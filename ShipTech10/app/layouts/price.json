@@ -1,0 +1,531 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [
+                                {
+                                    "Value": "8",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Active": false,
+                            "Unique_ID": "systemInstrument",
+                            "Name": "systemInstrument",
+                            "Type": "simpleLookup",
+                            "Group": "General",
+                            "Label": "SYSTEM_INSTRUMENT",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "masterSource": "SystemInstrument",
+                            "clc_id": "masters_systeminstrument"
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "marketInstrumentCode",
+                            "Name": "marketInstrumentCode",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "MARKET_INSTRUMENT",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Disabled": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "quoteDate",
+                            "Name": "quoteDate",
+                            "Type": "date",
+                            "Group": "General",
+                            "Label": "QUOTE_DATE",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "description",
+                            "Name": "description",
+                            "Type": "textarea",
+                            "Group": "General",
+                            "Label": "Description",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "period",
+                            "Name": "systemInstrumentPeriod",
+                            "Type": "simpleLookup",
+                            "Group": "General",
+                            "Label": "PERIOD",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "filter": "price_period_filter",
+                            "clc_id": "masters_period_price"
+                        }
+                    ]
+                },
+                "marketPrices": {
+                    "id": "marketPrices",
+                    "name": "marketPrices",
+                    "children": [
+                        {
+                            "Active": false,
+                            "Unique_ID": "marketPrices",
+                            "Name": "marketPrices",
+                            "Type": "CLC",
+                            "clc_id": "marketPrices",
+                            "Group": "marketPrices",
+                            "Label": "MARKET_PRICES",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "elements": [
+        {
+            "requiredFields": [
+                {
+                    "Unique_ID": "systemInstrument",
+                    "Name": "systemInstrument",
+                    "Type": "simpleLookup",
+                    "Group": "General",
+                    "Label": "System Instrument",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "systemInstrument"
+                },
+                {
+                    "Unique_ID": "marketInstrumentCode",
+                    "Name": "marketInstrumentCode",
+                    "Type": "text",
+                    "Group": "General",
+                    "Label": "Market Instrument",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "quoteDate",
+                    "Name": "quoteDate",
+                    "Type": "date",
+                    "Group": "General",
+                    "Label": "Quote date",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "systemInstrumentPeriod",
+                    "Name": "systemInstrumentPeriod",
+                    "Type": "simpleLookup",
+                    "Group": "General",
+                    "Label": "Period",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "systemInstrument"
+                },
+                {
+                    "Unique_ID": "description",
+                    "Name": "description",
+                    "Type": "textarea",
+                    "Group": "General",
+                    "Label": "Description",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Low",
+                    "Name": "Low",
+                    "Type": "text",
+                    "Group": "Market  Price",
+                    "Label": "Low",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "High",
+                    "Name": "High",
+                    "Type": "text",
+                    "Group": "Market  Price",
+                    "Label": "High",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Mean",
+                    "Name": "Mean",
+                    "Type": "text",
+                    "Group": "Market  Price",
+                    "Label": "Mean",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Open",
+                    "Name": "Open",
+                    "Type": "text",
+                    "Group": "Market  Price",
+                    "Label": "Open",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Close",
+                    "Name": "Close",
+                    "Type": "text",
+                    "Group": "Market  Price",
+                    "Label": "Close",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Index",
+                    "Name": "Index",
+                    "Type": "text",
+                    "Group": "Market  Price",
+                    "Label": "Index",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                }
+            ],
+            "customFields": [
+                {
+                    "Unique_ID": "CustomField1",
+                    "Name": "CustomField1",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 1",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField2",
+                    "Name": "CustomField2",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 2",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField3",
+                    "Name": "CustomField3",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 3",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField4",
+                    "Name": "CustomField4",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 4",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField5",
+                    "Name": "CustomField5",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 5",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField6",
+                    "Name": "CustomField6",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 6",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                }
+            ]
+        }
+    ],
+    "clc": {},
+    "id": 36
+}

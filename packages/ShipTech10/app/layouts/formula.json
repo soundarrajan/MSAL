@@ -1,0 +1,761 @@
+{
+  "layout": {
+    "children": {
+        "entity_documents": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+
+                    {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "entity_emaillog": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "TransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "PricingFormula": {
+              "id": "PricingFormula",
+              "name": "Pricing Formula",
+              "children": [
+                {
+                  "Unique_ID": "formulaMaster",
+                  "Name": "formulaMaster",
+                  "Type": "formulaMaster",
+                  "Group": "PricingFormula",
+                  "Label": "",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "LastOnRow": true
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "12"
+                }
+              }
+            }
+        }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "FormulaType",
+          "Name": "FormulaType",
+          "Type": "radio",
+          "Group": "PricingFormula",
+          "Label": "FormulaType",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "options": [
+            {
+              "simple": "Simple Formul",
+              "complex": "Complex Formula"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "Mean",
+          "Name": "Mean",
+          "Type": "checkbox",
+          "Group": "PricingFormula",
+          "Label": "Mean",
+          "Columns": [
+            {
+              "Value": "2",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "options": [
+            {
+              "Mean": "Mean"
+            }
+          ],
+          "ShowOn": "FormulaType,complex",
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Quote",
+          "Name": "Quote",
+          "Type": "simpleLookup",
+          "Group": "PricingFormula",
+          "Label": "Quote",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "masterSource": "systeminstrumentlist"
+        },
+        {
+          "Unique_ID": "PriceType",
+          "Name": "PriceType",
+          "Type": "dropdown",
+          "Group": "PricingFormula",
+          "Label": "Display Name",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "masterSource": "priceType"
+        },
+        {
+          "Unique_ID": "PlusMinus",
+          "Name": "PlusMinus",
+          "Type": "dropdown",
+          "Group": "PricingFormula",
+          "Label": "+/-",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "options": [
+            {
+              "premium": "Premium",
+              "discount": "Discount",
+              "none": "None"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "Amount",
+          "Name": "Amount",
+          "Type": "text",
+          "Group": "PricingFormula",
+          "Label": "Amount",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true
+        },
+        {
+          "Unique_ID": "flatOrPercentage",
+          "Name": "flatOrPercentage",
+          "Type": "dropdown",
+          "Group": "PricingFormula",
+          "Label": "Flat Or Percentage",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "options": [
+            {
+              " $": "$",
+              "%": "%"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "UOM",
+          "Name": "UOM",
+          "Type": "simpleLookup",
+          "Group": "PricingFormula",
+          "Label": "UOM",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "masterSource": "uomlist"
+        },
+        {
+          "Unique_ID": "complexFormulaCLC",
+          "Name": "complexFormulaCLC",
+          "Type": "CLC",
+          "App": "clcindlc",
+          "Screen": "complexformula",
+          "Group": "PricingFormula",
+          "Label": "",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true,
+          "masterSource": "uomlist",
+          "ShowOn": "FormulaType,complex"
+        },
+        {
+          "Unique_ID": "formulaDescription",
+          "Name": "formulaDescription",
+          "Type": "textarea",
+          "Group": "PricingFormula",
+          "Label": "Formula Description",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": true
+        }
+      ],
+      "customFields": [
+        {
+          "Unique_ID": "CustomField1",
+          "Name": "CustomField1",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 1",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField2",
+          "Name": "CustomField2",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 2",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField3",
+          "Name": "CustomField3",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 3",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField4",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 4",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField5",
+          "Name": "CustomField5",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 5",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField6",
+          "Name": "CustomField6",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 6",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ]
+    }
+  ],
+  "clc": {},
+  "id": 74
+}

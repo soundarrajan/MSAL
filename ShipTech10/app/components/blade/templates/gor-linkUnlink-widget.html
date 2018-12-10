@@ -1,0 +1,23 @@
+<div class="blade-column-title main text-uppercase" ng-init="$ctrl.dataLoaded = true">
+	Link / unlink
+</div>
+<div class="portlet light">
+	<div class="portlet-title">
+	    <span class="caption-subject pull-left">
+	        Link/Unlink requests
+	    </span>
+		<a class="btn btn-default orange pull-right" data-toggle="modal" href="#delink" ng-click="$ctrl.setDelinkIds()" ng-class="{'disabled' : !$ctrl.canDelinkRequests() || $ctrl.noRequestsSelected()}">Save</a>
+    </div>
+	<div class="row">
+        <div ng-repeat="request in $ctrl.selectedRequests track by $index" 
+        ng-show="!$ctrl.isRequestTabExpanded($index) || !request.isDeleted" class=" col-sm-3 request-tab-collapsed left-border border-selected-left border-selected-top">
+            <form class="form-inline">
+                <label class="control-label">{{request.name}} - {{request.vesselDetails.vessel.name}}</label>
+                <label class="mt-checkbox pull-left">
+                    <input type="checkbox" ng-model="$ctrl.requestCheckboxes[request.id]"/>      
+                    <span></span>
+                </label>
+            </form>
+        </div>
+	</div>
+</div>

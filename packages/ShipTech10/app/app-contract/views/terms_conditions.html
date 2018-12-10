@@ -1,0 +1,191 @@
+<general-header actions="{
+    primary: [{
+        label: 'Save',
+        special: 'true',
+        url: '#',
+        method: 'save_terms_and_conditions(CM.entity_id)',
+        extern: true,
+        main: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name != \'Confirmed\' && formValues.status.name != \'Delivered\' '
+    }, {
+        label: 'Confirm',
+        special: 'true',
+        url: '#',
+        method: 'confirm_contract()',
+        extern: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name != \'Cancelled\' && formValues.status.name != \'Confirmed\' && formValues.status.name != \'Delivered\' '
+
+    },    {
+                label: 'Undo Confirm',
+                type: 'goto',
+                method: 'undo_confirm_contract()',
+                ConditionalType: 'ng-show',
+                Conditional: 'formValues.status.name == \'Confirmed\'',
+                extern: true,
+                url: ''
+            },  {
+        label: '...',
+        type: 'button-group',
+        url: '',
+        children: [
+            {
+                label: 'Copy',
+                url: '#',
+                method: 'copyEntity()',
+                extern: true,
+                ConditionalType: 'ng-show',
+                Conditional: 'CM.entity_id > 0'
+            },
+            {
+                label: 'Extend',
+                type: 'goto',
+                method: 'extend_contract()',
+                url: ''
+            },
+
+            {
+        label: 'Cancel',
+        special: 'true',
+        url: '#',
+        method: 'cancel_contract()',
+        extern: true,
+    },
+            {
+        label: 'Delete',
+        special: 'true',
+        url: '#',
+        method: 'delete_contract()',
+        extern: true,
+    },
+
+        ]
+    }, ],
+    secondary: [{
+        label: 'Main Page',
+        type: 'goto',
+        url: 'edit/:entity_id'
+    }, {
+        label: 'Preview Contract',
+        type: 'goto',
+        url: 'preview/:entity_id'
+    }, {
+        label: 'Preview Email',
+        type: 'goto',
+         url: 'email-preview/:entity_id'
+    }, {
+        label: 'Deliveries',
+        type: 'goto',
+        url: 'productdelivery/:entity_id',
+        ConditionalType: 'ng-show',
+        Conditional: 'CM.entity_id > 0',
+        method: 'doEntityActionMaster(\'goto\', \'productdelivery/:entity_id\')'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true,
+    },{
+       label: 'Terms & Conditions',
+       active: true
+     }],
+}"></general-header>
+
+<div class="row" ng-controller="Controller_Master as CM">
+    <span ng-init="CM.get_master_entity(CM.screen_id)"></span>
+    <!-- <pre>{{fromValues}}</pre> -->
+    <div class="portlet light">
+        <div class="portlet-title">
+            <span class="caption-subject">Terms &amp; Conditions</span>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form_input form_input_terms_conditions">
+                        <textarea ng-model="formValues.termsAndConditions" name="termsAndConditions"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<general-header actions="{
+    primary: [{
+        label: 'Save',
+        special: 'true',
+        url: '#',
+        method: 'save_terms_and_conditions(CM.entity_id)',
+        extern: true,
+        main: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name != \'Confirmed\' && formValues.status.name != \'Delivered\' '
+    }, {
+        label: 'Confirm',
+        special: 'true',
+        url: '#',
+        method: 'confirm_contract()',
+        extern: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name != \'Cancelled\' && formValues.status.name != \'Confirmed\' && formValues.status.name != \'Delivered\' '
+
+    },    {
+                label: 'Undo Confirm',
+                type: 'goto',
+                extern: true,
+                method: 'undo_confirm_contract()',
+                ConditionalType: 'ng-show',
+                Conditional: 'formValues.status.name == \'Confirmed\'',
+                url: ''
+            },    {
+        label: '...',
+        type: 'button-group',
+        url: '',
+        children: [
+            {
+                label: 'Copy',
+                url: '#',
+                method: 'copyEntity()',
+                extern: true,
+                ConditionalType: 'ng-show',
+                Conditional: 'CM.entity_id > 0'
+            },
+            {
+                label: 'Extend',
+                type: 'goto',
+                method: 'extend_contract()',
+                url: ''
+            },
+            {
+        label: 'Cancel',
+        special: 'true',
+        url: '#',
+        method: 'cancel_contract()',
+        extern: true,
+    },
+            {
+        label: 'Delete',
+        special: 'true',
+        url: '#',
+        method: 'delete_contract()',
+        extern: true,
+    },
+
+        ]
+    }, ],
+    secondary: [],
+}" color="'white'"></general-header>
+<span ng-init="CM.equalizeColumnsHeightGrouped('.group_ContractSummary', '.group_General_Contract, .group_contact, .group_contractualQuantity, .group_ProductDetails, .group_AdditionalCosts, .group_Penalty')" ng-controller="Controller_Master as CM">
+</span>

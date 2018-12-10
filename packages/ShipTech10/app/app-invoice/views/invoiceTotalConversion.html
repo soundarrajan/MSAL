@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<div class="col-md-12">
+	        <div class="form-group row">
+	            <label for="" class="simpleLookupLabel" style="max-height: initial;">
+	                {{ CM.app_id + '.INVOICE_AMOUNT' | translate }}
+	            </label>
+		        <span class="input-group-addon">
+		            <input type="text" style="width:50%" class="form-control pull-left" ng-change="computeInvoiceTotalConversion(CM.conversionRoe, CM.conversionTo)" ng-model="formValues.invoiceSummary.invoiceAmountGrandTotal" disabled>
+			        <input type="text" style="width:50%" class="form-control pull-left" ng-model="formValues.invoiceRateCurrency.name" disabled>
+		        </span>
+	        </div>
+		</div>
+		<div class="col-md-12">
+	        <div class="form-group row">
+	            <label for="" class="simpleLookupLabel" style="max-height: initial;">
+	                {{ CM.app_id + '.CONVERTED_VALUE' | translate }}
+	            </label>
+		        <span class="input-group-addon">
+		            <input type="text" style="width:50%" class="form-control pull-left" ng-model="CM.convertedAmount" disabled>
+		            <span class="hidden" ng-if="formValues.invoiceRateCurrency" ng-init="CM.conversionTo = formValues.invoiceRateCurrency"></span>
+			        <select name="conversionCurrency" ng-model="CM.conversionTo" ng-change="CM.changedFromCurrency = true ; computeInvoiceTotalConversion(CM.conversionRoe, CM.conversionTo)" style="width:50%; max-width: initial;" class="form-control pull-left bg-white" id="conversionCurrency" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id"></select>
+		        </span>
+	        </div>
+		</div>	
+		<div class="col-md-12">
+	        <div class="form-group row">
+	            <label for="" class="simpleLookupLabel" style="max-height: initial;">
+	                {{ CM.app_id + '.ROE' | translate }}
+	            </label>
+		        <span class="input-group-addon">
+		            <input type="text" class="form-control pull-left" ng-blur="computeInvoiceTotalConversion(CM.conversionRoe, CM.conversionTo)" ng-disabled="roeDisabled" ng-model="CM.conversionRoe">
+		        </span>
+	        </div>		
+		</div>
+		<span class="hidden">{{(CM.conversionTo.id == formValues.invoiceRateCurrency.id) ? (roeDisabled = CM.conversionRoe = 1) : (roeDisabled = false)}}</span>
+			        <!-- <select name="conversionCurrency" style="width:50%" class="form-control pull-left" id="conversionCurrency" ng-options="item as item.name for item in listsCache.Currency track by item.id"></select> -->
+	</div>
+</div>

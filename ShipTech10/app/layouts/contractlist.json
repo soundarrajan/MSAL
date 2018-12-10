@@ -1,0 +1,455 @@
+{
+    "layout": {},
+    "elements": {},
+    "clc": {
+        "contracts_contractlist": {
+            "table_name": "Contract app contract list",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [30, 20, 10],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [
+                {
+                    "label": "Contract id",
+                    "name": "id1",
+                    "formatter": "edit_link",
+                    "width": 150
+                },
+                {
+                    "label": "Contract Name",
+                    "name": "contractName",
+                    "width": 150
+                },
+                {
+                    "label": "Seller",
+                    "name": "seller.name",
+                    "width": 150
+                },
+                {
+                    "label": "Main Location",
+                    "name": "location.name",
+                    "width": 150
+                },
+                {
+                    "label": "Product",
+                    "name": "product.name",
+                    "width": 150
+                },
+                {
+                    "label": "Contract qty",
+                    "name": "contractedQuantity",
+                    "width": 150
+                },
+                {
+                    "label": "Available qty",
+                    "name": "availableQuantity",
+                    "width": 150
+                },
+                {
+                    "label": "Contract valid to",
+                    "name": "validTo",
+                    "width": 150
+                },
+                {
+                    "label": "Days before expiry",
+                    "name": "noOfDaysBeforeExpiry",
+                    "width": 150
+                },
+                {
+                    "label": "Status",
+                    "name": "status.name",
+                    "formatter": "status_draft",
+                    "width": 150
+                },
+                {
+                    "label": "Agreement type",
+                    "name": "agreementType.name",
+                    "width": 150
+                },
+                {
+                    "label": "Contract valid from",
+                    "name": "validFrom",
+                    "width": 150
+                },
+                {
+                    "label": "Strategy",
+                    "name": "strategy.name",
+                    "width": 150
+                },
+                {
+                    "label": "Formula",
+                    "name": "formula",
+                    "width": 150
+                },
+                {
+                    "label": "Fixed price",
+                    "name": "fixedPrice",
+                    "width": 150
+                },
+                {
+                    "label": "Delivered qty",
+                    "name": "utilizedQuantity",
+                    "width": 150
+                },
+                {
+                    "label": "Planned qty",
+                    "name": "planned_qty",
+                    "width": 150
+                },
+                {
+                    "label": "Ordered qty",
+                    "name": "orderedQuantity",
+                    "width": 150
+                },
+                {
+                    "label": "Evergreen",
+                    "name": "evergreen",
+                    "width": 150
+                },
+                {
+                    "label": "Applied to",
+                    "name": "applyto.name",
+                    "width": 150
+                },
+                {
+                    "label": "Delivery term",
+                    "name": "incoterm.name",
+                    "width": 150
+                },
+                {
+                    "label": "Payment term",
+                    "name": "peymentTerm.name",
+                    "width": 150
+                },
+                {
+                    "label": "Min qty",
+                    "name": "minQuantity",
+                    "width": 150
+                },
+                {
+                    "label": "Max qty",
+                    "name": "maxQuantity",
+                    "width": 150
+                },
+                {
+                    "label": "UOM",
+                    "name": "uom.name",
+                    "width": 150
+                },
+                {
+                    "label": "Penalty applicable",
+                    "name": "penaltyApplies",
+                    "width": 150
+                },
+                {
+                    "label": "Penalty cost",
+                    "name": "penaltyCost",
+                    "width": 150
+                },
+                {
+                    "label": "Created by",
+                    "name": "createdBy.name",
+                    "width": 150
+                },
+                {
+                    "label": "Created date",
+                    "name": "createdOn",
+                    "width": 150
+                },
+                {
+                    "label": "Modified by",
+                    "name": "lastModifiedBy.name",
+                    "width": 150
+                },
+                {
+                    "label": "Modified date",
+                    "name": "lastModifiedOn",
+                    "width": 150
+                }
+            ],
+            "rowActions": [
+                {
+                    "label": "Copy",
+                    "class": "copy",
+                    "url": "get.php?action=copy"
+                },
+                {
+                    "label": "Edit",
+                    "class": "edit",
+                    "url": "get.php?action=edit",
+                    "idSrc": "id1"
+                }
+            ],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "contractProductDeliveries": {
+            "table_name": "contractProductDeliveries",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [30, 20, 10],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [
+                {
+                    "index": "deliveryId",
+                    "label": "Delivery ID",
+                    "name": "deliveryId",
+                    "formatter": "edit_link",
+                    "width": 150
+                },
+                {
+                    "index": "plannedLocation",
+                    "label": "Planned Location",
+                    "name": "plannedLocation",
+                    "width": 150
+                },
+                {
+                    "index": "plannedProduct",
+                    "label": "Planned Product",
+                    "name": "plannedProduct",
+                    "width": 150
+                },
+                {
+                    "index": "plannedQuantity",
+                    "label": "Planned Qty",
+                    "name": "plannedQuantity",
+                    "width": 150
+                },
+                {
+                    "index": "orderId",
+                    "label": "Order ID",
+                    "name": "orderId",
+                    "width": 150
+                },
+                {
+                    "index": "actualLocation",
+                    "label": "Actual Location",
+                    "name": "actualLocation",
+                    "width": 150
+                },
+                {
+                    "index": "actualProduct",
+                    "label": "Actual Product",
+                    "name": "actualProduct",
+                    "width": 150
+                },
+                {
+                    "index": "actualQuantity",
+                    "label": "Actual qty",
+                    "name": "actualQuantity",
+                    "width": 150
+                },
+                {
+                    "index": "availableQuantity",
+                    "label": "Available qty",
+                    "name": "availableQuantity",
+                    "width": 150
+                }
+            ],
+            "rowActions": [
+                {
+                    "label": "Copy",
+                    "class": "copy",
+                    "url": "get.php?action=copy"
+                },
+                {
+                    "label": "Edit",
+                    "class": "edit",
+                    "url": "get.php?action=edit"
+                }
+            ],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "entity_documents": {
+            "table_name": "Documents List",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [30, 20, 10],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "treedatatype": "json",
+            "loadonce": true,
+            "colModel": [
+                {
+                    "label": "Document Name",
+                    "name": "name",
+                    "width": 150,
+                    "formatter": "formGotoDocument"
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "width": 150
+                },
+                {
+                    "label": "Document Type",
+                    "name": "documentType.name",
+                    "width": 150
+                },
+                {
+                    "label": "File Type",
+                    "name": "fileType",
+                    "width": 150
+                },
+                {
+                    "label": "Entity",
+                    "name": "entity.name",
+                    "width": 150
+                },
+                {
+                    "label": "Reference No",
+                    "name": "referenceNo",
+                    "width": 150
+                },
+                {
+                    "label": "Uploaded By",
+                    "name": "uploadedBy.name",
+                    "width": 150
+                },
+                {
+                    "label": "Uploaded On",
+                    "name": "uploadedOn",
+                    "width": 150
+                },
+                {
+                    "label": "Add/View Notes",
+                    "name": "notes",
+                    "width": 150
+                },
+                {
+                    "label": "Verified",
+                    "name": "isVerified",
+                    "width": 150
+                }
+            ],
+            "rowActions": [{
+                    "label": "Delete", "class": "delete", "url": "?action=delete"
+                }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "entity_audit_log": {
+            "table_name": "Documents List",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [30, 20, 10],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "treedatatype": "json",
+            "loadonce": true,
+            "colModel": [
+                {
+                    "label": "Date (UTC)",
+                    "name": "date",
+                    "width": 150
+                },
+                {
+                    "label": "Transaction",
+                    "name": "transaction",
+                    "width": 150
+                },
+                {
+                    "label": "Transaction Type",
+                    "name": "transactionType",
+                    "width": 150
+                },
+                {
+                    "label": "Field Name",
+                    "name": "fieldName",
+                    "width": 150
+                },
+                {
+                    "label": "Old Value",
+                    "name": "oldValue",
+                    "width": 150
+                },
+                {
+                    "label": "New Value",
+                    "name": "newValue",
+                    "width": 150
+                },
+                {
+                    "label": "User",
+                    "name": "modifiedBy.name",
+                    "width": 150
+                },
+                {
+                    "label": "User IP Address",
+                    "name": "userip",
+                    "width": 150
+                }
+            ],
+            "rowActions": [],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        }
+    },
+    "id": 96
+}

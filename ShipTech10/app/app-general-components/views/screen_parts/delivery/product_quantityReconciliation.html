@@ -1,0 +1,137 @@
+<!-- current product {{product}} -->
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="tools">
+            <a   class="collapse"></a>
+        </div>
+        <div class="caption">
+            <span class="caption-subject">
+                QUANTITY RECONCILIATION
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="row margin-top-10">
+            <div class="col-xs-12">
+            <span ng-init='formQuantityHeaders(product.orderProductId,product.quantityHeader.ccaiDelivered)' ng-if="formValues.temp.deliverysummary">
+            </span>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_ccai_offered" class="ccai_offered_label">
+                                {{ CM.app_id + '.CCAI_OFFERED' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_ccai_offered">
+                                <input type="text" name="Product_{{ productIndex }}_ccai_offered" class="form-control ccai_offered" ng-model="formValues.temp.deliverysummary.products[CM.prodOrderInTemp].ccai" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true"  format="number:{{tenantSetting.defaultValues.quantityPrecision }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_ccai_delivered" class="ccai_offered_label">
+                                {{ CM.app_id + '.CCAI_DELIVERED' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_ccai_delivered">
+                                <input type="text" name="Product_{{ productIndex }}_ccai_delivered" class="form-control ccai_delivered" ng-model="product.quantityHeader.ccaiDelivered" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-change="formValues.temp.deliverysummary.products[CM.prodOrderInTemp].ccaiVariance = calculatCccaiVariance(formValues.temp.deliverysummary.products[CM.prodOrderInTemp].ccai,product.quantityHeader.ccaiDelivered)"  format="number:{{tenantSetting.defaultValues.quantityPrecision }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex + 1 }}_ccai_variance" class="ccai_offered_label">
+                                {{ CM.app_id + '.CCAI_VARIANCE' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_ccai_variance">
+                                <input type="text" name="Product_{{ productIndex }}_ccai_variance" class="form-control ccai_variance" ng-model="formValues.temp.deliverysummary.products[CM.prodOrderInTemp].ccaiVariance" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true"  format="number:{{tenantSetting.defaultValues.quantityPrecision }}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="custom-hardcoded-table">
+            <table  class="table-body" width="100%">
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="row margin-top-10 custom-hardcoded-table">
+            <div class="col-xs-12">
+                <table class="table-body" width="100%">
+                    <thead>
+                        <tr>
+                            <td class="padding" width="17%">
+                                <b>{{ CM.app_id + '.PARAMETERS' | translate }}</b>
+                            </td>
+                            <td class="padding" width="8%">
+                                <b>UOM</b>
+                            </td>
+                            <td class="padding" width="25%">
+                                <b>{{ CM.app_id + '.BDN_VALUE' | translate }}</b>
+                            </td>
+                            <td class="padding" width="25%">
+                                <b>{{ CM.app_id + '.LAB_VALUE' | translate }}</b>
+                            </td>
+                            <td class="padding" width="10%">
+                                <b>{{ CM.app_id + '.VARIANCE' | translate }}</b>
+                            </td>
+                            <td class="padding" width="15%">
+                                <b>%{{ CM.app_id + '.DEVIATION' | translate }}</b>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="parameter in product.quantityParameters">
+                            <td class="padding" width="17%">
+                                <span>{{parameter.parameter.name}}</span>
+                            </td>
+                            <td class="padding" width="8%">
+                                <span>{{parameter.uom}}</span>
+                            </td>
+                            <td wclass="padding" idth="25%">
+                                <span ng-if="!parameter.bdn" ng-init="parameter.bdn = 0"></span>
+                                <span>
+                                    <input type="text" class="form-control" ng-model="parameter.bdn" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" format="number:{{tenantSetting.defaultValues.quantityPrecision }}" />
+                                </span>
+                            </td>
+                            <td class="padding" width="25%">
+                                <!-- <span ng-if="!parameter.lab" ng-init="parameter.lab = 0"></span> -->
+                                <span>
+                                    {{parameter.lab}}
+                                </span>
+                            </td>
+                            <td class="padding" width="10%">
+                                <!-- Difference in BDR = Lab value – BDN value -->
+                                <span ng-if="(parameter.parameter.id != 3)">
+                                    <span ng-if="parameter.bdn != null && parameter.lab != null">
+                                        {{parameter.lab - parameter.bdn}}
+                                    </span>
+                                </span>
+                                <span ng-if="!(parameter.bdn != null && parameter.lab != null) || (parameter.parameter.id == 3)"> – </span>
+                            </td>
+                            <td class="padding" width="15%">
+                                <!-- % of Deviation = Difference in BDR / BDN Value -->
+                                <span ng-if="(parameter.parameter.id != 2) && (parameter.parameter.id != 3)">
+                                    <span ng-if="parameter.bdn">
+                                         {{((parameter.lab - parameter.bdn) / parameter.bdn)*100}}
+                                    </span>
+                                </span>
+                                <span ng-if="((!parameter.bdn) || (parameter.parameter.id == 2) || (parameter.parameter.id == 3))"> -</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row margin-top-10">
+            <div class="col-xs-12 productQuantityReconciliationComments">
+                <label for="Product_{{ productIndex }}_QuantityReconciliationComments">Comments</label>
+                <div class="form_input form_input_comments">
+                    <textarea ng-model="product.quantityHeader.comments" maxlength="500" name="Product_{{ productIndex }}_QuantityReconciliationComments" ></textarea>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

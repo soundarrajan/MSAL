@@ -1,0 +1,26 @@
+<general-header actions="{
+    primary: [
+        {label: 'Active', html_element: 'checkbox', checked: false, id: 'entity_active'},
+        {label: 'Save Changes', special: 'true', url: '#', method: 'save_master_changes()', extern:true},
+        {label: 'Discard Changes',type:'goto', url: ''},
+    ],
+    secondary: [
+        {label: 'Documents', type: 'goto', url: 'documents/:entity_id'},
+        {label: 'Audit Log', type: 'goto', url: 'audit-log/:entity_id'},
+        {label: 'Configure UI',type: 'goto', url: 'structure'},
+    ],
+}"></general-header>
+<entity-edit-form structure='' type = "" ></entity-edit-form>
+
+<general-header color="'white'" actions="{
+    primary: [
+        {label: 'Active', html_element: 'checkbox', checked: false, id: 'entity_active'},
+        {label: 'Save Changes', special: 'true', url: '#', method: 'save_master_changes()', extern:true},
+        {label: 'Discard Changes',type:'goto', url: ''},
+    ],
+    secondary: [
+        {label: 'Documents', type: 'goto', url: 'documents/:entity_id'},
+        {label: 'Audit Log', type: 'goto', url: 'audit-log/:entity_id'},
+        {label: 'Configure UI',type: 'goto', url: 'structure'},
+    ],
+}"></general-header>

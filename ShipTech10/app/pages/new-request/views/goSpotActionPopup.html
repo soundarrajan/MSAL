@@ -1,0 +1,24 @@
+	<div id="modal_close_bar">
+	    <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+	</div>
+    <div class="portlet">
+        <div class="portlet-title">
+            <span class="caption-subject">
+             There are available contracts for {{$ctrl.existingContractLocations}}
+            </span>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="col-sm-12">
+    		<b class="font-yellow-gold">
+		    	<!-- {{ PAGES.NEW_REQUEST.REASON_FOR_CANCELING_REQUEST | translate }} -->
+		    	Which option would you like to proceed with?
+    		</b>
+    	</div>
+    	<br><br>
+    	<div class="col-sm-12">
+	    	<a class="btn btn-default btn-outline pull-left" ng-click="prettyCloseModal(); $ctrl.buttonsDisabled = false; $ctrl.goToContractsSection();">Contract</a>
+	    	<span class="pull-left">&nbsp;&nbsp;</span>
+	    	<a class="btn orange btn-outline pull-left" ng-click="$ctrl.goSpot()">Go Spot</a>
+    	</div>	
+    </div>

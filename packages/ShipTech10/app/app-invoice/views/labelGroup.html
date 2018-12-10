@@ -1,0 +1,12 @@
+﻿<div class="form-group row" style="padding: 0; margin-bottom: 0;">
+    <div style="padding: 0 15px;">
+        <label class="control-label" style="padding: 0px;"> {{ CM.app_id + '.' + field.Label | translate}} </label>
+        <div class="input-group" style="width: calc(100% - 125px);">
+	        <div  ng-repeat="field in field.elements track by $index" class="form_input"
+	             ng-style="$index === 0 && {'padding-right': 0} || $index === 1 && {'padding-left': 0}"
+	             style="width: 50%">
+	            <span ng-include="'app-general-components/views/controls/label-control.html'"></span>
+	        </div>
+        </div>
+    </div>
+</div>

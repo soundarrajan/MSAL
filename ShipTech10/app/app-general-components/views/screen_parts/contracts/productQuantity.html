@@ -1,0 +1,77 @@
+﻿<span ng-init='options.ContractualQuantityOption ? return : CM.getOptions({"Name": "ContractualQuantityOption", "Type": "simpleLookup", "masterSource": "ContractualQuantityOption"});'></span>
+<span ng-if="formValues.products[index_0].details.length == 0" ng-init='formValues.products[index_0].details.push({"contractualQuantityOption":{"id":1,"name":"TotalContractualQuantity","code":"","collectionName":null},"id":0})'></span>
+<div class="custom-hardcoded-table">
+    <table class="table-body" width="100%">
+        <thead>
+            <tr>
+                <td width="5%"></td>
+                <td width="5%"><span class="insert" ng-click="CC.addNewProduct(index_0)"></span></td>
+                <td width="16%">
+                    <b>
+                        Quant. Type
+                    </b>
+                </td>
+                <td width="16%">
+                    <b>
+                        Min Qty
+                    </b>
+                </td>
+                <td width="16%">
+                    <b>
+                        Max Qty
+                    </b>
+                </td>
+                <td width="16%">
+                    <b>
+                        UOM
+                    </b>
+                </td>
+                <td width="16%">
+                    <b>
+                        Tolerance %
+                    </b>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key, value) in formValues.products[index_0].details" ng-if="value.isDeleted != true">
+                <td width="5%">
+                    <span class="remove" ng-click="CM.softDelete(formValues.products[index_0].details, key)"></span>
+                </td>
+                <td width="5%">
+                    <span class="insert" ng-click="CC.addNewProduct(index_0)"></span>
+                </td>
+                <td width="16%">
+                    <div class=" " ng-controller="Controller_Master as CM">
+                        <select name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_Quantity_Type" data-container="body" class="form-control bs-select changeIT" ng-options="item as item.name for item in options.ContractualQuantityOption track by item.id " ng-model="value.contractualQuantityOption" ng-disabled="value.contractualQuantityOption.id == 1 && key == 0" ng-required="true">
+                            <option></option>
+                        </select>
+                    </div>
+                </td>
+                <td width="16%">
+                	 {{value.tolerance > 0 ? value.minContractQuantity = null : ""}}
+                    <input name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_Min" type="text" class="form-control " ng-model="value.minContractQuantity" format="number" ng-disabled="value.tolerance > 0"/>
+                </td>
+                <td width="16%">
+                    <input name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_Max" type="text" class="form-control " ng-model="value.maxContractQuantity" format="number" ng-required="true"/>
+                </td>
+                <td width="16%">
+                    <div class=" " ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "dropdowm", "masterSource": "Uom"});'>
+                    	<!-- {{options.Uom}} -->
+                        <select name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_UOM" ng-model="value.uom"  data-container="body" class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.Uom track by item.id"></select>
+                        <!--  <input name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_UOM" ng-model="value.uom" uib-typeahead="item as item.name for item in options.Uom | filter:{name:$viewValue}"  class="form-control w100" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}"  autocomplete="off"/>
+                                                <span class="input-group-addon" ng-click="triggerModal('general', 'masters_uomlist', 'uom' , 'formValues.products.'+index_0+'.details.'+key+'.uom');">
+                                                    <a   class=" btn default">
+                                                        <i class="fa fa-search"></i>
+                                                    </a>
+                                                </span>  -->
+                    </div>
+                </td>
+                <td width="16%">
+                	 {{value.minContractQuantity > 0 ? value.tolerance = null : ""}}
+                    <input name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_Tolerance" type="number" format="number" class="form-control " ng-model="value.tolerance" ng-trim="false" step="0.0001" ng-disabled="value.minContractQuantity > 0"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

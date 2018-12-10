@@ -1,0 +1,42 @@
+<div class="">
+    <div id="modal_close_bar" class="row float_right">
+        <button type="button" class="close" ng-click="$ctrl.prettyCloseModal()" aria-hidden="true"></button>
+    	<a class="btn btn-sm btn-outline orange pull-right" style="margin-right: 25px;" ng-click="$ctrl.confirmContactCounterpartySelection($ctrl.selectedContactCounterparty)" data-dismiss="modal">Select</a>
+    </div>
+    <div class="col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title row">
+                <div class="col-sm-12 caption-subject">
+                    Select Contact
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="custom-hardcoded-table admin" style="max-height: 400px;">
+	            <table class="table-body" width="100%">
+	            	<thead class="table-head">
+	            		<tr style="background-color: #fff">
+	            			<td style="width:50px;" ></td>
+	            			<td>Name</td>
+	            			<td>Email Address</td>
+	            		</tr>
+	            	</thead>
+	            	<tbody >
+		            	<tr ng-repeat="(key, val) in $ctrl.OptionsContactCounterpartyModal">
+		            		<td  style="width:50px;" class="padding">
+        			            <label class="mt-checkbox">
+					                <input type="checkbox" name="contactCounterparty" ng-checked="$ctrl.selectedContactCounterparty.id == val.id" ng-click="$ctrl.selectedContactCounterparty.id == val.id ? $ctrl.selectedContactCounterparty = null : $ctrl.selectedContactCounterparty = val"/>
+					                <span></span>
+					            </label>
+		            		</td>
+		            		<td class="padding">{{val.name}}</td>
+		            		<td class="padding">{{val.emailAddress}}</td>
+		            	</tr>
+	            	</tbody>
+	            </table>
+            </div>
+        </div>
+	    <br><br>
+    </div>
+    <br><br>
+</div>

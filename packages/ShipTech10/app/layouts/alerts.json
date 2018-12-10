@@ -1,0 +1,30 @@
+{
+    "layout": {
+        "alertsScreen": {
+            "id": "alertsScreen",
+            "name": "alertsScreen",
+            "children": [{
+                "Unique_ID": "alertsScreen",
+                "Name": "alertsScreen",
+                "Type": "alertsScreen",
+                "Group": "alertsScreen",
+                "Label": "alertsScreen",
+                "Columns": [{
+                    "Value": "12",
+                    "Type": "dropdown",
+                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                }],
+                "Description": "",
+                "Required": true,
+                "Hidden": false,
+                "Added": true,
+                "Active": true,
+                "LastOnRow": true
+            }],
+            "Active": true
+        }
+    },
+    "elements": {},
+    "clc": {},
+    "id": 88
+}

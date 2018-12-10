@@ -1,0 +1,263 @@
+
+<div class="row" >
+	<div class="col-sm-4 sidebar">
+		<div class="row">
+			<div class="col-sm-6 first-sidebar">
+				<div class="sidebar-title">
+					Sidebar 1 
+				</div>
+			</div>
+			<div class="col-sm-6 second-sidebar">
+				<div class="sidebar-title">
+					Sidebar 1 
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-8 col-sm-push-4">
+		<div class="portlet light">
+			<div class="portlet-title">
+				<div class="caption-subject">
+					Contact Information
+				</div>	
+			</div>
+			<div class="portlet-content" ng-controller="Controller_Master as CM">
+				<div class="top-section">
+					<div class="row">
+						<div class="col-sm-2"><img class="img-responsive" src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e8/Shell_logo.svg/829px-Shell_logo.svg.png" alt=""></div>
+						<div class="col-sm-10">
+							<div class="row">
+								
+							</div>
+							<div><b class="col-sm-3">Company</b><div class="col-sm-9">{{counterpartyData.name}}</div></div>
+							<div class="clearfix"></div>
+							<br>
+							<div><b class="col-sm-3">Address</b><div class="col-sm-9">{{counterpartyData.address.addressLine1}}</div></div>
+							<div class="clearfix"></div>
+							<br>
+							<div><b class="col-sm-3">Phone</b><div class="col-sm-9">{{counterpartyData.phone}}</div></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2 text-center">
+							<a href="{{counterpartyData.website}}" ng-if="counterpartyData.website" target="_blank">{{counterpartyData.website}}</a>
+						</div>
+						<div class="col-sm-10">
+							<a class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope orange pull-right" ng-show="!addNewContact"  ng-click="addNewContact = !addNewContact">Add new contact</a>
+							<a ng-if="addNewContact" ng-click="saveNewContactCounterparty(newContact, counterpartyData)" class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope orange pull-right">Save contact</a>
+						</div>
+					</div>
+					<hr>
+				</div>
+				<div class="contacts-section row ">
+						<form class="add-contact-form dynamic_form_editor" ng-show="addNewContact">
+							<span ng-init="newContact={}"></span>
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Contact</b>
+												<span class="orange-txt ">
+												    *
+												</span>										        
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" class="form-control" ng-model="newContact.name" ng-required="true" >
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Contact Type </b>
+										        <span class="orange-txt ">
+									                *
+									            </span>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <!-- <input type="text" ng-model="newContact.name" class="form-control" ng-required="true"> -->
+
+											<div class="input-group form_input form_input_ContactType">
+											    <div style="position: relative;">
+											    	<input uib-typeahead="item as item.name for item in CM.listsCache.ContactType | filter:{name:$viewValue}" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contactType" name="contactType5" ng-model="newContact.contactType" autocomplete="off" ng-required="true" aria-autocomplete="list" aria-expanded="false" aria-owns="typeahead-589-7101" required="required" style="position: relative; vertical-align: top; background-color: transparent;">
+												</div>
+											    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_contacttypelist',  CM.app_id + '.CONTACT_TYPE' | translate , 'newContact.contactType');">
+											        <a href="javascript:;" class=" btn default">
+											            <i class="fa fa-search"></i>
+											        </a>
+											    </span>
+											</div>
+
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Email</b>
+												<span class="orange-txt ">
+												    *
+												</span>												    
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.email" class="form-control" ng-required="true">
+										    </div>
+										</div>
+									</div>
+								</div>							
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Contact Address</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.address.addressLine1" class="form-control" >
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Zip code</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.address.zipCode" class="form-control" >
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>City</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.address.city" class="form-control" >
+										    </div>
+										</div>
+									</div>								
+								</div>
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Country</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+
+												<div class="input-group form_input form_input_ContactType">
+												    <div style="position: relative;">
+												    	<input uib-typeahead="item as item.name for item in CM.listsCache.Country | filter:{name:$viewValue}" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="country" name="country" ng-model="newContact.address.country" autocomplete="off" aria-autocomplete="list" aria-expanded="false" style="position: relative; vertical-align: top; background-color: transparent;">
+													</div>
+												    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_countrylist',  'Country' , 'newContact.address.country');">
+												        <a href="javascript:;" class=" btn default">
+												            <i class="fa fa-search"></i>
+												        </a>
+												    </span>
+												</div>										        
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Mobile No</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.mobileNo" class="form-control" >
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Phone no</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.phoneNo" class="form-control" >
+										    </div>
+										</div>
+									</div>								
+								</div>						
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Fax No</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" class="form-control" >
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>IM ID</b>
+										    </label>
+										    <div class="form_input col-sm-8" >
+										    	<div class="col-sm-4 no-padding">
+												    <select name="imType" class="form-control img-responsive" id="imType" ng-model="newContact.imType" ng-options="item as item.name for item in CM.listsCache .ImType track by item.id"></select>
+										    	</div>
+										    	<div class="col-sm-8 no-padding">
+											        <input type="text" ng-model="newContact.instantMessengerAddress" class="form-control" >
+										    	</div>
+										    </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group row">
+										    <label class="control-label col-sm-4">
+										        <b>Notes</b>
+										    </label>
+										    <div class="form_input col-sm-8 " >
+										        <input type="text" ng-model="newContact.notes" class="form-control" >
+										    </div>
+										</div>
+									</div>								
+								</div>																
+							</div>
+							<div class="clearfix"></div><br>
+								<hr>
+
+						</form>
+						<div ng-repeat="(key, contact) in counterpartyData.contacts" class="col-sm-12 gor-counterparty-contact" ng-class-odd="'odd'" ng-class-even="'even'">
+							<div class="row">
+								<div class="col-sm-8">									
+									<div><b class="col-sm-3">Name</b><div class="col-sm-9">{{contact.name}}</div></div>
+									<div class="clearfix"></div><!-- <br> -->									
+									<div><b class="col-sm-3">Designation</b><div class="col-sm-9">{{contact.contactType.name}}</div></div>
+									<div class="clearfix"></div><!-- <br> -->									
+									<div><b class="col-sm-3">Email</b><div class="col-sm-9">{{contact.email}}</div></div>
+									<div class="clearfix"></div><!-- <br> -->									
+									<div><b class="col-sm-3">Phone</b><div class="col-sm-9">{{contact.phoneNo}}</div></div>
+									<div class="clearfix"></div><!-- <br> -->									
+									<div><b class="col-sm-3">Mobile</b><div class="col-sm-9">{{contact.mobileNo}}</div></div>
+									<div class="clearfix"></div><!-- <br> -->									
+									<div><b class="col-sm-3">IM</b><div class="col-sm-9">{{contact.instantMessengerAddress}}</div></div>
+								</div>
+								<div class="col-sm-4">
+							        <label class="mt-checkbox">
+							            <!--{{options[field.Name][key].id}}-->
+							            <input type="checkbox" ng-disabled="!addNewContact" ng-model="contact.emailContact" />
+							            <span></span>
+							            Email contact
+							        </label>
+									<div class="clearfix"></div><!-- <br> -->									
+							        <label class="mt-checkbox">
+							            <!--{{options[field.Name][key].id}}-->
+							            <input type="checkbox" ng-disabled="!addNewContact"/>
+							            <span></span>
+							        </label>							        
+								</div>
+							</div>
+						</div>					
+					
+				</div>
+			</div>
+		</div>		
+	</div>
+</div>
+
+

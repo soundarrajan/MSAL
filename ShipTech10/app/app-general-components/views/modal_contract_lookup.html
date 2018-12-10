@@ -1,0 +1,26 @@
+﻿<div id="modal_close_bar"><button type="button" class="close" ng-click="modalInstance.close()" aria-hidden="true"></button></div>
+<div id="contract_lookup" class="modal fade" tabindex="-1" data-width="90%">
+    <div class="modal-body top-no-padding">
+
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+
+        <general-header color="'white'" actions="{
+            primary: [
+                {label: 'Select', url: '#', method: 'select_contract()', extern:true},
+                {label: 'Contract Evaluation', url: '/', type: 'goto', special: true},
+            ],
+            secondary: [
+            ],
+            icons: [
+                {class: 'export-xls', action: 'export_xls'},
+                {class: 'export-csv', action: 'export_csv'},
+                {class: 'export-pdf', action: 'export_pdf'},
+            ],
+            title: 'Select Contract',
+            search: true,
+        }"></general-header>
+
+        <clc-table-list id="'contracts_selectcontractlist'" app="'contracts'" screen="'selectcontractlist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+    </div>
+</div>

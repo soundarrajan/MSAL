@@ -1,0 +1,82 @@
+{
+  "layout": {},
+  "elements": {},
+  "clc": {
+    "masters_emaillogslist": {
+      "table_name": "Email Log List",
+      "datatype": "local",
+      "language": "en",
+      "rowNum": 10,
+      "rowList": [
+        30,
+        20,
+        10
+      ],
+      "multiselect": false,
+      "viewrecords": true,
+      "sortable": {
+        "options": {
+          "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+        }
+      },
+      "view_type": "flat",
+      "treeGrid": false,
+      "treeGridModel": "adjacency",
+      "ExpandColumn": "actions-dimensional",
+      "treedatatype": "json",
+      "loadonce": true,
+      "colModel": [
+        {
+          "label": "Mail Sent To",
+          "name": "to"
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "formatter": "collectionRead",
+          "params": {
+            "collectionSelector": "name",
+            "collectionType": "status"
+          }
+        },
+        {
+          "label": "Sender",
+          "name": "from"
+        },
+        {
+          "label": "Subject",
+          "name": "subject"
+        },
+        {
+          "label": "Mail Date",
+          "name": "sentAt",
+          "formatter": "dateFormat",
+          "params": {
+            "formatterTemplate": "YYYY-MM-DD"
+          }
+        }
+      ],
+      "rowActions": [
+        { "label": "Edit", "class": "edit", "url": "get.php?action=edit" }
+      ],
+      "tenantData": {
+        "view": "dimensional",
+        "views": [
+          "flat",
+          "dimensional"
+        ],
+        "hiddenColumns": [],
+        "columnsOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "numberOfAdditionalColumns": 0,
+        "columnsOrderLoadOnce": false
+      }
+    }
+  },
+  "id": 77
+}

@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li><a ui-sref="default.edit-request({requestId: NAV.requestId})">Request</a></li>
+            <li><a ui-sref="default.view-request-documents({requestId: NAV.requestId})">Documents</a></li>
+            <li><a ui-sref="default.view-request-emaillog({requestId: NAV.requestId})">Email Log</a></li>
+            <li class="open"><a>Audit Log</a></li>
+            <!-- <li><a>Configure UI</a></li>
+            <li><a>Rate Supplier</a></li> -->
+        </ul>
+        <div class="pull-right">
+            <div ng-controller="Controller_General_Header as GH" style="line-height: 30px;">
+                <div  class="st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'auditlog';">
+                    <div class="st-content-action-icons">
+                        <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                            <span class="icon fa fa-save"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="row">
+
+    <clc-table-list
+        id="'entity_audit_log'"
+        app="'masters'"
+        screen="'counterpartylist'"
+        controls="'[info, pager]'"
+    ></clc-table-list>
+
+</div>

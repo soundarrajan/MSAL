@@ -1,0 +1,20 @@
+<div class="blade-column-title main text-uppercase">
+	Comments
+</div>
+
+<div class="modal-body">
+	<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 180px;">
+    	<div class="col-md-6">
+    		<span>Internal Comments</span>
+    		<textarea class="form-control img-responsive" rows="6" ng-model="$ctrl.internalComments"></textarea>
+    	</div>
+    	<div class="col-md-6">
+    		<span>External Comment to all Parties</span>
+    		<textarea class="form-control img-responsive" rows="6" ng-model="$ctrl.externalComments"></textarea>
+    	</div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline orange" ng-click="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)">Save</button>
+	<button ng-controller="BladeController" type="button" class="btn btn-default" ng-click="closeBlade(); $ctrl.blade={}">Cancel</button>
+</div>

@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li ng-class="{open : state.is(STATE.DASHBOARD_CALENDAR)  || state.is(STATE.HOME)}">
+                <a ui-sref="default.dashboard-calendar">
+                    Calendar View
+                </a>
+            </li>
+            <li ng-class="{open : state.is(STATE.DASHBOARD_TABLE)}">
+                <a ui-sref="default.dashboard-table">
+                    Table View
+                </a>
+            </li>
+        </ul>
+        <div class="form-inline pull-right">
+            <div ng-if="state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)">
+                <div class="btn-group calendar-select">
+                    <button type="button" class="btn btn-default calendar-selected">
+                        {{ $ctrl.timeScale }}
+                    </button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="javascript:;" ng-click="$ctrl.changeTimeScale($ctrl.TIMESCALE.DEFAULT)">
+                                Default
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" ng-click="$ctrl.changeTimeScale($ctrl.TIMESCALE.WEEK)">
+                                Week
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" ng-click="$ctrl.changeTimeScale($ctrl.TIMESCALE.DAY)">
+                                Day
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group st-content-search-box">
+                        <div id="search_box_dummy1">
+                            <input type="search" class="form-control ng-pristine ng-valid ng-empty ng-touched" placeholder="Search" ng-model="search_box"
+                                aria-controls="scheduleSeadrch" ng-keydown="$event.keyCode === 13 && search(search_box)">
+                        </div>
+                        <span class="input-group-addon" ng-click="search(search_box);">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            </form>
+            <div class="form-group " ng-if="state.is(STATE.DASHBOARD_TABLE)">
+                <div ng-controller="Controller_General_Header as GH" class="form-group">
+                    <div class="form-group st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'schedule-dashboard-table';">
+                        <div class="st-content-action-icons">
+                            <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                                <span class="icon fa fa-save"></span>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="input-group st-content-search-box ">
+                        <input type="search" class="form-control" ng-model="GH.general_search_terms" placeholder="Search" aria-controls="schedule_dashboard_table"
+                            ng-keydown="$event.keyCode === 13 &amp;&amp; GH.general_search(GH.general_search_terms)" />
+                        <span class="input-group-addon" ng-click="GH.general_search(GH.general_search_terms)">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
+                            Clear
+                        </a>
+                </div>
+                <a class="btn btn-default" ng-click="$ctrl.groupRequests();" ng-class="{'disabled' : $ctrl.isSelectionGrouped() || $ctrl.buttonsDisabled || $ctrl.contractPrePlanSelectionDisabled == false}">
+                    Group
+                </a>
+                <a class="btn btn-default" ng-click="$ctrl.gotoNewRequest();">
+                    Create Request
+                </a>
+                <a class="btn btn-default" ng-disabled="!$ctrl.contractPrePlanSelection || $ctrl.contractPrePlanSelectionDisabled" ng-click="$ctrl.addToContractPrePlanning();">
+                    Add to Contract Pre-planning
+                </a>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>

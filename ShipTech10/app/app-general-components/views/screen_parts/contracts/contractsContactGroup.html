@@ -1,0 +1,161 @@
+﻿<div class>
+    <div class="col-md-4">
+        <div class="form-group form-group">
+            <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+                {{ CM.app_id + '.CONTACT' | translate }}
+				<span class="orange-txt ng-scope">*</span>
+            </label>
+            <div class="form_input form_input_conditionAlertDate">
+                <span>
+                    <span ng-model="options.primaryContact" ng-change="refreshSelect()"></span>
+                    <select class="form-control changeIT" id="primaryContact" ng-model="formValues.contact" name="primaryContact" ng-options="item as item.name for item in options.primaryContact track by item.id" ng-required="true">
+                        <option></option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="city" class="{{ field.Unique_ID }}_label">
+                {{ CM.app_id + '.CONTACT_TYPE' | translate }}
+            </label>
+            <div class="form_input form_input_{{ field.Unique_ID }}">
+                <input type="text" class="form-control" id="contact_type" ng-model="formValues.contact.contactType.name" ng-disabled="true"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="mt-checkbox">
+                <input type="checkbox" name="emailContact" ng-model="formValues.contact.emailContact"/>
+                {{ CM.app_id + '.EMAIL_CONTACT' | translate }}
+                <span></span>
+            </label>
+        <a href="" ng-click="isMoreInfo = !isMoreInfo; toggle = !toggle" style="float:right; line-height: 2.5;font-weight: 600">
+            <span ng-hide="toggle">
+                More info
+            </span>
+            <span ng-show="toggle">
+                Less info
+            </span>
+        </a>
+        </div>
+    </div>
+</div>
+<div class="format_as_text">
+    <div ng-show="isMoreInfo" id="moreInfo">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="contactAddress" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.CONTACT_ADDRESS' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}"></div>
+                                <input type="text" class="form-control" id="contactAddress" ng-model="formValues.contact.address.addressLine1" ng-disabled="true"/>
+                                <input type="text" class="form-control" id="contactAddress2" ng-model="formValues.contact.address.addressLine2" ng-disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="zipPostalCode" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.ZIP_CODE' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}">
+                                    <input type="text" class="form-control" id="zipPostalCode" ng-model="formValues.contact.address.zipCode" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="city" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.CITY' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}">
+                                    <input type="text" class="form-control" id="city" ng-model="formValues.contact.address.city" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="country" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.COUNTRY' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}">
+                                    <input type="text" class="form-control" id="country" ng-model="formValues.contact.address.country.name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-md-o">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="phoneNumber" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.PHONE_NO' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}">
+                                    <input type="text" class="form-control" id="phoneNumber" ng-model="formValues.contact.phoneNo" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="corporateFaxNo" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.FAX_NO' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}">
+                                    <input type="text" class="form-control" id="corporateFaxNo" ng-model="formValues.contact.corporateFaxNo" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="mobileNumber" class="{{ field.Unique_ID }}_label">
+                                    {{ CM.app_id + '.MOBILE_NO' | translate }}
+                                </label>
+                                <div class="form_input form_input_{{ field.Unique_ID }}">
+                                    <input type="text" class="form-control" id="mobileNumber" ng-model="formValues.contact.mobileNo" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group" ng-init="i = 'formValues.contacts[$index].contactType.id';trueOptionVal(i, 'ContactType')">
+                                <div class="form-group">
+                                    <label for="contactAddress" class="{{ field.Unique_ID }}_label">
+                                        {{ CM.app_id + '.EMAIL' | translate }}
+                                    </label>
+                                    <div class="form_input form_input_{{ field.Unique_ID }}">
+                                        <input type="text" class="form-control" id="contactAddress2" ng-model="formValues.contact.email" ng-disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="IMID" class="IMID_label">
+                                    {{ CM.app_id + '.IM_ID' | translate }}
+                                </label>
+                                <div class="input-group form_input form_input_IMID">
+                                    <div class="row">
+                                        <div class="col-xs-5" style="padding-right: 0px">
+                                            <input type="text" id="IMID" name="IMID" class="form-control " ng-model="formValues.contact.imType.name" ng-disabled="true"/>
+                                        </div>
+                                        <div class="col-xs-7" style="padding-left: 0px">
+                                            <input type="text" id="IMID" name="IMID" class="form-control " ng-model="formValues.contact.instantMessengerAddress" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<span ng-if="formValues.seller.id" ng-init='CM.getOptions({"Name": "primaryContact", "Type": "dropdown", "masterSource": "primaryContact", "Filter":[{"ColumnName":"OrderId","OperationType":0,"ValueType":5,"Value":0,"ValueFrom":"seller.id"}], "Unique_ID" : "primaryContact" });'></span>

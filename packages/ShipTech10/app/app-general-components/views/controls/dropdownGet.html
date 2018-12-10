@@ -1,0 +1,17 @@
+<div class="form-group row" ng-init="options[field.Name] ? return : CM.getOptions(field)" >
+    <label class="control-label">
+        {{ CM.app_id + '.' + field.Label | translate}}
+        <span ng-if="field.Required" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="input-group pull-left form_input form_input_{{ field.Name }}" >
+         <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select changeIT" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.name for item in options[field.Name] track by item.id" ng-disabled="field.Disabled" ng-required='field.Required && isVisible(field.masterSource + field.Name)' ><option ng-show="false"></option></select>
+        <span class="input-group-addon">
+            <a href="javascript:;" class=" btn default" ng-click="mapLocation(field.Name, field.Unique_ID)">
+                <i class="fa fa-plus"></i>
+            </a>
+        </span>
+    </div>
+
+</div>

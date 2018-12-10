@@ -1,0 +1,121 @@
+
+
+<div>
+    <div id="modal_close_bar" class="row float_right">
+        <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    </div>
+    <br>
+    <div class="col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title row">
+            	<div class="col-sm-12">
+	                <div class="caption-subject pull-left">
+	                    Select Product
+	                </div>
+					<a ng-click="savePrefferedSellerProducts();" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope pull-right">
+				        <span class="ladda-label ng-binding">
+							Save
+				        </span>
+				    </a>            		
+					<div class="input-group st-content-search-box pull-right" style="width: 200px;">
+					    <input type="search" class="form-control" ng-model="locationMasterPreferredSellerProductsTableConfig.searchText" placeholder="Search" ng-keydown="$event.keyCode === 13 ? createLocationPreferredSellerProductsPayload(true) : ''">
+					    <span class="input-group-addon" ng-click="createLocationPreferredSellerProductsPayload(true)">
+					        <i class="fa fa-search"></i>
+					    </span>
+					</div>    
+            	</div>
+            </div>
+        </div>
+    </div>
+	<!-- <span ng-init="currentPage = 1; locationMasterPreferredSellerProductsTableConfig.skip = (currentPage-1) * 25; searchTerm=''; locationMasterPreferredSellerProductsTableConfig.order.columnName = 'name' "></span> -->
+<!-- 	{{locationMasterPreferredSellerProductsTableConfig.skip}}
+	{{searchTerm}} -->
+	 <!--  -->
+	 <div class="col-sm-12">
+		<div class="custom-hardcoded-table admin" style="max-height: 500px;">
+			<table class="table-body" width="100%" style="min-width:initial">
+				<thead>
+					<tr>
+						<td width="5%" class="padding" ng-init="selectAll = false">
+			        		<label class="mt-checkbox mt-checkbox-outline pull-left" >
+			                    <input type="checkbox" ng-model="selectAll" ng-change="preferredSellersSelectAllProducts(selectAll)">
+			                    <span></span>
+			                </label>							
+						</td>
+						<td width="25%" class="padding" ng-click="changeLocationMasterPreferredSellerProductsTableConfigColumnSorting('name'); createLocationPreferredSellerProductsPayload(true)">
+							<b>Product</b>
+							<span class="sortingHeader pull-right">
+								<i class="fa fa-sort font-grey-salt" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName != 'name'"></i>
+								<i class="fa fa-sort-up font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'desc' "></i>
+								<i class="fa fa-sort-down font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc' "></i>
+							</span>
+						</td>
+						<td width="25%" class="padding" ng-click="changeLocationMasterPreferredSellerProductsTableConfigColumnSorting('parent.name') ; createLocationPreferredSellerProductsPayload(true)">
+							<b>Parent</b>
+							<span class="sortingHeader pull-right">
+								<i class="fa fa-sort font-grey-salt" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName != 'parent.name' && locationMasterPreferredSellerProductsTableConfig.order.columnName != 'parent.name'"></i>
+								<i class="fa fa-sort-up font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'parent.name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'desc' "></i>
+								<i class="fa fa-sort-down font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'parent.name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc' "></i>
+							</span>							
+						</td>
+						<td width="20%" class="padding" ng-click="changeLocationMasterPreferredSellerProductsTableConfigColumnSorting('type.name') ; createLocationPreferredSellerProductsPayload(true)">
+							<b>Product Type</b>
+							<span class="sortingHeader pull-right">
+								<i class="fa fa-sort font-grey-salt" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName != 'type.name' && locationMasterPreferredSellerProductsTableConfig.order.columnName != 'type.name'"></i>
+								<i class="fa fa-sort-up font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'type.name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'desc' "></i>
+								<i class="fa fa-sort-down font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'type.name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc' "></i>
+							</span>							
+						</td>
+						<td width="25%" class="padding" ng-click="changeLocationMasterPreferredSellerProductsTableConfigColumnSorting('spec.name') ; createLocationPreferredSellerProductsPayload(true)">
+							<b>Default Spec Group</b>
+							<span class="sortingHeader pull-right">
+								<i class="fa fa-sort font-grey-salt" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName != 'spec.name' && locationMasterPreferredSellerProductsTableConfig.order.columnName != 'spec.name'"></i>
+								<i class="fa fa-sort-up font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'spec.name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'desc' "></i>
+								<i class="fa fa-sort-down font-blue-chambray" ng-if="locationMasterPreferredSellerProductsTableConfig.order.columnName == 'spec.name' && locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc' "></i>
+							</span>							
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key, item) in locationPreferredSellerProductsData">
+						<td width="5%" class="padding">
+			        		<label class="mt-checkbox mt-checkbox-outline pull-left">
+			        			<span class="hidden">
+			        				{{prefProdCheck[item.id] = checkIfIsPrefferedProduct(item.id)}}
+			        			</span>
+			                    <input type="checkbox" ng-model="prefProdCheck[item.id]" ng-change="changePrefferedProduct(item.id)">
+			                    <span></span>
+			                </label>							
+						</td>
+						<td width="25%" class="padding">{{item.name}}</td>
+						<td width="25%" class="padding">{{item.parent.name}}</td>
+						<td width="20%" class="padding">{{item.productType.name}}</td>
+						<td width="25%" class="padding">{{item.specGroup.name}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	 	
+	 </div>
+<!--     <button ng-disabled="currentPage == 1" ng-click="currentPage=currentPage-1; locationMasterPreferredSellerProductsTableConfig.skip = (currentPage-1) * 25">
+        Previous
+    </button>
+    {{currentPage}}
+    <button ng-disabled="currentPage >= locationPreferredSellerProductsDataLength/25" ng-click="currentPage=currentPage+1; locationMasterPreferredSellerProductsTableConfig.skip = (currentPage-1) * 25">
+        Next
+    </button> -->
+
+   <div class="col-sm-12 ng-binding">
+	   	<br><br>
+		Showing {{locationMasterPreferredSellerProductsTableConfig.skip+1}} to {{locationMasterPreferredSellerProductsTableConfig.skip+locationMasterPreferredSellerProductsTableConfig.take > locationPreferredSellerProductsDataLength ? locationPreferredSellerProductsDataLength : locationMasterPreferredSellerProductsTableConfig.skip+locationMasterPreferredSellerProductsTableConfig.take }}  of {{locationPreferredSellerProductsDataLength}}
+		<div class="notification-pagination ng-binding" ng-init="currentPage = 1">
+			Page
+			<span class="prevPage" ng-disabled="locationMasterPreferredSellerProductsTableConfig.currentPage <= 1" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = locationMasterPreferredSellerProductsTableConfig.currentPage-1; createLocationPreferredSellerProductsPayload(true)"> &lt; </span>
+			<span class="currentPage ng-binding">{{locationMasterPreferredSellerProductsTableConfig.currentPage}}</span>
+			<span class="nextPage" ng-disabled="locationMasterPreferredSellerProductsTableConfig.currentPage >= locationPreferredSellerProductsDataLength/locationMasterPreferredSellerProductsTableConfig.take" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = locationMasterPreferredSellerProductsTableConfig.currentPage+1; createLocationPreferredSellerProductsPayload(true)"> &gt; </span>
+			of {{locationPreferredSellerProductsDataPages}}
+		</div>
+	   	<br><br>
+	</div> 
+</div>
+

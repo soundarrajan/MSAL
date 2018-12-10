@@ -1,0 +1,162 @@
+<!-- <span ng-controller="Controller_Master as CM" ng-init="sellerRatingScreen()">{{template}}</span> -->
+<general-header actions="{
+    primary: [
+    {
+	    label: 'Delivery Completed',
+	    html_element: 'checkbox',
+	    checked: false,
+        id: 'completed',
+        ConditionalType: 'ng-disabled',
+        Conditional: 'formValues.deliveryStatus.name != \'Verified\''
+    },
+    {
+        label: 'Save',
+        special: 'true',
+        url: '#',
+        method: 'save_master_changes()',
+        extern: true,
+        main: true
+    },
+     {
+        label: 'Save & Send Email to Lab',
+        special: 'false',
+        url: '#',
+        method: 'saveAndSendEmail()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+		Conditional: 'formValues.temp.isShowDeliveryEmailToLabsButton'
+    },
+    {
+        label: 'Verify Delivery',
+        special: 'false',
+        url: '#',
+        method: 'verifyDelivery()',
+        extern: true,
+        main: false,
+		ConditionalType: 'ng-show',
+		Conditional: 'formValues.deliveryStatus.name == \'NotVerified\' || formValues.deliveryStatus.name == \'Open\''
+    },
+    {
+        label: 'Revert Verify',
+        special: 'false',
+        url: '#',
+        method: 'revertVerify()',
+        extern: true,
+        main: false,
+		ConditionalType: 'ng-show',
+		Conditional: 'formValues.deliveryStatus.name == \'Verified\''
+    },
+    {
+        label: 'Split Delivery',
+        special: 'false',
+        url: '#',
+        method: 'splitDelivery()',
+        extern: true,
+        main: false,
+		ConditionalType: 'ng-show',
+		Conditional: 'CM.entity_id > 0 && formValues.deliveryStatus.name != \'Verified\''
+    },
+    {
+        label: 'Raise Claim',
+        special: 'false',
+        url: '#',
+        method: 'raiseNewClaim()',
+        extern: true,
+        main: false,
+		ConditionalType: 'ng-disabled',
+		Conditional: 'CM.entity_id <= 0'
+    },],
+    secondary: [{
+        label: 'Main Page',
+        active: true
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true,
+    }, ],
+}"></general-header>
+<entity-edit-form structure=''></entity-edit-form>
+<general-header actions="{
+        primary: [
+    {
+        label: 'Delivery Completed',
+        html_element: 'checkbox',
+        checked: false,
+        id: 'completed',
+        ConditionalType: 'ng-disabled',
+        Conditional: 'formValues.deliveryStatus.name != \'Verified\''
+    },
+    {
+        label: 'Save',
+        special: 'true',
+        url: '#',
+        method: 'save_master_changes()',
+        extern: true,
+        main: true
+    },     {
+        label: 'Save & Send Email to Lab',
+        special: 'false',
+        url: '#',
+        method: 'saveAndSendEmail()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+		Conditional: 'formValues.temp.isShowDeliveryEmailToLabsButton'
+    },{
+        label: 'Verify Delivery',
+        special: 'false',
+        url: '#',
+        method: 'verifyDelivery()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.deliveryStatus.name == \'NotVerified\' || formValues.deliveryStatus.name == \'Open\''
+    },
+    {
+        label: 'Revert Verify',
+        special: 'false',
+        url: '#',
+        method: 'revertVerify()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.deliveryStatus.name == \'Verified\''
+    },
+    {
+        label: 'Split Delivery',
+        special: 'false',
+        url: '#',
+        method: 'splitDelivery()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+		Conditional: 'CM.entity_id > 0 && formValues.deliveryStatus.name != \'Verified\''
+    },
+    {
+        label: 'Raise Claim',
+        special: 'false',
+        url: '#',
+        method: 'raiseNewClaim()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-disabled',
+        Conditional: 'CM.entity_id <= 0'
+    },],
+}" color="'white'"></general-header>
+
+<span ng-init="CM.equalizeColumnsHeightGrouped('.group_Order_Summary', '.group_General_Information, .group_Quantity, .group_quality')" ng-controller="Controller_Master as CM">
+	<input type="hidden" ng-model="CM.entity_id">
+</span>

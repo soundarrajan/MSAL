@@ -1,0 +1,13 @@
+<a href="#" class="close" aria-label="close">&times;</a>
+<div class="content">
+<!-- {{voyageStop}} -->
+    <span ng-repeat="(key, value) in ::voyageStop track by $index">
+        <a ng-click="gotoNewRequest(value)">
+            <span ng-if="value.request == null || value.request.id == 0">Create Pre-request ({{::value.portCode}})</span>
+            <span ng-if="value.request != null && value.request.id != 0">Edit request ({{::value.portCode}}) - {{::value.request.requestName}}</span>
+        </a>
+        <br>
+    </span>
+</div>
+
+

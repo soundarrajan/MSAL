@@ -1,0 +1,76 @@
+﻿<div ng-controller="Controller_Configurable_List_Control as CLC">
+	<general-header actions="{
+	primary: [
+	{
+		label: 'Dismiss',
+		special: 'true',
+	    url: '#',
+	    method: 'notificationAction(\'dismiss\')',
+	    extern: true
+    },
+	],
+	secondary: [],
+	search: true
+}"></general-header>
+
+<!-- <clc-table-list id="'labs_documents'" app="'labs'" screen="'documents'" controls="'[entries, columns, info, pager]'"></clc-table-list> -->
+<div  ng-controller="Controller_Master as CM">
+
+	<span ng-init="initNotificationsPage()"></span>
+	<div class="portlet light" ng-show="notificationList">
+		<div class="portlet-title">
+			<div class="caption-subject">
+				Notifications
+			</div>
+		</div>
+		<table id="notifications-table" class="notifications" width="100%">
+			<tr ng-repeat="(key, notification) in notificationList">
+				<td width="50px">
+				<span ng-init="selectedNotifications = null"></span>
+					<label class="mt-checkbox">
+						<input type="checkbox" ng-model="notification.checked" ng-checked="selectedNotifications != notification[key]" ng-change="selectNotification(notification.checked, notification.id)" >
+						<!-- <input type="checkbox" ng-model="notification[key]" ng-checked= ng-change="selectedNotification = notification.id" >    -->
+						<span style="background:#fff; border: 1px solid #dedede;"></span>
+						{{notification[key]}}
+					</label>
+				</td>
+				<td >
+					<b>{{notification.message}}</b>
+				</td>
+				<td width="150px" class="notification-date" ng-bind="CM.formatDate(notification.addedAt, '{{tenantSetting.tenantFormats.dateFormat.name}}')"></td>
+			</tr>
+
+		</table>
+		<br>
+		<div class="col-sm-12">
+			Showing {{(currentPage * entries) - entries + 1}} to {{ currentPage == maxPages ?  matchedCount : (currentPage * entries)}}  of {{ matchedCount }}
+			<div class="notification-pagination" ng-init="currentPage = 1">
+			Page
+				<span class="prevPage" ng-disabled="currentPage <= 1" ng-click="currentPage <= 1 ? '' : getNotificationsListPage(currentPage, 'prev')"> < </span>
+				<span class="currentPage">{{currentPage}}</span>
+				<span class="nextPage" ng-disabled="currentPage >= maxPages" ng-click="currentPage >= maxPages ? '' : getNotificationsListPage(currentPage, 'next')"> > </span>
+				of {{maxPages}}
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+
+
+</div>
+
+
+<general-header actions="{
+primary: [
+	{
+		label: 'Dismiss',
+		special: 'true',
+	    url: '#',
+	    method: 'notificationAction(\'dismiss\')',
+	    extern: true
+    },
+],
+secondary: [],
+search: false,
+}" color="'white'"></general-header>
+</div>

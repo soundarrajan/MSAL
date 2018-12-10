@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div id="modal_close_bar" class="row float_right">
+        <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    </div>
+    <div id="modal_raise_claim">
+        <div class="portlet">
+            <div class="portlet-title row">
+                <div class="col-sm-10 caption-subject">
+                    {{ CM.app_id + '.RAISE_CLAIM' | translate }}
+                </div>
+                <div class="col-sm-2">
+                    <button class="raise-claim-btn btn btn-default btn-outline orange" ng-click="raiseNewClaim('true')" ng-disabled="">{{ CM.app_id + '.RAISE' | translate }}</button>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-xs-12">{{CM.availableClaimTypes}}</div> -->
+        <div class="portlet-body" style="max-height: 400px;overflow: auto;">
+            <div class="row">
+                <div class="claimRadioBtn" ng-repeat="(key, value) in CM.availableClaimTypes track by $index">
+                    <!-- claim -->
+                    <div class="form-group">
+                        <div class="form_input form_input_claim_type" ng-class="!field.Label ? 'no-label' : ''">
+                            <div class="mt-radio-list">
+                                <label class="mt-radio" ng-class="value.disabled ? 'disabled' : ''">
+                                   <!-- ng-class="CM.autoSelectedClaimType != value.claim.id ? 'disabled' : ''" -->
+                                    <!-- <input type="radio" name="claimTypes" id="claim_type_id_{{ value.id }}" ng-click="raiseClaimInfo.currentClaimTypeId = value.claim.id; selectClaimInfoId(value.claim.id,value.id)" ng-checked="raiseClaimInfo.currentClaimTypeId == value.claim.id"  value="{{ value.claim.id }}" ng-disabled="value.disabled"/> -->
+                                    <input type="checkbox" name="claimTypes" id="claim_type_ida_{{ value.id }}" ng-init="value.isTypeSelected = false" ng-model="value.isTypeSelected" ng-change="selectAllParamsToRaiseClaim(key, value.isTypeSelected)" ng-disabled="value.disabled"/>
+
+
+                                    {{ value.displayName }} <!-- {{value.claim.id}} {{value.id}} -->
+                                    <!-- {{value.disabled}} -->
+                                    <span></span>
+                                </label>
+                            </div>
+                            <input type="hidden" ng-model="fake" name="{{ CM.app_id + '.' + field.Label | translate}}" id="{{ field.Name }}" ng-required="!formValues[field.Unique_ID].id"/>
+                        </div>
+                    </div>
+                    <!-- spec params related to claim  -->
+			        <pre hidden>
+			            {{value}}
+			        </pre>
+                    <div class="claimSpecParams" ng-repeat="(key2,val2) in value.specParams track by $index">
+                        <!-- <span>
+                            <label class="mt-checkbox" style="">
+                                <input type="checkbox" id="claim_info_checkbox_{{val2.specParameter.id}}" class="claimInfoCheckbox" name="ClaimType_{{ key }}_QualityParameters" ng-disabled="{{val2.disabled}}" ng-class="val2.disabled == true ? 'cb-disabled' : ''" claim-type="{{value.claim.id}}" spec-param-id="{{val2.id}}" ng-click="addSpecParamsToClaim($event)" radio-id="#claim_type_id_{{ value.id }}"/>
+                                {{val2.specParameter.name}}
+                                <span></span>
+                            </label>
+                        </span> -->
+                        <span>
+                            <label class="mt-checkbox" style="">
+                                <input type="checkbox" ng-model="val2.isSelected" id="claim_info_checkbox_{{val2.specParameter.id}}" class="claimInfoCheckbox" name="ClaimType_{{ key }}_QualityParameters" ng-disabled="val2.isDisabled" ng-change="selectParamToRaiseClaim(key, key2)" />
+                                {{val2.specParameter.name}}
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--         <pre>
+        	{{CM.availableClaimTypes}}
+        </pre> -->
+     <!--    <div>{{raiseClaimInfo.currentClaimTypeId}}</div>
+        <div>{{raiseClaimInfo.currentSpecParamIds}}</div> -->
+    </div>
+</div>

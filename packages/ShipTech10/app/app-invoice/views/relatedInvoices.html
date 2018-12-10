@@ -1,0 +1,39 @@
+<div class="custom-hardcoded-table ng-scope" style="max-height: 500px;">
+    <table ng-repeat="(infoKey, infoValue) in formValues.relatedInvoicesSummary" class="table-body" width="100%">
+        <thead>
+            <tr>
+                <td class="padding"><b>Invoice ID</b></td>
+            	<td class="padding"><b>Order ID</b></td>
+            	<td class="padding"><b>Invoice Type</b></td>
+            	<td class="padding"><b>Invoice Date</b></td>
+            	<td class="padding"><b>Invoice Amount</b></td>
+            	<td class="padding"><b>Deductions</b></td>
+            	<td class="padding"><b>Paid Amount</b></td>
+            	<td class="padding"><b>Invoices Status</b></td>
+            	
+            </tr>
+        </thead>
+        <tbody>
+        	<tr ng-repeat="(invkey, invvalue) in formValues.relatedInvoices" ng-if="invvalue.orderId == infoValue.orderId" class="ng-scope">
+				<td class="padding"><a href="/#/invoices/invoice/edit/{{invvalue.id}}">{{invvalue.id}}</a></td>
+				<td class="padding">{{invvalue.orderId}}</td>
+				<td class="padding">{{invvalue.invoiceType.name}}</td>
+				<td class="padding">{{CM.formatDateTime(invvalue.invoiceDate)}}</td>
+				<td class="padding">{{invvalue.invoiceAmount}}</td>
+				<td class="padding">{{invvalue.deductions}}</td>
+				<td class="padding">{{invvalue.paidAmount}}</td>
+				<td class="padding"><span style="background: {{ CM.getColorCodeFromLabels(invvalue.invoiceStatus) }}; color:white; padding: 3px;">{{invvalue.invoiceStatus.displayName}}</span></td>
+            </tr>
+            <tr class="bg-grey-steel">
+				<td class="padding"><b>Net Payable</b></td>
+				<td class="padding">{{infoValue.netPayable}}</td>
+				<td class="padding"></td>
+				<td class="padding"><b>Total</b></td>
+				<td class="padding">{{infoValue.invoiceAmountTotal}}</td>
+				<td class="padding">{{infoValue.deductions}}</td>
+				<td class="padding">{{infoValue.paidAmount}}</td>
+				<td class="padding"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,609 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [{
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [{
+                                "Value": "8",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "entity_emaillog": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "module",
+                            "Name": "Module",
+                            "Type": "dropdown",
+                            "masterSource": "Module",
+                            "Group": "General",
+                            "Label": "MODULE",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "sender",
+                            "Name": "Sender",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "SENDER",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "status",
+                            "Name": "Status",
+                            "Type": "dropdown",
+                            "masterSource": "EmailStatus",
+                            "Group": "General",
+                            "Label": "STATUS",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "entity",
+                            "Name": "Entity",
+                            "Type": "dropdown",
+                            "masterSource": "TransactionType",
+                            "Group": "General",
+                            "Label": "ENTITY",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "subject",
+                            "Name": "Subject",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "SUBJECT",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "emailTo",
+                            "Name": "EmailTo",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "EMAIL_TO",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Active": false,
+                        "Unique_ID": "buyer",
+                        "Name": "Buyer",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "BUYER_NAME",
+                        "clc_id": "admin_userlist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Users",
+                        "Conditional": "formValues.hasNoMoreChildren == true",
+                        "ConditionalType": "ng-show"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "name",
+                        "Name": "Buyer",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "BUYER_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Conditional": "!formValues.hasNoMoreChildren",
+                        "ConditionalType": "ng-show"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "parent",
+                        "Name": "ParentBuyer",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "PARENT_BUYER",
+                        "clc_id": "masters_buyerlist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "ParentBuyer"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "hasNoMoreChildren",
+                        "Name": "Nomorechildren",
+                        "Type": "checkbox",
+                        "Group": "General",
+                        "Label": "NO_MORE_CHILDREN",
+                        "Columns": [{
+                            "Value": "2",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "options": [{
+                            "NoMoreChildren": "No more children"
+                        }]
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "childrens",
+                        "Name": "childrens",
+                        "Type": "multiLookup",
+                        "Group": "General",
+                        "Label": "CHILDREN_BUYER",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "Disabled": "formValues.hasNoMoreChildren == true",
+                        "LastOnRow": true,
+                        "masterSource": "Buyer"
+                    }, {
+                        "Unique_ID": "code",
+                        "Name": "ShortName",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SHORT_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true
+                },
+                "transactionLimit": {
+                    "id": "transactionLimit",
+                    "name": "transactionLimit",
+                    "children": [{
+                        "Unique_ID": "transactionLimits.transactionType",
+                        "Name": "TransactionLimits",
+                        "Type": "dropdown",
+                        "Group": "transactionLimit",
+                        "Label": "TRANSACTION_LIMIT",
+                        "masterSource": "TransactionLimitType",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "transactionLimits.amount",
+                        "Name": "Amount",
+                        "Type": "textUOM",
+                        "Group": "transactionLimit",
+                        "Label": "AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "UOMUnique_ID": "transactionLimits.currency",
+                        "UOMType": "Currency",
+                        "Conditional": "formValues.transactionLimits.transactionType.id == 1",
+                        "ConditionalType": "ng-show"
+                    }, {
+                        "Unique_ID": "transactionLimits.amount",
+                        "Name": "AmountUOM",
+                        "Type": "textUOM",
+                        "Group": "transactionLimit",
+                        "Label": "AMOUNT_UOM",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "UOMUnique_ID": "transactionLimits.uom",
+                        "UOMType": "Uom",
+                        "Conditional": "formValues.transactionLimits.transactionType.id == 2",
+                        "ConditionalType": "ng-show"
+                    }],
+                    "Active": true
+                }
+            }
+        }
+    },
+    "elements": [{
+        "requiredFields": [{
+            "Unique_ID": "name",
+            "Name": "Buyer",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Buyer",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ShortName",
+            "Name": "ShortName",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Short Name",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "Active": true
+        }, {
+            "Unique_ID": "parent",
+            "Name": "ParentBuyer",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Parent Buyer",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "buyerlist"
+        }, {
+            "Unique_ID": "childrens.id",
+            "Name": "ChildrenBuyer",
+            "Type": "multiLookup",
+            "Group": "General",
+            "Label": "Children Buyer",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "buyerlist"
+        }, {
+            "Unique_ID": "hasNoMoreChildren",
+            "Name": "Nomorechildren",
+            "Type": "checkbox",
+            "Group": "General",
+            "Label": "No more children",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "NoMoreChildren": "No more children"
+            }]
+        }, {
+            "Unique_ID": "hasNoMoreTransactions",
+            "Name": "Nomoretransaction",
+            "Type": "checkbox",
+            "Group": "General",
+            "Label": "No more transaction",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "isNomoretransaction": "No more transaction"
+            }]
+        }],
+        "customFields": [{
+            "Unique_ID": "CustomField1",
+            "Name": "CustomField1",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 1",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField2",
+            "Name": "CustomField2",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 2",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField3",
+            "Name": "CustomField3",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 3",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField4",
+            "Name": "CustomField4",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 4",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField5",
+            "Name": "CustomField5",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 5",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField6",
+            "Name": "CustomField6",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 6",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "transactionLimit": [{
+            "Unique_ID": "transactionLimits",
+            "Name": "Transaction Limit",
+            "Type": "Dropdown",
+            "Group": "transactionLimit",
+            "Label": "Transaction Limit",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "amount": "Amount",
+                "quantity": "Quantity"
+            }],
+            "Active": false
+        }, {
+            "Unique_ID": "Amount",
+            "Name": "Amount",
+            "Type": "textUOM",
+            "Group": "transactionLimit",
+            "Label": "Amount",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "Active": true
+        }]
+    }],
+    "clc": {},
+    "id": 26
+}

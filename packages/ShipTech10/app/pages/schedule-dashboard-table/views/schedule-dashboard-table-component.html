@@ -1,0 +1,22 @@
+<div data-ng-include="'components/schedule-content-menu/views/schedule-content-menu-component.html'"
+    request="rerereeer"
+    ng-controller="ScheduleContentMenuController"></div>
+<div class="row">
+
+<span ng-init="initBreadcrumbsFilter()"></span>
+    <div class="portlet light">
+        <div class="portlet-body">
+   
+            <clc-table-list id="'procurement_scheduleDashboardTable'" app="'procurement'" screen="'scheduleDashboardTable'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="st-main-content-menu bottom-menu">
+        <div class="table-buttons pull-right">
+            <a class="btn btn-default" ng-click="$ctrl.groupRequests();" ng-class="{'disabled' : $ctrl.isSelectionGrouped() || $ctrl.buttonsDisabled}">Group</a>
+            <a class="btn btn-default" ng-click="$ctrl.gotoNewRequest();">Create Request</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

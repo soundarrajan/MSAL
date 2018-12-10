@@ -1,0 +1,517 @@
+{
+    "layout": {},
+    "elements": {},
+    "clc": {
+        "delivery_deliverylist": {
+            "table_name": "Delivery list",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+	        "multiselect": true,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [
+                {
+                    "label": "Order No",
+                    "width": 150,
+                    "name": "orderNo"
+                },
+                {
+                    "label": "Order Date",
+                    "width": 150,
+                    "name": "orderDate"
+                },
+                {
+                    "label": "Seller",
+                    "width": 150,
+                    "name": "seller.name"
+                },
+                {
+                    "label": "Vessel",
+                    "width": 150,
+                    "name": "vessel.name"
+                },
+                {
+                    "label": "Order Location",
+                    "width": 150,
+                    "name": "orderLocation.name"
+                },
+                {
+                    "label": "Buyer",
+                    "width": 150,
+                    "name": "buyer.name"
+                },
+                {
+                    "label": "Order Status",
+                    "width": 150,
+                    "name": "orderStatus.name",
+                    "formatter": "status_verified_notverified"
+                },
+                {
+                    "label": "Order Comments",
+                    "width": 150,
+                    "name": "orderComments"
+                },
+                {
+                    "label": "Eta",
+                    "width": 150,
+                    "name": "eta"
+                },
+                {
+                    "label": "Etb",
+                    "width": 150,
+                    "name": "etb"
+                },
+                {
+                    "label": "Surveyor",
+                    "width": 150,
+                    "name": "surveyor.name"
+                },
+                {
+                    "label": "Broker",
+                    "width": 150,
+                    "name": "broker.name"
+                },
+                {
+                    "label": "Barge",
+                    "width": 150,
+                    "name": "barge.name"
+                },
+                {
+                    "label": "Delivery Date",
+                    "width": 150,
+                    "name": "deliveryDate"
+                },
+                {
+                    "label": "Delivery",
+                    "width": 150,
+                    "name": "delivery.id",
+                    "formatter": "edit_delivery_link"
+                },
+                {
+                    "label": "Delivery Status",
+                    "width": 150,
+                    "name": "deliveryStatus.name"
+                },
+                {
+                    "label": "Price Uom",
+                    "width": 150,
+                    "name": "priceUom.name"
+                },
+                {
+                    "label": "Price Value",
+                    "width": 150,
+                    "name": "priceValue"
+                },
+                {
+                    "label": "Pricing Type",
+                    "width": 150,
+                    "name": "pricingType.name"
+                },
+                {
+                    "label": "Currency",
+                    "width": 150,
+                    "name": "currency.name"
+                },
+                {
+                    "label": "Quantity Uom",
+                    "width": 150,
+                    "name": "quantityUom.name"
+                },
+                {
+                    "label": "Spec Group",
+                    "width": 150,
+                    "name": "specGroup.name"
+                },
+                {
+                    "label": "Physical Supplier",
+                    "width": 150,
+                    "name": "physicalSupplier.name"
+                },
+                {
+                    "label": "Product",
+                    "width": 150,
+                    "name": "product.name"
+                },
+                {
+                    "label": "Confirmed Quantity Amount",
+                    "width": 150,
+                    "name": "confirmedQuantityAmount"
+                },
+                {
+                    "label": "Buyer Quantity Amount",
+                    "width": 150,
+                    "name": "buyerQuantityAmount"
+                },
+                {
+                    "label": "Seller Quantity Amount",
+                    "width": 150,
+                    "name": "sellerQuantityAmount"
+                },
+                {
+                    "label": "Quantity Discrepancy Amount",
+                    "width": 150,
+                    "name": "quantityDiscrepancyAmount"
+                },
+                {
+                    "label": "Quantity Recon Match",
+                    "width": 150,
+                    "name": "quantityReconMatch.name",
+                    "formatter": "status_matched_notmatched"
+                },
+                {
+                    "label": "Claim Created",
+                    "width": 150,
+                    "name": "claimCreated"
+                },
+                {
+                    "label": "Lab Results Available",
+                    "width": 150,
+                    "name": "labResultsAvailable"
+                },
+                {
+                    "label": "Unit Price",
+                    "width": 150,
+                    "name": "unitPrice"
+                },
+                {
+                    "label": "Mass Type Uom",
+                    "width": 150,
+                    "name": "massTypeUom.name"
+                },
+                {
+                    "label": "Maximum Quantity Uom Amount",
+                    "width": 150,
+                    "name": "maximumQuantityUomAmount"
+                },
+                {
+                    "label": "Minimum Quantity Amount",
+                    "width": 150,
+                    "name": "minimumQuantityAmount"
+                },
+                {
+                    "label": "Last Modified On",
+                    "width": 150,
+                    "name": "lastModifiedOn"
+                },
+                {
+                    "label": "Last Modified By",
+                    "width": 150,
+                    "name": "lastModifiedBy.name"
+                },
+                {
+                    "label": "Created On",
+                    "width": 150,
+                    "name": "createdOn"
+                },
+                {
+                    "label": "Created By",
+                    "width": 150,
+                    "name": "createdBy.name"
+                },
+                {
+                    "label": "Confirmed On",
+                    "width": 150,
+                    "name": "confirmedOn"
+                },
+                {
+                    "label": "Confirmed By",
+                    "width": 150,
+                    "name": "confirmedBy.name"
+                },
+                {
+                    "label": "Request No",
+                    "width": 150,
+                    "name": "requestNo"
+                },
+                {
+                    "label": "Agent",
+                    "width": 150,
+                    "name": "agent.name"
+                },
+                {
+                    "label": "Request Date",
+                    "width": 150,
+                    "name": "requestDate"
+                },
+                {
+                    "label": "Agreement Type",
+                    "width": 150,
+                    "name": "agreementType"
+                },
+                {
+                    "label": "Default Conversion Factor",
+                    "width": 150,
+                    "name": "defaultConversionFactor.value"
+                },
+                {
+                    "label": "Delivery Option",
+                    "width": 150,
+                    "name": "deliveryOption.name"
+                }
+
+            ],
+            "rowActions": [],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [
+
+                ],
+                "columnsOrder": [
+                    0,
+                    16,
+                    2,
+                    3,
+                    4,
+                    1,
+                    5,
+                    14,
+                    6,
+                    7,
+                    30,
+                    32,
+                    34,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    15,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26,
+                    27,
+                    28,
+                    29,
+                    31,
+                    33,
+                    35,
+                    8,
+                    36,
+                    37,
+                    38,
+                    39,
+                    40,
+                    41,
+                    42,
+                    43,
+                    44,
+                    45
+                ],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "entity_documents": {
+          "table_name": "Documents List",
+          "datatype": "local",
+          "language": "en",
+          "rowNum": 10,
+          "rowList": [
+            30,
+            20,
+            10
+          ],
+          "multiselect": false,
+          "viewrecords": true,
+          "sortable": {
+            "options": {
+              "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+          },
+          "view_type": "flat",
+          "treeGrid": false,
+          "treeGridModel": "adjacency",
+          "ExpandColumn": "actions-dimensional",
+          "treedatatype": "json",
+          "loadonce": true,
+          "colModel": [
+            {
+              "label": "Document Name",
+              "name": "name",
+              "width": 150,
+              "formatter": "formGotoDocument"
+            },
+            {
+              "label": "Size",
+              "name": "size",
+              "width": 150
+            },
+            {
+              "label": "Document Type",
+              "name": "documentType.name",
+              "width": 150
+            },
+            {
+              "label": "File Type",
+              "name": "fileType",
+              "width": 150
+            },
+            {
+              "label": "Entity",
+              "name": "entity.name",
+              "width": 150
+            },
+            {
+              "label": "Reference No",
+              "name": "referenceNo",
+              "width": 150
+            },
+            {
+              "label": "Uploaded By",
+              "name": "uploadedBy.name",
+              "width": 150
+            },
+            {
+              "label": "Uploaded On",
+              "name": "uploadedOn",
+              "width": 150
+            },
+            {
+              "label": "Add/View Notes",
+              "name": "notes",
+              "width": 150
+            },
+            {
+              "label": "Verified",
+              "name": "isVerified",
+              "width": 150
+            }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "class": "delete",
+              "url": "?action=delete"
+            }
+          ],
+          "tenantData": {
+            "view": "flat",
+            "views": [
+              "flat",
+              "dimensional"
+            ],
+            "hiddenColumns": [],
+            "columnsOrder": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+          }
+        },
+        "entity_audit_log": {
+          "table_name": "Documents List",
+          "datatype": "local",
+          "language": "en",
+          "rowNum": 10,
+          "rowList": [
+            30,
+            20,
+            10
+          ],
+          "multiselect": false,
+          "viewrecords": true,
+          "sortable": {
+            "options": {
+              "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+          },
+          "view_type": "flat",
+          "treeGrid": false,
+          "treeGridModel": "adjacency",
+          "ExpandColumn": "actions-dimensional",
+          "treedatatype": "json",
+          "loadonce": true,
+          "colModel": [
+            {
+              "label": "Date (UTC)",
+              "name": "date",
+              "width": 150
+            },
+            {
+              "label": "Transaction",
+              "name": "transaction",
+              "width": 150
+            },
+            {
+              "label": "Transaction Type",
+              "name": "transactionType",
+              "width": 150
+            },
+            {
+              "label": "Field Name",
+              "name": "fieldName",
+              "width": 150
+            },
+            {
+              "label": "Old Value",
+              "name": "oldValue",
+              "width": 150
+            },
+            {
+              "label": "New Value",
+              "name": "newValue",
+              "width": 150
+            },
+            {
+              "label": "User",
+              "name": "modifiedBy.name",
+              "width": 150
+            },
+            {
+              "label": "User IP Address",
+              "name": "userip",
+              "width": 150
+            }
+          ],
+          "rowActions": [],
+          "tenantData": {
+            "view": "flat",
+            "views": [
+              "flat",
+              "dimensional"
+            ],
+            "hiddenColumns": [],
+            "columnsOrder": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+          }
+        }
+    },
+    "id": 102
+}

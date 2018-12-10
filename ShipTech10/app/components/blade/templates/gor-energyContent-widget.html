@@ -1,0 +1,226 @@
+<div class="blade-column-title main text-uppercase">
+    Energy Content
+</div>
+<!-- {{$ctrl.active_prod.products[0]}} -->
+
+<div class="dynamic_form_editor"  >
+    <div class="portlet light"  style="margin-bottom:0">
+        <div class="portlet-title">
+            <div class="caption ">
+                <span class="caption-subject pull-left ">
+                    Calorific Values - {{ $ctrl.active_prod.seller.name }} - {{ $ctrl.active_prod.physicalSupplier.name }}
+                </span>
+            </div>
+            <div class="pull-right" >
+                <form class="form-inline  ng-pristine ng-valid">
+                    <div class="form-group ">
+                        <div class="input-group ">
+                            <a class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope orange pull-right "  ng-click="$ctrl.updateSpecParemeters($ctrl.active_prod.products[0].energyParameterValues) ">
+                                Save
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="portlet-body" ng-init="display=3;offset=0;ctrl.req_cards = 'small'">
+            <!-- {{ $ctrl.requests[0].locations | filter : {location:{id:$ctrl.active_req } }; }} -->
+            <span ng-include="'components/blade/templates/req_cards.html'"></span>
+            <div class="energy_input_group  ">
+                <div class="row energy_disabled">
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                CCAI
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ccai" ng-disabled="true"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ccaiUom" tooltip="elem" data-original-title="{{$ctrl.active_prod.products[0].energyParameterValues.ccaiUom}}"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Price/MT
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.computedPrice" ng-disabled="true"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.computedPriceUom" tooltip="elem" data-original-title="{{$ctrl.active_prod.products[0].energyParameterValues.computedPriceUom}}"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Nett. MJ/KG
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.specificEnergy" ng-disabled="true"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.pricePerSpecificEnergyUom" tooltip="elem" data-original-title="{{$ctrl.active_prod.products[0].energyParameterValues.pricePerSpecificEnergyUom}}"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Viscosity
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.viscosity.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.viscosity.specParameterId)"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled"  ng-model="$ctrl.active_prod.products[0].energyParameterValues.viscosity.uom"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Sulphur
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.sulphur.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.sulphur.specParameterId)"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled"  ng-model="$ctrl.active_prod.products[0].energyParameterValues.sulphur.uom"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Density
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.density.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.density.specParameterId)"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.density.uom"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Ash %
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ash.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.ash.specParameterId)"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ash.uom"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="textUOM form-group row">
+                            <label for="" class="eneryContent_label">
+                                Water
+                            </label>
+                            <div class="input-group form_input">
+                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.water.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.water.specParameterId)"/>
+                                <span class="input-group-addon">
+                                    <input type="text" disabled class="form-control uom-disabled"  ng-model="$ctrl.active_prod.products[0].energyParameterValues.water.uom"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="req-details-tabs">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#prod_det">
+                            Spec group
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#neg_his">
+                            6 Months History
+                        </a>
+                    </li>
+<!--                     <li>
+                        <a data-toggle="tab" href="#comm">
+                            Comments
+                        </a>
+                    </li> -->
+                </ul>
+                <div class="tab-content">
+                    <div id="prod_det" class="tab-pane fade in active" ng-init="field={id:'paramsBlade'}">
+                        <br/>
+                        <br/>
+                        <b>
+                            Spec Group:
+                        </b>
+                        {{ $ctrl.active_prod.products[0].specGroup.name }}
+                        <br/>
+                        <br/>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Spec Parameter
+                                        </th>
+                                        <th>
+                                            Min
+                                        </th>
+                                        <th>
+                                            Max
+                                        </th>
+                                        <th>
+                                            UOM
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key, value) in $ctrl.active_prod.products[0].specParameters">
+                                        <td>
+                                            {{ value.specParameter.name }}
+                                        </td>
+                                        <td>
+                                            {{ value.min }}
+                                        </td>
+                                        <td>
+                                            {{ value.max }}
+                                        </td>
+                                        <td>
+                                            {{ value.uom }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="neg_his" class="tab-pane fade">
+                       <!--  <h3>
+                            Menu 1
+                        </h3>
+                        <p>
+                            Some content in menu 1.
+                        </p> -->
+                        <div ng-include="'components/blade/templates/gor-smHistory.html'"></div>
+                    </div>
+                    <div id="comm" class="tab-pane fade">
+                        <h3>
+                            Menu 2
+                        </h3>
+                        <p>
+                            Some content in menu 2.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

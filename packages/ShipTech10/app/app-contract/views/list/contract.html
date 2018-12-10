@@ -1,0 +1,43 @@
+﻿<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+    <!-- checkbox for general-header -->
+    <!--
+    <general-header actions="{
+        primary: [
+            {label: 'Active', html_element: 'checkbox', checked: true, id: 'entity_active'},
+            {label: 'Blacklisted', html_element: 'checkbox', id: 'entity_blacklisted'}
+        ],
+        secondary: [],
+        search: false,
+    }"></general-header>
+    -->
+
+    <general-header actions="{
+        primary: [
+            {label: 'New Contract', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: true,
+        icons: [
+            {class: 'fa fa-save', action: 'save_layout'},
+            {class: 'export-xls', action: 'export_xls'},
+            {class: 'export-csv', action: 'export_csv'},
+            {class: 'export-pdf', action: 'export_pdf'},
+            {class: 'print', action: 'print'},
+        ]
+    }"></general-header>
+
+
+    <clc-table-list id="'contracts_contractlist'" app="'contracts'" screen="'contractlist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+
+     <general-header actions="{
+        primary: [
+
+            {label: 'New Contract', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: false,
+    }" color="'white'"></general-header>
+
+</div>

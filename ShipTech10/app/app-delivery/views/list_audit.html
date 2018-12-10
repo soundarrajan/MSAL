@@ -1,0 +1,39 @@
+﻿<general-header actions="{
+    primary: [
+        {label: 'Edit Structure', special: true, url: 'structure', type: 'goto'},
+        {label: 'New Entity', type: 'goto', url: 'edit/'},
+    ],
+    secondary: [{
+        label: 'Main Page',
+        type: 'goto',
+        url: 'edit/:entity_id'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Audit Log',
+        active: true
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'triggerModal(\'sellerrating\')',
+        extern:true
+    }],
+    search: true,
+    icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+    ]
+}"></general-header>
+
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+    <clc-table-list
+        id="'entity_audit_log'"
+        app="'masters'"
+        screen="'counterpartylist'"
+        controls="'[info, pager]'"
+    ></clc-table-list>
+</span>

@@ -1,0 +1,118 @@
+
+<div class="row" >
+	<div class="sidebar " ng-class="$ctrl.blade.colLayout == 'double' ? 'col-sm-4' : 'col-sm-2' " ng-if="$ctrl.blade.colLayout != 'none'">
+		<div class="row">
+			<div class="col-sm-6 first-sidebar blade-column" ng-if="$ctrl.blade.colLayout == 'double'">
+				<div class="blade-column-title text-uppercase">
+					Counterparty
+				</div>
+				<div class="row">
+					<ul class="no-padding counterparties">
+
+						<span ng-init="$ctrl.groupSellersInLocations()"></span>
+						<li ng-repeat="location in $ctrl.groupedSellersByLocation">
+							<div class="location">
+								<strong>
+								<i class="fa fa-angle-double-down" ng-show="collapseLocation_$index" ng-click="collapseLocation_$index = !collapseLocation_$index"></i>
+								<i class="fa fa-angle-double-up" ng-show="!collapseLocation_$index" ng-click="collapseLocation_$index = !collapseLocation_$index"></i>
+								{{location.location.name}}
+								</strong>
+							</div>
+							<ul class="no-padding" ng-show="!collapseLocation_$index">
+								<li ng-repeat="seller in location.sellers"
+								ng-click="$ctrl.changeBladeCounterparty(seller, location)" >
+									<div class="seller" 
+									ng-class="$ctrl.blade.counterpartyActiveSeller.uniqueLocationSellerPhysical == seller.uniqueLocationSellerPhysical ? 'active' : ''" 
+									data-original-title="{{seller.offers[0].physicalSupplierCounterparty.name}}" tooltip="elem" style="padding-right: 30px">
+										{{seller.sellerCounterparty.name}} <i class="fa fa-user pull-right" style="position: absolute;right: 10px;"></i>
+									</div>
+
+									<span ng-if="$ctrl.blade.counterpartyData.id == seller.sellerCounterparty.id && $ctrl.blade.counterpartyActiveLocation[0].location.id == location.location.id"
+									ng-init="$ctrl.createSellerRequirements(seller, location, $event)"></span>
+
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="second-sidebar blade-column widget text-uppercase" ng-class="$ctrl.blade.colLayout == 'double' ? 'col-sm-6' : 'col-sm-12' ">
+				<div class="blade-column-title">
+					Widget
+				</div>
+				<div class="row">
+					<ul class="no-padding" ng-if="$ctrl.blade.widgetType == 'counterparty'"">
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='contact' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='contact' ; $ctrl.blade.colLayout = 'double'; $ctrl.viewEditCounterpartyBlade($ctrl.blade.counterpartyActiveSeller.sellerCounterparty.id, $ctrl.blade.counterpartyActiveLocation,$ctrl.blade.counterpartyActiveSeller)" ><i class="fa fa-users "></i> CONTACT</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='email' ? 'active' : '' "
+						ng-click="$ctrl.blade.activeWidget ='email';$ctrl.blade.colLayout = 'double';$ctrl.previewEmail($ctrl.blade.counterpartyActiveSeller, $ctrl.blade.counterpartyActiveLocation);" >
+							<span class="rfq-sent" ng-if="!$ctrl.canSendRFQ()">
+							    <i class="fa fa-envelope"></i><i class="fa fa-check" style="color:#3da7da"></i>
+							</span>
+							<i class="fa fa-envelope" ng-if="$ctrl.canSendRFQ()"></i> RFQs
+						</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='card' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='card' ; $ctrl.blade.colLayout = 'double'; $ctrl.viewSupplierCardBlade($ctrl.blade.counterpartyActiveSeller, $ctrl.blade.counterpartyActiveLocation, null, null) " ><i class="fa fa-clone "></i> CARD</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='requote' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='requote' ; $ctrl.blade.colLayout = 'double'; $ctrl.viewRequote($ctrl.blade.counterpartyActiveSeller, $ctrl.blade.counterpartyActiveLocation)"><i class="fa fa-refresh "></i> REQUOTE</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='rating' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='rating' ; $ctrl.blade.colLayout = 'double'" ><i class="fa fa-star "></i> SELLER RATING</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='energyContent' ? 'active' : '' " ng-show="$ctrl.isEnergyCalculationRequired"
+						ng-click="$ctrl.blade.activeWidget ='energyContent' ; $ctrl.blade.colLayout = 'double'; $ctrl.viewEnergyContentBlade($ctrl.blade.counterpartyActiveSeller, $ctrl.blade.counterpartyActiveLocation)" ><i class="fa fa-table "></i> ENERGY CONTENT</li>
+					</ul>
+					<ul class="no-padding" ng-if="$ctrl.blade.widgetType == 'general'">
+						<!-- <li class="font-dark" ng-class="$ctrl.blade.activeWidget =='addCounterparty' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='addCounterparty' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-user "></i> ADD COUNTERPARTY</li> -->
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='generalRfq' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='generalRfq' ; $ctrl.blade.colLayout = 'single'" ><span class="bg-dark font-white">&nbsp;RFQs&nbsp;</span></i> RFQs</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='comments' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='comments' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-comments "></i> COMMENTS</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='linkUnlink' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='linkUnlink' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-link "></i> LINK/UNLINK</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<span class="hidden">
+	{{$ctrl.blade.colLayout == 'double' ? mainClass = 'col-sm-8 col-sm-push-4' : '';
+		$ctrl.blade.colLayout == 'single' ? mainClass = 'col-sm-10 col-sm-push-2' : '';
+		$ctrl.blade.colLayout == 'none' ? mainClass = 'col-sm-12' : '';}}
+	</span>
+	<div class="blade-column main-content-column" ng-class="mainClass">
+		<div class="bladePrelaoder" ng-if="false" ng-hide="$ctrl.dataLoaded"><div class="ldr"></div></div>
+
+	
+		<span ng-if="$ctrl.blade.activeWidget == 'contact'">
+			<span data-ng-include="'components/blade/templates/gor-contact-widget.html'" ></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'rfq'">
+			<span data-ng-include="'components/blade/templates/gor-rfq-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'card'">
+			<span data-ng-include="'components/blade/templates/gor-card-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'requote'">
+			<span data-ng-include="'components/blade/templates/gor-requote-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'rating'">
+			<span data-ng-include="'components/blade/templates/gor-rating-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'email'">
+			<span data-ng-include="'components/blade/templates/gor-email-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'energyContent'">
+			<span data-ng-include="'components/blade/templates/gor-energyContent-widget.html'"></span>
+		</span>
+
+		<span ng-if="$ctrl.blade.activeWidget == 'addCounterparty'">
+			<span data-ng-include="'components/blade/templates/gor-addCounterparty-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'generalRfq'">
+			<span data-ng-include="'components/blade/templates/gor-generalRfq-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'comments'">
+			<span data-ng-include="'components/blade/templates/gor-comments-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'generalEmail'">
+			<span data-ng-include="'components/blade/templates/gor-generalEmail-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'linkUnlink'">
+			<span data-ng-include="'components/blade/templates/gor-linkUnlink-widget.html'"></span>
+		</span>
+	</div>
+</div>
+
+

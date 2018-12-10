@@ -1,0 +1,170 @@
+<!-- <span> delivery products quantity</span> -->
+<span ng-if="formValues.deliveryProducts" ng-init="getDeliveryConfigurations()"></span>
+<span ng-if="formValues.id == 0" ng-init="getDeliveryConfigurations()"></span>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="form-group row">
+            <label for="orderID" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.ORDER_ID' | translate }}
+            </label>
+            <div class="input-group form_input form_input_Product" ng-init='CM.getOptions({"Name": "OrderNumber","masterSource": "OrderList"})'>
+                <input uib-typeahead="item as item.name for item in options.OrderNumber | filter:{name:$viewValue}"
+                       class="form-control"
+                       typeahead-show-hint="true"
+                       typeahead-min-length="1"
+                       typeahead-append-to-body="true"
+                       typeahead-wait-ms="100"
+                       id="{{ field.masterSource }}Product"
+                       name="Product_{{ key + 1 }}_delivered_product"
+                       typeahead-on-select="triggerChangeFields('OrderNumber', 'OrderNumber');" ng-change="triggerChangeFields('OrderNumber', 'OrderNumber')"
+                       ng-model="formValues.order"
+                       autocomplete="off"
+                       ng-required="true"
+                       ng-disabled="!CM.isEditable"/>
+                <!-- ng-model="formValues.deliveryProducts[key].product" -->
+                <span class="input-group-addon" ng-click="triggerModal('general', 'orders_orders', 'Order' , 'formValues.order','','','OrderNumber', '');" ng-class="!CM.isEditable ? 'disabled' : ''">
+                    <a   class=" btn default">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </span>
+
+            </div>
+        </div>
+    </div>
+    <span ng-init='CM.getOptions({"Name": "Buyer", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
+<!--     {{formValues.temp.buyerPrecedenceRule}}
+    {{formValues.temp.sellerPrecedenceRule}} -->
+    <div class="col-xs-4" ng-if="!formValues.temp.hiddenFields.buyerQty">
+        <div class="form-group row">
+            <label for="buyerQuantity" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.BUYER_QUANTITY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_buyerQuantity" ng-init="formValues.temp.buyerPrecedenceRule = options['QuantityCategory'][0]">
+            <!-- ng-init="formValues.temp.buyerPrecedence.buyerQTY = options['QuantityCategory'][0]" -->
+                <select class="form-control bs-select changeIT"  ng-options="item as item.name + ' Quantity' for item in options.Buyer track by item.id" ng-required="true" id="buyerQuantity" ng-model="formValues.temp.buyerPrecedenceRule" ng-change="setVarianceQty('buyer',formValues.temp.buyerPrecedenceRule)" ng-disabled="formValues.deliveryStatus.id == 3"></select>
+                <span ng-if="formValues.temp.buyerPrecedenceRule" ng-init="setVarianceQty('buyer',formValues.temp.buyerPrecedenceRule)"></span>
+            </div>
+        </div>
+    </div>
+    <span ng-init='CM.getOptions({"Name": "Seller", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
+    <div class="col-xs-4" ng-if="!formValues.temp.hiddenFields.sellerQty">
+        <div class="form-group row">
+            <label for="sellerQuantity" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.SELLER_QUANTITY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_sellerQuantity" ng-init="formValues.temp.sellerPrecedenceRule = options['QuantityCategory'][0]">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name + ' Quantity' for item in options.Seller track by item.id" ng-required="true" id="sellerQuantity" ng-model="formValues.temp.sellerPrecedenceRule" ng-change="setVarianceQty('seller',formValues.temp.sellerPrecedenceRule)" ng-disabled="formValues.deliveryStatus.id == 3"></select>
+                <!-- ng-change="calculateVarianceAndReconStatus(key)" -->
+                <span ng-if="formValues.temp.sellerPrecedenceRule" ng-init="setVarianceQty('seller',formValues.temp.sellerPrecedenceRule)"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 delivery_products_table_wrapper">
+        <table class="delivery_products_quantity_table table table-stripped table-hover">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts">
+                        <span><!-- {{ CM.app_id + '.DELIVERY' | translate }} --> Delivery {{formValues.deliveryNumber}} -
+                              <!-- {{ CM.app_id + '.PRODUCT' | translate }} --> {{value.product.name}}
+                        </span>
+                        <span class="physical">{{value.physicalSupplier ? value.physicalSupplier.name : 'Physical Supplier: - '}}</span>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>{{ CM.app_id + '.BDN_QUANTITY' | translate }}</span></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts">
+                        <span>{{value.bdnQuantityAmount ? (value.bdnQuantityAmount | number:CM.tenantSetting.defaultValues.quantityPrecision ) : '-'}}</span>
+                        <span class="mt">{{value.bdnQuantityUom.name ? value.bdnQuantityUom.name : '-'}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>{{ CM.app_id + '.SURVEYOR_QTY' | translate }}</span></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts">
+                        <span>{{value.surveyorQuantityAmount ? ( value.surveyorQuantityAmount | number:CM.tenantSetting.defaultValues.quantityPrecision ): '-'}}</span>
+                        <span class="mt">{{value.surveyorQuantityUom.name ? value.surveyorQuantityUom.name : '-'}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>{{ CM.app_id + '.VESSEL_QTY' | translate }}</span></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts">
+                        <span>{{value.vesselQuantityAmount ? ( value.vesselQuantityAmount | number:CM.tenantSetting.defaultValues.quantityPrecision ): '-'}}</span>
+                        <span class="mt">{{value.vesselQuantityUom.name ? value.vesselQuantityUom.name : '-'}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>{{ CM.app_id + '.MFM_QTY' | translate }}</span></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts">
+                        <span>{{value.vesselFlowMeterQuantityAmount ? ( value.vesselFlowMeterQuantityAmount | number:CM.tenantSetting.defaultValues.quantityPrecision ): '-'}}</span>
+                        <span class="mt">{{value.vesselFlowMeterQuantityUom.name ? value.vesselFlowMeterQuantityUom.name : '-'}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>{{ CM.app_id + '.ORDERED_QTY' | translate }}</span></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts">
+                        <span>{{value.confirmedQuantityAmount ? ( value.confirmedQuantityAmount | number:CM.tenantSetting.defaultValues.quantityPrecision ) : '-'}}</span>
+                        <span class="mt">{{value.confirmedQuantityUom.name ? value.confirmedQuantityUom.name : '-'}}</span>
+                    </td>
+                </tr>
+                <tr class="no_hover">
+                    <td colspan="1" class="var_qty_top">
+                        <span class="whitespace"></span>
+                    </td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts" class="no_border">
+                        <span class="whitespace"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="var_qty"><span>{{ CM.app_id + '.VAR_QTY' | translate }}</span></td>
+              
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts" class="delivery_variance {{ formValues.temp.variances['color_' + key] }}">
+                        <span>
+                            <!-- <pre>{{formValues.temp.variances['color_' + key]}}</pre> -->
+                             <!-- {{formValues.temp.variances['product_' + key]}} -->
+
+                            {{formValues.temp.variances['product_' + key] != null ? formValues.temp.variances['product_' + key] : '-'}}
+                        </span>
+                        <span class="mt">{{formValues.temp.variances['uom_' + key]}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mfm_var_qty"><span>{{ CM.app_id + '.MFM_VAR_QTY' | translate }}</span></td>
+                    <td ng-repeat="(key, value) in formValues.deliveryProducts" class="delivery_variance {{ formValues.temp.variances['mfm_color_' + key] }}">
+                        <span>
+
+                        <!-- {{formValues.temp.variances['mfm_product_' + key]}} -->
+                            {{formValues.temp.variances['mfm_product_' + key] ? formValues.temp.variances['mfm_product_' + key] : '-'}}
+                        </span>
+                        <span class="mt">{{formValues.temp.variances['mfm_uom_' + key]}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <pre>{{formValues.temp}}</pre> -->
+    </div>
+</div>
+<div class="row margin-top-10">
+<!--    do not delete, field is just hidden for now, will be used later
+    <div class="col-xs-4">
+        <div class="form-group row">
+            <div class="form_input form_input_VRSVerified">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="VRSVerified" id="VRSVerified" ng-model="formValues.vrsVerified" ng-disabled="!CM.isEditable"/> {{ CM.app_id + '.VRS_VERIFIED' | translate }}
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="col-xs-8 deliveryProductsQuantityComments">
+        <label>{{ CM.app_id + '.COMMENTS' | translate }}</label>
+        <div class="form_input form_input_comments">
+            <textarea ng-model="formValues.surveyStatementComments" maxlength="500" ng-disabled="!CM.isEditable"></textarea>
+        </div>
+    </div>
+</div>

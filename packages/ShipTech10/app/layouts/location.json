@@ -1,0 +1,1447 @@
+{
+  "layout": {
+    "children": {
+        "entity_documents": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+
+                    {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "entity_emaillog": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "TransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "General": {
+              "id": "General",
+              "name": "General",
+              "children": [
+                {
+                  "Active": false,
+                  "Unique_ID": "name",
+                  "Name": "LocationName",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "LOCATION_NAME",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "code",
+                  "Name": "LocationCode",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "LOCATION_CODE",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "displayName",
+                  "Name": "DisplayName",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "DISPLAY_NAME",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "parent",
+                  "Name": "ParentLocation",
+                  "Type": "simpleLookup",
+                  "Group": "General",
+                  "Label": "PARENT_LOCATION",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true,
+                  "masterSource": "ParentLocation",
+                  "clc_id": "masters_locationlist"
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "hasNoMoreChildren",
+                  "Name": "NoChildrenLocation",
+                  "Type": "checkbox",
+                  "Group": "General",
+                  "Label": "NO_CHILDREN_LOCATION",
+                  "Columns": [
+                    {
+                      "Value": "2",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true,
+                  "options": [
+                    {
+                      "NoMoreChildren": "No More Children"
+                    }
+                  ]
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "childrens",
+                  "Name": "childrens",
+                  "Type": "multiLookup",
+                  "Group": "General",
+                  "Label": "CHILDREN_LOCATION",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true,
+                  "masterSource": "Location",
+                  "LastOnRow": true,
+                  "Disabled": "formValues.hasNoMoreChildren"
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "country",
+                  "Name": "Country",
+                  "Type": "simpleLookup",
+                  "Group": "General",
+                  "Label": "COUNTRY",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true,
+                  "masterSource": "Country",
+                  "LastOnRow": false,
+                  "clc_id": "masters_countrylist"
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "isBunkerablePort",
+                  "Name": "BunkerablePort",
+                  "Type": "checkbox",
+                  "Group": "General",
+                  "Label": "BUNKERABLE_PORT",
+                  "Columns": [
+                    {
+                      "Value": "2",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true,
+                  "options": [
+                    {
+                      "BunkerablePort": "Bunkerable Port"
+                    }
+                  ]
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "isAllowingRebates",
+                  "Name": "AllowRebate",
+                  "Type": "checkbox",
+                  "Group": "General",
+                  "Label": "ALLOW_REBATE",
+                  "Columns": [
+                    {
+                      "Value": "2",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true,
+                  "options": [
+                    {
+                      "AllowRebate": "Allow rebate"
+                    }
+                  ]
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "notes",
+                  "Name": "Notes",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "NOTES",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true
+                }
+              ]
+            },
+            "Port Specificity": {
+              "id": "Port Specificity",
+              "name": "Port Specificity",
+              "children": [
+                {
+                  "Active": false,
+                  "Unique_ID": "minLiftValue",
+                  "Name": "MinLift",
+                  "Type": "textUOM",
+                  "Group": "Port Specificity",
+                  "Label": "MIN_LIFT",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true,
+                  "UOMUnique_ID": "minLiftUom",
+                  "UOMType": "Uom"
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "maxLiftValue",
+                  "Name": "MaxLift",
+                  "Type": "textUOM",
+                  "Group": "Port Specificity",
+                  "Label": "MAX_LIFT",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true,
+                  "UOMUnique_ID": "maxLiftUom",
+                  "UOMType": "Uom"
+                }
+              ]
+            },
+            "Agents": {
+              "id": "Agents",
+              "name": "Agents",
+              "children": [
+                {
+                  "Active": false,
+                  "Unique_ID": "agents",
+                  "Name": "Agents",
+                  "Type": "locationAgentsGroup",
+                  "Group": "Agents",
+                  "Label": "AGENTS",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "masterSource": "Agent",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true
+                }
+              ]
+            },
+            "SystemInstrumentMapping": {
+              "id": "SystemInstrumentMapping",
+              "name": "SystemInstrumentMapping",
+              "children": [
+                {
+                  "Active": false,
+                  "Unique_ID": "MappingManagedFrom",
+                  "Name": "MappingManagedFrom",
+                  "Type": "dropdownGet",
+                  "Group": "SystemInstrumentMapping",
+                  "Label": "MAPPING_MANAGED_FROM",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "masterSource": "Location",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "LinkMappingTo",
+                  "Name": "LinkMappingTo",
+                  "Type": "dropdown",
+                  "Group": "SystemInstrumentMapping",
+                  "Label": "LINK_MAPPING_TO",
+                  "Columns": [
+                    {
+                      "Value": "4",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "masterSource": "MappingLinkType",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": true,
+                  "LastOnRow": true
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "productsSystemInstruments",
+                  "Name": "productsSystemInstruments",
+                  "clc_id": "productsSystemInstruments",
+                  "Type": "CLC",
+                  "Group": "SystemInstrumentMapping",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "masterSource": "counterpartylist[\"Agent\"]",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true
+                }
+              ]
+            },
+            "PortAdditionalCost": {
+              "id": "PortAdditionalCost",
+              "name": "PortAdditionalCost",
+              "children": [
+                {
+                  "Active": false,
+                  "Unique_ID": "additionalCosts",
+                  "clc_id": "additionalCosts",
+                  "Name": "PortAdditionalCost",
+                  "Type": "CLC",
+                  "App": "clcindlc",
+                  "Screen": "portadditionalcost",
+                  "Group": "PortAdditionalCost",
+                  "Label": "PORT_ADDITIONAL_COST",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "masterSource": "counterpartylist[\"Agent\"]",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": true
+                }
+              ]
+            }
+        }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "displayName",
+          "Name": "DisplayName",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Display Name",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "name",
+          "Name": "LocationName",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Location Name",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "code",
+          "Name": "LocationCode",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Location Code",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "parent",
+          "Name": "ParentLocation",
+          "Type": "dropdown",
+          "Group": "General",
+          "Label": "Parent Location",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "masterSource": "locationlist"
+        },
+        {
+          "Unique_ID": "hasNoMoreChildren",
+          "Name": "NoChildrenLocation",
+          "Type": "checkbox",
+          "Group": "General",
+          "Label": "No Children Location",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "options": [
+            {
+              "NoMoreChildren": "No More Children"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "hasNoMoreTransactions",
+          "Name": "NoMoreTransaction",
+          "Type": "checkbox",
+          "Group": "General",
+          "Label": "No More Transaction",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "options": [
+            {
+              "NoMoreTransaction": "No More Transaction"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "childrens",
+          "Name": "ChildrenLocation",
+          "Type": "multiLookup",
+          "Group": "General",
+          "Label": "Children Location",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "masterSource": "locationlist"
+        },
+        {
+          "Unique_ID": "country.id",
+          "Name": "Country",
+          "Type": "simpleLookup",
+          "Group": "General",
+          "Label": "Country",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "masterSource": "countrylist"
+        },
+        {
+          "Unique_ID": "isBunkerablePort",
+          "Name": "BunkerablePort",
+          "Type": "checkbox",
+          "Group": "General",
+          "Label": "Bunkerable Port",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "options": [
+            {
+              "BunkerablePort": "Bunkerable Port"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "isAllowingRebates",
+          "Name": "AllowRebate",
+          "Type": "checkbox",
+          "Group": "General",
+          "Label": "Allow rebate",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "options": [
+            {
+              "AllowRebate": "Allow rebate"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "minLiftValue",
+          "Name": "MinLift",
+          "Type": "textUOM",
+          "Group": "Port Specificity",
+          "Label": "Min Lift",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "maxLiftValue",
+          "Name": "MaxLift",
+          "Type": "textUOM",
+          "Group": "Port Specificity",
+          "Label": "Max Lift",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        }
+      ],
+      "customFields": [
+        {
+          "Unique_ID": "CustomField1",
+          "Name": "CustomField1",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 1",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "CustomField2",
+          "Name": "CustomField2",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 2",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "CustomField3",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 3",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "CustomField4",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 4",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "CustomField 5",
+          "Name": "CustomField 5",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 5",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        },
+        {
+          "Unique_ID": "CustomField6",
+          "Name": "CustomField6",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 6",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false
+        }
+      ],
+      "agents": [
+        {
+          "Unique_ID": "agents",
+          "Name": "Agents",
+          "Type": "locationAgentsGroup",
+          "Group": "Agents",
+          "Label": "Agents",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "masterSource": "counterpartylist[\"Agent\"]",
+          "Required": true,
+          "Hidden": false,
+          "Added": false
+        }
+      ],
+      "PortAdditionalCost": [
+        {
+          "Unique_ID": "additionalCosts",
+          "Name": "PortAdditionalCost",
+          "Type": "CLC",
+          "Group": "PortAdditionalCost",
+          "App": "clcindlc",
+          "Screen": "portadditionalcost",
+          "Label": "Port Additional Cost",
+          "Columns": [
+            {
+              "Value": "4",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": true
+        }
+      ]
+    }
+  ],
+  "clc": {},
+  "id": 16
+}

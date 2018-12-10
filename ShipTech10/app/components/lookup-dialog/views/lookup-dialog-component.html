@@ -1,0 +1,484 @@
+<div class="">
+    <div id="modal_close_bar">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    </div>
+    <div class="clearfix">
+        <div class="col-md-12 general-header color-white">
+            <div class="st-main-content-menu tabbable-line">
+                <form class="form-inline">
+                    <h4 class="pull-left title ">
+                        SELECT {{ $ctrl.ui[$ctrl.lookupType].title }}
+                    </h4>
+                    <div class="pull-right">
+                        <div class="input-group st-content-search-box">
+                            <div id="search_box_dummy1">
+                                <input type="search" class="form-control" placeholder="Search" ng-model="$ctrl.tableOptions.searchTerm" aria-controls="order_list_table" ng-keydown="$event.keyCode === 13 && search($ctrl.tableOptions.searchTerm)"/>
+                            </div>
+                            <span class="input-group-addon" ng-click="search($ctrl.tableOptions.searchTerm);">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                        <a class="btn btn-sm btn-outline orange" ng-click="$ctrl.confirmLookupSelection();search_box=''" data-dismiss="modal">
+                            Select
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.VESSEL">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.VESSEL].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.charteredVessel }}
+                    </td>
+                    <td>
+                        {{ row.fuel.name }}
+                    </td>
+                    <td>
+                        {{ row.distillate.name }}
+                    </td>
+                    <td>
+                        {{ row.licenseKey }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.COMPANY">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.COMPANY].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.parent.name }}
+                    </td>
+                    <td>
+                        {{ row.currency.name }}
+                    </td>
+                    <td>
+                        {{ row.uom.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn  | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn  | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.LOCATIONS">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.LOCATIONS].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.parent.name }}
+                    </td>
+                    <td>
+                        {{ row.code }}
+                    </td>
+                    <td>
+                        {{ row.country.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn  | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn  | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+         </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.VOYAGES">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.VOYAGES].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]" />
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{row.name}}
+                    </td>
+                    <td>
+                        {{row.locationCode}}
+                    </td>
+                    <td>{{row.voyageId}}</td>
+                    <td>{{row.eta | stDateFormat}}</td>
+                    <td>{{row.etb | stDateFormat}}</td>
+                    <td>{{row.etd | stDateFormat}}</td>
+                    <td>{{row.portCallId}}</td>
+					<td>{{row.isBunkerablePort ? "Yes" : "No"}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.PRODUCTS">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.PRODUCTS].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.parent.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn  | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn  | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.REQUEST">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.REQUEST].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.requestName }}
+                    </td>
+                    <td>
+                        {{ row.requestDate }}
+                    </td>
+                    <td>
+                        {{ row.serviceName }}
+                    </td>
+                    <td>
+                        {{ row.buyerName }}
+                    </td>
+                    <td>
+                        {{ row.vesselName }}
+                    </td>
+                    <td>
+                        {{ row.imo }}
+                    </td>
+                    <td>
+                        {{ row.eta | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.locationName }}
+                    </td>
+                    <td>
+                        {{ row.requestStatusDisplayName ? row.requestStatusDisplayName : row.requestStatus }}
+                    </td>
+                    <td>
+                        {{ row.productName }}
+                    </td>
+                    <td>
+                        {{ row.productStatusDisplayName ? row.productStatusDisplayName : row.productStatus }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.SERVICES">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.SERVICES].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.parent.name }}
+                    </td>
+                    <td>
+                        {{ row.code }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn  | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.BUYER">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.BUYER].columns" data-column-name="{{ column.sortableName }}">
+                        <!-- {{$ctrl.ui[$ctrl.LOOKUP_TYPE.BUYER].columns}} -->
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.parent.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn  | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn  | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.AGENT">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.AGENT].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.parent.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.CONTRACT">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.CONTRACT].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.contractName }}
+                    </td>
+                    <td>
+                        {{ row.seller.name }}
+                    </td>
+                    <td>
+                        {{ row.location.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered table-striped" id="lookup_table" ng-if="$ctrl.lookupType === $ctrl.LOOKUP_TYPE.PAYMENT_TERM">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui[$ctrl.LOOKUP_TYPE.PAYMENT_TERM].columns" data-column-name="{{ column.sortableName }}">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.tableData track by $index">
+                    <td class="centered">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        {{ row.name }}
+                    </td>
+                    <td>
+                        {{ row.createdBy.name }}
+                    </td>
+                    <td>
+                        {{ row.createdOn | utcToLocal | stDateFormat }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedBy.name }}
+                    </td>
+                    <td>
+                        {{ row.lastModifiedOn | utcToLocal | stDateFormat }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="dataTables_info" id="all_requests_table_info" role="status" aria-live="polite">
+            Showing {{ $ctrl.tableOptions.paginationStart + 1 }} to {{ Math.min($ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength,$ctrl.tableOptions.totalRows) }} of {{ $ctrl.tableOptions.totalRows }} entries
+        </div>
+        <div class="dataTables_paginate paging_input" id="all_requests_table_paginate">
+            <span class="first paginate_button" id="all_requests_table_first">
+                First
+            </span>
+            <span class="paginate_page">
+                Page
+            </span>
+            <span class="previous paginate_button" id="all_requests_table_previous" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">
+                &lt;
+            </span>
+            <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'/>
+            <span class="next paginate_button" id="all_requests_table_next" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">
+                &gt;
+            </span>
+            <span class="paginate_of"></span>
+            <span class="last paginate_button" id="all_requests_table_last">
+                Last
+            </span>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>

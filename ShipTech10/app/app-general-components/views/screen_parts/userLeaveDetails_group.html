@@ -1,0 +1,58 @@
+﻿<span ng-if="!formValues.leaves" ng-init="formValues.leaves=[{}]"></span>
+<div class="row" ng-repeat="(key, value) in formValues.leaves">
+    <div class="col-md-4">
+        <label for="user_leave_from" class = "user_leave_from_label"   >
+            Leave From
+        </label>
+        <div class="form_input form_input_leaves" ng-init="CM.datepickers()">
+            <div class="input-group date-picker date form_meridian_datetime">
+                <input class="form-control" type="text" ng-model="formValues.leaves[key].from"   ng-required='field.Required' id="user_leave_from"/>
+                <span class="formatted-date"  ng-bind="CM.formatDate(formValues.leaves[{{ key }}].from, '{{ field.Parse }}')"></span>
+                <span class="input-group-btn">
+                    <a class="btn default date-set" type="button">
+                        <i class="fa fa-calendar"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label for="user_leave_to" class="user_leave_to_label">
+            Leave To
+        </label>
+        <div class="form_input form_input_leaves" ng-init="CM.datepickers()">
+            <div class="input-group date-picker date form_meridian_datetime">
+                <input class="form-control" type="text" ng-model="formValues.leaves[key].to"   ng-required='field.Required' id="user_leave_to"/>
+                <span class="formatted-date"  ng-bind="CM.formatDate(formValues.leaves[{{ key }}].to, '{{ field.Parse }}')"></span>
+                <span class="input-group-btn">
+                    <a class="btn default date-set" type="button">
+                        <i class="fa fa-calendar"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label for="user_leave_reason" class = "user_leave_reason_label"    >
+            Reason
+        </label>
+        <div class="input-group form_input">
+            <div class="form_input_leaves">
+                <input type="text" class="form-control "  name="user_leave_reason" id="user_leave_reason" ng-model="formValues.leaves[key].reason" ng-trim="false"  ng-required='field.Required' ng-class="CM.invalid_form ? 'ng-touched' : ''"/>
+            </div>
+            <span class="input-group-btn">
+                <a   class="input_add_UserIm btn default" ng-click="formValues.leaves.push({'id':'0'})" class="btn default">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </span>
+            <span class="input-group-btn" ng-if="key> 0">
+                <a   class="input_add_UserIm btn default" ng-click="CM.softDelete(formValues.leaves, key)" class="btn default">
+                    <i class="fa fa-minus"></i>
+                </a>
+            </span>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+</div>

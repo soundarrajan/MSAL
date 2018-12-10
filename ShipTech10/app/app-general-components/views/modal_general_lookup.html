@@ -1,0 +1,17 @@
+﻿<!-- <div ng-controller="Controller_Master as CM"> -->
+<div id="modal_close_bar">
+    <!-- <button type="button" class="close" ng-click="modalInstance.close()" aria-hidden="true"></button> -->
+    <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+</div>
+<div id="modal_{{ modal.clc }}" ng-init="CM.delayaddModalActions()">
+    <div class="top-no-padding" ng-init="primaryAction = 'selectedModalValue( modal )'">
+        <general-header color="'white'" actions="{ primary: [ {label: 'Select', url: '#', method: primaryAction, extern:true, param: field.Name}, ], secondary: [ ], icons: [{class: 'fa fa-save', action: 'save_layout', id: modal.clc}, {class: 'export-xls', action: 'export_xls'}, {class: 'export-csv', action: 'export_csv'}, {class: 'export-pdf', action: 'export_pdf'}, ], title: 'Select '+modal.name, search: true, }"></general-header>
+        <span ng-if="modal.clc == 'deliveries_transactionstobeinvoiced' ">
+               <clc-table-list id="'deliveries_transactionstobeinvoiced'" app="modal.app" screen="modal.screen" controls="'[entries, columns, info, pager]'" filters="modal.filters" rowactions="'false'"></clc-table-list>
+        </span>
+        <span ng-if="modal.clc != 'deliveries_transactionstobeinvoiced' ">
+            <clc-table-list id="modal.clc" app="modal.app" screen="modal.screen" controls="'[entries, columns, info, pager]'" modal="true" filters="modal.filters" rowactions="'false'"></clc-table-list>
+        </span>
+    </div>
+</div>
+<!-- </div> -->

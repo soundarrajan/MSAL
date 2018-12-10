@@ -1,0 +1,264 @@
+<div class="row">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  row">
+                <div class="form_input form_input_isAutoApprove">
+                    <div class="">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" name="inlineRadiosisAutoApprove" id="inlinecheckisAutoApprove" ng-model="formValues.delivery.isAutoApprove"/>
+                            {{ CM.app_id + '.AUTO_VERIFY_DELIVERY' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label for="autoVerifyDelivery" class="simpleLookupLabel">
+                    {{ CM.app_id + '.TIME_TO_AUTO_VERIFY_DELIVERY' | translate }}
+                </label>
+                <div class="input-group form_input form_input_autoVerifyDelivery" ng-init='options.AutoVerifyDeliveryFrequency ? return : CM.getOptions({"Name": "AutoVerifyDeliveryFrequency", "Type": "dropdown", "masterSource": "AutoVerifyDeliveryFrequency"})'>
+                    <select class="form-control bs-select changeIT" name="autoVerifyDelivery" id="autoVerifyDelivery" ng-required="true" ng-options="item as item.name for item in options['AutoVerifyDeliveryFrequency'] track by item.id" ng-model="formValues.delivery.autoVerifyFrequency"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="input-group form_input"  class="simpleLookupLabel">
+                            <div class="form-control" time-picker ng-model="formValues.delivery.autoVerifyTime">
+                                <input type="number" class="hours" min="0" max="23" class="form-control"/>
+                                :
+                                <input type="number" class="minutes" min="0" max="59" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <input type="time" class="form-control" ng-model="formValues.delivery.autoVerifyTime"> -->
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row" ng-init='options.Timezone ? return : CM.getOptions({"Name": "TimeZone", "Type": "dropdown", "masterSource": "TimeZone"})'>
+                        <div class="input-group form_input form_input_timeZone">
+                            <select name="timeZone" class="form-control bs-select changeIT" ng-required="true" id="timeZone" ng-options="item as item.name for item in options.TimeZone track by item.id" ng-model="formValues.general.tenantFormats.timeZone" data-width="152px"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group row">
+                <div class="form_input form_input_showQtyReconciliation">
+                    <div class="">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" name="isShowQuantityReconciliationSection" id="isShowQuantityReconciliationSection" ng-model="formValues.delivery.isShowQuantityReconciliationSection"/>
+                            {{ CM.app_id + '.SHOW_QUANTITY_RECONCILIATION_SECTION' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group row">
+                <div class="form_input form_input_showQtyReconciliation">
+                    <div class="">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" name="isShowDeliveryEmailToLabsButton" id="isShowDeliveryEmailToLabsButton" ng-model="formValues.delivery.isShowDeliveryEmailToLabsButton"/>
+                            {{ CM.app_id + '.SHOW_EMAILTOLABS_BUTTON' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-title">
+            <span class="caption-subject ">
+                {{ CM.app_id + '.PRECEDENCE_RULE' | translate }}
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <!-- <div class="col-sm-12">
+            <div dropdown-ordering ng-model="formValues.delivery.buyerPrecedenceLogicRules" class="form-group row">
+                <label class="pull-left">
+                    {{ CM.app_id + '.BUYER' | translate }}
+                </label>
+                <span class="ordering-list pull-right">
+                    <span class="ordering-element" unique-id="{{ value.precedenceRule.name }}" ng-repeat="(key, value) in formValues.delivery.buyerPrecedenceLogicRules">
+                        <span  class="comparator">
+                            <i class="fa fa-angle-right"></i>
+                        </span>
+                        <span class="moveBack">
+                            <i class="fa fa-angle-left"></i>
+                        </span>
+                        {{ value.precedenceRule.name }}
+                        <span class="moveFwd">
+                            <i class="fa fa-angle-right"></i>
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div dropdown-ordering ng-model="formValues.delivery.sellerPrecedenceLogicRules" class="form-group row">
+                <label class="pull-left">
+                    {{ CM.app_id + '.SELLER' | translate }}
+                </label>
+                <span class="ordering-list pull-right">
+                    <span class="ordering-element" unique-id="{{ value.precedenceRule.name }}" ng-repeat="(key, value) in formValues.delivery.sellerPrecedenceLogicRules">
+                        <span  class="comparator">
+                            <i class="fa fa-angle-right"></i>
+                        </span>
+                        <span class="moveBack">
+                            <i class="fa fa-angle-left"></i>
+                        </span>
+                        {{ value.precedenceRule.name }}
+                        <span class="moveFwd">
+                            <i class="fa fa-angle-right"></i>
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div> -->
+
+		<span ng-init='CM.getOptions({"Name": "QuantityCategory", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
+		<span ng-init="initAdminPrecedenceRules()" ng-if="formValues.delivery"></span>
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-2">
+		            <label class="pull-left">
+		                {{ CM.app_id + '.BUYER' | translate }}
+		            </label>
+				</div>
+				<div class="col-sm-10">
+					<select class="form-control admin-precedence-select" name="buyer-ord-1" data-ord="1" ng-change="precedenceRuleChanged('buyer', '1')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_1" id="buyer-ord-1" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="buyer-ord-2" data-ord="2" ng-change="precedenceRuleChanged('buyer', '2')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_2" id="buyer-ord-2" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="buyer-ord-3" data-ord="3" ng-change="precedenceRuleChanged('buyer', '3')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_3" id="buyer-ord-3" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="buyer-ord-4" data-ord="4" ng-change="precedenceRuleChanged('buyer', '4')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_4" id="buyer-ord-4" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="buyer-ord-5" data-ord="5" ng-change="precedenceRuleChanged('buyer', '5')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_5" id="buyer-ord-5" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<br>
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-2">
+		            <label class="pull-left">
+		                {{ CM.app_id + '.SELLER' | translate }}
+		            </label>
+				</div>
+				<div class="col-sm-10">
+					<select class="form-control admin-precedence-select" name="seller-ord-1" data-ord="1" ng-change="precedenceRuleChanged('seller', '1')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_1" id="seller-ord-1" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="seller-ord-2" data-ord="2" ng-change="precedenceRuleChanged('seller', '2')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_2" id="seller-ord-2" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="seller-ord-3" data-ord="3" ng-change="precedenceRuleChanged('seller', '3')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_3" id="seller-ord-3" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="seller-ord-4" data-ord="4" ng-change="precedenceRuleChanged('seller', '4')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_4" id="seller-ord-4" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="seller-ord-5" data-ord="5" ng-change="precedenceRuleChanged('seller', '5')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_5" id="seller-ord-5" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+        <br>
+        <span ng-init='CM.getOptions({"Name": "FinalQtyPick", "Type": "dropdown", "masterSource": "FinalQtyPick"})'></span>
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-2">
+		            <label class="pull-left">
+		                {{ CM.app_id + '.AUTO_FINAL_QUANTITY' | translate }}
+                    </label>
+				</div>
+				<div class="col-sm-10" ng-init="getOptions('finalQtyPrecedenceRules')">
+					<select class="form-control admin-precedence-select" name="finalQty-ord-1" data-ord="1" ng-change="precedenceRuleChanged('finalQty', '1')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_1" id="finalQty-ord-1" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="finalQty-ord-2" data-ord="2" ng-change="precedenceRuleChanged('finalQty', '2')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_2" id="finalQty-ord-2" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+					<select class="form-control admin-precedence-select" name="finalQty-ord-3" data-ord="3" ng-change="precedenceRuleChanged('finalQty', '3')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_3" id="finalQty-ord-3" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> 
+				</div>
+			</div>
+		</div>
+
+    </div>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    {{ CM.app_id + '.QUANTITY_RECONCILIATION' | translate }}
+                </label>
+                <div class="input-group form_input form_input_quantityReconciliation" ng-init='options.Timezone ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"})'>
+                    <select name="quantityReconciliation" class="form-control bs-select changeIT" ng-required="true" id="quantityReconciliation" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.delivery.quantityReconciliation"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    {{ CM.app_id + '.MIN_TOLERANCE' | translate }}
+                </label>
+                <input name="minToleranceLimit" class="input-group form_input form_input_minTolerance form-control" type="number" ng-max="formValues.delivery.maxToleranceLimit" ng-model="formValues.delivery.minToleranceLimit"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    {{ CM.app_id + '.MAX_TOLERANCE' | translate }}
+                </label>
+                <input name="maxToleranceLimit" class="input-group form_input form_input_maxTolerance form-control" type="number" ng-min="formValues.delivery.minToleranceLimit" ng-model="formValues.delivery.maxToleranceLimit"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <div class="input-group form_input form_input_quantityUom" ng-init='options.Timezone ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'>
+                    <select name="quantityUom" class="form-control bs-select changeIT" ng-required="true" id="quantityUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.delivery.quantityUom"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-title">
+            <span class="caption-subject ">
+                {{ CM.app_id + '.HIDE_UNHIDE_FIELDS' | translate }}
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4">
+            <table id="delivery_config_fields">
+                <thead>
+                    <tr>
+                        <td width="70%">
+                            <span>Field</span>
+                        </td>
+                        <td width="30%">
+                            <span>Hide</span>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="field in formValues.delivery.hiddenFields">
+                        <td width="70%">
+                            <span> {{ field.option.name }} </span>
+                        </td>
+                        <td width="30%">
+                            <span class="text-center">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="hidden_ield_{{field.option.id}}" id="hidden_field_{{field.option.id}}" ng-model="field.hidden"/>
+                                    <span></span>
+                                </label>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

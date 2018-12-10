@@ -1,0 +1,72 @@
+<span ng-init="getAlertTypes(); checkAlertTypes()"></span>
+<div class="row">
+	<div class="col-sm-12">
+		<b class="form-label-out">
+			Select the alert type. Whether the alert notification should be available only within the application OR in the Email Or both
+		</b>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4" ng-repeat="(key, value) in options['alertTypes']">
+		<div class="form_input">
+			<label class="mt-checkbox form-label-out top-no-padding">
+				<input type="checkbox" name="{{value.name}}" id="{{value.name}}" ng-change="checkAlertTypes()" data-checklist-model="formValues.types" data-checklist-value="value" checklist-comparator=".id" />
+					{{ value.name | translate }}
+				<span></span>
+			</label>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="row">
+	<span ng-init="initIncludedEmailUsers()"></span>
+
+	<div class="col-sm-12" ng-if="EmailTypeIsSelected">
+		<div class="row">
+			<div class="col-sm-6">
+				<b class="form-label-out">Included users for email</b>
+				<br><br>
+				<div class="switchSelect">
+					<div ng-repeat="(key,value) in formValues.includedEmailUsers" class="element" ng-click="formValues.excludedEmailUsers.push(value); formValues.includedEmailUsers.splice(key, 1)">
+						{{value.name}}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<b class="form-label-out">Alert users</b>
+				<br><br>
+				<div class="switchSelect">
+					<div ng-repeat="(key,value) in formValues.excludedEmailUsers" class="element" ng-click="formValues.includedEmailUsers.push(value); formValues.excludedEmailUsers.splice(key, 1)">
+						{{value.name}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="row" ng-if="EmailTypeIsSelected">
+	<div class="col-sm-12">
+		<b class="form-label-out">Select the alert option, whether the alert should be sent as List or for each transaction</b>
+		<br><br>
+		<span ng-init="formValues.isList ? formValues.isList = 'true' : formValues.isList = 'false' "></span>
+		<div class="row">
+			<div class="col-sm-4">
+				<label class="mt-radio form-label-out top-no-padding">
+					<input ng-model="formValues.isList" value="true" ng-checked="formValues.isList == true " type="radio" name="isList" id="isList"  />
+						Is list
+					<span></span>
+				</label>
+			</div>
+			<div class="col-sm-4">
+				<label class="mt-radio form-label-out top-no-padding">
+					<input ng-model="formValues.isList" value="false" ng-checked="formValues.isList == false" type="radio" name="isList" id="isIndividual" />
+						Is individual
+					<span></span>
+				</label>
+			</div>
+		</div>
+	</div>
+</div>

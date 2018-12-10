@@ -1,0 +1,954 @@
+﻿#sideBar {
+    padding-top: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    z-index: 2;
+}
+
+.tab-container {
+    border-bottom: 1px solid gray;
+    padding-bottom: 20px;
+}
+
+#addFieldTab {
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+#fieldSettingTab {
+    padding: 20px;
+}
+
+.dragElement-wrapper {
+    width: 50%;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.dragElement-wrapper .drag-element {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dragElement-wrapper .drag-element i {
+    margin-right: 5px;
+}
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+.input-as-label {
+    border: none;
+    box-shadow: none;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    background-color: transparent;
+}
+
+.active-field {
+    background-color: #f1fafc;
+}
+
+.dynamic_form_editor .form-group {
+    padding: 0 15px;
+    margin-bottom: 10px;
+    position: relative;
+    clear: both;
+}
+
+.dynamic_form_editor .form-group:after {
+    /**** CLEARFIX *****/
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+.form-group i.remove-ico {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.form-group i.clone-ico {
+    position: absolute;
+    right: 30px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.pale {
+    opacity: 50%;
+}
+
+.form-group .help-block {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.sortable-formbuilder, .sortable-stdFields {
+    padding-left: 0px;
+    -moz-padding-start: 0px;
+    -webkit-padding-start: 0px;
+    -khtml-padding-start: 0px;
+    -o-padding-start: 0px;
+    padding-start: 0px;
+    list-style: none;
+    min-height: 40px;
+}
+
+.page-sidebar-closed {
+    overflow-x: hidden;
+}
+
+.dynamic_form_editor .drop-to-add {
+    height: 40px;
+}
+
+.dynamic_form_editor a[data-toggle="collapse"] i.fa-plus-square-o {
+    display: none;
+}
+
+.dynamic_form_editor a[data-toggle="collapse"] i.fa-minus-square-o {
+    display: inline-block;
+}
+
+.dynamic_form_editor a[data-toggle="collapse"].collapsed i.fa-plus-square-o {
+    display: inline-block;
+}
+
+.dynamic_form_editor a[data-toggle="collapse"].collapsed i.fa-minus-square-o {
+    display: none;
+}
+
+.dynamic_form_editor .orange-txt {
+    color: orange;
+    position: absolute;
+    font-size: 9px;
+    margin-left: 2px;
+}
+
+.dynamic_form_editor span.input-group-addon select:disabled {
+    background: #eef1f5;
+}
+
+.dynamic_form_editor span.input-group-addon select {
+    border: 1px solid #c2cad8;
+    background: transparent;
+    padding: 6px 2px;
+    outline: none;
+    max-width: 110px;
+    border-left: 0;
+    max-height: 34px;
+    font-weight: 400;
+}
+
+.dynamic_form_editor .bootstrap-tagsinput {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    display: inline-block;
+    padding: 4px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    max-width: 100%;
+    line-height: 28px;
+    cursor: text;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.dynamic_form_editor .mt-radio>span, .dynamic_form_editor .mt-checkbox>span {
+    border: 1.5px solid #E6E6E6;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    background: #fff;
+}
+
+.dynamic_form_editor .input-group-addon {
+    padding: 0;
+    font-weight: 400;
+    line-height: 1;
+    /*color: #fff;*/
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    border-left: 0;
+}
+
+.dynamic_form_editor .uom_group {
+    /*padding: 5px 10px;*/
+    /*    font-weight: 400;
+    line-height: 1;
+    color: #fff;
+    text-align: center;*/
+    /*background-color: #eeeeee;*/
+    /*border: 1px solid #c2cad8;*/
+    border-left: 1px solid #ccc;
+}
+
+.dynamic_form_editor .portlet .form-group .btn.default:not(.btn-outline):hover i {
+    color: #fff
+}
+
+.dynamic_form_editor .portlet .portlet-title {
+    margin-bottom: 20px;
+    min-height: 0 !important;
+}
+
+.dynamic_form_editor .portlet {
+    margin-bottom: 5px;
+}
+
+clc-table-list>.jqgrid_component {
+    margin: 0 -15px;
+}
+
+.dynamic_form_editor .form-group .btn.default:not(.btn-outline):hover {
+    color: #666;
+    background-color: #c5cdda;
+    border-color: #c2cad8;
+}
+
+.dynamic_form_editor .form-group .btn.default:not(.btn-outline) {
+    color: #c5cdda;
+    background-color: #fff;
+    border-color: #c2cad8;
+}
+
+.dynamic_form_editor .form-group .btn.default[disabled="disabled"] {
+    background-color: #eee;
+}
+
+.dynamic_form_editor .form-group .date input {
+    background: transparent;
+}
+
+.dynamic_form_editor .input-group-addon i {
+    color: #c5cdda;
+}
+
+.dynamic_form_editor .form-group label {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: left;
+    /*padding-top: 10px;*/
+    color: #686161;
+}
+
+.dynamic_form_editor .portlet .mt-checkbox-inline label, .dynamic_form_editor .portlet .mt-radio-list label {
+    line-height: 22px;
+    padding-top: 0px;
+    margin-left: 0;
+}
+
+.dynamic_form_editor .portlet.light {
+    padding: 12px 20px 15px 20px;
+    background-color: #fff;
+}
+
+.dynamic_form_editor .caption h4 {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.dynamic_form_editor .mt-checkbox {
+    margin: 10px 0;
+    line-height: initial!important;
+    margin-right: 20px;
+    padding-top: 0!important;
+}
+
+.dynamic_form_editor .form_input_FormulaType .mt-radio {
+    width: 50%!important;
+}
+
+.uom_group select {
+    /*-webkit-appearance: none;*/
+    color: #000;
+}
+
+
+/*span.input-group-addon.uom_group.pseudoSelect:after {
+    position: absolute;
+    content: "\f107";
+    display: inline-block;
+    border: 0;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    color: #3f3f3f;
+    right: 2px;
+    top: 10px;
+}*/
+
+.uom_group {
+    padding: 0;
+}
+
+.clear {
+    float: none;
+    clear: both;
+}
+
+.dynamic_form_editor .mt-checkbox-inline {
+    padding: 9px;
+}
+
+.dynamic_form_editor textarea {
+    resize: vertical;
+}
+
+.dynamic_form_editor form.submitted input.ng-invalid-required.ng-touched,.dynamic_form_editor form.submitted input.ng-invalid ~ .formatted-date {
+    border-color: red!important;
+}
+
+/*input.ng-invalid, select.ng-invalid, button.ng-invalid, button.grey.ng-invalid,.dynamic_form_editor input.ng-invalid ~ .formatted-date {
+    border-color: #e73d4a!important;
+}*/
+
+form.submitted input.ng-invalid, form.submitted select.ng-invalid, form.submitted button.ng-invalid, form.submitted button.grey.ng-invalid, form.submitted .dynamic_form_editor input.ng-invalid ~ .formatted-date {
+    border-color: #e73d4a!important;
+}
+
+.dynamic_form_editor .st-main-content-menu .btn {
+    min-width: 100px;
+}
+
+.dynamic_form_editor .simpleLookupLabel {
+    padding: 0;
+}
+
+.dynamic_form_editor .group_General .portlet.light {
+    padding-top: 25px;
+}
+
+.dynamic_form_editor .portlet .form-group label:not(.mt-checkbox) {
+    width: 125px;
+    float: left;
+    padding-right: 3px;
+    /*  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;*/
+}
+
+.dynamic_form_editor .portlet .form-group .form_input:not(.no-label) {
+    width: calc(100% - 125px);
+    float: left;
+    position: relative;
+    min-height: 35px;
+}
+
+textarea#reasonToStopSellerPayment {
+    /*position: absolute;*/
+    height: 80px;
+    max-height: 80px;
+}
+
+.dynamic_form_editor .portlet .form-group .form_input.form_input_Signature {
+    width: 100%;
+}
+
+.dynamic_form_editor .portlet .form-group label.Signature_label {
+    display: none;
+}
+
+.dynamic_form_editor .portlet .form-group .multi_lookup_tags {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+}
+
+.dynamic_form_editor .portlet .form-group .form_input .form-control, .form_input_Contacts input, .dynamic_form_editor .form_input_Contacts .input-group {
+    width: 100%
+}
+
+.dynamic_form_editor .portlet .form-group .form_input .form-control.bootstrap-select {
+    width: 100% !important;
+}
+
+.dynamic_form_editor .input-group-addon, .dynamic_form_editor .input-group-btn {
+    width: 1%!important
+}
+
+@media screen and (min-width: 992px) {
+    .dynamic_form_editor .group_ContractSummary, .dynamic_form_editor .group_Order_Summary {
+        position: absolute;
+        right: 0;
+        height: 859px;
+        width: calc(25% );
+        padding-right: 0!important
+    }
+    .dynamic_form_editor div[class^="group"].col-md-9 {
+        padding-left: 0!important;
+        padding-right: 5px!important;
+    }
+    .dynamic_form_editor div[class^="group"].col-md-6 {
+        padding-left: 0!important;
+        padding-right: 5px!important;
+    }
+    .dynamic_form_editor div[class^="group"].col-md-12 {
+        padding: 0!important;
+    }
+    .dynamic_form_editor div[class^="group"].col-md-3 {
+        padding: 0!important;
+    }
+    .contract-summary {
+        padding: 0 15px;
+    }
+    .dynamic_form_editor .group_ContractSummary .portlet, .dynamic_form_editor .group_Order_Summary .portlet {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: calc(100% + 5px);
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .col-md-1-2 {
+        width: 100%!important
+    }
+}
+
+
+/*.dynamic_form_editor{overflow: hidden;}*/
+
+.dynamic_form_editor .BuyerQuantity_label, .dynamic_form_editor .SellerQuantity_label {
+    width: 50px!important;
+}
+
+.dynamic_form_editor .form_input_BuyerQuantity, .dynamic_form_editor .form_input_SellerQuantity {
+    width: calc(100% - 55px)!important;
+}
+
+
+/*.dynamic_form_editor .fe_entity .form-group>label {
+    max-height: 15px;
+}*/
+
+.dynamic_form_editor .ui-jqgrid-bdiv {
+    height: auto!important;
+}
+
+div#general_information_upload {
+    min-height: auto;
+    padding: 10px;
+}
+
+div#general_information_upload h4 {
+    margin: 0;
+    padding: 0;
+}
+
+span.variance {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.delivery_result {
+    display: inline-block;
+    padding: 5px 10px;
+}
+
+.typeDropdownSend .form_input {
+    width: calc(100% - 232px)!important;
+}
+
+
+/*hack - remove after fixing grid system*/
+
+.group_invoiceDetails {
+    clear: left;
+}
+
+.datepicker.dropdown-menu {
+    z-index: 99999!important;
+}
+
+
+/*.group_debunkerDetails, .group_quantityDetails, .group_qualityDetails, .group_compianceDetails, .group_densityDetails {
+    display: none;
+}*/
+
+.order_summary_label {
+    font-weight: bold;
+    padding-bottom: 10px;
+    display: block;
+}
+
+.order_summary_product_name {
+    padding-bottom: 10px;
+    display: block;
+}
+
+.order_summary_product_name .product-status {
+    float: right;
+    padding: 5px 15px;
+}
+
+.order_summary_product_option {
+    display: block;
+    padding-bottom: 5px;
+}
+
+#general_information_upload .input-group-btn {
+    width: auto!important
+}
+
+#general_information_upload .dz-preview {
+    display: none!important;
+}
+
+.st-main-content-menu .input-group {
+    /*width: auto!important*/
+}
+
+.col-md-1-2 {
+    width: 6.6%;
+    float: left;
+}
+
+.asc_jqgrid__invoice_type_select .form-group {
+    clear: none;
+    float: left;
+    width: 92%;
+}
+
+.group_Contacts .form-group {
+    width: 100%;
+    padding: 0
+}
+
+.uom_group input {
+    border: none;
+    background: transparent;
+    width: 35px;
+    color: black;
+}
+
+.dataGrid {
+    height: 155px;
+}
+
+.group_debunkerDetails {
+    display: none;
+}
+
+.date-picker .formatted-date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 99.8%;
+    height: 100%;
+    background: #fff;
+    font-size: 13px;
+    z-index: 2;
+    border: 1px solid #c2cad8;
+    padding: 6px 12px;
+    padding-right: 40px;
+}
+
+.date-picker button.date-set[disabled="disabled"] {
+    pointer-events: none;
+}
+
+.date-picker-label {
+    pointer-events: none;
+}
+
+
+/*Multi header ui-grid*/
+
+.ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible {
+    display: inline-table;
+    height: 100%;
+}
+
+.ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible:before {
+    display: none;
+}
+
+.ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible [role="columnheader"] {
+    height: 100%;
+}
+
+.ui-grid-header-cell.ui-grid-clearfix.ui-grid-category .parent-header-category {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #e7ecf1;
+}
+
+.admin-configuration-screen .tab-content .portlet {
+    /*margin-top: 25px;*/
+}
+
+.dynamic_form_editor .form-inline .select2-container--bootstrap {
+    width: 100% !important;
+}
+
+.modal.fade.ng-isolate-scope.fullWidthModal.in {
+    top: 50px;
+    position: fixed;
+    width: 90% !important;
+    left: 5%;
+    margin-bottom: 50px;
+    margin: 0 auto;
+    /*padding: 0 15px !important;*/
+    z-index: 10000 !important;
+}
+.fullWidthModal .modal-dialog {
+	padding:15px;
+	width: 100%;
+}
+
+.modal.fade.ng-isolate-scope.fullWidthModal.autoWidthModal.in {
+    width: 50% !important;
+    left: 25%;
+}
+
+.order_summary_seller {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.page-sidebar-menu .sub-menu-scroll {
+    max-height: 500px;
+    overflow-y: scroll;
+    overflow-x: visible;
+}
+
+.sub-menu-scroll .sub-menu {
+    left: 200px
+}
+
+.page-sidebar-menu .sub-menu .mCSB_inside>.mCSB_container {
+    margin-right: 0!important;
+}
+
+
+/*.mCSB_container,.mCSB_container_wrapper,.mCustomScrollBox {
+    overflow-x: visible!important;
+}*/
+
+.dynamic_form_editor span.input-group-addon .btn {
+    border-left: 0;
+}
+
+.dynamic_form_editor .ui-grid-render-container .input-group .form-control:not(.uomInput):not(.uom-disabled) {
+    width: 100%!important
+}
+
+.dynamic_form_editor .ui-grid-render-container .ui-grid-header-cell .addData {
+    margin: 10px 0 0 10px;
+    display: inline-block;
+}
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.open>a, .page-sidebar .page-sidebar-menu>li:hover>a, .page-sidebar .page-sidebar-menu>li.open>a {
+    background: #21282e;
+    color: #d9d9d9;
+    font-size: 13px!important;
+}
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar .page-sidebar-menu .sub-menu>li:hover>a, .page-sidebar .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar .page-sidebar-menu .sub-menu>li.active>a {
+    background: #21282e !important;
+}
+
+.ui-jqgrid {
+    margin-bottom: 0!important;
+}
+
+.asc_jqgrid__container.section_bottom {
+    padding: 0!important;
+}
+
+.ui-grid-viewport {
+    /*background: url(/img/datatablesBg.png);*/
+}
+
+.ui-grid-cell>div.ng-scope {
+    margin-top: 2px;
+}
+
+.ui-grid-row, .ui-grid-cell {
+    height: 38px!important;
+    border-bottom: 1px solid #e7ecf1;
+}
+
+.edit_form_fields_paymentConditionType_masters label {
+    width: 300px!important
+}
+
+.edit_form_fields_paymentConditionType_masters .form_input:not(.no-label) {
+    width: calc(100% - 300px)!important
+}
+
+
+/*.jqgrid_component .mCSB_horizontal{margin-bottom: 10px;}*/
+
+.app_invoices_screen_invoice .group_RelatedInvoices, .app_invoices_screen_invoice .group_invoiceDetails, .app_invoices_screen_invoice .group_OrderDetails {
+    padding-right: 0;
+}
+
+.dynamic_form_editor .col-md-4 .portlet .form-group label:not(.mt-checkbox) {
+    width: 77px;
+}
+
+.dynamic_form_editor .col-md-4 .portlet .form-group .form_input:not(.no-label) {
+    width: calc(100% - 77px);
+}
+
+.group_relatedInvoices .dataGrid {
+	height: 168px;
+}
+
+.dynamic_form_editor .portlet .caption-subject {
+    float: left;
+}
+
+.dynamic_form_editor .portlet-title.ng-scope .pull-right {
+    margin-top: 5px;
+}
+
+.asc_jqgrid__payment_due_date .btn {
+    border-color: transparent!important;
+}
+
+.w100 * {
+    width: 100%!important;
+}
+
+.modal-setResetPassword {
+    padding: 65px 0 25px;
+    overflow: hidden;
+}
+
+.switchSelect {
+    border: 1px solid #dedede;
+    padding: 10px;
+    height: 200px;
+    overflow: auto;
+}
+
+.switchSelect .element {
+    cursor: pointer;
+}
+
+.switchSelect .element:hover {
+    background: #dedede;
+}
+
+.dynamic_form_editor .contractsContactGroup .form-group {
+    padding: 0!important
+}
+
+.format_as_text input {
+    background: transparent!important;
+    border-color: transparent;
+    padding: 0!important;
+    cursor: text!important;
+    height: auto!important;
+}
+
+.format_as_text .form_input {
+    /*width: calc(100% - 90px)!important;*/
+    padding: 0;
+    min-height: auto!important
+}
+
+.format_as_text .form-group {
+    margin-bottom: 0;
+}
+
+.format_as_text label {
+    /*width: 90px!important;*/
+    margin: 0!important;
+    line-height: 1.5!important;
+    padding: 0!important;
+}
+
+#grid_labTestResults {
+    height: 420px
+}
+
+.form-group.delivery_result {
+    padding-right: 0!important;
+}
+
+.form-group.delivery_result label {
+    width: 50px!important;
+}
+
+.mb0 {
+    margin-bottom: 0!important;
+}
+
+.form_input_Parameter {
+    margin-left: -14px;
+}
+
+#grid_claimNotes {
+    height: 240px;
+}
+
+#ClaimSummary {
+    height: 240px
+}
+
+.app_invoices_screen_invoice .group_InvoiceSummary .portlet  {
+    /*    background: #eee!important;*/
+    margin-bottom: 0!important;
+}
+
+.app_invoices_screen_invoice .group_ProductDetails .portlet,
+.app_invoices_screen_invoice .group_CostDetails .portlet,
+.app_invoices_screen_invoice .group_OrderDetails .portlet,
+.app_invoices_screen_invoice .group_invoiceDetails .portlet,
+.app_invoices_screen_invoice .group_PaymentDetails .portlet {
+    margin-bottom: 0!important;
+}
+
+.app_invoices_screen_invoice .group_InvoiceSummary .portlet-title, .app_invoices_screen_invoice .group_InvoiceSummary .main-portlet_content, 
+.app_invoices_screen_invoice .group_InvoiceTotalConversion .portlet-title , .app_invoices_screen_invoice .group_InvoiceTotalConversion .main-portlet_content {
+    background: #eee!important;
+    margin-bottom: 0!important;
+}
+
+.app_invoices_screen_invoice .group_InvoiceSummary .main-portlet_content {
+    padding: 20px;
+}
+.app_invoices_screen_invoice .group_InvoiceSummary .portlet-title, .app_invoices_screen_invoice .group_InvoiceTotalConversion .portlet-title{
+    border-color: #ccc!important;
+    padding-left: 20px;
+}
+div#tabs_navigation {
+    padding: 0!important;
+}
+.mt-element-ribbon td>* {
+    padding-bottom: 10px;
+    display: block;
+}
+.panel-title {
+    position: relative;
+}.panel-title a{
+   margin-left: 15px
+}
+
+.panel-title:before {
+    content: '+';
+    position: absolute;
+    font-size: 32px;
+    color: #ccc;
+    left: 5px;
+}
+.panel-title a:not(.collapsed) ~ .panel-title:before {
+    content: '-';
+    position: absolute;
+    font-size: 32px;
+    color: #ccc;
+    left: 5px;
+}
+
+/* UI Update Inatech */
+/*.group_productsSystemInstruments .ui-grid-cell-contents {
+    padding: 10px 10px 9.5px;
+}
+.group_productsSystemInstruments .parent-header-category.ng-binding.ng-scope {
+    background-color: #e3e8e6;
+}
+.group_productsSystemInstruments .dataGrid {
+    height: 195px;
+}
+.group_productsSystemInstruments .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible [role="columnheader"] {
+    height: 50%;
+    border-bottom: 1px solid #e7ecf1;
+    background-color: #e3e8e6;
+}
+.group_productsSystemInstruments .ui-grid-header-cell {
+    background-color: #f1f4f6;
+}
+.group_productsSystemInstruments .label_false_visible:last-child .ui-grid-header-cell:last-child {
+    min-width: 220px;
+    max-width: 220px;
+}*/
+
+ .ui-grid-cell-contents {
+    padding: 10px 10px 9.5px;
+}
+ .parent-header-category.ng-binding.ng-scope {
+    background-color: #e3e8e6;
+}
+ .dataGrid {
+    height: 195px;
+}
+ .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible [role="columnheader"] {
+    height: 50%;
+    border-bottom: 1px solid #e7ecf1;
+    background-color: #e3e8e6;
+}
+ .ui-grid-header-cell {
+    background-color: #f1f4f6;
+}
+.label_false_visible:last-child .ui-grid-header-cell:last-child {
+    min-width: 220px;
+    max-width: 220px;
+}
+
+//vessel master
+#tabs_navigation .nav-tabs > li{
+    margin-bottom: -10px !important;
+    padding: 20px 10px 10px 10px !important;
+}
+
+//payment term master
+.form_input.form_input_paymentConditionType .mt-radio-list label.mt-radio{
+    width: 280px !important;
+}
+
+/* end UI Update Inatech */
+.ui-grid-column-menu-button{display: none;}
+
+.col-md-4.fe_entity.edit_form_fields_PaymentProofReceived_invoices.conditional_hidden{
+    clear: left;
+}
+
+.fileUploadName {
+    font-weight: bold;
+}
+
+
+.priceUploadBtn{
+    text-align: right;
+}

@@ -1,0 +1,423 @@
+<div class="row" ng-if="$ctrl.bestTcoData" ng-hide="$ctrl.visible_sections.indexOf('best_tco') < 0"; ng-init="$ctrl.compare = false">
+    <div class="portlet light">
+        <div class="portlet-title ">
+            <div class="tools ">
+                <a href="javascript:; " class="{{$ctrl.bestTcoDefaultView.id == 1 ? 'collapse' : 'expand'}} " data-original-title=" " title=" "></a>
+            </div>
+            <div class="caption ">
+                <span class="caption-subject pull-left ">
+                    Best TCO
+                </span>
+            </div>
+        </div>
+        <div class="portlet-body {{$ctrl.bestTcoDefaultView.id != 1 ? 'portlet-collapsed' : ''}}">
+            <!-- {{$ctrl.tcoSelection}} -->
+            <div class="row best_tco_actions">
+                <div class="col-xs-12">
+                    <div class="pull-right ">
+                        <div class="input-group ">
+                            <a class="btn btn-default btn-outline  orange pull-right "  ng-click="$ctrl.setAsCurrentSelection($ctrl.requirements, 'table') ">
+                                Set as current selection
+                            </a>
+                        </div>
+                    </div>
+                    <div class="pull-right ">
+                        <div class="input-group pull-left">
+                            <b class="pull-left">
+                                Legend: &nbsp;&nbsp;
+                            </b>
+                            <div class="bg-blue font-white pull-left text-center" style="padding: 5px; margin-right: 5px; border-radius: 555px !important">
+                                Best TCO
+                            </div>
+                            <div class="bg-green-soft font-white pull-left text-center" style="padding: 5px; margin-right: 5px; border-radius: 555px !important" ng-if="$ctrl.packagesConfigurationEnabled">
+                                Package
+                            </div>
+                            <div class="bg-yellow-gold font-white pull-left text-center" style="padding: 5px; margin-right: 5px; border-radius: 555px !important" ng-if="$ctrl.packagesConfigurationEnabled">
+                                Best Individual
+                            </div>
+                        </div>
+                        <div class="input-group ">
+                            <a class="btn btn-default btn-outline pull-right "   ng-click="$ctrl.compare = true">
+                                Compare
+                            </a>
+                        </div>
+                    </div>
+                    <div class="pull-right" >
+                        <span ng-init="$ctrl.includeAverageSurveyorChargeChecbox = $ctrl.includeAverageSurveyorCharge"></span>
+                        <label class="mt-checkbox" ng-if="$ctrl.includeAverageSurveyorChargeChecbox">
+                            <b>
+                                Include Surveyor Cost &nbsp;&nbsp;&nbsp;
+                            </b>
+                            <input type="checkbox" checked="$ctrl.includeAverageSurveyorCharge" ng-model="$ctrl.includeAverageSurveyorChargeChecbox"/>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="$ctrl.bestTcoData.bestTotalTCO.length> 0">
+                <div class="portlet light">
+                    <div class="portlet-title ">
+                        <div class="tools ">
+                            <a href="javascript:; " class="collapse " data-original-title=" " title=" "></a>
+                        </div>
+                        <div class="caption ">
+                            <span class="caption-subject pull-left ">
+                                Best Total TCO
+                            </span>
+                        </div>
+                        <div class="pull-right ">
+                            <a ng-click="$ctrl.viewSupplierCardBlade({sellerCounterparty:svalue.seller},null,svalue.products)" class="font-dark">
+                                <b>
+                                    <i class="fa fa-clone"></i>
+                                </b>
+                            </a>
+                            <label class="mt-checkbox mt-checkbox-outline">
+                                <input type="checkbox" ng-checked="$ctrl.isSelectedBestTotalTco()" ng-click="$ctrl.selectBestTotalTco()"/>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="portlet-body tcos">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <!-- {{dragging}} -->
+                                <div class="row" ng-repeat="(reqK, reqV) in $ctrl.bestTotalTCOUniqueRequestsList">
+                                    <div class="col-sm-10 no-padding">
+                                        <span ng-repeat="(key, value) in $ctrl.bestTcoData.bestTotalTCO" ng-show="value.requestIdForGrouping == reqV">
+                                            <div class="col-sm-4 mb" ng-init="value.tco = value.tco " data-drag="{{ $ctrl.canDrag(value) }}" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}"  jqyoui-draggable="{  placeholder: 'keep',  onStart:'$ctrl.startCallback(value, $index)', onStop:'$ctrl.stopCallback'}" ng-model="value"   >
+                                                <div class="small-card bg-grey-steel blue-border">
+                                                    <p>
+                                                        <b>
+                                                            TCO:
+                                                        </b>
+                                                        {{ value.tco | number:3 }}
+                                                    </p>
+                                                    <p>
+                                                        Seller: {{ value.seller.name }}
+                                                        <!--  <span ng-if="value.physicalSupplier">
+                                                                                                                    , {{ value.physicalSupplier.name }}
+                                                                                                                </span> -->
+                                                    </p>
+                                                    <p>
+                                                        Physical supplier:
+                                                        <span ng-if="value.physicalSupplier">
+                                                            {{ value.physicalSupplier.name }}
+                                                        </span>
+                                                        <span ng-if="!value.physicalSupplier">
+                                                            -
+                                                        </span>
+                                                    </p>
+                                                    <p>
+                                                        Vessel:
+                                                        <span ng-if="value.vessel">
+                                                            {{ value.vessel.name }}
+                                                        </span>
+                                                        <span ng-if="!value.vessel">
+                                                            -
+                                                        </span>
+                                                    </p>
+                                                    <p>
+                                                        <b>
+                                                            Request ID :
+                                                        </b>
+                                                        <span ng-repeat="(prodKey, prodVal) in value.products | unique:'request.id'">
+                                                            {{ prodVal.request.id }},
+                                                        </span>
+                                                    </p>
+                                                    <span ng-repeat="(skey, svalue) in value.products track by $index">
+                                                        {{ svalue.product.name }}: {{ svalue.maxQuantity | number:2 }}{{ svalue.uom.name }} - {{ svalue.price | number:3 }} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+                                                        <br/>
+                                                    </span>
+                                                    <div class="location-name">
+                                                        <span class="bg-green-soft font-white text-center" ng-if="value.packageId">
+                                                            &nbsp;P&nbsp;
+                                                        </span>
+                                                        <b>
+                                                            {{ value.location.name }}
+                                                        </b>
+                                                    </div>
+                                                    <!-- <div class="bg-red">
+                                                                                                            {{svalue.requestOfferId}}
+                                                                                                        </div> -->
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-2 mb">
+                                        <div class="small-card bg-grey-steel">
+                                            <b class="totals grey-text">
+                                                REQ {{ reqV }}
+                                            </b>
+                                            <h5>
+                                                <b>
+                                                    Vessel:
+                                                </b>
+                                                {{ $ctrl.getVesselByRequestId(reqV)["name"] }}
+                                            </h5>
+                                            <h4>
+                                                <b>
+                                                    Total:
+                                                </b>
+                                                {{ $ctrl.getTotalBestTCOForRequest(reqV) | number : 3 }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- {{value}} -->
+                            <div class="col-sm-2 ">
+                                <div class="small-card bg-grey-steel text-center">
+                                    <h4>
+                                        <b class="totals">
+                                            Grand Total
+                                        </b>
+                                        <!-- <p>
+                                            {{ $ctrl.bestTcoData.bestTotalTCO | sumOfValueArray:'tco' | number:3 }}  {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                        </p> -->
+                                        <span>
+                                            {{  $ctrl.calculateBestTotalTCOGrandTotal() | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                        </span>
+                                        <!--                                        <div>
+                                                                                    <b>{{$ctrl.tcoSurveyorCost}}</b>
+                                                                                </div> -->
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="$ctrl.bestTcoData.bestPackages.length> 0 && $ctrl.packagesConfigurationEnabled">
+                <div class="portlet light">
+                    <div class="portlet-title ">
+                        <div class="tools ">
+                            <a  class="expand" ng-click="$ctrl.packagesExpanded ? $ctrl.packagesExpanded = false : $ctrl.packagesExpanded = true"></a>
+                        </div>
+                        <div class="caption ">
+                            <span class="caption-subject pull-left ">
+                                Best Packages
+                            </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body tcos">
+                        <div class="row">
+                        	<div class="col-sm-9">
+                        		<div class="row">
+		                            <div class="col-sm-4 mb" ng-repeat="(key, value) in $ctrl.bestTcoData.bestPackages">
+		                                <div data-drag="{{ $ctrl.canDrag(value) }}" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}"  jqyoui-draggable="{  placeholder: 'keep', onStart:'$ctrl.startCallback(value, $index)', onStop:'$ctrl.stopCallback'}" ng-model="value">
+		                                    <div class="small-card bg-grey-steel green-border mb"   >
+		                                        <p>
+		                                            <b>
+		                                                TCO:
+		                                            </b>
+		                                            {{ value.tco | number:3 }}
+		                                        </p>
+		                                        <p>
+		                                            Seller: {{ value.seller.name }}
+		                                            <span ng-if="value.physicalSupplier">
+		                                                , {{ value.physicalSupplier.name }}
+		                                            </span>
+		                                        </p>
+		                                        <p>
+		                                            <b>
+		                                                Request ID :
+		                                            </b>
+		                                            <span ng-repeat="(key,val) in $ctrl.getPackageRequestIds(value.packageId)">
+		                                                {{ val }},
+		                                            </span>
+		                                        </p>
+		                                        <span  ng-repeat="(skey, svalue) in value.products">
+		                                            {{ svalue.product.name }}: {{ svalue.maxQuantity | number:2 }}{{ svalue.uom.name }} - {{ svalue.price | number:3 }} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+		                                            <!-- <span class="bg-red">
+		                                                {{svalue.requestOfferId}}
+		                                            </span> -->
+		                                            <br/>
+		                                        </span>
+		                                        <div class="location-name">
+		                                            <b>
+		                                                {{ value.location.name }}
+		                                            </b>
+		                                            <a ng-click="$ctrl.viewSupplierCardBlade({sellerCounterparty:svalue.seller},null,svalue.products)" class="font-dark">
+		                                                <b>
+		                                                    <i class="fa fa-clone"></i>
+		                                                </b>
+		                                            </a>
+		                                            <label class="mt-checkbox mt-checkbox-outline">
+		                                                <!-- <input type="checkbox" data-checklist-model="$ctrl.tcoSelection" data-checklist-value="svalue" checklist-comparator=".id"/> -->
+		                                                <input type="checkbox" ng-checked="$ctrl.tcoHasPackageRequirements(value)" ng-click="$ctrl.hasPackageRequirement(value) ? $ctrl.removePackageRequirements(value, null, null) : $ctrl.createTcoSellerRequirementsForProductPackage(value)"/>
+		                                                <span></span>
+		                                            </label>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div class="row packagesMini" ng-show="$ctrl.packagesExpanded">
+		                                    <div class="col-sm-4 mb" ng-repeat="(skey, svalue) in value.products">
+		                                        <div class="small-card bg-grey-steel grey-border">
+		                                            <p>
+		                                                <b>
+		                                                    TCO:
+		                                                </b>
+		                                                {{ svalue.amount | number:3 }}
+		                                            </p>
+		                                            <span  >
+		                                                {{ svalue.product.name }}
+		                                                <br/>
+		                                                {{ svalue.maxQuantity | number:2 }}{{ svalue.uom.name }} - {{ svalue.price | number:3 }} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+		                                            </span>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+                        		</div>
+                        	</div>
+                        	<div class="col-sm-3">
+                        		<div class="small-card bg-grey-steel text-center">
+                                    <h4>
+                                        <b class="totals">
+                                            Grand Total
+                                        </b>
+                                        <p>
+                                            <!-- {{$ctrl.bestTcoData.bestIndividuals}} -->
+                                            {{$ctrl.diffProducts()}}
+                                            <span>
+                                                {{  $ctrl.bestPackagesGrandTotal | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                            </span>
+                                        </p>
+                                    </h4>
+                                </div>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="$ctrl.bestTcoData.bestIndividuals.length> 0" ng-init="$ctrl.diffProducts()">
+                <div class="portlet light">
+                    <div class="portlet-title ">
+                        <div class="tools ">
+                            <a href="javascript:; " class="collapse " data-original-title=" " title=" "></a>
+                        </div>
+                        <div class="caption ">
+                            <span class="caption-subject pull-left ">
+                                Best individual
+                            </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body tcos">
+                        <div class="row">
+                            <div class="col-md-10" ng-repeat="(key, value) in $ctrl.bestTcoData.bestIndividuals">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-sm-4 mb" ng-repeat="(skey, svalue) in value.bestTCO track by $index"  data-drag="{{ $ctrl.canDrag(svalue) }}" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}"  jqyoui-draggable="{  placeholder: 'keep', onStart:'$ctrl.startCallback(svalue, $index)',onStop:'$ctrl.stopCallback'}" ng-init="svalue.tco = svalue.amount" ng-model="svalue"   >
+                                                <div class="small-card bg-grey-steel orange-border">
+
+                                                    <div class="pull-right">
+                                                        <b>
+                                                            {{ svalue.location.name }}
+                                                        </b>
+                                                        <a ng-click="$ctrl.viewSupplierCardBlade({sellerCounterparty:svalue.seller},null,svalue.products)" class="font-dark">
+                                                            <b>
+                                                                <i class="fa fa-clone"></i>
+                                                            </b>
+                                                        </a>
+                                                        <label class="mt-checkbox mt-checkbox-outline">
+                                                            <!-- <input type="checkbox" data-checklist-model="$ctrl.tcoSelection" data-checklist-value="svalue" checklist-comparator=".id"/> -->
+                                                            <input type="checkbox" ng-checked="$ctrl.hasTcoSellerProductRequirements(svalue.requestOfferId)" ng-click="$ctrl.createTcoSellerRequirementsForProduct(svalue.requestOfferId)"/>
+                                                            <span></span>
+                                                        </label>
+                                                    </div>
+                                                    <p>
+                                                        <b ng-if="svalue.isEnergyContent">
+                                                            TCO:
+                                                        </b>
+                                                        <b ng-if="!svalue.isEnergyContent">
+                                                            Best Offer:
+                                                        </b>
+                                                        {{ svalue.amount | number:3 }}
+                                                    </p>
+
+
+                                                    <p>
+                                                        Seller: {{ svalue.seller.name }}
+                                                        <!-- - {{svalue.physicalSupplier.name}} -->
+                                                    </p>
+                                                    <p>
+                                                        Physical supplier:
+                                                        <span ng-if="svalue.physicalSupplier">
+                                                            {{ svalue.physicalSupplier.name }}
+                                                        </span>
+                                                        <span ng-if="!svalue.physicalSupplier">
+                                                            -
+                                                        </span>
+                                                    </p>
+                                                    <p>
+                                                        Vessel:
+                                                        <span ng-if="svalue.vessel">
+                                                            {{ svalue.vessel.name }}
+                                                        </span>
+                                                        <span ng-if="!svalue.vessel">
+                                                            -
+                                                        </span>
+                                                    </p>
+                                                    <p>
+                                                        <b>
+                                                            Request ID:
+                                                        </b>
+                                                        {{ value.request.id }}
+                                                    </p>
+                                                    <span>
+                                                        {{ svalue.product.name }}: {{ svalue.maxQuantity | number:2 }}{{ svalue.uom.name }} - {{ svalue.price | number:3 }} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- {{value}} -->
+                                    <div class="col-sm-2 mb">
+                                        <div class="small-card bg-grey-steel">
+                                            <b class="totals grey-text">
+                                                {{ value.request.name }}
+                                            </b>
+                                            <h5>
+                                                <b>
+                                                    Vessel:
+                                                </b>
+                                                {{ value.request.vessel.name }}
+                                            </h5>
+                                            <h4>
+                                                <b>
+                                                    Total:
+                                                </b>
+                                                {{ value.request.amount  | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="small-card bg-grey-steel text-center">
+                                    <h4>
+                                        <b class="totals">
+                                            Grand Total
+                                        </b>
+                                        <p>
+                                            <!-- {{$ctrl.bestTcoData.bestIndividuals}} -->
+                                            {{$ctrl.diffProducts()}}
+                                            <span ng-if="$ctrl.includeAverageSurveyorChargeChecbox == true" ng-init="$ctrl.diffProducts()">
+                                                {{  $ctrl.bestTcoData.bestIndividuals.grandTotal  + $ctrl.bestTcoData.bestIndividuals.surveyorCost | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                            </span>
+                                            <span ng-if="$ctrl.includeAverageSurveyorChargeChecbox == false" ng-init="$ctrl.diffProducts()">
+                                                {{  $ctrl.bestTcoData.bestIndividuals.grandTotal | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                            </span>
+                                        </p>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

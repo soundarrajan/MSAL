@@ -1,0 +1,199 @@
+<div class="page-quick-sidebar-chat-user sidebar-filters">
+  
+    <!-- <pre>  {{globalFilters}}</pre> -->
+   <!-- ng-if="!$ctrl.isSellerPortal" -->
+    <div class="row">
+        <div class="left col-xs-12">
+            <span class="caption-subject filters_configuration" ng-init="getFiltersConfigurations(); getDefaultFiltersConfiguration()" ng-if="!$ctrl.isSellerPortal" >
+                Default Filters configuration:
+            </span>
+        </div>
+        <div class="left col-xs-6">
+            <div class="form_input">
+                <!-- <pre></pre> -->
+                <select ng-model="selectedConfig" class="form-control bs-select" name="configurations_list" id="configurations_list" ng-options="item as item.name for item in filtersConfigurations track by item.id" ng-change="loadSelectedConfig()"></select>
+            </div>
+        </div>
+    </div>
+    <form name="$ctrl.addFilters">
+        <div class="page-quick-sidebar-chat-user-messages">
+            <div class="right-menu-title"></div>
+            <div class="filters_top row">
+                <div class="left col-md-6">
+                    <span class="caption-subject">
+                        Filter by:
+                    </span>
+                </div>
+
+                <!-- dynamic-pattern="{{ globalFilters[key].column.columnType }}" -->
+
+
+                <!-- <div class="right col-md-6">
+                    <div class="form_input">
+                        <select ng-model="filterTemplates" class="form-control bs-select" name="filterTemplates" id="filterTemplates" ng-options="item as item.name for item in $ctrl.filterTemplates track by item.id" ng-change="globalFilters = filterTemplates.data" ng-hide="true"></select>
+                    </div>
+                    <br/>
+                    <div class="btn_group">
+                        <a  class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="applyFilters(globalFilters);">
+                            Apply
+                        </a>
+                        <a  class="btn btn-default btn-default" ng-click="clearFilters();">
+                            Clear
+                        </a>
+                        <a  class="btn btn-default btn-default" ng-hide="true">
+                            Save
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+            <span ng-init="!globalFilters || globalFilters.length < 1 ? globalFilters=[{}] : ''"></span>
+            <div class="right-menu-content">
+                <span class="caption-subject">
+                    Show rows that match
+                </span>
+                <div class="row" ng-repeat="(key, value) in globalFilters">
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <!-- parameter -->
+                            <div class="col-sm-4">
+                                <div class="form_input">
+                                    <select ng-model="globalFilters[key].column" class="form-control bs-select" name="rule_{{ key }}_parameter" id="rule_{{ key }}_parameter" ng-options="item as item.columnName for item in currentColumns track by item.columnValue" required ng-change="clearCurrentLine(key,'column')"></select>
+                                </div>
+                            </div>
+                            <!-- condition -->
+                            <div class="col-sm-4">
+                                <div class="form_input">
+									<span class="hidden">
+									{{globalFilters[key].column.columnType == 'Quantity' || 
+									globalFilters[key].column.columnType == 'Price' || 
+									globalFilters[key].column.columnType == 'Amount' 
+									? renderColumnType = 'Number' 
+									: renderColumnType = globalFilters[key].column.columnType}}
+									</span>
+                                    <select ng-model="globalFilters[key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition" ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue " ng-disabled="!globalFilters[key].column" required ng-change="clearCurrentLine(key,'condition'); renderColumnType == 'Date' ? datepickers() : ''"></select>
+                                </div>
+                            </div>
+                            <!-- {{$ctrl.filter_conditions }} -->
+                            <!-- value -->
+                            <div class="col-sm-4">
+                                <div class="form_input">
+
+                                    <span ng-switch="globalFilters[key].condition.conditionNrOfValues">
+                                        <span ng-switch-when="2">
+                                            <div class="form_group no-label">
+                                                <div class="between" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control " ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}"/>
+
+                                                    <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <div class="between" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}1" class="form-control" ng-model="globalFilters[key].value[1]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}"/>
+
+                                                    <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <span ng-switch-when="1">
+                                            <div class="form_input no-label">
+                                                <div ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''" >
+                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}"/>
+                                                    <span ng-if="globalFilters[key].column.columnType == 'Date'" class="formatted-date" ng-controller="Controller_Master as CM" ng-bind="CM.formatSimpleDate(globalFilters[key].value[0], tenantSetting.tenantFormats.dateFormat)"></span>
+                                                    <!-- ng-bind="CM.formatDate(globalFilters[key].value[0], 'dd/MM/yyyy')" -->
+                                                    <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
+                                                        <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <span ng-switch-default></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!$first" class=""  ng-click="globalFilters.splice(key, 1)">
+                            <a href="javascript:;" class=" btn default">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                        </span>
+                        <span class=""  ng-click="globalFilters.push({})">
+                            <a href="javascript:;" class=" btn default">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="col-sm-12">
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6 col-md-offset-6">
+        <div class="footer_action">
+            <div class="btn_group">
+                <a  class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="applyFilters(globalFilters);">
+                    Apply
+                </a>
+                <a  class="btn btn-default btn-default" ng-click="clearFilters();">
+                    Clear
+                </a>
+                <a  class="btn btn-default btn-default" ng-hide="true">
+                    Save
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 filters_configuration" ng-if="globalFilters[0].condition">
+        <div class="footer_action">
+            <div class="configuration_actions">
+                <span>Configuration Actions</span>
+            </div>
+            <div class="configuration_name">
+                <!-- <span ng-if="selectedConfiguration.id ==" -->
+                <label for="configuration_name"> Configuration Name </label>
+                <input type="text" id="configuration_name" class="form-control " ng-model="selectedConfig.name" name="configuration_name"  ng-required="true"/>
+            </div>
+            <div class="is_default">
+                <div class="text-center">
+                    <label class="mt-checkbox" ng-controller="Controller_Master as CM">
+                        Is Default Configuration
+                        <input type="checkbox" ng-model="selectedConfig.isDefault" name="isDefault"/>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="buttons">
+                <a  class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="createAndUpdateFilterConfig(selectedConfig.id,selectedConfig.name,globalFilters,selectedConfig.isDefault);">
+                     Save
+                </a>
+                <a  class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="deleteConfig(selectedConfig);">
+                    Delete
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <pre>
+    {{ globalFilters }}
+</pre>
+ -->
+
+<!--  <pre style="margin-top: 30px"> {{selectedConfig}} </pre> -->
+

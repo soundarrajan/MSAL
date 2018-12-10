@@ -1,0 +1,977 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+                        "clc_id": "masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "ContactDetails": {
+                    "id": "ContactDetails",
+                    "name": "Contact Details",
+                    "children": [{
+                        "Unique_ID": "licenseKey",
+                        "Name": "licenseKey",
+                        "Type": "simpleLookup",
+                        "Group": "ContactDetails",
+                        "Label": "LICENSE_KEY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "licenses",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "username",
+                        "Name": "UserName",
+                        "Type": "text",
+                        "Group": "ContactDetails",
+                        "Label": "USER_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "displayName",
+                        "Name": "DisplayName",
+                        "Type": "text",
+                        "Group": "ContactDetails",
+                        "Label": "DISPLAY_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    },  {
+                        "Unique_ID": "company",
+                        "Name": "company",
+                        "Type": "simpleLookup",
+                        "Group": "ContactDetails",
+                        "Label": "COMPANY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Company",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "parentUser",
+                        "Name": "parentUser",
+                        "Type": "simpleLookup",
+                        "Group": "ContactDetails",
+                        "Label": "REPORTING_MANAGER",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": true,
+                        "Active": false,
+                        "masterSource": "Users"
+                    },{
+                        "Unique_ID": "userId",
+                        "Name": "UserId",
+                        "Type": "text",
+                        "Group": "ContactDetails",
+                        "Label": "USER_ID",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "Disabled": true,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "isLocked",
+                        "Name": "Locked",
+                        "Type": "checkbox",
+                        "Group": "ContactDetails",
+                        "Label": "LOCKED",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "options": [{
+                            "isLocked": "isLocked"
+                        }]
+                    }],
+                    "Active": true
+                },
+                "ContactInformation": {
+                    "id": "ContactInformation",
+                    "name": "Contact Information",
+                    "children": [{
+                        "Unique_ID": "contactInformation.email",
+                        "Name": "EmailID",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "EMAIL_ID",
+                        "Columns": [{
+                            "Value": "9",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "signature",
+                        "Name": "Signature",
+                        "Type": "textarea",
+                        "Group": "ContactInformation",
+                        "Label": "SIGNATURE",
+                        "Columns": [{
+                            "Value": "3",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Richtext": true,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.phoneNo",
+                        "Name": "Telephone",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "TELEPHONE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.mobileNo",
+                        "Name": "Mobile",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "MOBILE",
+                        "Columns": [{
+                            "Value": "5",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.instantMessengerAddress",
+                        "": "contactInformation.instantMessengerAddress",
+                        "Name": "IMID",
+                        "Type": "textIM",
+                        "Group": "ContactInformation",
+                        "Label": "IM_ID",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.address.addressLine1",
+                        "Name": "Address1",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "ADDRESS_LINE_1",
+                        "Columns": [{
+                            "Value": "9",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.address.addressLine2",
+                        "Name": "Address2",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "ADDRESS_LINE_2",
+                        "Columns": [{
+                            "Value": "9",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.address.city",
+                        "Name": "City",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "CITY",
+                        "Columns": [{
+                            "Value": "9",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.address.state",
+                        "Name": "State",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "STATE",
+                        "Columns": [{
+                            "Value": "9",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.address.zipCode",
+                        "Name": "Zip/Postal",
+                        "Type": "text",
+                        "Group": "ContactInformation",
+                        "Label": "ZIP_/_POSTAL",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "contactInformation.address.country",
+                        "Name": "Country",
+                        "Type": "simpleLookup",
+                        "Group": "ContactInformation",
+                        "Label": "COUNTRY",
+                        "Columns": [{
+                            "Value": "5",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Country",
+                        "Active": false
+                    }],
+                    "Active": true
+                },
+                "UserRoleandAccessdetails": {
+                    "id": "UserRoleandAccessdetails",
+                    "name": "User Role and Access details",
+                    "children": [{
+                        "Unique_ID": "roles",
+                        "Name": "UserRole",
+                        "Type": "multiLookup",
+                        "Group": "UserRoleandAccessdetails",
+                        "Label": "USER_ROLE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": true,
+                        "masterSource": "roles",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "accessBuyers",
+                        "Name": "BuyerAccess",
+                        "Type": "multiLookup",
+                        "Group": "UserRoleandAccessdetails",
+                        "Label": "BUYER_ACCESS",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": true,
+                        "masterSource": "Buyer",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "accessVessels",
+                        "Name": "VesselAccess",
+                        "Type": "multiLookup",
+                        "Group": "UserRoleandAccessdetails",
+                        "Label": "VESSEL_ACCESS",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": true,
+                        "masterSource": "Vessel",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "accessCompanies",
+                        "Name": "CompanyAccess",
+                        "Type": "multiLookup",
+                        "Group": "UserRoleandAccessdetails",
+                        "Label": "COMPANY_ACCESS",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Company",
+                        "Active": false
+                    }],
+                    "Active": true
+                },
+                "UserLeaveDetails": {
+                    "id": "UserLeaveDetails",
+                    "name": "User Leave Details",
+                    "hidden": true,
+                    "children": [{
+                        "Unique_ID": "userLeaveDetails",
+                        "Name": "userLeaveDetails",
+                        "Type": "userLeaveDetailsGroup",
+                        "Group": "UserLeaveDetails",
+                        "Label": "USER_LEAVE_DETAILS",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }]
+                }
+            }
+        }
+    },
+    "elements": [{
+        "requiredFields": [{
+            "Unique_ID": "LicenseKey",
+            "Name": "LicenseKey",
+            "Type": "simpleLookup",
+            "Group": "ContactDetails",
+            "Label": "LICENSE KEY",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "licenses"
+        }, {
+            "Unique_ID": "UserName",
+            "Name": "UserName",
+            "Type": "text",
+            "Group": "ContactDetails",
+            "Label": "USER NAME",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "DisplayName",
+            "Name": "DisplayName",
+            "Type": "text",
+            "Group": "ContactDetails",
+            "Label": "DISPLAY NAME",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "UserId",
+            "Name": "UserId",
+            "Type": "text",
+            "Group": "ContactDetails",
+            "Label": "USER ID",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Company",
+            "Name": "Company",
+            "Type": "simpleLookup",
+            "Group": "ContactDetails",
+            "Label": "COMPANY",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ReportingManager",
+            "Name": "Reporting Manager",
+            "Type": "simpleLookup",
+            "Group": "ContactDetails",
+            "Label": "REPORTING MANAGER",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Password",
+            "Name": "Password",
+            "Type": "password",
+            "Group": "ContactDetails",
+            "Label": "PASSWORD",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Locked",
+            "Name": "Locked",
+            "Type": "checkbox",
+            "Group": "ContactDetails",
+            "Label": "LOCKED",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "EmailID",
+            "Name": "EmailID",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "EMAIL ID",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "Active": true
+        }, {
+            "Unique_ID": "Signature",
+            "Name": "Signature",
+            "Type": "textarea",
+            "Group": "ContactInformation",
+            "Label": "SIGNATURE",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "Richtext": true
+        }, {
+            "Unique_ID": "Telephone",
+            "Name": "Telephone",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "TELEPHONE",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Mobile",
+            "Name": "Mobile",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "MOBILE",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "IMType",
+            "Name": "IMType",
+            "Type": "dropdown",
+            "Group": "ContactInformation",
+            "Label": "IM TYPE",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "ImType"
+        }, {
+            "Unique_ID": "IMID",
+            "Name": "IMID",
+            "Type": "textIM",
+            "Group": "ContactInformation",
+            "Label": "IM ID",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Address",
+            "Name": "Address",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "ADDRESS",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "City",
+            "Name": "City",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "CITY",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "State",
+            "Name": "State",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "STATE",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Zip/Postal",
+            "Name": "Zip/Postal",
+            "Type": "text",
+            "Group": "ContactInformation",
+            "Label": "ZIP / POSTAL ",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Country",
+            "Name": "Country",
+            "Type": "simpleLookup",
+            "Group": "ContactInformation",
+            "Label": "COUNTRY",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "countries"
+        }, {
+            "Unique_ID": "UserRole",
+            "Name": "UserRole",
+            "Type": "multiLookup",
+            "Group": "General",
+            "Label": "USER ROLE",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "User Role"
+        }, {
+            "Unique_ID": "BuyerAccess",
+            "Name": "BuyerAccess",
+            "Type": "multiLookup",
+            "Group": "General",
+            "Label": "BUYER ACCESS",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "buyers"
+        }, {
+            "Unique_ID": "VesselAccess",
+            "Name": "VesselAccess",
+            "Type": "multiLookup",
+            "Group": "General",
+            "Label": "VESSEL ACCESS",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "vessels"
+        }, {
+            "Unique_ID": "CompanyAccess",
+            "Name": "CompanyAccess",
+            "Type": "multiLookup",
+            "Group": "General",
+            "Label": "COMPANY ACCESS",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "companies"
+        }],
+        "customFields": [{
+            "Unique_ID": "CustomField1",
+            "Name": "CustomField1",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "CUSTOM FIELD 1",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField2",
+            "Name": "CustomField2",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "CUSTOM FIELD 2",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField3",
+            "Name": "CustomField3",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "CUSTOM FIELD 3",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField4",
+            "Name": "CustomField4",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "CUSTOM FIELD 4",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField5",
+            "Name": "CustomField5",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "CUSTOM FIELD 5",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField6",
+            "Name": "CustomField6",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "CUSTOM FIELD 6",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "userLeaveDetails": [{
+            "Unique_ID": "userLeaveDetails",
+            "Name": "userLeaveDetails",
+            "Type": "date",
+            "Group": "UserLeaveDetails",
+            "Label": "USER LEAVE DETAILS",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }]
+    }],
+    "clc": {},
+    "id": 82
+}

@@ -1,0 +1,39 @@
+﻿<general-header actions="{
+    primary: [],
+    secondary: [],
+}"></general-header>
+
+<script type="text/ng-template" id="adminlist_renderer.html">
+    <div ui-tree-handle class="tree-node tree-node-content">
+        <a class="btn btn-success btn-xs" data-ng-if="node.nodes && node.nodes.length> 0" data-nodrag data-ng-click="toggle(this)">
+            <span class="glyphicon" data-ng-class="{ 'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed }"></span>
+        </a>
+        <i class="jstree-icon jstree-themeicon  {{ node.icon }} icon-state-success jstree-themeicon-custom" role="presentation"></i>
+        <span data-ng-click="CI.selectInvoiceScreen(node.slug, node.title)">
+            {{ node.title }}
+        </span>
+    </div>
+    <ol ui-tree-nodes="" data-ng-model="node.nodes" data-ng-class="{hidden: collapsed}">
+        <li data-ng-repeat="node in node.nodes" ui-tree-node data-ng-include="'adminlist_renderer.html'"></li>
+    </ol>
+</script>
+<div data-ng-controller="Controller_Invoice as CI" data-ng-init="CI.invoiceCatalog()">
+    <div class="col-md-5">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs font-green-sharp"></i>
+                    <span class="caption-subject font-green-sharp bold uppercase">
+                        Invoice App | Screen List
+                    </span>
+                </div>
+            </div>
+            <div ui-tree data-drag-enabled="false" id="tree-root">
+                <ol ui-tree-nodes data-ng-model="CI.invoiceTree">
+                    <li data-ng-repeat="node in CI.invoiceTree" ui-tree-node data-ng-include="'adminlist_renderer.html'"></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>

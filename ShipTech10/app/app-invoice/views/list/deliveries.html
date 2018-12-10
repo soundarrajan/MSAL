@@ -1,0 +1,30 @@
+﻿<span ng-controller="Controller_Invoice as CI" ng-init="setPageTitle()"></span>
+<span ng-controller="Controller_Master as CM">
+	<span ng-init="CM.addHeadeActions()"></span>
+</span>
+
+	<general-header actions="{
+	    primary: [
+	        {label: 'Create Invoice', special: true, url: '#', type: 'goto', method: 'createInvoiceFromDelivery()', extern: true}
+	    ],
+	    secondary: [
+	        {label: 'Delivery List', active: true},
+	        {label: 'Claims List', url: 'claims', type: 'goto', absolute:true},
+	    ],
+	    search: true,
+	    icons: [
+                {class: 'fa fa-save', action: 'save_layout'},
+	            {class: 'export-xls', action: 'export_xls'},
+	            {class: 'export-csv', action: 'export_csv'},
+	            {class: 'export-pdf', action: 'export_pdf'},
+	            {class: 'print', action: 'print'},
+	    ]
+	}"></general-header>
+
+	<clc-table-list id="'deliveries_transactionstobeinvoiced'" app="'invoices'" screen="'transactionstobeinvoiced'" controls="'[entries, columns,invoice_type_select, info, pager]'"></clc-table-list>
+	<general-header color="'white'" actions="{
+	    primary: [
+	        {label: 'Create Invoice', special: true, url: '#', type: 'goto', method: 'createInvoiceFromDelivery()', extern: true},
+	    ],
+	    secondary: [],
+	}"></general-header>

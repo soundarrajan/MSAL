@@ -1,0 +1,115 @@
+{
+    "layout": {},
+    "elements": {},
+    "clc": {
+        "table_name": "Invoices app deliveries list",
+        "datatype": "local",
+        "language": "en",
+        "rowNum": 10,
+        "rowList": [10, 20, 30],
+        "multiselect": true,
+        "viewrecords": true,
+        "sortable": {
+            "options": {
+                "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+        },
+        "view_type": "flat",
+        "treeGrid": false,
+        "treeGridModel": "adjacency",
+        "ExpandColumn": "actions-dimensional",
+        "colModel": [
+            {
+                "label": "Order ID",
+                "name": "order.id",
+                "width": 150
+            },
+            {
+                "label": "Del. No",
+                "name": "delivery.name",
+                "width": 150
+            },
+            {
+                "label": "Counterparty",
+                "name": "counterparty.name",
+                "width": 150
+            },
+            {
+                "label": "Port",
+                "name": "port.name",
+                "width": 150
+            },
+            {
+                "label": "Delivery Date",
+                "name": "deliveryDate",
+                "width": 150
+            },
+            {
+                "label": "Vessel",
+                "name": "vessel.name",
+                "width": 150
+            },
+            {
+                "label": "Prod.",
+                "name": "product.name",
+                "width": 150
+            },
+            {
+                "label": "Del. Qty.",
+                "name": "deliveryQuantity",
+                "width": 150
+            },
+            {
+                "label": "Cost Name",
+                "name": "costName.name",
+                "width": 150
+            },
+            {
+                "label": "Cost Type",
+                "name": "costType.name",
+                "width": 150
+            },
+            {
+                "label": "Order Price / Cost Amnt",
+                "name": "estimatedPrice",
+                "width": 150
+            },
+            {
+                "label": "Est. Amount",
+                "name": "estimatedAmount",
+                "width": 150
+            },
+            {
+                "label": "Comp.",
+                "name": "company.name",
+                "width": 150
+            },
+            {
+                "label": "Buyer",
+                "name": "buyer.name",
+                "width": 150
+            },
+            {
+                "label": "Agrmnt Type",
+                "name": "agreementType.name",
+                "width": 150
+            },
+            {
+                "label": "Order Status",
+                "name": "orderStatus.name",
+                "formatter": "status_new_verified",
+                "width": 150
+            }
+        ],
+        "rowActions": [],
+        "tenantData": {
+            "view": "flat",
+            "views": ["flat", "dimensional"],
+            "hiddenColumns": [],
+            "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+        }
+    },
+    "id": 92
+}

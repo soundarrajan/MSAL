@@ -1,0 +1,133 @@
+<div class="row">
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="startsBefore">
+            {{ CM.app_id + '.DASHBOARD_STARTS_ON_BEFORE' | translate }}
+            <span class="orange-txt">*</span>
+        </label>
+        <div class="form_input">
+            <input type="text" ng-required="true" class="form-control " name="startsBefore" id="startsBefore" ng-model="formValues.schedule.startsBefore" />
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="endsAfter">
+            {{ CM.app_id + '.DASHBOARD_ENDS_AFTER' | translate }}
+            <span class="orange-txt">*</span>
+        </label>
+        <div class="form_input">
+            <input type="text" ng-required="true" class="form-control " name="endsAfter" id="endsAfter" ng-model="formValues.schedule.endsAfter" />
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="traverseBy">
+            {{ CM.app_id + '.TRAVERSE_BY' | translate }}
+            <span class="orange-txt">*</span>
+        </label>
+        <div class="form_input">
+            <input type="text" ng-required="true" class="form-control " name="traverseBy" id="traverseBy" ng-model="formValues.schedule.traverseBy" />
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="nearingEta">
+            {{ CM.app_id + '.NEARING_ETA' | translate }}
+            <span class="orange-txt">*</span>
+        </label>
+        <div class="form_input">
+            <input type="text" ng-required="true" class="form-control " name="nearingEta" id="nearingEta" ng-model="formValues.schedule.nearingEta" />
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="scheduleBuyerDisplay" class="simpleLookupLabel">
+           {{ CM.app_id + '.BUYER_DISPLAY' | translate }}
+            <span class="orange-txt">
+                *
+            </span>
+        </label>
+        <div class="input-group form_input form_input_scheduleBuyerDisplay">
+            <select class="form-control bs-select changeIT" name="scheduleBuyerDisplay" id="scheduleBuyerDisplay" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.scheduleBuyerDisplay"></select>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="scheduleCompanyDisplay" class="simpleLookupLabel">
+           {{ CM.app_id + '.COMPANY_DISPLAY' | translate }}
+            <span class="orange-txt">
+                *
+            </span>
+        </label>
+        <div class="input-group form_input form_input_scheduleCompanyDisplay">
+            <select class="form-control bs-select changeIT" name="scheduleCompanyDisplay" id="scheduleCompanyDisplay" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.scheduleCompanyDisplay"></select>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="productTypeInSchedule" class="simpleLookupLabel">
+           {{ CM.app_id + '.DISPLAY_PRODUCT_TYPE' | translate }}
+            <span class="orange-txt">
+                *
+            </span>
+        </label>
+        <div class="input-group form_input form_input_productTypeInSchedule">
+            <select class="form-control bs-select changeIT" name="productTypeInSchedule" id="productTypeInSchedule" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.productTypeInSchedule"></select>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12" >
+        <div class="custom-hardcoded-table admin">
+            <table class="table-body" width="100%">
+            	<thead>
+	                <tr>
+	                    <td class="padding" width="20%"><b>System Status</b></td>
+	                    <td class="padding" width="15%"><b>Trasaction</b></td>
+	                    <td class="padding" width="20%"><b>Label</b></td>
+	                    <td class="padding" width="20%"><b>Colour code</b></td>
+	                    <td class="padding" width="15%"><b>Display Order</b></td>
+	                    <td class="padding" width="10%"><b>Display in dashboard</b></td>
+	                </tr>
+            	</thead>
+            	<tbody>
+	                <tr ng-repeat="(key, val) in formValues.schedule.labels | orderBy : 'displayOrder'">
+	                    <td width="20%">
+	                    	 {{val.status.displayName ? val.status.displayName : val.label}}
+	                 	</td>
+	                    <td width="20%">
+	                 		{{val.transactionType.name}}
+	                 	</td>
+	                    <td width="20%"><input type="text" class="form-control " name="{{val.status.name}}_label" ng-model="val.label"></td>
+	                    <td width="15%" class="text-center">
+							<!-- <input ng-model="val.colorCode" type="color" name="{{val.status.name}}_colour_code"> -->
+	                    	<!-- {{initMinicolors()}} -->
+							<input ng-init="initMinicolors()" ng-model="val.colorCode" class="form-control demo minicolors-input" value="{{val.colorCode}}" size="15" >
+							<!-- {{val.colorCode}} -->
+	                    </td>
+	                    <td ng-init="val.tempDisplayOrder = val.displayOrder">
+	                    	<select class="form-control" ng-model="val.tempDisplayOrder" ng-change="changeScheduleStatusDisplayOrder(val.tempDisplayOrder, val.displayOrder)" ng-options="item as item for item in createRange(1,formValues.schedule.labels.length) track by item">
+	                    	</select>
+	                    </td>
+	                    <td width="10%" class="text-center">
+		                    <label ng-if="val.displayInSchedule" class="mt-checkbox" style="margin-bottom:20px;">
+		                    	<input type="checkbox"  ng-model="val.displayInDashboard">
+		                    	<span></span>
+		                    </label>
+		                   <!--  <label ng-if="!val.displayInSchedule" ng-click="throwToastrError('This status cannot be displayed in the Schedule dashboard.')" class="mt-checkbox" style="margin-bottom:20px;">
+		                    	<span></span>
+		                    </label> -->		                    
+	                    	<!-- {{val.displayInSchedule}} -->
+                    	</td>
+	                </tr>
+            	</tbody>
+            </table>
+        </div>
+</div>
+</div>

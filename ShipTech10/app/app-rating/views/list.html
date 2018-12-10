@@ -1,0 +1,17 @@
+<div ng-controller="Controller_Configurable_List_Control as CLC">
+    <!-- checkbox for general-header -->
+    <!--
+    <general-header actions="{
+        primary: [
+            {label: 'Active', html_element: 'checkbox', checked: true, id: 'entity_active'},
+            {label: 'Blacklisted', html_element: 'checkbox', id: 'entity_blacklisted'}
+        ],
+        secondary: [],
+        search: false,
+    }"></general-header>
+    -->
+    <general-header actions="{ primary: [ {label: 'Add Lab Result', type: 'goto', url: '/edit/', absolute: true}, ], secondary: [ {label: 'Lab Result List', active: true, type: 'goto', url: ' ', absolute: true}], search: true, icons: [ {class: 'export-xls', action: 'export_xls'}, {class: 'export-csv', action: 'export_csv'}, {class: 'export-pdf', action: 'export_pdf'}, {class: 'print', action: 'print'}, ],   icons: [
+            {class: 'fa fa-save', action: 'save_layout'},] }"></general-header>
+    <clc-table-list id="'labs_labrsresultlist'" app="'labs'" screen="'labresultlist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+    <general-header actions="{ primary: [ {label: 'Add Lab Result', type: 'goto', url: '/edit/', absolute: true}, ], secondary: [], search: false, }" color="'white'"></general-header>
+</div>

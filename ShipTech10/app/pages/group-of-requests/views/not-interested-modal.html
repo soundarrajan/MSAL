@@ -1,0 +1,36 @@
+<div class="">
+    <div id="modal_close_bar" class="row float_right">
+        <button type="button" class="close" ng-click="$ctrl.prettyCloseModal()" aria-hidden="true"></button>
+    </div>
+    <div class="col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title row">
+                <div class="col-sm-12 caption-subject">
+                    Seller's Participation in Negotiation
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+        	<span class="hidden">
+        	</span>
+        	<div class="row">
+	        	<div class="col-sm-12">
+	        		<label class="mt-checkbox mt-checkbox-outline pull-left">
+	                    <input type="checkbox" ng-model="$ctrl.notInterstedModalActiveData.sellerNotInterested">
+	                    <span></span>
+		                Not interested
+	                </label>
+	        	</div>
+				<div class="col-sm-12">
+					<textarea name="" style="min-width: 100%" class="img-responsive" ng-model="$ctrl.notInterstedModalActiveData.seller.notInterestedComments" cols="30" rows="10"></textarea>
+				</div>        		
+        	</div>
+        </div>
+	    <br><br>
+    </div>
+    <div class="col-sm-12">
+	    <hr>
+		<a class="btn btn-sm btn-outline orange pull-right" ng-click="$ctrl.saveNotInterestedModal()" data-dismiss="modal">Save</a>
+		<br><br><br>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+
+<span ng-init=""></span>
+<div id="modal_close_bar">
+    <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange btn-save-alert" ng-controller="Controller_Master as CM" ng-click="reconQualityDispute()">
+        <span class="ladda-label ng-binding">
+            Dispute
+        </span>
+    </a>
+    <button type="button" class="close" ng-click="modalInstance.close()" aria-hidden="true"></button>
+</div>
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption-subject">
+            <span class="caption-subject">
+                SELECT PARAMETERS
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body ">
+    <div ui-grid="gridOptions['reconLabTestResults']"  id="grid_labsTestRecon"  ui-grid-auto-resize  class="dataGrid"  ui-grid-resize-columns>
+        <div class="clearfix"></div>
+    </div>
+
+
+    </div>
+</div>

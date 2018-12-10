@@ -1,0 +1,1038 @@
+{
+  "layout": {
+    "children": {
+      "entity_documents": {
+        "General": {
+          "id": "General",
+          "name": "General",
+          "children": [
+            {
+              "Unique_ID": "documentType",
+              "Name": "DocumentType",
+              "Type": "simpleLookup",
+              "masterSource": "DocumentType",
+              "Group": "General",
+              "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+              "Columns": [
+                {
+                  "Value": "4",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            },
+            {
+              "Unique_ID": "dropFiles",
+              "Name": "DropFiles",
+              "Type": "uploadDocuments",
+              "Group": "General",
+              "Label": "DROP_FILES",
+              "Columns": [
+                {
+                  "Value": "8",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            }
+          ],
+          "Active": true
+        }
+      },
+      "entity_emaillog": {
+        "General": {
+          "id": "General",
+          "name": "General",
+          "children": [
+            {
+              "Unique_ID": "module",
+              "Name": "Module",
+              "Type": "dropdown",
+              "masterSource": "Module",
+              "Group": "General",
+              "Label": "MODULE",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": false,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            },
+            {
+              "Unique_ID": "sender",
+              "Name": "Sender",
+              "Type": "text",
+              "Group": "General",
+              "Label": "SENDER",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": false,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            },
+            {
+              "Unique_ID": "status",
+              "Name": "Status",
+              "Type": "dropdown",
+              "masterSource": "EmailStatus",
+              "Group": "General",
+              "Label": "STATUS",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": false,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            },
+            {
+              "Unique_ID": "entity",
+              "Name": "Entity",
+              "Type": "dropdown",
+              "masterSource": "TransactionType",
+              "Group": "General",
+              "Label": "ENTITY",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": false,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            },
+            {
+              "Unique_ID": "subject",
+              "Name": "Subject",
+              "Type": "text",
+              "Group": "General",
+              "Label": "SUBJECT",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            },
+            {
+              "Unique_ID": "emailTo",
+              "Name": "EmailTo",
+              "Type": "text",
+              "Group": "General",
+              "Label": "EMAIL_TO",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": false,
+              "Hidden": false,
+              "Added": true,
+              "Active": false,
+              "LastOnRow": false
+            }
+          ],
+          "Active": true
+        }
+      },
+      "edit": {
+        "General": {
+          "id": "General",
+          "name": "General",
+          "children": [
+            {
+              "Active": false,
+              "Unique_ID": "name",
+              "Name": "MarketInstrument",
+              "Type": "text",
+              "Group": "General",
+              "Label": "MARKET_INSTRUMENT",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": false,
+              "LastOnRow": false
+            },
+            {
+              "Active": false,
+              "Unique_ID": "code",
+              "Name": "MarketInstrumentCode",
+              "Type": "text",
+              "Group": "General",
+              "Label": "MARKET_INSTRUMENT_CODE",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": false,
+              "LastOnRow": false
+            },
+            {
+              "Active": false,
+              "Unique_ID": "uom",
+              "Name": "UOM",
+              "Type": "simpleLookup",
+              "Group": "General",
+              "Label": "UOM",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": false,
+              "LastOnRow": false,
+              "masterSource": "Uom",
+              "clc_id": "masters_uomlist"
+            },
+            {
+              "Active": false,
+              "Unique_ID": "calendar",
+              "Name": "Calendar",
+              "Type": "simpleLookup",
+              "Group": "General",
+              "Label": "CALENDAR",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": false,
+              "LastOnRow": false,
+              "masterSource": "Calendar",
+              "clc_id": "masters_calendarlist"
+            },
+            {
+              "Active": false,
+              "Unique_ID": "currency",
+              "Name": "Currency",
+              "Type": "simpleLookup",
+              "Group": "General",
+              "Label": "CURRENCY",
+              "Columns": [
+                {
+                  "Value": "6",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": false,
+              "LastOnRow": true,
+              "masterSource": "Currency",
+              "clc_id": "masters_currencylist"
+            },
+            {
+              "Active": false,
+              "Unique_ID": "marketPriceTypes",
+              "Name": "PriceType",
+              "Type": "checkbox",
+              "Group": "General",
+              "masterSource": "MarketPriceType",
+              "Label": "PRICE_TYPE",
+              "Columns": [
+                {
+                  "Value": "8",
+                  "Type": "dropdown",
+                  "PossibleValue": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12"
+                  ]
+                }
+              ],
+              "Description": "",
+              "Required": true,
+              "Hidden": false,
+              "Added": false,
+              "LastOnRow": true,
+              "options": []
+            }
+          ]
+        }
+      }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "name",
+          "Name": "MarketInstrument",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Market Instrument",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "code",
+          "Name": "MarketInstrumentCode",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Market Instrument Code",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "calendar.if",
+          "Name": "Calendar",
+          "Type": "simpleLookup",
+          "Group": "General",
+          "Label": "Calendar",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "calendar"
+        },
+        {
+          "Unique_ID": "uom.id",
+          "Name": "UOM",
+          "Type": "simpleLookup",
+          "Group": "General",
+          "Label": "UOM",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "uomlist"
+        },
+        {
+          "Unique_ID": "currency.id",
+          "Name": "Currency",
+          "Type": "simpleLookup",
+          "Group": "General",
+          "Label": "Currency",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "currencylist"
+        },
+        {
+          "Unique_ID": "marketPriceTypes",
+          "Name": "PriceType",
+          "Type": "checkbox",
+          "Group": "General",
+          "Label": "Price Type",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "options": [
+            {
+              "Low": "Low",
+              "High": "High",
+              "Open": "Open",
+              "Close": "Close",
+              "Mean": "Mean",
+              "Index": "Index"
+            }
+          ]
+        }
+      ],
+      "customFields": [
+        {
+          "Unique_ID": "CustomField1",
+          "Name": "CustomField1",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 1",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField2",
+          "Name": "CustomField2",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 2",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField3",
+          "Name": "CustomField3",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 3",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField4",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 4",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField5",
+          "Name": "CustomField5",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 5",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField6",
+          "Name": "CustomField6",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 6",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ]
+    }
+  ],
+  "clc": {
+    "masters_marketinstrument": {
+      "table_name": "Market Instrument List",
+      "datatype": "local",
+      "language": "en",
+      "rowNum": 10,
+      "rowList": [
+        30,
+        20,
+        10
+      ],
+      "multiselect": false,
+      "viewrecords": true,
+      "sortable": {
+        "options": {
+          "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+        }
+      },
+      "view_type": "flat",
+      "treeGrid": false,
+      "treeGridModel": "adjacency",
+      "ExpandColumn": "actions-dimensional",
+      "colModel": [
+        {
+          "index": "id",
+          "label": "ID",
+          "name": "id",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "name",
+          "label": "Market Instrument",
+          "name": "name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "code",
+          "label": "Market Instrument Code",
+          "name": "code",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "calendar.name",
+          "label": "Calendar",
+          "name": "calendar.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "createdBy.name",
+          "label": "Created By",
+          "name": "createdBy.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "createdOn",
+          "label": "Created On",
+          "name": "createdOn",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "lastModifiedBy.name",
+          "label": "Last Modified by",
+          "name": "lastModifiedBy.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "lastModifiedOn",
+          "label": "Last Modified on",
+          "name": "lastModifiedOn",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "isDeleted",
+          "label": "Status",
+          "name": "isDeleted",
+          "width": 150,
+          "sortable": true,
+          "formatter": "masters_isdeleted"
+        }
+      ],
+      "rowActions": [
+        {
+          "label": "Copy",
+          "class": "copy",
+          "url": "get.php?action=copy"
+        },
+        {
+          "label": "Edit",
+          "class": "edit",
+          "url": "get.php?action=edit"
+        }
+      ],
+      "tenantData": {
+        "view": "flat",
+        "views": [
+          "flat",
+          "dimensional"
+        ],
+        "hiddenColumns": [
+          2
+        ],
+        "columnsOrder": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "numberOfAdditionalColumns": 0,
+        "columnsOrderLoadOnce": false
+      }
+    }
+  },
+  "id": 32
+}

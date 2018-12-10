@@ -1,0 +1,189 @@
+<general-header actions="{
+    primary: [{
+        label: 'Save',
+        special: 'true',
+        url: '#',
+        method: 'save_master_changes()',
+        extern: true,
+        main: true
+    }, {
+        label: 'Copy',
+        url: '#',
+        method: 'copyEntity()',
+        extern: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'CM.entity_id > 0'
+    },{
+        label: 'Complete',
+        url: '#',
+        method: 'save_master_changes(null, null, true, complete_claim)',
+        extern: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'CM.entity_id > 0 && formValues.claimDetails.status.name != \'Completed\' '
+    }, {
+        label: 'Create Debunker Claim',
+        url: '#',
+        method: 'createDebunker()',
+        extern: true,
+        Conditional: 'formValues.claimsPossibleActions.canCreateDebunkerClaim',
+        ConditionalType: 'ng-show'
+    },  {
+        label: '...',
+        type: 'button-group',
+        url: '',
+        children: [ {
+        label: 'New',
+        type: 'goto',
+        url: 'claim/edit/',
+        absolute: true
+    }, {
+            label: 'Reset',
+            url: '#',
+            method: 'reset_form()',
+            extern: true,
+            main: true
+        }, {
+            label: 'claims.CLAIM_EDIT_CREATE_CREDIT_NOTE',
+            url: '#',
+            method: 'claims_create_credit_note(0)',
+            Conditional: 'formValues.claimsPossibleActions.canCreateCreditNote',
+            ConditionalType: 'ng-show',
+            extern: true,
+            main: true
+        },{
+            label: 'Create Resale Credit Note',
+            url: '#',
+            method: 'claims_create_credit_note(1)',
+            Conditional: 'formValues.claimsPossibleActions.canCreateResaleCreditNote',
+            ConditionalType: 'ng-show',
+            extern: true,
+            main: true
+        }, {
+            label: 'Debunker Credit Note',
+            url: '#',
+            method: 'claims_create_credit_note(2)',
+             Conditional: 'formValues.claimsPossibleActions.canCreateDebunkerCreditNote',
+            ConditionalType: 'ng-show',
+            extern: true,
+            main: true
+        },{
+            label: 'Cancel',
+            url: '#',
+            method: 'cancel_claim()',
+            extern: true,
+            main: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.claimsPossibleActions.canCancelClaim',
+        }, ]
+    }],
+    secondary: [{
+        label: 'Main Page',
+        active: 'true'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit-log/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Configure UI',
+        type: 'goto',
+        url: 'structure'
+    } ],
+}">
+</general-header>
+<entity-edit-form structure='' type="" screen="'claims'" edit-action=''></entity-edit-form>
+<span ng-controller="Controller_Master as CM">
+	<span ng-init="CM.displayStatusInHeader()"></span>
+</span>
+<general-header actions="{
+    primary: [{
+        label: 'Save',
+        special: 'true',
+        url: '#',
+        method: 'save_master_changes()',
+        extern: true,
+        main: true
+    }, {
+        label: 'Copy',
+        url: '#',
+        method: 'copyEntity()',
+        extern: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'CM.entity_id > 0'
+    },{
+        label: 'Complete',
+        url: '#',
+        method: 'save_master_changes(null, null, true, complete_claim)',
+        extern: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'CM.entity_id > 0 && formValues.claimDetails.status.name != \'Completed\' '
+    }, {
+        label: 'Create Debunker Claim',
+        url: '#',
+        method: 'createDebunker()',
+        extern: true,
+         Conditional: 'formValues.claimsPossibleActions.canCreateDebunkerClaim',
+        ConditionalType: 'ng-show'
+    }, {
+        label: '...',
+        type: 'button-group',
+        url: '',
+        children: [ {
+        label: 'New',
+        type: 'goto',
+        url: 'claim/edit/',
+        absolute: true
+    }, {
+            label: 'Reset',
+            url: '#',
+            method: 'reset_form()',
+            extern: true,
+            main: true
+        }, {
+            label: 'claims.CLAIM_EDIT_CREATE_CREDIT_NOTE',
+            url: '#',
+            method: 'claims_create_credit_note(0)',
+            Conditional: 'formValues.claimsPossibleActions.canCreateCreditNote',
+            ConditionalType: 'ng-show',
+            extern: true,
+            main: true
+        },{
+            label: 'Create Resale Credit Note',
+            url: '#',
+            method: 'claims_create_credit_note(1)',
+            Conditional: 'formValues.claimsPossibleActions.canCreateResaleCreditNote',
+            ConditionalType: 'ng-show',
+            extern: true,
+            main: true
+        }, {
+            label: 'Debunker Credit Note',
+            url: '#',
+            method: 'claims_create_credit_note(2)',
+             Conditional: 'formValues.claimsPossibleActions.canCreateDebunkerCreditNote',
+            ConditionalType: 'ng-show',
+            extern: true,
+            main: true
+        },{
+            label: 'Cancel',
+            url: '#',
+            method: 'cancel_claim()',
+            extern: true,
+            main: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.claimsPossibleActions.canCancelClaim',
+        }, ]
+    }]
+}" color= "'white'">
+</general-header>
+<!-- <span  ng-controller="Controller_Master as CM">
+
+    <span ng-if="!CM.entity_id" ng-init="fVal().formValues.isEditable = true"></span>
+</span>
+ -->

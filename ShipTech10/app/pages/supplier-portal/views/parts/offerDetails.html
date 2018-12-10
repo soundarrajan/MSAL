@@ -1,0 +1,246 @@
+<div class="col-md-12 portlet light" ng-init="$ctrl.tabType = 'individual';" ng-show="$ctrl.loaded">
+    <div class="portlet-title">
+        <div class="tools">
+            <a data-toggle="collapse" href="#offDetails" class="collapse" data-original-title="" title="" aria-expanded="true"></a>
+        </div>
+        <div class="caption">
+            <span class="caption-subject ">
+                OFFER DETAILS <span ng-if="$ctrl.tabType == 'individual'">- Standalone product offer</span><span ng-if="$ctrl.tabType == 'package'">- Combined product offer</span>
+            </span>
+        </div>
+        <button ng-if="!$ctrl.token" class="btn btn-sm btn-outline orange pull-right" ng-click="$ctrl.sendOffer()" ng-class="{'disabled': $ctrl.buttonsDisabled}">
+            Save
+        </button>
+    </div>
+    <div class="portlet-body collapse in" id="offDetails" aria-expanded="true">
+        <div class="mb">
+            <div class="details-req">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <div class="left-arrow arrow">
+                            <button  ng-click="offset= offset - 1; $ctrl.sellersCardNavigation('prev')">
+                                <i class="fa fa-caret-left" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-10">
+                        <span ng-if="$ctrl.packages" ng-init="$ctrl.initUniqueAvailableRFQsForPkg()"></span>
+                        <!-- <span ng-if="$ctrl.packages" ng-init="$ctrl.initSellersCardNavigation()"></span> -->
+                        <div class="row" id="sellerCardsItems">
+                            <!-- FOR SELLER CARD -->
+<!--                             <div class="card-carousel-item" ng-repeat="(key,val) in $ctrl.uniqueAvailableRFQsForPkg" ng-if="!$ctrl.token && $ctrl.packagesConfigurationEnabled" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
+                                <div class="req-card"  ng-click="$ctrl.tabType='package'; $ctrl.activeRFQ = val; $ctrl.isPackageOffer = true" ng-class="$ctrl.tabType =='package' &&  $ctrl.activeRFQ == val &&$ctrl.isPackageOffer == true ? 'active_req' : ''">
+                                    <div>
+                                        <p>
+                                            <span style="font-weight: 600;">
+                                                Packages
+                                                <span ng-if="$ctrl.token">
+                                                    {{ $ctrl.packages.length }}
+                                                </span>
+                                            </span>
+                                            <br/>
+                                            <span style="font-weight: 600;">
+                                                RFQ ID : {{ val }}
+                                            </span>
+                                            <br/>
+                                            Requests:
+                                            <span ng-repeat="(key, value) in $ctrl.getAllRequestsInPackage(val) ">
+                                                {{ value }},
+                                            </span>
+                                            <br/>
+                                            Products:
+                                            <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage(val)">
+                                                {{ pc.name }},
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!--  END FOR SELLER CARD -->
+                            <span ng-if="$ctrl.packagesOffers && $ctrl.enableOffers">
+                                <div class="card-carousel-item" ng-if="$ctrl.token && $ctrl.packagesConfigurationEnabled" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'" ng-init="$ctrl.activeRFQ = $ctrl.packagesOffers[0].rfqs[0].rfq.id">
+                                    <div class="req-card"  ng-click="$ctrl.tabType='packagesOffers'; $ctrl.activeRFQ = $ctrl.packagesOffers[0].rfqs[0].rfq.id" ng-class="$ctrl.tabType =='packagesOffers' ? 'active_req' : ''">
+                                        <div>
+                                            <p>
+                                                <span style="font-weight: 600;">
+                                                    Offers - {{ $ctrl.packagesOffers.length }}
+                                                </span>
+                                                <br/>
+                                                Requests:
+                                                <span ng-repeat="(key, value) in $ctrl.requests ">
+                                                    {{ value.name }},
+                                                </span>
+                                                <br/>
+                                                Products:
+                                                <span ng-repeat="(p, pc) in $ctrl.individuals[0].products">
+                                                    {{ pc.product.name }},
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                            <!-- {{ $ctrl.requests}} -->
+                            <!-- {{$ctrl.active_req}} ** {{$ctrl.tabType}} -->
+                            <div class="card-carousel-item" ng-repeat="(key, value) in $ctrl.requests" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
+                                <div class="req-card"  ng-class="$ctrl.active_req == value.id && $ctrl.tabType=='individual' ? 'active_req' : ''"  ng-click="$ctrl.tabType='individual';$ctrl.active_req = value.id; $ctrl.onTabClick(value);">
+                                    <div ng-init="vesselDetails = $ctrl.getVesselDetailsByRequestId(value.id)">
+                                        <p>
+                                            <span style="font-weight: 600;">
+                                                {{ value.name }}
+                                            </span>
+                                            <br/>
+                                            <!-- {{vesselDetails}} -->
+                                            Vessel Name: {{ vesselDetails .vessel.name }} - IMO: {{ vesselDetails .vesselImoNo }}
+                                            <br/>
+                                            Locations:
+                                            <!-- <span ng-repeat="(k, v) in $ctrl.individuals | filter:{request:{id:value.id}} |  limitTo:4">
+                                                {{ v.location.name }}
+                                                - {{ v.physicalSupplier.name }}
+                                                <br/>
+                                            </span> -->
+                                            <span ng-init="distinctLocations = $ctrl.getDistinctLocationsInRequest(value.id)">
+                                            	<span ng-repeat="(k,v) in distinctLocations">
+                                            		{{v}}
+                                            	</span>
+                                            </span>
+                                            <br/>
+                                            Products :
+                                            <span ng-repeat="(p, pc) in $ctrl.getAllProductsInRequest(value)">
+                                                {{ pc.name }},
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FOR SELLER CARD -->
+                            <div class="card-carousel-item" ng-repeat="(key,val) in $ctrl.uniqueAvailableRFQsForPkg" ng-if="!$ctrl.token && $ctrl.packagesConfigurationEnabled" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
+                                <div class="req-card"  ng-click="$ctrl.tabType='package'; $ctrl.activeRFQ = val; $ctrl.isPackageOffer = false" ng-class="$ctrl.tabType =='package' &&  $ctrl.activeRFQ == val && $ctrl.isPackageOffer == false ? 'active_req' : ''">
+                                    <div>
+                                        <p>
+                                            <span style="font-weight: 600;">
+                                                Packages
+                                                <span ng-if="$ctrl.token">
+                                                    {{ $ctrl.packages.length }}
+                                                </span>
+                                            </span>
+                                            <br/>
+                                            <span style="font-weight: 600;">
+                                                RFQ ID : {{ val }}
+                                            </span>
+                                            <br/>
+                                            Requests:
+                                            <span ng-repeat="(key, value) in $ctrl.getAllRequestsInPackage(val) ">
+                                                {{ value }},
+                                            </span>
+                                            <br/>
+                                            <!-- {{val}}      -->
+                                            Products:
+                                            <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage(val)">
+                                                {{ pc.name }},
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-carousel-item" ng-if="!$ctrl.token && $ctrl.packagesConfigurationEnabled" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
+                                <div class="req-card"  ng-click="$ctrl.tabType='package'; $ctrl.activeRFQ = 'surrogate'; $ctrl.isPackageOffer = false" ng-class="$ctrl.tabType =='package' &&  $ctrl.activeRFQ == 'surrogate' ? 'active_req' : ''">
+                                    <div>
+                                        <p>
+                                            <span style="font-weight: 600;">
+                                                Buyer package
+                                            </span>
+                                            <br/>
+                                            Requests:
+                                            <span ng-repeat="(key, value) in $ctrl.getAllRequestsInPackage('surrogate') ">
+                                                {{ value }},
+                                            </span>
+                                            <br/>
+                                            Products:
+                                            <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage('surrogate')">
+                                                {{ pc.name }},
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  END FOR SELLER CARD -->
+                            <div class="card-carousel-item" ng-if="$ctrl.token && $ctrl.packagesConfigurationEnabled && $ctrl.vesselsNumber > 1" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'" ng-init="$ctrl.tabType = 'package';$ctrl.activeRFQ = $ctrl.packages[0].rfqs[0].rfq.id">
+                                <div class="req-card"  ng-click="$ctrl.tabType='package'; $ctrl.activeRFQ = $ctrl.packages[0].rfqs[0].rfq.id;$ctrl.newSupplier=null" ng-class="$ctrl.tabType =='package' ? 'active_req' : ''">
+                                    <div>
+                                        <p>
+                                            <span style="font-weight: 600;">
+                                                Packages - {{ $ctrl.packages.length }}
+                                            </span>
+                                            <br/>
+                                            Requests:
+                                            <span ng-repeat="(key, value) in $ctrl.requests ">
+                                                {{ value.name }},
+                                            </span>
+                                            <br/>
+                                            Products:
+                                            <span ng-repeat="(p, pc) in $ctrl.individuals[0].products">
+                                                {{ pc.product.name }},
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                        <div class="right-arrow arrow">
+                            <button ng-click="offset= offset  + 1;  $ctrl.sellersCardNavigation('next')">
+                                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <p>{{$ctrl.tabType}}</p> -->
+        <span ng-include="'pages/supplier-portal/views/parts/productDetails.html'" ng-show="$ctrl.tabType == 'individual'"></span>
+        <span ng-include="'pages/supplier-portal/views/parts/packageDetails.html'" ng-show="$ctrl.tabType == 'package'"></span>
+        <span ng-include="'pages/supplier-portal/views/parts/packagesOffersDetails.html'" ng-show="$ctrl.tabType == 'packagesOffers'"></span>
+        <div class="" style="margin-top: 10px; padding: 15px 0px 5px 20px; border: 1px solid #dde4ec;" ng-if="$ctrl.token">
+            <!-- <div class="row mb" ng-if="$ctrl.token && $ctrl.tabType != 'packagesOffers'"> -->
+            <div class="col-md-3">
+                <div class="form-group row">
+                    <label for="" class="price_label ">
+                        Physical Supplier
+                        <span  class="orange-txt">
+                            *
+                        </span>
+                    </label>
+                    <div class="input-group">
+                        <input name="{{ $ctrl.productColumns.PhysicalSupplier.name }}add" id="id_{{ $ctrl.productColumns.PhysicalSupplier.name }}add" class="typeahead form-control" uib-typeahead="physicalSupplier as physicalSupplier.name for physicalSupplier in $ctrl.lists.Supplier | filter:$viewValue"  ng-click="$ctrl.setSellerDialogType($ctrl.productColumns.PhysicalSupplier.name, $ctrl.productColumns.PhysicalSupplier.name + 'add')" ng-model="$ctrl.newSupplier" typeahead-editable="false"/>
+                        <span class="input-group-addon" data-toggle="modal" href="#counterparties" ng-click="$ctrl.setSellerDialogType($ctrl.productColumns.PhysicalSupplier.name, $ctrl.productColumns.PhysicalSupplier.name + 'add'); $ctrl.supplierPlace = 'supplier';$ctrl.supplierUpdate = null">
+                            <a   class=" btn default">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-disabled="!$ctrl.newSupplier  || $ctrl.buttonsDisabled == true" ng-click="$ctrl.addSupplier($ctrl.newSupplier, $ctrl.tabType)">
+                    <span class="ladda-label " ng-if="$ctrl.tabType == 'individual'">
+                        Add Offer
+                    </span>
+                    <span class="ladda-label " ng-if="$ctrl.tabType == 'package'">
+                        Add Offer
+                    </span>
+                </button>
+            </div>
+        <!-- </div> -->
+
+            <!-- <div class="col-md-6" style="padding-left: 0px;margin-top: 15px;">
+                Please provide offer for all the requests before building the package.
+            </div> -->
+            <div class="clear"></div>
+        </div>
+    </div>
+    <!--     <pre>{{$ctrl.individuals}}</pre>
+        <pre>{{$ctrl.packages}}</pre> -->
+</div>

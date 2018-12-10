@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div id="modal_close_bar" class="row float_right">
+        <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    </div>
+    <div>
+        <div class="portlet">
+            <div class="portlet-title row">
+                <span class="caption-subject confirm_delete_product_subject">
+                    Contact
+                </span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-xs-12 confirm_delete_product">
+                    Do you want to delete the contact?
+                    <!-- <pre>{{confirmDeleteContact}}</pre> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                    <button class=" btn btn-default btn-outline orange" ng-click="CM.deleteContactFromMasterEdit(confirmDeleteContact.key, confirmDeleteContact.value, confirmDeleteContact.screen, true); prettyCloseModal()">Yes</button>
+                </div>
+                <div class="col-sm-1">
+                    <button class=" btn btn-default btn-outline gray" ng-click="prettyCloseModal()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

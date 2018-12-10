@@ -1,0 +1,9 @@
+<div class="ui-grid-cell-contents" ng-controller="Controller_Master as CM" ng-init="rowObj=  grid.appScope.fVal().formValues.labTestResults[rowRenderIndex]">
+    <span  class="formatter delivery_quality_matched passed"  ng-if="MODEL_COL_FIELD == 'Passed'" >
+        Passed
+    </span>
+    <span  class="formatter delivery_quality_matched failed"  ng-if="MODEL_COL_FIELD == 'Failed'" >
+        Failed
+    </span>    
+</div>
+

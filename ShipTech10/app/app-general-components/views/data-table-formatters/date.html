@@ -1,0 +1,9 @@
+<div class="input-group date-picker date form_meridian_datetime" ng-controller="Controller_Master as CM" ng-init="CM.datepickers(null,null, col.colDef.cellObject.type, col.colDef.cellObject.unique )" ng-class="expression">
+    <input class="form-control" type="text" ng-model="MODEL_COL_FIELD" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}" ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false" />
+    <span class="formatted-date"  ng-bind="CM.formatDate(MODEL_COL_FIELD, 'dd/MM/yyyy')"></span>
+    <span class="input-group-btn"  dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
+        <button class="btn default date-set" type="button"  dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
+            <i class="fa fa-calendar"></i>
+        </button>
+    </span>
+</div>

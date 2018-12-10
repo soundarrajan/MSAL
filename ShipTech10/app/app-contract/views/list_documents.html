@@ -1,0 +1,72 @@
+﻿<div ng-controller="Controller_Configurable_List_Control as CLC">
+    <general-header actions="{
+    primary: [
+        {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
+    ],
+
+    secondary: [{
+        label: 'Main Page',
+        type: 'goto',
+        url: 'edit/:entity_id',
+    }, {
+        label: 'Preview Contract',
+        type: 'goto',
+        url: 'preview/:entity_id',
+    }, {
+        label: 'Preview Email',
+        type: 'goto',
+         url: 'email-preview/:entity_id'
+    }, {
+        label: 'Deliveries',
+        type: 'goto',
+        url: 'productdelivery/:entity_id'
+    }, {
+        label: 'Documents',
+        active: 'true'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true,
+    }
+    ,{
+       label: 'Terms & Conditions',
+       type: 'goto',
+       url: 'terms-conditions/:entity_id',
+       ConditionalType: 'ng-show',
+       Conditional: '((GH.entity_id > 0) && (GH.adminConfiguration.contract.areTermsAndConditionsAvailable))',
+        method: 'doEntityActionMaster(\'goto\', \'terms-conditions/:entity_id\')'
+     }]
+}"></general-header>
+
+    <entity-edit-form screenchild="'entity_documents'"></entity-edit-form>
+
+    
+    <span ng-controller="Controller_Configurable_List_Control as CLC">
+        <clc-table-list
+            id="'entity_documents'"
+            app="'contracts'"
+            screen="'entity_documents'"
+            controls="'[info, pager]'"
+            filters="[{
+                ColumnName: 'TransactionTypeId',
+                Value: 2
+            }]"
+        ></clc-table-list>
+    </span>
+
+    <general-header color="'white'" actions="{
+        primary: [  {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
+        ],
+        secondary: [
+
+        ],
+    }"></general-header>
+</div>

@@ -1,0 +1,194 @@
+<div>
+    <button type="button" style="margin-left: 25px;" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    <span class="portlet-light">
+        <div class="portlet-title">
+            <div class="caption-subject">
+                {{ 'PAGES.NEW_ORDER.PRICING_DETAILS' | translate }}
+            </div>
+        </div>
+        <hr />
+    </span>
+    <!-- {{$ctrl.formulaDetailsData}} -->
+    <div class="row">
+        <div class="col-sm-4">
+            <b>
+                {{ 'PAGES.NEW_ORDER.VESSEL' | translate }} :
+            </b>
+            {{ $ctrl.formulaDetailsData.vessel.name }}
+            <br />
+            <b>
+                {{ 'PAGES.NEW_ORDER.PRODUCT' | translate }} :
+            </b>
+            {{ $ctrl.formulaDetailsData.product.name }}
+        </div>
+        <div class="col-sm-4">
+            <b>
+                {{ 'PAGES.NEW_ORDER.ETA' | translate }} :
+            </b>
+            <span ng-controller="Controller_Master as CM">
+                {{ CM.formatDateTime($ctrl.formulaDetailsData.eta,null,'eta') }}
+            </span>
+            <br />
+        </div>
+        <div class="col-sm-4">
+            <b>
+                {{ 'PAGES.NEW_ORDER.LOCATION' | translate }} :
+            </b>
+            {{ $ctrl.formulaDetailsData.location.name }}
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4">
+            <b>
+                {{ 'PAGES.NEW_ORDER.SELLER' | translate }} :
+            </b>
+            {{ $ctrl.formulaDetailsData.seller.name }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <b>
+                {{ 'PAGES.NEW_ORDER.PRICING_FORMULA' | translate }} :
+            </b>
+            {{ $ctrl.formulaDetailsData.formula.name }}
+        </div>
+    </div>
+    <!--     <div class="row">
+            <div class="col-sm-4">
+                <b>
+                    {{ 'PAGES.NEW_ORDER.PRICING_DATE' | translate }} :
+                </b>
+                <span ng-controller="Controller_Master as CM">
+                    {{ CM.formatSimpleDate($ctrl.formulaDetailsData.pricingDate) }}
+                </span>
+            </div>
+        </div> -->
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <span class="pull-left">
+                <b>
+                    Average Unit Price: {{$ctrl.formulaDetailsData.formulaSchedule.avgDealValue | number : $ctrl.pricePrecision }}
+                </b>
+            </span>
+            <span class="pull-right">
+                * All values are in {{ $ctrl.currency.code }} / {{ $ctrl.tenantUom.name }}
+            </span>
+        </div>
+    </div>
+    <div class="custom-hardcoded-table">
+        <table class="table-body" width="100%">
+            <thead>
+                <tr>
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.PRICING_DATE' | translate }}
+                        </b>
+                    </td>
+
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.INITIAL_PRICING_DAY' | translate }}
+                        </b>
+                    </td>
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.PRICING_DAY' | translate }}
+                        </b>
+                    </td>
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.MARKET_PRICE' | translate }}
+                        </b>
+                    </td>
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.PREMIUM/DISCOUNT' | translate }}
+                        </b>
+                    </td>
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.QUANTITY' | translate }}
+                        </b>
+                    </td>
+                    <td class="padding">
+                        <b>
+                            {{ 'PAGES.NEW_ORDER.PRICE' | translate }}
+                        </b>
+                    </td>
+                </tr>
+            </thead>
+           <!--  <tbody>
+                <tr ng-repeat="(key, value) in $ctrl.productPrices">
+                    <td class="padding">
+                        <span ng-controller="Controller_Master as CM">
+                            {{ CM.formatSimpleDate(value.quantity.quoteDate) }}
+                        </span>
+                    </td>
+                    <td class="padding">
+                        {{ value.price| number : $ctrl.pricePrecision }}
+                    </td>
+                    <td class="padding">
+                        {{ value.premium| number : $ctrl.pricePrecision }}
+                    </td>
+                    <td class="padding">
+                        {{ value.premium + value.price | number : $ctrl.pricePrecision }}
+                    </td>
+                    <td class="padding">
+                        {{ value.quantity.splittedQuantity | number : $ctrl.quantityPrecision }} {{ $ctrl.formulaDetailsData.quantityUom.name }}
+                    </td>
+                    <td class="padding">
+                        <span ng-controller="Controller_Master as CM">
+                            {{ CM.formatSimpleDate(value.data.pricingDate) }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody> -->
+            <tbody>
+                <tr ng-repeat="(key, value) in $ctrl.productPrices">
+                    <td class="padding">
+                        <span ng-controller="Controller_Master as CM">
+                            {{ CM.formatSimpleDate(value.data.pricingDate) }}
+                        </span>
+                    </td>
+                    <td class="padding">
+                        <span ng-controller="Controller_Master as CM">
+                            {{ CM.formatSimpleDate(value.quantity.initialDate) }}
+                        </span>
+                    </td>
+                    <td class="padding">
+                        <span ng-controller="Controller_Master as CM">
+                            {{ CM.formatSimpleDate(value.quantity.quoteDate) }}
+                        </span>
+                    </td>
+                    <td class="padding">
+                        {{ value.price | number : $ctrl.pricePrecision }}
+                    </td>
+                    <td class="padding">
+                        {{ value.premium | number : $ctrl.pricePrecision }}
+                    </td>
+                    <td class="padding">
+                        {{ value.quantity.splittedQuantity | number : $ctrl.quantityPrecision }} {{ $ctrl.formulaDetailsData.quantityUom.name }}
+                    </td>
+                    <td class="padding">
+                        {{ value.premium + value.price | number : $ctrl.pricePrecision }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <span class="pull-left">
+        NOTE: UOM conversion applied as applicable
+    </span>
+    <span class="pull-right" ng-if="$ctrl.formulaDetailsData.formulaSchedule.schedule.length> 1">
+        {{ 'PAGES.NEW_ORDER.AVERAGE_PRICE' | translate }} :
+        <b>
+            {{ $ctrl.formulaDetailsData.formulaSchedule.avgDealValue | number : $ctrl.pricePrecision }}
+        </b>
+    </span>
+    <br />
+    <br />
+</div>

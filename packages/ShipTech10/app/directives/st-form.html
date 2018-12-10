@@ -1,0 +1,51 @@
+<!-- Iterate the form groups in form. -->
+<div ng-repeat="formGroup in form.fields" class="form-group-sm">
+
+    <!-- Iterate the inputs in form group. -->
+    <div ng-repeat="input in formGroup track by $index"
+         class="{{inputContainerClass}}">
+
+        <!--- Display INPUT and TEXTAREA elements -->
+        <label ng-if="['text', 'checkbox'].indexOf(input.type) >= 0" class="control-label {{labelClass}}">{{input.label}}</label>
+        <div class="input-group {{inputGroupClass}}"
+             ng-if="['text', 'checkbox'].indexOf(input.type) >= 0">
+            <input 
+                   ng-if="['multiline'].indexOf(input.control) < 0"
+                   ng-class="{'form-control': input.type != 'checkbox'}" 
+                   type="{{input.type}}"
+                   placeholder="{{input.placeholder}}"
+                   ng-disabled="{{input.disabled}}"
+                   name={{input.name}}
+                   id={{input.name}}
+                   />
+            <span ng-if="['search', 'datepicker'].indexOf(input.control) >= 0" class="input-group-addon">
+                <i ng-if="input.control === 'search'" class="fa fa-search"></i>
+                <i ng-if="input.control === 'datepicker'" class="glyphicon glyphicon-calendar"></i>
+            </span>
+
+            <textarea 
+                ng-if="['multiline'].indexOf(input.control) >= 0"
+                class="form-control {{inputGroupClass}}"
+                name={{input.name}}
+                id={{input.name}}></textarea>
+
+        </div>
+
+        <!-- Display SELECT elements  -->
+        <div ng-if="input.type === 'select'">
+            <label class="control-label {{labelClass}}">{{input.label}}</label>
+            <div class="input-group {{inputGroupClass}}">
+                <select class="form-control"
+                        ng-disabled="{{input.disabled}}"
+                        name="{{input.name}}"
+                        id={{input.name}}>
+                    <option ng-repeat="(key, value) in input.options" value="key">
+                        {{value}}
+                    </option>
+                </select>
+            </div>
+        </div>    
+
+    </div>
+
+</div>

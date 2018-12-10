@@ -1,0 +1,48 @@
+<div class="blade-column-title main text-uppercase">
+    supplier card
+</div>
+
+<div class="portlet light" style="margin-bottom:0"  >
+    <div class="portlet-title pull-left" style="border:none">
+        <span class="caption-subject pull-left">
+            Quote from {{ $ctrl.blade.counterpartyActiveSeller.sellerCounterparty.name }}
+        </span>
+
+        <div class="rating" style="display: inline-block; margin-top: -10px; margin-left: 10px;">
+            -
+            <b>
+                Supplier rating :
+            </b>
+            <span class="supplierRatingStars" style="position: relative;display: inline-block;">
+                <img src="img/stars-empty.jpg" alt=""/>
+                <span class="full" style="background-image:url('img/stars-full.jpg');position: absolute;left: 0;width: {{ $ctrl.sellers[$ctrl.blade.counterpartyActiveSeller.sellerCounterparty.id].sellerRating / 5 * 100 }}%;height: 100%;top: 0;"></span>
+            </span>
+
+            {{ $ctrl.sellers[$ctrl.blade.counterpartyActiveSeller.sellerCounterparty.id].sellerRating }}
+            <!-- <span style="position:relative">
+                <a>
+                    <i class="fa fa-users font-dark" ng-click="showContactNo = !showContactNo"></i>
+                </a>
+                <span ng-click="showContactNo = !showContactNo" ng-if="showContactNo" class="showContactNoToolTip">
+                    Contact: Name
+                    <b>
+                        987.64.31
+                    </b>
+                </span>
+            </span> -->
+        </div>
+
+    </div>
+</div>
+
+<!-- <seller-card source="$ctrl.blade.supplierCardData" activerequestid="$ctrl.supplierCardActiveRequestId"></seller-card>		 -->
+<span ng-if="!$ctrl.cannotViewSellerCard">
+	<supplier-portal source="$ctrl.blade.supplierCardData" initdata="$ctrl.blade.cardInitData"></supplier-portal>		
+</span>
+<span ng-if="$ctrl.cannotViewSellerCard" ng-init="$ctrl.dataLoaded = true">
+	<br>
+	<br>
+	<hr>
+	<h4>{{$ctrl.cannotViewSellerCardMessage}}</h4>
+	<hr>
+</span>

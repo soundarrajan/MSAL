@@ -1,0 +1,25 @@
+﻿<span ng-controller="Controller_Admin as CA" ng-init="setPageTitle()"></span>
+<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+    <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', special: false, url: 'edit/', type: 'goto'},
+        ],
+        secondary: [],
+        search: true,
+        icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+        ]
+    }"></general-header>
+
+    <clc-table-list id="'admin_rolelist'" app="'admin'" screen="'rolelist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+ <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: false,
+    }" color="'white'"></general-header>
+</div>

@@ -1,0 +1,187 @@
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="tools">
+            <a href="javascript:;" class="collapse"></a>
+        </div>
+        <div class="caption">
+            <span class="caption-subject">
+                {{ CM.app_id + '.QUALITY' | translate }}
+            </span>
+        </div>
+        <div class="viewLabs">
+            <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope" ng-click="viewLabs()">
+                <span>{{ CM.app_id + '.VIEW_LABS' | translate }}</span>
+            </a>
+        </div>
+        <div class="viewLabs" ng-if="formValues.temp.isShowDeliveryEmailToLabsButton">
+            <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope" ng-click="sendLabsTemplateEmail(product.id)">
+                <span>{{ CM.app_id + '.EMAIL_TO_LABS' | translate }}</span>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="row margin-top-10">
+            <div class="col-xs-4" ng-init="CM.datepickers(null, nuul, 'date')">
+                <div class="form-group row">
+                    <label for="Product_{{ productIndex }}_analysedOn" class="analysed_on_label">
+                        {{ CM.app_id + '.ANALYSED_ON' | translate }} 
+                       
+                    </label>
+                    <div class="form_input form_input_analysed_on">
+                        <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''">
+                            <input class="form-control" type="text" id="Product_{{ productIndex }}_analysedOn" ng-model="product.qualityHeader.analysedOn" ng-required="false" name="Product_{{ productIndex }}_analysedOn" />
+                            <!-- <span class="formatted-date">{{product.qualityHeader.analysedOn | date : 'shortDate'}}</span> -->
+                            <span class="formatted-date" ng-bind="CM.formatSimpleDate(product.qualityHeader.analysedOn, tenantSetting.tenantFormats.dateFormat)"></span>
+                            <span class="input-group-btn" >
+                                <button class="btn default date-set" type="button" >
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <span class="help-block">
+                            {{ field.Description }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="form-group row">
+                    <label for="Product_{{ productIndex }}_net_specific_energy" class="net_specific_energy_label">
+                        {{ CM.app_id + '.NET_SPECIFIC_ENERGY' | translate }}
+                    </label>
+                    <div class="input-group form_input form_input_net_specific_energy">
+                        <span ng-init="product.qualityHeader.netSpecificEnergyUom = 'MJ/KG'" ng-if="!product.qualityHeader.netSpecificEnergyUom"></span>
+                        <input type="text" name="Product_{{ productIndex }}_net_specific_energy" class="form-control net_specific_energy" ng-model="product.qualityHeader.netSpecificEnergy" ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+                        <span class="input-group-addon uom_group uom_group_text">
+                                <input type="text" name="Product_{{ productIndex }}_net_specific_energy_uom" class="form-control net_specific_energy" ng-model="product.qualityHeader.netSpecificEnergyUom" ng-required="product.qualityHeader.netSpecificEnergy != null && product.qualityHeader.netSpecificEnergy != ''"
+                                    id=""/>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="form-group row">
+                    <label for="Product_{{ productIndex }}_ccai" class="ccai_label">
+                        {{ CM.app_id + '.CCAI' | translate }}
+                    </label>
+                    <div class="input-group form_input form_input_ccai">
+                        <input type="text" name="Product_{{ productIndex }}_ccai" class="form-control ccai" ng-model="product.qualityHeader.ccai" ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+                    </div>
+                </div>
+            </div>
+        </div>
+       <span ng-if="product.qualityParameters" ng-controller="Controller_Delivery as CD">
+            <span ng-init="getClaimInfo(product.qualityParameters,product.id)" ng-if="$index == CM.selectedProduct"></span>
+        </span>
+        <div class="row margin-top-10">
+            <div class="col-xs-12 table_wrapper_scroll">
+                <table class="product_quality_table table table-stripped table-hover">
+                    <thead>
+                        <tr>
+                            <td width="4%"></td>
+                            <td width="12%">
+                                <span>{{ CM.app_id + '.PARAMETERS' | translate }}</span>
+                            </td>
+                            <td width="7%">
+                                <span>Min</span>
+                            </td>
+                            <td width="7%">
+                                <span>Max</span>
+                            </td>
+                            <td width="12%">
+                                <span>UOM</span>
+                            </td>
+                            <td width="12%">
+                                <span>BDN</span>
+                            </td>
+                            <td width="12%">
+                                <span>{{ CM.app_id + '.SURVEY_ANALYSIS' | translate }}</span>
+                            </td>
+                            <td width="12%">
+                                <span>{{ CM.app_id + '.VARIANCE' | translate }}</span>
+                            </td>
+                            <td width="12%">
+                                <span>{{ CM.app_id + '.RECON_STATUS' | translate }}</span>
+                            </td>
+                            <td width="12%">
+                                <span>{{ CM.app_id + '.CLAIM' | translate }}</span>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody ng-init="key = 1">
+                        <tr ng-repeat="(key2, value2) in product.qualityParameters" ng-if="value2.isDeleted == false || !value2.isDeleted">
+                            <td width="4%" class="text-center padding">
+                                <span></span>
+                            </td>
+                            <td width="12%" class="padding">
+                                <span>{{ value2.specParameter.name }}</span>
+                            </td>
+                            <td width="12%" class="padding">
+                               <span>{{ value2.min }}</span>
+                            </td>
+                            <td width="12%" class="padding">
+                                <span>{{ value2.max }}</span>
+                            </td>
+                            <td width="12%" class="padding">
+                               <span>{{ value2.uom }}</span>
+                            </td>
+                            <td width="12%">
+                                <span>
+                                    <input type="text" class="form-control" ng-model="value2.bdnValue" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" ng-change="value2.qualityMatch = setQualityMatch(value2.bdnValue, value2.surveyValue,value2.min,value2.max)"  />
+                                    <!-- ng-required="value2.min != null || value2.max != null ? true : false"  -->
+                                    {{Number(value2.bdnValue)}}
+                                </span>
+                            </td>
+                            <td width="12%">
+                                <span>
+                                    <input type="text" class="form-control" ng-model="value2.surveyValue" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" ng-change="value2.qualityMatch = setQualityMatch(value2.bdnValue, value2.surveyValue,value2.min,value2.max)"   />
+                                    <!-- ng-required="value2.min != null || value2.max != null ? true : false" -->
+                                </span>
+                            </td>
+                            <td width="12%" class="padding">
+                                <!-- Variance = Survey Analysis Value – BDN Value -->
+                                <span ng-if="!(value2.surveyValue == null && value2.bdnValue == null)">{{ value2.surveyValue - value2.bdnValue | number:tenantSetting.defaultValues.quantityPrecision}}</span>
+                                <span ng-if="value2.surveyValue == null && value2.bdnValue == null"> - </span>
+                            </td>
+                            <td width="12%" class="padding text-center">
+                                <!-- <span ng-if="value2.min != null || value2.max != null" class="width100"> -->
+                                    <span ng-show="value2.qualityMatch.id == '2'" class="quality_table_data_false">
+                                        <b>
+                                            Failed
+                                        </b>
+                                    </span>
+                                    <span ng-show="value2.qualityMatch.id == '1'" class="quality_table_data_true">
+                                        <b>
+                                            Passed
+                                        </b>
+                                    </span>
+                                <!-- </span> -->
+                            </td>
+                            <td width="12%" class="padding text-center">
+                                <span ng-show="!value2.claim" class="quality_table_data_false">
+                                    <b>
+                                        No
+                                    </b>
+                                </span>
+                                <span ng-show="value2.claim" class="quality_table_data_true">
+                                    <b>
+                                        Yes
+                                    </b>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row margin-top-10">
+            <div class="col-xs-12 productQualityComments">
+                <label for="Product_{{productIndex}}_productQualityComments">{{ CM.app_id + '.COMMENTS' | translate }}</label>
+                <div class="form_input form_input_comments">
+                    <textarea ng-model="product.qualityHeader.comments" maxlength="500" name="Product_{{productIndex}}_productQualityComments" ></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

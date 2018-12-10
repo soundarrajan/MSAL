@@ -1,0 +1,31 @@
+﻿<span ng-controller="Controller_Master as CM">
+	<input type="hidden" ng-model="CM.entity_id">
+</span>
+<general-header actions="{
+	primary: [{
+		label: 'Active',
+		html_element: 'checkbox',
+		checked: false,
+		id: 'entity_active'
+	}, {
+		label: 'Save Changes',
+		special: 'true',
+		url: '#',
+		method: 'save_master_changes()',
+		extern: true
+	}, {
+		label: 'Discard Changes',
+		type: 'goto',
+		url: ''
+	}, ],
+	secondary: [{
+        label: 'Edit',
+        active: true
+    }, {
+		label: 'Configure UI',
+		type: 'goto',
+		url: 'structure'
+	}, ],
+}"></general-header>
+<entity-edit-form structure='' type="" screen="" edit-action='"users"'></entity-edit-form>
+<general-header actions="{ primary: [ {label: 'Active', html_element: 'checkbox', checked: false, id: 'entity_active'}, {label: 'Save Changes', special: 'true', url: '#', method: 'save_master_changes()', extern:true}, {label: 'Discard Changes',type:'goto', url: ''}, ], secondary: [ ], }" color="'white'"></general-header>

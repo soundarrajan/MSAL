@@ -1,0 +1,311 @@
+<div class="row">
+    <span ng-init="testscheduleDashboardVesselVoyages()"></span>
+    <div class="st-main-content-menu st-displaceable-menu">
+        <div class="form-inline pull-right">
+            <div class="filters-box">
+                <filters-widget></fitlers-widget>
+            </div>
+            <div ng-controller="Controller_General_Header as GH" class="form-group">
+                <div  class="form-group st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'orderlist';">
+                    <div class="st-content-action-icons">
+                        <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                            <span class="icon fa fa-save"></span>
+                        </a>
+                        <a ng-click="GH.export({action:'export_xls'}, params)" class="btn">
+                            <span class="icon export-xls"></span>
+                        </a>
+                        <a ng-click="GH.export({action:'export_csv'}, params)" class="btn">
+                            <span class="icon export-csv"></span>
+                        </a>
+                        <a ng-click="GH.export({action:'export_pdf'}, params)" class="btn">
+                            <span class="icon export-pdf"></span>
+                        </a>
+                        <a ng-click="GH.export({action:'print'}, params)" class="btn">
+                            <span class="icon print"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="input-group st-content-search-box ">
+                    <input type="search" class="form-control" ng-model="GH.general_search_terms" placeholder="Search" aria-controls="schedule_dashboard_table" ng-keydown="$event.keyCode === 13 &amp;&amp; GH.general_search(GH.general_search_terms)"/>
+                    <span class="input-group-addon" ng-click="GH.general_search(GH.general_search_terms)">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div>
+                <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
+                        Clear
+                    </a>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-outline orange" ng-class="{'disabled': $ctrl.buttonsDisabled}" ng-click="$ctrl.saveContractPlanning()">
+                    Save
+                </a>
+                <a class="btn btn-default" ng-class="{'disabled': $ctrl.buttonsDisabled}">
+                    &hellip;
+                </a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+<div class="row" ng-if="false">
+    <div class="portlet light stretch-vertical">
+        <span ng-if="$ctrl.data.length> 0 ? $ctrl.hideEmptyRow(true) : $ctrl.hideEmptyRow(false)">
+        </span>
+        <div class="portlet-body st-contract-planning">
+            <table class="table table-striped table-hover table-bordered st-all-requests-table" id="contract_planning">
+                <thead>
+                    <tr>
+                        <th ng-repeat="column in $ctrl.contractsColumns" data-column-name="{{ column.sortableName }}" data-dto-path="{{ column.dtoPath }}">
+                            <span ng-bind-html="$ctrl.trustAsHtml(column.caption)"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in $ctrl.data track by $index">
+                        <td>
+                            <label class="mt-checkbox mt-checkbox-outline" style='padding-left: 5px;'>
+                                <input type="checkbox" ng-model="$ctrl.selectedContracts[$index]"/>
+                                <span></span>
+                            </label>
+                        </td>
+                        <td>
+                            <a class="font-grey-cascade" ng-click="$ctrl.contractPreviewEmail(row)">
+                                <i class="glyphicon glyphicon-envelope"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="link-underline-light" data-type="{{ row.requestId }}" ng-if="row.requestId != 0" ng-href="#/edit-request/{{ row.requestId }}">
+                                {{ row.requestId }}
+                            </a>
+                        </td>
+                        <td data-original-title="{{ row.requestProductStatusDisplayName }}"  tooltip>
+                            <span class="label" style="background-color:{{ $ctrl.getStatusColor(row.requestProductStatus) }}">
+                                {{ row.requestProductStatusDisplayName ?  row.requestProductStatusDisplayName : row.requestProductStatus}}
+                            </span>
+                        </td>
+                        <td data-original-title="{{ row.requestStatusDisplayName }}"  tooltip>
+                            <span class="label" style="background-color:{{ $ctrl.getStatusColor(row.requestStatus) }}">
+                                {{ row.requestStatusDisplayName ? row.requestStatusDisplayName : row.requestStatus}}
+                            </span>
+                        </td>
+                        <td data-original-title="{{ row.vessel.name }}" tooltip>
+                            {{ row.vessel.name }}
+                        </td>
+                        <td data-original-title="{{ row.service.name }}" tooltip>
+                            {{ row.service.name }}
+                        </td>
+                        <td data-original-title="{{ row.bunkeringLocation.name }}" tooltip style="{{ row.locationWasModified ? 'background:pink;' : '' }}">
+                            {{ row.bunkeringLocation.name }}
+                        </td>
+                        <td data-original-title="{{ row.bunkeringEta | stDateFormat }}" tooltip style="{{ row.etaWasModified ? 'background:pink;' : '' }}">
+                            <span class="hidden">
+                                {{ row.bunkeringEta }}
+                            </span>
+                            <span ng-bind="$ctrl.formatDate(row.bunkeringEta,$ctrl.dateFormat)"></span>
+                        </td>
+                        <td data-original-title="{{ row.product.name }}" tooltip>
+                            {{ row.product.name }}
+                        </td>
+                        <td data-original-title="{{ row.minQuantity | number: $ctrl.numberPrecision.quantityPrecision }} - {{ row.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}" tooltip>
+                            <a  data-toggle="modal" ng-if="row.requestId == 0"  href="#minMaxModal" ng-click="$ctrl.openMinMaxModalEdit(row)">
+                                <i class="fa fa-pencil font-dark"></i>
+                            </a>
+                            {{ row.minQuantity | number: $ctrl.numberPrecision.quantityPrecision }} - {{ row.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm"  ng-if="$ctrl.tableLoaded">
+                                <input class="form-control no-right-border" ng-model="row.contract.name" ng-focus="$ctrl.getLookupLists(row, $index)" uib-typeahead="contract as contract.contract.name for contract in $ctrl.lookupLists[$index] | filter:$viewValue | limitTo:5" typeahead-append-to-body="true" typeahead-on-select="$ctrl.selectContract($item);" ng-blur="$ctrl.clearContract(row.contract.name)" ng-change="contractPlanningHasChanges()"/>
+                                <span class="input-group-addon">
+                                    <i  class="fa fa-search clickable" data-toggle="modal" href="#selectContract" ng-click="$ctrl.setContractFilters(row)"></i>
+                                </span>
+                            </div>
+                        </td>
+                        <td data-original-title="{{ row.seller.name }}" tooltip>
+                            {{ row.seller.name }}
+                        </td>
+                        <td>
+                            <span ng-init="row.agreementType = $ctrl.lists.AgreementType[1]" ng-if="!row.agreementType"></span>
+                            <div class="input-group input-group-sm">
+                                <select ng-options="agreement as agreement.name for agreement in $ctrl.lists.AgreementType track by agreement.id" ng-model="row.agreementType" class="select form-control"></select>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea ng-model="row.comment" name="comment" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px"></textarea>
+                        </td>
+                        <td data-original-title="{{ row.buyer.name }}" tooltip>
+                            {{ row.buyer.name }}
+                        </td>
+                        <td data-original-title="{{ row.etd | stDateFormat }}" tooltip>
+                            <span class="hidden">
+                                {{ row.etd }}
+                            </span>
+                            <span ng-bind="$ctrl.formatDate(row.etd,$ctrl.dateFormat)"></span>
+                        </td>
+                        <td data-original-title="{{ row.deliveryOption.name }}" tooltip>
+                            {{ row.deliveryOption.name }}
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <input class="form-control" ng-model="row.formulaDescription" readonly/>
+                            </div>
+                        </td>
+                        <td data-original-title="{{ row.premiumDiscount }}" tooltip>
+                            {{ row.premiumDiscount }}
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <input type="number" class="form-control" ng-model="row.deliveryPrice" st-number-format="{{ $ctrl.numberPrecision.quantityPrecision }}" readonly/>
+                            </div>
+                        </td>
+                        <td data-original-title="{{ row.requestComment }}" tooltip>
+                            <div class="input-group input-group-sm">
+                                <input class="form-control" ng-model="row.requestComment" readonly/>
+                            </div>
+                        </td>
+                        <td data-original-title="{{ row.noOfDaysBeforeExpiry }}" tooltip>
+                            {{ row.noOfDaysBeforeExpiry }}
+                        </td>
+                        <td data-original-title="{{ row.contractMinQuantity | number: $ctrl.numberPrecision.quantityPrecision }} - {{ row.contractMaxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}" tooltip>
+                            {{ row.contractMinQuantity | number: $ctrl.numberPrecision.quantityPrecision }} - {{ row.contractMaxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}
+                        </td>
+                        <td data-original-title="{{ row.lastPurchasedQuantity }}" tooltip>
+                            {{ row.lastPurchasedQuantity ? row.lastPurchasedQuantity : '0' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="dataTables_info" id="all_requests_table_info" role="status" aria-live="polite">
+                Showing {{ $ctrl.tableOptions.paginationStart + 1 }} to
+                {{ Math.min($ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength,$ctrl.tableOptions.totalRows) }}
+                of {{ $ctrl.tableOptions.totalRows }} entries
+            </div>
+            <div class="dataTables_paginate paging_input" id="all_requests_table_paginate">
+                <span class="first paginate_button" id="all_requests_table_first">
+                    First
+                </span>
+                <span class="paginate_page">
+                    Page
+                </span>
+                <span class="previous paginate_button" id="all_requests_table_previous" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">
+                    &lt;
+                </span>
+                <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'/>
+                <span class="next paginate_button" id="all_requests_table_next" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">
+                    &gt;
+                </span>
+                <span class="paginate_of"></span>
+                <span class="last paginate_button" id="all_requests_table_last">
+                    Last
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+        <div class="portlet light stretch-vertical">
+<!--             <general-header actions="
+    { primary: [ {label: 'Create rule', special: 'true', url: '#', method: 'triggerModal(\'alerts\')', extern:true}, ],
+    secondary: [],
+        icons: [
+            {class: 'export-xls', action: 'export_xls'},
+            {class: 'export-csv', action: 'export_csv'},
+            {class: 'export-pdf', action: 'export_pdf'},
+            {class: 'print', action: 'print'},
+        ]
+     }
+    "></general-header> -->
+
+    <clc-table-list id="'procurement_contractplanning'" app="'procurement'" screen="'contractplanning'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+<!--     <general-header actions="{ primary: [ {label: 'Create rule', special: 'true', url: '#', method: 'triggerModal(\'alerts\')', extern:true}, ], secondary: [], }" color="'white'"></general-header>
+    <div ng-controller="Controller_Master as CM">
+        <div ng-init="CM.delayaddHeadeActions()"></div> -->
+    <!-- </div> -->
+        </div>
+    </div>
+
+
+
+
+<div class="row">
+    <div class="st-main-content-menu bottom-menu">
+        <div class="pull-right buttons">
+            <a class="btn btn-default" ng-class="{'disabled': $ctrl.buttonsDisabled}" ng-click="$ctrl.sendContractPlanningEmail()">
+                Send Email
+            </a>
+            <a class="btn btn-outline orange" ng-class="{'disabled': $ctrl.buttonsDisabled}" ng-click="$ctrl.saveContractPlanning()">
+                Save
+            </a>
+            <a class="btn btn-default" ng-class="{'disabled': $ctrl.buttonsDisabled}">
+                &hellip;
+            </a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+
+<contract-select-dialog class="modal fade in"  id="selectContract" aria-hidden="true" data-width="80%" filters="$ctrl.contractFilters" on-contract-select="$ctrl.selectContract(contract)"></contract-select-dialog>
+ 
+<!--  this was commented from the start-->
+<!-- <sellers-dialog class="modal fade in sellers-dialog"  id="sellers" aria-hidden="true" data-width="90%" seller-types="$ctrl.sellerTypeIds" filters="$ctrl.sellerFilters" on-seller-contract-select="$ctrl.selectSellerContract(sellerContract)"></sellers-dialog> -->
+<!-- end this waas commented -->
+
+
+
+<div class="modal fade in minmax-dialog" id="minMaxModal" aria-hidden="true" data-width="40%">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <div class="col-md-6 caption-subject">
+                Min-Max Quantity
+            </div>
+        </div>
+        <div class="portlet-body" ng-if="$ctrl.minMaxModalEdit">
+            <div class="row">
+                <div class="col-sm-3">
+                    <b>
+                        Quantity
+                    </b>
+                </div>
+                <div class="col-sm-9">
+                    <div class="row">
+                        <span ng-init="minEdit = $ctrl.minMaxModalEdit.minQuantity; maxEdit = $ctrl.minMaxModalEdit.maxQuantity;"></span>
+                        <span ng-init="qtyUom = $ctrl.minMaxModalEdit.qtyUom;"></span>
+                        <div class="col-sm-6">
+                            <div class="col-sm-7 no-padding">
+                                <input type="text" format="number" ng-model="$ctrl.minMaxModalEdit.minQuantity" class="form-control" placeholder="Min" ng-blur="$ctrl.minQtyBlur()"/>
+                            </div>
+                            <div class="col-sm-5 no-padding">
+                                <select ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id" ng-model="qtyUom" class="select form-control"></select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="col-sm-7 no-padding">
+                                <input type="text" format="number" ng-model="$ctrl.minMaxModalEdit.maxQuantity" class="form-control" placeholder="Max"/>
+                            </div>
+                            <div class="col-sm-5 no-padding">
+                                <select ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id" ng-model="qtyUom" class="select form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-outline orange pull-right" ng-click="$ctrl.saveMinMaxModal($ctrl.minMaxModalEdit.minQuantity, $ctrl.minMaxModalEdit.maxQuantity, qtyUom)" data-dismiss="modal">
+                        Save
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

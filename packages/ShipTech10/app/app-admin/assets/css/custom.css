@@ -1,0 +1,38 @@
+﻿.nodeExample {
+    width: 100px;
+    background-color: #61a0d7;
+    border: 1px solid;
+    color: #ffffff;
+    border-radius: 5px!important;
+}
+
+.nodeExample > p {
+    text-align: center;
+}
+
+.orange-color {
+    background-color: #C86014;
+}
+
+.form-row {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.form-row > label {
+    min-width: 150px;
+    text-align: left;
+}
+
+.form-row > input {
+    border: 1px solid #44a9fe;
+}
+
+form.reset-pass-form {
+    margin-top: 30px;
+}
+
+.bs-modal:focus {
+	outline: none;
+}
+

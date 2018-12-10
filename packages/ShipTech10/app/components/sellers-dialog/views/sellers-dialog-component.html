@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <form class="form-inline">
+        <div class="col-md-5 form-group">
+            <h4 class="modal-title caption-subject"><b>{{$ctrl.ui.sellersDialog.title}}</b></h4>
+        </div>
+        <div class="col-md-6 form-group text-right">
+            <div class="input-group st-content-search-box">
+                <div id="search_box_dummy_sellers"></div>
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div>
+            <a class="btn btn-sm btn-outline orange" ng-click="$ctrl.confirmSellersSelection()" data-dismiss="modal">Select</a>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+    </form>
+</div>
+<div class="modal-body">
+    <table class="table table-hover table-bordered table-striped" id="sellers_table">
+        <thead>
+            <tr>
+                <th ng-repeat="column in $ctrl.ui.sellersDialog.columns track by $index" data-column-name="{{column.sortableName}}">
+                    {{column.caption | translate}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in $ctrl.tableData track by $index">
+                <td>
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]" />
+                        <span></span>
+                    </label>
+                </td>
+                <td>{{row.counterparty.name ? row.counterparty.name : row.name}}</td>
+                <td>{{row.parent.name}}</td>
+                <td>{{row.createdBy.name}}</td>
+                <td>{{row.createdOn | utcToLocal | stDateFormat}}</td>
+                <td>{{row.lastModifiedBy.name}}</td>
+                <td>{{row.lastModifiedOn | utcToLocal | stDateFormat}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="dataTables_info" id="all_requests_table_info" role="status" aria-live="polite">Showing {{$ctrl.tableOptions.paginationStart + 1}} to {{$ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength}} of {{$ctrl.tableOptions.totalRows}} entries</div>
+    <div class="dataTables_paginate paging_input" id="all_requests_table_paginate">
+        <span class="first paginate_button" id="all_requests_table_first">First</span>
+        <span class="paginate_page">Page </span>
+        <span class="previous paginate_button" id="all_requests_table_previous" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">&lt;</span>
+        <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'>
+        <span class="next paginate_button" id="all_requests_table_next" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">&gt;</span>
+        <span class="paginate_of"></span>
+        <span class="last paginate_button" id="all_requests_table_last">Last</span>
+    </div>
+</div>
+<div class="modal-footer">
+</div>

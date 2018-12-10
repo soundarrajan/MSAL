@@ -1,0 +1,58 @@
+<div class="row">
+	<div class="col-md-12">
+		<span ng-init="alertsGetRoles()"></span>
+		<!-- {{options['userRoles']}} -->
+		<span class="form-label-out">{{ CM.app_id + '.SELECT_THE_ROLES_FOR_WICH_THE_ALERT_RULE_IS_APPLICABLE' | translate}}</span>
+	</div>
+	<div class="col-md-12">
+		<br>
+		<div class="form-group row">
+			<div class="row">
+				<div class="col-md-3">
+				    <div class="input-group no-label pull-left form_input form_input_userRoles" >
+				        <input ng-model="roles" uib-typeahead="item as item.name for item in options['userRoles'] | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="roles" data-uniqueid="roles" data-value="{{roles.id}}" autocomplete="off" ng-blur="showMultiLookupWarning(roles)">
+
+				        <span class="input-group-addon" ng-click="roles.id ? addRolesInAlert(roles) : ''; alertsGetUserFromRoles(); roles = null">
+				            <a   class="object_tagsinput_add_roles btn default" ng-disabled="!roles.id" ng-click="CM.plusClickedMultilookup = true">
+				                <i class="fa fa-plus"></i>
+				            </a>
+				        </span>
+				    </div>
+				</div>
+				<div class="col-md-9">
+				    <div class="tagsForuserRoles">
+				    	<span class="email-tag pull-left" ng-repeat="(key, value) in formValues.roles">{{value.name}}
+					    	<i class="fa fa-remove" ng-click="formValues.roles.splice(key, 1); alertsGetUserFromRoles()"></i>
+				    	</span>
+				    </div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<br>
+	<div class="col-sm-12">
+		<div class="row">
+			<div class="col-sm-6">
+				<span class="form-label-out">Included Users</span>
+				<br><br>
+				<div class="switchSelect">
+					<div ng-repeat="(key,value) in formValues.includedUsers"  class="element" ng-click="formValues.excludedUsers.push(value); formValues.includedUsers.splice(key, 1); formValues.includedEmailUsers = []; formValues.excludedEmailUsers = []">
+						{{value.name}}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<span class="form-label-out">Excluded Users</span>
+				<br><br>
+				<div class="switchSelect">
+					<div ng-repeat="(key,value) in formValues.excludedUsers"  class="element" ng-click="formValues.includedUsers.push(value); formValues.excludedUsers.splice(key, 1);">
+						{{value.name}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

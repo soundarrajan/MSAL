@@ -1,0 +1,55 @@
+<!-- <div class="row">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li ng-class="{open: state.is(STATE.GROUP_OF_REQUESTS)}">
+                <a ng-click="$ctrl.goSpot()">
+                    Group of Requests
+                </a>
+            </li>
+            <li class="open">
+                <a>
+                    Email Log
+                </a>
+            </li>
+            <li>
+                <a>
+                    Transaction KPI
+                </a>
+            </li>
+            <li>
+                <a>
+                    Rate Supplier
+                </a>
+            </li>
+            <li ng-class="{open: state.is(STATE.VIEW_RFQ)}">
+                <a ng-click="$ctrl.viewRFQ()">
+                    View RFQ
+                </a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+</div> -->
+
+<div data-ng-include="'components/group-of-requests-menu/views/group-of-requests-menu-component.html'" ng-controller="GroupOfRequestsMenuController"></div>
+
+<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+
+</div>
+
+<div class="row">
+    <span ng-controller="Controller_Configurable_List_Control as CLC">
+		<span ng-init="newFilterEmailLog('group-request',entity_id)"></span>
+
+        <clc-table-list ng-if="requestIdsFilter"
+            id="'masters_emaillogslist'"
+            app="'masters'"
+            screen="'emaillogslist'"
+            controls="'[pager, info]'"
+            filters= "requestIdsFilter">
+        </clc-table-list>
+        <span ng-if="clc_loaded" ng-init="filterEmailLog()"></span>
+    </span>
+
+</div>

@@ -1,0 +1,360 @@
+{
+    "layout": {},
+    "elements": {},
+    "clc": {
+        "invoices_invoiceslist": {
+            "table_name": "Invoices app invoice list",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "label": "Order No",
+                "name": "order.id",
+                "width": 150
+            }, {
+                "label": "Order Product Id",
+                "name": "orderProductId",
+                "width": 150
+            }, {
+                "label": "Delivery No",
+                "name": "delivery.id",
+                "width": 150
+            }, {
+                "label": "Invoice No",
+                "name": "invoice.id",
+                "width": 150
+            }, {
+                "label": "Document No",
+                "name": "documentNo",
+                "width": 150
+            }, {
+                "label": "Invoice Status",
+                "name": "invoiceStatus",
+                "width": 150,
+                "formatter": "order_status_invoiced"
+            }, {
+                "label": "Buyer",
+                "name": "buyer.name",
+                "width": 150
+            }, {
+                "label": "Supplier Name",
+                "name": "supplier.name",
+                "width": 150
+            }, {
+                "label": "Vessel",
+                "name": "vessel.name",
+                "width": 150
+            }, {
+                "label": "Carrier",
+                "name": "carrierCompany.name",
+                "width": 150
+            }, {
+                "label": "Payment Company",
+                "name": "paymentCompany.name",
+                "width": 150
+            }, {
+                "label": "Agreement Type",
+                "name": "agreementType.name",
+                "width": 150
+            }, {
+                "label": "Port Name",
+                "name": "port.name",
+                "width": 150
+            }, {
+                "label": "ETA",
+                "name": "eta",
+                "width": 150,
+                "formatter" : "formatDate"
+            }, {
+                "label": "Date of delivery",
+                "name": "deliveryDate",
+                "width": 150,
+                "formatter" : "formatDate"
+            }, {
+                "label": "Line",
+                "name": "line.name",
+                "width": 150
+            }, {
+                "label": "Product",
+                "name": "product.name",
+                "width": 150
+            }, {
+                "label": "Inv. Qty",
+                "name": "invoiceQuantity",
+                "width": 150
+            }, {
+                "label": "Inv. Price",
+                "name": "price",
+                "width": 150
+            }, {
+                "label": "Sum of costs",
+                "name": "sumOfCosts",
+                "width": 150
+            }, {
+                "label": "Invoice Amount",
+                "name": "invoiceAmount",
+                "width": 150
+            }, {
+                "label": "Con. Qty",
+                "name": "confirmedQuantity",
+                "width": 150
+            }, {
+                "label": "Order Price",
+                "name": "orderPrice",
+                "width": 150
+            }, {
+                "label": "Order Amount",
+                "name": "orderAmount",
+                "width": 150
+            }, {
+                "label": "Invoice Approval Status",
+                "name": "invoiceApprovalStatus",
+                "width": 150,
+                "formatter": "order_status_invoiced"
+            }, {
+                "label": "Due Date",
+                "name": "dueDate",
+                "width": 150,
+                "formatter" : "formatDate"
+            }, {
+                "label": "Working Due Date",
+                "name": "workingDueDate",
+                "width": 150,
+                "formatter" : "formatDate"
+            }, {
+                "label": "Payment Date",
+                "name": "paymentDate",
+                "width": 150,
+                "formatter" : "formatDate"
+            }, {
+                "label": "Back Office Comments",
+                "name": "backOfficeComments",
+                "width": 150
+            }, {
+                "label": "Order Status",
+                "name": "orderStatus.name",
+                "width": 150
+            }],
+            "rowActions": [{
+                "label": "Edit",
+                "class": "edit",
+                "url": "get.php?action=edit",
+                "idSrc": "invoice.id"
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "entity_documents": {
+          "table_name": "Documents List",
+          "datatype": "local",
+          "language": "en",
+          "rowNum": 10,
+          "rowList": [
+            30,
+            20,
+            10
+          ],
+          "multiselect": false,
+          "viewrecords": true,
+          "sortable": {
+            "options": {
+              "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+          },
+          "view_type": "flat",
+          "treeGrid": false,
+          "treeGridModel": "adjacency",
+          "ExpandColumn": "actions-dimensional",
+          "treedatatype": "json",
+          "loadonce": true,
+          "colModel": [
+            {
+              "label": "Document Name",
+              "name": "name",
+              "width": 150,
+              "formatter": "formGotoDocument"
+            },
+            {
+              "label": "Size",
+              "name": "size",
+              "width": 150
+            },
+            {
+              "label": "Document Type",
+              "name": "documentType.name",
+              "width": 150
+            },
+            {
+              "label": "File Type",
+              "name": "fileType",
+              "width": 150
+            },
+            {
+              "label": "Entity",
+              "name": "entity.name",
+              "width": 150
+            },
+            {
+              "label": "Reference No",
+              "name": "referenceNo",
+              "width": 150
+            },
+            {
+              "label": "Uploaded By",
+              "name": "uploadedBy.name",
+              "width": 150
+            },
+            {
+              "label": "Uploaded On",
+              "name": "uploadedOn",
+              "width": 150
+            },
+            {
+              "label": "Add/View Notes",
+              "name": "notes",
+              "width": 150
+            },
+            {
+              "label": "Verified",
+              "name": "isVerified",
+              "width": 150
+            }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "class": "delete",
+              "url": "?action=delete"
+            }
+          ],
+          "tenantData": {
+            "view": "flat",
+            "views": [
+              "flat",
+              "dimensional"
+            ],
+            "hiddenColumns": [],
+            "columnsOrder": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+          }
+        },
+        "entity_audit_log": {
+          "table_name": "Documents List",
+          "datatype": "local",
+          "language": "en",
+          "rowNum": 10,
+          "rowList": [
+            30,
+            20,
+            10
+          ],
+          "multiselect": false,
+          "viewrecords": true,
+          "sortable": {
+            "options": {
+              "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+          },
+          "view_type": "flat",
+          "treeGrid": false,
+          "treeGridModel": "adjacency",
+          "ExpandColumn": "actions-dimensional",
+          "treedatatype": "json",
+          "loadonce": true,
+          "colModel": [
+            {
+              "label": "Date (UTC)",
+              "name": "date",
+              "width": 150
+            },
+            {
+              "label": "Transaction",
+              "name": "transaction",
+              "width": 150
+            },
+            {
+              "label": "Transaction Type",
+              "name": "transactionType",
+              "width": 150
+            },
+            {
+              "label": "Field Name",
+              "name": "fieldName",
+              "width": 150
+            },
+            {
+              "label": "Old Value",
+              "name": "oldValue",
+              "width": 150
+            },
+            {
+              "label": "New Value",
+              "name": "newValue",
+              "width": 150
+            },
+            {
+              "label": "User",
+              "name": "modifiedBy.name",
+              "width": 150
+            },
+            {
+              "label": "User IP Address",
+              "name": "userip",
+              "width": 150
+            }
+          ],
+          "rowActions": [],
+          "tenantData": {
+            "view": "flat",
+            "views": [
+              "flat",
+              "dimensional"
+            ],
+            "hiddenColumns": [],
+            "columnsOrder": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+          }
+        }
+    },
+    "id": 93
+}

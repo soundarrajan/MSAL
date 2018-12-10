@@ -1,0 +1,449 @@
+{
+  "layout": {
+    "children": {
+        "entity_documents": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+
+                    {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "entity_emaillog": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "TransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "General": {
+              "id": "General",
+              "name": "General",
+              "children": [
+                {
+                  "Unique_ID": "name",
+                  "Name": "VesselTypeName",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "VESSEL_TYPE_NAME",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ]
+            }
+        }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "name",
+          "Name": "VesselTypeName",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Vessel    Type Name",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ],
+      "customFields": [
+        {
+          "Unique_ID": "CustomField1",
+          "Name": "CustomField1",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 1",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField2",
+          "Name": "CustomField2",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 2",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField3",
+          "Name": "CustomField3",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 3",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField4",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 4",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField5",
+          "Name": "CustomField5",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 5",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField6",
+          "Name": "CustomField6",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 6",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ]
+    }
+  ],
+  "clc": {},
+  "id": 30
+}

@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li class="open">
+                <a>
+                    Preview Email
+                </a>
+            </li>
+            <!-- <li>
+                <a>
+                    Preview Contract
+                </a>
+            </li>
+            <li>
+                <a>
+                    Email Log
+                </a>
+            </li>
+            <li>
+                <a>
+                    Audit Log
+                </a>
+            </li> -->
+        </ul>
+        <div class="pull-right">
+            <form class="form-inline">
+                <div class="form-group form-group-sm">
+                    <a>
+                        <i class="fa fa-file-pdf-o font-grey-salsa"></i>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a>
+                        <i class="fa fa-file-word-o font-grey-salsa"></i>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a>
+                        <i class="fa fa-print font-grey-salsa"></i>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a>
+                        <i class="fa fa-pencil font-grey-salsa"></i>
+                    </a>
+                </div>
+                <div class="form-group form-group-sm">
+                    <select class="select form-control" ng-model="$ctrl.template"  ng-options="template as template.name for template in $ctrl.templateList track by template.id" ng-change="$ctrl.loadTemplate($ctrl.template)"></select>
+                </div>
+                <a " class="btn btn-sm btn-default" ng-click="$ctrl.goBack()">
+                    Back
+                </a>
+                <a class="btn btn-sm btn-default " ng-click="$ctrl.saveComments('discard')"  ng-class="{'disabled' : $ctrl.buttonsDisabled }">
+                    Discard saved preview
+                </a>
+                <a class="btn btn-sm btn-outline orange" ng-click="$ctrl.saveComments()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
+                    Save
+                </a>
+                <a class="btn btn-sm btn-default" ng-click="$ctrl.saveAndSend()" ng-class="{'disabled' : (!$ctrl.canSend() || $ctrl.buttonsDisabled) }">
+                    Save and Send
+                 </a>
+                <a class="btn btn-sm btn-default disabled">
+                    &hellip;
+                </a>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <span class="caption-subject">
+                {{ 'PAGES.PREVIEW_EMAIL.TITLE' | translate }}
+            </span>
+        </div>
+        <div class="portlet-body">
+            <form class="form-horizontal st-new-request-form" name="$ctrl.emailPreview">
+                <div class="form-group form-group-sm st-email-input">
+                    <label class="col-md-1 control-label">
+                        {{ 'PAGES.PREVIEW_EMAIL.TO' | translate }}
+                    </label>
+                    <div class="col-md-11 row" ng-init="!$ctrl.email.to ? $ctrl.email.to = [] : ''">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input class="typeahead form-control" uib-typeahead="to as to.name for to in $ctrl.email.toList | filter:$viewValue | limitTo:5" ng-model="$ctrl.toEmail"/>
+                                <span class="input-group-addon clickable" ng-click="$ctrl.addEmail($ctrl.toEmail, $ctrl.email.to, 'to')">
+                                    <i class="fa fa-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 label-list">
+                            <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openToList}">
+                                <span ng-show="$ctrl.email.to.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openToList = !ctrl.openToList">
+                                    &hellip;
+                                </span>
+                                <span ng-repeat="toEmail in $ctrl.email.to track by $index" class="tag label label-info"  ng-show="$index < $ctrl.shownEmailNr || ctrl.openToList">
+                                    <i ng-click="$ctrl.removeEmail($index, $ctrl.email.to)" class="fa fa-close clickable"></i>
+                                    {{ toEmail.name }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm st-email-input"  ng-if="$ctrl.tenantSetting.allowEmailEdit">
+                    <label class="col-md-1 control-label">
+                        {{ 'PAGES.PREVIEW_EMAIL.TO' | translate }} Others
+                    </label>
+                    <div class="col-md-11">
+                        <div class="">
+                            <input class="form-control pull-left"  ng-model="$ctrl.toEmailOthers" style="width:100%" ng-blur="$ctrl.validateEmails($ctrl.toEmailOthers, 'toOthers')" name="toOthers"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm st-email-input">
+                    <label class="col-md-1 control-label">
+                        {{ 'PAGES.PREVIEW_EMAIL.CC' | translate }}
+                    </label>
+                    <div class="col-md-11 row" ng-init="!$ctrl.email.cc ? $ctrl.email.cc = [] : ''">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input class="typeahead form-control" uib-typeahead="cc as cc.name for cc in $ctrl.email.ccList | filter:$viewValue | limitTo:5" ng-model="$ctrl.ccEmail"/>
+                                <span class="input-group-addon clickable" ng-click="$ctrl.addEmail($ctrl.ccEmail, $ctrl.email.cc, 'cc')">
+                                    <i class="fa fa-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 label-list">
+                            <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openCcList}">
+                                <span ng-show="$ctrl.email.cc.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openCcList = !ctrl.openCcList">
+                                    &hellip;
+                                </span>
+                                <span ng-repeat="ccEmail in $ctrl.email.cc track by $index" class="tag label label-info" ng-show="$index < $ctrl.shownEmailNr || ctrl.openCcList">
+                                    <i ng-click="$ctrl.removeEmail($index, $ctrl.email.cc)" class="fa fa-close clickable"></i>
+                                    {{ ccEmail.name }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <span ng-if="$ctrl.email.ccOthers" ng-init="$ctrl.ccEmailOthers = $ctrl.email.ccOthers"></span> -->
+                <div class="form-group form-group-sm st-email-input"  ng-if="$ctrl.tenantSetting.allowEmailEdit">
+                    <label class="col-md-1 control-label">
+                        {{ 'PAGES.PREVIEW_EMAIL.CC' | translate }} Others
+                    </label>
+                    <div class="col-md-11">
+                        <div class="">
+                            <input class="form-control pull-left"  ng-model="$ctrl.ccEmailOthers" style="width:100%" ng-blur="$ctrl.validateEmails($ctrl.ccEmailOthers,'ccOthers')" name="ccOthers"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-md-1 control-label">
+                        {{ 'PAGES.PREVIEW_EMAIL.SUB' | translate }}
+                    </label>
+                    <div class="col-md-11">
+                        <input class="form-control" disabled="disabled" ng-model="$ctrl.email.subject"/>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-md-12">
+                        <div class="box-grey" disabled="disabled" style="padding: 10px; border: 1px solid #CCCCCC; line-height: 1.8" ng-bind-html="$ctrl.email.content"  ng-if="!$ctrl.tenantSetting.allowEmailEdit"></div>
+                        <textarea  rich-text-editor class="wysihtml5 form-control" rows="20" ng-model="$ctrl.email.content" ng-if="$ctrl.tenantSetting.isEmailBodyHtml && $ctrl.tenantSetting.allowEmailEdit"></textarea>
+                        <textarea   class="wysihtml5 form-control" rows="20" ng-model="$ctrl.email.content" ng-if="!$ctrl.tenantSetting.isEmailBodyHtml && $ctrl.tenantSetting.allowEmailEdit"></textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="st-main-content-menu bottom-menu">
+        <div class="pull-right">
+            <a class="btn btn-sm btn-default" ng-click="$ctrl.goBack()">
+                Back
+            </a>
+            <a class="btn btn-sm btn-outline orange" ng-click="$ctrl.saveComments()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
+                Save
+            </a>
+            <a class="btn btn-sm btn-default" ng-click="$ctrl.saveAndSend()" ng-class="{'disabled' : (!$ctrl.canSend() || $ctrl.buttonsDisabled) }">
+                Save and Send
+             </a>
+            <a class="btn btn-sm btn-default disabled">
+                &hellip;
+            </a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

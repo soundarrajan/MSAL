@@ -1,0 +1,144 @@
+﻿<span ng-controller="Controller_Invoice as CI" ng-init="setPageTitle()"></span>
+<span ng-controller="Controller_Master as CM">
+	<span ng-init="CM.addHeadeActions()"></span>
+</span>
+<general-header actions="{
+    primary: [
+        {label: 'Resale Credit Note', special: false, url: '#', type: 'goto', method: 'createResaleCreditNote()', extern: true},
+        {label: 'Debunker Credit Note', special: false, url: '#', type: 'goto', method: 'createDebunkerCreditNote()', extern: true},
+        {label: 'Create Credit/Debit Note', special: true, url: '#', type: 'goto', method: 'createCreditNote()', extern: true},
+
+    ],
+    secondary: [
+                {label: 'Delivery list', special: false, url: 'deliveries', type: 'goto', absolute: true},
+                {label: 'Claims list', active: true},
+                ],
+    search: true,
+    icons: [
+            {class: 'fa fa-save', action: 'save_layout'},
+            {class: 'export-xls', action: 'export_xls'},
+            {class: 'export-csv', action: 'export_csv'},
+            {class: 'export-pdf', action: 'export_pdf'},
+            {class: 'print', action: 'print'},
+    ]
+}"></general-header>
+
+<clc-table-list id="'claims_transactionstobeinvoiced'" app="'invoices'" screen="'transactionstobeinvoiced'" controls="'[entries, columns, info, pager]'" source='{
+    "table_name": "invoices_app_deliveries_list",
+    "table_id": "invoices_app_deliveries_list",
+    "datatype": "local",
+    "language": "en",
+    "rowNum": 25,
+    "rowList": [999999, 100, 50, 25],
+    "multiselect": true,
+    "radioselect": true,
+    "viewrecords": true,
+    "sortable": {
+        "options": {
+            "items": ">th:not(:has([id*=_cb],[id*=_actions]),:hidden)"
+        }
+    },
+    "view_type": "flat",
+    "treeGrid": false,
+    "treeGridModel": "adjacency",
+    "ExpandColumn": "actions-dimensional",
+    "colModel": [
+        {
+            "label": "Order Name",
+            "name": "order.name",
+            "width": 150,
+            "formatter": "edit_order_link_from_claims"
+        },
+        {
+            "label": "Claim. No",
+            "name": "claimNo.name",
+            "width": 150,
+            "formatter": "edit_claim_link_from_claims"
+        },
+        {
+            "label": "Claim Type",
+            "name": "claimType.displayName",
+            "width": 150
+        },
+        {
+            "label": "Claim Date",
+            "name": "claimDate",
+            "width": 150
+        },
+        {
+            "label": "Delivery No.",
+            "name": "delivery.name",
+            "width": 150,
+            "formatter": "edit_delivery_link_from_claims"
+        },
+        {
+            "label": "Seller",
+            "name": "seller.name",
+            "width": 150
+        },
+        {
+            "label": "Physical Supplier",
+            "name": "physicalSupplier.name",
+            "width": 150
+        },
+        {
+            "label": "Port",
+            "name": "port.name",
+            "width": 150
+        },
+        {
+            "label": "Vessel",
+            "name": "vessel.name",
+            "width": 150
+        },
+        {
+            "label": "Product",
+            "name": "product.name",
+            "width": 150
+        },
+        {
+            "label": "Del Qty.",
+            "name": "deliveryQuantity",
+            "width": 150
+        },
+        {
+            "label": "Price",
+            "name": "price",
+            "width": 150
+        },
+        {
+            "label": "Actual Settlement Amount",
+            "name": "actualSettlementAmount",
+            "width": 150
+        },
+        {
+            "label": "Debunker Amount",
+            "name": "debunkerAmount",
+            "width": 150
+        },
+        {
+            "label": "Resale Amount",
+            "name": "resaleAmount",
+            "width": 150
+        }
+    ],
+    "rowActions": [],
+    "tenantData": {
+        "view": "flat",
+        "views": ["flat", "dimensional"],
+        "hiddenColumns": [],
+        "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "numberOfAdditionalColumns": 0,
+        "columnsOrderLoadOnce": false
+    }
+}'></clc-table-list>
+
+<general-header color="'white'" actions="{
+    primary: [
+        {label: 'Resale Credit Note', special: false, url: '#', type: 'goto', method: 'createResaleCreditNote()', extern: true},
+        {label: 'Debunker Credit Note', special: false, url: '#', type: 'goto', method: 'createDebunkerCreditNote()', extern: true},
+        {label: 'Create Credit/Debit Note', special: true, url: '#', type: 'goto', method: 'createCreditNote()', extern: true},
+
+    ],
+    secondary: [],
+}"></general-header>

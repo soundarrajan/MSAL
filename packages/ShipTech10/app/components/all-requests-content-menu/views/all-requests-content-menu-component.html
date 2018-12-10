@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="st-main-content-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li ng-class="{open : state.is(STATE.ALL_REQUESTS_TABLE)}">
+                <a ui-sref="{{ STATE.ALL_REQUESTS_TABLE }}">
+                    Table View
+                </a>
+            </li>
+        </ul>
+        <div class="pull-right">
+            <form class="form-inline">
+                    <div class="filters-box">
+                            <filters-widget></fitlers-widget>
+                        </div>
+                <div ng-controller="Controller_General_Header as GH" class="form-group">
+                    <div  class="form-group st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'requestslist';">
+                        <div class="st-content-action-icons">
+                            <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                                <span class="icon fa fa-save"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'export_xls'}, params)" class="btn">
+                                <span class="icon export-xls"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'export_csv'}, params)" class="btn">
+                                <span class="icon export-csv"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'export_pdf'}, params)" class="btn">
+                                <span class="icon export-pdf"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'print'}, params)" class="btn">
+                                <span class="icon print"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="input-group st-content-search-box ">
+                        <input type="search" class="form-control" ng-model="GH.general_search_terms" placeholder="Search" aria-controls="schedule_dashboard_table" ng-keydown="$event.keyCode === 13 &amp;&amp; GH.general_search(GH.general_search_terms)"/>
+                        <span class="input-group-addon" ng-click="GH.general_search(GH.general_search_terms)">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
+                            Clear
+                        </a>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-default" ng-click="$parent.$ctrl.groupRequests();" ng-class="{'disabled' : $parent.$ctrl.isGroupButtonDisabled() || $ctrl.buttonsDisabled}">
+                        Group
+                    </a>
+                    <a class="btn btn-default" ng-click="$parent.$ctrl.gotoNewRequest()">
+                        Create Request
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

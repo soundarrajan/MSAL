@@ -1,0 +1,69 @@
+﻿<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+    <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: true,
+        icons: [
+            {class: 'fa fa-save', action: 'save_layout'},
+            {class: 'export-xls', action: 'export_xls'},
+            {class: 'export-csv', action: 'export_csv'},
+            {class: 'export-pdf', action: 'export_pdf'},
+
+            {class: 'print', action: 'print'},
+        ],
+    }"></general-header>
+ 
+    <div class="row" ng-controller="Controller_Master as CM">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject  bold uppercase">
+                       Price Upload
+                    </span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form-group  form-inline row ">
+                    <div class="col-sm-4"  ng-click="clickUpload()">
+                        <div class="dropzone-file-area" id="{{ field.Name }}" imagedrop  on-image-drop="dropDocument(uploadedFile )">
+                            <h3 class="sbold">
+                                Drop files here or click to upload
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type='file' id="fileUpload" class="inputfile" ng-model="droppedDoc" style="opacity: 0"/>
+                        <label for="fileUpload" class="fileUploadName">
+                            <div class="col-sm-9">
+                                <span></span>
+                                <span ng-bind="droppedDoc.name"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-md-4 priceUploadBtn" ng-init="priceDisabledUpload = false">
+                        <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope float-right" ng-click="uploadPriceImport()" ng-disabled="priceDisabledUpload">
+                            <span>Upload</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <clc-table-list id="'masters_pricelist'" app="'masters'" screen="'pricelist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+    </div>
+
+    <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: false,
+    }" color="'white'"></general-header>
+
+</div>

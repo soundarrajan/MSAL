@@ -1,0 +1,163 @@
+<!-- <div ng-controller="FiltersController"> -->
+<!-- {{columnFilters[column][0].value[0]}} -->
+
+<div class="customPopover" id="customPopover" ng-init="checkColumnFilters(column);">
+    <!--  <pre>Old: {{columnFilters[column][0].column.columnValue}}</pre> -->
+    <!-- <pre>New: {{columnFilters[column][0].column.sortColumnValue}}</pre> -->
+    <!-- <pre>{{columnFilters[column][0].column.columnValue == column ? "don't change" : "change"}}</pre> -->
+    <p></p>
+    <ul>
+        <li>
+            <a ng-click="columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue)">
+                <i class="fa fa-sort-alpha-asc"></i> Sort Ascending</a>
+        </li>
+        <li>
+            <a ng-click="columnSort(table, sortcol, 2,  columnFilters[column][0].column.sortColumnValue)">
+                <i class="fa fa-sort-alpha-desc"></i> Sort Descending</a>
+        </li>
+        <li>
+            <a ng-click="columnSort(table, sortcol, 0,  columnFilters[column][0].column.sortColumnValue)">
+                <i class="fa fa-random" aria-hidden="true"></i> Remove Sorting</a>
+        </li>
+    </ul>
+    <!-- {{column}}
+    {{columnFilters}} -->
+    <!-- <pre>{{columnFilters[column][0]}}</pre> -->
+    <div class="showFilters" ng-if="$root.CheckForFilters && table != 'flat_schedule_dashboard_table'">
+        <p>Show rows where:</p>
+        <div class="filterRules">
+            <div class="row" ng-repeat="(key, value) in columnFilters[column]"  ng-init="columnFilters[column][key].column.columnType == 'Date' ? datepickers() : ''">
+
+                <div class="col-sm-12" ng-init="columnFilters[column][key].column =(currentColumns | filter:{columnValue:column}:true)[0];  "
+                    ng-if=" key == 0 || columnFilters[column][key].filterOperator">
+                    <div class="row mb10">
+                        <!-- condition -->
+                        <span ng-init="setDefaultConditionType(column, key)"></span>
+                        <div class="col-sm-9">
+                            <div class="form_input" ng-if="columnFilters[column][key].column.columnType">
+                            	<span class="hidden">
+		                    	 {{columnFilters[column][key].column.columnType == 'Quantity' || 
+		                    	 columnFilters[column][key].column.columnType == 'Price' || 
+		                    	 columnFilters[column][key].column.columnType == 'Amount' 
+		                    	 ? renderColumnType = 'Number' 
+		                    	 : renderColumnType = columnFilters[column][key].column.columnType}}
+                            	</span>
+                                <select ng-model="columnFilters[column][key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition"
+                                    ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue "
+                                    ng-disabled="!columnFilters[column][key].column" required ng-change="columnFilters[column][key].column.columnType == 'Date' ? datepickers() : ''; clearValues(column, key)"></select>
+                            </div>
+                       
+                        </div>
+                        <div class="col-sm-2 no-padding">
+                            <span ng-show="!$first" class="">
+                                <button href="javascript:;" class=" btn default miunsAct" ng-click="columnFilters[column].splice(key, 1)">
+                                    <i class="fa fa-minus miunsAct"></i>
+                                </button>
+                            </span>
+                            <span ng-if="$first" class="">
+                                <button href="javascript:;" class=" btn default" ng-disabled="!columnFilters[column][columnFilters[column].length -1].condition"
+                                    ng-click="columnFilters[column].push({})">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="row mb10">
+
+                        <!-- value -->
+                        <div class="col-sm-12">
+                            <div class="form_input">
+                                <!-- {{columnFilters[column][key].column.columnType }} -->
+                                <span ng-switch="columnFilters[column][key].condition.conditionNrOfValues">
+                                    <!-- two filter values -->
+                                    <span ng-switch-when="2">
+                                        <div class="form_group no-label">
+                                            <div class="between" ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control " ng-model="columnFilters[column][key].value[0]"
+                                                    name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                    format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
+                                                />
+
+                                                <span class="input-group-btn" ng-if="columnFilters[column][key].column.columnType == 'Date'">
+                                                    <button class="btn default date-set" type="button">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <div class="between" ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}1" class="form-control" ng-model="columnFilters[column][key].value[1]"
+                                                    name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                    format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
+                                                />
+
+                                                <span class="input-group-btn" ng-if="columnFilters[column][key].column.columnType == 'Date'">
+                                                    <button class="btn default date-set" type="button">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <!-- one filter value -->
+                                    <span ng-switch-when="1" >
+                                        <div class="form_input no-label">
+                                            <div ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                                <!-- type number & type text -->
+                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control" ng-model="columnFilters[column][key].value[0]"
+                                                    name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                    format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
+                                                    ng-if="columnFilters[column][key].column.columnType != 'Bool'" />
+
+                                                <!--  type bool -->
+                                                <select name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
+                                                    ng-model="columnFilters[column][key].value[0]" class="form-control bs-select">
+                                                    <option value="{{vl.databaseValue}}" ng-repeat="(key, vl) in listsCache.TrueFalseOptions">{{vl.name}}</option>
+                                                </select>
+
+                                                <!--  type date -->
+                                                <span ng-if="columnFilters[column][key].column.columnType == 'Date'" class="formatted-date" ng-controller="Controller_Master as CM"
+                                                    ng-bind="CM.formatSimpleDate(columnFilters[column][key].value[0], tenantSetting.tenantFormats.dateFormat)"></span>
+                                                <span class="input-group-btn" ng-if="columnFilters[column][key].column.columnType == 'Date'">
+                                                    <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}"
+                                                        dynamic-condition-type="{{ field.ConditionalType }}">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <span ng-switch-default></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb10" ng-if="columnFilters[column][key+1] && columnFilters[column][key].condition && (columnFilters[column][key].condition.conditionNrOfValues == 0 || columnFilters[column][key].condition.conditionNrOfValues > 0 && (columnFilters[column][key].value[0] || columnFilters[column][key].value[1]))  ">
+                        <div class="col-sm-5" ng-init="operators = [{id:2,name:'OR'},{id:1, name:'AND'}]">
+                            <select ng-model="columnFilters[column][key+1].filterOperator" class="form-control bs-select" name="rule_{{ key+1 }}_filterOperator"
+                                id="rule_{{ key+1 }}_filterOperator" ng-options="item.id as item.name for item in operators">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+        <div class="footer_action">
+            <div class="">
+                <button class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="applyFilters(columnFilters[column], true, true);hidePopover()"
+                    ng-disabled="!columnFilters[column][0].condition">
+                    Filter
+                </button>
+                <button class="btn btn-default btn-default" ng-click="removeFilterColumn(column);hidePopover()" ng-disabled="!columnFilters[column][0].condition">
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- </div> -->
+</div>

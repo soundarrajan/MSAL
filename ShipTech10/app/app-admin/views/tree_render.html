@@ -1,0 +1,16 @@
+<div class="node-embed" ui-tree-handle ng-click="itemSelect(item,this)" ng-class="{nodeActive:item.isSelected,matched:item.match}">
+    <a class="btn btn-clear btn-xs" data-ng-show="item.children.length" ng-click="expandNode(this,$event)">
+        <i class="fa" ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></i>
+    </a>
+    <span class="node-header">
+        <label class="mt-checkbox" ng-click="itemSelect(item,this)">
+            <input type="checkbox"  name="item{{ key }}{{ item.id }}" id="item{{ key }}{{ item.id }}" ng-checked="item.isSelected; " indeterminate-checkbox node="item" />
+            <span ng-click="itemSelect(item,this)"></span>
+        </label>
+            {{ ::item.name }}
+        <!-- <input type="checkbox"  data-checklist-model="formValues.vesselAcces" data-checklist-value="item" checklist-comparator=".id" indeterminate-checkbox node="item"/> -->
+    </span>
+</div>
+<ol ui-tree-nodes="options" ng-model="item.children" ng-class="{hidden: collapsed,displayed:!collapsed}">
+    <li ng-repeat="item in ::item.children track by item.id" ui-tree-node collapsed="true" ng-include="'app-admin/views/tree_render.html'" ng-hide="filter(item, pattern)"></li>
+</ol>

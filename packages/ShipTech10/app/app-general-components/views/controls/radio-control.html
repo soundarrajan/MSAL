@@ -1,0 +1,21 @@
+<div class="form-group  row"  ng-init="options[field.Name] ? return : CM.getOptions(field)">
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate}}
+        <span ng-if="field.Required" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+        <div class="mt-radio-list">
+            <label class="mt-radio" ng-repeat="(key, value) in options[field.Name]">
+                <input type="radio" name="inlineRadios{{ field.Name }}[]" id="inlineRadio{{ key }}" ng-model="dummyModel" dynamic-model="'formValues.' + field.Unique_ID + '.id'" value="{{ value.id }}"  ng-checked="$eval('formValues.' + field.Unique_ID + '.id') == value.id" ng-change="changeFields(field.Name)"/>
+                {{ value.name }}
+                <span></span>
+            </label>
+        </div>
+
+        <input type="hidden" ng-model="fake" name="{{ CM.app_id + '.' + field.Label | translate}}" id="{{ field.Name }}" ng-required="!formValues[field.Unique_ID].id"/>
+
+    </div>
+</div>
+<span ng-if="CM.entity_id < 1" ng-init="formValues[field.Unique_ID].id = field.Default"></span>

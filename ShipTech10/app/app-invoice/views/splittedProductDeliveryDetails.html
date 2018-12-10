@@ -1,0 +1,68 @@
+
+<div class="custom-hardcoded-table ng-scope" style="max-height: 500px;">
+    <table class="table-body" width="100%">
+        <thead>
+            <tr>
+                <td class="padding"><b>Ord. Product</b></td>
+            	<td class="padding"><b>Product Type</b></td>
+            	<td class="padding"><b>Confirmed Qty</b></td>
+            	<td class="padding"><b>Est Rate</b></td>
+            	<td class="padding"><b>Amount</b></td>
+            	<td class="padding bg-blue-madison"><b>Deliv. product</b></td>
+            	<td class="padding bg-blue-madison"><b>Deliv. Qty</b></td>
+            	<td class="padding bg-blue-madison"><b>Sulphur Content</b></td>
+            	<td class="padding bg-blue-madison"><b>Physical Supplier</b></td>
+            	<td class="padding bg-blue-madison"><b>Deliv. MFM</b></td>
+            	<td class="padding bg-blue-madison"><b>Deliv. No</b></td>
+            </tr>
+        </thead>
+        <tbody>
+        	<!-- | orderBy: 'productTypeId' -->
+            <tr ng-repeat="(key, value) in formValues.productDetails" ng-if="value.isDeleted != true" class="ng-scope">
+				<td  style="min-width: 120px;" class="padding">{{value.orderedProduct.name}}</td>
+                <td  style="min-width: 120px;" ng-bind="getProductTypeById(value.productTypeId)" class="padding"></td>
+				<td  style="min-width: 120px;" class="">
+                    <div class="formatter-uom-label pull-left">{{value.confirmedQuantityUom.name}}</div>
+					<div class="pull-left" style="padding: 8px;">{{value.confirmedQuantity | number:CM.tenantSetting.defaultValues.quantityPrecision}}</div>
+				</td>
+				<td style="min-width: 150px;" >
+					<div class="formatter-uom-label pull-left">{{value.estimatedRateCurrency.code}}</div>
+					<div class="pull-left" style="padding: 8px;">{{value.estimatedRate | number:CM.tenantSetting.defaultValues.amountPrecision}}</div>
+					<div class="formatter-uom-label pull-right" style="margin: 0;">{{value.estimatedRateUom.name}}</div>
+				</td>
+				<td  style="min-width: 170px;" class="">
+					<div class="formatter-uom-label pull-left">{{value.estimatedRateCurrency.code}}</div>
+					<div class="pull-left" style="padding: 8px;">{{value.estimatedAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</div>
+				</td>
+				<td  style="min-width: 160px;" class="padding">{{value.product.name}}</td>
+				<td style="min-width: 120px;" class="">
+					<div class="pull-left" style="padding: 8px;">{{value.deliveryQuantity | number:CM.tenantSetting.defaultValues.quantityPrecision}}</div>
+					<div class="formatter-uom-label pull-right" style="margin: 0;">{{value.deliveryQuantityUom.name}}</div>
+				</td>
+				<td  style="min-width: 120px;" class="">
+					<input type="text" ng-model="value.sulphurContent" class="form-control">
+				</td>
+				<td style="min-width: 120px;" >
+                            <div class="input-group form_input form_input_physicalSupplier">
+                                <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="Product" name="Product_{{productIndex}}_physical_supplier" ng-model="value.physicalSupplierCounterparty" autocomplete="off" />
+                                <!-- ng-model="product.product" -->
+                                <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_suppliers', 'Physical Supplier' , 'formValues.productDetails.'+$index+'.physicalSupplierCounterparty','','','Counterparty', '');">
+                                    <a   class=" btn default">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </span> -->
+                                <span class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_counterpartylist', 'Physical Supplier' , 'formValues.productDetails.'+$index+'.physicalSupplierCounterparty');">
+                                	<a   class=" btn default">
+                                		<i class="fa fa-search"></i>
+                                	</a>
+                                </span>
+                            </div>
+				</td>
+				<td style="min-width: 120px;" >
+					<select name="" id="" class="form-control" ng-model="value.deliveryMFM" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id"></select>
+				</td>
+				<td  style="min-width: 120px;" class="padding"><a href="#/delivery/delivery/edit/{{value.deliveryId}}" target="_blank">{{value.deliveryNo}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

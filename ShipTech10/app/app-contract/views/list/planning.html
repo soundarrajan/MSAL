@@ -1,0 +1,24 @@
+﻿<general-header actions="{
+    primary: [
+        {label: 'Save', special: true, url: '/contracts', type: 'goto'},
+        {label: 'Copy', url: '/contracts', type: 'goto'},
+    ],
+    secondary: [],
+    icons: [
+        {class: 'print', action: 'print'},
+    ],
+    search: true,
+}"></general-header>
+
+<clc-table-list id="'contracts_planning'" app="'contracts'" screen="'contractplanninglist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+<div ng-include="'app-general-components/views/modal_contract_lookup.html'"></div>
+
+<general-header actions="{
+    primary: [
+        {label: 'Save', special: true, url: '/contracts', type: 'goto'},
+        {label: 'Copy', url: '/contracts', type: 'goto'},
+    ],
+    secondary: [],
+    search: false,
+}" color="'white'"></general-header>

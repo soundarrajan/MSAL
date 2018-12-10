@@ -1,0 +1,534 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [{
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [{
+                                "Value": "8",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "entity_emaillog": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "module",
+                            "Name": "Module",
+                            "Type": "dropdown",
+                            "masterSource": "Module",
+                            "Group": "General",
+                            "Label": "MODULE",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "sender",
+                            "Name": "Sender",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "SENDER",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "status",
+                            "Name": "Status",
+                            "Type": "dropdown",
+                            "masterSource": "EmailStatus",
+                            "Group": "General",
+                            "Label": "STATUS",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "entity",
+                            "Name": "Entity",
+                            "Type": "dropdown",
+                            "masterSource": "TransactionType",
+                            "Group": "General",
+                            "Label": "ENTITY",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "subject",
+                            "Name": "Subject",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "SUBJECT",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "emailTo",
+                            "Name": "EmailTo",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "EMAIL_TO",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Active": false,
+                            "Unique_ID": "name",
+                            "Name": "CalendarName",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "CALENDAR_NAME",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "description",
+                            "Name": "Description",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "DESCRIPTION",
+                            "Columns": [
+                                {
+                                    "Value": "6",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "isSystemDefined",
+                            "Name": "SystemDefined",
+                            "Type": "checkbox",
+                            "Group": "General",
+                            "Label": "SYSTEM_DEFINED",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "options": [{
+                                    "isSystemDefined": "SystemDefined"
+                                }]
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "weeklyHolidays",
+                            "Name": "WeeklyHolidays",
+                            "Type": "checkbox",
+                            "Group": "General",
+                            "Label": "WEEKLY_HOLIDAYS",
+                            "masterSource": "DayOfWeek",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "Disabled": "formValues.isSystemDefined == true",
+                            "LastOnRow": false,
+                            "Checked": [5, 6]
+                        }
+                    ]
+                },
+                "Other Holidays": {
+                    "id": "Other Holidays",
+                    "name": "Other Holidays",
+                    "children": [
+                        {
+                            "Active": false,
+                            "Unique_ID": "holidays",
+                            "Name": "Other Holidays",
+                            "Type": "CLC",
+                            "App": "clcindlc",
+                            "Screen": "calendarotherholidays",
+                            "clc_id": "holidays",
+                            "Group": "Other Holidays",
+                            "Label": "OTHER_HOLIDAYS",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "LastOnRow": false,
+                            "Added": false
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "elements": [
+        {
+            "requiredFields": [
+                {
+                    "Unique_ID": "CalendarName",
+                    "Name": "CalendarName",
+                    "Type": "text",
+                    "Group": "General",
+                    "Label": "Calendar Name",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Description",
+                    "Name": "Description",
+                    "Type": "text",
+                    "Group": "General",
+                    "Label": "Description",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "SystemDefined",
+                    "Name": "SystemDefined",
+                    "Type": "checkbox",
+                    "Group": "General",
+                    "Label": "System Defined",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "options": [{
+                            "isSystemDefined": "System Defined"
+                        }]
+                },
+                {
+                    "Unique_ID": "WeeklyHolidays",
+                    "Name": "WeeklyHolidays",
+                    "Type": "checkbox",
+                    "Group": "General",
+                    "Label": "Weekly Holidays",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "options": [
+                        {
+                            "monday": "Monday",
+                            "tuesday": "Tuesday",
+                            "wednesday": "Wednesday",
+                            "thursday": "Thursday",
+                            "friday": "Friday",
+                            "saturday": "Saturday",
+                            "sunday": "Sunday"
+                        }
+                    ]
+                }
+            ],
+            "customFields": [
+                {
+                    "Unique_ID": "CustomField1",
+                    "Name": "CustomField1",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 1",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField2",
+                    "Name": "CustomField2",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 2",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField3",
+                    "Name": "CustomField3",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 3",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField4",
+                    "Name": "CustomField4",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 4",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField5",
+                    "Name": "CustomField5",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 5",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField6",
+                    "Name": "CustomField6",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 6",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                }
+            ],
+            "otherHolidays": [
+                {
+                    "Unique_ID": "Other Holidays",
+                    "Name": "Other Holidays",
+                    "Type": "CLC",
+                    "App": "clcindlc",
+                    "Screen": "calendarotherholidays",
+                    "Group": "Other Holidays",
+                    "Label": "Other Holidays",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "LastOnRow": false,
+                    "Added": false
+                }
+            ]
+        }
+    ],
+    "clc": {},
+    "id": 56
+}

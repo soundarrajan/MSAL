@@ -1,0 +1,37 @@
+
+
+<div class="textarea-with-tags">
+<span ng-if="formValues.messageTemplate" ng-init="initAlertTransform()"></span>
+	<div class="form-group row">
+	    <div class="form_input no-label">
+	        <div id="alertMessage" name="alertMessage" type="text" ng-model="alertsMessage" class="form-control" ng-blur="convertForSave($event)" ng-click="setCaretPosition()"  ng-keypress="cleanUnwantedChars($event); setCaretPosition()" contenteditable></div>
+	        <div id="clonedAlertMessage" ng-show="false" name="ClonedAlertMessage" type="text" ng-model="ClonedAlertMessage" class="form-control"></div>
+	    </div>
+	</div>
+
+	<span ng-model="formValues.messageTemplate"></span>
+	
+
+	<div class="form-group row">
+		    Click on symbol <span class="mini-plus"><i class="fa fa-plus"></i></span> to move the fields into the Alert Message Text Box
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group row" ng-init="">
+			    <label class="control-label" style="float: left;">
+			        {{ CM.app_id + '.DISPLAY_FIELDS' | translate }}
+			    </label>
+			    <div class="input-group " style="float: left;">
+			        <input ng-model="formValues.temp.MessageVariable"  name="MessageVariable"  uib-typeahead="item as item.name for item in formValues.parameters | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" autocomplete="off"/>
+			    </div>
+			    <span class=""  ng-click="addHtmlValueIn(formValues.temp.MessageVariable, '#alertMessage'); formValues.temp.MessageVariable = null">
+					<span class=" btn default">
+						<i class="fa fa-plus"></i>
+			        </span>
+		        </span>
+			</div>	
+		</div>	
+	</div>	
+</div>
+

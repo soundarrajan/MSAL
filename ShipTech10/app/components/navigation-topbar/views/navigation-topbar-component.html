@@ -1,0 +1,12 @@
+<div class="st-breadcrumbs-progress-bar" ng-if="shouldDisplayNavigationBar">
+    <ul class="page-breadcrumb">
+        <li class="btn btn-fit-height {{navItem.indexStatus}}" title="{{navItem.entityId}}" ng-hide="navItem.hidden" ng-repeat="(key, navItem) in navigationItems">          
+            <a ng-if="navItem.url" ng-href="{{navItem.url}}">
+                {{navItem.displayName}}
+            </a>
+            <span ng-if="!navItem.url">
+                {{navItem.displayName}}
+            </span>
+        </li>
+    </ul>
+</div>	

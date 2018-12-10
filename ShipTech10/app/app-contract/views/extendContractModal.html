@@ -1,0 +1,32 @@
+<div id="modal_close_bar">
+    <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+</div>
+<div>
+    <div class="top-no-padding">
+        <div ng-init="CM.datepickers('dateDate')" class="form_input form_input_date">
+			<div class="row">
+				<br><br>
+				<div class="col-sm-12">
+                    <label for="date" class="simpleLookupLabel col-sm-4" style="max-height: initial;">
+                       <b>Effective From</b> 
+                    </label>
+                    <div class="input-group date-picker date form_meridian_datetime col-sm-8" id="effectiveFrom" >
+                        <input class="form-control" type="text" id="date" ng-model="formValues.effectiveFrom"/>
+                        <span class="formatted-date">{{CM.formatDate(formValues.effectiveFrom, 'dd/MM/yyyy')}}</span>
+                        <span class="input-group-btn">
+                            <button class="btn default date-set" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>								
+				</div>
+			</div>
+        </div>   
+        <div class="row">
+            <div class="col-md-12 pull-left notesModalButtons">
+                <button class="btn btn-default btn-outline orange" ng-disabled="!formValues.effectiveFrom" ng-click="sendExtendContractData()">OK</button>
+                <button class="btn btn-default btn-outline gray" ng-click="prettyCloseModal()">Cancel</button>
+            </div>
+        </div>                         
+    </div>
+</div>

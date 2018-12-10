@@ -1,0 +1,83 @@
+<div class="row" ng-if="$ctrl.compare">
+    <div class="portlet light grey_portlet">
+        <div class="portlet-title ">
+            <div class="tools ">
+                <a href="javascript:; " class="collapse " data-original-title=" " title=" "></a>
+            </div>
+            <div class="caption ">
+                <span class="caption-subject pull-left ">
+                    Compare
+                </span>
+            </div>
+            <div class="pull-right ">
+                <div class="input-group ">
+                    <a class="btn pull-right "  ng-click="$ctrl.compare = false">
+                        x
+                    </a>
+                </div>
+            </div>
+            <div class="pull-right ">
+                <div class="input-group ">
+                    <a class="btn btn-default btn-outline pull-right "   ng-click="$ctrl.compareLines.push({ 'first': {}, 'second': {}, 'third': {},'droppable':true });$ctrl.minTco = null">
+                        +
+                    </a>
+                </div>
+            </div>
+            <div class="pull-right ">
+                <div class="input-group ">
+                    <a class="btn btn-default btn-outline pull-right "   ng-click="$ctrl.compareLines = [{ 'first': {}, 'second': {}, 'third': {},'droppable':true }];$ctrl.minTco = null">
+                        Clear
+                    </a>
+                </div>
+            </div>
+            <div class="pull-right ">
+                <div class="input-group ">
+                    <a class="btn btn-default btn-outline pull-right orange"   ng-click="$ctrl.compareSelection()" ng-disabled="$ctrl.compareLines.length  <= 1">
+                        Compare
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row mb" ng-repeat="(k,val) in $ctrl.compareLines">
+                <!-- <div ng-if="!val.droppable" class="unDroppable"></div> -->
+                <div class="col-md-3" ng-repeat="(key, value) in val" ng-if="key != 'droppable'">
+                    <div ng-class=" { 'dropCard' : (!value.product && !value.seller), 'unDroppable': !val.droppable}">
+                        <div data-drop="{{ val.droppable }}" class="pseudoCard"  data-jqyoui-options="{revert: 'invalid'}" ng-model="$ctrl.compareLines[k][key]" jqyoui-droppable="{onDrop: '$ctrl.dropCallback'}"  ></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-6" text-center>
+                            <span ng-if="$index == 0">
+                                <b>
+                                    TCO
+                                </b>
+                            </span>
+                            <h4>
+                                {{  val| sumOfValueArray:'tco' | number:3 }}
+                            </h4>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <span ng-if="$index == 0">
+                                <b>
+                                    Difference
+                                </b>
+                            </span>
+                            <h4 ng-if="!$ctrl.minTco">
+                                {{ 0 | number:3 }}
+                            </h4>
+                            <h4 ng-if="$ctrl.minTco ">
+                                {{ (val| sumOfValueArray:'tco') - $ctrl.minTco | number:3 }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <pre>
+    {{ $ctrl.compareLines}}
+</pre>
+ -->

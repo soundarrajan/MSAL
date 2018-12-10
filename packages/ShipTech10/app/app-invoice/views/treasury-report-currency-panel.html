@@ -1,0 +1,34 @@
+<div class="col-sm-12">
+
+    <div class="custom-hardcoded-table">
+        <table class="table-body">
+            <thead>
+                <tr>
+                    <td class="padding">
+                        <b> S. No</b>
+                    </td>
+                    <td class="padding">
+                        <b> Currency</b>
+                    </td>
+                    <td class="padding">
+                        <b> Invoice Amount</b>
+                    </td>
+                    <td class="padding">
+                        <b> Calculated Amount</b>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, value) in treasuryReportTotals">
+                    <td class="padding">{{key+1}}</td>
+                    <td class="padding">{{value.currencyCode}}</td>
+                    <td class="padding">{{value.invoiceAmount | number:3}}</td>
+                    <td class="padding">{{value.calculatedAmount | number:3}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <br>
+    <br>
+</div>

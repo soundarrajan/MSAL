@@ -1,0 +1,110 @@
+<div class="row">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="form-group  row">
+                <div class="form_input form_input_contractExpiryApplicable">
+                    <div class="">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" name="inlineRadioscontractExpiryApplicable" id="inlinecheckcontractExpiryApplicable" ng-model="formValues.contract.contractExpiryApplicable"/>
+                            {{ CM.app_id + '.CONTRACT_EXPIRY_APPLICABLE' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group  row">
+                <div class="form_input form_input_hideContractReferencedFormulas">
+                    <div class="">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" name="inlineRadioshideContractReferencedFormulas" id="inlinecheckhideContractReferencedFormulas" ng-model="formValues.contract.hideContractReferencedFormulas"/>
+                            {{ CM.app_id + '.HIDE_CONTRACT_REFERENCED_FORMULAS' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
+        
+        <div class="col-md-4">
+            <div class="form-group  row">
+                <div class="form_input form_input_areTermsAndConditionsAvailable">
+                    <div class="">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" name="areTermsAndConditionsAvailable" id="areTermsAndConditionsAvailable" ng-model="formValues.contract.areTermsAndConditionsAvailable"/>
+                            {{ CM.app_id + '.ARE_TERMS_AND_CONDITIONS_AVAILABLE' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="col-md-4">
+	        <div class="form-group row">
+	            <label for="averageSurveyorCost" class="contractOrderCreationTolerance_label">
+	                {{ CM.app_id + '.CONTRACT_ORDER_CREATION_TOLERANCE' | translate }}
+	                <span class="orange-txt">*</span>
+	            </label>
+	            <div class="input-group form_input form_input_contractOrderCreationTolerance">
+	                <input type="number" name="contractOrderCreationTolerance" required class="form-control contractOrderCreationTolerance" ng-model="formValues.contract.contractOrderCreationTolerance" ng-class="CM.invalid_form ? 'ng-touched' : ''"/>
+	            </div>
+	        </div>
+		</div>        
+         
+    </div>
+<div class="row">
+	<div class="col-sm-4">
+		<div class="form-group row">
+	        <label for="displayAgreementType" class="displayAgreementType">
+	            {{ CM.app_id + '.DISPLAY_AGREEMENT_TYPE' | translate }}
+	            <span class="orange-txt">*</span>
+	        </label>
+	        <div class="input-group form_input form_input_displayAgreementType">
+	            <select class="form-control contractOrderCreationTolerance" name="agreementTypeDisplay" id="agreementTypeDisplay" ng-model="formValues.contract.agreementTypeDisplay" ng-options="item as item.name for item in CM.listsCache.ShowHide  track by item.id "></select>
+	        </div>
+        </div>
+	</div>
+    <div class="col-md-4">
+        <div class="form-group  row">
+            <div class="form_input form_input_hideAllowedProduct">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="inlineRadioshideAllowedProduct" id="inlinecheckhideAllowedProduct" ng-model="formValues.contract.hideAllowedProduct"/>
+                        {{ CM.app_id + '.HIDE_ALLOWED_PRODUCT' | translate }}
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>	
+</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="custom-hardcoded-table admin">
+				<table class="table-body" width="100%" style="min-width:initial">
+					<thead>
+						<tr>
+							<td width="25%"><b>Parameter</b></td>
+							<td width="25%"><b>Percent</b></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, val) in formValues.contract.contractEvaluation">
+							<td width="25%">{{val.parameter.name}}</td>
+							<td width="25%"><input type="number" min="0" max="100" class="form-control " name="{{val.status.name}}_label" ng-model="val.weightPercentValue"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	
+	</div>
+
+
+</div>

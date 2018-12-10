@@ -1,0 +1,92 @@
+<div class="dynamic_form_editor supplier_portal row" ng-if="$ctrl.isSupportedBrowser">
+    <span ng-include="'pages/supplier-portal/views/parts/topBar.html'"></span>
+    <span ng-include="'pages/supplier-portal/views/parts/instructions.html'"></span>
+    <span ng-if="$ctrl.loadedData">
+        <span ng-include="'pages/supplier-portal/views/parts/general.html'"></span>
+        <span ng-include="'pages/supplier-portal/views/parts/offerDetails.html'"></span>
+    </span>
+    <div class="col-md-12 portlet light" ng-if="!$ctrl.loadedData">
+        <div class="portlet-title">
+            <div class="tools">
+                <a data-toggle="collapse" href="#general" class="collapse" data-original-title="" title="" aria-expanded="true"></a>
+            </div>
+            <div class="caption">
+                <span class="caption-subject ">
+                   Shiptech Supplier Portal
+                </span>
+            </div>
+        </div>
+        <div class="portlet-body collapse in" id="general" aria-expanded="true">
+            <div class="row">
+                <div class="col-xs-12">
+                    Shiptech Supplier Portal Loading ...
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row st-supplier-portal-halves">
+            <div class="col-md-6 no-padding-right">
+                <div class="portlet light stretch-vertical">
+                    <div class="portlet-title">
+                        <span class="caption-subject">
+                            BUNKERABLE PORTS
+                        </span>
+                    </div>
+                    <div class="portlet-body">
+                        <form class="form-inline st-supplier-portal-bunkerable-ports">
+                            <div class="form-group-sm">
+                                <label class="control-label">
+                                    {{ $ctrl.bunkerablePortsFields.quoteFor.caption | translate }}
+                                </label>
+                                <ng-repeat ng-repeat="location in $ctrl.request.locations">
+                                    <label class="mt-checkbox mt-checkbox-outline">
+                                        <input type="checkbox" id="location_{{ location.location.name }}" ng-model="$ctrl.selectedLocationIds[location.location.id]"/>
+                                        <span></span>
+                                    </label>
+                                    <label class="control-label clickable" for="location_{{ location.location.name }}">
+                                        {{ location.location.name }}
+                                    </label>
+                                </ng-repeat>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div> -->
+    <lookup-dialog class="modal fade in"  id="lookupSeller" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" supplier-portal="$ctrl.sellerPortalModule" supplier-portal-token="$ctrl.token" on-product-select="$ctrl.selectQuotedProduct(product)"></lookup-dialog>
+    <sellers-dialog class="modal fade in sellers-dialog" id="counterparties" aria-hidden="true" data-width="90%" seller-types="$ctrl.counterpartyTypeId" trigger='$ctrl.supplierPlace' supplier-portal="true", supplier-portal-token="$ctrl.token" on-seller-select="$ctrl.selectCounterparty(sellerId)" on-supplier-select="$ctrl.selectSupplier(seller)"></sellers-dialog>
+    <last-offer-prices-dialog class="modal fade in"  id="last_offer_prices" aria-hidden="true" args="{token: $ctrl.latestOfferToken, location: $ctrl.latestOfferLocation, seller: $ctrl.latestOfferSeller, random: $ctrl.randomOfferRefreshToken}" data-width="40%"></last-offer-prices-dialog>
+    <div class="clear"></div>
+</div>
+<div ng-if="!$ctrl.isSupportedBrowser">
+    <div class="col-md-12 portlet light seller_portal_instructions" ng-if="$ctrl.token">
+        <div class="portlet-title">
+            <div class="tools">
+                <a data-toggle="collapse" href="#general" class="collapse" data-original-title="" title="" aria-expanded="true"></a>
+            </div>
+            <div class="caption">
+                <span class="caption-subject ">
+                    Your browser is not supported!
+                </span>
+            </div>
+        </div>
+        <div class="portlet-body collapse in" id="general" aria-expanded="true">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>
+
+                        <strong>
+                            In order to use Shiptech Seller Portal you must use one of the browsers listed below
+                        </strong>
+                    </p>
+                    <p>
+                        <ul>
+                            <li ng-repeat="browser in $ctrl.supportedBrowsers"><a href="{{browser.url}}" target="blank">{{browser.browser}}</a></li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

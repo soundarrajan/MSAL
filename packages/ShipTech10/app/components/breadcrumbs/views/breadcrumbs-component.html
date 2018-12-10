@@ -1,0 +1,78 @@
+<div class="page-bar breadcrumbs-container" ng-class="{'no-top-margin' : state.is(STATE.SUPPLIER_PORTAL)}">
+    <ul class="page-breadcrumb">
+        <li ng-repeat="station in state.params.path">
+
+            <a ui-sref="{{station.uisref}}({screen_id: '{{state.params.screen_id}}'})" ng-if="station.uisref.indexOf('.single') >= 0"
+                ng-class="{'disabled' : state.is(STATE.SUPPLIER_PORTAL)}">
+                <i ng-show="$first" class="fa fa-home"></i>
+                {{station.label}}
+            </a>
+            <a ui-sref="{{station.uisref}}" ng-if="station.uisref.indexOf('.single') < 0" ng-class="{'disabled' : state.is(STATE.SUPPLIER_PORTAL)}">
+                <i ng-show="$first" class="fa fa-home"></i>
+                {{station.label}}
+            </a>
+
+            <i ng-show="!$last" class="fa fa-angle-right"></i>
+        </li>
+    </ul>
+    <div class="btn-group pull-right "  ng-if="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)">
+        <!-- <a class="btn btn-fit-height dropdown-toggle" ng-show="visibleSidebarToggle()"> -->
+
+            <span class="hidden">{{CheckForFilters}}</span>
+        <span class="refresh-icon"><a ng-click="broadcastRefreshData()"><i class="fa fa-refresh fa-2x"></i></a></span>
+        <span class="dropdown dropdown-quick-sidebar-toggler" ng-click="toggle()">
+            <a class="btn btn-fit-height dropdown-toggle filter_btn" ng-hide="CheckForFilters == 0">
+                Filter
+            </a>
+        </span>
+    </div>
+<!--     <div ng-if="state.is(STATE.HOME)""  class="btn-group pull-right layout-button">
+        <a href="javascript:;" class="btn btn-fit-height">
+            <i class="icon-grid"></i>
+        </a>
+    </div> -->
+    <navigation-topbar class="pull-right"></navigation-topbar>
+    <div class="page-toolbar" ng-class="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME) ? 'schedule_toolbar' : ''">
+
+        <div class="st-breadcrumbs-pins" ng-if="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)" ng-init="getCalendarStatus()">
+            <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
+            <ul class="page-breadcrumb" style="width: 100%;">
+            	<li class="hidden">
+	            	{{statusesCount = calculateStatusesCount() }}
+            	</li>
+                <li ng-repeat="status in statusList | filter:{ display: true } track by $index" style="width: {{100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px;" ng-click="breadcrumbsFilter(status.name,status.count)">
+                    <div class="tear clickable" ng-style="{{status.style}}">
+                        <span>
+                            {{status.count}}
+                        </span>
+                    </div>
+                    <div class="caption clickable center-line" ng-class="{'center-line': status.name.indexOf(' ') < 0}" style="margin-bottom: 10px;" >
+                        {{status.label}}
+                        <!-- {{status.statusDisplayName}} -->
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+<!--         <div ng-if="state.is(STATE.NEW_REQUEST) ||
+        state.is(STATE.ORDER_LIST) ||
+        state.is(STATE.ORDER_TRANSACTION_KPI) ||
+        state.is(STATE.PREVIEW_EMAIL) ||
+        state.is(STATE.NEW_ORDER) ||
+        state.is(STATE.CONTRACT_PLANNING)" class="st-breadcrumbs-progress-bar">
+        <ul class="page-breadcrumb">
+            <li class="btn btn-fit-height st-progress-bar-next"> Request</li>
+            <li class="btn btn-fit-height"> Contract</li>
+            <li class="btn btn-fit-height"> Order</li>
+            <li class="btn btn-fit-height"> Delivery</li>
+            <li class="btn btn-fit-height"> Labs</li>
+            <li class="btn btn-fit-height"> Claims</li>
+            <li class="btn btn-fit-height"> Invoices</li>
+            <li class="btn btn-fit-height"> Recon</li>
+        </ul> -->
+    </div>
+
+
+    </div>
+</div>

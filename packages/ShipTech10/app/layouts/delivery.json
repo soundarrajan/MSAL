@@ -1,0 +1,1208 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [{
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [{
+                                "Value": "8",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General Information": {
+                    "id": "General Information",
+                    "name": "General Information",
+                    "children": [
+                        {
+                            "Unique_ID": "order",
+                            "Name": "OrderNumber",
+                            "Type": "simpleLookup",
+                            "Group": "General Information",
+                            "Label": "ORDER_ID",
+                            "masterSource": "OrderList",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "clc_id" : "orders_orders",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false,
+                            "filter": "delivery_order_filter"
+                        },
+                        {
+                            "Unique_ID": "SellerName",
+                            "Name": "SellerName",
+                            "Type": "label",
+                            "Group": "General Information",
+                            "Label": "SELLER",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "Port",
+                            "Name": "Port",
+                            "Type": "label",
+                            "Group": "General Information",
+                            "Label": "PORT",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "bdnNumber",
+                            "Name": "bdnNumber",
+                            "Type": "text",
+                            "Group": "General Information",
+                            "Label": "BDN_NUMBER",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "bdnDate",
+                            "Name": "BDNDate",
+                            "Type": "date",
+                            "Group": "General Information",
+                            "Label": "BDN_DATE",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "deliveryDate",
+                            "Name": "DeliveryDate",
+                            "Type": "date",
+                            "Group": "General Information",
+                            "Label": "DELIVERY_DATE",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "barge",
+                            "Name": "Barge",
+                            "Type": "dropdown",
+                            "Group": "General Information",
+                            "Label": "BARGE",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "masterSource": "Barge",
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "pumpingRate",
+                            "Name": "PumpingRateUOM",
+                            "Type": "textUOM",
+                            "Group": "General Information",
+                            "UOMUnique_ID": "pumpingRateUom",
+                            "UOMType": "PumpingRateUom",
+                            "Label": "BARGE_PUMPING_RATE",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "pumpingDurationSeconds",
+                            "Name": "pumpingDurationSeconds",
+                            "Type": "text",
+                            "Group": "General Information",
+                            "Label": "PUMPING_DURATION",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "surveyor",
+                            "Name": "Surveyor",
+                            "Type": "simpleLookup",
+                            "Group": "General Information",
+                            "Label": "SURVEYOR",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "masterSource": "Surveyor",
+                            "clc_id" : "masters_counterpartylist",
+                            "Active": false
+                        },
+
+                        {
+                            "Unique_ID": "surveyedHours",
+                            "Name": "surveyedHours",
+                            "Type": "text",
+                            "Group": "General Information",
+                            "Label": "SURVEYED_HOURS",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "ConditionalType": "ng-required",
+                            "Conditional": "formValues.surveyor.id",
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "surveyorName",
+                            "Name": "surveyorName",
+                            "Type": "text",
+                            "Group": "General Information",
+                            "ConditionalType": "ng-required",
+                            "Conditional": "formValues.surveyor.id",
+                            "Label": "SURVEYOR_NAME",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "pricingDate",
+                            "Name": "pricingDate",
+                            "Type": "date",
+                            "Group": "General Information",
+                            "Label": "PRICING_DATE",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "bargePumpingRateStartTime",
+                            "Name": "bargePumpingRateStartTime",
+                            "Type": "date",
+                            "Group": "General Information",
+                            "Label": "BARGE_PUMPING_RATE_START_TIME",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        },
+                        {
+                            "Unique_ID": "bargePumpingRateEndTime",
+                            "Name": "bargePumpingRateEndTime",
+                            "Type": "date",
+                            "Group": "General Information",
+                            "Label": "BARGE_PUMPING_RATE_END_TIME",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        }
+                    ],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                },
+                "Order Summary": {
+                    "id": "Order Summary",
+                    "name": "Order Summary",
+                    "children": [
+                        {
+                            "Unique_ID": "DeliveryOrderSummaryGroup",
+                            "Name": "DeliveryOrderSummaryGroup",
+                            "Type": "DeliveryOrderSummaryGroup",
+                            "Group": "Order Summary",
+                            "Label": "ORDER_SUMMARY",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "masterSource": "product",
+                            "Active": false
+                        }
+                    ],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "3"
+                        }
+                    }
+                },
+                "deliveryProducts": {
+                    "id": "deliveryProducts",
+                    "name": "deliveryProducts",
+                    "children": [
+                        {
+                            "Unique_ID": "deliveryProducts",
+                            "Name": "deliveryProducts",
+                            "Type": "deliveryProductsGroup",
+                            "Group": "deliveryProducts",
+                            "Label": "deliveryProducts",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        }
+                    ],
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "elements": [
+        {
+            "requiredFields": [
+                {
+                    "Unique_ID": "OrderNumber",
+                    "Name": "OrderNumber",
+                    "Type": "simpleLookup",
+                    "Group": "General Information",
+                    "Label": "Order Number",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "OrderBuyer",
+                    "Name": "OrderBuyer",
+                    "Type": "simpleLookup",
+                    "Group": "General Information",
+                    "Label": "Buyer",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "users"
+                },
+                {
+                    "Unique_ID": "PhysicalSupplier",
+                    "Name": "PhysicalSupplier",
+                    "Type": "text",
+                    "Group": "General Information",
+                    "Label": "Physical Supplier",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Port",
+                    "Name": "Port",
+                    "Type": "text",
+                    "Group": "General Information",
+                    "Label": "Port",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "SellerName",
+                    "Name": "SellerName",
+                    "Type": "label",
+                    "Group": "General Information",
+                    "Label": "Seller Name",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "BuyerQuantity",
+                    "Name": "BuyerQuantity",
+                    "Type": "dropdown",
+                    "Group": "Quantity",
+                    "Label": "Buyer",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "options": [
+                        {
+                            "isConfirmquantity": "Confirm quantity",
+                            "isVesselQuantity": "Vessel Quantity",
+                            "isBDNQuantity": "BDN Quantity",
+                            "isFlowmeterquantity(Vessel)": "Flowmeter quantity (Vessel)",
+                            "isFlowMeterquantity(Barge)": "FlowMeter quantity (Barge)",
+                            "isSurveyorQuantity": "Surveyo rQuantity"
+                        }
+                    ]
+                },
+                {
+                    "Unique_ID": "SellerQuantity",
+                    "Name": "SellerQuantity",
+                    "Type": "dropdown",
+                    "Group": "Quantity",
+                    "Label": "Seller",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "options": [
+                        {
+                            "isConfirmquantity": "Confirm quantity",
+                            "isVesselQuantity": "Vessel Quantity",
+                            "isBDNQuantity": "BDN Quantity",
+                            "isFlowmeterquantity(Vessel)": "Flowmeter quantity (Vessel)",
+                            "isFlowMeterquantity(Barge)": "FlowMeter quantity (Barge)",
+                            "isSurveyorQuantity": "Surveyo rQuantity"
+                        }
+                    ]
+                },
+                {
+                    "Unique_ID": "BDNNo_",
+                    "Name": "BDNNo_",
+                    "Type": "label",
+                    "Group": "General Information",
+                    "Label": "BDN No",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Barge",
+                    "Name": "Barge",
+                    "Type": "dropdown",
+                    "Group": "General Information",
+                    "Label": "Barge",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "barges"
+                },
+                {
+                    "Unique_ID": "PumpingRateUOM",
+                    "Name": "PumpingRateUOM",
+                    "Type": "textUOM",
+                    "Group": "General Information",
+                    "Label": "Pumping Rate UOM",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "PumpingDurationinHrs",
+                    "Name": "PumpingDurationinHrs",
+                    "Type": "text",
+                    "Group": "General Information",
+                    "Label": "Pumping Duration in Hrs",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "BDNDate",
+                    "Name": "BDNDate",
+                    "Type": "date",
+                    "Group": "General Information",
+                    "Label": "BDN Date",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "DeliveryDate",
+                    "Name": "DeliveryDate",
+                    "Type": "date",
+                    "Group": "General Information",
+                    "Label": "Delivery Date",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Product",
+                    "Name": "Product",
+                    "Type": "dropdown",
+                    "Group": "Quantity",
+                    "Label": "Product",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "products"
+                },
+                {
+                    "Unique_ID": "ConfirmedQuantity_UOM",
+                    "Name": "ConfirmedQuantity_UOM",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Confirmed Quantity",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "AgreedQuantity_UOM",
+                    "Name": "AgreedQuantity_UOM",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Agreed Quantity",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "FinalQuantity_UOM",
+                    "Name": "FinalQuantity_UOM",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Final Quantity",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Comments",
+                    "Name": "Comments",
+                    "Type": "label",
+                    "Group": "Quantity",
+                    "Label": "Comments",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "VesselQuantity",
+                    "Name": "VesselQuantity",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Vessel Quantity",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "FlowMeterQuantityVessel",
+                    "Name": "FlowMeterQuantityVessel",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Flow Meter Quantity (Vessel)",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "SurveyorQuantity",
+                    "Name": "SurveyorQuantity",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Surveyor Quantity",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "FlowMeterQuantityBarge",
+                    "Name": "FlowMeterQuantityBarge",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "Flow Meter Quantity (Barge)",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "BDNQuantity",
+                    "Name": "BDNQuantity",
+                    "Type": "textUOM",
+                    "Group": "Quantity",
+                    "Label": "BDN Quantity",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "ReconStatus",
+                    "Name": "ReconStatus",
+                    "Type": "label",
+                    "Group": "General",
+                    "Label": "Recon Status (Detail)",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "Surveyor",
+                    "Name": "Surveyor",
+                    "Type": "simpleLookup",
+                    "Group": "General Information",
+                    "Label": "Surveyor",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "users"
+                },
+                {
+                    "Unique_ID": "Variance",
+                    "Name": "Variance",
+                    "Type": "variance",
+                    "Group": "Quantity",
+                    "Label": "Variance",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "DeliveredProduct",
+                    "Name": "DeliveredProduct",
+                    "Type": "simpleLookup",
+                    "Group": "Quantity",
+                    "Label": "Delivered Product",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "product"
+                }
+            ],
+            "quality": [
+                {
+                    "Unique_ID": "qualityGroup",
+                    "Name": "qualityGroup",
+                    "Group": "quality",
+                    "Label": "Quality",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                }
+            ],
+            "orderSummary": [
+                {
+                    "Unique_ID": "orderSummaryGroup",
+                    "Name": "orderSummaryGroup",
+                    "Group": "Order Summary",
+                    "Label": "Order Summary",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": true,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false,
+                    "masterSource": "product"
+                }
+            ],
+            "customFields": [
+                {
+                    "Unique_ID": "CustomField1",
+                    "Name": "CustomField1",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 1",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField2",
+                    "Name": "CustomField2",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 2",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField3",
+                    "Name": "CustomField3",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 3",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField4",
+                    "Name": "CustomField4",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 4",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField5",
+                    "Name": "CustomField5",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 5",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                },
+                {
+                    "Unique_ID": "CustomField6",
+                    "Name": "CustomField6",
+                    "Type": "text",
+                    "Group": "Custom Fields",
+                    "Label": "Custom Field 6",
+                    "Columns": [
+                        {
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }
+                    ],
+                    "Description": "",
+                    "Required": false,
+                    "Hidden": false,
+                    "Added": false,
+                    "LastOnRow": false
+                }
+            ]
+        }
+    ],
+    "clc": {
+        "table_name": "Delivery",
+        "datatype": "local",
+        "language": "en",
+        "rowNum": 10,
+        "rowList": [10, 20, 30],
+        "multiselect": false,
+        "viewrecords": true,
+        "sortable": {
+            "options": {
+                "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+        },
+        "view_type": "flat",
+        "treeGrid": false,
+        "treeGridModel": "adjacency",
+        "ExpandColumn": "actions-dimensional",
+        "colModel": [
+            {
+                "label": "Quality Parameters",
+                "name": "quality_parameters",
+                "width": 5,
+                "formatter": "edit_link"
+            },
+            {
+                "label": "Spec.",
+                "name": "spec",
+                "width": 3
+            },
+            {
+                "label": "BDN",
+                "name": "bdn",
+                "width": 4
+            },
+            {
+                "label": "Variance",
+                "name": "variance",
+                "width": 2
+            },
+            {
+                "label": "Matched",
+                "name": "matched",
+                "width": 1,
+                "formatter": "delivery_quality_matched"
+            },
+            {
+                "label": "Claim",
+                "name": "claim",
+                "width": 1
+            }
+        ],
+        "rowActions": [],
+        "tenantData": {
+            "view": "flat",
+            "views": ["flat", "dimensional"],
+            "hiddenColumns": [],
+            "columnsOrder": [0, 1, 2, 3, 4, 5, 6],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+        }
+    },
+    "id": 103
+}

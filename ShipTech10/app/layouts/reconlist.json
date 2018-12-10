@@ -1,0 +1,280 @@
+{
+    "layout": {},
+    "elements": {},
+    "clc": {
+        "recon_reconlist": {
+            "table_name": "Recon",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "label": "Order ID",
+                "name": "order.name",
+                "width": 150
+            }, {
+                "label": "Vessel",
+                "name": "vessel.name",
+                "width": 150
+            }, {
+                "label": "Service",
+                "name": "service.name",
+                "width": 150
+            }, {
+                "label": "Location",
+                "name": "location.name",
+                "width": 150
+            }, {
+                "label": "Order Status",
+                "name": "orderStatus.name",
+                "formatter": "delivery_status",
+                "width": 200
+            }, {
+                "label": "Delivery Available",
+                "name": "deliveriesAvailable",
+                "formatter": "yes_no",
+                "width": 150
+            }, {
+                "label": "No. of deliveries",
+                "name": "deliveriesNo",
+                "width": 150
+            }, {
+                "label": "Lab Results Available",
+                "name": "labResultsAvailable",
+                "formatter": "yes_no",
+                "width": 150
+            }, {
+                "label": "No. of lab results",
+                "name": "labResultsNo",
+                "width": 150
+            }, {
+                "label": "Invoice available",
+                "name": "invoicesAvailable",
+                "formatter": "yes_no",
+                "width": 150
+            }, {
+                "label": "No of invoices",
+                "name": "invoicesNo",
+                "width": 150
+            }],
+            "rowActions": [{
+                "label": "Edit",
+                "class": "edit",
+                "url": "order"
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "entity_documents": {
+          "table_name": "Documents List",
+          "datatype": "local",
+          "language": "en",
+          "rowNum": 10,
+          "rowList": [
+            30,
+            20,
+            10
+          ],
+          "multiselect": false,
+          "viewrecords": true,
+          "sortable": {
+            "options": {
+              "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+          },
+          "view_type": "flat",
+          "treeGrid": false,
+          "treeGridModel": "adjacency",
+          "ExpandColumn": "actions-dimensional",
+          "treedatatype": "json",
+          "loadonce": true,
+          "colModel": [
+            {
+              "label": "Document Name",
+              "name": "name",
+              "width": 150,
+              "formatter": "formGotoDocument"
+            },
+            {
+              "label": "Size",
+              "name": "size",
+              "width": 150
+            },
+            {
+              "label": "Document Type",
+              "name": "documentType.name",
+              "width": 150
+            },
+            {
+              "label": "File Type",
+              "name": "fileType",
+              "width": 150
+            },
+            {
+              "label": "Entity",
+              "name": "entity.name",
+              "width": 150
+            },
+            {
+              "label": "Reference No",
+              "name": "referenceNo",
+              "width": 150
+            },
+            {
+              "label": "Uploaded By",
+              "name": "uploadedBy.name",
+              "width": 150
+            },
+            {
+              "label": "Uploaded On",
+              "name": "uploadedOn",
+              "width": 150
+            },
+            {
+              "label": "Add/View Notes",
+              "name": "notes",
+              "width": 150
+            },
+            {
+              "label": "Verified",
+              "name": "isVerified",
+              "width": 150
+            }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "class": "delete",
+              "url": "?action=delete"
+            }
+          ],
+          "tenantData": {
+            "view": "flat",
+            "views": [
+              "flat",
+              "dimensional"
+            ],
+            "hiddenColumns": [],
+            "columnsOrder": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+          }
+        },
+        "entity_audit_log": {
+          "table_name": "Documents List",
+          "datatype": "local",
+          "language": "en",
+          "rowNum": 10,
+          "rowList": [
+            30,
+            20,
+            10
+          ],
+          "multiselect": false,
+          "viewrecords": true,
+          "sortable": {
+            "options": {
+              "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+          },
+          "view_type": "flat",
+          "treeGrid": false,
+          "treeGridModel": "adjacency",
+          "ExpandColumn": "actions-dimensional",
+          "treedatatype": "json",
+          "loadonce": true,
+          "colModel": [
+            {
+              "label": "Date (UTC)",
+              "name": "date",
+              "width": 150
+            },
+            {
+              "label": "Transaction",
+              "name": "transaction",
+              "width": 150
+            },
+            {
+              "label": "Transaction Type",
+              "name": "transactionType",
+              "width": 150
+            },
+            {
+              "label": "Field Name",
+              "name": "fieldName",
+              "width": 150
+            },
+            {
+              "label": "Old Value",
+              "name": "oldValue",
+              "width": 150
+            },
+            {
+              "label": "New Value",
+              "name": "newValue",
+              "width": 150
+            },
+            {
+              "label": "User",
+              "name": "modifiedBy.name",
+              "width": 150
+            },
+            {
+              "label": "User IP Address",
+              "name": "userip",
+              "width": 150
+            }
+          ],
+          "rowActions": [],
+          "tenantData": {
+            "view": "flat",
+            "views": [
+              "flat",
+              "dimensional"
+            ],
+            "hiddenColumns": [],
+            "columnsOrder": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+          }
+        }
+    },
+    "id": 111
+}

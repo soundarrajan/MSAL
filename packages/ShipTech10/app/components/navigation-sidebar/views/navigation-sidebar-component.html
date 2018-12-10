@@ -1,0 +1,1353 @@
+<!--
+    BEGIN SIDEBAR
+-->
+<div class="page-sidebar navbar-collapse collapse">
+    <span class="menu-title">
+        MENU
+    </span>
+    <!-- BEGIN SIDEBAR MENU -->
+    <ul class="page-sidebar-menu  " data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
+        <li class="nav-item">
+            <a class="nav-link nav-toggle" href="#/masters">
+                <span class="">
+                    Masters
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu ">
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Additional cost
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/additionalcost"> -->
+                            <a ng-click="openInNewTab('url','/masters/additionalcost')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Additional cost List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/additionalcost/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/additionalcost/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New additional cost
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Agreement type
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/agreementtype"> -->
+                            <a ng-click="openInNewTab('url','/masters/agreementtype')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Agreement type List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/agreementtype/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/agreementtype/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New agreement type
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Barge
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/barge"> -->
+                            <a ng-click="openInNewTab('url','/masters/barge')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Barge List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/barge/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/barge/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New barge
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Buyer
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/buyer"> -->
+                            <a ng-click="openInNewTab('url','/masters/buyer')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Buyer List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/buyer/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/buyer/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New buyer
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Calendar
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/calendar"> -->
+                            <a ng-click="openInNewTab('url','/masters/calendar')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Calendar List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/calendar/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/calendar/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New calendar
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Claim Type
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/claimtype"> -->
+                            <a ng-click="openInNewTab('url','/masters/claimtype')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Claim Type List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/claimtype/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/claimtype/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New claim type
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            <!-- Company -->
+                            {{tenantSettings.companyDisplayName.name}}
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/{{tenantSettings.companyDisplayName.name.toLowerCase()}}"> -->
+                            <a ng-click="openInNewTab('company','')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    {{tenantSettings.companyDisplayName.name}} List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+
+                            <!-- <a class="nav-link " href="#/masters/{{tenantSettings.companyDisplayName.name.toLowerCase()}}/edit/"> -->
+                            <a ng-click="openInNewTab('company', '/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New {{tenantSettings.companyDisplayName.name}}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Contact type
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/contacttype"> -->
+                            <a ng-click="openInNewTab('url','/masters/contacttype')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Contact type List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/contacttype/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/contacttype/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New contact type
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Counterparty
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/counterparty"> -->
+                            <a ng-click="openInNewTab('url','/masters/counterparty')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Counterparty List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/counterparty/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/counterparty/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Counterparty
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Country
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/country"> -->
+                            <a ng-click="openInNewTab('url','/masters/country')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Country List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/country/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/country/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New country
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Currency
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/currency"> -->
+                            <a ng-click="openInNewTab('url','/masters/currency')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Currency List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/currency/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/currency/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New currency
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Delivery option
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/deliveryoption"> -->
+                            <a ng-click="openInNewTab('url','/masters/deliveryoption')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Delivery option List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/deliveryoption/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/deliveryoption/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New delivery option
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Document type
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/documenttype"> -->
+                            <a ng-click="openInNewTab('url','/masters/documenttype')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Document type List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/documenttype/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/documenttype/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New document type
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Email Logs
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/emaillogs"> -->
+                            <a ng-click="openInNewTab('url','/masters/emaillogs')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Email Logs
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Event
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/event"> -->
+                            <a ng-click="openInNewTab('url','/masters/event')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Event List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/event/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/event/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New event
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Exchange rate
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/exchangerate"> -->
+                            <a ng-click="openInNewTab('url','/masters/exchangerate')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Exchange rate List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/exchangerate/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/exchangerate/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New exchange rate
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Formula
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/formula"> -->
+                            <a ng-click="openInNewTab('url','/masters/formula')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Formula List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/formula/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/formula/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New formula
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Incoterms
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/incoterms"> -->
+                            <a ng-click="openInNewTab('url','/masters/incoterms')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Incoterms List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/incoterms/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/incoterms/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New incoterms
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Location
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/location"> -->
+                            <a ng-click="openInNewTab('url','/masters/location')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Location List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/location/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/location/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Location
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Market instrument
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/marketinstrument"> -->
+                            <a ng-click="openInNewTab('url','/masters/marketinstrument')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Market instrument List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/marketinstrument/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/marketinstrument/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New market instrument
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Payment term
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/paymentterm"> -->
+                            <a ng-click="openInNewTab('url','/masters/paymentterm')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Payment term List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/paymentterm/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/paymentterm/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New payment term
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Period
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/period"> -->
+                            <a ng-click="openInNewTab('url','/masters/period')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Period List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/period/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/period/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New period
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Price master
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/price"> -->
+                            <a ng-click="openInNewTab('url','/masters/price')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Price List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/price/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/price/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New price
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Price type
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/pricetype"> -->
+                            <a ng-click="openInNewTab('url','/masters/pricetype')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Price type List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/pricetype/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/pricetype/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Price type
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Product
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/product"> -->
+                            <a ng-click="openInNewTab('url','/masters/product')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Product List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/product/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/product/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New product
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            <!-- Service -->
+                            {{tenantSettings.serviceDisplayName.name}}
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/{{tenantSettings.serviceDisplayName.name.toLowerCase()}}"> -->
+                            <a ng-click="openInNewTab('service','')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    {{tenantSettings.serviceDisplayName.name}} List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/{{tenantSettings.serviceDisplayName.name.toLowerCase()}}/edit/"> -->
+                            <a ng-click="openInNewTab('service','/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New {{tenantSettings.serviceDisplayName.name.toLowerCase()}}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Spec group
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/specgroup"> -->
+                            <a ng-click="openInNewTab('url','/masters/specgroup')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Spec group List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/specgroup/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/specgroup/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Spec group
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Spec parameter
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/specparameter"> -->
+                            <a ng-click="openInNewTab('url','/masters/specparameter')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Spec parameter List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/specparameter/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/specparameter/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Spec parameter
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Status
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/status"> -->
+                            <a ng-click="openInNewTab('url','/masters/status')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Status List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/status/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/status/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New status
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Strategy
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/strategy"> -->
+                            <a ng-click="openInNewTab('url','/masters/strategy')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Strategy List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/strategy/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/strategy/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New strategy
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            System instrument
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/systeminstrument"> -->
+                            <a ng-click="openInNewTab('url','/masters/systeminstrument')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    System instrument List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/systeminstrument/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/systeminstrument/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New system instrument
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            UOM
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/uom"> -->
+                            <a ng-click="openInNewTab('url','/masters/uom')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    UOM List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/uom/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/uom/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New UOM
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Vessel
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/vessel"> -->
+                            <a ng-click="openInNewTab('url','/masters/vessel')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Vessel List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/vessel/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/vessel/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New vessel
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Vessel type
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/vesseltype"> -->
+                            <a ng-click="openInNewTab('url','/masters/vesseltype')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Vessel type List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/masters/vesseltype/edit/"> -->
+                            <a ng-click="openInNewTab('url','/masters/vesseltype/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New vessel type
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a  class="nav-link nav-toggle" href="">
+                <span class="">
+                    Procurement
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                    <a class="nav-toggle nav-link" href="">
+                        <span class="">
+                            Schedule Dashboard
+                        </span>
+                        <i class="fa fa-angle-right pull-right "></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <a ng-click="openInNewTab('state','DASHBOARD_CALENDAR')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Schedule Dashboard Calendar
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a ng-click="openInNewTab('url','/schedule-dashboard-table')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Schedule Dashboard Table
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link  nav-toggle" href="">
+                        <span class="">
+                            Request
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="/#/all-requests-table"> -->
+                            <a ng-click="openInNewTab('url','/all-requests-table')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Request List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a  class="nav-link " href="/#/new-request/"> -->
+                            <a ng-click="openInNewTab('url','/new-request')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Request
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a  class="nav-link  nav-toggle" href="">
+                        <span class="">
+                            Order
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a  class="nav-link " href="/#/order-list"> -->
+                            <a  ng-click="openInNewTab('url','/order-list')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Order List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a  class="nav-link " href="/#/new-order"> -->
+                            <a  ng-click="openInNewTab('url','/new-order')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Order
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a  class="nav-link " href="/#/sap-export"> -->
+                            <a  ng-click="openInNewTab('url','/sap-export')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    SAP Export
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a  class="nav-link " href="/#/contract-planning/"> -->
+                    <a  ng-click="openInNewTab('url','/contract-planning/')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Contract Planning
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-toggle" >
+                <span class="">
+                    Contract
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/contracts/contract"> -->
+                    <a ng-click="openInNewTab('url','/contracts/contract')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Contract list
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/contracts/contract/edit/"> -->
+                    <a  ng-click="openInNewTab('url','/contracts/contract/edit/')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            New contract
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+             <a class="nav-link nav-toggle">  <!-- href="#/delivery" -->
+                <span class="">
+                    Delivery
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item ">
+                    <!-- <a class="nav-link " href="#/delivery/ordersdelivery"> -->
+                    <a ng-click="openInNewTab('url','/delivery/ordersdelivery')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Orders to be delivered
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/delivery/delivery/edit/"> -->
+                    <a ng-click="openInNewTab('url','/delivery/delivery/edit/')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            New delivery
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/delivery/delivery"> -->
+                    <a ng-click="openInNewTab('url','/delivery/delivery')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Delivery List
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/delivery/deliveriestobeverified"> -->
+                    <a ng-click="openInNewTab('url','/delivery/deliveriestobeverified')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Deliveries to be verified
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-toggle" > <!-- href="#/labs" -->
+                <span class="">
+                    Labs
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/labs/labresult"> -->
+                    <a ng-click="openInNewTab('url','/labs/labresult')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Lab results list
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/labs/labresult/edit/"> -->
+                    <a  ng-click="openInNewTab('url','/labs/labresult/edit/')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            New lab result
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-toggle" >  <!-- href="#/claims/claim" -->
+                <span class="">
+                    Claims
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link" href="#/claims/claim"> -->
+                    <a ng-click="openInNewTab('url','/claims/claim')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Claims list
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/claims/claim/edit/"> -->
+                    <a ng-click="openInNewTab('url','/claims/claim/edit/')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            New claim
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+             <a class="nav-link nav-toggle">  <!--href="#/invoices" -->
+                <span class="">
+                    Invoices
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/invoices/deliveries"> -->
+                    <a ng-click="openInNewTab('url','/invoices/deliveries')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            {{ translateLabel('navigation.INVOICES_DELIVERIES_LIST') }}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/invoices/claims"> -->
+                    <a ng-click="openInNewTab('url','/invoices/claims')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Claims list
+                        </span>
+                        <!-- <i class="fa fa-angle-right pull-right"></i> -->
+                    </a>
+                    <!-- <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <a class="nav-link" href="#/invoices/claims">
+                                <span class="">Claims list</span>
+                            </a>
+                        </li>
+                    </ul> -->
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/invoices/invoice"> -->
+                    <a ng-click="openInNewTab('url','/invoices/invoice')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Invoices list
+                        </span>
+                        <!-- <i class="fa fa-angle-right pull-right"></i> -->
+                    </a>
+                    <!-- <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <a class="nav-link" href="#/invoices/invoice">
+                                <span class="">Invoices list</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a class="nav-link" href="#/invoices/invoice/edit/">
+                                <span class="">New invoice</span>
+                            </a>
+                        </li>
+                    </ul> -->
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/invoices/complete_view"> -->
+                    <a ng-click="openInNewTab('url','/invoices/complete_view')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Complete view
+                        </span>
+                    </a>
+                </li>
+                <!-- <li class="nav-item  ">
+                    <a class="nav-link " href="#/invoices/filters">
+                        <span class="">Filters</span>
+                    </a>
+                </li> -->
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/invoices/treasuryreport"> -->
+                    <a ng-click="openInNewTab('url','/invoices/treasuryreport')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Treasury report
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+             <a class="nav-link nav-toggle">  <!-- href="#/recon" -->
+                <span class="">
+                    Recon
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/recon/reconlist"> -->
+                    <a ng-click="openInNewTab('url','/recon/reconlist')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Recon list
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+             <a class="nav-link nav-toggle" > <!-- href="#/admin" -->
+                <span class="">
+                    Admin
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item  ">
+                     <a class="nav-link nav-toggle"> <!-- href="" -->
+                        <span class="">
+                            Users list
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/admin/users"> -->
+                            <a ng-click="openInNewTab('url','/admin/users')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Users List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/admin/users/edit/"> -->
+                            <a ng-click="openInNewTab('url','/admin/users/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New user
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle" href="">
+                        <span class="">
+                            Roles list
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/admin/role"> -->
+                            <a ng-click="openInNewTab('url','/admin/role')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Roles List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/admin/role/edit/"> -->
+                            <a ng-click="openInNewTab('url','/admin/role/edit/')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    New Role
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link" href="#/admin/configuration/edit/1"> -->
+                    <a ng-click="openInNewTab('url','/admin/configuration/edit/1')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Configuration
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <!-- <a class="nav-link " href="#/admin/sellerrating/edit/"> -->
+                    <a ng-click="openInNewTab('url','/admin/sellerrating/edit/')" class="nav-link " href="javascript:;">
+                        <span class="">
+                            Seller Rating
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                     <a class="nav-link nav-toggle"> <!-- href="#/alerts" -->
+                        <span class="">
+                            Alerts
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <!--<li class="nav-item  ">
+                            <a class="nav-link nav-toggle" href="">
+                                <span class="">
+                                    Alerts list
+                                </span>
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </a>
+                            <ul class="sub-menu">-->
+                        <!-- <li class="nav-item  ">
+                            <a class="nav-link " href="#/alerts/alerts_list">
+                                <span class="">Alerts list</span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item  ">
+                            <!-- <a class="nav-link " href="#/alerts"> -->
+                            <a ng-click="openInNewTab('url','/alerts')" class="nav-link " href="javascript:;">
+                                <span class="">
+                                    Alerts list
+                                </span>
+                            </a>
+                        </li>
+                        <!--</ul>
+                        </li>-->
+                        <!--<li class="nav-item  ">
+                            <a class="nav-link " href="#/recon/quantity_recon">
+                                <span class="">Quantity reconciliation</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a class="nav-link " href="#/recon/quality_recon">
+                                <span class="">Quality reconciliation</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a class="nav-link " href="#/recon/price_cost_recon">
+                                <span class="">Price and cost reconciliation</span>
+                            </a>
+                        </li>-->
+                    </ul>
+                </li>
+            </ul>
+        </li>
+       <li class="nav-item">
+            <!-- <a class="nav-link nav-toggle" href="#/reports"> -->
+            <a ng-click="openInNewTab('url','/reports')" class="nav-link " href="javascript:;">
+                <span class="">
+                    Reports
+                </span>
+            </a>
+        </li>
+    </ul>
+    <!-- END SIDEBAR MENU -->
+</div>
+<!-- END SIDEBAR -->

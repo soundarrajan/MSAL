@@ -1,0 +1,102 @@
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="letterOfProtest" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.LETTER_OF_PROTEST' | translate }}
+            </label>
+            <div class="input-group form_input form_input_letterOfProtest">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id" id="letterOfProtest" ng-model="formValues.feedback.hasLetterOfProtest"  ></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="deliveredAsScheduled" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.DELIVERED_AS_SCHEDULED' | translate }}
+            </label>
+            <div class="input-group form_input form_input_deliveredAsScheduled">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id" id="deliveredAsScheduled" ng-model="formValues.feedback.deliveredAsScheduled"  ></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="requestQtyFullyDelivered" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.REQUESTED_QTY_FULLY_DELIVERED' | translate }}
+            </label>
+            <div class="input-group form_input form_input_requestQtyFullyDelivered">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id" id="requestQtyFullyDelivered" ng-model="formValues.feedback.requestedQuantityFullyDelivered"  ></select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row margin-top-10">
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="filterClogging" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.FILTER_CLOGGING' | translate }}
+            </label>
+            <div class="input-group form_input form_input_filterClogging">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id" id="filterClogging" ng-model="formValues.feedback.filterClogging" ></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="purifierProblems" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.PURIFIER_PROBLEMS' | translate }}
+            </label>
+            <div class="input-group form_input form_input_purifierProblems">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id" id="purifierProblems" ng-model="formValues.feedback.purifierProblems" ></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="combustionProblems" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.COMBUSTION_PROBLEMS' | translate }}
+            </label>
+            <div class="input-group form_input form_input_combustionProblems">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id" id="combustionProblems" ng-model="formValues.feedback.combustionProblem" ></select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <span class="satisfactionLevel">{{ CM.app_id + '.SATISFACTION_LEVEL' | translate }}</span>
+    </div>
+</div>
+<div class="row margin-top-10">
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="agentCoordination" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.AGENT_COORDINATION' | translate }}
+            </label>
+            <div class="input-group form_input form_input_agentCoordination">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.SatisfactionLevel track by item.id" id="agentCoordination" ng-model="formValues.feedback.agentCoordination" ></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="bunkerOperator" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.BUNKER_OPERATOR' | translate }}
+            </label>
+            <div class="input-group form_input form_input_bunkerOperator">
+                <select class="form-control bs-select changeIT"  ng-options="item as item.name for item in CM.listsCache.SatisfactionLevel track by item.id" id="bunkerOperator" ng-model="formValues.feedback.bunkerOperator" ></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label for="surveyor" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.SURVEYOR' | translate }}
+            </label>
+            <div class="input-group form_input form_input_surveyor">
+                <select class="form-control bs-select changeIT"  ng-options="item as item.name for item in CM.listsCache.SatisfactionLevel track by item.id" id="surveyor" ng-model="formValues.feedback.surveyor" ></select>
+            </div>
+        </div>
+    </div>
+</div>
+

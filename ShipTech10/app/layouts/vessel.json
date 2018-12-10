@@ -1,0 +1,1867 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+                        "clc_id": "masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }],
+                    "Active": true
+                }
+            },
+            "entity_emaillog": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "TransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Active": false,
+                        "Unique_ID": "name",
+                        "Name": "Vessel",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "VESSEL",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "licenseKey",
+                        "Name": "LicenseKey",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "LICENSE_KEY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "licenses"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "displayName",
+                        "Name": "DisplayName",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "DISPLAY_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "code",
+                        "Name": "VesselCode",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "VESSEL_CODE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "imoNo",
+                        "Name": "IMONo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "IMO_NO",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "vesselFlagCountry",
+                        "Name": "VesselFlag",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "clc_id": "masters_countrylist",
+                        "Label": "VESSEL_FLAG",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Country"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "buyer",
+                        "Name": "Buyer",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "BUYER",
+                        "clc_id": "masters_buyerlist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Buyer"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "operatingCompany",
+                        "Name": "OperatingCompany",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "OPERATING_COMPANY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "OperatingCompany",
+                        "clc_id": "masters_companylist"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "email",
+                        "Name": "Email",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "defaultFuelOilProduct",
+                        "Name": "DefaultFuelOil",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "clc_id": "masters_productlist",
+                        "Label": "DEFAULT_FUEL_OIL",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Product"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "fuelOilSpecGroup",
+                        "Name": "FuelOilSpec",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "FUEL_OIL_SPEC",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": "formValues.defaultFuelOilProduct.id",
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "specGroup",
+                        "clc_id": "masters_specgrouplist",
+                        "Filter": [{
+                            "ColumnName": "ProductId",
+                            "ValueFrom": "defaultFuelOilProduct.id",
+                            "Value": 0
+                        }]
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "defaultService",
+                        "Name": "DefaultService",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "clc_id": "masters_servicelist",
+                        "Label": "DEFAULT_SERVICE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Service"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "defaultDistillateProduct",
+                        "Name": "DefaultDistillate",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "clc_id": "masters_productlist",
+                        "Label": "DEFAULT_DISTILLATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Product"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "distillateSpecGroup",
+                        "Name": "DistillateSpec",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "DISTILLATE_SPEC",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": "formValues.defaultDistillateProduct.id",
+                        "Hidden": false,
+                        "clc_id": "masters_specgrouplist",
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "specGroup",
+                        "Filter": [{
+                            "ColumnName": "ProductId",
+                            "ValueFrom": "defaultDistillateProduct.id",
+                            "Value": 0
+                        }]
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "comments",
+                        "Name": "Comments",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "COMMENTS",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }]
+                },
+                "Chartered Info": {
+                    "id": "Chartered Info",
+                    "name": "Chartered Info",
+                    "children": [{
+                        "Active": false,
+                        "Unique_ID": "vesselOwnership",
+                        "Name": "VesselOwnership",
+                        "Type": "radio",
+                        "Group": "Chartered Info",
+                        "Label": "VESSEL_OWNERSHIP",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": true,
+                        "masterSource": "VesselOwnership"
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "chartererName",
+                        "Name": "ChartererName",
+                        "Type": "text",
+                        "Group": "Chartered Info",
+                        "Label": "CHARTERER_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "delivery",
+                        "Name": "DeliveryDate",
+                        "Type": "date",
+                        "Group": "Chartered Info",
+                        "Label": "DELIVERY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "expiry",
+                        "Name": "ExpiryDate",
+                        "Type": "date",
+                        "Group": "Chartered Info",
+                        "Label": "EXPIRY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "earliestRedelivery",
+                        "Name": "EarliestRedelieveryDate",
+                        "Type": "date",
+                        "Group": "Chartered Info",
+                        "Label": "EARLIEST_REDELIVERY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "estimatedRedelivery",
+                        "Name": "EstimatedRedelieveryDate",
+                        "Type": "date",
+                        "Group": "Chartered Info",
+                        "Label": "ESTIMATED_REDELIVERY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "latestRedelivery",
+                        "Name": "LatestRedelieveryDate",
+                        "Type": "date",
+                        "Group": "Chartered Info",
+                        "Label": "LATEST_REDELIVERY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false
+                    }, {
+                        "Active": false,
+                        "Unique_ID": "redeliveryLocation",
+                        "Name": "RedelieveryPort",
+                        "Type": "simpleLookup",
+                        "Group": "Chartered Info",
+                        "clc_id": "masters_locationlist",
+                        "Label": "REDELIVERY_PORT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "masterSource": "Location",
+                        "LastOnRow": true
+                    }]
+                },
+                "VesselTechnicalDetails": {
+                    "id": "VesselTechnicalDetails",
+                    "name": "VesselTechnicalDetails",
+                    "isTab": true,
+                    "children": [{
+                        "Unique_ID": "mainEngine",
+                        "Name": "MainEngine",
+                        "Type": "text",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "MAIN_ENGINE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "teuNominal",
+                        "Name": "TEUnominal",
+                        "Type": "text",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "TEU_NOMINAL",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "vesselType",
+                        "Name": "VesselType",
+                        "Type": "simpleLookup",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "VESSEL_TYPE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "masterSource": "VesselType",
+                        "clc_id": "masters_vesseltypelist"
+                    }, {
+                        "Unique_ID": "isFlowMeterAvailable",
+                        "Name": "FlowMeterAvailable",
+                        "Type": "checkbox",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "FLOW_METER_AVAILABLE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "options": [{
+                            "FlowMeterAvailable": "Flow Meter Available"
+                        }]
+                    }, {
+                        "Unique_ID": "pumpingRate",
+                        "Name": "PumpingRate",
+                        "Type": "text",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "PUMPING_RATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "averageSpeed",
+                        "Name": "AverageSpeed",
+                        "Type": "text",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "AVERAGE_SPEED",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "averageDailyConsumption",
+                        "Name": "AverageDailyConsumption",
+                        "Type": "text",
+                        "Group": "VesselTechnicalDetails",
+                        "Label": "AVERAGE_DAILY_CONSUMPTION",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }],
+                    "Active": true
+                },
+                "VesselTankDetails": {
+                    "id": "VesselTankDetails",
+                    "name": "VesselTankDetails",
+                    "isTab": true,
+                    "children": [{
+                        "Unique_ID": "VesselTankDetailsCLC",
+                        "Name": "VesselTankDetailsCLC",
+                        "Type": "CLC",
+                        "Group": "VesselTankDetails",
+                        "Label": "VESSEL_TANK_DETAILS_CLC",
+                        "clc_id": "tanks",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "temp.tanks.name",
+                        "Name": "TankName",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "TANK_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "temp.tanks.tankCategory",
+                        "Name": "TankCategory",
+                        "Type": "dropdown",
+                        "Group": "VesselTankDetails",
+                        "Label": "TANK_CATEGORY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "TankCategory",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "temp.tanks.capacity",
+                        "Name": "Capacity",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "CAPACITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "temp.tanks.product",
+                        "Name": "Product",
+                        "Type": "simpleLookup",
+                        "Group": "VesselTankDetails",
+                        "clc_id": "masters_productlist",
+                        "Label": "PRODUCT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Product",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "temp.tanks.uom",
+                        "Name": "UOM",
+                        "Type": "simpleLookup",
+                        "Group": "VesselTankDetails",
+                        "Label": "UOM",
+                        "clc_id": "masters_uomlist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Uom",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "temp.tanks.safeFillCapacity",
+                        "Name": "SafeFillCapacity",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "SAFE_FILL_CAPACITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "temp.tanks.unpumpableQuantity",
+                        "Name": "UnpumpableQuantity",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "UNPUMPABLE_QUANTITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "temp.tanks.rob",
+                        "Name": "ROB",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "ROB",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "temp.tanks.minimumCapacity",
+                        "Name": "MinimumCapacity",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "MINIMUM_CAPACITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "temp.tanks.usableCapacity",
+                        "Name": "UsableCapacity",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "USABLE_CAPACITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }, {
+                        "Unique_ID": "temp.tanks.availableCapacity",
+                        "Name": "AvailableCapacity",
+                        "Type": "text",
+                        "Group": "VesselTankDetails",
+                        "Label": "AVAILABLE_CAPACITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "Pattern": "decimalNumber"
+                    }],
+                    "Active": true
+                },
+                "VesselKPI": {
+                    "id": "VesselKPI",
+                    "name": "VesselKPI",
+                    "isTab": true,
+                    "children": [{
+                        "Unique_ID": "kpis",
+                        "Name": "VesselKPI",
+                        "Type": "CLC",
+                        "clc_id": "kpis",
+                        "App": "clcindlc",
+                        "Screen": "vesselKPI",
+                        "Group": "VesselKPI",
+                        "Label": "VESSELKPI",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }]
+                },
+                "VesselVoyage": {
+                    "id": "VesselVoyage",
+                    "name": "VesselVoyage",
+                    "isTab": true,
+                    "children": [{
+                        "Unique_ID": "voyages[0].voyageUpdated",
+                        "Name": "VoyageUpdatedDate",
+                        "Type": "date",
+                        "Group": "VesselVoyage",
+                        "Label": "VOYAGE_UPDATED_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "disabled": true
+                    }, {
+                        "Unique_ID": "voyages",
+                        "Name": "VesselVoyage",
+                        "Type": "CLC",
+                        "clc_id": "voyages",
+                        "App": "clcindlc",
+                        "Screen": "vesselvoyage",
+                        "Group": "VesselVoyage",
+                        "Label": "VESSEL_VOYAGE",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }]
+                }
+            }
+        }
+    },
+    "elements": [{
+        "requiredFields": [{
+            "Unique_ID": "name",
+            "Name": "Vessel",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Vessel",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "displayName",
+            "Name": "DisplayName",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Display Name",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "licenseKey.id",
+            "Name": "LicenseKey",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "License Key",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "admin[\"licenses\"]"
+        }, {
+            "Unique_ID": "imoNo",
+            "Name": "IMONo.",
+            "Type": "text",
+            "Group": "General",
+            "Label": "IMO No.",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "code",
+            "Name": "VesselCode",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Vessel Code",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "vesselFlagCountry.id",
+            "Name": "VesselFlag",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Vessel Flag",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "countrylist"
+        }, {
+            "Unique_ID": "email",
+            "Name": "Email",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Email",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "buyer.id",
+            "Name": "Buyer",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Buyer",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "buyerlist"
+        }, {
+            "Unique_ID": "operatingCompany.id",
+            "Name": "OperatingCompany",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Operating Company",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "company[\"Operating Company\"]"
+        }, {
+            "Unique_ID": "defaultService",
+            "Name": "DefaultService",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Default Service",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "servicelist"
+        }, {
+            "Unique_ID": "defaultFuelOilProduct",
+            "Name": "DefaultFuelOil",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Default   Fuel Oil",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "productlist"
+        }, {
+            "Unique_ID": "fuelOilSpecGroup",
+            "Name": "FuelOilSpec",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Fuel Oil Spec",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "specgrouplist"
+        }, {
+            "Unique_ID": "defaultDistillateProduct",
+            "Name": "DefaultDistillate",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Default Distillate",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "productlist"
+        }, {
+            "Unique_ID": "distillateSpecGroup",
+            "Name": "DistillateSpec",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Distillate Spec",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "specgrouplist"
+        }, {
+            "Unique_ID": "comments",
+            "Name": "Comments",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Comments",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "vesselOwnership.id",
+            "Name": "VesselOwnership",
+            "Type": "radio",
+            "Group": "Chartered Info",
+            "Label": "Vessel Ownership",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "owned": "Owned",
+                "chartered": "Charted"
+            }]
+        }, {
+            "Unique_ID": "chartererName",
+            "Name": "ChartererName",
+            "Type": "text",
+            "Group": "Chartered Info",
+            "Label": "Charterer Name",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "delivery",
+            "Name": "DeliveryDate",
+            "Type": "date",
+            "Group": "Chartered Info",
+            "Label": "Delivery Date",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "expiry",
+            "Name": "ExpiryDate",
+            "Type": "date",
+            "Group": "Chartered Info",
+            "Label": "Expiry Date",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "earliestRedelievery",
+            "Name": "EarliestRedelieveryDate",
+            "Type": "date",
+            "Group": "Chartered Info",
+            "Label": "Earliest Redelievery Date",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "estimatedRedelievery",
+            "Name": "EstimatedRedelieveryDate",
+            "Type": "date",
+            "Group": "Chartered Info",
+            "Label": "Estimated Redelievery Date",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "latestRedelievery",
+            "Name": "LatestRedelieveryDate",
+            "Type": "date",
+            "Group": "Chartered Info",
+            "Label": "Latest Redelievery Date",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "redelieveryLocation",
+            "Name": "RedelieveryPort",
+            "Type": "simpleLookup",
+            "Group": "Chartered Info",
+            "Label": "Redelievery Port",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "masterSource": "locationlist",
+            "LastOnRow": false
+        }],
+        "VesselTechnicalDetails": [{
+            "Unique_ID": "mainEngine",
+            "Name": "MainEngine",
+            "Type": "text",
+            "Group": "VesselTechnicalDetails",
+            "Label": "Main Engine",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "teuNominal",
+            "Name": "TEUnominal",
+            "Type": "text",
+            "Group": "VesselTechnicalDetails",
+            "Label": "TEU Nominal",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "vesselType.id",
+            "Name": "VesselType",
+            "Type": "simpleLookup",
+            "Group": "VesselTechnicalDetails",
+            "Label": "Vessel Type",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "vesselTYpe"
+        }, {
+            "Unique_ID": "isFlowMeterAvailable",
+            "Name": "FlowMeterAvailable",
+            "Type": "checkbox",
+            "Group": "VesselTechnicalDetails",
+            "Label": "Flow Meter Available",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "FlowMeterAvailable": "Flow Meter Available"
+            }]
+        }, {
+            "Unique_ID": "pumpingRate",
+            "Name": "PumpingRate",
+            "Type": "text",
+            "Group": "VesselTechnicalDetails",
+            "Label": "Pumping Rate",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "averageSpeed",
+            "Name": "AverageSpeed",
+            "Type": "text",
+            "Group": "VesselTechnicalDetails",
+            "Label": "Average Speed",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "averageDailyConsumption",
+            "Name": "AverageDailyConsumption",
+            "Type": "text",
+            "Group": "VesselTechnicalDetails",
+            "Label": "Average Daily Consumption",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "VesselTankDetails": [{
+            "Unique_ID": "tanks[$index].name",
+            "Name": "Tank Name",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Tank Name",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks[$index].tankCategory.id",
+            "Name": "Tank Category",
+            "Type": "dropdown",
+            "Group": "VesselTankDetails",
+            "Label": "Tank Category",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "storageTanks": "Storage tanks",
+                "settlingTanks": "Settling tanks",
+                "serviceTanks": "Service tanks"
+            }]
+        }, {
+            "Unique_ID": "tanks[$index].capacity",
+            "Name": "Capacity",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Capacity",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks[$index].product.id",
+            "Name": "Product",
+            "Type": "simpleLookup",
+            "Group": "VesselTankDetails",
+            "Label": "Product",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "productlist",
+            "Active": false
+        }, {
+            "Unique_ID": "tanks[$index].uom.id",
+            "Name": "UOM",
+            "Type": "simpleLookup",
+            "Group": "VesselTankDetails",
+            "Label": "UOM",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "uomlist",
+            "Active": false
+        }, {
+            "Unique_ID": "tanks[$index].safeFillCapacity",
+            "Name": "Safe Fill Capacity",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Safe Fill Capacity",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks.unpumpableQuantity",
+            "Name": "Unpumpable Quantity",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Unpumpable Quantity",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks.rob",
+            "Name": "ROB",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "ROB",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks[$index].minimumCapacity",
+            "Name": "Minimum Capacity",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Minimum Capacity",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks[$index].usableCapacity",
+            "Name": "Usable Capacity",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Usable Capacity",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "tanks[$index].availableCapacity",
+            "Name": "Available Capacity",
+            "Type": "text",
+            "Group": "VesselTankDetails",
+            "Label": "Available Capacity",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "VesselKPI": [{
+            "Unique_ID": "kpis",
+            "Name": "VesselKPI",
+            "Type": "CLC",
+            "App": "clcindlc",
+            "Screen": "vesselKPI",
+            "Group": "VesselKPI",
+            "Label": "VesselKPI",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "VesselVoyage": [{
+            "Unique_ID": "voyages[$index].voyageUpdated",
+            "Name": "VoyageUpdatedDate",
+            "Type": "date",
+            "App": "clcindlc",
+            "Screen": "VesselVoyage",
+            "Group": "VoyageUpdatedDate",
+            "Label": "VoyageUpdatedDate",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "voyages[$index].vessel.id",
+            "Name": "VesselVoyage",
+            "Type": "CLC",
+            "App": "clcindlc",
+            "Screen": "vesselvoyage",
+            "Group": "VesselVoyage",
+            "Label": "VesselVoyage",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "customFields": [{
+            "Unique_ID": "CustomField1",
+            "Name": "CustomField1",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 1",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField2",
+            "Name": "CustomField2",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 2",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField3",
+            "Name": "CustomField3",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 3",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField4",
+            "Name": "CustomField4",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 4",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField5",
+            "Name": "CustomField5",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 5",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomField6",
+            "Name": "CustomField6",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 6",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }]
+    }],
+    "clc": {},
+    "id": 28
+}

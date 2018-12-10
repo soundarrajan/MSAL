@@ -1,0 +1,1413 @@
+﻿<div class="admin-configuration-screen" ng-init="config_tab = 1">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#general" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 1">
+                {{ 'General' | translate }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#procurement" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 2">
+                {{ 'Procurement' | translate }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#schedule" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 3">
+                {{ 'Schedule' | translate }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#email" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 4">
+                {{ 'Email' | translate }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#delivery" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 5">
+                {{ 'Delivery' | translate }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#invoice" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 6">
+                {{ 'Invoice' | translate }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#contract" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 7">
+                {{ 'Contract' | translate }}
+            </a>
+        </li>
+        <!--         <li role="presentation"><a href="#ftp" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 8">{{'FTP' | translate}}</a></li> -->
+    </ul>
+    <!-- Tab panes -->
+
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="general" ng-show="config_tab == 1">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Authentication
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='options.Culture ? return : CM.getOptions({"Name": "Culture", "Type": "dropdown", "masterSource": "Culture"})'>
+                        <label class="passwordFailedCount_label" for="passwordFailedCount">
+                            {{ CM.app_id + '.PASSWORD_FAILED_COUNT' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="form_input form_input_passwordFailedCount">
+                            <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,100) track by item"
+                                ng-model="formValues.general.authenticationConfiguration.passwordFailedCount"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="passwordValidDays_label" for="passwordValidDays">
+                            {{ CM.app_id + '.PASSWORD_VALID_DAYS' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="form_input form_input_passwordValidDays">
+                            <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,100) track by item"
+                                ng-model="formValues.general.authenticationConfiguration.passwordValidDays"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="accountReleasedMinutes_label" for="accountReleasedMinutes">
+                            {{ CM.app_id + '.ACCOUNT_RELEASED_MINUTES' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="form_input form_input_accountReleasedMinutes">
+                            <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,120) track by item"
+                                ng-model="formValues.general.authenticationConfiguration.accountReleasedMinutes"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Tenant formats
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='options.Culture ? return : CM.getOptions({"Name": "Culture", "Type": "dropdown", "masterSource": "Culture"})'>
+                        <label for="numericFormatCulture" class="simpleLookupLabel">
+                            {{ CM.app_id + '.NUMERIC_FORMAT' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_numericFormatCulture">
+                            <select name="numericFormat" class="form-control bs-select changeIT" id="numericFormatCulture" ng-required="true" ng-options="item as item.name for item in options.Culture track by item.id"
+                                ng-model="formValues.general.tenantFormats.numericFormatCulture"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="dateFormat_label" for="dateFormat">
+                            {{ CM.app_id + '.DATE_FORMAT' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="form_input form_input_dateFormat" ng-init='options.TransactionDate ? return : CM.getOptions({"Name": "TransactionDate", "Type": "dropdown", "masterSource": "TransactionDate"})'>
+                            <select name="dateFormat" class="form-control bs-select changeIT" id="dateFormat" ng-required="true" ng-options="item as item.name for item in options.TransactionDate track by item.id"
+                                ng-model="formValues.general.tenantFormats.dateFormat"></select>
+                            <!-- <input type="text" ng-required="true" class="form-control " name="dateFormat" id="dateFormat" ng-model="formValues.general.tenantFormats.dateFormat"/> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="emailDateFormat_label" for="emailDateFormat">
+                            {{ CM.app_id + '.EMAIL_DATE_FORMAT' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="form_input form_input_emailDateFormat" ng-init='options.EmailDate ? return : CM.getOptions({"Name": "EmailDate", "Type": "dropdown", "masterSource": "EmailDate"})'>
+                            <select name="emailDateFormat" class="form-control bs-select changeIT" id="emailDateFormat" ng-required="true" ng-options="item as item.name for item in options.EmailDate track by item.id"
+                                ng-model="formValues.general.tenantFormats.emailDateFormat"></select>
+                            <!-- <input type="text" ng-required="true" class="form-control " name="emailDateFormat" id="emailDateFormat" ng-model="formValues.general.tenantFormats.emailDateFormat"/> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='options.Timezone ? return : CM.getOptions({"Name": "TimeZone", "Type": "dropdown", "masterSource": "TimeZone"})'>
+                        <label for="timeZone" class="simpleLookupLabel">
+                            {{ CM.app_id + '.TIME_ZONE' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_timeZone">
+                            <select name="timeZone" class="form-control bs-select changeIT" ng-required="true" id="timeZone" ng-options="item as item.name for item in options.TimeZone track by item.id"
+                                ng-model="formValues.general.tenantFormats.timeZone"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="csvDelimiter" class="simpleLookupLabel">
+                            {{ CM.app_id + '.CSV_DELIMITER' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_csvDelimiter" ng-init='options.CsvDelimiter ? return : CM.getOptions({"Name": "CsvDelimiter", "Type": "dropdown", "masterSource": "CsvDelimiter"})'>
+                            <select name="CsvDelimiter" class="form-control bs-select changeIT" id="CsvDelimiter" ng-required="true" ng-options="item as item.name for item in options.CsvDelimiter track by item.id"
+                                ng-model="formValues.general.tenantFormats.csvDelimiter"></select>
+                            <!-- <input type="text" name="csvDelimiter" class="form-control" ng-required="true" id="csvDelimiter"  ng-model="formValues.general.tenantFormats.csvDelimiter"/> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Default Values
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="quantityPrecision" class="simpleLookupLabel">
+                            {{ CM.app_id + '.QUANTITY_PRECISION' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_quantityPrecision">
+                            <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(0,4) track by item"
+                                ng-model="formValues.general.defaultValues.quantityPrecision"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="pricePrecision" class="simpleLookupLabel">
+                            {{ CM.app_id + '.PRICE_PRECISION' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_pricePrecision">
+                            <select name="pricePrecision" class="form-control bs-select changeIT" ng-required="true" id="pricePrecision" ng-options="item as item for item in createRange(0,4) track by item"
+                                ng-model="formValues.general.defaultValues.pricePrecision"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="amountPrecision" class="simpleLookupLabel">
+                            {{ CM.app_id + '.AMOUNT_PRECISION' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_amountPrecision">
+                            <select name="amountPrecision" class="form-control bs-select changeIT" ng-required="true" id="amountPrecision" ng-options="item as item for item in createRange(0,4) track by item"
+                                ng-model="formValues.general.defaultValues.amountPrecision"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'>
+                        <label for="uom" class="formula_quotes_label" class="simpleLookupLabel">
+                            {{ CM.app_id + '.UOM' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_formula_quotes">
+                            <input ng-model="formValues.general.tenantFormats.uom" uib-typeahead="item as item.name for item in options.Uom | filter:{name:$viewValue}"
+                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
+                                typeahead-wait-ms="100" ng-required="true" name="uom" autocomplete="off" />
+                            <span class="input-group-addon" ng-click="triggerModal('general', 'masters_uomlist', 'UOM', 'formValues.general.tenantFormats.uom');"
+                                ng-init="modal = false">
+                                <!-- triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product'); -->
+                                <a   class=" btn default">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="maximumUploadFileSize" class="simpleLookupLabel">
+                            {{ CM.app_id + '.FILE_UPLOAD_MAXIMUM_SIZE' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_maximumUploadFileSize">
+                            <select class="form-control bs-select changeIT" name="maximumUploadFileSize" id="maximumUploadFileSize" ng-required="true"
+                                ng-options="item as item for item in createRange(1,20) track by item" ng-model="formValues.general.defaultValues.maximumUploadFileSize"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "Currency", "Type": "dropdown", "masterSource": "Currency"})'>
+                        <label for="Currency" class="formula_quotes_label" class="simpleLookupLabel">
+                            {{ CM.app_id + '.CURRENCY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_formula_quotes">
+                            <input ng-model="formValues.general.tenantFormats.currency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"
+                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
+                                typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}" autocomplete="off" />
+                            <span class="input-group-addon" ng-click="triggerModal('general', 'masters_currencylist', 'Currency', 'formValues.general.tenantFormats.currency');"
+                                ng-init="modal = false">
+                                <a   class=" btn default">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="quantityPrecision" class="simpleLookupLabel">
+                            {{ CM.app_id + '.DEFAULT_UPLOAD_TIME' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_defaultUploadTime">
+                            <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''" id="timePicker">
+                                <input class="form-control" type="text" id="time" ng-model="formValues.general.defaultValues.defaultUploadTime" ng-required="true"/>
+                                <span class="formatted-date" ng-bind="CM.formatDateTime(formValues.general.defaultValues.defaultUploadTime, tenantSetting.tenantFormats.dateFormat)"></span>
+                                <span class="input-group-btn">
+                                    <button class="btn default date-set" type="button">
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-4" ng-init="formValues.general.defaultValues.uploadHistory='7'">
+                    <div class="form-group row">
+                        <label for="quantityPrecision" class="simpleLookupLabel">
+                            {{ CM.app_id + '.UPLOADED_FILES_HISTORY_TIME' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_uploadHistory">
+                            <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,10) track by item" ng-model="formValues.general.defaultValues.uploadHistory"></select>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="averageSurveyorCost" class="averageSurveyorCost_label">
+                            {{ CM.app_id + '.AVERAGE_SURVEYOR_COST' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_averageSurveyorCost">
+                            <input type="number" name="averageSurveyorCost" class="form-control averageSurveyorCost" ng-model="formValues.general.defaultValues.averageSurveyorCost"
+                                ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+                            <span class="input-group-addon uom_group pseudoSelect">
+                                <select class="bs-select" ng-required="formValues.general.defaultValues.averageSurveyorCost != null && formValues.general.defaultValues.averageSurveyorCost != ''"
+                                    id="" ng-model="formValues.general.defaultValues.averageSurveyorCostCurrency" ng-options="item as item.code for item in options.Currency track by item.id"
+                                    data-width="fit">
+                                    <option></option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+          
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isSSRSReports">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisSSRSReports" id="isSSRSReports" ng-model="formValues.general.defaultValues.isSSRSReports"
+                                    /> {{ CM.app_id + '.SSR_REPORTS' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isEnergyCalculationRequired">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisEnergyCalculationRequired" id="isEnergyCalculationRequired" ng-model="formValues.general.defaultValues.isEnergyCalculationRequired"
+                                    /> {{ CM.app_id + '.IS_ENERGY_CALCULATION_REQUIRED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- {{isEnergyCalculationRequired}} -->
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_includeAverageSurveyorCharge">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosincludeAverageSurveyorCharge" id="inlinecheckincludeAverageSurveyorCharge" ng-model="formValues.general.defaultValues.includeAverageSurveyorCharge"
+                                    /> {{ CM.app_id + '.INCLUDE_AVERAGE_SURVEYOR_CHARGE' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="averageSurveyorCost" class="interestRate_label">
+                            {{ CM.app_id + '.INTEREST_RATE' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_interestRate">
+                            <input type="number" name="interestRate" class="form-control interestRate" ng-model="formValues.general.defaultValues.interestRate"
+                                ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="buyerPaymentTerm" class="simpleLookupLabel">
+                            {{ CM.app_id + '.BUYER_PAYMENT_TERM' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_buyerPaymentTerm">
+                            <select class="form-control bs-select changeIT" name="buyerPaymentTerm" id="buyerPaymentTerm" ng-required="true" ng-options="item as item.name for item in CM.listsCache.PaymentTerm track by item.id"
+                                ng-model="formValues.general.defaultValues.buyerPaymentTerm"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_IsComplexFormulaWeightEnforced">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="IsComplexFormulaWeightEnforced" id="IsComplexFormulaWeightEnforced" ng-model="formValues.general.defaultValues.isComplexFormulaWeightEnforced"
+                                    /> {{ CM.app_id + '.WEIGHT_ENFORCED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <span ng-init="getAgreementTypeIndividualList()"></span>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="defaultSpotAgreementType" class="simpleLookupLabel">
+                            {{ CM.app_id + '.DEFAULT_SPOT_AGREEMENT_TYPE' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_defaultSpotAgreementType">
+                            <select class="form-control bs-select changeIT" name="defaultSpotAgreementType" id="defaultSpotAgreementType" ng-required="true" ng-options="item as item.name for item in spotAgreementTypesList track by item.id"
+                                ng-model="formValues.general.defaultValues.defaultSpotAgreementType"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="defaultContractAgreementType" class="simpleLookupLabel">
+                            {{ CM.app_id + '.DEFAULT_CONTRACT_AGREEMENT_TYPE' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_defaultContractAgreementType">
+                            <select class="form-control bs-select changeIT" name="defaultContractAgreementType" id="defaultContractAgreementType" ng-required="true" ng-options="item as item.name for item in contractAgreementTypesList track by item.id"
+                                ng-model="formValues.general.defaultValues.defaultContractAgreementType"></select>
+                        </div>
+                    </div>
+                </div> 
+
+            </div>
+        	<div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="emailServerType" class="simpleLookupLabel">
+                            {{ CM.app_id + '.EMAIL_SERVER_TYPE' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_emailServerType">
+                            <select class="form-control bs-select changeIT" name="emailServerType" id="emailServerType" ng-required="true" ng-options="item as item.name for item in CM.listsCache.EmailServerTypes track by item.id"
+                                ng-model="formValues.general.defaultValues.emailServerType"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="IntegrationsUrl" class="simpleLookupLabel">
+                            {{ CM.app_id + '.INTEGRATIONS_URL' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_IntegrationsUrl">
+                            <input type="text" class="form-control bs-select changeIT" name="IntegrationsUrl" id="IntegrationsUrl"
+                                ng-model="formValues.general.defaultValues.integrationsUrl">
+                        </div>
+                    </div>
+                </div>                  
+        	</div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Default Names
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="companyDisplayName" class="simpleLookupLabel">
+                            {{ CM.app_id + '.COMPANY_DISPLAY_NAME' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_companyDisplayName">
+                            <select class="form-control bs-select changeIT" name="companyDisplayName" id="companyDisplayName" ng-required="true" ng-options="item as item.name for item in CM.listsCache.CompanyDisplayName track by item.id"
+                                ng-model="formValues.general.companyDisplayName"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="serviceDisplayName" class="simpleLookupLabel">
+                            {{ CM.app_id + '.SERVICE_DISPLAY_NAME' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_serviceDisplayName">
+                            <select class="form-control bs-select changeIT" name="serviceDisplayName" id="serviceDisplayName" ng-required="true" ng-options="item as item.name for item in CM.listsCache.ServiceDisplayName track by item.id"
+                                ng-model="formValues.general.serviceDisplayName"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Editable Email Templates
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="allowEmailEdit" class="mt-checkbox">
+                            <input type="checkbox" name="allowEmailEdit" id="allowEmailEdit" ng-model="formValues.general.allowEmailEdit" /> {{ CM.app_id + '.ALLOW_EMAIL_EDIT' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="isEmailBodyHtml" class="mt-checkbox">
+                            <input type="checkbox" name="isEmailBodyHtml" id="isEmailBodyHtml" ng-model="formValues.general.isEmailBodyHtml" /> {{ CM.app_id + '.EMAI_BODY_HTML' | translate }}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="procurement" ng-show="config_tab == 2">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Request
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isPrerequestEnabled">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisPrerequestEnabled" id="inlinecheckisPrerequestEnabled" ng-model="formValues.procurement.request.isPrerequestEnabled"
+                                    /> {{ CM.app_id + '.ENABLE_PREREQUEST' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "AutoPopulateBuyer", "Type": "dropdown", "masterSource": "AutoPopulateBuyer"})'>
+                        <label for="autoPopulateBuyerInRequest" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.AUTO_POPULATE_BUYER_IN_THE_BASED_ON' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_autoPopulateBuyerInRequest">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.AutoPopulateBuyer track by item.id"
+                                ng-required="true" id="autoPopulateBuyerInRequest" ng-model="formValues.procurement.request.autoPopulateBuyerInRequest"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_IsPreReqEmailAttachment ">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosIsPreReqEmailAttachment " id="IsPreReqEmailAttachment " ng-model="formValues.procurement.request.isPreReqEmailAttachment "
+                                    /> {{ CM.app_id + '.IS_PREREQ_EMAIL_ATTACHMENT ' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_allowAddNewContact">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosallowAddNewContact" id="allowAddNewContact" ng-model="formValues.procurement.request.allowAddNewContact"
+                                    /> {{ CM.app_id + '.ALLOW_ADD_NEW_CONTACT ' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "captureReasonToCancelRequest", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="captureReasonToCancelRequest" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.CAPTURE_REASON_TO_CANCEL_REQUEST' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_captureReasonToCancelRequest">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.captureReasonToCancelRequest track by item.id"
+                                ng-required="true" id="captureReasonToCancelRequest" ng-model="formValues.procurement.request.captureReasonToCancelRequest"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "DeliveryOption", "Type": "dropdown", "masterSource": "DeliveryOption"})'>
+                        <label for="defaultDeliveryOption" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.DEFAULT_DELIVERY_OPTION' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_defaultDeliveryOption">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.DeliveryOption track by item.id"
+                                ng-required="true" id="defaultDeliveryOption" ng-model="formValues.procurement.request.defaultDeliveryOption"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "recentEta", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="recentEta" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.RECENT_ETA' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_recentEta">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.recentEta track by item.id"
+                                ng-required="true" id="recentEta" ng-model="formValues.procurement.request.recentEta"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "etaFreezeStatus", "Type": "dropdown", "masterSource": "listsCache"}, true)'>
+                        <label for="etaFreezeStatus" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.ETA_FREEZE_STATUS' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_recentEta">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.OrderedStatus track by item.id"
+                                ng-required="true" id="etaFreezeStatus" ng-model="formValues.procurement.request.etaFreezeStatus"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "AdminAgentDisplay", "Type": "dropdown", "masterSource": "AdminAgentDisplay"})'>
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.AGENT_DISPLAY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.AdminAgentDisplay track by item.id"
+                                ng-required="true" id="agentDisplay" ng-model="formValues.procurement.request.agentDisplay"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "deliveryWindowDisplay", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.DISPLAY_DELIVERY_WINDOW' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.deliveryWindowDisplay track by item.id"
+                                id="deliveryWindowDisplay" ng-model="formValues.procurement.request.deliveryWindowDisplay"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.DISPLYA_PRODUCT_TYPE_IN_REQUEST' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" id="deliveryWindowDisplay" ng-model="formValues.procurement.request.productTypeInRequest"></select>
+                        </div>
+                    </div>
+                </div>
+                <!-- new fields -->
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.DISPLAY_OF_COMPANY' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DisplayOfCompanyAndService track by item.id"
+                                id="displayOfCompany" ng-model="formValues.procurement.request.displayOfCompany"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.DISPLAY_OF_SERVICE' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.DisplayOfCompanyAndService track by item.id"
+                                id="displayOfService" ng-model="formValues.procurement.request.displayOfService"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.POPULATE_REQUEST_COMMENTS_TO' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.CommentSection track by item.id"
+                                id="PopulateRequestCommentsTo" ng-model="formValues.procurement.request.populateRequestCommentsTo"></select>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Offer
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 ">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
+                        <label for="needValidationOnQuoteByDateExpiry" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.NEED_VALIDATION_ON_QUOTE_BY_DATE_EXPIRY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_needValidationOnQuoteByDateExpiry">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id"
+                                ng-required="true" id="needValidationOnQuoteByDateExpiry" ng-model="formValues.procurement.offer.needValidationOnQuoteByDateExpiry"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
+                        <label for="needSupplierQuoteValidityDateExpiry" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.NEED_SUPLIER_QUOTE_VALIDITY_DATE_EXPIRY_CHECK' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_needSupplierQuoteValidityDateExpiry">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id"
+                                ng-required="true" id="needSupplierQuoteValidityDateExpiry" ng-model="formValues.procurement.offer.needSupplierQuoteValidityDateExpiry"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isSelerPortalNeeded">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisSelerPortalNeeded" id="isSelerPortalNeeded" ng-model="formValues.procurement.offer.isSelerPortalNeeded"
+                                    /> {{ CM.app_id + '.IS_SELLER_PORTAL_NEEDED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isSkipRfqAllowed">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisSkipRfqAllowed" id="isSkipRfqAllowed" ng-model="formValues.procurement.offer.isSkipRfqAllowed"
+                                    /> {{ CM.app_id + '.IS_SKIP_RFQ_ALLOWED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isOfferReviewMandatory">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisOfferReviewMandatory" id="isOfferReviewMandatory" ng-model="formValues.procurement.offer.isOfferReviewMandatory"
+                                    /> {{ CM.app_id + '.IS_OFFER_REVIEW_MANDATORY' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isQuickAddCounterpartyEnabled">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisQuickAddCounterpartyEnabled" id="isQuickAddCounterpartyEnabled" ng-model="formValues.procurement.offer.isQuickAddCounterpartyEnabled"
+                                    /> {{ CM.app_id + '.IS_QUICK_ADD_COUNTERPARTY_ENABLED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isQuoteDateAutoPopulated">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisQuoteDateAutoPopulated" id="isQuoteDateAutoPopulated" ng-model="formValues.procurement.offer.isQuoteDateAutoPopulated"
+                                    /> {{ CM.app_id + '.IS_QUOTE_DATE_AUTO_POPULATED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_IsQuoteByEndDateValidated">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosIsQuoteByEndDateValidated" id="IsQuoteByEndDateValidated" ng-model="formValues.procurement.offer.isQuoteByEndDateValidated"
+                                    /> {{ CM.app_id + '.IS_QUOTE_BY_END_DATE_VALIDATED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="sellerHistoryVisibility" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.SELLER_HISTORY_VISIBILITY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_sellerHistoryVisibility">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id"
+                                ng-required="true" id="sellerHistoryVisibility" ng-model="formValues.procurement.offer.sellerHistoryVisibility"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="priceDetailsDefaultView" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.PRICE_DETAILS_DEFAULT_VIEW' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_priceDetailsDefaultView">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.PanelViewMode track by item.id"
+                                ng-required="true" id="priceDetailsDefaultView" ng-model="formValues.procurement.offer.priceDetailsDefaultView"></select>
+                        </div>
+                    </div>
+                </div>
+                <!--  <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="display" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.DISPLAY_NO_OF_SELLERS' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_display">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.ItemsToDisplay track by item.id" ng-required="true" id="noOfSellersForDisplay" ng-model="formValues.procurement.offer.noOfSellersForDisplay"></select>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="counterpartyCommentsVisibility" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.COUNTERPARTY_COMMENTS_VISIBILITY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_counterpartyCommentsVisibility">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id"
+                                ng-required="true" id="counterpartyCommentsVisibility" ng-model="formValues.procurement.offer.counterpartyCommentsVisibility"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="commentsDefaultView" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.COMMENTS_DEFAULT_VIEW' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_commentsDefaultView">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.ViewMode track by item.id"
+                                ng-required="true" id="commentsDefaultView" ng-model="formValues.procurement.offer.commentsDefaultView"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="bestTcoDefaultView" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.BEST_TCO_DEFAULT_VIEW' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_bestTcoDefaultView">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.PanelViewMode track by item.id"
+                                ng-required="true" id="bestTcoDefaultView" ng-model="formValues.procurement.offer.bestTcoDefaultView"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="noOfCounterpartiesToDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.NO_OF_COUNTERPARTIES_TO_DISPLAY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_noOfCounterpartiesToDisplay" ng-init='CM.getOptions({"Name": "numberOfCounterpartiesToDisplay", "Type": "dropdown", "masterSource": "listsCache"}, true)'>
+                            <select class="form-control bs-select changeIT" ng-options="item for item in options.numberOfCounterpartiesToDisplay" id="noOfCounterpartiesToDisplay"
+                                ng-model="formValues.procurement.offer.numberOfCounterpartiesToDisplay"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="decimal" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.NEGOTIATION_DISPLAY_DECIMAL' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_decimal">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-required="true" id="decimal" ng-model="formValues.procurement.request.negotiationDisplayDecimal"></select>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group row">
+                        <label for="display" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.COUNTERPARTY_TYPE_FILTER' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_display">
+                            <input ng-model="counterpartyTypeFilterItemsInput" uib-typeahead="item as item.name for item in getCounterpartyTypeFilterItems() | filter:{name:$viewValue}"
+                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5"
+                                typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput"
+                                autocomplete="off" />
+                            <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
+                                                                    <a   class=" btn default">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </a>
+                                                                </span> -->
+                            <span class="input-group-addon bg-default" ng-click="addCounterpartyTypeFilterItem(counterpartyTypeFilterItemsInput) ? '' : counterpartyTypeFilterItemsInput = null"
+                                style="border: 1px solid #c5cdda; cursor: pointer">
+                                &nbsp;&nbsp;
+                                <i class="fa fa-plus"></i>
+                                &nbsp;&nbsp;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="bootstrap-tagsinput">
+                        <span class="tag label border-default" style="border: 1px solid; color: black" ng-repeat="(key, value) in formValues.procurement.request.counterpartyTypeFilters">
+                            <a ng-click="formValues.procurement.request.counterpartyTypeFilters.splice(key,1)">
+                                <i class="fa fa-close font-red-thunderbird"></i>
+                            </a>
+                            {{ value.name }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Hide/Unhide Fields
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="custom-hardcoded-table admin">
+                        <table class="table-body" width="100%">
+                            <thead class="table-head">
+                                <tr style="background-color: #fff">
+                                    <td>
+                                        Field
+                                    </td>
+                                    <td>
+                                        Hide
+                                    </td>
+                                    <td>
+                                        Mandatory
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="padding">
+                                        Physical Supplier
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isPhysicalSupplierHidden" ng-click="formValues.procurement.fieldVisibility.isPhysicalSupplierMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isPhysicalSupplierMandatory" ng-click="formValues.procurement.fieldVisibility.isPhysicalSupplierHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Contact
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isSellerContactHidden" ng-click="formValues.procurement.fieldVisibility.isSellerContactMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isSellerContactMandatory" ng-click="formValues.procurement.fieldVisibility.isSellerContactHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Broker
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isBrokerHidden" ng-click="formValues.procurement.fieldVisibility.isBrokerMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <!-- <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isBrokerMandatory" ng-click="formValues.procurement.fieldVisibility.isBrokerHidden = false"/>
+                                            <span></span>
+                                        </label> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Additional Cost
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isAdditionalCostHidden" />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td class="padding">
+                                        Total
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isNegotiationTotalHidden"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                    </td>
+                                </tr>                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Order
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 ">
+                    <div class="form-group row">
+                        <div class="form_input form_input_isSellerConfirmationDocumentMandatory">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisSellerConfirmationDocumentMandatory" id="isSellerConfirmationDocumentMandatory"
+                                        ng-model="formValues.procurement.order.isSellerConfirmationDocumentMandatory" /> {{ CM.app_id + '.IS_SELLER_CONFIRMATION_DOCUMENT_MANDATORY_?' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row">
+                        <div class="form_input form_input_needsTransactionLimitApproval">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosneedsTransactionLimitApproval" id="needsTransactionLimitApproval" ng-model="formValues.procurement.order.needsTransactionLimitApproval"
+                                    /> {{ CM.app_id + '.NEED_TRANSACTION_LIMIT_APPROVAL' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "CaptureConfirmedQuantity", "Type": "dropdown", "masterSource": "CaptureConfirmedQuantity"})'>
+                        <label for="captureConfirmedQuantity" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.CAPTURE_CONFIRMED_QUANTITY_IN' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_captureConfirmedQuantity">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.CaptureConfirmedQuantity track by item.id"
+                                ng-required="true" id="captureConfirmedQuantity" ng-model="formValues.procurement.order.captureConfirmedQuantity"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "specRequest", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="specGroupFlowFromRequest" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.SPEC_FROM_REQUEST' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_specGroupFlowFromRequest">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.specRequest track by item.id"
+                                ng-required="true" id="specGroupFlowFromRequest" ng-model="formValues.procurement.order.specGroupFlowFromRequest"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "specContract", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="specGroupFlowFromContract" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.SPEC_FROM_CONTRACT' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_specGroupFlowFromContract">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.specContract track by item.id"
+                                ng-required="true" id="specGroupFlowFromContract" ng-model="formValues.procurement.order.specGroupFlowFromContract"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row">
+                        <div class="form_input form_input_showReconfirmAction">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosshowReconfirmAction" id="showReconfirmAction" ng-model="formValues.procurement.order.showReconfirmAction"
+                                    /> {{ CM.app_id + '.SHOW_RECONFIRM_ACTION' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
+                        <label for="needConfirmationSellerEmail" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.NEED_ORDER_CONFIRMATION_EMAIL' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_needConfirmationVesselEmail">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id"
+                                ng-required="true" id="needConfirmationSellerEmail" ng-model="formValues.procurement.order.needConfirmationSellerEmail"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
+                        <label for="needConfirmationVesselEmail" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.NEED_ORDER_CONFIRMATION_EMAIL_VESSEL' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_needConfirmationVesselEmail">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id"
+                                ng-required="true" id="needConfirmationVesselEmail" ng-model="formValues.procurement.order.needConfirmationVesselEmail"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="form-group row">
+                        <label for="captureConfirmedQuantity" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.AUTOPOPULATE_LAB_FROM' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_autoPopulateLabFrom" ng-init='CM.getOptions({"Name": "AutoPopulateLabInOrderOption", "Type": "dropdown", "masterSource": "AutoPopulateLabInOrderOption"})'>
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.AutoPopulateLabInOrderOption track by item.id"
+                                ng-required="true" id="autoPopulateLabInOrderOption" ng-model="formValues.procurement.order.autoPopulateLabInOrderOption"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            	<div class="col-md-4">
+            		<div class="form-group row" ng-init='CM.getOptions({"Name": "defaultPaymentCompany", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+            			<label for="defaultPaymentCompany" class="simpleLookupLabel" style="max-height: initial;">
+            				{{ CM.app_id + '.DEFAULT_CARRIER_IF_NOT_PAYMENT_COMPANY' | translate }}
+            				<span class="orange-txt">
+            					*
+            				</span>
+            			</label>
+            			<div class="input-group form_input form_input_defaultPaymentCompany">
+                            <input ng-model="formValues.procurement.order.defaultPaymentCompany" uib-typeahead="item as item.name for item in CM.listsCache.Company | filter:{name:$viewValue}"
+                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
+                                typeahead-wait-ms="100" ng-required="true" name="Default Payment Company" autocomplete="off" />
+                            <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', 'Company', 'formValues.procurement.order.defaultPaymentCompany');"
+                                ng-init="modal = false">
+                                <!-- triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product'); -->
+                                <a   class=" btn default">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>	
+
+
+            				<!-- <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.defaultCarrierIfNotPaymentCompany track by item.id"
+            				ng-required="true" id="defaultCarrierIfNotPaymentCompany" ng-model="formValues.procurement.order.defaultCarrierIfNotPaymentCompany"></select> -->
+            			</div>
+            		</div>
+            	</div>
+            </div>
+
+
+                <!-- <div class="col-md-4 ">
+                    <div class="form-group row">
+                        <label for="hideMinMax" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.HIDE_MIN_MAX' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_hideMinMax" ng-init='CM.getOptions({"Name": "hideMinMax", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.hideMinMax track by item.id"
+                                ng-required="true" id="hideMinMax" ng-model="formValues.procurement.order.orderHideMinMax"></select>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- needConfirmationEmail -->
+            <!-- </div> -->
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Price
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "CaptureConfirmedQuantity", "Type": "dropdown", "masterSource": "CaptureConfirmedQuantity"})'>
+                        <label for="PricingDateStopOption" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.PRICING_DATE_STOP' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_PricingDateStopOption">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.PricingDateStopOption track by item.id"
+                                ng-required="true" id="PricingDateStopOption" ng-model="formValues.procurement.price.pricingDateStopOption"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "pricingEventDate", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="pricingEventDateManualOverrride" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.PRICING_EVENT_DATE_MANUAL_OVERRIDE' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_pricingEventDateManualOverrride">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.pricingEventDate track by item.id"
+                                ng-required="true" id="pricingEventDateManualOverrride" ng-model="formValues.procurement.price.pricingEventDateManualOverrride"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div role="tabpanel" class="tab-pane " id="schedule" ng-show="config_tab == 3">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Schedule Dashboard
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationSchedule.html'"></span>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="email" ng-show="config_tab == 4">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Email Configuration
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+               <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationEmail.html'"></span>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="delivery" ng-if="config_tab == 5">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Delivery
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationDelivery.html'"></span>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="invoice" ng-if="config_tab == 6">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Invoice
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationInvoice.html'"></span>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="contract" ng-if="config_tab == 7">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Contract
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationContract.html'"></span>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="ftp" ng-if="config_tab == 8">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        FTP
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationFTP.html'"></span>
+            </div>
+        </div>
+    </div>
+</div>

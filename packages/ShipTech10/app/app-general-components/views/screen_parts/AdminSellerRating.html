@@ -1,0 +1,145 @@
+<div class="row sellerRating">
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='CM.getOptions({"Name": "Company", "Type": "simpleLookup", "masterSource": "Company"})'>
+            <label class="sellerRatingCompany" class="simpleLookupLabel">
+                {{ CM.app_id + '.COMPANY' | translate }}
+                <span class="orange-txt">
+                    *
+                </span>
+            </label>
+            <div class="input-group form_input">
+                <input ng-model="formValues.company" uib-typeahead="item as item.name for item in options.Company | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-required="true" name="company" autocomplete="off" typeahead-on-select="triggerChangeFields('company','company' )"/>
+                <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_companylist','Company' , 'formValues.company','','','company');">
+                    <a href="javascript:;" class=" btn default">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-sm-12">
+    	<div class="row">
+    		<div class="col-md-4">
+    			<div class="form-group row">
+		    		<label class="simpleLookupLabel">
+		    			{{ CM.app_id + '.APPLICABLE_APP' | translate }}
+		    			<span class="orange-txt">
+		    				*
+		    			</span>
+		    		</label>
+    				<div class="input-group form_input">
+    					<input ng-model="applicableApp" uib-typeahead="item as item.name for item in CM.listsCache.Module | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput" autocomplete="off" ng-disabled="!formValues.company.id" />
+    					<span class="input-group-addon"  ng-click="addSellerRatingApplicabbleApp(applicableApp); applicableApp = null" ng-disabled="!formValues.company.id">
+    						<a href="javascript:;" class=" btn default">
+    							<i class="fa fa-plus"></i>
+    						</a>
+    					</span>
+    				</div>
+    			</div>
+    		</div>
+	    	<div class="col-sm-8">
+	    		<div class="bootstrap-tagsinput"> 
+	    			<span class="tag label border-default" style="border: 1px solid; color: black; padding-left:6px" ng-repeat="(key, value) in formValues.applications">
+	    				<a ng-click="formValues.applications.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
+	    				{{value.module.name}}
+	    			</span>
+	    		</div>					
+	    	</div>        		
+    	</div>
+    </div>
+    <div class="col-md-4 col-md-push-8">
+        <div class="weightage-labels">
+            <div class="input-group pull-right form_input form_input_applications">
+                <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalc()" ng-class="totalWeightage != 100 ? 'danger' : '' ">
+                    {{ totalWeightage }}
+                </span>
+            </div>
+            <label class="control-label pull-right">
+                {{ CM.app_id + '.TOTAL_WEIGHTAGE' | translate }}
+            </label>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="col-sm-12" ng-if="formValues.company.id">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" ng-repeat="(key,value) in formValues.applications">
+                <a href="#{{ value.module.name }}" aria-controls="{{ value.name }}" role="tab" data-toggle="tab">
+                    {{ value.module.name }}
+                </a>
+            </li>
+        </ul>
+        <br/>
+        <div class="tab-content">
+            <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name }}">
+                <span ng-init="!formValues.applications[key1].categories ? formValues.applications[key1].categories=[{'id':0}] : '' "></span>
+                <div class="portlet" ng-repeat="(key2, value2) in value1.categories">
+                    <div ng-if="key2> 0" style="margin-bottom: 25px;clear: both;border-top: 2px solid #ddd;margin-top: 25px;">
+                    </div>
+                    <div class="portlet-title">
+                        <div class="row">
+                            <div class="col-md-8 form-group">
+                                <span class="caption-subject pull-left control-label">
+                                    {{ CM.app_id + '.CATEGORY' | translate }} {{ key2 + 1 }}
+                                </span>
+                                <div class="form_control pull-left">
+                                    <input type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="weightage-labels">
+                                    <div class="action-buttons">
+                                        <div class="insert" ng-click="value1.categories.push({'id':0})">
+                                            <i class="fa fa-plus"></i>
+                                        </div>
+                                        <div class="remove" ng-if="key2> 0" ng-click="value1.categories.splice(key2, 1)">
+                                            <i class="fa fa-minus"></i>
+                                        </div>
+                                    </div>
+                                    <label class="control-label">
+                                        {{ CM.app_id + '.WEIGHTAGE' | translate }}
+                                    </label>
+                                    <div class="input-group pull-right form_input">
+                                        <span class="form-control weightage">
+                                            {{ value2.weight }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
+                    <div class="row" ng-repeat="(key3, value3) in value2.details">
+                        <div class="col-md-8">
+                            <div class="form-group row">
+                                <label class="control-label">
+                                    {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
+                                </label>
+                                <div class="input-group form_input">
+                                    <input type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}" ng-model="value3.name"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="weightage-labels">
+                                <div class="action-buttons">
+                                    <div class="insert" ng-click="value2.details.push({'id':0})">
+                                        <i class="fa fa-plus"></i>
+                                    </div>
+                                    <div class="remove" ng-if="key3> 0" ng-click="value2.details.splice(key3, 1)">
+                                        <i class="fa fa-minus"></i>
+                                    </div>
+                                </div>
+                                <div class="input-group pull-right form_input">
+                                    <input type="number" class="form-control weightage" ng-required="true" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight" ng-model="value3.weight" ng-change="updateWeightSum(key1, key2)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 5px; clear: both"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+    <!-- checkbox for general-header -->
+    <!--
+    <general-header actions="{
+        primary: [
+            {label: 'Active', html_element: 'checkbox', checked: true, id: 'entity_active'},
+            {label: 'Blacklisted', html_element: 'checkbox', id: 'entity_blacklisted'}
+        ],
+        secondary: [],
+        search: false,
+    }"></general-header>
+    -->
+
+    <general-header actions="{
+        primary: [
+            {label: 'Edit Structure', special: true, url: 'structure', type: 'goto'},
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: true,
+        icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+        ]
+    }"></general-header>
+
+    <clc-table-list id="'recon_recon_list'" app="'recon'" screen="'recon_list'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+    <general-header actions="{
+        primary: [
+            {label: 'Edit Structure', special: true, url: 'structure', type: 'goto'},
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: false,
+    }" color="'white'"></general-header>
+
+</div>

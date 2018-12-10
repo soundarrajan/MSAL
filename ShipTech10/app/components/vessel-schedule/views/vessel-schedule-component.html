@@ -1,0 +1,72 @@
+<!-- <div class="modal-header">
+    <div class="col-md-11">
+        <h4 class="modal-title caption-subject">
+            {{$ctrl.ui.vesselSchedule.title |  translate}}
+        </h4>
+    </div>
+    <div class="col-md-1">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    </div>
+</div> -->
+        <div id="modal_close_bar">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="">
+            <div class="col-md-12 general-header color-white">
+                <div class="st-main-content-menu tabbable-line">
+                    <form class="form-inline">
+                        <h4 class="pull-left title ">
+                            SELECT  {{$ctrl.ui.vesselSchedule.title |  translate}}
+                        </h4>
+
+                        <!-- <div class="pull-right">
+                            <div class="input-group st-content-search-box">
+                                <div id="search_box_dummy"></div>
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+
+                        </div> -->
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+<div class="modal-body">
+    <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable">
+        <thead>
+            <tr>
+                <th ng-repeat="column in $ctrl.ui.vesselSchedule.columns track by $index">
+                    {{column.caption | translate}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in $ctrl.data track by $index">
+                <td>
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input type="checkbox" ng-model="$ctrl.selectedLocations[$index]"/>
+                        <span></span>
+                    </label>
+                </td>
+                <td>
+                    <i class="fa fa-sitemap fa-rotate-270 font-grey-salsa"></i>
+                    {{row.locationName}}
+                </td>
+                <td>{{row.voyageId}}</td>
+                <td>{{row.eta | stDateFormat}}</td>
+                <td>{{row.etb | stDateFormat}}</td>
+                <td>{{row.etd | stDateFormat}}</td>
+                <td>{{row.portCallId}}</td>
+                <td>{{row.service.name}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <div class="pull-right">
+        <a class="btn btn-outline orange" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Request</a>
+    </div>
+</div>

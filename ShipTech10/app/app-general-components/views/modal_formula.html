@@ -1,0 +1,18 @@
+﻿<div id="modal_close_bar">
+    <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+</div>
+<div ng-init="defineNew = 0" id="modal_masters_formulalist">
+    <div class="modalFormulaEdit" ng-if='defineNew == 1' ng-init="primaryAction = 'save_modal_entity(\'masters\', \'formula\')';">
+        <div class="top-no-padding">
+             <general-header color="'white'" actions="{ primary: [ {label: 'Save changes', url: '#', method: primaryAction, extern:true, param: field.Name},{label: 'Select Formula', url: '#', method: 'defineNew = 0', extern:true, param: field.Name} ], secondary: [ ], icons: [ ], title: 'Define '+modal.name, search: true, }"></general-header>
+            <entity-edit-form structure='' type = "'tabs'" screen="'formula'" entity='-1' app="'masters'"></entity-edit-form>
+        </div>
+    </div>
+    <div class="modalFormulaTable" ng-if='defineNew == 0' >
+        <div class="top-no-padding" ng-init="primaryAction = 'selectedModalValue( modal )';CM.delayaddModalActions()">
+
+            <general-header color="'white'" actions="{ primary: [ {label: 'Select', url: '#', method: primaryAction, extern:true, param: field.Name},{label: 'Define Formula',special:'true',url: '#',method: 'goToFormula()',extern: true,} ], secondary: [ ], icons: [ ], title: 'Select '+modal.name, search: true, }"></general-header>
+            <clc-table-list id="modal.clc" app="modal.app" screen="modal.screen" controls="'[info, pager]'" modal="true" filters="modal.filters" rowactions="'false'"></clc-table-list>
+        </div>
+    </div>
+</div>

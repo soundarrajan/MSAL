@@ -1,0 +1,9 @@
+﻿<div class="text-center">
+    <label class="mt-checkbox" ng-controller="Controller_Master as CM">
+        <input type="checkbox" ng-model="MODEL_COL_FIELD" dynamic-condition="{{col.colDef.cellCondition}}" dynamic-condition-type="{{col.colDef.cellConditionType}}" ng-change="$eval(col.colDef.cellAction)" name="{{col.colDef.cellName}}_{{rowRenderIndex}}" spec-selection="{{grid.appScope.fVal().formValues.labTestResults[rowRenderIndex].claimTypes}}" spec-param-id="{{grid.appScope.fVal().formValues.labTestResults[rowRenderIndex].id}}" ng-if="col.colDef.cellParams"/>  <input type="checkbox" ng-model="MODEL_COL_FIELD" dynamic-condition="{{col.colDef.cellCondition}}" dynamic-condition-type="{{col.colDef.cellConditionType}}" ng-change="$eval(col.colDef.cellAction)" name="{{col.colDef.cellName}}_{{rowRenderIndex}}"  ng-if="!col.colDef.cellParams"/>
+
+        <span></span>
+    </label>
+
+
+</div>

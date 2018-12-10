@@ -1,0 +1,354 @@
+{
+  "layout": {
+    "children": {
+        "emaillogs_search": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "EmailTransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }]
+                    },
+                    {
+                        "Unique_ID": "sentAt",
+                        "Name": "SentAt",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENT_AT",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    },
+                    {
+                        "Unique_ID": "body",
+                        "Name": "Body",
+                        "Type": "textarea",
+                        "Richtext": true,
+                        "AutoHeightIframe": true,
+                        "Group": "General",
+                        "Label": "BODY",
+                        "Description": "",
+                        "ReadOnly": true,
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "12",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    }
+                ],
+                "Active": true
+            },
+            "Meta": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "from",
+                        "Name": "From",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "FROM",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    },
+                    {
+                        "Unique_ID": "cc",
+                        "Name": "Cc",
+                        "Type": "textarea",
+                        "Group": "General",
+                        "Label": "CC",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    },
+                    {
+                        "Unique_ID": "bcc",
+                        "Name": "Bcc",
+                        "Type": "textarea",
+                        "Group": "General",
+                        "Label": "BCC",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    },
+                    {
+                        "Unique_ID": "to",
+                        "Name": "To",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "TO",
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Columns": [
+                            {
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }
+                        ]
+                    },
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "transactionType",
+                        "Name": "TransactionType",
+                        "Type": "dropdown",
+                        "masterSource": "EmailTransactionType",
+                        "Group": "General",
+                        "Label": "TRANSACTIONTYPE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Disabled": true,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        }
+    }
+  },
+  "elements": {},
+  "clc": {},
+  "id": 78
+}

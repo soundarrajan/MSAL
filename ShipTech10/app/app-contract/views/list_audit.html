@@ -1,0 +1,58 @@
+﻿<div>
+    <!-- ng-controller="Controller_Configurable_List_Control as CLC" -->
+    <general-header actions="{
+    primary: [],
+    secondary: [{
+        label: 'Main Page',
+        type: 'goto',
+        url: 'edit/:entity_id',
+    }, {
+        label: 'Preview Contract',
+        type: 'goto',
+        url: 'preview/:entity_id',
+    }, {
+        label: 'Preview Email',
+        type: 'goto',
+         url: 'email-preview/:entity_id'
+    }, {
+        label: 'Deliveries',
+        type: 'goto',
+        url: 'productdelivery/:entity_id'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Audit Log',
+        active: 'true'
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true,
+    },{
+       label: 'Terms & Conditions',
+       type: 'goto',
+       url: 'terms-conditions/:entity_id',
+       ConditionalType: 'ng-show',
+       Conditional: '((GH.entity_id > 0) && (GH.adminConfiguration.contract.areTermsAndConditionsAvailable))',
+       method: 'doEntityActionMaster(\'goto\', \'terms-conditions/:entity_id\')'
+     }],
+     icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+    ]
+}"></general-header>
+
+    <span ng-controller="Controller_Configurable_List_Control as CLC">
+        <clc-table-list
+            id="'entity_audit_log'"
+            app="'contracts'"
+            screen="CLC.get_documents_screen_name()"
+            controls="'[info, pager]'"
+        ></clc-table-list>
+    </span>
+
+</div>

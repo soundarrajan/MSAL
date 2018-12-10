@@ -1,0 +1,143 @@
+
+<div class="row">
+	<div class="st-main-content-menu st-displaceable-menu tabbable-line">
+		<div class="pull-left">
+			<div class=" form-inline">
+				<span>
+					<span ng-hide ng-init="$ctrl.visible_sections = ['general_information','negotiation_panel','best_tco']"></span>
+					<span  class="select_visible_sections_label">
+						Display:
+					</span>
+					<select id="multiple" ng-model="$ctrl.visible_sections" title="{{$ctrl.visible_sections}}" class="form-control selectpicker col-md-8" multiple multi-select data-selected-text-format="count> 3"  ng-change="showHideSections($ctrl.visible_sections)">
+						<option value="" disabled=""></option>
+						<option value="general_information">
+							General Information
+						</option>
+						<option value="negotiation_panel">
+							Negotiation Panel
+						</option>
+						<option value="best_tco">
+							Best TCO
+						</option>
+					</select>
+					<label class="mt-checkbox">
+						<input type="checkbox" ng-model="moreInformations"  ng-init="moreInformations = true"/>
+						<span></span>
+						More Information
+					</label>
+				</span>
+			</div>
+		</div>
+
+		<div class="pull-right buttons">
+			<form class="form-inline">
+				<div ng-if="state.is(STATE.GROUP_OF_REQUESTS)" class="form-group">
+					<label class="mt-checkbox" ng-if="$ctrl.isOfferReviewMandatory">
+						<input type="checkbox" ng-disabled="true" ng-model="$ctrl.isReviewed"/>
+						<span></span>
+						Is Reviewed
+					</label>
+					<a class="btn btn-default" ng-click="$ctrl.sendRFQ()" ng-class="{'disabled' :  !$ctrl.canSendRFQ() || $ctrl.buttonsDisabled}">
+						Send RFQ
+					</a>
+					<!-- {{!$ctrl.canSendRFQ()}} ** {{$ctrl.buttonsDisabled}} ** {{!$ctrl.isSkipRfqAllowed}} -->
+                    <a class="btn btn-default" ng-click="$ctrl.skipRFQ()" ng-class="{ 'disabled' : !$ctrl.canSendRFQ() || $ctrl.buttonsDisabled || !$ctrl.isSkipRfqAllowed}">Skip RFQ</a>
+                    <a class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope orange " ng-show="!addNewContact"  ng-click="$ctrl.setAsCurrentSelection($ctrl.requirements, 'table')">  Set as current selection</a>
+					<a class="btn orange btn-outline" ng-click="$ctrl.setConfirmationOffers()" ng-class="{'disabled' : !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM)||!$ctrl.requirementsAreCorrectForConfirm() || $ctrl.buttonsDisabled}">
+						Confirm
+					</a>
+					<div class="btn-group">
+						<a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false" ng-class="{'disabled' : $ctrl.extraButtons() || $ctrl.buttonsDisabled}">
+							&hellip;
+						</a>
+						<ul class="dropdown-menu st-extra-buttons" role="menu">
+							<li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.AMENDRFQ)&&$ctrl.requirementsAreCorrectForRevokeAmend()">
+								<a ng-click="$ctrl.amendRFQ()">
+									Amend RFQ
+								</a>
+							</li>
+							<li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.REVOKERFQ)&&$ctrl.requirementsAreCorrectForRevokeAmend()">
+								<a ng-click="$ctrl.revokeRFQ()">
+									Revoke RFQ
+								</a>
+							</li>
+							<li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.INCLUDEINRFQ)">
+								<a ng-click="$ctrl.includeInRFQ()">
+									Include in RFQ
+								</a>
+							</li>
+							<li ng-if="!$ctrl.hasAction($ctrl.SCREEN_ACTIONS.DELINKRFQ)">
+								<a ng-click="$ctrl.delinkInRFQ()">
+									Delink in RFQ
+								</a>
+							</li>
+							<li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.REVIEW) && $ctrl.isOfferReviewMandatory">
+								<a ng-click="$ctrl.reviewRFQ()">
+									Review
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- {{STATE.VIEW_RFQ}} -->
+				<div ng-if="state.is(STATE.VIEW_RFQ)" class="form-group">
+					<a class="btn btn-default" ng-click="$ctrl.amend()" ng-class="{'disabled' : $ctrl.buttonsDisabled || $ctrl.requirements.length === 0 || !$ctrl.canAmendRFQ()}">
+						Send Amended RFQ
+					</a>
+					<a class="btn orange btn-outline" ng-click="$ctrl.revoke()" ng-class="{'disabled' : $ctrl.buttonsDisabled || $ctrl.requirements.length === 0 || !$ctrl.canRevokeRFQ()}">
+						Revoke RFQ
+					</a>
+				</div>
+				<div class="pull-right buttons" ng-if="screen_id == 'request_procurement_documents'">
+					<a ng-controller="Controller_Master as CM" class="btn btn-default btn-outline" ng-click="uploadDocument('#fileUpload')">
+						Upload
+					</a>
+				</div>
+			</form>
+		</div>
+        <div class="clearfix"></div>
+        </div>
+        <div class="st-main-content-menu st-displaceable-menu tabbable-line tabs_bar"  ng-show="moreInformations">
+        	<ul class="nav nav-tabs pull-left">
+        		<li ng-class="{open: state.is(STATE.GROUP_OF_REQUESTS)}">
+        			<a href="/#/group-of-requests/{{ entity_id }}" ng-if="!$ctrl.groupId"  ng-init="$ctrl.groupId = entity_id">
+        				Negotiation
+        			</a>
+        			<a href="/#/group-of-requests/{{ $ctrl.groupId }}" ng-if="entity_id || $ctrl.groupId">
+        				Negotiation
+        			</a>
+        		</li>
+        		<li ng-class="screen_id == 'request_procurement_documents' ? 'open' : '' ">
+        			<a href="/#/view-group-of-requests-documents/{{ $ctrl.groupId }}">
+        				Documents
+        			</a>
+        		</li>
+        		<li ng-class="screen_id == 'request_procurement' ? 'open' : '' ">
+        			<a href="/#/group-of-requests-emaillog/{{ $ctrl.groupId }}">
+        				Email Log
+        			</a>
+        		</li>
+        		<li ng-class="{open: state.is(STATE.VIEW_RFQ)}">
+        			<a ng-click="$ctrl.viewRFQ(entity_id)">
+        				View RFQ
+        			</a>
+        		</li>
+        	</ul>
+          <!--   <pre>{{  $ctrl }}</pre>
+            <pre>{{  $ctrl }}</pre> -->
+     <!--        <div class="pull-right">
+                <div ng-controller="Controller_General_Header as GH" style="line-height: 30px;"
+                ng-if="'default.group-of-requests-emaillog' == GH.stateParams.path[1].uisref">
+                << {{ GH.stateParams.path[1].uisref }} </div>
+                    <div  class="st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'emaillog';">
+                        <div class="st-content-action-icons">
+                            <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                                <span class="icon fa fa-save"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        	<div class="clearfix"></div>
+        </div>
+    </div>

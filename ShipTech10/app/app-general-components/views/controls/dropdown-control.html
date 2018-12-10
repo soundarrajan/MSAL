@@ -1,0 +1,36 @@
+<div class="form-group row dropdown-control" ng-init="options[field.Name] ? return : CM.getOptions(field)">
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+		<span ng-if="$eval(field.Required)> 0 || field.Required == true ? true : false" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+        <span ng-switch="field.Name">
+         <!--    <span ng-switch-when='ClaimType'>
+                <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.displayName disable when item.disabled for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-required="$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" ng-change="triggerChangeFields(field.Name, field.Unique_ID); temp[field.Name] = dummyModel" dynamic-condition="{{ ::field.Conditional }}" dynamic-condition-type="{{ ::field.ConditionalType }}" ><option value="" disabled></option></select>
+            </span> -->
+            <span ng-switch-when='Product'>
+                <!--  order products by productTypeId -->
+                <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.name disable when item.disabled for item in options[field.Name] | orderBy : 'payload.productTypeId' track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-required="$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" ng-change="triggerChangeFields(field.Name, field.Unique_ID); temp[field.Name] = dummyModel" dynamic-condition="{{ ::field.Conditional }}" dynamic-condition-type="{{ ::field.ConditionalType }}" ><option value="" disabled></option></select>
+            </span>
+            <span ng-switch-default>
+                <!-- for other types of dropdown, check if you should show displayName or name -->
+                <span ng-if="CM.useDisplayName(field.Name)">
+                      <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.displayName disable when item.disabled for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-required="$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" ng-change="triggerChangeFields(field.Name, field.Unique_ID); temp[field.Name] = dummyModel" dynamic-condition="{{ ::field.Conditional }}" dynamic-condition-type="{{ ::field.ConditionalType }}" ><option value="" disabled></option></select>
+                </span>
+                <span ng-if="!CM.useDisplayName(field.Name)">
+                    <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.name disable when item.disabled for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-required="$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" ng-change="triggerChangeFields(field.Name, field.Unique_ID); temp[field.Name] = dummyModel" dynamic-condition="{{ ::field.Conditional }}" dynamic-condition-type="{{ ::field.ConditionalType }}" ><option value="" disabled></option></select>
+                </span>
+            </span>
+        </span>
+    </div>
+
+    <span ng-if="options[field.Name] && isCreate && field.DefaultValue && !$eval('formValues.' + field.Unique_ID )" ng-init="setDefaultValue(field.masterSource + field.Name, field.DefaultValue)"></span>
+</div>
+<span ng-if="CM.entity_id && CM.entity_id < 1 && !isCopiedEntity" ng-init="formValues[field.Unique_ID] = tenantSetting.tenantFormats[field.Unique_ID]"></span>
+
+<span ng-if="(CM.app_id == 'claims' && field.Name == 'ClaimType') && (CM.entity_id > -1 && formValues.claimType.claimType.name != 'Debunker') && options[field.Name]" ng-init="options[field.Name][getIndex(options[field.Name], 'Debunker')].disabled = true">
+</span>
+
+<span ng-if="(CM.app_id == 'labs' && field.Name == 'DeliveryID')" ng-init="CM.checkVerifiedDeliveryFromLabs('loadedControl')"></span>

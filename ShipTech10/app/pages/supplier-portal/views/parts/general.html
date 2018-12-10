@@ -1,0 +1,139 @@
+<div class="col-md-12 portlet light" ng-if="$ctrl.token">
+    <div class="portlet-title">
+        <div class="tools">
+            <a data-toggle="collapse" href="#general" class="collapse" data-original-title="" title="" aria-expanded="true"></a>
+        </div>
+        <div class="caption">
+            <span class="caption-subject ">
+                GENERAL INFORMATION
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body collapse in" id="general" aria-expanded="true">
+        <div class="row">
+            <div class="col-md-3">
+
+                <div class="form-group row">
+                    <label for="" class="price_label ng-binding">
+                        Quote From
+                    </label>
+                    <div class="input-group form_input date " >
+                                <input name="quoteByDateFrom" id="quoteByDateFrom" class="form-control" disabled ng-model="$ctrl.individuals[0].products[0].sellers[0].offers[0].quoteByDateFrom" st-date-format="supplierPortal"/>
+                                <span class="input-group-btn">
+                                    <a   class=" btn default">
+                                        <i class="fa fa-calendar"></i>
+                                    </a>
+                                </span>
+                            </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group row">
+                    <label for="" class="price_label"  >
+                        {{ $ctrl.requestDetailsFields.validity.caption | translate }}
+                    </label>
+                    <div class="input-group form_input date form_meridian_datetimes">
+                        <input class="form-control" readonly="" id="validity" st-date-format="supplierPortal" st-date-to-local  ng-model="$ctrl.validity" ng-change="$ctrl.validityChanged($ctrl.validity);"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm date-set" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                       <!--  <input class="form-control" id="validity" st-date-format="supplierPortal" st-date-to-local  ng-model="$ctrl.validity"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm date-set" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span> -->
+                    </div>
+                </div>
+            </div>
+         <!--    <div class="col-md-3">
+                <div class="form-group row">
+                    <label for="" class="price_label ng-binding">
+                        To
+                    </label>
+                    <div class="input-group form_input date " >
+                                <input name="quoteByDate" id="quoteByDate" class="form-control" disabled ng-model="$ctrl.individuals[0].products[0].sellers[0].offers[0].quoteByDate" st-date-format="supplierPortal"/>
+                                <span class="input-group-btn">
+                                    <a   class=" btn default">
+                                        <i class="fa fa-calendar"></i>
+                                    </a>
+                                </span>
+                            </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="buyer_info info_box">
+                    <div class="row">
+                        <div  class="col-md-6">
+                            <span class="caption-subject">
+                                Buyer Details
+                            </span>
+                            <div class="clear"></div>
+                            <span>
+                                <b>
+                                    {{ $ctrl.payload.buyerCompany.name }}
+
+                                </b>
+                            </span>
+                            <br/> Request From: {{ $ctrl.payload.buyerName.name }}
+                            <br/> Telephone: {{$ctrl.locations[0].products[0].sellers[0].offers[0].offer.contact.phoneNo}}
+                            <br/> Email ID: {{$ctrl.locations[0].products[0].sellers[0].offers[0].offer.contact.email}}
+                            <br/> IM: {{$ctrl.locations[0].products[0].sellers[0].offers[0].offer.contact.instantMessengerAddress}}
+                        </div>
+
+                <div class="col-md-6">
+                        <label class="control-label caption-subject">
+                            {{ $ctrl.commentsFields.buyerComment.caption | translate }}
+                        </label>
+                        <textarea disabled class="form-control" rows="3" ng-model="$ctrl.buyerComments"></textarea></div>
+
+</div>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="seller_info info_box">
+                    <div>
+                        <span class="caption-subject ">
+                            Seller Details
+                        </span>
+                        <div class="clear"></div>
+                        <span>
+                            <b>
+                                {{ $ctrl.locations[0].products[0].sellers[0].sellerCounterparty.name }}
+                            </b>
+                        </span>
+                        <span class="row">
+                            <div ng-if="$ctrl.requestDetailsFields.quotedBy.visible" class="col-md-4 row">
+                                <label class="control-label col-md-5 row">
+                                    {{ $ctrl.requestDetailsFields.quotedBy.caption | translate }}
+                                </label>
+                                <div class="form-group-sm">
+                                    <div class="input-group col-md-7">
+                                    	<span ng-if="$ctrl.individuals[0].products[0].sellers[0].offers[0]">
+	                                    	<span ng-if="$ctrl.counterpartyContacts.contacts.length == 1 && !$ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty" ng-init="$ctrl.quotedByChanged($ctrl.counterpartyContacts.contacts[0])"></span>
+                                    	</span>
+                                        <select ng-options="contact as contact.name for contact in $ctrl.counterpartyContacts.contacts track by contact.id" ng-model="$ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty" ng-change="$ctrl.quotedByChanged($ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty);" class="form-control"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        <div class="clear"></div>
+                        <span ng-if="$ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty" >
+                        Telephone: {{($ctrl.counterpartyContacts.contacts | filter:{id: $ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty.id})[0].phoneNo}}
+                        <br/>
+                        Email ID: {{($ctrl.counterpartyContacts.contacts | filter:{id: $ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty.id})[0].email}}
+                        <br/>
+                        IM: {{($ctrl.counterpartyContacts.contacts | filter:{id: $ctrl.individuals[0].products[0].sellers[0].offers[0].contactCounterparty.id})[0].instantMessengerAddress}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

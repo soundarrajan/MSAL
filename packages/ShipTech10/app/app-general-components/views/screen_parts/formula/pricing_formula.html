@@ -1,0 +1,158 @@
+<span ng-if="formValues.id > 0" ng-init="checkEditableFormula(formValues.isEditable);"></span>
+<div class="form-group  row"  >
+    <div class="col-md-6">
+        <div class="form_input form_input_formulatype">
+            <div class="mt-radio-list" ng-init='options.FormulaType ? return : CM.getOptions({"Name": "FormulaType", "Type": "simpleLookup", "masterSource": "FormulaType"})'>
+                <label class="mt-radio" ng-repeat="(key, value) in options.FormulaType">
+                    <input type="radio" name="inlineRadiosformulatype[]" ng-value="value.id" id="inlineRadio0"  ng-model="formValues.formulaType.id"/>
+                    {{ value.name }}
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group  row">
+            <label  for="formula_description" class="formula_description_label">
+                {{ CM.app_id + '.FORMULA_COMMENTS' | translate }}
+                <span ng-if="field.Required" class="orange-txt">
+                    *
+                </span>
+            </label>
+            <div class="form_input form_input_formula_description">
+
+                <textarea class="form-control" rows="2"  name="formula_comments" id="formula_comments" ng-model="formValues.comments" ng-maxlength="500"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="formValues.formulaType.id == 1 && initialized == 1">
+    <div class="col-md-12">
+        <div class="portlet light row">
+            <div class="portlet-title">
+                <span class="caption-subject">
+                    Define Formula
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='options.SystemInstrument ? return : CM.getOptions({"Name": "SystemInstrument", "Type": "simpleLookup", "masterSource": "SystemInstrument"})'>
+            <label for="SystemInstrumentSystemInstrument" class="formula_quotes_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.FORMULA_QUOTES' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_quotes">
+                <input ng-model="formValues.simpleFormula.systemInstrument" uib-typeahead="item as item.name for item in options.SystemInstrument | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
+                <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_systeminstrumentlist', CM.app_id + '.FORMULA_QUOTES' | translate , 'formValues.simpleFormula.systemInstrument');">
+                    <a href="javascript:;" class=" btn default">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='options.MarketPriceType ? return : CM.getOptions({"Name": "MarketPriceType", "Type": "dropdown", "masterSource": "MarketPriceType"}); '>
+            <label for="MarketPriceTypeMarketPriceType" class="formula_price_type_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.FORMULA_price_type' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_price_type">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.MarketPriceType track by item.id" ng-model="formValues.simpleFormula.priceType">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='options.FormulaPlusMinus ? return : CM.getOptions({"Name": "FormulaPlusMinus", "Type": "dropdown", "masterSource": "FormulaPlusMinus"}); '>
+            <label for="FormulaPlusMinusFormulaPlusMinus" class="formula_plus_minus_label" class="simpleLookupLabel">
+                + / -
+            </label>
+            <div class="input-group form_input form_input_formula_plus_minus">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaPlusMinus track by item.id" ng-model="formValues.simpleFormula.plusMinus">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group  row">
+            <label  for="formula_amount" class="formula_amount_label">
+                {{ CM.app_id + '.AMOUNT' | translate }}
+                <span ng-if="field.Required" class="orange-txt">
+                    *
+                </span>
+            </label>
+            <div class="form_input form_input_formula_amount">
+                <input type="text" class="form-control " name="formula_amount" id="formula_amount"  ng-model="formValues.simpleFormula.amount" ng-trim="false"  ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" format='number:{{ tenantSetting.defaultValues.quantityPrecision }}' ng-disabled="formValues.simpleFormula.plusMinus.id == 3"/>
+                <!-- disabled if +/- is none -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='options.FormulaFlatPercentage ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"}); '>
+            <label for="FormulaFlatPercentageFormulaFlatPercentage" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.FLAT_OR_PERCENTAGE' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.simpleFormula.flatPercentage" ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" ng-disabled="formValues.simpleFormula.plusMinus.id == 3">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"}); re()'>
+            <label for="UomUom" class="formula_uom_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.Uom' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_uom">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.simpleFormula.uom" ng-disabled="formValues.simpleFormula.flatPercentage.id != 1 || formValues.simpleFormula.plusMinus.id == 3">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="formValues.formulaType.id == 2 && initialized == 1">
+    <div class="col-md-12">
+        <div class="portlet light row">
+            <div class="portlet-title">
+                <span class="caption-subject">
+                    Define Formula
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group  row"  >
+            <div class="form_input form_input_mean">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="inlineRadiosmean[]"  id="inlinecheckMean"  ng-model="formValues.isMean"/>
+                        Mean
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row" ng-init='options.Currency ? return : CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"});'>
+            <div class="input-group form_input form_input_formula_quotes">
+                <input ng-model="formValues.currency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
+                <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_currencylist', CM.app_id + '.CURRENCY' | translate , 'formValues.currency');">
+                    <a href="javascript:;" class=" btn default">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div ng-if="formValues.currency.id">
+        <div ui-grid="gridOptions.complexFormulaQuoteLines"  id="grid_complexFormulaQuoteLines"   class="dataGrid"></div>
+        <span ng-init="initGridDropdowns('complexFormulaQuoteLines')"></span>
+    </div>
+    <span ng-if="formValues.isMean && formValues.complexFormulaQuoteLines" ng-init="isMeanFormula()"></span>
+</div>

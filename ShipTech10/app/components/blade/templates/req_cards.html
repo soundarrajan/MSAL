@@ -1,0 +1,50 @@
+<div class="details-req" ng-class="$ctrl.req_cards == 'big' ? 'expanded' : 'collapsed'">
+    <div class="row">
+        <div class="col-xs-1">
+            <div class="left-arrow arrow">
+                <button  ng-click="offset= offset - 1" ng-disabled="offset == 0" ng-class="offset == 0 ? 'disabled' : ''">
+                    <i class="fa fa-caret-left" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-xs-10">
+            <div class="row">
+            <!-- {{$ctrl.sellerOffers}} -->
+                <div class="col-md-4" ng-repeat="(key, value) in $ctrl.sellerOffers |  limitTo:display:offset track by $index" >
+                <!-- ng-if="value.products[0].isEnergyCalculationRequired" -->
+                    <div class="req-card"  ng-class="$ctrl.active_prod == value ? 'active_req' : ''"  ng-click="$ctrl.active_prod = value">
+                        <p class="caption-subject">
+                            <a href="" ng-click="$ctrl.req_cards == 'big' ? $ctrl.req_cards = 'small' : $ctrl.req_cards = 'big'">
+                                <i class="fa fa-angle-double-down" aria-hidden="true" ng-if="$ctrl.req_cards == 'small'"></i>
+                                <i class="fa fa-angle-double-up" aria-hidden="true" ng-if="$ctrl.req_cards == 'big'"></i>
+                            </a>
+                            {{ value.request.name }} - {{value.rfq.name}}
+                        </p>
+                        <div class="clearfix"></div>
+                        <b>
+                            {{ value.vessel.name }}
+                        </b>
+                        <p ng-if="$ctrl.req_cards == 'big' ">
+                        	Port : {{ value.location.name }}
+                        	<br>
+                        	Seller : {{value.seller.name}} - {{value.physicalSupplier.name}}
+                        	<br>
+                        	Product: {{value.products[0].product.name}} -
+                            <span ng-if="value.package">
+                                <!-- Package: {{value.package.id}} -->
+								Package	
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="right-arrow arrow">
+                <button ng-click="offset= offset  + 1" ng-disabled="$ctrl.sellerOffers.length - display <= offset " ng-class="$ctrl.sellerOffers.length - display <= offset ? 'disabled' : ''">
+                    <i class="fa fa-caret-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

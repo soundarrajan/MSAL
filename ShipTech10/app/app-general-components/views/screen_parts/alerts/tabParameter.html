@@ -1,0 +1,55 @@
+<span ng-init="getAlertsParametersForTransaction()"></span>
+<div class="row">
+	<div class="col-sm-12">
+		<span class="form-label-out">Select the Parameters for which the alert rule is applicable</span>
+	</div>
+</div>
+<br>
+<br>
+<div class="row">
+	<span ng-repeat="(key, value) in formValues.transactions">
+	<!-- {{value}} -->
+		<span class="col-sm-12">
+			<div class="row">
+			
+				<div class="col-md-6">
+					<div class="form-group row" >
+					    <label class="control-label">
+					        {{value.name}}
+					        <span ng-if="field.Required" class="orange-txt">
+					            *
+					        </span>
+					    </label>
+
+					    <div class="input-group pull-left form_input form_input_alertsParametersForTransaction{{value.id}}" >
+					        <input ng-model="alertsParametersForTransaction[value.id]"  uib-typeahead="item as item.name for item in options['alertsParametersForTransaction'+value.id] | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="alertsParametersForTransaction{{value.id}}" data-uniqueid="alertsParametersForTransaction{{value.id}}" typeahead-on-select="dataParams = alertsParametersForTransaction[value.id]" data-value="{{alertsParametersForTransaction.id}}" ng-init="CM.multiTags('alertsParametersForTransaction'+value.id,'false', 'alertsParametersForTransaction'+value.id)" autocomplete="off" ng-change="dataParams={};" ng-blur="showMultiLookupWarning(alertsParametersForTransaction[value.id])">
+					        <span class="input-group-addon">
+					            <a   class="object_tagsinput_add_apps btn default" ng-click="alertsAddParameter(dataParams); alertsParametersForTransaction[value.id] = null; CM.plusClickedMultilookup = true">
+					                <i class="fa fa-plus"></i>
+					            </a>
+					        </span>
+					    </div>
+
+					</div>
+				</div>	
+
+				<span class="col-sm-6">
+					<div class="form-group row" >
+					    <div class="multi_lookup_tags" style="position: relative; left: initial">
+						    <div class="bootstrap-tagsinput"> 
+						    	<span ng-repeat="(index, valoare) in formValues.parameters" class="tag label label-info" style="clear: none;" ng-if="valoare.transactionId == value.id">
+						    		{{valoare.name}}
+						    		<span data-role="remove" ng-click="removeAlertsParameterById(valoare.id)"></span>
+					    		</span> 
+					    	</div>
+					    </div>
+					</div>
+				</span>
+
+			</div>
+		</span>
+		<span class="clearfix"></span>
+	</span>	
+</div>
+
+<!-- <span ng-model="formValues.parameters" ng-change="formValues.messageTemplate=null"></span> -->

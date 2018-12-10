@@ -1,0 +1,649 @@
+{
+  "layout": {
+    "children": {
+        "entity_documents": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+
+                    {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "entity_emaillog": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "TransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "General": {
+              "id": "General",
+              "name": "General",
+              "children": [
+                {
+                  "Active": false,
+                  "Unique_ID": "name",
+                  "Name": "BargeName",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "BARGE_NAME",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "code",
+                  "Name": "BargeCode",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "BARGE_CODE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false
+                },
+                {
+                  "Unique_ID": "counterparty",
+                  "Name": "BargeCompany",
+                  "Type": "simpleLookup",
+                  "Group": "General",
+                  "Label": "BARGE_COMPANY",
+                  "clc_id": "masters_companylist",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": true,
+                  "masterSource": "BargeCompany",
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "locations",
+                  "Name": "locations",
+                  "Type": "multiLookup",
+                  "Group": "General",
+                  "Label": "LOCATION",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": true,
+                  "masterSource": "location",
+                  "Active": false
+                }
+              ]
+            }
+        }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "name",
+          "Name": "BargeName",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Barge Name",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "code",
+          "Name": "BargeCode",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Barge Code",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "company.id",
+          "Name": "BargeCompany",
+          "Type": "simpleLookup",
+          "Group": "General",
+          "Label": "Barge Company",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "counterpartylist[\"Barge\"]"
+        },
+        {
+          "Unique_ID": "locations",
+          "Name": "Location",
+          "Type": "multiLookup",
+          "Group": "General",
+          "Label": "Location",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "locationlist"
+        }
+      ],
+      "customFields": [
+        {
+          "Unique_ID": "CustomField1",
+          "Name": "CustomField1",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 1",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField2",
+          "Name": "CustomField2",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 2",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField3",
+          "Name": "CustomField3",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 3",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField4",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 4",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField5",
+          "Name": "CustomField5",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 5",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField6",
+          "Name": "CustomField6",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 6",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ]
+    }
+  ],
+  "clc": {},
+  "id": 66
+}

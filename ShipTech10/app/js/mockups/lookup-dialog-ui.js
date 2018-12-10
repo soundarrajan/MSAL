@@ -1,0 +1,471 @@
+{
+    "vessels": {
+        "title": "Vessel",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false
+        }, {
+            "name": "name",
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Name"
+        }, {
+            "name": "charteredVessel",
+            "caption": "PAGES.NEW_REQUEST.CHARTERED",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "CharteredVessel"
+        }, {
+            "name": "fuelName",
+            "caption": "PAGES.NEW_REQUEST.FUEL",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Fuel_Name"
+        }, {
+            "name": "distillateName",
+            "caption": "PAGES.NEW_REQUEST.DISTILLATE",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Distillate_Name"
+        }, {
+            "name": "licenseKey",
+            "caption": "PAGES.NEW_REQUEST.LICENSE_KEY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "LicenseKey"
+        }]
+    },
+    "companies": {
+        "title": "Companies",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false
+        }, {
+            "name": "name",
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Name"
+        }, {
+            "name": "parentName",
+            "caption": "PAGES.NEW_REQUEST.PARENT",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Parent_Name"
+        }, {
+            "name": "currencyName",
+            "caption": "PAGES.NEW_REQUEST.BASE_CURRENCY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Currency_Name"
+        }, {
+            "name": "uomName",
+            "caption": "PAGES.NEW_REQUEST.BASE_UOM",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "Uom_Name"
+        }, {
+            "name": "createdByName",
+            "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "CreatedBy_Name"
+        }, {
+            "name": "createdOn",
+            "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "CreatedOn"
+        }, {
+            "name": "lastModifiedByName",
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "LastModifiedBy_Name"
+        }, {
+            "name": "lastModifiedOn",
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "LastModifiedOn_Name"
+        }]
+    },
+    "voyages": {
+        "title": "Locations",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false
+        }, {
+            "caption": "PAGES.VESSEL_SCHEDULE.LOCATION_PORT",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "masters.LOCATION_CODE",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "PAGES.VESSEL_SCHEDULE.VOYAGE_ID",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "PAGES.VESSEL_SCHEDULE.ETA",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "PAGES.VESSEL_SCHEDULE.ETB",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "PAGES.VESSEL_SCHEDULE.ETD",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "PAGES.VESSEL_SCHEDULE.PORT_CALL_ID",
+            "visible": true,
+            "sortable": true
+        }, {
+            "caption": "masters.BUNKERABLE_PORT",
+            "visible": true,
+            "sortable": true
+        }]
+    },
+    "locations": {
+        "title" : "Locations",
+        "columns": [
+            {
+                "caption": "",
+                "skipRendering": true,
+                "alwaysVisible": true,
+                "sortable": false
+            },
+            {
+                "name": "name",
+                "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "Name"
+            },
+            {
+                "name": "parentName",
+                "caption": "PAGES.NEW_REQUEST.PARENT",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "Parent_Name"
+            },
+            {
+                "name": "code",
+                "caption": "PAGES.NEW_REQUEST.CODE",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "Code"
+            },
+            {
+                "name": "countryName",
+                "caption": "PAGES.NEW_REQUEST.COUNTRY",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "Country_Name"
+            },
+            {
+                "name": "createdByName",
+                "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "CreatedBy_Name"
+            },
+            {
+                "name": "createdOn",
+                "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "CreatedOn"
+            },
+            {
+                "name": "lastModifiedBy",
+                "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_BY",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "LastModifiedBy"
+            },
+            {
+                "name": "lastModifiedOn",
+                "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "LastModifiedOn"
+            }
+        ]
+    },
+    "products": {
+        "title": "Products",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false,
+            "sortableName": ""
+        }, {
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "name"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.PARENT",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "parent"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdBy"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdOn"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedByUser"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedOn"
+        }]
+    },
+    "request": {
+        "title": "Request List",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false,
+            "sortableName": ""
+        }, {
+            "caption": "PAGES.REQUEST_LIST.REQUEST_ID",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "requestId"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.DATE",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "requestDate"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.SERVICE",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "serviceName"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.BUYER",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "buyerName"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.VESSEL",
+            "visible": false,
+            "sortable": true,
+            "sortableName": "vesselName"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.IMO",
+            "visible": false,
+            "sortable": true,
+            "sortableName": "imo"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.ETA",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "eta"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.LOCATION",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "locationName"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.REQUEST_STATUS",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "requestStatus"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.PRODUCT",
+            "visible": false,
+            "sortable": true,
+            "sortableName": "productName"
+        }, {
+            "caption": "PAGES.REQUEST_LIST.PRODUCT_STATUS",
+            "visible": false,
+            "sortable": true,
+            "sortableName": "productStatus"
+        }]
+    },
+    "services": {
+        "title": "Service List",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false,
+            "sortableName": ""
+        }, {
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "name"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.PARENT",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "parent"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.SERVICE_CODE",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "code"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdBy"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdOn"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedByUser"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedOn"
+        }]
+    },
+    "buyer": {
+        "title": "Buyers List",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false,
+            "sortableName": ""
+        }, {
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "name"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.PARENT",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "parent"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdBy"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdOn"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedBy"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedOn"
+        }]
+    },
+    "contract": {
+        "title": "Select Contract",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false,
+            "sortableName": ""
+        }, {
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "name"
+        }, {
+            "caption": "PAGES.SELECT_CONTRACT.SELLER",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "seller"
+        }, {
+            "caption": "PAGES.SELECT_CONTRACT.LOCATION",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "location"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdBy"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdOn"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedOn"
+        }]
+    },
+    "paymentTerm": {
+        "title": "Payment Terms",
+        "columns": [{
+            "caption": "",
+            "skipRendering": true,
+            "alwaysVisible": true,
+            "sortable": false,
+            "sortableName": ""
+        }, {
+            "caption": "PAGES.NEW_REQUEST.DISPLAY_NAME",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "name"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdBy"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.CREATED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "createdOn"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_BY",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedByUser"
+        }, {
+            "caption": "PAGES.NEW_REQUEST.LAST_MODIFIED_ON",
+            "visible": true,
+            "sortable": true,
+            "sortableName": "lastModifiedOn"
+        }]
+    }
+}

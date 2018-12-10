@@ -1,0 +1,17 @@
+﻿
+<div class="row reconQuantityUom">
+    <div class="col-md-12">
+        <span ng-init='CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"});'></span>
+        <span ng-if="!formValues.temp.reconQtyUom.id" ng-init="formValues.temp.reconQtyUom = getDefaultUom()"></span>
+        <span ng-if="formValues.temp.reconQtyUom.id && formValues.order.id" ng-init='CM.getDataTable("quantity", { "UomId": formValues.temp.reconQtyUom.id, "orderId": formValues.order.id })'></span>
+        <select class="form-control bs-select changeIT" style="max-width:150px; float:right" name="quantityUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.temp.reconQtyUom" ng-change='CM.getDataTable("quantity", { "UomId": formValues.temp.reconQtyUom.id, "orderId": formValues.order.id })'>
+            <option></option>
+        </select>
+    </div>
+</div>
+<span>
+    <span ng-init="initGridDropdowns('quantityRecon')"></span>
+    <div ng-if="formValues" ui-grid="gridOptions['quantityRecon']" external-scopes="clickHandler" id="grid_{{ field.clc_id }}" ui-grid-auto-resize  class="dataGrid" >
+        <div class="clearfix"></div>
+    </div>
+</span>

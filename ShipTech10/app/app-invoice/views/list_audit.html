@@ -1,0 +1,35 @@
+﻿<general-header actions="{
+    primary: [],
+   secondary: [{
+        label: 'Main Page',
+        url: 'edit/:entity_id',
+        type: 'goto',
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Audit Log',
+        active: 'true',
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Configure UI',
+        type: 'goto',
+        url: 'structure'
+    } ],
+    icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+    ]
+}"></general-header>
+
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+    <clc-table-list
+        id="'entity_audit_log'"
+        app="'invoices'"
+        screen="'invoicelist'"
+        controls="'[info, pager]'"
+    ></clc-table-list>
+</span>

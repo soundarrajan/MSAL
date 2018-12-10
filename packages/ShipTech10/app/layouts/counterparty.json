@@ -1,0 +1,897 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [{
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [{
+                                "Value": "8",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "entity_emaillog": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "module",
+                            "Name": "Module",
+                            "Type": "dropdown",
+                            "masterSource": "Module",
+                            "Group": "General",
+                            "Label": "MODULE",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "sender",
+                            "Name": "Sender",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "SENDER",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "status",
+                            "Name": "Status",
+                            "Type": "dropdown",
+                            "masterSource": "EmailStatus",
+                            "Group": "General",
+                            "Label": "STATUS",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "entity",
+                            "Name": "Entity",
+                            "Type": "dropdown",
+                            "masterSource": "TransactionType",
+                            "Group": "General",
+                            "Label": "ENTITY",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "subject",
+                            "Name": "Subject",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "SUBJECT",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Unique_ID": "emailTo",
+                            "Name": "EmailTo",
+                            "Type": "text",
+                            "Group": "General",
+                            "Label": "EMAIL_TO",
+                            "Columns": [{
+                                "Value": "6",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Unique_ID": "name",
+                        "Name": "CounterpartyName",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "COUNTERPARTY_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "displayName",
+                        "Name": "DisplayName",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "DISPLAY_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "defaultPaymentTerm",
+                        "Name": "DefaultPaymentTerm",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "DEFAULT_PAYMENT_TERM",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "masterSource": "PaymentTerm",
+                        "Active": false,
+                        "clc_id": "masters_paymenttermlist"
+                    }, {
+                        "Unique_ID": "parent",
+                        "Name": "ParentCounterparty",
+                        "Type": "simpleLookup",
+                        "Group": "General",
+                        "Label": "PARENT_COUNTERPARTY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "masterSource": "ParentCounterparty",
+                        "Active": false,
+                        "clc_id": "masters_counterpartylist"
+                    }, {
+                        "Unique_ID": "hasNoMoreChildren",
+                        "Name": "NoChildrenCounterparty",
+                        "Type": "checkbox",
+                        "Group": "General",
+                        "Label": "HAS_NO_MORE_CHILDREN",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "options": [{
+                            "NoMoreChildren": "No More Children"
+                        }],
+                        "Active": false
+                    },  {
+                        "Unique_ID": "blacklistReason",
+                        "Name": "BlacklistReason",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "BLACKLISTED_REASON",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "LastOnRow": false,
+                        "Added": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "childrens",
+                        "Name": "ChildrenCoutnerparty",
+                        "Type": "multiLookup",
+                        "Group": "General",
+                        "Label": "CHILDREN_COUNTERPARTY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "masterSource": "Counterparty",
+                        "Active": false,
+                        "LastOnRow": true,
+                        "Disabled": "formValues.hasNoMoreChildren"
+                    }, {
+                        "Unique_ID": "counterpartyTypes",
+                        "Name": "CounterpartyType",
+                        "Type": "checkbox",
+                        "Group": "Custom Fields",
+                        "Label": "COUNTERPARTY_TYPE",
+                        "masterSource": "CounterpartyType",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false
+                    }],
+                    "Active": true
+                },
+                "Address": {
+                    "id": "Address",
+                    "name": "Address",
+                    "children": [{
+                        "Unique_ID": "address.addressLine1",
+                        "Name": "AddressLine1",
+                        "Type": "text",
+                        "Group": "Address",
+                        "Label": "ADDRESS_LINE_1",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": true
+                    }, {
+                        "Unique_ID": "address.addressLine2",
+                        "Name": "AddressLine2",
+                        "Type": "text",
+                        "Group": "Address",
+                        "Label": "ADDRESS_LINE_2",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": true
+                    }, {
+                        "Unique_ID": "address.city",
+                        "Name": "City",
+                        "Type": "text",
+                        "Group": "Address",
+                        "Label": "CITY",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": true
+                    }, {
+                        "Unique_ID": "address.state",
+                        "Name": "StateProvinceRegion",
+                        "Type": "text",
+                        "Group": "Address",
+                        "Label": "STATE_PROVINCE_REGION",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": true
+                    }, {
+                        "Unique_ID": "address.zipCode",
+                        "Name": "ZipPostalCode",
+                        "Type": "text",
+                        "Group": "custom_group2",
+                        "Label": "ZIP_POSTAL_CODE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "address.country",
+                        "Name": "Country",
+                        "Type": "simpleLookup",
+                        "Group": "Address",
+                        "Label": "COUNTRY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "masterSource": "Country",
+                        "Active": false,
+                        "LastOnRow": false,
+                        "clc_id": "masters_countrylist"
+                    }, {
+                        "Unique_ID": "website",
+                        "Name": "website",
+                        "Type": "text",
+                        "Group": "Address",
+                        "Label": "WEBSITE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false,
+                        "Pattern":"website"
+                    }]
+                },
+                "contacts": {
+                    "id": "contacts",
+                    "name": "Contacts",
+                    "children": [{
+                        "Unique_ID": "contactsGroup",
+                        "Name": "contactsName",
+                        "Type": "contactsGroup",
+                        "Group": "contacts",
+                        "Label": "CONTACT",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }]
+                },
+                "Location": {
+                    "id": "Location",
+                    "name": "Location",
+                    "children": [{
+                        "Unique_ID": "productsLocations",
+                        "Name": "Location",
+                        "Type": "CLC",
+                        "Group": "Location",
+                        "Label": "LOCATION",
+                        "App": "clcindlc",
+                        "clc_id": "productsLocations",
+                        "Screen": "counterpartylocation",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "LastOnRow": false,
+                        "Added": false,
+                        "Active": false
+                    }],
+                    "Active": true
+                }
+            }
+        }
+    },
+    "elements": [{
+        "requiredFields": [{
+            "Unique_ID": "displayName",
+            "Name": "DisplayName",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Display Name",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "name",
+            "Name": "CounterpartyName",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Counterparty Name",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "defaultPaymentTerm.name",
+            "Name": "DefaultPaymentTerm",
+            "Type": "simpleLookup",
+            "Group": "General",
+            "Label": "Default Payment Term",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "masterSource": "paymenttermlist"
+        }, {
+            "Unique_ID": "parent",
+            "Name": "ParentCounterparty",
+            "Type": "dropdown",
+            "Group": "General",
+            "Label": "Parent Counterparty",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "masterSource": "counterpartylist"
+        }, {
+            "Unique_ID": "hasNoMoreChildren",
+            "Name": "NoChildrenCounterparty",
+            "Type": "checkbox",
+            "Group": "General",
+            "Label": "No Children Counterparty",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "options": [{
+                "NoMoreChildren": "No More Children"
+            }]
+        }, {
+            "Unique_ID": "isBlacklisted",
+            "Name": "BlacklistCounterparty",
+            "Type": "checkbox",
+            "Group": "General",
+            "Label": "Blacklist",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "options": [{
+                "IsBlacklisted": "Is Blacklisted"
+            }]
+        }, {
+            "Unique_ID": "blacklistReason",
+            "Name": "BlacklistReason",
+            "Type": "text",
+            "Group": "General",
+            "Label": "Reason",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "childrens",
+            "Name": "ChildrenCoutnerparty",
+            "Type": "multiLookup",
+            "Group": "General",
+            "Label": "Children Coutnerparty",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "masterSource": "counterpartylist"
+        }, {
+            "Unique_ID": "counterpartyTypes",
+            "Name": "CounterpartyType",
+            "Type": "checkbox",
+            "Group": "General",
+            "Label": "Counterparty Type",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "options": [{
+                "Lab": "Lab",
+                "IsBlacklisted": "Is Blacklisted",
+                "Barge Company": "Barge Company",
+                "Surveyor": "Surveyor",
+                "Agent": "Agent",
+                "Customer": "Customer",
+                "Broker": "Broker",
+                "Seller": "Seller",
+                "Supplier": "Supplier"
+            }]
+        }, {
+            "Unique_ID": "AddressLine1",
+            "Name": "AddressLine1",
+            "Type": "text",
+            "Group": "Address",
+            "Label": "Address Line 1",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "AddressLine2",
+            "Name": "AddressLine2",
+            "Type": "text",
+            "Group": "Address",
+            "Label": "Address Line 2",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "City",
+            "Name": "City",
+            "Type": "text",
+            "Group": "Address",
+            "Label": "City",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "State/Province/Region",
+            "Name": "State/Province/Region",
+            "Type": "text",
+            "Group": "Address",
+            "Label": "State/Province/Region",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "Zip/PostalCode",
+            "Name": "Zip/PostalCode",
+            "Type": "text",
+            "Group": "Address",
+            "Label": "Zip/Postal Code",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "Country",
+            "Name": "Country",
+            "Type": "simpleLookup",
+            "Group": "Address",
+            "Label": "Country",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false,
+            "masterSource": "countrylist"
+        }],
+        "customFields": [{
+            "Unique_ID": "CustomField1",
+            "Name": "CustomField1",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 1",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "CustomField2",
+            "Name": "CustomField2",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 2",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "CustomField3",
+            "Name": "CustomField4",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 3",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "CustomField4",
+            "Name": "CustomField4",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 4",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "CustomField 5",
+            "Name": "CustomField 5",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 5",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }, {
+            "Unique_ID": "CustomField6",
+            "Name": "CustomField6",
+            "Type": "text",
+            "Group": "Custom Fields",
+            "Label": "Custom Field 6",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }],
+        "contacts": [{
+            "Unique_ID": "contacts",
+            "Name": "Contacts",
+            "Type": "contactsGroup",
+            "Group": "Contacts",
+            "Label": "Contacts",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "masterSource": "contacttypelist",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }],
+        "location": [{
+            "Unique_ID": "productsLocations",
+            "Name": "Location",
+            "Type": "CLC",
+            "Group": "Location",
+            "Label": "Location",
+            "App": "clcindlc",
+            "Screen": "counterpartylocation",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "LastOnRow": false,
+            "Added": false
+        }]
+    }],
+    "clc": {},
+    "id": 14
+}

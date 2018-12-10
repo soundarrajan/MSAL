@@ -1,0 +1,105 @@
+       <!--          {
+            label: 'Reset',
+            method: 'reset_form()',
+            extern: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.status.name !== \'Approved\''
+        },{
+            label: 'Cancel',
+            method: 'cancel_invoice()',
+            extern: true,
+            url: '#',
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.status.name !== \'Approved\''
+        },
+        {
+            label: 'Submit Invoice for Review',
+            method: 'submit_invoice_review()',
+            extern: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.status.name !== \'Approved\''
+        },
+        {
+            label: 'Accept',
+            method: 'accept_invoice()',
+            extern: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.status.name !== \'Approved\''
+        },
+        {
+            label: 'Submit for Approve',
+            method: 'submit_invoice_approve()',
+            extern: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.status.name !== \'Approved\''
+        },
+        {
+            label: 'Reject',
+            method: 'reject_invoice()',
+            extern: true,
+            ConditionalType: 'ng-show',
+            Conditional: 'formValues.status.name !== \'Approved\''
+        } -->
+
+
+<general-header actions="{
+    primary: [
+        {
+            label: 'Back Office Report',
+            html_element: 'ordertoinvoice'
+        },
+        {
+            label: 'Save',
+            special: 'true',
+            method: 'save_master_changes()',
+            extern: true,
+            main: true,
+            ConditionalType: 'ng-disabled',
+            Conditional: 'submitedAction'
+        },
+        {
+        	type: 'customActionButton',
+            html_element: 'customActionButton'
+        }
+    ],
+   secondary: [{
+        label: 'Main Page',
+        active: 'true'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit-log/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Configure UI',
+        type: 'goto',
+        url: 'structure'
+    } ],
+}"></general-header>
+
+<entity-edit-form structure='' app="'invoices'" screen="'invoice'"></entity-edit-form>
+<general-header actions="{
+    primary: [
+        {
+            label: 'Save',
+            special: 'true',
+            method: 'save_master_changes()',
+            extern: true,
+            main: true,
+            ConditionalType: 'ng-disabled',
+            Conditional: 'submitedAction'
+        },
+        {
+        	type: 'customActionButton',
+            html_element: 'customActionButton'
+        }
+    ],
+   secondary: [],
+}" color="'white'"></general-header>

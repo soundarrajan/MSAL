@@ -1,0 +1,8 @@
+<span  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+
+    <div ui-grid="gridOptions[field.clc_id]"  id="grid_{{ field.clc_id }}"  ui-grid-auto-resize  class="dataGrid" ng-init="gridOptions.source = '$scope.formValues.' + field.clc_id; " style="{{gridOptions[field.clc_id].autoHeight ? 'height: ' + ($eval(gridOptions[field.clc_id].data).length * gridOptions[field.clc_id].rowHeight + 60) + 'px' : ''}}" >
+        <div class="clearfix"></div>
+    </div>
+</span>
+<span ng-init="initGridDropdowns(field.clc_id)"></span>
+<!-- <span ng-if="field.DynamicDataTable == true" ng-init="data={} ; getDataTable(field.name, data)"></span> -->

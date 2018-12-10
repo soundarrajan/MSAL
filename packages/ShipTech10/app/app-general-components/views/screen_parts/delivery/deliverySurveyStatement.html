@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-8">
+        <div class="portlet">
+            <div class="portlet-title">
+                <span class="caption-subject ">
+                    {{ CM.app_id + '.DELIVERY_PRODUCTS_QUANTITY' | translate }}
+                </span>
+            </div>
+            <span ng-include="'app-general-components/views/screen_parts/delivery/deliveryProductsQuantity.html'"></span>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-4">
+        <div class="portlet">
+            <div class="portlet-title">
+                <span class="caption-subject ">
+
+                    {{ CM.app_id + '.ORDER_SUMMARY' | translate }}
+                </span>
+            </div>
+            <span ng-include="'app-general-components/views/screen_parts/delivery/orderSummaryGroup.html'"></span>
+        </div>
+    </div>
+</div>

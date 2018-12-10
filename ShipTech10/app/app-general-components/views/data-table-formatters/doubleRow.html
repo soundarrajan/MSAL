@@ -1,0 +1,6 @@
+<div ng-controller="Controller_Master as CM">
+
+    <div class="ui-grid-cell-contents double-cells cells_{{grid.appScope.fVal().formValues.labSealNumberInformation[rowRenderIndex][col.colDef.custom_src].length}}" ng-repeat="(key, value) in grid.appScope.fVal().formValues.labSealNumberInformation[rowRenderIndex][col.colDef.custom_src]">
+        <input type="text" class="form-control" ng-model="value[col.colDef.name] ">
+    </div>
+</div>

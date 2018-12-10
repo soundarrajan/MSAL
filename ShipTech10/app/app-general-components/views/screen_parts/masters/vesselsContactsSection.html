@@ -1,0 +1,204 @@
+<!-- init uom for rob section -->
+<span ng-init="CM.initRobSectionUOM()"></span>
+<span ng-init="CM.initOptionsForDefaultLab()"></span>
+<div>
+    <span ng-init='options.ContactType ? return : CM.getOptions({"Name": "ContactType", "Type": "simpleLookup", "masterSource": "ContactType"})' ng-if="!options['ContactType']"></span>
+    <span ng-init='options.Country ? return : CM.getOptions({"Name": "Country", "Type": "simpleLookup", "masterSource": "Country"})' ng-if="!options['Country']"></span>
+    <span ng-if="!formValues.contacts" ng-init='formValues.contacts=[{"id": 0, "isActive": true}];'></span>
+    <span ng-if="formValues.contacts.length == 0" ng-init="formValues.contacts.push({isActive: true, id: 0});"></span>
+    <div ng-repeat="(key, value) in formValues.contacts  track by $index">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group row vessel_contact">
+                    <label for="contact_name_{{ key }}" class="{{ field.Name }}_label">
+                        <a class="st-btn-icon ng-scope pull-left" ng-click="CM.deleteContactFromMasterEdit(key,value,'vessel')"><i class="fa fa-minus"></i></a>
+                        &nbsp;&nbsp;&nbsp;
+                        {{ CM.app_id + '.CONTACT' | translate }}
+                        <span  class="orange-txt "> * </span>
+                    </label>
+                    <div class="form_input form_input_contact_name input-group">
+                        <input type="text" name="contact_name_{{ key }}" class="form-control" id="contact_name_{{ key }}" ng-model="formValues.contacts[$index].name" ng-required="true"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group row">
+                    <label  for="contact_type_{{ key }}" class="contact_type_label">
+                        {{ CM.app_id + '.CONTACT_TYPE' | translate }}
+                        <span  class="orange-txt "> * </span>
+                    </label>
+                    <div class="input-group form_input form_input_contact_type_{{ key }}">
+                        <input  uib-typeahead="item as item.name for item in options.ContactType | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_type_{{ key }}" name="contact_type_{{ key }}" ng-model="formValues.contacts[$index].contactType"  autocomplete="off" ng-required="true"/>
+                        <span class="input-group-addon" ng-click="triggerModal('general', 'masters_contacttypelist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.contactType');">
+                            <a   class=" btn default">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <!-- <div class="multi_lookup_tags tagsFor{{ field.Unique_ID }}">
+                        <input type="text" name="{{ field.Unique_ID }}{{$index}}" class="input-as-label form-control typeahead object_tagsinput_{{ field.Unique_ID }}" dynamic-model="'formValues.' + field.Unique_ID +'.id'"  ng-required='field.Required'/>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group row">
+                    <label for="email_{{ key }}" class = "email_label_{{ key }}">
+                        {{ CM.app_id + '.EMAIL' | translate }}
+                    <span  class="orange-txt "> * </span>
+                    </label>
+                    <div class="form_input form_input_contact_type_{{ key }}">
+                        <div ng-class="$index == 0 ? 'input-group' : ''">
+                            <input type="text" class="form-control" id="Email" ng-model="formValues.contacts[$index]['email']" name="email_{{ key }}" ng-blur="formValues.contacts[$index]['email'] = validateEmailPattern(formValues.contacts[$index]['email'])" ng-required="true"/>
+                            <span class="input-group-btn"  ng-if="$index == 0">
+                                <a   ng-click="formValues.contacts.push({isActive: true, id: 0})" class="btn default">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                <div class="contacts_btn">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" ng-model="formValues.contacts[$index].emailContact"/>
+                        <span></span>
+                        {{ CM.app_id + '.EMAIL_CONTACT' | translate }}
+                    </label>
+                    <a href="" ng-click="CM.cloneEntity('contacts', formValues.contacts[$index])">
+                        Copy
+                    </a>
+                    <a href="" ng-click="triggerModal('general', 'masters_contactlist', CM.app_id + '.EMAIL_CONTACT' | translate , 'formValues.contacts.'+key);">
+                        Link
+                    </a>
+                    <a href="" ng-click="isMoreInfo = !isMoreInfo; toggle = !toggle">
+                        <span ng-hide="toggle">
+                            More info
+                        </span>
+                        <span ng-show="toggle">
+                            Less info
+                        </span>
+                    </a>
+                </div>
+                </div>
+            </div>
+            <div ng-show="isMoreInfo" id="moreInfo">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="contactAddress" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.CONTACT_ADDRESS' | translate }}
+                            <span ng-if="formValues.contacts[$index].address" class="orange-txt ng-scope">
+                                *
+                            </span>
+                        </label>
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <input type="text" class="form-control" id="contactAddress" ng-model="formValues.contacts[$index].address.addressLine1"/>
+                            <input type="text" class="form-control" id="contactAddress2" ng-model="formValues.contacts[$index].address.addressLine2"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="zipPostalCode" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.ZIP_CODE' | translate }}
+                        </label>
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <input type="text" class="form-control" id="zipPostalCode" ng-model="formValues.contacts[$index].address.zipCode"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="city" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.CITY' | translate }}
+                        </label>
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <input type="text" class="form-control" id="city" ng-model="formValues.contacts[$index].address.city"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="country" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.COUNTRY' | translate }}
+                            <span ng-if="formValues.contacts[$index].address" class="orange-txt ng-scope">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''"  >
+                            <input  uib-typeahead="item as item.name for item in options.Country | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_country{{ $index }}" ng-required="formValues.contacts[$index].address" name="contact_country{{ $index }}" class="form-control select2 changeIT" ng-model="formValues.contacts[$index].address.country"  autocomplete="off"/>
+                            <span class="input-group-addon" ng-click="triggerModal('general', 'masters_countrylist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.address.country');">
+                                <a   class=" btn default">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <span ng-if="CM.entity_id < 1" ng-init="formValues.contacts[$index].isActive = true"></span>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <label class="mt-checkbox ">
+                                <input type="checkbox" class="form-control" id="active" ng-model="formValues.contacts[$index].isActive"/>
+                                <span></span>
+                                {{ CM.app_id + '.ACTIVE' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="mobileNumber" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.MOBILE_NO' | translate }}
+                        </label>
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <input type="text" class="form-control" id="mobileNumber" ng-model="formValues.contacts[$index].mobileNo"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="phoneNumber" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.PHONE_NO' | translate }}
+                        </label>
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <input type="text" class="form-control" id="phoneNumber" ng-model="formValues.contacts[$index].phoneNo"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="corporateFaxNo" class = "{{ field.Unique_ID }}_label">
+                            {{ CM.app_id + '.FAX_NO' | translate }}
+                        </label>
+                        <div class="form_input form_input_{{ field.Unique_ID }}">
+                            <input type="text" class="form-control" id="corporateFaxNo" ng-model="formValues.contacts[$index].corporateFaxNo"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="IMID" class="IMID_label">
+                            {{ CM.app_id + '.IM_ID' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_IMID4">
+                            <span class="input-group-addon uom_group pseudoSelect" ng-init='options.ImType ? return : CM.getOptions({"Name": "ImType", "Type": "dropdown", "masterSource": "ImType"})'>
+                                <select class="bs-select" data-width="fit" ng-model="formValues.contacts[$index].imType" ng-options="item as item.name for item in options.ImType track by item.id"></select>
+                            </span>
+                            <input type="text" id="IMID" name="IMID" class="form-control " ng-model="formValues.contacts[$index].instantMessengerAddress"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="Notes" class="Notes_label">
+                            {{ CM.app_id + '.NOTES' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_Notes4">
+                            <input type="text" id="Notes" name="Notes" class="form-control " ng-model="formValues.contacts[$index].notes"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>

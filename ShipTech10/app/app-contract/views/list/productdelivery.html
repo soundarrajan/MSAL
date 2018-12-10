@@ -1,0 +1,102 @@
+﻿<general-header actions="{
+       primary: [
+        {
+	        label: 'MTM',
+			special: 'true',
+	        url: '#',
+	        method: 'triggerContractDeliveryModal(\'mtm\')',
+	        extern: true,
+	    },
+        {
+	        label: 'Price',
+			special: 'true',
+	        url: '#',
+	        method: 'triggerContractDeliveryModal(\'price\')',
+	        extern: true,
+	    },
+        {
+	        label: 'Exposure',
+			special: 'true',
+	        url: '#',
+	        method: 'triggerContractDeliveryModal(\'exposure\')',
+	        extern: true,
+	    }
+    ],
+    secondary: [{
+        label: 'Edit',
+        type: 'goto',
+        url: 'edit/:entity_id',
+    }, {
+        label: 'Preview Contract',
+        type: 'goto',
+        url: 'preview/:entity_id',
+    }, {
+        label: 'Preview Email',
+        type: 'goto',
+         url: 'email-preview/:entity_id'
+    }, {
+        label: 'Deliveries',
+        active: 'true'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true,
+    },{
+       label: 'Terms & Conditions',
+       type: 'goto',
+       url: 'terms-conditions/:entity_id',
+       ConditionalType: 'ng-show',
+       Conditional: '((GH.entity_id > 0) && (GH.adminConfiguration.contract.areTermsAndConditionsAvailable))',
+      method: 'doEntityActionMaster(\'goto\', \'terms-conditions/:entity_id\')'
+     }],
+     icons: [
+            {class: 'fa fa-save', action: 'save_layout'},
+        ]
+}"></general-header>
+
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+	<clc-table-list id="'contractProductDeliveries'" app="'contracts'" screen="'contractlist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+		<!-- <span ng-if="clc_loaded" ng-init="initProductDeliveryList()"></span> -->
+</span>
+
+<general-header color="'white'" actions="{
+       primary: [
+        {
+	        label: 'MTM',
+			special: 'true',
+	        url: '#',
+	        method: 'triggerContractDeliveryModal(\'mtm\')',
+	        extern: true,
+	    },
+        {
+	        label: 'Price',
+			special: 'true',
+	        url: '#',
+	        method: 'triggerContractDeliveryModal(\'price\')',
+	        extern: true,
+	    },
+        {
+	        label: 'Exposure',
+			special: 'true',
+	        url: '#',
+	        method: 'triggerContractDeliveryModal(\'exposure\')',
+	        extern: true,
+	    }
+    ],
+    secondary: [
+
+    ],
+    search: false,
+}"></general-header>

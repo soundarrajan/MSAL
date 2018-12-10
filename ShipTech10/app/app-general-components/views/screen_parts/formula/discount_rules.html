@@ -1,0 +1,50 @@
+<div class="clearfix"></div>
+<div class="tabbable tabbable-tabdrop row"  ng-init="rules = 1" ng-if="initialized == 2">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <span class="caption-subject">
+                Define Discount
+            </span>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#quantity" data-toggle="tab" ng-click='rules = 1'>
+                    {{ CM.app_id + '.QUANTITY_TAB' | translate }}
+                </a>
+            </li>
+            <li>
+                <a href="#product" data-toggle="tab" ng-click='rules = 2'>
+                    {{ CM.app_id + '.PRODUCT_TAB' | translate }}
+                </a>
+            </li>
+            <li>
+                <a href="#vessel_location" data-toggle="tab" ng-click='rules = 3'>
+                    {{ CM.app_id + '.VESSEL_LOCATION_TAB' | translate }}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content col-md-12">
+        <div class="tab-pane active" id="quantity" ng-if="rules == 1">
+            <span ng-init="initGridDropdowns('quantityDiscountRules')"></span>
+            <div class="clearfix"></div>
+            <div ui-grid="gridOptions.quantityDiscountRules"  id="grid_complexFormulaQuoteLinesquantityDiscountRules"   class="dataGrid"   ui-grid-resize-columns>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="product" ng-if="rules == 2">
+            <span ng-init="initGridDropdowns('productDiscountRules')"></span>
+            <div class="clearfix"></div>
+            <div ui-grid="gridOptions.productDiscountRules"  id="grid_complexFormulaQuoteLinesproductDiscountRules"   class="dataGrid"   ui-grid-resize-columns>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="vessel_location" ng-if="rules == 3">
+            <span ng-init="initGridDropdowns('locationDiscountRules')"></span>
+            <div class="clearfix"></div>
+            <div ui-grid="gridOptions.locationDiscountRules"  id="grid_complexFormulaQuoteLineslocationDiscountRules"   class="dataGrid"   ui-grid-resize-columns>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>

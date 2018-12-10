@@ -1,0 +1,852 @@
+{
+  "layout": {
+    "children": {
+        "entity_documents": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+
+                    {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "entity_emaillog": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "module",
+                        "Name": "Module",
+                        "Type": "dropdown",
+                        "masterSource": "Module",
+                        "Group": "General",
+                        "Label": "MODULE",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "sender",
+                        "Name": "Sender",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SENDER",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "status",
+                        "Name": "Status",
+                        "Type": "dropdown",
+                        "masterSource": "EmailStatus",
+                        "Group": "General",
+                        "Label": "STATUS",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "entity",
+                        "Name": "Entity",
+                        "Type": "dropdown",
+                        "masterSource": "TransactionType",
+                        "Group": "General",
+                        "Label": "ENTITY",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "subject",
+                        "Name": "Subject",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "SUBJECT",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+                    {
+                        "Unique_ID": "emailTo",
+                        "Name": "EmailTo",
+                        "Type": "text",
+                        "Group": "General",
+                        "Label": "EMAIL_TO",
+                        "Columns": [{
+                            "Value": "6",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "General": {
+              "id": "General",
+              "name": "General",
+              "children": [
+                {
+                  "Unique_ID": "company",
+                  "Name": "Company",
+                  "Type": "simpleLookup",
+                  "Group": "General",
+                  "Label": "COMPANY",
+                  "clc_id": "masters_companylist",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "masterSource": "Company",
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "baseCurrency.name",
+                  "Name": "BaseCurrency",
+                  "Type": "text",
+                  "Group": "General",
+                  "Label": "BASE_CURRENCY",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Disabled": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Active": false,
+                  "Unique_ID": "exchangeRateType",
+                  "Name": "ExchangeRateType",
+                  "Type": "dropdown",
+                  "Group": "General",
+                  "Label": "EXCHANGE_RATE_TYPE",
+                  "masterSource": "ExchangeRateType",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": true
+                }
+              ]
+            },
+            "Exchange Rate Details": {
+              "id": "Exchange Rate Details",
+              "name": "Exchange Rate Details",
+              "children": [
+                {
+                  "Unique_ID": "exchangeRateDetails.id",
+                  "Name": "Exchange Rate Details",
+                  "Type": "CLC",
+                  "App": "clcindlc",
+                  "clc_id": "exchangeRateDetails",
+                  "Screen": "exchangeratedetails",
+                  "Group": "Exchange Rate Details",
+                  "Label": "EXCHANGE_RATE_DETAILS",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "LastOnRow": false,
+                  "Added": false,
+                  "Active": false
+                }
+              ],
+              "Active": true
+            }
+        }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "company.id",
+          "Name": "Company",
+          "Type": "simpleLookup",
+          "Group": "General",
+          "Label": "Company",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "companylist"
+        },
+        {
+          "Unique_ID": "caseCurrency.id",
+          "Name": "BaseCurrency",
+          "Type": "text",
+          "Group": "General",
+          "Label": "Base Currency",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "exchangeRateType.id",
+          "Name": "ExchangeRateType",
+          "Type": "dropdown",
+          "Group": "General",
+          "Label": "Exchange Rate Type",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "options": [
+            {
+              "isAccount": "Account",
+              "isMaster": "Master"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "Date",
+          "Name": "Date",
+          "Type": "date",
+          "Group": "General",
+          "Label": "Date",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "exchangeRateDetails",
+          "Name": "Exchangerate",
+          "Type": "number",
+          "Group": "General",
+          "Label": "Exchange rate",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ],
+      "customFields": [
+        {
+          "Unique_ID": "CustomField1",
+          "Name": "CustomField1",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 1",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField2",
+          "Name": "CustomField2",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 2",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField3",
+          "Name": "CustomField3",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 3",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField4",
+          "Name": "CustomField4",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 4",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField5",
+          "Name": "CustomField5",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 5",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "CustomField6",
+          "Name": "CustomField6",
+          "Type": "text",
+          "Group": "Custom Fields",
+          "Label": "Custom Field 6",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ],
+      "exchangeRateDetails": [
+        {
+          "Unique_ID": "ExchangeRateDetails",
+          "Name": "Exchange Rate Details",
+          "Type": "CLC",
+          "App": "clcindlc",
+          "Screen": "exchangeratedetails",
+          "Group": "Exchange Rate Details",
+          "Label": "Exchange Rate Details",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "LastOnRow": false,
+          "Added": false
+        }
+      ]
+    }
+  ],
+  "clc": {
+    "companyclc": {
+      "table_name": "Company List",
+      "datatype": "local",
+      "language": "en",
+      "rowNum": 10,
+      "rowList": [
+        30,
+        20,
+        10
+      ],
+      "multiselect": false,
+      "viewrecords": true,
+      "sortable": {
+        "options": {
+          "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+        }
+      },
+      "view_type": "flat",
+      "treeGrid": false,
+      "treeGridModel": "adjacency",
+      "ExpandColumn": "actions-dimensional",
+      "colModel": [
+        {
+          "index": "id",
+          "label": "ID",
+          "name": "id",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "name",
+          "label": "Company",
+          "name": "name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "parent.name",
+          "label": "Parent",
+          "name": "parent.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "currency.name",
+          "label": "Base Currency",
+          "name": "currency.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "uom.name",
+          "label": "Base UOM",
+          "name": "uom.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "createdBy.name",
+          "label": "Created By",
+          "name": "createdBy.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "createdOn",
+          "label": "Created On",
+          "name": "createdOn",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "lastModifiedBy.name",
+          "label": "Last Modified by",
+          "name": "lastModifiedBy.name",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "lastModifiedOn",
+          "label": "LastModified on",
+          "name": "lastModifiedOn",
+          "width": 150,
+          "sortable": true
+        },
+        {
+          "index": "isDeleted",
+          "label": "Status",
+          "name": "isDeleted",
+          "width": 150,
+          "sortable": true,
+          "formatter": "masters_isdeleted"
+        }
+      ],
+      "rowActions": [],
+      "tenantData": {
+        "view": "dimensional",
+        "views": [
+          "flat",
+          "dimensional"
+        ],
+        "hiddenColumns": [],
+        "columnsOrder": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "numberOfAdditionalColumns": 0,
+        "columnsOrderLoadOnce": false
+      }
+    }
+  },
+  "id": 72
+}

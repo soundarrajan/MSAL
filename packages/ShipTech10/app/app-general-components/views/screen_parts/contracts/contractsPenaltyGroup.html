@@ -1,0 +1,65 @@
+﻿<div class="form-group row">
+    <div class="col-md-3">
+        <label class="mt-checkbox">
+            {{ CM.app_id + '.ANY_PENALTIES_APPLIES' | translate }}
+            <input type="checkbox" ng-model="formValues.penaltyApplies"/>
+            <span></span>
+        </label>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group row">
+            <label for="penaltyCost" class="penaltyCost_label">
+                {{ CM.app_id + '.PENALTY_COST_IF_ANY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_penaltyCost">
+                <span class="input-group-addon uom_group pseudoSelect">
+                    <select class="bs-select" id="" ng-model="formValues.penaltyCostCurrency" ng-options="item as item.code for item in options.Currency track by item.id" data-width="fit">
+                        <option></option>
+                    </select>
+                </span>
+                <input type="text" format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" name="penaltyCost" class="form-control penaltyCost" ng-model="formValues.penaltyCost" ng-class="CM.invalid_form ? 'ng-touched' : ''"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 form-group">
+    <div class="row ">
+        <div class="col-md-3">
+            <label class="mt-checkbox">
+                {{ CM.app_id + '.SET_ALERT' | translate }}
+                <input type="checkbox" ng-model="formValues.alert"/>
+                <span></span>
+            </label>
+        </div>
+        <div class="col-md-2" ng-if="formValues.alert">
+            <div class="form-group row">
+                <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" min="0" class="form-control " ng-model="formValues.noOfDays" ng-trim="false" step="0.0001"/>
+            </div>
+        </div>
+        <div class="col-md-4" ng-if="formValues.alert">
+            <div class="form_input form_input_conditionAlertDate" ng-init='CM.getOptions({"Name": "ConditionAlert", "Type": "simpleLookup", "masterSource": "ConditionAlert"});'>
+                <span>
+                    <select class="form-control bs-select changeIT" id="conditionAlertDate" ng-model="formValues.conditionAlertDate" name="conditionAlertDate" ng-options="item as item.name for item in options.ConditionAlert track by item.id" style="max-width: 130px">
+                        <option></option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group  form-inline row ">
+                <label for="penalty_comment" class="penalty_comment_label">
+                    {{ CM.app_id + '.COMMENT' | translate }}
+                </label>
+                <div class="form_input form_input_comment" ng-class="!field.Label ? 'no-label' : ''" style="padding-left: 115px;">
+                    <span>
+                        <span>
+                            <textarea class="form-control" rows="2" id="penalty_comment" ng-model="formValues.comments"></textarea>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

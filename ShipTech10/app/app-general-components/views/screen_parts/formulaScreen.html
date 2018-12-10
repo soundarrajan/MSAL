@@ -1,0 +1,33 @@
+<div class="">
+    <div class="tabbable tabbable-tabdrop ">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#pricing_formula" data-toggle="tab" aria-expanded="true" ng-click="initialized = 1">
+                    {{ CM.app_id + '.PRICING_FORMULA' | translate }}
+                </a>
+            </li>
+            <li class="">
+                <a href="#discount_rules" data-toggle="tab" aria-expanded="false" ng-click="initialized = 2">
+                    {{ CM.app_id + '.DISCOUNT_RULES' | translate }}
+                </a>
+            </li>
+            <li class="">
+                <a href="#pricing_schedule" data-toggle="tab" aria-expanded="false" ng-click="initialized = 3">
+                    {{ CM.app_id + '.PRICING_SCHEDULE' | translate }}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <span ng-include="'app-general-components/views/screen_parts/formula/formula_schedule_description.html'"></span>
+            <div class="tab-pane active" id="pricing_formula" ng-init="initialized = 1">
+                <span ng-include="'app-general-components/views/screen_parts/formula/pricing_formula.html'"></span>
+            </div>
+            <div class="tab-pane" id="discount_rules">
+                <span ng-include="'app-general-components/views/screen_parts/formula/discount_rules.html'"></span>
+            </div>
+            <div class="tab-pane" id="pricing_schedule">
+                <span ng-include="'app-general-components/views/screen_parts/formula/pricing_schedule.html'"></span>
+            </div>
+        </div>
+    </div>
+</div>

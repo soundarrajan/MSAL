@@ -1,0 +1,35 @@
+<div class="clearfix"></div>
+<div class="row" ng-if="initialized == 3">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <span class="caption-subject">
+                Select Event
+            </span>
+        </div>
+    </div>
+    <div class="form_input form_input_pricingSchedule form-group">
+        <div class="mt-radio-list" ng-init='options.PricingSchedule ? return : CM.getOptions({"Name": "PricingSchedule", "Type": "simpleLookup", "masterSource": "PricingSchedule"})'>
+            <label class="mt-radio" ng-repeat="(key, value) in options.PricingSchedule">
+                <input type="radio" name="inlineRadiospricingSchedule[]" ng-value="{{ value.id }}" id="inlineRadio2"  ng-model="formValues.pricingSchedule.id" ng-change="clearSchedules()"/>
+                {{ value.name }}
+                <span></span>
+            </label>
+        </div>
+    </div>
+    <span ng-init='options.HolidayRule ? return : CM.getOptions({"Name": "HolidayRule", "Type": "dropdown", "masterSource": "HolidayRule"}); '></span>
+    <div class="col-md-12" ng-if="formValues.pricingSchedule.id == 4">
+        <span ng-include="'app-general-components/views/screen_parts/formula/pricing_schedule_dateRange.html'"></span>
+    </div>
+    <div class="col-md-12" ng-if="formValues.pricingSchedule.id == 5">
+        <span ng-include="'app-general-components/views/screen_parts/formula/pricing_schedule_specificDates.html'"></span>
+    </div>
+    <div class="col-md-12" ng-if="formValues.pricingSchedule.id == 6">
+        <span ng-include="'app-general-components/views/screen_parts/formula/pricing_schedule_eventBasedSimple.html'"></span>
+    </div>
+    <div class="col-md-12" ng-if="formValues.pricingSchedule.id == 7">
+        <span ng-include="'app-general-components/views/screen_parts/formula/pricing_schedule_eventBasedExtended.html'"></span>
+    </div>
+    <div class="col-md-12" ng-if="formValues.pricingSchedule.id == 8">
+        <span ng-include="'app-general-components/views/screen_parts/formula/pricing_schedule_eventBasedContinuous.html'"></span>
+    </div>
+</div>

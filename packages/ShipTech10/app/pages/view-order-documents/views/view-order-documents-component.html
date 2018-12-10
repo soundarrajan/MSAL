@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li><a ui-sref="default.edit-order({orderId: NAV.orderId})">Order</a></li>
+            <!-- <li><a>Transaction KPI</a></li> -->
+            <li class="open"><a>Documents</a></li>
+            <li><a>Rate Supplier</a></li>
+            <li><a ui-sref="default.view-order-auditlog({orderId: NAV.orderId})">Audit Log</a></li>
+            <li><a ui-sref="default.view-order-emaillog({orderId: NAV.orderId})">Email Log</a></li>
+        </ul>
+
+        <div class="pull-right buttons">
+            <a ng-controller="Controller_Master as CM" class="btn btn-default btn-outline" ng-click="uploadDocument('#fileUpload')">Upload</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="row">
+
+    <entity-edit-form screenchild="'entity_documents'"></entity-edit-form>
+    <span ng-controller="Controller_Configurable_List_Control as CLC">
+        <clc-table-list
+            id="'entity_documents'"
+            app="'procurement'"
+            screen="'order_entity_documents'"
+            controls="'[]'"
+        ></clc-table-list>
+    </span>
+
+</div>

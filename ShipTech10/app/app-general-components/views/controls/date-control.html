@@ -1,0 +1,33 @@
+<div class="form-group  row "  ng-init="CM.datepickers(field.masterSource + field.Name, field.DefaultToday && isCreate, field.PickerType)">
+    <label ng-if="field.Label && !field.isCustomField" for="{{ field.Name }}" class="{{ field.Name }}_label date-picker-label" >
+        {{ CM.app_id + '.' + field.Label | translate }}
+        <span ng-if="$eval(field.Required) > 0 || field.Required == true ? true : false " class="orange-txt">
+            *
+        </span>
+    </label>
+    <label ng-if="field.isCustomField" for="{{ field.Name }}" class="{{ field.Name }}_label date-picker-label" >
+        {{ field.Label }}
+        <span ng-if="$eval(field.Required) > 0 || field.Required == true ? true : false " class="orange-txt">
+            *
+        </span>
+    </label>
+
+    <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+        <div class="input-group date-picker date form_meridian_datetime w100" ng-class="field.disabled == true || $eval(field.Disabled) == true ? 'disabled' : ''">
+            <input name="{{field.Name}}" class="form-control" type="text" id="{{ field.masterSource }}{{ field.Name }}" dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}" dynamic-model="'formValues.' + field.Unique_ID " ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)' ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-change="triggerChangeFields(field.Name, field.Unique_ID);" >
+            <span ng-if="field.PickerType != 'date' || !field.Name.indexOf('Date') > -1" class="formatted-date" ng-class="field.Disabled == true ? 'bg-grey' : '' "  ng-bind="CM.formatDateTime(formValues.{{field.Unique_ID}}, '{{tenantSetting.tenantFormats.dateFormat.name}}', '{{field.Unique_ID}}')" >
+            </span>
+            <span ng-if="field.PickerType == 'date' || field.Name.indexOf('Date') > -1" class="formatted-date" ng-class="field.Disabled == true ? 'bg-grey' : '' "  ng-bind="CM.formatDate(formValues.{{field.Unique_ID}}, '{{tenantSetting.tenantFormats.dateFormat.name.split(' ')[0]}}')" >
+            </span>
+            <span class="input-group-btn" ng-hide="$eval(field.Disabled) == true || field.Disabled == true ? true : false ">
+                <button class="btn default date-set" type="button" ng-hide="$eval(field.Disabled) == true || field.Disabled == true ? true : false || $eval(field.disabled) == true || field.disabled == true ? true : false " dynamic-condition="{{field.Conditional}}" dynamic-condition-type="{{field.ConditionalType}}">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </div>
+
+        <span class="help-block">
+            {{ field.Description }}
+        </span>
+    </div>
+</div>

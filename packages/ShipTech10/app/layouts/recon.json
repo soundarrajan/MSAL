@@ -1,0 +1,277 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [{
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [{
+                                "Value": "8",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "OrderDetails": {
+                    "id": "General",
+                    "name": "OrderDetails",
+                    "children": [
+                        {
+                            "Active": false,
+                            "Unique_ID": "vesselName",
+                            "Name": "vesselName",
+                            "Type": "text",
+                            "Disabled": true,
+                            "Group": "OrderDetails",
+                            "Label": "VESSEL_NAME",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "imo",
+                            "Name": "imo",
+                            "Type": "text",
+                            "Disabled": true,
+                            "Group": "OrderDetails",
+                            "Label": "IMO",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "serviceCode",
+                            "Name": "serviceCode",
+                            "Type": "text",
+                            "Disabled": true,
+                            "Group": "OrderDetails",
+                            "Label": "SERVICE_CODE",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "port",
+                            "Name": "port",
+                            "Type": "text",
+                            "Disabled": true,
+                            "Group": "OrderDetails",
+                            "Label": "PORT",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "buyer",
+                            "Name": "buyer",
+                            "Type": "text",
+                            "Disabled": true,
+                            "Group": "OrderDetails",
+                            "Label": "BUYER",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        },
+                        {
+                            "Active": false,
+                            "Unique_ID": "sellerCounterparty",
+                            "Name": "sellerCounterparty",
+                            "Type": "text",
+                            "Disabled": true,
+                            "Group": "OrderDetails",
+                            "Label": "COUNTERPARTY",
+                            "Columns": [
+                                {
+                                    "Value": "4",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false
+                        }
+                    ]
+                },
+                "Quantity": {
+                    "id": "Quantity",
+                    "name": "Quantity",
+                    "isTab": true,
+                    "children": [
+                        {
+                            "Unique_ID": "Quantity",
+                            "Name": "Quantity",
+                            "Type": "quantityRecon",
+                            "clc_id": "quantityRecon",
+                            "DynamicDataTable": true,
+                            "Group": "Quantity",
+                            "Label": "Quantity",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        }
+                    ]
+                },
+                "Quality": {
+                    "id": "Quality",
+                    "name": "Quality",
+                    "isTab": true,
+                    "children": [
+                        {
+                            "Unique_ID": "Quality",
+                            "Name": "Quality",
+                            "Type": "qualityRecon",
+                            "clc_id": "qualityRecon",
+                              "DynamicDataTable": true,
+                            "Group": "Quality",
+                            "Label": "Quality",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        }
+                    ]
+                },
+                "Price": {
+                    "id": "Price",
+                    "name": "Price",
+                    "isTab": true,
+                    "children": [
+                        {
+                            "Unique_ID": "Price",
+                            "Name": "Price",
+                            "Type": "priceRecon",
+                            "DynamicDataTable": true,
+                            "clc_id": "priceRecon",
+                            "Group": "Price",
+                            "Label": "Price",
+                            "Columns": [
+                                {
+                                    "Value": "12",
+                                    "Type": "dropdown",
+                                    "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                                }
+                            ],
+                            "Description": "",
+                            "Required": false,
+                            "Hidden": false,
+                            "Added": false,
+                            "LastOnRow": false,
+                            "Active": false
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "elements": {},
+    "clc": {}
+}

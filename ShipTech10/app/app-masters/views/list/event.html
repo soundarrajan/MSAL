@@ -1,0 +1,31 @@
+﻿<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+    <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: true,
+        icons: [
+            {class: 'fa fa-save', action: 'save_layout'},
+            {class: 'export-xls', action: 'export_xls'},
+            {class: 'export-csv', action: 'export_csv'},
+            {class: 'export-pdf', action: 'export_pdf'},
+
+            {class: 'print', action: 'print'},
+        ],
+    }"></general-header>
+
+    <clc-table-list id="'masters_eventlist'" app="'masters'" screen="'eventlist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+    <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: false,
+    }" color="'white'"></general-header>
+
+</div>

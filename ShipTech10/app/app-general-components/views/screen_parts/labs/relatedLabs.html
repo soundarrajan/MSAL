@@ -1,0 +1,94 @@
+<div class="row">
+    <!-- old related labs -->
+<!-- <div class="pull&#45;left related&#45;entity&#45;item" ng&#45;if="!CM.relatedLabs || CM.relatedLabs.length == 0"> -->
+<!-- 		<div class="col&#45;sm&#45;12"> -->
+<!-- 			<div class="note note&#45;related active"> -->
+<!-- 				<div class="fa fa&#45;times remove&#45;entity" ng&#45;click="deleteRelatedLab(CM.entity_id)"></div> -->
+<!-- 				<p><b>Order ID</b>: {{formValues.order.name}}</p> -->
+<!-- 				<p><b>Lab ID</b>: {{CM.entity_id}}</p> -->
+<!-- 				<p><b>Lab Status</b>: {{formValues.status.displayName}}</p> -->
+<!-- 	        </div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+    <!-- old related labs -->
+
+    <!-- uncomment for related labs TODO -->
+<!-- <div class="pull&#45;left related&#45;entity&#45;item" ng&#45;repeat="(labK, labVal) in relatedLabs" > -->
+<!-- 		<div class="col&#45;sm&#45;12"> -->
+<!-- 			<div class="note note&#45;related pull&#45;left" ng&#45;class="{'active' : labVal.id == CM.entity_id}" > -->
+<!-- 				<span class="fa fa&#45;times remove&#45;entity"  ng&#45;click="deleteRelatedLab(labVal.id)"></span> -->
+<!-- 				<a href="/#/labs/labresult/edit/{{labVal.id}}"> -->
+<!-- 					<p><b>Order ID</b>: {{labVal.order.name}}</p> -->
+<!-- 					<p><b>Lab ID</b>: {{labVal.id}}</p> -->
+<!-- 					<p><b>Lab Status</b>: {{labVal.labStatus.displayName}}</p> -->
+<!-- 				</a> -->
+<!-- 	        </div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+
+    <!--  related labs table -->
+<div class="related_labs_table_wrapper" style="display: none;">
+    <table>
+      <thead>
+        <th>
+          {{ CM.app_id + '.LAB_RESULT_ID' | translate }}
+        </th>
+        <th>
+          {{ CM.app_id + '.LAB_COUNTERPARTY' | translate }}
+        </th>
+        <th>
+          {{ CM.app_id + '.LAB_STATUS' | translate }}
+        </th>
+        <th>
+          {{ CM.app_id + '.REQUEST_DATE' | translate }}
+        </th>
+        <th>
+          {{ CM.app_id + '.TEST_TYPE' | translate }}
+        </th>
+        <th>
+          {{ CM.app_id + '.PRODUCT' | translate }}
+        </th>
+        <th>
+          {{ CM.app_id + '.RECON_STATUS' | translate }}
+        </th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(key, lab) in relatedLabs">
+          <td> {{ lab.id }} </td>
+          <td> {{ lab.counterparty }} </td>
+          <td> {{ lab.status }} </td>
+          <td> {{ lab.requestDate }} </td>
+          <td> {{ lab.testType }} </td>
+          <td> {{ lab.product }} </td>
+          <td> {{ lab.reconStatus }} </td>
+        <tr>
+      </tbody>
+    </table>
+    </div>
+    <span ng-if="!CM.relatedLabs || CM.relatedLabs.length == 0">
+	    <div ui-grid="gridOptions['related_labs']"  id="grid_related_labs"  ui-grid-auto-resize  class="dataGrid" ng-init="gridOptions.source = '$scope.formValues.orderRelatedLabResults'; "  >
+        <div class="clearfix"></div>
+	    </div>
+    </span>
+    <span ng-init="initGridDropdowns('related_labs')"></span>
+</div>
+
+<!-- <div ng&#45;if="!CM.relatedLabs || CM.relatedLabs.length == 0"> -->
+<!-- 	<div class="note note&#45;related pull&#45;left" style="margin&#45;right:15px;" ng&#45;repeat="(key, value) in formValues.orderRelatedLabResults" ng&#45;class="{'active' : value.id == CM.entity_id}"> -->
+<!--         <a href="/#/labs/labresult/edit/{{value.id}}" > -->
+<!--             <p class="ng&#45;binding"> -->
+<!--                 <b> -->
+<!--                     Lab ID -->
+<!--                 </b> -->
+<!--                 : {{value.id}} -->
+<!--             </p>             -->
+<!--             <p class="ng&#45;binding"> -->
+<!--                 <b> -->
+<!--                     Lab Status -->
+<!--                 </b> -->
+<!--                 : {{value.labStatus.displayName}} -->
+<!--             </p> -->
+<!--         </a> -->
+<!--     </div> -->
+<!-- </div> -->
+<!--  -->

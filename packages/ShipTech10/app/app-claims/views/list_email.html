@@ -1,0 +1,25 @@
+<general-header actions="{
+    primary: [],
+    secondary: [
+        {label: 'Main Page', type: 'goto', url: 'edit/:entity_id'},
+        {label: 'Documents', type: 'goto', url: 'documents/:entity_id'},
+        {label: 'Audit Log', type: 'goto', url: 'audit-log/:entity_id'},
+        {label: 'Email Log', active: true},
+        {label: 'Configure UI',type: 'goto', url: 'structure'},
+    ],
+    icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+    ]
+}"></general-header>
+
+<!-- <entity-edit-form screenchild="'entity_emaillog'"></entity-edit-form> -->
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+    <clc-table-list
+        id="'masters_emaillogslist'"
+        app="'masters'"
+        screen="'emaillogslist'"
+        controls="'[pager, info]'"
+        filters='[{ColumnName: "TransactionTypeId", Value: 7}, {ColumnName: "TransactionIds", Value: CLC.entity_id}]'>
+    </clc-table-list>
+    <span ng-if="clc_loaded" ng-init="filterEmailLog()"></span>
+</span>

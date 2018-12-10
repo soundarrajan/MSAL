@@ -1,0 +1,536 @@
+<!-- <div class="row hideInRequest" ng-if="!$ctrl.requestScreen">
+    <div class="st-main-content-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li class="open" ng-class="{open : true}">
+                <a href="#/new-order" ui-sref="default.select-contract" ui-sref-active="text-muted">
+                    Contract
+                </a>
+            </li>
+        </ul>
+        <div class="pull-right">
+            <a class="btn btn-default" ng-click="$ctrl.goBack()">
+                Back
+            </a>
+            <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()"  ng-class="{'disabled' : $ctrl.selectedRow === null}">
+                Proceed to Order
+            </a>
+            <a class="btn btn-default">
+                &hellip;
+            </a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="row m0">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <div class="tools">
+                <a   class="collapse" data-original-title="" title=""></a>
+            </div>
+            <div class="caption">
+                <span class="caption-subject ">
+                    Best Available Contracts
+                </span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-lg-3 text-right col-lg-offset-1">
+                            <a class="link-underline-light" ng-click="$ctrl.gotoContractEvaluation();">
+                                Go to Contracts Evaluation
+                            </a>
+                        </div>
+                        <div class="col-lg-3 text-right">
+                            <a class="link-underline-light" ng-click="$ctrl.displayAllContracts()">
+                                Display All Contracts
+                            </a>
+                        </div>
+                        <div class="col-lg-5 text-right">
+                            <form class="form-inline">
+                                <div class="form-group-sm">
+                                    <label class="control-label">
+                                        Search Contract
+                                    </label>
+                                    <div class="input-group">
+                                        <input class="typeahead form-control" uib-typeahead="contract as contract.name for contract in $ctrl.contractList | filter:$viewValue" ng-model="$ctrl.autocompleteContract" typeahead-on-select="$ctrl.selectContract($item.id)" typeahead-editable="false"/>
+                                        <span class="input-group-addon" data-toggle="modal" href="#lookup" ng-click="$ctrl.setDialogTypeContract()">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="st-select-contract-table-container">
+                <table class="table table-bordered table-hover st-select-contract-table">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                &nbsp;
+                            </th>
+
+                            <th ng-repeat-start="product in $ctrl.products track by $index" ng-show="! $ctrl.isProductTabExpanded($index)" colspan="2" class="product-tab-collapsed left-border right-border ">
+                                {{ product.name }}
+                                <div ng-click="$ctrl.toggleProductTab($index);" class="pull-right expander">
+                                    <a>
+                                        <i class="fa fa-2x fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </th>
+
+
+                            <th ng-repeat-end ng-show="$ctrl.isProductTabExpanded($index)" colspan="6" class="product-tab-collapsed left-border  right-border ">
+                                {{ product.name }}
+                                <div class="pull-right expander">
+                                    <a ng-click="$ctrl.toggleProductTab($index);">
+                                        <i class="fa fa-2x fa-angle-left"></i>
+                                    </a>
+                                </div>
+                            </th>
+
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>
+                                {{ $ctrl.contractColumns.contractName.caption | translate }}
+                            </th>
+                            <th>
+                                {{ $ctrl.contractColumns.seller.caption | translate }}
+                            </th>
+                            <th>
+                                {{ $ctrl.contractColumns.location.caption | translate }}
+                            </th>
+                            <th>
+                                {{ $ctrl.contractColumns.priceType.caption | translate }}
+                            </th>
+                            <th>
+                                {{ $ctrl.contractColumns.contractExpiryDate.caption | translate }}
+                            </th>
+
+
+                            <th ng-repeat-start="product in $ctrl.products track by $index" colspan="2" ng-show="$ctrl.isProductTabExpanded($index)" class="left-border">
+                                {{ $ctrl.contractColumns.contractExpiryDate.caption | translate }}
+                            </th>
+                            <th ng-show="$ctrl.isProductTabExpanded($index)">
+                                {{ $ctrl.contractColumns.productAvailability.caption | translate }}
+                            </th>
+                            <th ng-show="$ctrl.isProductTabExpanded($index)">
+                                {{ $ctrl.contractColumns.contractedQuantity.caption | translate }}
+                            </th>
+                            <th ng-show="$ctrl.isProductTabExpanded($index)">
+                                {{ $ctrl.contractColumns.price.caption | translate }}
+                            </th>
+                            <th ng-show="$ctrl.isProductTabExpanded($index)" class="right-border">
+                                {{ $ctrl.contractColumns.uom.caption | translate }}
+                            </th>
+
+                            <th ng-repeat-end colspan="2" ng-show="! $ctrl.isProductTabExpanded($index)" class="left-border  right-border"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="contract in $ctrl.contracts track by $index" style="{{ $ctrl.contractIsInRequestProducts(contract) ? 'background:#eef1f5' : '' }}">
+                            <td class="centered">
+                                <label class="mt-checkbox mt-checkbox-outline">
+                                    <input type="checkbox" ng-change="$ctrl.toggleSelection(contract.contract.id+'_'+contract.requestProductId, contract)" ng-model="$ctrl.checkboxes[contract.contract.id+'_'+contract.requestProductId]"/>
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                {{ contract.contract.name }}
+                            </td>
+                            <td>
+                                {{ contract.seller.name }}
+                            </td>
+                            <td>
+                                {{ contract.location.name }}
+                            </td>
+                            <td>
+                                {{ contract.priceType }}
+                            </td>
+
+                            <td>
+                                <span ng-controller="Controller_Master as CM" ng-bind="CM.formatDateTime(contract.contractExpiryDate, '', 'eta')"></span>
+                            </td>
+
+
+                            <td ng-repeat-start="product in $ctrl.products track by $index" ng-init="contractProduct = $ctrl.getContractProduct(contract, product)" class="left-border centered" style="border-right: none;">
+
+
+                                <span class="hidden">
+                                    {{ contractProduct = $ctrl.getContractProduct(contract, product) }}
+                                </span>
+                            </td>
+                            <td ng-class="{'right-border': ! $ctrl.isProductTabExpanded($index)}" style="border-left: none; padding-top: 8px !important">
+                                <i ng-show="contractProduct != null && contract.productMatched" class="fa fa-2x fa-check font-porraceous-green"></i>
+                                <i ng-show="contractProduct == null || !contract.productMatched" class="fa fa-2x fa-close text-danger"></i>
+                            </td>
+
+
+
+                            <td ng-show="$ctrl.isProductTabExpanded($index)" class="">
+                                <span ng-show="contractProduct != null">
+                                    {{ contract.availableQuantity | number:3 }}
+                                </span>
+                            </td>
+                            <td ng-show="$ctrl.isProductTabExpanded($index)" class="">
+                                <span ng-show="contractProduct != null">
+                                    {{ contract.contractedQuantity| number:3  }}
+                                </span>
+                            </td>
+                            <td ng-show="$ctrl.isProductTabExpanded($index)" class="">
+                                <span ng-show="contractProduct != null">
+                                    {{ contract.fixedPrice | number:3 }}
+                                </span>
+                            </td>
+                            <td ng-repeat-end class="right-border" ng-show="$ctrl.isProductTabExpanded($index)" class="">
+                                <span ng-show="contractProduct != null">
+                                    {{ contract.uom.name }}
+                                </span>
+                            </td>
+                            <!--
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-if="$ctrl.showAllContracts" class="dataTables_info" id="all_requests_table_info" role="status" aria-live="polite">
+                    Showing {{ $ctrl.tableOptions.paginationStart + 1 }} to
+                    {{ $ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength < $ctrl.tableOptions.totalRows ? $ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength : $ctrl.tableOptions.totalRows }}
+                    of {{ $ctrl.tableOptions.totalRows }} entries
+                </div>
+                <div ng-if="$ctrl.showAllContracts" class="dataTables_paginate paging_input" id="all_requests_table_paginate">
+                    <span class="first paginate_button" id="all_requests_table_first">
+                        First
+                    </span>
+                    <span class="paginate_page">
+                        Page
+                    </span>
+                    <span class="previous paginate_button" id="all_requests_table_previous" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">
+                        &lt;
+                    </span>
+                    <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'/>
+                    <span class="next paginate_button" id="all_requests_table_next" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">
+                        &gt;
+                    </span>
+                    <span class="paginate_of"></span>
+                    <span class="last paginate_button" id="all_requests_table_last">
+                        Last
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row hideInRequest" ng-if="!$ctrl.requestScreen">
+    <div class="portlet light">
+        <div class="portlet-body">
+            <div class="pull-right">
+                <a class="btn btn-default" ng-click="$ctrl.goBack()">
+                    Back
+                </a>
+                <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()"  ng-class="{'disabled' : $ctrl.selectedRow === null}">
+                    Proceed to Order
+                </a>
+                <a class="btn btn-default">
+                    &hellip;
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<lookup-dialog class="modal fade in" id="lookup" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" on-contract-select="$ctrl.selectContract(contractId)"></lookup-dialog>
+<confirm-order-dialog class="modal fade in" id="confirm" aria-hidden="true" data-width="90%" confirmation-product-orders=$ctrl.confirmationProductOrders></confirm-order-dialog>
+ -->
+
+
+
+
+
+
+
+
+<div class="row hideInRequest" ng-if="!$ctrl.requestScreen">
+    <div class="st-main-content-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li class="open" ng-class="{open : true}">
+                <a href="#/new-order" ui-sref="default.select-contract" ui-sref-active="text-muted">
+                    Contract
+                </a>
+            </li>
+        </ul>
+        <div class="pull-right">
+            <a class="btn btn-default" ng-click="$ctrl.goBack()">
+                Back
+            </a>
+            <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()" ng-disabled="!$ctrl.contractHasProduct">
+                Proceed to Order
+            </a>
+            <a class="btn btn-default">
+                &hellip;
+            </a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+
+
+
+<div class="">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <div class="tools">
+                <a   class="collapse" data-original-title="" title=""></a>
+            </div>
+            <div class="caption">
+                <span class="caption-subject ">
+                    Available Contracts
+                </span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <!-- <div class="col-md-6">
+                    <div class="" >
+                        <label>
+                            <select class="form-control input-sm input-xsmall input-inline" ng-model="$ctrl.tableEntries" ng-change="$ctrl.changePage(1);">
+                                <option ng-value="10">10</option>
+                                <option ng-value="25">25</option>
+                                <option ng-value="50">50</option>
+                                <option ng-value="9999">All</option>
+                            </select> entries</label>
+                    </div>
+                </div> -->
+                <div class="col-md-12 pull-right">
+                    <div class="row" style="margin-right: 5px;">
+                            <div class="pull-right text-right" ng-init="params.app = 'procurement';params.screen = 'requestslist';">
+                                <a ng-controller="Controller_General_Header as GH" class="link-underline-light" ng-click="GH.export({action:'save_layout'}, params)">
+                                   <span class="fa fa-save" style="font-size:20px; color: #536881"></span>
+                                </a>
+                            </div>
+                            <div class="pull-right">
+                                <span style="margin-right: 10px;">|</span> 
+                            </div>
+							<div class="filters-box">
+								<filters-widget></fitlers-widget>
+							</div>                            
+                            <div class="pull-right col-lg-3 text-right">
+                                <a class="link-underline-light" ng-click="$ctrl.displayAllContracts();">
+                                    Display All Contracts
+                                </a>
+                            </div>
+                        <!-- <div class="col-lg-5 text-right">
+                            <a ng-click="$ctrl.savePageSize($ctrl.tableEntries)" class="pull-left font-dark" style="font-size: 20px;">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <form class="form-inline">
+                                <div class="form-group-sm">
+                                    <div class="input-group st-content-search-box ">
+                                        <input type="search" class="form-control" ng-model="$ctrl.search_contract" placeholder="Search Contract" aria-controls="schedule_dashboard_table"
+                                            ng-keydown="$event.keyCode === 13 && $ctrl.searchContract()" />
+                                        <span class="input-group-addon" ng-click="$ctrl.searchContract()">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-if="!$ctrl.allContracts">
+                <clc-table-list style="max-width: calc(100vw - 50px);padding-left: 15px;" id="'request_bestcontracts'" app="'procurement'" screen="'request_bestcontracts'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+            </div>
+            <div class="row" ng-if="$ctrl.allContracts">
+                <clc-table-list style="max-width: calc(100vw - 50px);padding-left: 15px;" id="'request_bestcontracts_all'" app="'procurement'" screen="'request_bestcontracts_all'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+            </div>
+   
+        </div>
+    </div>
+</div>
+
+<div class="row hideInRequest" ng-if="!$ctrl.requestScreen">
+    <div class="portlet light">
+        <div class="portlet-body">
+            <div class="pull-right">
+                <a class="btn btn-default" ng-click="$ctrl.goBack()">
+                    Back
+                </a>
+                <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()" ng-disabled="!$ctrl.contractHasProduct">
+                    Proceed to Order
+                </a>
+                <a class="btn btn-default">
+                    &hellip;
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<lookup-dialog class="modal fade in" id="lookup" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" on-contract-select="$ctrl.selectContract(contractId)"></lookup-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- <div class="custom-hardcoded-table">
+                <table class="table-body" width="100%">
+                    <thead>
+                        <tr style="font-weight: bold">
+                            <td class="padding" width="50px"></td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.REQUEST_LOCATION '| translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.REQUEST_PRODUCT' | translate }}
+                            </td>
+                            <td class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.CONTRACT_ID' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.CONTRACT_NAME' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.SELLER' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.CONTRACT_EXPIRY_DATE' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.CONTRACT_MAIN_LOCATION' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.CONTRACT_MAIN_PRODUCT' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.AVAILABLE_QUANTITY' | translate }}
+                            </td>
+                            <td style="min-width:100px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.PRICE_TYPE' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.PRICE' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.CONTRACT_QUANTITY' | translate }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.ALLOWED_LOCATION' | translate }}
+                            </td>
+                            <td style="min-width:200px" class="padding" ng-cloak>
+                                {{ 'PAGES.SELECT_CONTRACT.ALLOWED_PRODUCT' | translate }}
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="contract in $ctrl.contracts track by $index" style="{{ $ctrl.contractIsInRequestProducts(contract) ? 'background:#eef1f5' : '' }}"
+                            ng-init="$ctrl.initTableScale()">
+                            <td class="text-center padding" width="50px">
+                                <label class="mt-checkbox mt-checkbox-outline">
+                                    <input type="checkbox" ng-change="$ctrl.showProceedButton($index)" ng-model="$ctrl.checkboxes[contract.id]">
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak bgcolor="#e2e1d7">
+                                {{ contract.requestProductLocationName }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak bgcolor="#e2e1d7">
+                                {{ contract.requestProductName }}
+                            </td>
+                            <td class="padding" ng-cloak>
+                                <a href="/#/contracts/contract/edit/{{ contract.contract.id }}">
+                                    {{ contract.contract.id }}
+                                </a>
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ contract.contract.name }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ contract.seller.name }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                <span>
+                                    {{ contract.contractExpiryDate | date:"dd/MM/yyyy" }}
+                                </span>
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                <span ng-class="contract.mainLocationMatched ? 'isMatch' : ''">
+                                    {{ contract.location.name }}
+                                </span>
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                <span ng-class="contract.mainProductMatched ? 'isMatch' : ''">
+                                    {{ contract.product.name }}
+                                </span>
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ contract.availableQuantity | number:3 }} {{ contract.uom.name }}
+                            </td>
+                            <td style="min-width:100px" class="padding" ng-cloak>
+                                {{ contract.priceType }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ contract.currency.name }} {{ contract.fixedPrice | number:3 }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                {{ contract.contractedQuantity | number:3 }} {{ contract.uom.name }}
+                            </td>
+                            <td style="min-width:150px" class="padding" ng-cloak>
+                                <span ng-repeat="(key, value) in contract.locations" ng-class="value.isMatch ? 'isMatch' : ''">
+                                    {{ value.name }},
+                                    <br>
+                                </span>
+                            </td>
+                            <td style="min-width:200px" class="padding" ng-cloak>
+                                <span ng-repeat="(key, value) in contract.products" ng-class="value.isMatch ? 'isMatch' : ''">
+                                    {{ value.name }},
+                                    <br>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+       
+            <!-- <div class="col-sm-12">
+                Showing {{ ($ctrl.currentPage * $ctrl.tableEntries) - $ctrl.tableEntries + 1 }} to {{ $ctrl.currentPage == $ctrl.maxPages
+                ? $ctrl.matchedCount : ($ctrl.currentPage * $ctrl.entries) }} of {{ $ctrl.matchedCount }}
+                <div class="notification-pagination" ng-init="$ctrl.currentPage = 1">
+                    Page
+                    <span class="prevPage" ng-disabled="$ctrl.currentPage  <= 1" ng-click="$ctrl.currentPage  <= 1 ? '' : $ctrl.getNotificationsListPage($ctrl.currentPage, 'prev')">
+                        < </span>
+                            <span class="$ctrl.currentPage">
+                                {{ $ctrl.currentPage }}
+                            </span>
+                            <span class="nextPage" ng-disabled="$ctrl.currentPage >= $ctrl.maxPages" ng-click="$ctrl.currentPage >= $ctrl.maxPages ? '' : $ctrl.getNotificationsListPage($ctrl.currentPage, 'next')">
+                                >
+                            </span> of {{ $ctrl.maxPages }}
+                </div>
+            </div> -->
+  

@@ -1,0 +1,43 @@
+<div class="w100" ng-controller="Controller_Master as CM">
+    <span ng-init="chg = false"></span>
+	<span ng-if="CM.chg == true" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
+
+    <span ng-if="col.colDef.scopeMasterSource" class="w100">
+        <span dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
+            <select class="form-control bs-select changeIT "
+            name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
+            data-container="body"
+            ng-class="'colt' + col.uid"
+            ng-change="grid.appScope.fVal().triggerChangeFields(col.colDef.name, rowRenderIndex); $eval(col.colDef.cellObject.changeEvent)"
+            ng-options="item as item.displayName for item in grid.appScope.fVal().dtMasterSource[col.colDef.scopeMasterSource] track by item.id"
+            ng-model="MODEL_COL_FIELD"
+            ng-required="$eval(col.colDef.cellObject.Required) || $eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false"
+            ng-disabled="$eval(col.colDef.cellObject.Disabled)">
+
+                <option value="" disabled></option>
+            </select>
+        </span>
+    </span>
+
+
+    <span ng-if="!col.colDef.scopeMasterSource" class="w100">
+        <span dynamic-condition-repeater="{{ col.colDef.cellCondition }}" dynamic-condition-repeater-type="{{ col.colDef.cellConditionType }}">
+            <select class="form-control bs-select changeIT "
+            name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
+            data-container="body"
+            ng-class="'colt' + col.uid"
+            ng-change="grid.appScope.fVal().triggerChangeFields(col.colDef.name, rowRenderIndex); $eval(col.colDef.cellObject.changeEvent)"
+            ng-options="item as item.displayName for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id | unique:'id'"
+            ng-model="MODEL_COL_FIELD"
+            ng-required="$eval(col.colDef.cellObject.Required) || $eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false"
+            ng-disabled="$eval(col.colDef.cellObject.Disabled)">
+
+                <option value="" disabled></option>
+            </select>
+        </span>
+        <!-- {{grid.appScope.fVal().options[col.colDef.cellObject.Name]}} -->
+    </span>
+
+
+    <!-- <div>{{col.colDef.cellObject.Action}}</div> -->
+</div>

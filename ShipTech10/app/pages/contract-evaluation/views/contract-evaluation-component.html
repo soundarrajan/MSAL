@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="st-main-content-menu st-displaceable-menu">
+        <div class="form-inline pull-right">
+            <div class="form-group">
+                <a class="font-grey-cascade"><i class="fa fa-file-excel-o st-larger-glyph"></i></a>
+                <span class="font-grey-cascade">|</span>
+                <a class="font-grey-cascade"><i class="fa fa-file-o st-larger-glyph"></i></a>
+                <span class="font-grey-cascade">|</span>
+                <a class="font-grey-cascade"><i class="fa fa-file-pdf-o st-larger-glyph"></i></a>
+                <span class="font-grey-cascade">|</span>
+                <a class="font-grey-cascade"><i class="fa fa-file-word-o st-larger-glyph"></i></a>
+                <span class="font-grey-cascade">|</span>
+                <a class="font-grey-cascade"><i class="fa fa-print st-larger-glyph"></i></a>
+            </div>
+            <div class="form-group">
+                <div class="input-group st-content-search-box">
+                    <div id="search_box_dummy"></div>
+                    <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-default" ng-click="$ctrl.selectContract()">Select</a>
+                <a class="btn btn-default" ng-click="$ctrl.goBack()">Back</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="portlet light">
+        <div class="portlet-body">
+            <table class="table table-striped table-hover table-bordered st-contract-evaluation"
+                    id="contract_evaluation">
+                <thead>
+                    <tr>
+                        <th ng-if="$ctrl.evaluationsColumns.parameter.visible">{{$ctrl.evaluationsColumns.parameter.caption | translate}}</th>
+                        <th ng-if="$ctrl.evaluationsColumns.weight.visible">{{$ctrl.evaluationsColumns.weight.caption | translate}}</th>
+                        <th ng-repeat="contract in $ctrl.data track by $index"
+                            ng-if="$ctrl.getUIContractColumnByIndex($index).visible"
+                            data-orderable="false">
+                           {{$ctrl.getUIContractColumnByIndex($index).caption | translate}}
+                            <label class="mt-checkbox mt-checkbox-outline pull-right">
+                                <input type="checkbox" ng-change="$ctrl.toggleSelection($index, contract)"
+                                        ng-model="$ctrl.checkboxes[$index]">
+                                <span></span>
+                            </label>
+                            <div>
+                                <a class="link-underline-light">{{contract.name}}</a>
+                            </div>
+                        </th>
+                        <th data-orderable="false">&hellip;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="parameter in $ctrl.data[0].parameterList track by $index" ng-init="parameterIndex = $index">
+                        <td>
+                            <a class="link-underline-light">{{parameter.name}}</a>
+                        </td>
+                        <td>
+                            {{parameter.value}}%
+                        </td>
+                        <td ng-repeat="contract in $ctrl.data">
+                            <i ng-if="contract.parameterList[parameterIndex].evaluationValue" class="fa fa-check font-porraceous-green st-larger-glyph"></i>
+                            <i ng-if="!contract.parameterList[parameterIndex].evaluationValue" class="fa fa-close text-danger st-larger-glyph"></i>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="portlet light">
+        <div class="portlet-body">
+            <div class="st-bottom-menu form-inline pull-right">
+                <div class="form-group">
+                    <a class="btn btn-default" ng-click="$ctrl.selectContract()">Select</a>
+                    <a class="btn btn-default" ui-sref="$ctrl.goBack()">Back</a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

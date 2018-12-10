@@ -1,0 +1,60 @@
+<general-header actions="{
+    primary: [],
+    secondary: [{
+        label: 'Main Page',
+        type: 'goto',
+        url: 'edit/:entity_id'
+    }, {
+        label: 'Preview Contract',
+        type: 'goto',
+        url: 'preview/:entity_id'
+    }, {
+        label: 'Preview Email',
+        type: 'goto',
+         url: 'email-preview/:entity_id'
+    }, {
+        label: 'Deliveries',
+        type: 'goto',
+        url: 'productdelivery/:entity_id',
+        ConditionalType: 'ng-show',
+        Conditional: 'CM.entity_id > 0',
+        method: 'doEntityActionMaster(\'goto\', \'productdelivery/:entity_id\')'
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id',
+    }, {
+        label: 'Email Log',
+        active: true
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true,
+    },{
+       label: 'Terms & Conditions',
+       type: 'goto',
+       url: 'terms-conditions/:entity_id',
+       ConditionalType: 'ng-show',
+       Conditional: '((GH.entity_id > 0) && (GH.adminConfiguration.contract.areTermsAndConditionsAvailable))',
+        method: 'doEntityActionMaster(\'goto\', \'terms-conditions/:entity_id\')'
+     }],
+     icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+    ]
+}"></general-header>
+
+<!-- <entity-edit-form screenchild="'entity_emaillog'"></entity-edit-form> -->
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+    <clc-table-list
+        id="'masters_emaillogslist'"
+        app="'masters'"
+        screen="'emaillogslist'"
+        controls="'[pager, info]'"
+        filters='[{ColumnName: "TransactionTypeId", Value: 15}, {ColumnName: "TransactionIds", Value: CLC.entity_id}]'>
+    </clc-table-list>
+    <span ng-if="clc_loaded" ng-init="filterEmailLog()"></span>
+</span>

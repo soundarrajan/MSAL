@@ -1,0 +1,59 @@
+<div class="" ng-if="$ctrl.token">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <div class="pull-left">
+        <div class="pull-left">
+                                <p class="navbar-text ng-binding new-s" style="text-transform: uppercase; font-weight: 700; color: #364150; font-size: 16px; margin: 0 15px;">
+                  {{$ctrl.buyerDetails.company.name}} BUNKER REQUESTS - <span style="font-weight: 400;" ng-repeat="request in $ctrl.requests track by $index">{{$index != 0 ? ', ' : ''}} {{ request.name }}</span>
+
+                  </p>
+                             </div>
+            <!-- <li ng-repeat="request in $ctrl.requests track by $index" ng-class="{'open': request === $ctrl.request}">
+                <a ng-click="$ctrl.onTabClick(request)">
+                    {{ request.name }}
+                </a>
+            </li> -->
+        </div>
+        <form class="form-inline pull-right">
+            <!-- <div class="col-md-3">
+                <div class="form-group ">
+                    <label for="" class="price_label ">
+                        Quote By
+                    </label>
+                    <div class="input-group form_input date form_meridian_datetime">
+                        <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" st-date-format="supplierPortal" st-date-to-local="" ng-model="$ctrl.request.locations[0].products[0].sellers[0].offers[0].quoteByDate"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm date-set" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div> -->
+            <div class="">
+                <div class="form-group-sm">
+                    <!-- <div class="input-group">
+                        <button type="button" class="btn dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ $ctrl.locations[0].products[0].sellers[0].offers[0].quoteByTimeZone }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right st-dropdown-timezone">
+                            <li ng-repeat="timeZone in $ctrl.lists.TimeZone">
+                                <a>
+                                    {{ timeZone.name }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
+                    <button class="btn btn-sm btn-outline orange" ng-click="$ctrl.sendOffer()" ng-class="{'disabled': $ctrl.buttonsDisabled}">
+                        Send Offer
+                    </button>
+           <!--          <button class="btn btn-sm btn-default" ng-click="$ctrl.sendNoQuote()" ng-class="{'disabled': $ctrl.buttonsDisabled}">
+                        No Quote
+                    </button>
+                    <input class="input-sm form-control" placeholder="Reason"/> -->
+                </div>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+    </div>
+</div>

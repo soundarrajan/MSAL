@@ -1,0 +1,175 @@
+<div id="offer" class="confirm-offers-dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="isRequest()"></button>
+        <a class="closeBlade pull-right font-white" ng-click="closeBlade()" ng-controller="BladeController">
+            <i class="fa  fa-close font-white"></i>
+        </a>
+        <h4 class="modal-title font-blue-madison">
+            <b>
+                {{ $ctrl.ui.offers.title | translate }}
+            </b>
+        </h4>
+    </div>
+    <div class="modal-body">
+        <h4 class="font-yellow-gold">
+            {{ $ctrl.ui.offers.subtitle | translate }}
+        </h4>
+        <form name="requestOfferItems">
+        <table class="table table-striped table-bordered" ng-class="$ctrl.requestOfferItems.length> 0 ? 'has_data' : 'no_data'" >
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui.offers.columns" ng-if="column.sortableName != 'confirmedQuantity' || (column.sortableName == 'confirmedQuantity' && $ctrl.captureConfirmedQuantity.name == 'Offer')">
+                        {{ column.caption | translate }}
+                    </th>
+                    <th>
+                        Physical Supplier
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in $ctrl.requestOfferItems track by $index">
+                    <td>
+                        {{ item.sellerName }}
+                    </td> 
+                    <td>
+                        {{ item.locationName }}
+                    </td>
+                    <td>
+                        {{ item.productName }}
+                    </td>
+                    <td>
+                        {{ item.minQuantity | number:3 }}
+                    </td>
+                    <td>
+                        {{ item.maxQuantity | number:3 }}
+                    </td>
+                    <td ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' " class="confirm_offer_dialog_confirmed_quantity">
+                        <input class="form-control" ng-required="true" ng-model="item.confirmedQuantity" type="text" format="number:3" ng-change="$ctrl.changeOrderQty(item)" name="confirmedQuantity_{{ $index }}"/>
+                        <span class="input-group-addon"> {{ item.quantityUomName ? item.quantityUomName : '-' }}</span>
+                    </td>
+                    <td>
+                        {{ item.offerPrice | number:3 }}
+                    </td>
+                    <td>
+                        {{ item.confirmedQuantity * (item.conversionFactorToUomOfPriceFromContract ? item.conversionFactorToUomOfPriceFromContract * item.offerPrice : item.offerPrice)| number:3 }}
+                        <!-- {{item}} -->
+                    </td>
+                    <td>
+                        {{ item.physicalSupplierName }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+        <h5 class="caption-subject">
+            {{ $ctrl.ui.contracts.subtitle | translate }}
+        </h5>
+        <table class="table table-striped table-bordered" ng-class="$ctrl.availableContractItems.length> 0 ? 'has_data' : 'no_data'">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in $ctrl.ui.contracts.columns">
+                        {{ column.caption | translate }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in $ctrl.availableContractItems track by $index" ng-if="$index < 10">
+                    <!-- <td>{{$index}}</td> -->
+                    <td>
+                        {{ item.seller.name }}
+                    </td>
+                    <td>
+                        {{ item.location.name }}
+                    </td>
+                    <td>
+                        {{ item.product.name }}
+                    </td>
+                    <td>
+                        {{ item.contractedQuantity  | number:3 }}
+                    </td>
+                    <td>
+                        {{ item.utilizedQuantity  | number:3 }}
+                    </td>
+                    <td>
+                        {{ item.availableQuantity  | number:3 }}
+                    </td>
+                    <td>
+                        {{ item.uom.name }}
+                    </td>
+                    <td>
+                        {{ item.convertedPrice | number:3 }}
+                    </td>
+                    <td>
+                        {{ item.uom.name }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline orange" ng-click="$ctrl.confirmOffers(true);" ng-disabled="$ctrl.buttonsDisabled">
+            Yes
+        </button>
+        <button type="button" data-dismiss="modal" ng-click="$ctrl.enableButtons()" class="btn btn-default" ng-if="isRequest()">
+            No
+        </button>
+        <button type="button" ng-if="!isRequest()" ng-click="closeBlade()" ng-controller="BladeController" class="btn btn-default">
+            No
+        </button>
+    </div>
+</div>
+<div id="warning" hidden>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeBlade()" ng-controller="BladeController" aria-hidden="true"></button>
+        <h4 class="modal-title font-blue-madison">
+            <b>
+                {{ $ctrl.ui.offers.title | translate }}
+            </b>
+        </h4>
+    </div>
+    <div class="modal-body">
+    	 <!-- {{ctrl.BEvalidationMessages}} -->
+    	<!-- <div ng-repeat="(key, message) in $ctrl.BEvalidationMessages">{{message}}</div> -->
+    	<div ng-repeat="message in $ctrl.BEvalidationMessages track by $index">{{message}}</div>
+<!--         <div id="termCtrWarning">
+            Term Contracts are available for this Port & Product. Do you still want to confirm this Offer?
+        </div>
+        <div id="betterOffWarning">
+            Better Offer available for this Port & Product. Do you still want to confirm this Offer?
+        </div>
+        <div id="lessMinWarning">
+            Confirmed quantity is less than the Min Qty. Do you still want to confirm this Offer?
+        </div>
+        <div id="grMaxWarning">
+            Confirmed quantity is greater than the Max Qty. Do you still want to confirm this Offer?
+        </div>
+        <div id="grMaxWarningS">
+            Validity of the offer is expired. Do you still want to confirm this Offer?
+        </div>
+        <div id="grMaxWarningH">
+            Validity of the offer is expired. You cannot confirm the offer!
+        </div>
+        <div id="grAvailableQty">
+            Confirmed quantity is greater than the term contract available quantity. Do you still want to confirm this Offer?
+        </div> -->
+    </div>
+    <div class="modal-footer" ng-show="!$ctrl.isHardStop">
+        <button type="button" data-dismiss="modal" class="btn btn-outline orange" ng-click="$ctrl.confirmOffers(false);" ng-disabled="$ctrl.buttonsDisabled">
+            Yes
+        </button>
+        <button type="button" data-dismiss="modal" ng-click="$ctrl.enableButtons()" class="btn btn-default" ng-if="isRequest()">
+            No
+        </button>
+        <button type="button" ng-if="!isRequest()" ng-click="closeBlade()" ng-controller="BladeController" class="btn btn-default">
+            No
+        </button>
+    </div>
+    <div class="modal-footer" ng-show="$ctrl.isHardStop">
+        <button type="button" ng-if="!isRequest()" ng-click="closeBlade()" ng-controller="BladeController" class="btn btn-outline orange">
+            Ok
+        </button>
+        <button type="button" data-dismiss="modal" ng-click="$ctrl.enableButtons()" class="btn btn-default" ng-if="isRequest()">
+            Ok
+        </button>
+    </div>
+</div>

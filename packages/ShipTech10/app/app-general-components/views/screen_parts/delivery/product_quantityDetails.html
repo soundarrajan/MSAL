@@ -1,0 +1,266 @@
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="tools">
+            <a href="javascript:;" class="collapse"></a>
+        </div>
+        <div class="caption">
+            <span class="caption-subject">
+                QUANTITY DETAILS
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="row margin-top-10">
+            <div class="col-xs-12">
+                <div class="row">
+                     <span ng-init='CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'></span>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{productIndex}}_selectedProduct" class="product_label" style="max-height: initial;">
+                                {{ CM.app_id + '.PRODUCT' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_product">
+                                <input type="text" name="Product_{{productIndex}}_selectedProduct" class="form-control" id="Product_{{productIndex}}_selectedProduct" ng-model="product.orderedProduct.name" ng-disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="col-md-4" ng-init='CM.getOptions({"Name": "Product", "Type": "simpleLookup", "masterSource": "Product"})'>
+                        <div class="form-group row" tooltip tooltiptrigger="hover"
+                            data-original-title="{{ getProductTooltipByProductId(formValues.deliveryProducts[productIndex].product.id) }}">
+                            <label for="Product_{{productIndex}}_productDelivered" class="product_delivered_label">
+                                {{ CM.app_id + '.PRODUCT_DELIVERED' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_bdn_number">
+                                <input uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue}" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" type="text" name="Product_{{productIndex}}_productDelivered" autocomplete="off" aria-autocomplete="list" class="form-control productDelivered" ng-model="formValues.deliveryProducts[productIndex].product" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-required="false" />
+                                <span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.deliveryProducts.'+$index+'.product','','','Product', '');"  >
+                                    <a href="javascript:;" class=" btn default">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{productIndex}}_physical_supplier" class="simpleLookupLabel" style="max-height: initial;">
+                                {{ CM.app_id + '.PHYSICAL_SUPPLIER' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_physicalSupplier">
+                                <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{productIndex}}_physical_supplier" ng-model="product.physicalSupplier" autocomplete="off" />
+                                <!-- ng-model="product.product" -->
+                                <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_suppliers', 'Physical Supplier' , 'formValues.deliveryProducts.'+$index+'.physicalSupplier','','','Counterparty', '');"   ng-class="!CM.isEditable ? 'disabled' : ''">
+                                    <a href="javascript:;" class=" btn default">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_surveyorQuantityAmount" class="price_label">
+                                {{ CM.app_id + '.SURVEYOR_QTY' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_price">
+                                <input ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" type="text" name="Product_{{ productIndex }}_surveyorQuantityAmount" class="form-control" ng-model="formValues.deliveryProducts[productIndex].surveyorQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''" format="number:{{tenantSetting.defaultValues.quantityPrecision }}"  id="Product_{{ productIndex }}_surveyorQuantityAmount"  ng-model-options="{ updateOn: 'default'}"/>
+                                <span class="input-group-addon uom_group pseudoSelect">
+                                    <select ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" class="bs-select" name="Product_{{ productIndex }}_surveyorQuantityUom" data-width="fit"  id="Product_{{ productIndex }}_surveyorQuantityUom" ng-model="formValues.deliveryProducts[productIndex].surveyorQuantityUom" ng-options="item as item.name for item in options.Uom track by item.id" >
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_confirmedQuantityAmount" class="price_label">
+                                {{ CM.app_id + '.ORDERED_QTY' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_price">
+                                <input ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" type="text" name="Product_{{ productIndex }}_confirmedQuantityAmount" class="form-control" ng-model="formValues.deliveryProducts[productIndex].confirmedQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''" format="number:{{tenantSetting.defaultValues.quantityPrecision }}" ng-required="true" ng-disabled="true" ng-model-options="{ updateOn: 'default'}" ng-disabled="!CM.isEditable"/>
+                                <span class="input-group-addon uom_group pseudoSelect" ng-disabled="!CM.isEditable">
+                                    <select ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" class="bs-select" name="Product_{{ productIndex }}_confirmedQuantityUom" data-width="fit"  id="Product_{{ productIndex }}_confirmedQuantityUom" ng-model="formValues.deliveryProducts[productIndex].confirmedQuantityUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-disabled="true" ng-disabled="!CM.isEditable">
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_vessel_quantity" class="price_label">
+                                {{ CM.app_id + '.VESSEL_QTY' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_price">
+                                <input ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" type="text" name="Product_{{ productIndex }}_vessel_quantity" class="form-control" ng-model="formValues.deliveryProducts[productIndex].vesselQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''" format="number:{{tenantSetting.defaultValues.quantityPrecision }}"  ng-disabled="!CM.isEditable" ng-model-options="{ updateOn: 'default'}"/>
+                                <span class="input-group-addon uom_group pseudoSelect" ng-disabled="!CM.isEditable">
+                                    <select ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" class="bs-select" name="Product_{{ productIndex }}_vessel_quantity" data-width="fit"  id="Product_{{ productIndex }}_vessel_quantityUom" ng-model="formValues.deliveryProducts[productIndex].vesselQuantityUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-disabled="!CM.isEditable">
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" ng-if="!formValues.temp.hiddenFields.agreedQty">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_agreedQuantityAmount" class="price_label">
+                                {{ CM.app_id + '.AGREED_QTY' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_price">
+                                <input ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" type="text" name="Product_{{ productIndex }}_agreedQuantityAmount" class="form-control" ng-model="formValues.deliveryProducts[productIndex].agreedQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''" format="number:{{tenantSetting.defaultValues.quantityPrecision }}" ng-disabled="!CM.isEditable" ng-model-options="{ updateOn: 'default'}"/>
+                                <span class="input-group-addon uom_group pseudoSelect" ng-disabled="!CM.isEditable">
+                                    <select ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" class="bs-select" ng-required="false" name="Product_{{ productIndex }}_agreedQuantityUom" data-width="fit"  id="Product_{{ productIndex }}_agreedQuantityUom" ng-model="formValues.deliveryProducts[productIndex].agreedQuantityUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-disabled="!CM.isEditable">
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+			        <div class="col-md-4">
+			            <div class="form-group row">
+			                <label for="Product_{{ productIndex }}_BDN_quantity" class="price_label">
+			                    {{ CM.app_id + '.BDN_QUANTITY' | translate }}
+				                <span class="orange-txt ng-scope">
+						            *
+						        </span>
+			                </label>
+			                <div class="input-group form_input form_input_price">
+			                    <input ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex); calculatePumpingRate(formValues.pumpingDuration,0)" type="text" name="Product {{ productIndex + 1 }} BDN quantity" class="form-control" ng-model="formValues.deliveryProducts[productIndex].bdnQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''" format="number:{{tenantSetting.defaultValues.quantityPrecision }}" ng-required="true"  ng-model-options="{ updateOn: 'default'}" ng-disabled="!CM.isEditable"/>
+			                    <span class="input-group-addon uom_group pseudoSelect">
+			                        <select ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex); calculatePumpingRate(formValues.pumpingDuration,0)" class="bs-select" name="Product {{ productIndex + 1 }} BDN quantity UOM" data-width="fit"  id="Product_{{ productIndex }}_BDN_quantityUom" ng-model="formValues.deliveryProducts[productIndex].bdnQuantityUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-required="true" ng-disabled="!CM.isEditable" >
+			                            <option></option>
+			                        </select>
+			                    </span>
+			                </div>
+			            </div>
+			        </div>
+                     <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_vesselFlowMeterQuantityAmount" class="price_label">
+                                {{ CM.app_id + '.MFM_QTY' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_price">
+                                <input ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" type="text" name="Product_{{ productIndex }}_vesselFlowMeterQuantityAmount" class="form-control" ng-model="formValues.deliveryProducts[productIndex].vesselFlowMeterQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''" format="number:{{tenantSetting.defaultValues.quantityPrecision }}"  ng-model-options="{ updateOn: 'default'}"/>
+                                <span class="input-group-addon uom_group pseudoSelect">
+                                    <select ng-change="calculateVarianceAndReconStatus(productIndex)" ng-blur="calculateVarianceAndReconStatus(productIndex)" class="bs-select" name="Product_{{ productIndex }}_vesselFlowMeterQuantityUom" data-width="fit"  id="Product_{{ productIndex }}_vesselFlowMeterQuantityUom" ng-model="formValues.deliveryProducts[productIndex].vesselFlowMeterQuantityUom" ng-options="item as item.name for item in options.Uom track by item.id" >
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <span ng-init="formValues.deliveryProducts[productIndex].fuelManifoldTemperatureUom = 'Celsius'" ng-if="!formValues.deliveryProducts[productIndex].fuelManifoldTemperature"></span>
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_fuelManifoldTemperature" class="fuel_manifold_temperature_label" style="max-height: initial;">
+                                {{ CM.app_id + '.FUEL_MANIFOLD_TEMPERATURE' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_fuel_manifold_temperature">
+                                <input type="text" class="form-control" ng-required="false" id="fuel_manifold_temperature" ng-model="formValues.deliveryProducts[productIndex].fuelManifoldTemperature" name="Product_{{ productIndex }}_fuelManifoldTemperature"  ng-model-options="{ updateOn: 'default'}"/>
+                                 <span class="input-group-addon uom_group uom_group_text">
+                                        <input type="text" name="Product_{{ productIndex }}_fuelManifoldTemperatureUom" class="form-control fuel_manifold_temperature_uom" ng-model="formValues.deliveryProducts[productIndex].fuelManifoldTemperatureUom" ng-required="formValues.deliveryProducts[productIndex].fuelManifoldTemperature != null && formValues.deliveryProducts[productIndex].fuelManifoldTemperature != ''"
+                                            id="" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_final_quantity" class="final_quantity_label">
+                                {{ CM.app_id + '.FINAL_QUANTITY' | translate }}
+                            </label>
+                            <!-- <span ng-if="!formValues.deliveryProducts[productIndex].finalQuantityUom" ng-init="formValues.deliveryProducts[productIndex].finalQuantityUom = confirmedQuantityUom"></span> -->
+                            <div class="input-group form_input form_input_final_quantity">
+                                <input type="text" name="Product_{{ productIndex }}_final_quantity" class="form-control final_quantity" ng-model="formValues.deliveryProducts[productIndex].finalQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''"  format="number:{{tenantSetting.defaultValues.quantityPrecision }}"   disabled="true" id="Product_{{ productIndex }}_finalQuantity" />
+                                <!-- view-model-sync -->
+                                <!-- ng-model-options="{ updateOn: 'default blur'}" -->
+                                <span class="input-group-addon uom_group pseudoSelect">
+                                    <select class="bs-select"
+                                            ng-required="formValues.deliveryProducts[productIndex].finalQuantityAmount != null && formValues.deliveryProducts[productIndex].finalQuantityAmount != ''"
+                                            id=""
+                                            disabled="true"
+                                            ng-model="formValues.deliveryProducts[productIndex].finalQuantityUom" ng-options="item as item.name for item in CM.listsCache.Uom track by item.id" name="Product_{{ productIndex }}_final_quantityUom"
+                                            data-width="fit" >
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <span ng-init="product.deliveredVolumeUom = CM.listsCache.UomVolume[0]" ng-if="!product.deliveredVolumeUom"></span> -->
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_delivered_volume" class="final_quantity_label">
+                                {{ CM.app_id + '.DELIVERED_VOLUME' | translate }}
+                                <!-- {{product.deliveredVolume}} -->
+                            </label>
+                            <div class="input-group form_input form_input_mfm_quantity">
+                                <input type="text" name="Product_{{ productIndex }}_delivered_volume" class="form-control final_quantity" ng-model="formValues.deliveryProducts[productIndex].deliveredVolume" ng-class="CM.invalid_form ? 'ng-touched' : ''"   format="number:{{tenantSetting.defaultValues.quantityPrecision }}" ng-required="false"  ng-model-options="{ updateOn: 'default'}"/>
+                                <span class="input-group-addon uom_group pseudoSelect">
+                                    <select class="bs-select"
+                                            ng-required="formValues.deliveryProducts[productIndex].deliveredVolume != null && formValues.deliveryProducts[productIndex].deliveredVolume != ''"
+                                            id=""
+                                            ng-model="formValues.deliveryProducts[productIndex].deliveredVolumeUom" ng-options="item as item.name for item in CM.listsCache.UomVolume track by item.id" name="Product_{{ productIndex }}_delivered_volumeUom"
+                                            data-width="fit" >
+                                        <option></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                   <div ng-hide="formValues.temp.hiddenFields.pricingDate" class="col-md-4" ng-init="CM.datepickers(null,null,'date')" ng-show="!formValues.temp.hiddenFields.pricingDate">
+                        <!-- <span ng-init="product.pricingDate = formValues.deliveryDate" ng-if="!product.pricingDate && formValues.deliveryDate && !formValues.id"></span> -->
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_pricingDate" class="pricing_date_label">
+                                {{ CM.app_id + '.PRICING_DATE' | translate }}
+                            </label>
+                            <div class="form_input form_input_pricing_date">
+                                <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''" id="pricing_date">
+                                    <input class="form-control" type="text" id="Product_{{ productIndex }}_pricingDate" ng-model="formValues.deliveryProducts[productIndex].pricingDate" ng-required="false" name="Product_{{ productIndex }}_pricingDate"  ng-model-options="{ updateOn: 'default'}" ng-disabled="!CM.isEditable || !formValues.deliveryProducts[productIndex].manualPricingDateOverride"/>
+                                    <span class="formatted-date" ng-bind="CM.formatSimpleDate(formValues.deliveryProducts[productIndex].pricingDate, tenantSetting.tenantFormats.dateFormat)"></span>
+                                    <span class="input-group-btn" ng-disabled="!CM.isEditable || !formValues.deliveryProducts[productIndex].manualPricingDateOverride">
+                                        <button class="btn default date-set" type="button" ng-disabled="!CM.isEditable || !formValues.deliveryProducts[productIndex].manualPricingDateOverride">
+                                            <i class="fa fa-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span class="help-block">
+                                    {{ field.Description }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_quantity_details_comments" class="quantity_details_comments_label" style="max-height: initial;">
+                                {{ CM.app_id + '.COMMENTS' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_quantity_details_comments">
+                                <input type="text" class="form-control" ng-required="false" id="Product_{{ productIndex }}_quantity_details_comments" ng-model="formValues.deliveryProducts[productIndex].comments" name="Product_{{ productIndex }}_quantity_details_comments" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_quantity_details_sludge_production" class="quantity_details_sludge_productio" style="max-height: initial;">
+                                {{ CM.app_id + '.SLUDGE_PRODUCTION' | translate }}
+                            </label>
+                            <div class="input-group form_input form_input_quantity_details_comments">
+                                <input type="text" class="form-control" format="number: 2" ng-required="false" id="Product_{{ productIndex }}_quantity_details_sludge_production" ng-model="formValues.deliveryProducts[productIndex].sludgeProduction" name="Product_{{ productIndex }}_quantity_details_sludge_production" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

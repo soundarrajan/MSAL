@@ -1,0 +1,15 @@
+<span ng-controller="Controller_Master as CM">
+    <span ng-if="row['entity'][col.colDef.cellUomName].code">
+        <div class="formatter-uom-label currency">{{ row['entity'][col.colDef.cellUomName].code }}</div>
+    </span>
+    <span ng-if="col.colDef.cellObject.hasUom ">
+    	 <!-- {{col.colDef.cellSecondUomName}} -->
+        <div class="formatter-uom-label uom">{{ row['entity'][col.colDef.cellSecondUomName].name }}</div>
+    </span>
+    <span ng-if="!row['entity'][col.colDef.cellUomName].code">
+        <div class="formatter-uom-label currency">{{ row['entity'][col.colDef.cellUomName].name }}</div>
+    </span>
+	<!-- {{row['entity']}} -->
+    <div ng-if="!col.colDef.cellObject.Formula" class="formatter-uom-value">{{ MODEL_COL_FIELD | number:(col.colDef.format ? col.colDef.format : 3 ) }}</div>
+    <div ng-if="col.colDef.cellObject.Formula" class="formatter-uom-value input"><input ng-readonly="col.colDef.cellObject.Disabled" class="form-control" type="text" ng-model="MODEL_COL_FIELD"  compute-formula="$eval(col.colDef.cellObject.Formula)"/></div>
+</span>

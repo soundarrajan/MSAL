@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title font-blue-madison"><b>GO SPOT/CONTRACT</b></h4>                    
+</div>
+<div class="modal-body">
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+                <th>Request ID</th>
+                <td>{{$ctrl.request.requestName}}</td>
+            </tr>
+            <tr>
+                <th>Vessel</th>
+                <td>{{$ctrl.request.vesselName}}</td>
+            </tr>
+            <tr>
+                <th>Port</th>
+                <td>{{$ctrl.request.locationName}}</td>
+            </tr>
+            <tr>
+                <th>ETA</th>
+                <td>{{$ctrl.request.eta | stDateFormat}}</td>
+            </tr>
+        </tbody>
+    </table>                             	
+    <div class="modal-footer">
+        <div class="pull-right">
+            <a class="btn btn-outline orange" data-dismiss="modal" ng-click="$ctrl.gotoGroupOfRequests($ctrl.request)">GO SPOT</a>
+            <a class="btn btn-outline orange" data-dismiss="modal" ng-click="$ctrl.gotoSelectContract($ctrl.request)">GO CONTRACT</a>
+        </div>
+    </div>
+</div>

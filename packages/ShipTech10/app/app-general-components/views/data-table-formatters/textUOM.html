@@ -1,0 +1,60 @@
+﻿<span class="textUOM" ng-controller="Controller_Master as CM" ng-init="CM.getOptions(col.colDef.cellObject)" ng-class="col.colDef.cellObject.uomBindSource ? 'bindedUom' : return; col.colDef.cellObject.hasUom ? 'doubleUom' : return ">
+    <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+    	
+    	<span ng-if="!col.colDef.cellObject.uomBindSource" class="input-group-addon uom_group ">
+            <span ng-if="col.colDef.cellObject.UniqueId">
+                <span ng-if="col.colDef.cellObject.masterSource == 'Currency'" >
+                    <select id="{{ col.colDef.name }}_1" name="{{ col.colDef.name }} Currency" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" ng-change="$eval(col.colDef.cellObject.changeEvent)" ng-required="col.colDef.cellObject.UomRequired">
+                        <option></option>
+                    </select>
+                </span>
+            </span>
+			<span ng-if="!col.colDef.cellObject.UniqueId">
+			    <span ng-if="col.colDef.cellObject.masterSource == 'Currency'">
+			        <select id="{{ col.colDef.name }}_3" name="{{ col.colDef.name }} Currency" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
+			            <option></option>
+			        </select>
+			    </span>
+			</span>            
+    	</span>
+
+        <input ng-readonly="col.colDef.cellObject.uomBindSource" type="text" id="{{ field.Name }}{{ field.UOMType }}" name="{{ col.colDef.name }}" ng-model="MODEL_COL_FIELD" class="form-control uomInput" ng-required='field.Required && isVisible(field.Name + field.UOMType)' ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(col.colDef.cellObject.Disabled)"  ng-change="$eval(col.colDef.cellObject.changeEvent)" format="number:2"    ng-model-options="{ debounce: 300 }" style="width: 100% !important"/>
+
+        <span ng-if="!col.colDef.cellObject.uomBindSource" class="input-group-addon uom_group ">
+            <span ng-if="col.colDef.cellObject.UniqueId">
+                <span ng-init="chg = false"></span>
+                <select ng-init="$eval(col.colDef.cellObject.changeEvent)" name="{{ col.colDef.name }} UOM" ng-if="col.colDef.cellObject.hasUom == true" class="bs-select pull-left" data-container="body" ng-model="row['entity'][col.colDef.cellObject.additionalUomModel]" ng-options="item as item.name for item in CM.listsCache['Uom'] track by item.id"  id="{{col.colDef.cellObject.masterSource}}__{{col.colDef.cellObject.Name}}_{{rowRenderIndex}}" ng-change="$eval(col.colDef.cellObject.changeEvent); CM.chg = true;$eval(col.colDef.cellObject.changeEvent)" ng-hide="$eval(col.colDef.cellObject.FirstUomDisabled)" ng-required="col.colDef.cellObject.UomRequired">
+                    <option></option>
+                </select>
+                <span ng-if="CM.chg == true && changedFVal" class="hidden">
+                    {{ grid.appScope.fVal().formValues = changedFVal }}
+                </span>
+                <span ng-if="col.colDef.cellObject.masterSource != 'Currency'">
+                    <select id="{{ col.colDef.name }}" name="{{ col.colDef.name }} UOM" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" ng-change="$eval(col.colDef.cellObject.changeEvent)" ng-required="col.colDef.cellObject.UomRequired">
+                        <option></option>
+                    </select>
+                </span>
+<!--                 <span ng-if="col.colDef.cellObject.masterSource == 'Currency'" >
+                    <select id="{{ col.colDef.name }}_1" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" ng-change="$eval(col.colDef.cellObject.changeEvent)" ng-required="col.colDef.cellObject.UomRequired">
+                        <option></option>
+                    </select>
+                </span> -->
+            </span>
+            <span ng-if="!col.colDef.cellObject.UniqueId">
+                <span ng-if="col.colDef.cellObject.masterSource != 'Currency'">
+                    <select id="{{ col.colDef.name }}_2" name="{{ col.colDef.name }} UOM" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
+                        <option></option>
+                    </select>
+                </span>
+<!--                 <span ng-if="col.colDef.cellObject.masterSource == 'Currency'">
+                    <select id="{{ col.colDef.name }}_3" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
+                        <option></option>
+                    </select>
+                </span> -->
+            </span>
+        </span>
+        {{$eval(col.colDef.cellObject.UomRequired)}}
+        <span ng-if="col.colDef.cellObject.uomBindSource" class="input-group-addon bg-grey border-grey-salsa" id="basic-addon1" style="border: 1px solid;padding: 0 5px;">{{grid.appScope.fVal().formValues.temp[col.colDef.cellObject.uomBindSource].name}}</span>
+        <!-- <input ng-if="col.colDef.cellObject.uomBindSource" type="text" disabled class="form-control uom-disabled input-group-addon"  ng-value="grid.appScope.fVal().formValues.temp[col.colDef.cellObject.uomBindSource].name"/> -->
+    </div>
+</span>

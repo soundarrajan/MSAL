@@ -1,0 +1,174 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group  row">
+            <label for="schedule_description_add" class="schedule_description_add_label">
+                {{ CM.app_id + '.SCHEDULE_DESCRIPTION' | translate }}
+                <span ng-if="field.Required" class="orange-txt">
+                    *
+                </span>
+            </label>
+            <div class="input-group form_input_schedule_description_add" ng-class="!field.Label ? 'no-label' : ''">
+                <input type="text" class="form-control " name="schedule_description_add" id="schedule_description_add" ng-model="formValues.pricingScheduleOptionSpecificDate.name"/>
+                <span class="input-group-btn">
+                    <a class="btn default" ng-click="addSchedule('pricingScheduleOptionSpecificDate')" ng-disabled="formValues.pricingScheduleOptionSpecificDate.id> 0 && !formValues.pricingScheduleOptionSpecificDate.isDeleted">
+                        Add Schedule
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<span ng-if="!formValues.pricingScheduleOptionSpecificDate.dates[0]" ng-init="formValues.pricingScheduleOptionSpecificDate.dates=[{}]"></span>
+<div class="row" ng-repeat="(key, value) in formValues.pricingScheduleOptionSpecificDate.dates">
+    <div class="col-md-3">
+        <div class="form-group  row "  ng-init="CM.datepickers()">
+            <label  for="pricing_schedule_from" class="pricing_schedule_from_label">
+                {{ CM.app_id + '.DATE' | translate }}
+            </label>
+            <div class="form_input form_input_pricing_schedule_from">
+                <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''">
+                    <input class="form-control" type="text" id="pricing_schedule_from" ng-model="formValues.pricingScheduleOptionSpecificDate.dates[key].date"/>
+                    <span class="formatted-date"  ng-bind="CM.formatDateTime(formValues.pricingScheduleOptionSpecificDate.dates[key].date, tenantSetting.tenantFormats.dateFormat)"></span>
+                    <span class="input-group-btn">
+                        <button class="btn default date-set" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+                <span class="help-block">
+                    {{ field.Description }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="form-group  row ">
+            <div class="form_input form_input_pricing_schedule_from">
+                <div class="input-group ">
+                    <input class="form-control" type="text" id="pricing_schedule_comment" ng-model="formValues.pricingScheduleOptionSpecificDate.dates[key].comment" placeholder="Comment"/>
+                    <span class="input-group-btn">
+                        <a   class="input_add_UserIm btn default" ng-click="formValues.pricingScheduleOptionSpecificDate.dates.push({'id':'0'})" class="btn default">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </span>
+                    <span class="input-group-btn" ng-if="key> 0">
+                        <a   class="input_add_UserIm btn default" ng-click="CM.softDelete(formValues.pricingScheduleOptionSpecificDate.dates, key)" class="btn default">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form_input form_input_pricingSchedule form-group row">
+            <div class="mt-checkbox-list">
+                <label class="mt-checkbox">
+                    <input type="checkbox" name="inlineRadiospricingSchedule[]"  id="allowsPricingOnHoliday"  ng-model="formValues.pricingScheduleOptionSpecificDate.allowsPricingOnHoliday"/>
+                    Allow Pricing on Holidays
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="portlet light">
+        <div class="portlet-title">
+            <span class="caption-subject">
+                Calendar Option And holiday Rules
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form_input form_input_holiday form-group row">
+            <div class="mt-checkbox-list">
+                <label class="mt-checkbox">
+                    <input type="checkbox" name="inlineRadiosholiday[]"  id="assumeHolidayOnInstruments"  ng-model="formValues.pricingScheduleOptionSpecificDate.assumeHolidayOnInstruments" ng-disabled="formValues.formulaType.id != 2"/>
+                    Assume holiday if any one instrument is on holiday
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <span ng-if="!formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.SUNDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+         <span ng-if="!formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.MONDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <span ng-if="!formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.TUESDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+            <span ng-if="!formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.WEDNESDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+           <span ng-if="!formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.THURSDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+          <span ng-if="!formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.FRIDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+          <span ng-if="!formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule" ng-init="formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.SATURDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+</div>

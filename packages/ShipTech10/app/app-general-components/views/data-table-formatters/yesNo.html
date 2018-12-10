@@ -1,0 +1,9 @@
+<div class="ui-grid-cell-contents">
+    <span ng-if="MODEL_COL_FIELD == true" class="formatter "  ng-class="grid.appScope.fVal().formValues.labTestResults[rowRenderIndex].noAction == false ? 'amber' : 'succes'" data-formatter-type="status">
+        Yes
+    </span>
+    <span ng-if="MODEL_COL_FIELD == false" class="formatter "  ng-class="grid.appScope.fVal().formValues.labTestResults[rowRenderIndex].noAction == true ? 'amber' : 'danger'" data-formatter-type="status">
+        No
+    </span>
+</div>
+

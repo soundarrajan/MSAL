@@ -1,0 +1,37 @@
+<div class="form-group row" ng-init='CM.getOptions({"Name": "Buyer", "Type": "simpleLookup", "masterSource": "Users"})'>
+	<label class="mainBuyer" class="simpleLookupLabel">
+	  {{ CM.app_id + '.BUYER' | translate }}
+	  <span class="orange-txt">
+	      *
+	  </span>
+	</label>
+	<!-- <div ng-if="!formValues.code"> -->
+		  <div class="input-group form_input" ng-if="formValues.hasNoMoreChildren">
+		      <input ng-model="formValues.user" uib-typeahead="item as item.displayName for item in options.Buyer | filter:{displayName:$viewValue}"
+		          class="form-control" typeahead-show-hint="true" typeahed-min-length="1" typeahead-append-to-body="true"
+		          typeahead-wait-ms="100" id="Buyer" ng-required="!formValues.user"
+		          name="Buyer" autocomplete="off"
+		      />
+		      <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Buyer name' , 'formValues.user', null, null, 'Buyer');"
+		          ng-init="modal = false">
+		          <a href="javascript:;" class=" btn default">
+		              <i class="fa fa-search"></i>
+		          </a>
+		      </span>
+		  </div>
+		  <div class="form_input" ng-if="!formValues.hasNoMoreChildren">
+		    <input type="text" class="form-control" name="Buyer" id="Buyer" ng-model="formValues.name" ng-required="true">
+		  </div>
+	<!-- </div> -->
+
+
+	<!-- <div ng-if="formValues.code">
+	  <div class="form_input" ng-if="formValues.code">
+	    <input type="text" class="form-control" name="Buyer" id="Buyer" ng-model="formValues.name" ng-required="!formValues.code" disabled="disabled">
+	  </div>
+	</div> -->
+  <!-- <span style="display: none;"> {{ formValues.code ? formValues.name = formValues.code : '' }} </span>  -->
+</div>
+
+
+<!-- <span ng-if="formValues.name" ng-init="formValues.tempName = formValues.name  "></span> -->

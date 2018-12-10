@@ -1,0 +1,21 @@
+﻿<general-header actions="{
+    primary: [
+        {label: 'Edit Structure', special: true, url: 'structure', type: 'goto'},
+        {label: 'New Entity', special: false, url: 'edit/', type: 'goto'},
+    ],
+    secondary: [],
+    search: true,
+    icons: [
+            {class: 'fa fa-save', action: 'save_layout'}
+    ]
+}"></general-header>
+
+<clc-table-list id="'invoices_filters'" app="'invoices'" screen="'filters'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+
+<general-header color="'white'" actions="{
+    primary: [
+        {label: 'Edit Structure', special: true, url: 'structure', type: 'goto'},
+        {label: 'New Entity', special: false, url: 'edit/', type: 'goto'},
+    ],
+    secondary: [],
+}"></general-header>

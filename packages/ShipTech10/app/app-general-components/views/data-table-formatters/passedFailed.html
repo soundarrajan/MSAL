@@ -1,0 +1,40 @@
+<div ng-controller="Controller_Master as CM">
+    <span ng-init="rIndex = grid.appScope.rowIdx(row) ? grid.appScope.rowIdx(row) : 0;">
+
+        <div ng-if="col.colDef.template == 1" class="ui-grid-cell-contents" ng-init="rowObj =  grid.appScope.fVal().formValues.labTestResults[rIndex]">
+            <div ng-if="rowObj">
+                <span class="formatter delivery_quality_matched labs_result passed" ng-if="grid.appScope.fVal().setQualityMatch(rowObj.value, rowObj.min, rowObj.max) == 1 || grid.appScope.fVal().setQualityMatch(rowObj.value, rowObj.min, rowObj.max).id == 1"
+                    ng-init='rowObj.qualityMatch = { "id": 1, "name": "Passed" };grid.appScope.fVal().checkQualityStatus()'>
+                    <span ng-repeat="(key,val) in CM.listsCache.QualityMatch" ng-if="val.name == 'Passed'">
+                        {{val.displayName ? val.displayName : val.name}}
+                    </span>
+                </span>
+                <span class="formatter delivery_quality_matched labs_result failed" ng-if="grid.appScope.fVal().setQualityMatch(rowObj.value, rowObj.min, rowObj.max) == 2 || grid.appScope.fVal().setQualityMatch(rowObj.value, rowObj.min, rowObj.max).id == 2"
+                    ng-init='rowObj.qualityMatch = { "id": 2, "name": "Failed" };grid.appScope.fVal().formValues.reconMatch = { "id": 2, "name": "Failed" }'>
+                    <span ng-repeat="(key,val) in CM.listsCache.QualityMatch" ng-if="val.name == 'Failed'">
+                        {{val.displayName ? val.displayName : val.name}}
+                    </span>
+                </span>
+            </div>
+            <!-- </div> -->
+
+        </div>
+        <div ng-if="col.colDef.template == 2" class="ui-grid-cell-contents" ng-init="rowObj =  grid.appScope.fVal().formValues.orderRelatedLabResults[rIndex]">
+            <!-- <div ng-controller="Controller_Master as CM"> -->
+            <!-- {{rowObj}} -->
+            <div ng-if="rowObj">
+                <span class="formatter lab_recon_status labs_result passed" ng-if="rowObj.reconStatus.id == 1">
+                    <span ng-repeat="(key,val) in CM.listsCache.QualityMatch" ng-if="val.name == 'Passed'">
+                        {{val.displayName ? val.displayName : val.name}}
+                    </span>
+                </span>
+                <span class="formatter lab_recon_status labs_result failed" ng-if="rowObj.reconStatus.id == 2">
+                    <span ng-repeat="(key,val) in CM.listsCache.QualityMatch" ng-if="val.name == 'Failed'">
+                        {{val.displayName ? val.displayName : val.name}}
+                    </span>
+                </span>
+            </div>
+        </div>
+
+    </span>
+</div>

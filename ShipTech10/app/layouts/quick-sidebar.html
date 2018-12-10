@@ -1,0 +1,97 @@
+<div class="page-quick-sidebar" ng-controller="QuickSidebarController as QuickSidebarCtrl">
+    <div class="nav-justified">
+        <div class="tab-content">
+            <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
+                <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd"
+                     data-wrapper-class="page-quick-sidebar-list">
+                    <h3 class="list-heading"></h3>
+                    <ul class="media-list list-items">
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(1)"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(2)"><i class="fa fa-sliders"></i></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(3)"><i class="fa fa-files-o"></i></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(4)"><span aria-hidden="true" class="icon-user"></span></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(5)"><span aria-hidden="true" class="icon-drop"></span></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(6)"><i class="fa fa-ship"></i></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(7)"><i class="fa fa-dollar"></i></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(8)"><i class="fa fa-clock-o"></i></a>
+                            </div>
+                        </li>
+                        <!-- <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(9)"><i class="fa fa-line-chart"></i></a>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-body">
+                                <a ng-click="QuickSidebarCtrl.selectTab(10)"><i class="fa fa-arrow-up"></i></a>
+                            </div>
+                        </li> -->
+                    </ul>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(1)">
+                    <add-request></add-request>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(2)">
+                    <filters></filters>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(3)">
+                    <worksheets></worksheets>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(4)">
+                    <directory></directory>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(5)">
+                    <counterparty></counterparty>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(6)">
+                    <port-information></port-information>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(7)">
+                    <market-prices></market-prices>
+                </div>
+
+                <div class="page-quick-sidebar-item" ng-show="QuickSidebarCtrl.isSelected(8)">
+                    <clocks></clocks>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

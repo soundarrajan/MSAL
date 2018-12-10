@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="row">
+
+        <div class="col-md-4">
+        	<div class="form-group row" ng-init='CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"})'>
+        		<label for="reconToleranceType" class="simpleLookupLabel" style="max-height: initial;">
+        			{{ CM.app_id + '.RECON_TOLERANCE_TYPE' | translate }}
+        		</label>
+        		<div class="input-group form_input form_input_reconToleranceType">
+        			<select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-required="true" id="reconToleranceType" ng-model="formValues.invoice.reconToleranceType"></select>
+        		</div>
+        	</div>
+        </div>
+
+        <div class="col-md-4">
+        	<div class="form-group row">
+        		<label for="toleranceLimit" style="max-height: initial;">
+        			{{ CM.app_id + '.TOLERANCE_LIMIT' | translate }}
+        		</label>
+        		<div class="input-group form_input form_input_reconToleranceType">
+					<input class="form-control" type="number" id="toleranceLimit" ng-model="formValues.invoice.toleranceLimit">
+        		</div>
+        	</div>
+        </div>
+
+        <div class="col-md-4">
+        	<div class="form-group row" ng-init='CM.getOptions({"Name": "Currency", "Type": "dropdown", "masterSource": "Currency"})'>
+                <label for="Currency" class="formula_quotes_label" class="simpleLookupLabel">
+                   {{ CM.app_id + '.CURRENCY' | translate }}
+
+                </label>
+                <div class="input-group form_input form_input_formula_quotes">
+                    <input ng-model="formValues.invoice.invoiceCurrency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-required="true" name="{{ field.Name }}" autocomplete="off"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+    	<div class="col-md-4">
+            <div class="form_input form_input_needInvoiceReview form-group">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="inlineRadiosneedInvoiceReview" id="inlinecheckneedInvoiceReview" ng-model="formValues.invoice.needInvoiceReview"/>
+                            {{ CM.app_id + '.NEED_INVOICE_REVIEW' | translate }}
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+    	</div>
+    	<div class="col-md-4 ">
+            <div class="form_input form_input_autoApproveMatchedInvoice form-group">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="inlineRadiosautoApproveMatchedInvoice" id="inlinecheckautoApproveMatchedInvoice" ng-model="formValues.invoice.autoApproveMatchedInvoice"/>
+                            {{ CM.app_id + '.AUTO_APPROVE_MATCHED_INVOICE' | translate }}
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+    	</div>
+
+        <div class="col-md-4">
+        	<div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
+        		<label for="needWarningWhenSellerPaymentOnHold" class="simpleLookupLabel" style="max-height: initial;">
+        			{{ CM.app_id + '.NEED_WARNING_WHEN_SELLER_PAYMENT_ON_HOLD' | translate }}
+        		</label>
+        		<div class="input-group form_input form_input_needWarningWhenSellerPaymentOnHold">
+        			<select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id" ng-required="true" id="needWarningWhenSellerPaymentOnHold" ng-model="formValues.invoice.needWarningWhenSellerPaymentOnHold"></select>
+        		</div>
+        	</div>
+        </div>
+
+    	<div class="col-md-4 ">
+            <div class="form_input form_input_isNeedForSubmitForApproval form-group">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="inlineRadiosisNeedForSubmitForApproval" id="inlinecheckisNeedForSubmitForApproval" ng-model="formValues.invoice.isNeedForSubmitForApproval"/>
+                            {{ CM.app_id + '.IS_NEED_FOR_SUBMIT_FOR_APPROVAL' | translate }}
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+    	</div>
+
+
+    </div>
+</div>

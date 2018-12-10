@@ -1,0 +1,122 @@
+{
+    "layout": {},
+    "elements": {},
+    "clc": {
+        "table_name": "Deliveries_to_be_verified",
+        "datatype": "local",
+        "language": "en",
+        "rowNum": 10,
+        "rowList": [10, 20, 30],
+        "multiselect": false,
+        "viewrecords": true,
+        "sortable": {
+            "options": {
+                "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+        },
+        "view_type": "flat",
+        "treeGrid": false,
+        "treeGridModel": "adjacency",
+        "ExpandColumn": "actions-dimensional",
+        "colModel": [{
+            "label": "Order No",
+            "name": "orderNo",
+            "width": 150
+        }, {
+            "label": "Seller",
+            "name": "seller.name",
+            "width": 150
+        }, {
+            "label": "Vessel",
+            "name": "vessel.name",
+            "width": 150
+        }, {
+            "label": "Order Location",
+            "name": "orderLocation.name",
+            "width": 150
+        }, {
+            "label": "Buyer",
+            "name": "buyer.name",
+            "width": 150
+        }, {
+            "label": "Eta",
+            "name": "eta",
+            "width": 150
+        }, {
+            "label": "Broker",
+            "name": "broker.name",
+            "width": 150
+        }, {
+            "label": "Barge",
+            "name": "barge.name",
+            "width": 150
+        }, {
+            "label": "Delivery Date",
+            "name": "deliveryDate",
+            "width": 150
+        }, {
+            "label": "Delivery",
+            "name": "delivery.id",
+            "width": 150,
+            "formatter": "edit_delivery_link"
+        }, {
+            "label": "Delivery Number",
+            "name": "deliveryNumber",
+            "width": 150
+        }, {
+            "label": "Delivery Status",
+            "name": "deliveryStatus.name",
+            "width": 150,
+            "formatter": "status_verified_notverified"
+        }, {
+            "label": "Physical Supplier",
+            "name": "physicalSupplier.name",
+            "width": 150
+        }, {
+            "label": "Product",
+            "name": "product.name",
+            "width": 150
+        }, {
+            "label": "Confirmed Quantity Amount",
+            "name": "confirmedQuantityAmount",
+            "width": 150
+        }, {
+            "label": "Buyer Quantity Amount",
+            "name": "buyerQuantityAmount",
+            "width": 150
+        }, {
+            "label": "Seller Quantity Amount",
+            "name": "sellerQuantityAmount",
+            "width": 150
+        }, {
+            "label": "Quantity Discrepancy Amount",
+            "name": "quantityDiscrepancyAmount",
+            "width": 150
+        }, {
+            "label": "Quantity Recon Match",
+            "name": "quantityReconMatch.name",
+            "width": 150,
+            "formatter": "status_matched_notmatched"
+        },
+	    {
+            "label": "BDN",
+            "name": "bdnNumber",
+            "width": 150
+        },
+	    {
+            "label": "Delivered Quantity",
+            "name": "deliveredQuantityAmount",
+            "width": 150
+        }],
+        "rowActions": [],
+        "tenantData": {
+            "view": "flat",
+            "views": ["flat", "dimensional"],
+            "hiddenColumns": [5, 6, 7, 8, 10, 12, 13, 14],
+            "columnsOrder": [9, 0, 2, 1, 3, 4, 5, 6, 7, 8, 10, 15, 16, 12, 13, 14, 17, 18, 11],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+        }
+    },
+    "id": 104
+}

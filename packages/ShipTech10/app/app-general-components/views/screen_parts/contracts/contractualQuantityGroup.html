@@ -1,0 +1,42 @@
+﻿<!-- <span ng-if="isCreate == true" ng-init="formValues.details = [{}];formValues.productQuantityRequired=true"></span> -->
+<div class="col-md-6 col-md-push-6">
+    <div class="form-group">
+        <div class="form_input form_input_productQuantityRequired" style="float: right; width: auto;">
+            <div class="mt-checkbox-list">
+                <label class="mt-checkbox">
+                    <input type="checkbox" name="inlineRadiosproductQuantityRequired[]" id="inlinecheckproductQuantityRequired" ng-model="formValues.productQuantityRequired" ng-change="changeContractLayout(formValues.productQuantityRequired)"/>
+                    {{'Product Quantity Required' | translate}}
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="col-xs-12">
+     <div>copied: {{formValues.summary.copiedContract}}  entityid {{CM.entity_id}} state params {{$state.params}}</div>
+    <pre>{{formValues.details}}</pre>
+    <pre>{{formValues.contractualQuantity}}
+</div> -->
+
+
+<div class="clearfix"></div>
+
+<!-- if edit/copy, only init table once formValues.details is loaded, to avoid overwrite -->
+<div ng-if="formValues.summary.copiedContract || CM.entity_id">
+    <div ng-if="formValues.details">
+        <div ui-grid="gridOptions.contractualQuantity" id="grid_contractualQuantity" class="dataGrid">
+            <div class="clearfix"></div>
+        </div>
+        <span ng-init="initGridDropdowns('contractualQuantity')"></span>
+    </div>
+</div>
+
+ <!-- if new contract, init table and set default row in its onRegisterApi function -->
+<div ng-if="!formValues.summary.copiedContract && !CM.entity_id">
+   <div ui-grid="gridOptions.contractualQuantity" id="grid_contractualQuantity" class="dataGrid">
+        <div class="clearfix"></div>
+    </div>
+    <span ng-init="initGridDropdowns('contractualQuantity')"></span>
+</div>
+
+

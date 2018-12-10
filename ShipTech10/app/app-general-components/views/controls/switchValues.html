@@ -1,0 +1,9 @@
+﻿<div class="form-group row multiSelectSwitch" ng-init="options[field.Name] ? return : CM.getOptions(field);">
+    <div class="" ng-class="field.Unique_ID2 ? 'col-md-6' : 'col-md-12'">
+        <select multiple="multiple" class="multi-select form-control" id="{{ field.Unique_ID }}"  name="{{ field.Unique_ID }}[]" dynamic-model="'formValues.' + field.Unique_ID "  ng-options="item as item.name for item in options[field.Name]  track by item.id"></select>
+    </div>
+    <div class="col-md-6" ng-if="field.Unique_ID2">
+        <select multiple="multiple" class="multi-select form-control" id="{{ field.Unique_ID2 }}"  name="{{ field.Unique_ID2 }}[]" dynamic-model="'formValues.' + field.Unique_ID2 "  ng-options="item as item.name for item in options[field.Name]  track by item.id"></select>
+    </div>
+    <!-- <span ng-if="options[field.Name]" ng-init="CM.enableMultiSelect(field.Unique_ID, field.fromLabel, field.toLabel)"></span> -->
+</div>

@@ -1,0 +1,19 @@
+<div class="form-group row" ng-repeat="(key, value) in formValues.imContacts">
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+        <span ng-if="field.Required" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="input-group form_input form_input_{{ field.Name }}{{ $index }}" ng-class="!field.Label ? 'no-label' : ''">
+        <span class="input-group-addon uom_group pseudoSelect" ng-init='CM.getOptions({"Name": "ImType", "Type": "dropdown", "masterSource": "ImType"})'>
+            <select class="bs-select" data-width="fit" ng-model="value.imType" ng-options="item as item.name for item in options.ImType track by item.id"></select>
+        </span>
+        <input type="text" id="{{ field.Name }}" name="{{ field.Name }}" class="form-control" ng-model="value.instantMessengerAddress" ng-required='field.Required' ng-class="CM.invalid_form ? 'ng-touched' : ''"/>
+        <span class="input-group-btn">
+            <a   class="input_add_UserIm btn default" ng-click="formValues.imContacts.push({'id':0})" class="btn default">
+                <i class="fa fa-plus"></i>
+            </a>
+        </span>
+    </div>
+</div>   

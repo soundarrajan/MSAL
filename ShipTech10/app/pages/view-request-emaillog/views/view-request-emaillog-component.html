@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="st-main-content-menu st-displaceable-menu tabbable-line">
+        <ul class="nav nav-tabs pull-left">
+            <li><a ui-sref="default.edit-request({requestId: NAV.requestId})">Request</a></li>
+            <li><a ui-sref="default.view-request-documents({requestId: NAV.requestId})">Documents</a></li>
+            <li class="open"><a>Email Log</a></li>
+            <li><a ui-sref="default.view-request-auditlog({requestId: NAV.requestId})">Audit Log</a></li>
+            <!-- <li><a>Configure UI</a></li>
+            <li><a>Rate Supplier</a></li> -->
+        </ul>
+        <div class="pull-right">
+            <div ng-controller="Controller_General_Header as GH" style="line-height: 30px;">
+                <div  class="st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'emaillog';">
+                    <div class="st-content-action-icons">
+                        <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                            <span class="icon fa fa-save"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="row">
+
+    <span ng-controller="Controller_Configurable_List_Control as CLC">
+	    <span ng-init="filters = newFilterEmailLog('request', entity_id)"></span>
+        <clc-table-list
+            id="'masters_emaillogslist'"
+            app="'masters'"
+            screen="'emaillogslist'"
+            controls="'[pager, info]'"
+            filters= "filters">
+        </clc-table-list>
+        <span ng-if="clc_loaded" ng-init="filterEmailLog()"></span>
+    </span>
+
+</div>

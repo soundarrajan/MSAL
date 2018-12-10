@@ -1,0 +1,185 @@
+<general-header actions="{
+	primary: [{
+		label: 'Template',
+		type: 'claimEmailPreviewDdw',
+		html_element: 'claimEmailPreviewDdw'
+	}, {
+		label: 'Discard saved preview',
+		special: 'true',
+		url: '#',
+		method: 'discardSavedPreview()',
+		extern: true,
+	}, {
+		label: 'Save',
+		special: 'true',
+		url: '#',
+		method: 'saveClaimEmail()',
+		extern: true,
+		main: true
+	}, {
+		label: 'Save and send',
+		special: 'true',
+		url: '#',
+		method: 'sendClaimPreviewEmail()',
+		extern: true
+	}, {
+		label: 'Back to edit',
+		type:'back'
+	}],
+	secondary: [],
+}"></general-header>
+<div ng-controller="Controller_Master as CM">
+    <span>
+        <span ng-init="CM.screen_id='claims';CM.formValues = CM.get_master_entity('claim'); "></span>
+    </span>
+    <div class="row">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <span class="caption-subject">
+                    New Message
+                </span>
+            </div>
+
+            <div class="portlet-body">
+                <form class="form-horizontal st-new-request-form" name="emailPreview">
+                    <div class="form-group form-group-sm">
+                        <label class="col-md-1 control-label">
+                            To
+                        </label>
+                        <div class="col-md-11">
+                            <span>
+                                <span class="input-group pull-left form_input">
+                                    <span class="input-group pull-left form_input" style="margin-right: 5px;">
+                                        <input ng-model="asyncSelectedTo" uib-typeahead="item as item.idEmailAddress for item in previewEmail.toList | filter:{idEmailAddress:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="toEmail" data-uniqueid="toEmail" data-value="{{ dummyModel.id }}" autocomplete="off" typeahead-on-select="addEmailAddressInPreview('previewEmail.to', $item); asyncSelectedTo=''" style="margin-bottom: 5px;"/>
+                                    </span>
+                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.to">
+                                        {{ value.idEmailAddress }}
+                                        <i class="fa fa-remove" ng-click="previewEmail.to.splice(key, 1)"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm st-email-input"  ng-if="tenantSetting.allowEmailEdit">
+                        <label class="col-md-1 control-label">
+                            {{ 'PAGES.PREVIEW_EMAIL.TO' | translate }} Others
+                        </label>
+                        <div class="col-md-11">
+                            <div class="">
+                                <input class=" form-control pull-left"  ng-model="previewEmail.toEmailOthers" style="width:100%" ng-blur="validateEmails(previewEmail.toEmailOthers,'toOthers')" name="toOthers"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-md-1 control-label">
+                            Cc
+                        </label>
+                        <div class="col-md-11">
+                            <span>
+                                <span class="input-group pull-left form_input">
+                                    <span class="input-group pull-left form_input" style="margin-right: 5px;">
+                                        <input ng-model="asyncSelectedCc" uib-typeahead="item as item.idEmailAddress for item in previewEmail.ccList | filter:{idEmailAddress:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="ccEmail" data-uniqueid="ccEmail" data-value="{{ dummyModel.id }}" autocomplete="off" typeahead-on-select="addEmailAddressInPreview('previewEmail.cc', $item); asyncSelectedCc=''" style="margin-bottom: 5px;"/>
+                                    </span>
+                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.cc">
+                                        {{ value.idEmailAddress }}
+                                        <i class="fa fa-remove" ng-click="previewEmail.cc.splice(key, 1)"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm st-email-input"  ng-if="tenantSetting.allowEmailEdit">
+                        <label class="col-md-1 control-label">
+                            {{ 'PAGES.PREVIEW_EMAIL.CC' | translate }} Others
+                        </label>
+                        <div class="col-md-11">
+                            <div class="">
+                                <input class=" form-control pull-left"  ng-model="previewEmail.ccEmailOthers" style="width:100%" ng-blur="validateEmails(previewEmail.ccEmailOthers,'ccOthers')" name="ccOthers"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-md-1 control-label">
+                            Bcc
+                        </label>
+                        <div class="col-md-11">
+                            <span>
+                                <span class="input-group pull-left form_input">
+                                    <span class="input-group pull-left form_input" style="margin-right: 5px;">
+                                        <input ng-model="asyncSelectedBcc" uib-typeahead="item as item.idEmailAddress for item in previewEmail.bccList | filter:{idEmailAddress:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="bccEmail" data-uniqueid="bccEmail" data-value="{{ dummyModel.id }}" autocomplete="off" typeahead-on-select="addEmailAddressInPreview('previewEmail.bcc', $item); asyncSelectedBcc=''" style="margin-bottom: 5px;"/>
+                                    </span>
+                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.bcc">
+                                        {{ value.idEmailAddress }}
+                                        <i class="fa fa-remove" ng-click="previewEmail.bcc.splice(key, 1)"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-md-1 control-label">
+                            Attachments
+                        </label>
+                        <div class="col-md-11">
+                            <span ng-repeat="(key, attachment) in previewEmail.attachments track by $index" class="email-tag pull-left">
+                                <a ng-click="downloadDocument(attachment.id, attachment.name)">
+                                    {{ attachment.name }}
+                                </a>
+                                <i class="fa fa-remove font-red-thunderbird" ng-click="previewEmail.attachments.splice(key, 1)"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-md-1 control-label">
+                            Sub
+                        </label>
+                        <div class="col-md-11">
+                            <input ng-model="previewEmail.subject" class="form-control" disabled="disabled"/>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-md-12">
+                            <div class="box-grey" style="padding: 10px; border: 1px solid #CCCCCC; line-height: 1.8" ng-if="!tenantSetting.allowEmailEdit">
+                                <span ng-bind-html="previewEmail.content"></span>
+                            </div>
+                            <textarea  rich-text-editor class="wysihtml5 form-control" rows="20" ng-model="previewEmail.content" ng-if="tenantSetting.isEmailBodyHtml && tenantSetting.allowEmailEdit"></textarea>
+                            <textarea   class="wysihtml5 form-control" rows="20" ng-model="previewEmail.content" ng-if="!tenantSetting.isEmailBodyHtml && tenantSetting.allowEmailEdit"></textarea>
+                        </div>
+                        <!-- <pre>{{previewEmail.content}}</pre> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <pre ng-show="host == 'localhost'">
+        {{ previewEmail }}
+    </pre>
+</div>
+<general-header actions="{
+	primary: [{
+		label: 'Template',
+		type: 'claimEmailPreviewDdw',
+		html_element: 'claimEmailPreviewDdw'
+	}, {
+		label: 'Discard saved preview',
+		special: 'true',
+		url: '#',
+		method: 'discardSavedPreview()',
+		extern: true,
+	}, {
+		label: 'Save',
+		special: 'true',
+		url: '#',
+		method: 'saveClaimEmail()',
+		extern: true,
+		main: true
+	}, {
+		label: 'Save and send',
+		special: 'true',
+		url: '#',
+		method: 'sendClaimPreviewEmail()',
+		extern: true
+	}],
+	secondary: [],
+}"></general-header>
+<!--<span ng-init="CM.equalizeColumnsHeightGrouped('.group_ContractSummary', '.group_General_Contract, .group_contact, .group_contractualQuantity, .group_ProductDetails, .group_AdditionalCosts, .group_Penalty')" ></span>-->

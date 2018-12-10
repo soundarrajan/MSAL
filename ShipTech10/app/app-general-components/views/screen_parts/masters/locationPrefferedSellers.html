@@ -1,0 +1,47 @@
+<div class="custom-hardcoded-table admin">
+	<table class="table-body" width="100%" style="min-width:initial">
+		<thead>
+			<tr>
+				<td width="5%" class="padding"></td>
+				<td width="5%" class="padding"><span class="insert" ng-click="formValues.sellers ? formValues.sellers.push({id:0}) : formValues.sellers=[{id:0}]"></span></td>
+				<td width="20%" class="padding"><b>Counterparty</b></td>
+				<td width="20%" class="padding"><b>Preferred Products</b></td>
+				<td width="20%" class="padding"><b>Status</b></td>
+				<td width="30%" class="padding"><b>Comments</b></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="(key, value) in formValues.sellers" ng-if="!value.isDeleted">
+				<td width="5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.sellers.splice(key,1) : value.isDeleted = true"></span></td>
+				<td width="5%"><span class="insert" ng-click="formValues.sellers.push({id:0})"></span></td>
+				<td width="20%">
+					<div class="input-group">
+	                    <input ng-model="value.counterparty" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
+	                        <a   class=" btn default">
+	                            <i class="fa fa-search"></i>
+	                        </a>
+	                    </span>		
+	                    <span class="input-group-addon">
+	                    	&nbsp;&nbsp;
+	                    	<i class="fa fa-file" ng-click="openLocationPreferredSellerProducts(key)"></i>
+	                    	&nbsp;&nbsp;
+	                    </span>				
+					</div>
+				</td>
+				<td width="20%">
+					<div class="location-preffered-sellers">
+	                    <span ng-repeat="(key2,product) in value.products">
+                            <span ng-if="key2 != 0">,</span>
+                            {{ product.product.name }}
+                        </span>			
+					</div>
+				</td>
+				<td width="20%">
+					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
+				</td>
+				<td width="30%"><input class="form-control" type="text" ng-model="value.comments"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

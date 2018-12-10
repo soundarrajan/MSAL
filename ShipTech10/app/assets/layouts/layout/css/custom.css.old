@@ -1,0 +1,176 @@
+/*#3d4957*/
+/*#364150*/
+/*#75808e*/
+
+.page-quick-sidebar-wrapper .page-quick-sidebar .list-items > li {
+    text-align: right;
+    font-size: 25px;
+}
+.page-quick-sidebar-open .page-quick-sidebar-wrapper {
+    top: 100px;
+    background: #364150;
+}
+
+.icon-login {
+    position: absolute;
+    top: -31px;
+    right: 23px;
+}
+.page-quick-sidebar-toggler i {
+    display: none;
+}
+.page-quick-sidebar-chat-user {
+    background: #75808e;
+    color: #111;
+    font-weight: 800;
+    font-size: 15px;
+}
+.right-menu-title {
+    font-size: 24px;
+    color: #333;
+    margin: 20px 0;
+}
+
+.page-quick-sidebar-chat-user-messages .row .input-group {
+    font-weight: 100;
+    margin: 10px;
+    margin-left: 17px;
+
+}
+
+
+
+
+body {
+    font-size: 12px;
+    font-family: Arial;
+}
+
+/* main portlet button */
+.portlet-button .btn {
+    float: right;
+    margin: 0 0 10px 10px;
+}
+
+.portlet-title .caption-subject {
+    color: #578ebe;
+}
+
+.portlet-title .actions .btn.more, .portlet-body .vesselSchedule .btn.more {
+    color: #01bae8;
+    text-decoration: underline;
+}
+
+.portlet.light {
+    padding: 25px;
+}
+
+.portlet-body .table td {
+    font-size: 12px;
+}
+
+.buttonsContainer .portlet-button {
+    float: left;
+}
+
+.buttonsContainer .portlet-button .fa-plus-square {
+    margin: 5px 0 0;
+    font-size: 34px;
+    line-height: 18px;
+    color: #8e99ab;
+    cursor: pointer;
+}
+
+.portlet-body .actionButtonsHolder .btn {
+    margin: 0 0 10px;
+}
+
+/* override menu tabs color  */
+
+.kpi .portlet-body .nav-tabs .active {
+    border-bottom-color: #00aae0;
+}
+
+.portlet .datePickerHolder {
+    float: left;
+}
+
+.portlet .datePickerHolder .input-group-addon {
+    background: none;
+    border: none;
+}
+
+/* dashboard */
+.topMenu {
+    padding: 10px 10px;
+    border-bottom: 1px solid #dae2ea;
+    background-color: #e2e2e2;
+}
+
+.topMenu .actionButtonsHolder {
+    margin: 3px 0 0;
+}
+
+.topMenu .actionButtonsHolder .focus, .bottomButtons .btn.focus {
+    background: #fff;
+    border-color: #c49f47;
+    color: #c49f47;
+}
+
+.topMenu .nav.nav-tabs, .topMenu .tabbable-line > .tab-content {
+    border: none;
+}
+
+.topMenu .searchForm {
+    margin: 0 10px 0 0;
+}
+
+.topMenu .tabbable-line > .tab-content {
+    padding: 0;
+}
+
+/* new request page */
+.portlet-body .locationVoyageHolder {
+    width: 12%;
+}
+
+.portlet-body .locationVoyageHolder .voyage {
+    color: #cccccc;
+}
+
+.productInformation .portlet-body .control-label, .productInformation .locationVoyageHolder {
+    padding-top: 7px;
+}
+
+.productInformation .eta,
+.productInformation .etb,
+.productInformation .etd,
+.productInformation .agent,
+.productInformation .buyer {
+    padding: 0 5px;
+    margin: 0 -40px 0 0;
+    width: 20%;
+}
+
+.productInformation .row.dataFinder {
+    margin: 0 0 20px 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.productInformation .row.dataFinder:last-child {
+    border-bottom: none;
+}
+
+.productInformation .row.query {
+    padding: 0 0 20px;
+}
+
+.productInformation .fa-plus-square,
+.productInformation .fa-minus-square {
+    font-size: 16px;
+}
+
+.bottomButtons .actionButtonsHolder {
+    float: right;
+}

@@ -1,0 +1,137 @@
+<span ng-init="alertsGetRuleCondition();alertsGetRuleOperator();"></span>
+<span ng-init="getAlertsParametersForTransaction()"></span>
+<span ng-init="!formValues.triggerRules || formValues.triggerRules.length < 1 ? formValues.triggerRules=[{}] : ''"></span>
+<div class="row" ng-repeat="(key, value) in formValues.triggerRules">
+	<span ng-init="alertsGetTriggerRuleValuesByParamId(formValues.triggerRules[key].parameterId)"></span>
+	<div class="col-sm-10">
+		<div class="row">
+
+			<!-- parameter -->
+			<div class="col-sm-3">
+				<div class="form_input">
+				<!-- {{formValues.parameters}} -->
+					<span ng-init="selectedParameterId[key] = {'id':formValues.triggerRules[key].parameterId}"></span>
+					<select ng-model="selectedParameterId[key]" class="form-control bs-select" name="rule_{{key}}_parameter" id="rule_{{key}}_parameter" ng-options="item as item.name for item in formValues.parameters track by item.id" ng-change="formValues.triggerRules[key].parameterId = selectedParameterId[key].id;alertsGetTriggerRuleValuesByParamId(formValues.triggerRules[key].parameterId); formValues.triggerRules[key].value = null; selectedConditionId[key] = null">
+					</select>
+				</div>
+			</div>
+
+			<!-- condition -->
+			<div class="col-sm-3">
+			<!-- {{parameterTypeId[formValues.triggerRules[key].parameterId].conditions}} -->
+				<div class="form_input" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id != 2">
+					<span ng-init="selectedConditionId[key] = {'id':formValues.triggerRules[key].conditionId}"></span>
+					<select ng-model="selectedConditionId[key]" class="form-control bs-select" name="rule_{{key}}_condition" id="rule_{{key}}_condition" ng-options="item as item.name for item in parameterTypeId[formValues.triggerRules[key].parameterId].conditions track by item.id" ng-change="formValues.triggerRules[key].conditionId = selectedConditionId[key].id">
+					</select>
+				</div>
+
+				<!-- if date -->
+				<div class="form_input" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 2">
+					<span ng-init="selectedConditionId[key] = {'id':formValues.triggerRules[key].conditionId}"></span>
+					<div class="row">
+						<div class="col-sm-6">
+							<select ng-model="selectedConditionId[key]" class="form-control bs-select" name="rule_{{key}}_condition" id="rule_{{key}}_condition" ng-options="item as item.name for item in parameterTypeId[formValues.triggerRules[key].parameterId].conditions track by item.id" ng-change="formValues.triggerRules[key].conditionId = selectedConditionId[key].id ; formValues.triggerRules[key].value = null; selectedConditionId[key].id <= 4 ? formValues.triggerRules[key].isDate = true : ''; selectedConditionId[key].id <= 4 ? disableDate = true : disableDate = false">
+							</select>
+							<span ng-init="selectedConditionId[key].id <= 4 ? formValues.triggerRules[key].isDate = true : ''; selectedConditionId[key].id <= 4 ? disableDate = true : disableDate = false"></span>
+						</div>
+						<div class="col-sm-6">
+							<select name="" id="" ng-disabled="disableDate" class="form-control bs-select" ng-model="formValues.triggerRules[key].isDate" ng-change="formValues.triggerRules[key].value = null"
+							ng-options="(item?'Date':'Days') for item in [true, false]">
+							<!-- 	<option ng-value="true" ng-selected="formValues.triggerRules[key].isDate == true || formValues.triggerRules[key].isDate == 'true'">Date</option>
+								<option ng-value="false" ng-selected="formValues.triggerRules[key].isDate == false || formValues.triggerRules[key].isDate == 'false'">Days</option> -->
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- value -->
+			<div class="col-sm-3">
+
+				<span ng-if="formValues.triggerRules[key].conditionId == 1 || formValues.triggerRules[key].conditionId == 2" ng-init="formValues.triggerRules[key].value = null"></span>
+
+				<span ng-if="formValues.triggerRules[key].conditionId != 1 && formValues.triggerRules[key].conditionId != 2">
+					<div class="form_input" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 1">
+						<select ng-model="formValues.triggerRules[key].value" class="form-control bs-select" name="rule_{{key}}_parameter" id="rule_{{key}}_parameter">
+							<option value="true"  ng-selected="{{formValues.triggerRules[key].value == 'true'}}">Yes</option>
+							<option value="false" ng-selected="{{formValues.triggerRules[key].value == 'false'}}">No</option>
+						</select>
+					</div>
+
+					<!-- Date -->
+					<div class="form-group row"  ng-init="CM.datepickers('triggerRules[key]', false, 'date')" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 2">
+					    <div class="form_input form_input_triggerRules[key] no-label" ng-show="formValues.triggerRules[key].isDate == 'true' || formValues.triggerRules[key].isDate == true ">
+					        <div class="input-group date-picker date form_meridian_datetime">
+					            <input name="triggerRules[key]" class="form-control" type="text" id="triggerRules[key]_value" ng-model="formValues.triggerRules[key].value">
+					            <span class="formatted-date"  ng-bind="CM.formatDate(formValues.triggerRules[key].value, 'dd/MM/yyyy')" >
+					            </span>
+					            <span class="input-group-btn" >
+					                <button class="btn default date-set" type="button">
+					                    <i class="fa fa-calendar"></i>
+					                </button>
+					            </span>
+					        </div>
+					    </div>
+					    <span ng-show="formValues.triggerRules[key].isDate == 'false' || formValues.triggerRules[key].isDate == false">
+					    	<input type="text" class="form-control" ng-model="formValues.triggerRules[key].value">
+					    </span>
+					</div>
+
+					<!--  Select  -->
+					<div class="form_input" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 3">
+						<select ng-model="formValues.triggerRules[key].value" class="form-control bs-select" name="rule_{{key}}_parameter" id="rule_{{key}}_parameter">
+							<option value="{{value.name}}" ng-repeat="(key, value) in options['triggerRuleValuesFor'+formValues.triggerRules[key].parameterId]" ng-selected="{{formValues.triggerRules[key].value == value.name}}">{{value.name}}</option>
+						</select>
+					</div>
+
+					<!--  Number  -->
+					<div class="form_input" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 4 || parameterTypeId[formValues.triggerRules[key].parameterId].id == 5">
+						<input class="form-control" ng-model="formValues.triggerRules[key].value" type="text" format="number:0">
+					</div>
+
+					<!--  TEXT  -->
+					<div class="form_input" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 6">
+						<input class="form-control" ng-model="formValues.triggerRules[key].value" type="text">
+					</div>
+				</span>
+			</div>
+
+			<!-- operator -->
+			<div class="col-sm-3">
+				<div class="form_input" ng-if="$last == false" >
+					<span ng-init="CM.selectedOperatorId[key] = {'id':formValues.triggerRules[key].operatorId}; changeAlertsOperatorsId(CM.selectedOperatorId[0])"></span>
+					<!-- ng-options="item as item.name for item in options['alertsOperator'] track by item.id" -->
+					<select ng-model="CM.selectedOperatorId[key]" class="form-control bs-select" name="rule_{{key}}_operator" id="rule_{{key}}_operator" ng-change="formValues.triggerRules[key].operatorId = CM.selectedOperatorId[key].id; changeAlertsOperatorsId(CM.selectedOperatorId[key])" ng-show="key == 0" ng-options="item as item.name for item in options['alertsOperator'] track by item.id">
+						<option value="value.id" ng-repeat="(k, value) in options['alertsOperator']" >{{value.name}}</option>
+					</select>
+					<span ng-if="key > 0" ng-init="changeAlertsOperatorsId(CM.selectedOperatorId[0])">
+
+					<!-- {{CM.selectedOperatorId[0]}} -->
+						<select ng-model="CM.selectedOperatorId[key]" class="form-control bs-select" name="rule_{{key}}_operator" id="rule_{{key}}_operator"  ng-init="formValues.triggerRules[key].operatorId = CM.selectedOperatorId[0].id; CM.selectedOperatorId[key].name = CM.selectedOperatorId[0].name" ng-options="item as item.name for item in options['alertsOperator'] track by item.id" disabled>
+						</select>
+						<!-- <input type="text" class="form-control" ng-model="CM.selectedOperatorId[key].name" ng-init="formValues.triggerRules[key].operatorId = CM.selectedOperatorId[0].id; CM.selectedOperatorId[key].name = CM.selectedOperatorId[0].name" readonly=""> -->
+					</span>
+					<!-- {{options['alertsOperator']}} -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-2">
+	    <span ng-if="!$first" class=""  ng-click="formValues.triggerRules.splice(key, 1); formValues.triggerRules[key-1].operatorId = null">
+			<a href="javascript:;" class=" btn default">
+				<i class="fa fa-minus"></i>
+	        </a>
+        </span>
+	    <span class=""  ng-click="formValues.triggerRules.push({})">
+			<a href="javascript:;" class=" btn default">
+				<i class="fa fa-plus"></i>
+	        </a>
+        </span>
+	</div>
+	<div class="col-sm-12">
+		<br>
+	</div>
+</div>
+

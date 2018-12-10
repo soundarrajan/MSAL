@@ -1,0 +1,18 @@
+
+<div   ng-if="state.is('default.home') || state.is('default.dashboard-table') || state.is('default.dashboard-calendar')">
+
+
+<div class="page-quick-sidebar" ng-controller="QuickSidebarController as QuickSidebarCtrl">
+    <div class="nav-justified">
+    	<div class="sidebar-content col-md-12">
+
+                <div class="page-quick-sidebar-item" ng-if="QuickSidebarCtrl.isSelected(2) && QuickSidebarCtrl.hideFilters() == -1">
+                    <filters></filters>
+                </div>
+
+
+        </div>
+
+    </div>
+</div>
+</div>

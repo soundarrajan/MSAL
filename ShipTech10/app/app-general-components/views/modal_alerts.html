@@ -1,0 +1,136 @@
+﻿<div ng-controller="Controller_Master as CM">
+	<div id="modal_close_bar">
+		<span ng-init="initAlertsModal()"></span>
+	    <a class="btn btn-default  btn-outline mt-ladda-btn ladda-button btn-save-alert" ng-if="alertsActiveTab > 1" ng-click="backTabAlert(alertsActiveTab)">
+	        <span class="ladda-label ng-binding">
+	            Back
+	        </span>
+	    </a>
+	    <a class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange btn-save-alert" ng-if="alertsActiveTab < 7" ng-click="nextTabAlert(alertsActiveTab)">
+	        <span class="ladda-label ng-binding">
+	            Next
+	        </span>
+	    </a>
+	    <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange btn-save-alert" ng-if="alertsActiveTab == 7" ng-click="save_modal_entity('alerts', 'alerts')">
+	        <span class="ladda-label ng-binding">
+	            Save
+	        </span>
+	    </a>
+	    <span ng-controller="Controller_Configurable_List_Control as CLC" type="button" class="close" ng-click="prettyCloseModalAlerts(true)" aria-hidden="true"><i class="fa fa-close"></i></span>
+	</div>
+	<div class="portlet light modal-alerts">
+	    <div class="portlet-title" style="padding-top: 25px;">
+	        <div class="caption-subject">
+	            <span class="caption-subject">
+	                CREATE ALERT RULE
+	            </span>
+	        </div>
+	    </div>    
+	    <div class="portlet-body ">
+	            <div  class=" text-left row form-wizard" id="formBuilderContent">
+	                <div class="col-md-12 alertTabs"  id="tabs_navigation">
+	                    <ul class="nav nav-tabs bg-white mb0 steps nav-justified">
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 1 ? 'active' : (alertsActiveTab < 1 ? 'next' : 'previous');  ">
+	                            <a  class="step">
+	                                <span class="number">
+	                                    1
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    App
+	                                </span>
+	                            </a>
+	                        </li>
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 2 ? 'active' : (alertsActiveTab < 2 ? 'next' : 'previous'); ">
+	                            <a  class="step">
+	                                <span class="number">
+	                                    2
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    Parameter
+	                                </span>
+	                            </a>
+	                        </li>
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 3 ? 'active' : (alertsActiveTab < 3 ? 'next' : 'previous');" >
+	                            <a  class="step">
+	                                <span class="number">
+	                                    3
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    Trigger Rule
+	                                </span>
+	                            </a>
+	                        </li>
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 4 ? 'active' : (alertsActiveTab < 4 ? 'next' : 'previous'); ">
+	                            <a  class="step">
+	                                <span class="number">
+	                                    4
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    Message
+	                                </span>
+	                            </a>
+	                        </li>
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 5 ? 'active' : (alertsActiveTab < 5 ? 'next' : 'previous') ">
+	                            <a  class="step">
+	                                <span class="number">
+	                                    5
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    Role
+	                                </span>
+	                            </a>
+	                        </li>
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 6 ? 'active' : (alertsActiveTab < 6 ? 'next' : 'previous'); ">
+	                            <a  class="step">
+	                                <span class="number">
+	                                    6
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    Alert Type
+	                                </span>
+	                            </a>
+	                        </li>
+	                        <li class="shiptech_tabs" ng-class="alertsActiveTab == 7 ? 'active' : (alertsActiveTab < 7 ? 'next' : 'previous'); ">
+	                            <a  class="step">
+	                                <span class="number">
+	                                    7
+	                                </span>
+	                                <span class="desc">
+	                                    <i class="fa fa-check"></i>
+	                                    Activation Details
+	                                </span>
+	                            </a>
+	                        </li>
+	                    </ul>
+	                </div>
+	            </div>
+		        <entity-edit-form screen="'alerts'" app="'alerts'" edit-action='' entity="modal.source"></entity-edit-form>
+		        <!-- <entity-edit-form-alerts screen="'alerts'" app="'alerts'" edit-action='' entity="modal.source"></entity-edit-form-alerts> -->
+	    </div>
+	</div>
+	
+	<div class="confirmModal fade bs-modal hide" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+				</div>
+				<div class="modal-body">
+					{{confirmModalData.text}} 
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+					<button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,55 @@
+<div ng-if="parents.name == 'General Information' && CM.app_id == 'delivery'">
+    <div class="pull-right">
+        <div class="form-inline">
+            <div class="form-group dz-clickable">
+                <div class="input-group  dz-message" id="general_information_upload" ng-init="CM.initDropZone('general_information_upload')">
+                    <input type="text" class="form-control dz-message" placeholder="Upload BDN"/>
+                    <span class="input-group-btn ">
+                        <button class="btn default dz-message" type="button">
+                            <i class="fa fa-upload"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group" >
+                <a class="btn btn-default orange btn-outline" ng-disabled="!formValues.order.id" ng-click="!formValues.order.id || add_delivery_product()">
+                    Add product
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="parents.name == 'Quantity' && CM.app_id == 'delivery'">
+    <div class="pull-right">
+        <div class="form-inline">
+            <a class="btn btn-sm btn-default" ng-click="raise_note_of_protest()">
+                Raise Note of Protest
+            </a>
+            <div class="form-group">
+                <b>
+                    Result:
+                    <span class="bg-green-jungle bg-font-green-jungle delivery_result">
+                        Matched
+                    </span>
+                </b>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="parents.name == 'Quality' && CM.app_id == 'delivery'">
+    <div class="pull-right">
+        <div class="form-inline">
+            <a class="btn btn-sm btn-default" ng-click="raise_note_of_protest()">
+                Raise Note of Protest
+            </a>
+            <div class="form-group">
+                <b>
+                    Result:
+                    <span class="bg-red-thunderbird bg-font-red-thunderbird delivery_result">
+                        Failed
+                    </span>
+                </b>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="custom-hardcoded-table fixed-header ng-scope" style="max-height: 500px;">
+		<!-- <span class="hidden" ng-if="formValues.email" ng-init="initEmailTemplateTypeahead()"></span> -->
+		    <table class="table-body" width="99.9%">
+		        <thead>
+		            <tr>
+		            	<th class="padding">Transaction</th>
+		            	<th class="padding">Process</th>
+		            	<th class="padding">Email Type</th>
+		            	<th class="padding">Template</th>
+		            	<th class="padding">Reply To</th>
+		            	<th class="padding">To email configuration</th>
+		            	<th class="padding">CC email configuration</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr ng-repeat="(key, value) in formValues.email" ng-if="value.isDeleted != true" ng-mouseover="initEmailTemplateTypeahead(key, value)" class="ng-scope">
+						<td class="padding">{{value.transactionType.name}}</td>
+						<td class="padding">{{value.process}}</td>
+						<td class="">
+							<select class="form-control bs-select changeIT" name="emailType" id="emailType" ng-required="true" ng-options="item as item.name for item in CM.listsCache.EmailType track by item.id"
+							ng-model="value.emailType"></select>
+						</td>
+						<td class="">
+		                    <div class="input-group form_input form_input_formula_quotes">
+		                        <input ng-model="value.template" uib-typeahead="item as item.name for item in options['EmailTemplate_'+key] | filter:{name:$viewValue}"
+		                            class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
+		                            typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}" autocomplete="off" />
+		                        <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_currencylist', 'Currency', 'formValues.general.tenantFormats.currency');"
+		                            ng-init="modal = false">
+		                            <a   class=" btn default">
+		                                <i class="fa fa-search"></i>
+		                            </a>
+		                        </span> -->
+
+								<span class="input-group-addon ng-scope" ng-click="triggerModal('general',
+								 'admin_templates',
+								 'Template' ,
+								 'template',
+								 'formValues.email',
+								 key,
+								 null,
+								 'filter__admin_templates');" >
+								        <a class=" btn default">
+								            <i class="fa fa-search"></i>
+								        </a>
+								    </span>
+
+		                    </div>							
+						</td>
+						<td>
+							<input type="text" class="form-control" ng-model="value.replyTo">
+						</td>
+						<td class="">
+							<div ng-controller="Controller_Master as CM">
+								<multiselect ng-model="value.toEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
+							</div>
+						</td>
+						<td class="">
+							<div ng-controller="Controller_Master as CM">
+								<multiselect ng-model="value.ccEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
+							</div>							
+						</td>
+		            </tr>		            
+		        </tbody>
+		    </table>
+		</div>
+
+
+
+<!-- <div ng-if="config_tab == 4" ui-grid="gridOptions.adminConfigurationEmail" id="grid_adminConfigurationEmail" class="dataGrid"
+    style="height: initial" ng-init="initGridDropdowns('adminConfigurationEmail')">
+    <div class="clearfix"></div>
+</div> -->

@@ -1,0 +1,148 @@
+<div class="row" >
+
+    <div class="portlet light stretch-vertical">
+        <div class="portlet-body">
+            <div class="row" id="reports_menu">
+                <!-- reports list -->
+                <div class="col_reports_list" ng-init="ctrl.toggled = false;$ctrl.showIframe = false">
+                    <div class="slide_menu" ng-class="{'slide_menu_toggled' : ctrl.toggled, 'slide_menu_collapsed' : !ctrl.toggled}">
+                        <a class="right" ng-click="ctrl.toggled = true" ng-if="!ctrl.toggled">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                        <span ng-class="{'title_menu_toggled' : ctrl.toggled, 'title_menu_collapsed' : !ctrl.toggled}"> REPORTS </span>
+                        <a class="left" ng-click="ctrl.toggled = false" ng-if="ctrl.toggled">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    </div>
+                    <ul class="categories_menu animated fadeIn" ng-if="!$ctrl.reportsLoading && ctrl.toggled">
+                        <!-- reports_custom_col -->
+                        <li class="nav-item" ng-repeat="(key, value) in $ctrl.standardReports">
+                            <a class="nav-link nav-toggle" ng-click="$ctrl.showIframe = true;$ctrl.selectIframe=null;$ctrl.showCateg=[]">
+                                <span class="">
+                                    {{value.category}}
+                                </span>
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </a>
+                            <ul class="reports_names" ng-repeat="(key2,report2) in value.items" ng-if="$ctrl.showIframe">
+                                <li class="nav-item " ng-class="$ctrl.selectIframe.id == report2.id ? 'current' : '' ">
+                                    <a ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]">
+                                        <span class="">
+                                            {{report2.name}}
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item" ng-repeat="(key,category) in $ctrl.reports track by key" ng-class="$ctrl.showCateg[key] ? 'current' : ''"
+                            ng-init="$ctrl.showCateg[key] = false">
+                            <a class="nav-link nav-toggle" ng-click="$ctrl.clearSelected($ctrl.showCateg);$ctrl.showCateg[key] == false ? $ctrl.showCateg[key] = true : $ctrl.showCateg[key] = false;$ctrl.showIframe = false;$ctrl.selectIframe =null;$ctrl.customReports = false">
+                                <span class="">
+                                    {{category.name}}
+                                </span>
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </a>
+                            <ul class="reports_names" ng-repeat="(key2,report) in category.reportsList track by key2" ng-if="$ctrl.showCateg[key]">
+                                <li class="nav-item " ng-class="$ctrl.isReportSelected[report.id] ? 'current' : '' ">
+                                    <a ng-click="$ctrl.clearSelected($ctrl.isReportSelected); $ctrl.isReportSelected[report.id] = true; $ctrl.setCurrentSelection(report);ctrl.showIframe = false;$ctrl.selectIframe =null;$ctrl.customReports = false">
+                                        <span class="">
+                                            {{report.name}}
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="loading_reports_spinner reports_custom_col" ng-if="$ctrl.reportsLoading && ctrl.toggled">
+                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- reports -->
+                <div class="col_selected_report" ng-if="!$ctrl.customReports">
+                    <div class="portlet-body">
+                        <!-- <span ng-include="'pages/reports/views/reports.html'"> -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!--         <div class="portlet-title">
+                                    <div class="caption-subject">
+                                        {{$ctrl.currentSelection.name}}
+                                    </div>
+                                </div> -->
+                                <div class="report_error" ng-if="$ctrl.currentSelection.name == 'Selected Report' && !$ctrl.selectIframe">
+                                    Please select report to display data.
+                                </div>
+                                <div class="report_error" ng-if="$ctrl.embedErrorMessage">
+                                    Report data is currently unavailable. {{ctrl.embedErrorMessage}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12" id="reportContainerWrapper">
+                                <div id="reportContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- custom reports -->
+                <div class="col_selected_report" ng-if="$ctrl.customReports">
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-xs-12 ">
+
+                                <div ng-if="$ctrl.selectIframe">
+                                    <iframe ng-src="{{$ctrl.selectIframe.link | srcurl}}" class="iframes">
+                                        <p>Your browser does not support iframes.</p>
+                                    </iframe>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <pre>{{$ctrl.reports}}</pre> -->
+
+    <!-- three layer menu might be used later, keep it here for a while -->
+    <!-- <div class="col-xs-2 reports_custom_col">
+   <ul class="page-sidebar-menu " id="reports_menu" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
+        <li class="nav-item" ng-class="!$ctrl.customReports ? 'current' : ''">
+            <a class="nav-link nav-toggle" href="/#/reports" ui-sref="default.reports">
+                <span class="">
+                    {{ 'PAGES.REPORTS.REPORTS' | translate }}
+                </span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="categories_menu">
+                <li class="nav-item" ng-repeat="(key,category) in $ctrl.reports" ng-class="$ctrl.showCateg[key] ? 'current' : ''" ng-init="$ctrl.showCateg[key] = false">
+                    <a class="nav-link nav-toggle"   ng-click="$ctrl.clearSelected($ctrl.showCateg);$ctrl.showCateg[key] == false ? $ctrl.showCateg[key] = true : $ctrl.showCateg[key] = false">
+                        <span class="">
+                            {{category.name}}
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="reports_names" ng-repeat="(key2,report) in category.reportsList" ng-if="$ctrl.showCateg[key]">
+                        <li class="nav-item " ng-class="$ctrl.isReportSelected[report.id] ? 'current' : '' ">
+                              <a   ng-click="$ctrl.clearSelected($ctrl.isReportSelected); $ctrl.isReportSelected[report.id] = true; $ctrl.setCurrentSelection(report)">
+                                <span class="">
+                                     {{report.name}}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+       <li class="nav-item" ng-class="$ctrl.customReports ? 'current' : ''">
+            <a class="nav-link nav-toggle"  href="/#/custom-reports" ui-sref="default.custom-reports">
+                <span class="">
+                    {{ 'PAGES.REPORTS.CUSTOM_REPORTS' | translate }}
+                </span>
+                <i class="fa fa-angle-right pull-right" ng-if="$ctrl.customReports""></i>
+            </a>
+        </li>
+    </ul>
+</div> -->

@@ -1,0 +1,93 @@
+﻿<div class=""  ng-init="triggerChangeFields('OrderID')">
+    <div class="mt-element-ribbon bg-grey-steel">
+        <table class="col-md-12">
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        Order ID:
+                    </span>
+                </td>
+                <td>
+                    <a ng-href="#/edit-order/{{ formValues.order.id }}">
+                        {{ labOrderSummary.name }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        Order Date:
+                    </span>
+                </td>
+                <td>
+                    <span class="font-grey-silver">
+                        {{ CM.formatDate(labOrderSummary.orderDate, tenantSetting.tenantFormats.dateFormat.name) }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        IMO:
+                    </span>
+                </td>
+                <td>
+                    <span class="font-grey-silver">
+                        {{ labOrderSummary.vesselImoNo }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        Voyage ID:
+                    </span>
+                </td>
+                <td>
+                    <span class="font-grey-silver">
+                        {{ labOrderSummary.voyageCode }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        Seller:
+                    </span>
+                </td>
+                <td>
+                    <span class="font-grey-silver order_summary_seller">
+                        {{ labOrderSummary.seller.name }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+    <div class="mt-element-ribbon bg-grey-cararra" ng-repeat="(key, value) in labOrderSummary.products">
+        <table>
+            <tr>
+                <td>
+                    <span class="order_summary_product_name">
+                        <p>
+                            <b>
+                                {{ value.product.name ? value.product.name : "New Product" }}
+                            </b>
+                        </p>
+                        <p>
+                            Spec: {{ value.specGroup.name }}
+                        </p>
+                        <p>
+                            Status:
+                            <span class="delivery_result ng-binding ng-scope" style="background: {{ CM.getColorCodeFromLabels(labOrderSummary.status) }}" ng-if="formValues.order.id">
+                                <!-- {{ labOrderSummary.status.name }} -->
+                                {{ labOrderSummary.status.displayName }}
+                            </span>
+                        </p>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,101 @@
+﻿<div class="contract-summary">
+    <div class="row">
+        <div class="mt-element-ribbon bg-grey-steel">
+            <span>
+                <div class="status">
+                    Contract status
+                </div>
+                <h2>
+                <!-- Confirmed -->
+                <!--    {{formValues.status.name}} -->
+                {{formValues.status.displayName}}
+                </h2>
+            </span>
+            <div>
+                Contracted Qty
+            </div>
+            <h2>
+                {{ formValues.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
+            </h2>
+            <div>
+                Planned Qty
+            </div>
+            <h2>
+                {{ formValues.summary.plannedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
+            </h2>
+            <div>
+                Ordered Qty
+            </div>
+            <h2>
+                {{ formValues.summary.orderedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{ formValues.summary.uom }}
+            </h2>
+            <div>
+                Utilised Qty
+            </div>
+            <h2>
+                {{ formValues.summary.utilizedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
+            </h2>
+            <div>
+                Available Qty
+            </div>
+            <h2>
+                {{ formValues.summary.availableQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{ formValues.summary.uom }}
+            </h2>
+            <div class="big-message">
+                <div class="inner">
+                    <h2>
+                        {{ formValues.noOfDaysBeforeExpiry | number:0 }} Days
+                    </h2>
+                    <p>
+                        Before Expiry
+                    </p>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="portlet-title ng-scope">
+    <div class="caption">
+        <h4 class="font-blue-madison ng-binding">
+            Product Details
+        </h4>
+    </div>
+</div>
+
+<span ng-if="formValues.productQuantityRequired" ng-init="loadedProductDetails = 'test'">
+</span>
+    <div class="mt-element-ribbon bg-grey-cararra" ng-repeat="(key, value) in formValues.products" ng-show="!formValues.products[key].isDeleted">
+
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="order_summary_product_name">
+                        <p>
+                            <b>
+                                {{ value.product.name ? value.product.name : "New Product" }}
+                            </b>
+                            <span class="product-status">
+                                {{ value.summary.productStatus }}
+                            </span>
+                        </p>
+                        <p>
+                            Contracted Qty: {{ value.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                        </p>
+                        <p>
+                            Planned Qty: {{ value.summary.plannedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                        </p>
+                        <p>
+                            Ordered Qty: {{ value.summary.orderedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                        </p>
+                        <p>
+                            Utilised Qty: {{ value.summary.utilizedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                        </p>
+                        <p>
+                            Available Qty: {{ value.summary.availableQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                        </p>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>

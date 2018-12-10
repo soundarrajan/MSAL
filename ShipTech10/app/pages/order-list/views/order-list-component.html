@@ -1,0 +1,217 @@
+<div class="row">
+    <div class="st-main-content-menu tabbable-line">
+
+        <div class="pull-right">
+            <form class="form-inline">
+                <div class="filters-box">
+                    <filters-widget></fitlers-widget>
+                </div>
+                <div ng-controller="Controller_General_Header as GH" class="form-group">
+                    <div  class="form-group st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'orderlist';">
+                        <div class="st-content-action-icons">
+                            <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+                                <span class="icon fa fa-save"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'export_xls'}, params)" class="btn">
+                                <span class="icon export-xls"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'export_csv'}, params)" class="btn">
+                                <span class="icon export-csv"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'export_pdf'}, params)" class="btn">
+                                <span class="icon export-pdf"></span>
+                            </a>
+                            <a ng-click="GH.export({action:'print'}, params)" class="btn">
+                                <span class="icon print"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="input-group st-content-search-box ">
+                        <input type="search" class="form-control" ng-model="GH.general_search_terms" placeholder="Search" aria-controls="schedule_dashboard_table" ng-keydown="$event.keyCode === 13 &amp;&amp; GH.general_search(GH.general_search_terms)"/>
+                        <span class="input-group-addon" ng-click="GH.general_search(GH.general_search_terms)">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
+                            Clear
+                        </a>
+                </div>
+
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<!-- <div class="row">
+    <div class="st-main-content-menu">
+        <div class="pull-right">
+            <form class="form-inline">
+                <div class="form-group st-content-action-icons">
+                    <a ng-click="$ctrl.export($ctrl.EXPORT_FILETYPE.EXCEL)">
+                        <span class="icon export-xls"></span>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a ng-click="$ctrl.export($ctrl.EXPORT_FILETYPE.CSV)">
+                        <span class="icon export-csv"></span>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a ng-click="$ctrl.export($ctrl.EXPORT_FILETYPE.PDF)">
+                        <span class="icon export-pdf"></span>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a ng-click="$ctrl.export($ctrl.EXPORT_FILETYPE.NONE)">
+                        <span class="icon export-doc"></span>
+                    </a>
+                    <span class="font-grey-salsa">
+                        |
+                    </span>
+                    <a ng-click="$ctrl.export($ctrl.EXPORT_FILETYPE.NONE)">
+                        <span class="icon print"></span>
+                    </a>
+                </div>
+                <div class="form-group">
+                    <div class="input-group st-content-search-box">
+                        <div id="search_box_dummy1">
+                            <input type="search" class="form-control" placeholder="Search" ng-model="search_box" aria-controls="order_list_table"  ng-keydown="$event.keyCode === 13 && search(search_box)"/>
+                        </div>
+                        <span class="input-group-addon" ng-click="search(search_box);">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div> -->
+<div class="row">
+    <div class="portlet light">
+        <div class="portlet-body">
+<!--             <table class="table table-striped table-hover table-bordered st-all-requests-table" id="order_list_table">
+                <thead>
+                    <tr>
+                        <th ng-repeat="column in $ctrl.ui.Orders.columns" data-column-name="{{ column.sortableName }}" data-dto-path="{{ column.dtoPath }}" data-sortable="{{ column.sortable }}">
+                            {{ column.caption | translate }}
+                        </th>
+                        <th data-sortable="false"></th>
+                        <th data-sortable="false"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in $ctrl.tableData">
+                    <td class="ui-jqgrid">
+                            <span class="jqgrid-ng-action edit" ui-sref="{{ $ctrl.STATE.EDIT_ORDER }}({orderId: '{{ row.order.id }}'})" title="Edit">
+                                Edit
+                            </span>
+                        </td>
+                        <td>
+                            <a ui-sref="{{ $ctrl.STATE.EDIT_ORDER }}({orderId: '{{ row.order.id }}'})">
+                                {{ row.order.name }}
+                            </a>
+                        </td>
+                        <td data-original-title="{{ row.eta | stDateFormat }}" tooltip>
+                            {{ row.eta | stDateFormat }}
+                        </td>
+                        <td data-original-title=" {{ row.orderDate | stDateFormat }}" tooltip>
+                            {{ row.orderDate | stDateFormat }}
+                        </td>
+                        <td data-original-title="{{row.request.id}}" tooltip>
+                        	<a href="#/edit-request/{{ row.request.id }}">{{ row.request.id }}</a>
+                        </td>
+                        <td data-original-title="{{row.service.name}}" tooltip>
+                            {{ row.service.name }}
+                        </td>
+                        <td data-original-title="{{row.seller.name}}" tooltip>
+                            {{ row.seller.name }}
+                        </td>
+                        <td data-original-title="{{row.buyer.name}}" tooltip>
+                            {{ row.buyer.name }}
+                        </td>
+                        <td data-original-title="{{row.vessel.name}}" tooltip>
+                            {{ row.vessel.name }}
+                        </td>
+                        <td data-original-title="{{row.vesselImoNo}}" tooltip>
+                            {{ row.vesselImoNo }}
+                        </td>
+                        <td data-original-title="{{row.location.name}}" tooltip>
+                            {{ row.location.name }}
+                        </td>
+                        <td data-original-title="{{row.product.name}}" tooltip>
+                            {{ row.product.name }}
+                        </td>
+                        <td >
+                            <span class="label" style="background-color: {{ $ctrl.getColorCodeByStatusId(row.productStatus.id) }}">
+                                {{ row.productStatus.displayName }}
+                            </span>
+                        </td>
+                        <td >
+                            <span class="label" style="background-color: {{ $ctrl.getColorCodeByStatusId(row.orderStatus.id) }}">
+                                {{ row.orderStatus.displayName }}
+                            </span>
+                        </td>
+                        <td data-original-title="{{ row.unitPriceWithCurrency | number: $ctrl.numberPrecision.pricePrecision }}" tooltip>
+                            {{ row.price | number: $ctrl.numberPrecision.pricePrecision }} {{ row.currency.name }}
+                        </td>
+                        <td data-original-title="{{row.confirmedQuantityUom.name}}" tooltip>
+                        	{{row.confirmedQuantity | number: $ctrl.numberPrecision.pricePrecision}} {{ row.confirmedQuantityUom.name }}
+                        </td>
+                        <td data-original-title="{{row.agreementType.name}}" tooltip>
+                            {{ row.agreementType.name }}
+                        </td>
+                        <td data-original-title="{{row.deliveryOption.name}}" tooltip>
+                            {{ row.deliveryOption.name }}
+                        </td>
+                        <td data-original-title="{{row.physicalSupplier.name}}" tooltip>
+                            {{ row.physicalSupplier.name }}
+                        </td>
+                        <td data-original-title="{{row.broker.name}}" tooltip>
+                            {{ row.broker.name }}
+                        </td>
+                        <td>
+                            <a class="btn btn-outline btn-xs orange" ng-class="{'disabled': !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM, row) || $ctrl.buttonsDisabled}" ng-click="$ctrl.confirmOrder(row.order.id)">
+                                Confirm
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline btn-xs orange" ng-class="{'disabled': !$ctrl.canReconfirm(row) || $ctrl.buttonsDisabled}" ng-click="$ctrl.reconfirmOrder(row.order.id)">
+                                Reconfirm
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="dataTables_info" id="all_requests_table_info" role="status" aria-live="polite">
+                Showing {{ $ctrl.tableOptions.paginationStart + 1 }} to {{ Math.min($ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength,$ctrl.tableOptions.totalRows) }} of {{ $ctrl.tableOptions.totalRows }} entries
+            </div>
+            <div class="dataTables_paginate paging_input" id="all_requests_table_paginate">
+                <span class="first paginate_button" id="all_requests_table_first">
+                    First
+                </span>
+                <span class="paginate_page">
+                    Page
+                </span>
+                <span class="previous paginate_button" id="all_requests_table_previous" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">
+                    &lt;
+                </span>
+                <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'/>
+                <span class="next paginate_button" id="all_requests_table_next" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">
+                    &gt;
+                </span>
+                <span class="paginate_of"></span>
+                <span class="last paginate_button" id="all_requests_table_last">
+                    Last
+                </span>
+            </div> -->
+
+
+            <clc-table-list id="'procurement_orderlist'" app="'procurement'" screen="'orderlist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+        </div>
+    </div>
+</div>

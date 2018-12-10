@@ -1,0 +1,44 @@
+﻿<general-header actions="{
+    primary: [  {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
+    ],
+    secondary: [{
+        label: 'Main Page',
+        type: 'goto',
+        url: 'edit/:entity_id'
+    }, {
+        label: 'Documents',
+        active: true
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit/:entity_id'
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id'
+    }, {
+        label: 'Seller Rating',
+        method: 'triggerModal(\'sellerrating\')',
+        extern:true
+    }]
+}"></general-header>
+
+<entity-edit-form screenchild="'entity_documents'"></entity-edit-form>
+
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+    <clc-table-list
+        id="'entity_documents'"
+        app="'delivery'"
+        screen="'entity_documents'"
+        controls="'[info, pager]'"
+    ></clc-table-list>
+</span>
+
+<general-header color="'white'" actions="{
+    primary: [  {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
+    ],
+    secondary: [
+
+    ],
+}"></general-header>
+

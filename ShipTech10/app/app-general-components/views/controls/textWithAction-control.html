@@ -1,0 +1,12 @@
+<div class="form-group  row">
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+        <span ng-if="field.Required" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+        <input type="text" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}" dynamic-model="'formValues.' + field.Unique_ID " ng-trim="false" ng-required='field.Required' ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+        <!--   <a href="">Test</a> -->
+    </div>
+</div>

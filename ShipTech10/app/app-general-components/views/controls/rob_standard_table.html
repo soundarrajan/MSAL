@@ -1,0 +1,91 @@
+<div>
+    <table>
+        <tr>
+            <td>
+                Debug time:
+            </td>
+            <td>
+                <input ng-model="formValues.createdOn" type="text" ng-value="'2019-01-01T00:00:00Z'" value=2019-01-01T00:00:00Z />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Min QTY</td>
+            <td>Max QTY</td>
+            <td>UOM</td>
+        </tr>
+        <tr>
+            <td>HSFO</td>
+            <td>
+                <div class="form-group row w100">
+                    <div class="form_input" class="w100">
+                        <input ng-model="formValues.robStandard[0].minQty" type="text" class="form-control " name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
+                    </div>
+                </div>                
+            </td>
+            <td>
+                <div class="form-group row w100"> 
+                    <div class="form_input">
+                        <input ng-model="formValues.robStandard[0].maxQty" type="text" class="form-control " name="hsfo_max" id="hsfo_max"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
+                    </div>
+                </div>         
+            </td>
+            <td>
+                <select ng-model="formValues.robStandard[0].uom.name" class="w100">
+                    <option data-ng-repeat="element in CM.listsCache.Uom" ng-selected="element.name == formValues.robStandard[0].uom.name">
+                        {{element.name}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>LSFO</td>
+            <td>
+                    <div class="form-group row w100">
+                          
+                        <div class="form_input">
+                            <input ng-model="formValues.robStandard[1].minQty" type="text" class="form-control " name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
+                        </div>
+                    </div>                
+                </td>
+                <td>
+                    <div class="form-group row w100">
+                        <div class="form_input">
+                            <input ng-model="formValues.robStandard[1].maxQty" type="text" class="form-control " name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
+                        </div>
+                    </div>         
+                </td>
+            <td>
+                <select>
+                    <option data-ng-repeat="element in CM.listsCache.Uom" ng-selected="element.name == formValues.robStandard[0].uom.name">
+                        {{element.name}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Dogo</td>
+            <td>
+                    <div class="form-group row w100">
+                        <div class="form_input">
+                            <input ng-model="formValues.robStandard[2].minQty" type="text" class="form-control " name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
+                        </div>
+                    </div>                
+                </td>
+                <td>
+                    <div class="form-group row w100">
+                        <div class="form_input">
+                            <input ng-model="formValues.robStandard[2].maxQty" type="text" class="form-control " name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
+                        </div>
+                    </div>         
+                </td>
+            <td>
+                <select>
+                    <option data-ng-repeat="element in CM.listsCache.Uom" ng-selected="element.name == formValues.robStandard[0].uom.name">
+                        {{element.name}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>

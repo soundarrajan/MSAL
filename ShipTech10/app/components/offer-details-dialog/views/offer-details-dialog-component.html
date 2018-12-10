@@ -1,0 +1,500 @@
+<div class="modal-header general_info_blade_card">
+    <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> -->
+ 	<a class="closeBlade pull-right" ng-click="closeBlade()" ng-controller="BladeController">
+		<i class="fa  fa-close font-white"></i>
+	</a>
+    <h4 class="modal-title font-blue-madison"><b>OFFER DETAILS - {{$ctrl.data.locations[0].products[0].sellers[0].sellerCounterparty.name}}</b></h4>
+</div>
+<div class="modal-body">
+    <div class="general_info_blade_card">
+        <span class="caption-subject">
+            GENERAL INFORMATION
+        </span>
+        <hr>
+        <form class="st-new-request-form form-horizontal" id="general" name="forms.general">
+            <div class="form-group-sm col-md-12">
+                <div class="input-group-sm col-md-4">
+                    <label class="control-label col-md-4">{{$ctrl.generalInformationFields.seller.caption | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control disabled" disabled readonly>
+                            <option selected>{{$ctrl.data.locations[0].products[0].sellers[0].sellerCounterparty.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-sm col-md-12">
+                <div class="input-group-sm col-md-4">
+                    <label class="control-label col-md-4">{{$ctrl.generalInformationFields.vessel.caption | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control disabled" disabled readonly>
+                            <option selected>{{$ctrl.data.vesselDetails.vessel.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group-sm col-md-4">
+                    <label class="control-label col-md-4">{{$ctrl.generalInformationFields.imo.caption | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control disabled" disabled readonly>
+                            <option selected>{{$ctrl.data.vesselDetails.vesselImoNo}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-sm col-md-12">
+                <div class="input-group-sm col-md-4">
+                    <label class="control-label col-md-4">{{$ctrl.generalInformationFields.contact.caption | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control"
+                                ng-options="contact as contact.name for contact in $ctrl.counterpartyContacts track by contact.id"
+                                ng-model="$ctrl.data.locations[0].products[0].sellers[0].offers[0].contactCounterparty" required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-sm col-md-12">
+                <div class="input-group-sm col-md-4">
+                    <label class="control-label col-md-4">{{$ctrl.generalInformationFields.terms.caption | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control"
+                                ng-options="terms as terms.name for terms in $ctrl.lists.PaymentTerm track by terms.id"
+                                ng-model="$ctrl.data.locations[0].products[0].sellers[0].offers[0].paymentTerm">
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group-sm col-md-4">
+                    <label class="control-label col-md-4">{{$ctrl.generalInformationFields.physicalSupplier.caption | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control"
+                                ng-options="supplier as supplier.name for supplier in $ctrl.lists.Supplier track by supplier.id"
+                                ng-model="$ctrl.data.locations[0].products[0].sellers[0].offers[0].physicalSupplierCounterparty">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+    <div  ng-repeat="location in $ctrl.data.locations" class="row">
+        <div class="col-md-12">
+            <!-- PRODUCT TABLE -->
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="col-md-3">
+                        <span class="caption-subject">PRODUCT {{location.location.id}}</span>
+                    </div>
+                    <div class="col-md-9 text-right">
+                        <span class="caption-subject">
+                            TOTAL PRODUCT: {{$ctrl.sumProductAmounts(location.products) | number: $ctrl.numberPrecision.amountPrecision}} |
+                            ADD. COST: {{$ctrl.additionalCostTotalAmountSums[location.id] | number: $ctrl.numberPrecision.amountPrecision}} |
+                            GRAND TOTAL: {{$ctrl.getGrandTotal(location) | number: $ctrl.numberPrecision.amountPrecision}}
+                        </span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form class="st-new-request-form form-horizontal" id="products" name="forms.products">
+                        <div class="col-md-2 location-label">
+                            <span>{{location.location.name}}</span>
+                        </div>
+                        <div ng-if="$ctrl.productFormFields.eta.visible" class="col-md-2">
+                            <label class="control-label col-md-4">{{$ctrl.productFormFields.eta.caption | translate}}</label>
+                            <div class="form-group-sm">
+                                <div class="input-group col-md-8">
+                                    <input name="eta"
+                                            id="eta"
+                                            class="form-control"
+                                            disabled
+                                            ng-model="location.eta"
+                                            st-date-format>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="$ctrl.productFormFields.etb.visible" class="col-md-2">
+                            <label class="control-label col-md-4">{{$ctrl.productFormFields.etb.caption | translate}}</label>
+                            <div class="form-group-sm">
+                                <div class="input-group col-md-8">
+                                    <input name="etb"
+                                            id="etb"
+                                            class="form-control date form_meridian_datetime"
+                                            disabled
+                                            ng-model="location.etb"
+                                            st-date-format>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="$ctrl.productFormFields.etd.visible" class="col-md-2">
+                            <label class="control-label col-md-4">{{$ctrl.productFormFields.etd.caption | translate}}</label>
+                            <div class="form-group-sm">
+                                <div class="input-group col-md-8">
+                                    <input name="etd"
+                                            id="etd"
+                                            class="form-control date form_meridian_datetime"
+                                            disabled
+                                            ng-model="location.etd"
+                                            st-date-format>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <a href="#"><u>Price History</u></a>
+                        </div>
+
+                        <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table"
+                                    id="product_info_table_{{$index + 1}}">
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="column in $ctrl.productColumns">
+                                        <label ng-if="$last" class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox"
+                                                    ng-model="$ctrl.productTableNoQuoteCheckAll"
+                                                    ng-change="$ctrl.productTableNoQuoteCheckAllChanged(location, $ctrl.productTableNoQuoteCheckAll)">
+                                            <span></span>
+                                        </label>
+                                        {{column.caption | translate}}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="product in location.products">
+                                    <td>
+                                        <input class="form-control" ng-model="product.product.name" disabled readonly>
+                                    </td>
+                                    <td>
+                                        <div class="form-group-sm">
+                                            <div class="input-group">
+                                                <input name="{{$ctrl.productColumns.QuotedProduct.name}}"
+                                                        id="id_{{$ctrl.productColumns.QuotedProduct.name}}"
+                                                        class="typeahead form-control"
+                                                        uib-typeahead="quotedProduct as quotedProduct.name for quotedProduct in $ctrl.lists.Product | filter:$viewValue"
+                                                        typeahead-on-select="$ctrl.selectQuotedProduct($item.id)"
+                                                        ng-model="product.sellers[0].offers[0].quotedProduct.name"
+                                                        typeahead-editable="false"
+                                                        required>
+                                                <span class="input-group-addon"
+                                                        data-toggle="modal"
+                                                        href="#lookup"
+                                                        ng-click="$ctrl.setDialogType($ctrl.productColumns.QuotedProduct.name, product)">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                         {{product.specGroup.name}}
+                                    </td>
+                                    <td>
+                                        <select ng-options="deliveryOption as deliveryOption.name for deliveryOption in $ctrl.lists.DeliveryOption track by deliveryOption.id"
+                                                ng-model="product.deliveryOption"
+                                                class="form-control">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control"
+                                                value="{{product.minQuantity | number: $ctrl.numberPrecision.quantityPrecision}} - {{product.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision}}" readonly disabled>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>{{product.uom.name}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="uom in $ctrl.lists.Uom" ng-click="$ctrl.updateModel(product.uom, uom)">
+                                                        <a>{{uom.name}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control"
+                                                    ng-model="product.sellers[0].offers[0].price"
+                                                    st-number-format="{{$ctrl.numberPrecision.pricePrecision}}"
+                                                    ng-change="$ctrl.productPriceChanged(product)"
+                                                    ng-required="!product.sellers[0].offers[0].hasNoQuote"
+                                                    name="{{$ctrl.productColumns.Price.name}}">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{product.sellers[0].offers[0].priceQuantityUom.name}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="uom in $ctrl.lists.Uom" ng-click="$ctrl.updateModel(product.sellers[0].offers[0].priceQuantityUom, uom);$ctrl.productUomChanged(product)">
+                                                        <a>{{uom.name}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>{{product.sellers[0].offers[0].currency.code}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="currency in $ctrl.lists.Currency" ng-click="$ctrl.updateModel(product.sellers[0].offers[0].currency, currency)">
+                                                        <a>{{currency.code}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{product.totalAmount | number: $ctrl.numberPrecision.amountPrecision}}
+                                    </td>
+                                    <td>
+                                        <select ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType track by pricingType.id"
+                                                ng-model="product.pricingType"
+                                                class="form-control"
+                                                readonly
+                                                disabled>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                                class="form-control"
+                                                ng-model="product.sellers[0].offers[0].formulaDescription"
+                                                name="{{$ctrl.productColumns.Formula.name}}"
+                                                ng-required="product.pricingType.id === $ctrl.PRICING_TYPE_FORMULA_ID"
+                                                ng-disabled="product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID">
+                                    </td>
+                                    <td>{{product.buyerComments}}</td>
+                                    <td>
+                                        <input type="text"
+                                                class="form-control"
+                                                ng-model="product.sellers[0].offers[0].sellerComments"
+                                                name="{{$ctrl.productColumns.SupplierComment.name}}">
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" ng-model="product.sellers[0].offers[0].hasNoQuote"
+                                                            ng-change="$ctrl.noQuoteChanged(location)"/>
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control"
+                                                        placeholder="Reason"
+                                                        ng-model="product.sellers[0].offers[0].reasonForNoQuote"
+                                                        ng-required="product.sellers[0].offers[0].hasNoQuote">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!-- ADDITIONAL COST TABLE -->
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="col-md-3">
+                        <span class="caption-subject">ADDITIONAL COST</span>
+                    </div>
+                </div>
+
+                <div class="portlet-body">
+                    <form id="additionalCosts" name="forms.additionalCosts">
+                        <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table"
+                                    id="product_add_cost_table_{{$index + 1}}">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th ng-repeat="column in $ctrl.additionalCostColumns">
+                                        {{column.caption | translate}}
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="additionalCost in $ctrl.getAdditionalCosts() | orderBy: '-fakeId' track by $index" ng-if="!additionalCost.isDeleted">
+                                    <td><span class="st-btn-icon" ng-click="$ctrl.addAdditionalCost(location)"><i class="fa fa-plus clickable"></i></span></td>
+                                    <td><span class="st-btn-icon" ng-click="$ctrl.deleteAdditionalCost(additionalCost, location)"><i class="fa fa-minus clickable"></i></span></td>
+                                    <td>
+                                        <select class="select2 form-control"
+                                                ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost track by addCost.id"
+                                                ng-model="additionalCost.additionalCost"
+                                                ng-change="$ctrl.additionalCostNameChanged(additionalCost)"
+                                                ng-required="additionalCost.price">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="select2 form-control"
+                                                ng-options="costType as costType.name for costType in $ctrl.lists.CostType track by costType.id"
+                                                ng-model="additionalCost.costType"
+                                                name="{{$ctrl.additionalCostColumns.type.name}}"
+                                                ng-required="additionalCost.additionalCost">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control" value="{{additionalCost.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision}}" readonly disabled>
+                                            <div class="input-group-btn">
+                                                <button type="button"
+                                                        class="btn dropdown-toggle"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false"
+                                                        disabled>{{$ctrl.getAdditionalCostParentProductUom(additionalCost).name}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="uom in $ctrl.lists.Uom" ng-click="$ctrl.updateModel(additionalCost.uom, uom)">
+                                                        <a>{{uom.name}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input type="number"
+                                                    class="form-control"
+                                                    ng-model="additionalCost.price"
+                                                    st-number-format="{{$ctrl.numberPrecision.pricePrecision}}"
+                                                    name="{{$ctrl.additionalCostColumns.Price.name}}"
+                                                    ng-required="additionalCost.additionalCost">
+                                            <div class="input-group-btn">
+                                                <button type="button"
+                                                        class="btn dropdown-toggle"
+                                                        ng-class="{'ng-invalid' : additionalCost.additionalCost && $ctrl.additionalCostPriceUomEnabled(additionalCost) && !additionalCost.priceUom.id}"
+                                                        ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost)"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        {{additionalCost.priceUom.id ? additionalCost.priceUom.name : "&nbsp;&nbsp;-&nbsp;&nbsp;"}} <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                  <li ng-repeat="uomItem in $ctrl.lists.Uom"><a ng-click="$ctrl.setPriceUom(additionalCost, uomItem);$ctrl.addPriceUomChanged(additionalCost,location)">{{uomItem.name}}</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="input-group-btn">
+                                                <button type="button"
+                                                        class="btn dropdown-toggle"
+                                                        ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false"
+                                                        ng-disabled="true">
+                                                        {{additionalCost.currency.code}} <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="currency in $ctrl.lists.Currency" ng-click="$ctrl.updateModel(additionalCost.currency, currency)">
+                                                        <a>{{currency.code}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select ng-options="product as product.product.name for product in location.products"
+                                                ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
+                                                ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location)"
+                                                class="form-control"
+                                                ng-disabled="additionalCost.id > 0 || !additionalCost.additionalCost">
+                                            <option value="">All</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control"
+                                                    ng-model="additionalCost.amount"
+                                                    st-number-format="{{$ctrl.numberPrecision.amountPrecision}}"
+                                                    readonly
+                                                    disabled>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>{{additionalCost.currency.code}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="currency in $ctrl.lists.Currency" ng-click="$ctrl.updateModel(additionalCost.currency, currency)">
+                                                        <a>{{currency.code}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control"
+                                                type="number"
+                                                max="100"
+                                                ng-model="additionalCost.extras",
+                                                st-number-format="{{$ctrl.numberPrecision.pricePrecision}}">
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control"
+                                                    ng-model="additionalCost.extrasAmount"
+                                                    st-number-format="{{$ctrl.numberPrecision.amountPrecision}}"
+                                                    readonly
+                                                    disabled>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>{{additionalCost.currency.code}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="currency in $ctrl.lists.Currency" ng-click="$ctrl.updateModel(additionalCost.currency, currency)">
+                                                        <a>{{currency.code}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control"
+                                                    ng-model="additionalCost.totalAmount"
+                                                    st-number-format="{{$ctrl.numberPrecision.amountPrecision}}"
+                                                    readonly
+                                                    disabled>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>{{additionalCost.currency.code}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="currency in $ctrl.lists.Currency" ng-click="$ctrl.updateModel(additionalCost.currency, currency)">
+                                                        <a>{{currency.code}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control"
+                                                    ng-model="additionalCost.rate"
+                                                    st-number-format="{{$ctrl.numberPrecision.pricePrecision}}"
+                                                    readonly
+                                                    disabled>
+                                            <div class="input-group-btn">
+                                                <button type="button"
+                                                        class="btn dropdown-toggle"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false"
+                                                        disabled>
+                                                        {{additionalCost.currency.code}} <span class="caret"></span></button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li ng-repeat="currency in $ctrl.lists.Currency" ng-click="$ctrl.updateModel(additionalCost.currency, currency)">
+                                                        <a>{{currency.code}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="restrict-width-20">
+                                        <input class="form-control" ng-model="additionalCost.comment">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="pull-right">
+        <a class="btn btn-sm yellow btn-outline" ng-click="$ctrl.saveOffer()">Save</a>
+        <a class="btn btn-sm btn-default" ng-click="closeBlade()" ng-controller="BladeController">Cancel</a>
+    </div>
+</div>

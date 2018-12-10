@@ -1,0 +1,127 @@
+﻿<input type="hidden" value="{{ formValues.orderDetails.deliveryProductId }}" id="deliveryProductId"/>
+<div class="row form-group " ng-if="formValues.claimType.claimType.id == 1" ng-init="CM.getClaimOptions('claimSubtype',1);checkSubtype();table = 'a'">
+    <span ng-init="CM.table = 'quan'; " ng-if="formValues.quantitySubtypes[0].specParameter"></span>
+    <span ng-init="CM.table = 'den'; " ng-if="formValues.densitySubtypes[0].specParameter"></span>
+    <label class="control-label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+    </label>
+    <div class="">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group  row">
+                    <!-- <label ng-if="field.Label" for="quantity_Parameter" class="quantity_Parameter_label">
+                        Parameter
+                    </label> -->
+                    <div class="form_input form_input_Parameter input-group">
+                        <select class="form-control bs-select"  id="quantity_Parameter" ng-model="quantity_Parameter"  ng-change="setQuantitySub() " ng-disabled="formValues.isEditable == false">
+                            <option value=""></option>
+                            <option value="{{ value.payload }}" data-opt="{{ value.isQuantitySubtype }}"  ng-repeat="(key, value) in claimsOptions"   >
+                                {{ value.name }}
+                            </option>
+                        </select>
+                        <input type="hidden" ng-model="IsQuantitySubtype"/>
+                        <span class="input-group-addon"  ng-if="IsQuantitySubtype == true">
+                            <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.quantitySubtypes', quantity_Parameter);" ng-if="quantity_Parameter">
+                                Add New
+                            </a>
+                        </span>
+                        <span class="input-group-addon"  ng-if="IsQuantitySubtype == false">
+                            <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.densitySubtypes', quantity_Parameter);" ng-if="quantity_Parameter">
+                                Add New
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span  ng-if="IsQuantitySubtype == true || CM.table == 'quan'">
+            <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
+                {{ formValues.claimDetails.estimatedSettlementAmount = formValues.orderDetails.orderPrice * claimsOptions[0].payload.quantityShortage; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount'); }}
+            </span>
+            <span class="hidden" ng-if="claimsOptions[0].payload.sellerQuantity && claimsOptions[0].payload.buyerQuantity && !formValues.claimType.quantityShortage ;">
+                {{ formValues.claimType.quantityShortage = claimsOptions[0].payload.quantityShortage; formValues.claimType.quantityShortageUom = claimsOptions[0].payload.quantityUom }}
+            </span>
+            <span ng-init="initGridDropdowns('quantitySubtypes');"></span>
+            <div id="grid_quantitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['quantitySubtypes']"></div>
+        </span>
+        <span ng-if="IsQuantitySubtype == false || CM.table == 'den'">
+            <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
+                {{ formValues.claimDetails.estimatedSettlementAmount =  formValues.orderDetails.orderPrice * claimsOptions[13].payload.quantityShortage; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount');  }}
+            </span>
+
+            <span class="hidden" ng-if="claimsOptions[13].payload.bdnDensity && claimsOptions[13].payload.labDensity && claimsOptions[13].payload.bdnQuantity  && !formValues.claimType.quantityShortage">
+                {{ formValues.claimType.quantityShortageUom = claimsOptions[13].payload.bdnQuantityUom }}
+                {{ formValues.claimType.quantityShortage = claimsOptions[13].payload.quantityShortage; }}
+            </span>
+            <span ng-init="initGridDropdowns('densitySubtypes');"></span>
+            <div id="grid_densitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['densitySubtypes']"></div>
+        </span>
+    </div>
+</div>
+<div class="row form-group " ng-if="formValues.claimType.claimType.id == 2"  ng-init="CM.getClaimOptions('claimSubtype',2);quality_Parameter = ''">
+    <label class="control-label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+    </label>
+    <div class="">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group  row">
+                    <!--       <label ng-if="field.Label" for="quality_Parameter" class="quality_Parameter_label">
+                              Parameter
+                          </label> -->
+                    <div class="form_input form_input_Parameter input-group">
+                        <select class="form-control bs-select"  id="quality_Parameter" ng-model="quality_Parameter"  ng-disabled="formValues.isEditable == false">
+                            <option value=""></option>
+                            <option value="{{ value.payload }}"  ng-repeat="(key, value) in claimsOptions"   >
+                                {{ value.name }}
+                            </option>
+                        </select>
+                        <span class="input-group-addon">
+                            <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.qualitySubtypes', quality_Parameter)" ng-if="quality_Parameter">
+                                Add New
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span ng-init="initGridDropdowns('qualitySubtypes')"></span>
+        <div id="grid_qualitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['qualitySubtypes']"></div>
+    </div>
+</div>
+<div class="row form-group " ng-if="formValues.claimType.claimType.id == 3"  ng-init="CM.getClaimOptions('claimSubtype',3);compliance_Parameter = ''">
+    <label class="control-label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+    </label>
+    <div class="">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group  row">
+                    <!--       <label ng-if="field.Label" for="compliance_Parameter" class="compliance_Parameter_label">
+                              Parameter
+                          </label> -->
+                    <div class="form_input form_input_Parameter input-group">
+                        <select class="form-control bs-select"  id="compliance_Parameter" ng-model="compliance_Parameter" ng-disabled="formValues.isEditable == false">
+                            <option value=""></option>
+                            <option value="{{ value.payload }}"  ng-repeat="(key, value) in claimsOptions"   >
+                                {{ value.name }}
+                            </option>
+                        </select>
+                        <span class="input-group-addon">
+                            <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.complianceSubtypes', compliance_Parameter)" ng-if="compliance_Parameter">
+                                Add New
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span ng-init="initGridDropdowns('complianceSubtypes')"></span>
+        <div id="grid_complianceSubtypes" external-scopes="clickHandler" ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['complianceSubtypes']"></div>
+    </div>
+</div>
+<div ng-if="formValues.claimType.claimType.id == 4">
+    <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
+        {{ formValues.claimDetails.estimatedSettlementAmount = formValues.claimDebunkerDetails.debunkerAmount - formValues.claimDebunkerDetails.resaleAmount; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount'); }}
+    </span>
+</div>

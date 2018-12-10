@@ -1,0 +1,12 @@
+<div class=" " ng-controller="Controller_Master as CM">
+    <span ng-init="refreshSelect()" ng-show="grid.appScope.fVal().formValues.conditions[ rowRenderIndex ].isDayOfMonth == true">
+        <select class="form-control bs-select changeIT"  name="{{ col.colDef.displayName }}"  ng-class="'colt' + col.uid" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-model="grid.appScope.fVal().formValues.conditions[rowRenderIndex][col.colDef.name2]"  ng-required="col.colDef.cellObject.Required">
+            <option></option>
+        </select>
+    </span>
+    <span ng-init="CM.getOptions(col.colDef.cellObject2);refreshSelect();" ng-show="!grid.appScope.fVal().formValues.conditions[rowRenderIndex].isDayOfMonth || grid.appScope.fVal().formValues.conditions[rowRenderIndex].isDayOfMonth== false">
+        <select class="form-control bs-select changeIT"  name="{{ col.colDef.displayName }}"  ng-class="'colt' + col.uid" ng-options="item as item.name for item in options[col.colDef.cellObject2.Name] track by item.id" ng-model=" MODEL_COL_FIELD "  ng-required="col.colDef.cellObject2.Required">
+            <option></option>
+        </select>
+    </span>
+</div>

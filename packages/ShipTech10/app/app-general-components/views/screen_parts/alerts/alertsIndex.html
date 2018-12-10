@@ -1,0 +1,26 @@
+<span ng-init="initWatchAlerts()"></span>	 
+<div class="row">
+
+    <div class="col-md-12 portlet light" ng-if="alertsActiveTab == 1">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabApp.html'"></span>
+    </div> 
+    <div class="col-md-12 portlet light" ng-if="alertsActiveTab == 2">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabParameter.html'"></span>
+    </div> 
+    <div class="col-md-12 portlet light" ng-if="alertsActiveTab == 3">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabTriggerRule.html'"></span>
+    </div> 
+    <div class="col-md-12 portlet light" ng-if="alertsActiveTab == 4">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabMessage.html'"></span>
+    </div> 
+	<div class="col-md-12 portlet light" ng-if="alertsActiveTab == 5">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabRole.html'"></span>
+    </div> 
+	<div class="col-md-12 portlet light" ng-if="alertsActiveTab == 6">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabAlertType.html'"></span>
+    </div> 
+	<div class="col-md-12 portlet light" ng-if="alertsActiveTab == 7">
+    	<span ng-include="'app-general-components/views/screen_parts/alerts/tabActivationDetails.html'"></span>
+    </div>  	  
+	
+</div>           

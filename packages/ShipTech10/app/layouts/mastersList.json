@@ -1,0 +1,168 @@
+  {
+      "masters": [{
+          "id": 1,
+          "title": "Counterparty",
+          "slug": "counterparty",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 2,
+          "title": "Location",
+          "slug": "location",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 3,
+          "title": "Product",
+          "slug": "product",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 4,
+          "title": "Company",
+          "slug": "company",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 5,
+          "title": "Buyer",
+          "slug": "buyer",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 6,
+          "title": "Service",
+          "slug": "service",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 7,
+          "title": "Strategy",
+          "slug": "strategy",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 8,
+          "title": "Vessel",
+          "slug": "vessel",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 9,
+          "title": "Vessel Type",
+          "slug": "vesseltype",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 10,
+          "title": "Market Instrument",
+          "slug": "marketinstrument",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 11,
+          "title": "System Instrument",
+          "slug": "systeminstrument",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 12,
+          "title": "Price Master ",
+          "slug": "price",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 13,
+          "title": "Market Price Type Master ",
+          "slug": "pricetype",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 14,
+          "title": "Spec Group Master",
+          "slug": "specgroup",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 15,
+          "title": "Spec Parameter Master",
+          "slug": "specparameter",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 16,
+          "title": "Payment Term Master",
+          "slug": "paymentterm",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 17,
+          "title": "Delivery Option Master ",
+          "slug": "deliveryoption",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 18,
+          "title": "Incoterms Master ",
+          "slug": "incoterms",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 19,
+          "title": "Uom Master ",
+          "slug": "uom",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 20,
+          "title": "Period Master",
+          "slug": "period",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 21,
+          "title": "Event Master ",
+          "slug": "event",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 22,
+          "title": "Calendar Master",
+          "slug": "calendar",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 23,
+          "title": "Document Type Master",
+          "slug": "documenttype",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 24,
+          "title": "Contact Type Master",
+          "slug": "contacttype",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 25,
+          "title": "Agreement Type Master",
+          "slug": "agreementtype",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 26,
+          "title": "Additional Cost Master",
+          "slug": "additionalcost",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 27,
+          "title": "Barge Master ",
+          "slug": "barge",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 28,
+          "title": "Status Master",
+          "slug": "status",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 29,
+          "title": "Country Master ",
+          "slug": "country",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 30,
+          "title": "Currency Master",
+          "slug": "currency",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 31,
+          "title": "Exchange Rate Master",
+          "slug": "exchangerate",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 32,
+          "title": "Formula Master ",
+          "slug": "formula",
+          "icon": "fa fa-folder icon-lg"
+      }, {
+          "id": 33,
+          "title": "Claim Type Master ",
+          "slug": "claimtype",
+          "icon": "fa fa-folder icon-lg"
+      }]
+  }

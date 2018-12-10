@@ -1,0 +1,78 @@
+
+<div class="pull-right">
+    <a class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope" ng-show="!addNewContact"  ng-click="">
+        New Quote
+    </a>
+    <span>
+        &nbsp;
+    </span>
+    <a ng-click="$ctrl.saveSupplierCard()" class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope orange">
+        Save
+    </a>
+</div>
+<div class="col-md-12 portlet light">
+    <div class="portlet-title">
+        <div class="tools">
+            <a data-toggle="collapse" href="#offDetails" class="collapse" data-original-title="" title="" aria-expanded="true"></a>
+        </div>
+        <div class="caption">
+            <span class="caption-subject ">
+                OFFER DETAILS
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body collapse in" id="offDetails" aria-expanded="true" ng-if="$ctrl.requests.length > 0">
+        <div class="mb">
+            <div class="details-req">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <div class="left-arrow arrow">
+                            <button  ng-click="offset= offset - 1" ng-disabled="offset <= 0" ng-class="offset == 0 ? 'disabled' : ''">
+                                <i class="fa fa-caret-left" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-10" >
+                        <div class="row" ng-init="display = 4; offset = 0" >
+                        <span ng-init="$ctrl.active_req = $ctrl.activerequestid"></span>
+                            <div class="col-md-3" ng-repeat="(key, value) in $ctrl.requests |  limitTo:display:offset track by $index">
+                                <div class="req-card"  ng-class="$ctrl.active_req == value.id ? 'active_req' : ''"  ng-click="$ctrl.onTabClick(value); $ctrl.active_req = value.id; $ctrl.active_req_val = value; $ctrl.request = value">
+                                    <div>
+
+                                        <p>
+                                            <span style="font-weight: 600;">
+                                                {{ value.name }}
+                                            </span>
+                                            <br/>
+                                            Vessel Name: {{ value.vesselDetails.vessel.name }} - IMO: {{ value.vesselDetails.vesselImoNo }}
+                                            <br/>
+                                            Locations:
+                                            <span ng-repeat="(k, v) in value.locations">
+                                                {{ v.location.name }}
+                                            </span>
+                                            <br/>
+                                            Products :
+                                            <span ng-repeat="(p, pc) in value.locations[0].products">
+                                                {{ pc.product.name }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                        <div class="right-arrow arrow">
+                            <button ng-click="offset = offset  + 1" ng-disabled="offset >= $ctrl.requests.length - display" ng-class="offset >= $ctrl.requests.length - display ? 'disabled' : ''">
+                                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<!-- {{$ctrl.requests}} -->
+        <span ng-include="'components/blade/templates/supplierCardProducts.html'"></span>
+
+    </div>
+</div>

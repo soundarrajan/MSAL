@@ -1,0 +1,40 @@
+<div class="form-group  form-inline ">
+    <div class="row"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+
+        <span ng-if="!field.Button">
+            <span ng-if="field.LabelAsLink == 'true'">
+                <label class="control-label">
+                    <a ng-href="{{field.Url}}{{$eval(field.UrlVar)}}" target="_blank">
+                        {{ CM.app_id + '.' + field.Label | translate}}
+                    </a>
+                </label>
+            </span>
+            <span ng-if="!field.LabelAsLink || field.LabelAsLink == 'false'">
+                <label class="control-label">
+                    {{ CM.app_id + '.' + field.Label | translate}}
+                </label>
+                <div class="input-group pull-left" ng-class="field.Columns[0].Value> 6  ? 'col-md-4' : 'col-md-2'">
+                    <a ng-href="{{field.Url}}{{$eval('formValues.' + field.Unique_ID)}}" target="_blank" style="line-height: 34px;">
+                        <span ng-if="field.ValueAsLink">
+                            <span ng-if="field.Name == 'OrderID'">
+	                            {{ $eval('formValues.' + field.LinkText) }}
+                            </span>
+                            <span ng-if="field.Name != 'OrderID'">
+	                            {{ $eval('formValues.' + field.Unique_ID) }}
+                            </span>
+                        </span>
+                        <span ng-if="!field.ValueAsLink">
+                            Link
+                        </span>
+                    </a>
+                </div>
+            </span>
+        </span>
+
+        <span ng-if="field.Button">
+            <button class="treasury_generate_report" ng-click="treasury_generate_report()">{{ field.Label }}</button>
+            <button class="btn btn-default  btn-outline pull-right" style="margin:0 15px" ng-click="treasury_clear_report()">Clear</button>
+        </span>
+
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="form-group  form-inline " ng-init="getLogo(field.Name)" ng-click="clickUpload()">
+<!--     <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+    </label>
+    <span ng-if="field.Required" class="orange-txt">
+        *
+    </span> -->
+    <div class="dropzone-file-area" id="{{ field.Name }}" imagedrop  on-image-drop="uploadFiles(field.Name, 'drag',uploadedFile )">
+        <h3 class="sbold" ng-show="!image[field.Name]">
+            Drop files here or click to upload
+        </h3>
+        <input type='file' id="fileUpload" ng-model='logo' base-sixty-four-input class="hidden" ng-change="uploadFiles(field.Name)"/>
+        <div style="max-height: 130px; overflow: hidden;    ">
+
+    <img ng-src="data:{{image[field.Name].type}};base64,{{ image[field.Name].stream }}"/>
+        </div>
+    </div>
+</div>

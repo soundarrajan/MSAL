@@ -1,0 +1,22 @@
+<div class="form-group  row" >
+	<span class="hidden">
+    	{{field.Name.toLowerCase().indexOf('amount') != -1 || 
+    	field.Name.toLowerCase().indexOf('total') != -1 ||
+    	field.Name.toLowerCase().indexOf('deductions') != -1 ||
+    	field.Name.toLowerCase().indexOf('pay') != -1 
+    	? tenantFormatPrecision = tenantSetting.defaultValues.amountPrecision : ''}}
+    	{{ field.Name.toLowerCase().indexOf('quantity') != -1 ? tenantFormatPrecision = tenantSetting.defaultValues.quantityPrecision : ''	}}
+	</span>
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate}}
+        <span ng-if="field.Required" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+        <!-- <input type="text" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}" ng-model="dummyModel" dynamic-model="'formValues.{{field.Unique_ID}}'" ng-trim="false" ng-required='field.Required' ng-class="CM.invalid_form ? 'ng-touched' : ''"  ng-bind="formValues.{{field.Unique_ID}}"/> -->
+	    <span ng-if="tenantFormatPrecision"  class="form-control "  ng-bind="formValues.{{field.Unique_ID}} | number:tenantFormatPrecision" style="background: #eeeeee;" ></span>
+	    <span ng-if="!tenantFormatPrecision"  class="form-control "  ng-bind="formValues.{{field.Unique_ID}}" style="background: #eeeeee;" ></span>
+    </div>
+
+</div>

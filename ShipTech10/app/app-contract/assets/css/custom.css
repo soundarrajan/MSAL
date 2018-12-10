@@ -1,0 +1,234 @@
+﻿#sideBar {
+    padding-top: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    z-index: 2;
+}
+
+.tab-container {
+    border-bottom: 1px solid gray;
+    padding-bottom: 20px;
+}
+
+#addFieldTab {
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+#fieldSettingTab {
+    padding: 20px;
+}
+
+.dragElement-wrapper {
+    width: 50%;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.dragElement-wrapper .drag-element {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dragElement-wrapper .drag-element i {
+    margin-right: 5px;
+}
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+
+.input-as-label {
+    border: none;
+    box-shadow: none;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    background-color: transparent;
+}
+
+.active-field {
+    background-color: #f1fafc;
+}
+
+.form-group {
+    padding: 10px;
+    position: relative;
+}
+
+.form-group i.remove-ico {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.form-group i.clone-ico {
+    position: absolute;
+    right: 30px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.pale {
+    opacity: 50%;
+}
+
+.sortable-formbuilder, .sortable-stdFields {
+    padding-left: 0px;
+    -moz-padding-start: 0px;
+    -webkit-padding-start: 0px;
+    -khtml-padding-start: 0px;
+    -o-padding-start: 0px;
+    padding-start: 0px;
+    list-style: none;
+    min-height: 40px;
+}
+
+.drop-to-add {
+    height: 40px;
+}
+
+a[data-toggle="collapse"] i.fa-plus-square-o {
+    display: none;
+}
+
+a[data-toggle="collapse"] i.fa-minus-square-o {
+    display: inline-block;
+}
+
+a[data-toggle="collapse"].collapsed i.fa-plus-square-o {
+    display: inline-block;
+}
+
+a[data-toggle="collapse"].collapsed i.fa-minus-square-o {
+    display: none;
+}
+
+.orange-txt {
+    color: orange;
+}
+
+span.input-group-addon select {
+    border: none;
+    background: transparent;
+    padding: 0;
+    outline: none;
+}
+
+.bootstrap-tagsinput {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    display: inline-block;
+    padding: 4px 6px;
+    margin-bottom: 10px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    max-width: 100%;
+    line-height: 28px;
+    cursor: text;
+}
+
+.mt-radio > span, .mt-checkbox > span {
+    border: 1.5px solid #E6E6E6;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    background: #fff;
+}
+
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.input-group-addon i {
+    color: #c5cdda;
+}
+
+.portlet .form-group label {
+    font-family: Arial;
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: bold;
+    text-align: left;
+    padding-top: 10px;
+}
+.portlet .mt-checkbox-inline label,.portlet .mt-radio-list label {
+    line-height: 28px;
+    padding-top: 0px;
+}
+.portlet.light {
+    padding: 12px 20px 15px 20px;
+    background-color: #fff;
+}
+
+.caption h4 {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+ .mt-checkbox {
+    margin-bottom: 0!important
+}
+
+.uom_group select {
+    color: #000;
+}
+
+.uom_group {
+    padding: 0;
+}
+
+.clear{
+    float: none;
+    clear: both;
+}
+.mt-checkbox-inline{
+   padding:  0;
+}
+.twitter-typeahead .form-control {
+    margin: 0 !important;
+    float: right;
+    width: 97%
+}
+input.ng-invalid-required.ng-touched {
+    border-color: red;
+}
+.st-main-content-menu .btn {
+    min-width: 100px;
+}
+.simpleLookupLabel{
+    padding: 0;
+}
+
+.form_input_terms_conditions textarea{
+    width: 1870px;
+    height: 525px;
+    overflow-y: scroll;
+    margin: 0px;
+    resize: none;
+}

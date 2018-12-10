@@ -1,0 +1,1069 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [{
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }, {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "General Contract Information": {
+                    "id": "General Contract Information",
+                    "name": "General Contract Information",
+                    "children": [{
+                        "Unique_ID": "name",
+                        "Name": "name",
+                        "Type": "text",
+                        "Group": "General Contract Information",
+                        "Label": "CONTRACT_NAME",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "createdBy.name",
+                        "Name": "Createdby",
+                        "Type": "text",
+                        "Group": "General Contract Information",
+                        "Label": "CREATED_BY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "createdOn",
+                        "Name": "Createdon",
+                        "Type": "date",
+                        "disabled": true,
+                        "Group": "General Contract Information",
+                        "Label": "CREATED_ON",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "DefaultToday": true,
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "PickerType": "date"
+                    }, {
+                        "Unique_ID": "seller",
+                        "Name": "Seller",
+                        "Type": "simpleLookup",
+                        "clc_id": "masters_counterpartylist",
+                        "Group": "General Contract Information",
+                        "Label": "SELLER",
+                        "masterSource": "Seller",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "agreementType",
+                        "Name": "AgreementType",
+                        "Type": "dropdown",
+                        "Group": "General Contract Information",
+                        "Label": "AGREEMENT_TYPE",
+                        "masterSource": "AgreementType",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "strategy",
+                        "Name": "Strategy",
+                        "Type": "dropdown",
+                        "Group": "General Contract Information",
+                        "Label": "STRATEGY",
+                        "masterSource": "Strategy",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "incoterm",
+                        "Name": "incoterm",
+                        "Type": "simpleLookup",
+                        "clc_id": "masters_incotermlist",
+                        "Group": "General Contract Information",
+                        "Label": "DELIVERY_TERM",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Incoterm",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "paymentTerm",
+                        "Name": "PaymTerm",
+                        "Type": "dropdown",
+                        "Group": "General Contract Information",
+                        "Label": "PAYMENT_TERM",
+                        "masterSource": "PaymentTerm",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "entryDate",
+                        "Name": "EntryDate",
+                        "Type": "date",
+                        "Group": "General Contract Information",
+                        "Label": "ENTRY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "PickerType": "date"
+                    }, {
+                        "Unique_ID": "validFrom",
+                        "Name": "StartDate",
+                        "Type": "date",
+                        "Group": "General Contract Information",
+                        "Label": "START_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "PickerType": "date"
+                    }, {
+                        "Unique_ID": "validTo",
+                        "Name": "EndDate",
+                        "Type": "date",
+                        "Group": "General Contract Information",
+                        "Label": "END_DATE",
+                        "Required": "!formValues.evergreen",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+
+                        "PickerType": "date"
+                    }, {
+                        "Unique_ID": "evergreen",
+                        "Name": "Evergreen",
+                        "Type": "checkbox",
+                        "Group": "General Contract Information",
+                        "Label": "EVERGREEN",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "options": [{
+                            "evergreen": "Evergreen"
+                        }],
+                        "Active": false
+                    }, {
+                        "Unique_ID": "applyTo",
+                        "Name": "ApplyTo",
+                        "Type": "dropdown",
+                        "Group": "General Contract Information",
+                        "Label": "APPLY_TO",
+                        "masterSource": "ApplyTo",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "DefaultValue": 2,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "company",
+                        "Name": "Company",
+                        "Type": "dropdown",
+                        "masterSource": "Company",
+                        "Group": "General Contract Information",
+                        "Label": "COMPANY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "allowedCompanies",
+                        "Name": "allowedCompanies",
+                        "Type": "multiLookup",
+                        "masterSource": "Company",
+                        "Group": "General Contract Information",
+                        "Label": "ALLOWED_COMPANIES",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": "!formValues.company.id",
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                },
+                "ContractSummary": {
+                    "id": "ContractSummary",
+                    "name": "Contract Summary",
+                    "children": [{
+                        "Unique_ID": "ContractSummary",
+                        "Name": "ContractSummary",
+                        "Type": "ContractSummaryGroup",
+                        "Group": "ContractSummary",
+                        "Label": "CONTRACT_SUMMARY",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "options": [{
+                            "yes": "Yes",
+                            "no": "No"
+                        }],
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "3"
+                        }
+                    }
+                },
+                "contact": {
+                    "id": "contact",
+                    "name": "contact",
+                    "children": [{
+                        "Unique_ID": "contact",
+                        "Name": "contact",
+                        "Type": "contractsContactGroup",
+                        "Group": "contact",
+                        "Label": "CONTACT",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                },
+                "contractualQuantity": {
+                    "id": "contractualQuantity",
+                    "name": "Contractual Quantity",
+                    "children": [{
+                        "Unique_ID": "contractualQuantity",
+                        "Name": "contractualQuantity",
+                        "Type": "contractualQuantityGroup",
+                        "Group": "contractualQuantity",
+                        "Label": "CONTRACTUAL_QUANTITY",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                },
+                "ProductDetails": {
+                    "id": "ProductDetails",
+                    "name": "Product Details",
+                    "children": [{
+                        "Unique_ID": "ProductDetails",
+                        "Name": "ProductDetails",
+                        "Type": "ProductDetailsGroup",
+                        "Group": "ProductDetails",
+                        "Label": "PRODUCT_DETAILS",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                },
+                "Penalty": {
+                    "id": "Penalty",
+                    "name": "Penalty",
+                    "children": [{
+                        "Unique_ID": "Penalty",
+                        "Name": "Penalty",
+                        "Type": "contractsPenaltyGroup",
+                        "Group": "Penalty",
+                        "Label": "PENALTY",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "9"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "elements": [{
+        "requiredFields": [{
+            "Unique_ID": "ContractName",
+            "Name": "ContractName",
+            "Type": "text",
+            "Group": "General Contract Information",
+            "Label": "Contract Name",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Createdby",
+            "Name": "Createdby",
+            "Type": "text",
+            "Group": "General Contract Information",
+            "Label": "Created by",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Created on",
+            "Name": "Created on",
+            "Type": "date",
+            "Group": "General Contract Information",
+            "Label": "Created on",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Seller",
+            "Name": "Seller",
+            "Type": "simpleLookup",
+            "Group": "General Contract Information",
+            "Label": "Seller",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "AgreementType",
+            "Name": "AgreementType",
+            "Type": "dropdown",
+            "Group": "General Contract Information",
+            "Label": "Agreement Type",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Strategy",
+            "Name": "Strategy",
+            "Type": "dropdown",
+            "Group": "General Contract Information",
+            "Label": "Strategy",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "DeliveryTerm",
+            "Name": "DeliveryTerm",
+            "Type": "simpleLookup",
+            "Group": "General Contract Information",
+            "Label": "Delivery Term",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "PaymTerm",
+            "Name": "PaymTerm",
+            "Type": "dropdown",
+            "Group": "General Contract Information",
+            "Label": "Paym. Term",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "EntryDate",
+            "Name": "EntryDate",
+            "Type": "date",
+            "Group": "General Contract Information",
+            "Label": "Entry Date",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "StartDate",
+            "Name": "StartDate",
+            "Type": "date",
+            "Group": "General Contract Information",
+            "Label": "Start Date",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "EndDate",
+            "Name": "EndDate",
+            "Type": "date",
+            "Group": "General Contract Information",
+            "Label": "End Date",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Evergreen",
+            "Name": "Evergreen",
+            "Type": "checkbox",
+            "Group": "General Contract Information",
+            "Label": "Evergreen",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "evergreen": "Evergreen"
+            }]
+        }, {
+            "Unique_ID": "ApplyTo",
+            "Name": "ApplyTo",
+            "Type": "dropdown",
+            "Group": "General Contract Information",
+            "Label": "Apply to",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Currency",
+            "Name": "Currency",
+            "Type": "dropdown",
+            "Group": "General Contract Information",
+            "Label": "Currency",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Company",
+            "Name": "Company",
+            "Type": "dropdown",
+            "Group": "General Contract Information",
+            "Label": "Company",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "AllowedCompanies",
+            "Name": "AllowedCompanies",
+            "Type": "multiLookup",
+            "Group": "General Contract Information",
+            "Label": "Allowed Companies",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "ContractSummary": [{
+            "Unique_ID": "ContractSummary",
+            "Name": "ContractSummary",
+            "Type": "ContractSummaryGroup",
+            "Group": "ContractSummary",
+            "Label": "Contract Summary",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "yes": "Yes",
+                "no": "No"
+            }]
+        }],
+        "contact": [{
+            "Unique_ID": "PrimaryContact",
+            "Name": "PrimaryContact",
+            "Type": "dropdown",
+            "Group": "contact",
+            "Label": "Primary Contact",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ContactType",
+            "Name": "ContactType",
+            "Type": "dropdown",
+            "Group": "contact",
+            "Label": "ContactType",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "EmailContact",
+            "Name": "EmailContact",
+            "Type": "checkbox",
+            "Group": "contact",
+            "Label": "EmailContact",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "EmailContact": "Email Contact"
+            }]
+        }],
+        "contractualQuantity": [{
+            "Unique_ID": "contractualQuantity",
+            "Name": "contractualQuantity",
+            "Type": "CLC",
+            "Group": "contractualQuantity",
+            "Label": "contractualQuantity",
+            "App": "clcindlc",
+            "Screen": "contractscontractualquantity",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "ProductDetails": [{
+            "Unique_ID": "ProductDetails",
+            "Name": "ProductDetails",
+            "Type": "ProductDetailsGroup",
+            "Group": "ProductDetails",
+            "Label": "ProductDetails",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "AdditionalCosts": [{
+            "Unique_ID": "AdditionalCosts",
+            "Name": "AdditionalCosts",
+            "Type": "CLC",
+            "Group": "AdditionalCosts",
+            "Label": "AdditionalCosts",
+            "App": "clcindlc",
+            "Screen": "contractsadditionalcosts",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "Penalty": [{
+            "Unique_ID": "AnyPenaltiesApplies",
+            "Name": "AnyPenaltiesApplies",
+            "Type": "checkbox",
+            "Group": "Penalty",
+            "Label": "Any penalties applies",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "yes": "Yes",
+                "no": "No"
+            }]
+        }, {
+            "Unique_ID": "SetAlert",
+            "Name": "SetAlert",
+            "Type": "checkbox",
+            "Group": "Penalty",
+            "Label": "SetAlert",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "yes": "Yes",
+                "no": "No"
+            }]
+        }, {
+            "Unique_ID": "NoOfDays",
+            "Name": "NoOfDays",
+            "Type": "text",
+            "Group": "Penalty",
+            "Label": "No Of Days",
+            "Columns": [{
+                "Value": "2",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "DateCondition",
+            "Name": "DateCondition",
+            "Type": "dropdown",
+            "Group": "Penalty",
+            "Label": "Date Condition",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "BeforeExpiry": "BeforeExpiry",
+                "AfterExpiry": "AfterExpiry",
+                "OnExpiry": "OnExpiry"
+            }]
+        }, {
+            "Unique_ID": "PenaltyCostIfAny",
+            "Name": "PenaltyCostIfAny",
+            "Type": "textUOM",
+            "Group": "Penalty",
+            "Label": "Penalty Cost If Any",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "Comment",
+            "Name": "Comment",
+            "Type": "textarea",
+            "Group": "Penalty",
+            "Label": "Comment",
+            "Columns": [{
+                "Value": "6",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }]
+    }],
+    "clc": {
+        "contractProductDeliveries": {
+            "table_name": "contractProductDeliveries",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [30, 20, 10],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "index": "deliveryId",
+                "label": "Delivery ID",
+                "name": "deliveryId",
+                "formatter": "edit_link",
+                "width": 150
+            }, {
+                "index": "plannedLocation",
+                "label": "Planned Location",
+                "name": "plannedLocation",
+                "width": 150
+            }, {
+                "index": "plannedProduct",
+                "label": "Planned Product",
+                "name": "plannedProduct",
+                "width": 150
+            }, {
+                "index": "plannedQuantity",
+                "label": "Planned Qty",
+                "name": "plannedQuantity",
+                "width": 150
+            }, {
+                "index": "orderId",
+                "label": "Order ID",
+                "name": "orderId",
+                "width": 150
+            }, {
+                "index": "actualLocation",
+                "label": "Actual Location",
+                "name": "actualLocation",
+                "width": 150
+            }, {
+                "index": "actualProduct",
+                "label": "Actual Product",
+                "name": "actualProduct",
+                "width": 150
+            }, {
+                "index": "actualQuantity",
+                "label": "Actual qty",
+                "name": "actualQuantity",
+                "width": 150
+            }, {
+                "index": "availableQuantity",
+                "label": "Available qty",
+                "name": "availableQuantity",
+                "width": 150
+            }],
+            "rowActions": [{
+                "label": "Copy",
+                "class": "copy",
+                "url": "get.php?action=copy"
+            }, {
+                "label": "Edit",
+                "class": "edit",
+                "url": "get.php?action=edit"
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        }
+    },
+    "id": 97
+}

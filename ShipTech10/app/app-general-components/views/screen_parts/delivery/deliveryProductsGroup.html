@@ -1,0 +1,96 @@
+<!-- products list -->
+<span ng-init="watchSelectDeliveryRow(); watcherCounter = 0;"></span>
+<span ng-init="initSplitDelivery();"></span>
+<div class="products_list">
+    <div class="row" ng-init="end1 = CM.initCarouselStep('end'); start1 = CM.initCarouselStep('start')">
+        <div class="col-xs-1">
+            <div class="left-arrow arrow">
+                <button  ng-click="start1 = start1 - 1" ng-disabled="start1 == 0" ng-class="start1 == 0 ? 'disabled' : ''">
+                    <i class="fa fa-caret-left" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-xs-10">
+            <div class="row">
+                <span ng-init="CM.selectedProduct = 0;"></span>
+                <div class="col-xs-6 col-md-3" ng-repeat="product in formValues.deliveryProducts track by $index" ng-show="$index >= start1 && $index < end1+start1" >
+	                <span ng-if="formValues.temp.deliverysummary.products" ng-init="initGetConversionInfo(product.product.id, $index); orderProductsByProductType('deliveryProducts')"></span>
+	                <div class="product_tab" ng-click="CM.selectedProduct = $index; formValues.temp.savedProdForCheck = product.product" ng-class="CM.selectedProduct == $index ? 'selected' : ''">
+	                    <div class="row">
+	                        <div class="col-xs-12">
+		                    	<span ng-repeat="(key, delProd) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'">
+		                    		<span ng-if="delProd.id == product.orderProductId">
+		                    			{{key+1}} - 
+		                    		</span>
+		                    	</span>
+                                <span><b>{{product.product.name}}</b></span>
+                                 <button class="remove-button-style" ng-click="deleteDeliveryProduct(product.id, $index); $event.stopPropagation()">
+                                    <span class="close"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                </button>
+                            </div>
+                            <div class="col-xs-12">
+                                <span>{{ CM.app_id + '.PRODUCT_TYPE' | translate }}:</span>
+	                            <span ng-bind="getProductTypeById(product.productTypeId)"></span>
+	                        </div>
+	                        <div class="col-xs-12">
+	                            <span>{{ CM.app_id + '.ORDER_NUMBER' | translate }}:</span>
+	                            <span>{{formValues.order.name}}</span>
+	                        </div>
+	                        <div class="col-xs-12">
+	                            <span>{{ CM.app_id + '.ORDER_QUANTITY' | translate }}:</span>
+	                            <span>{{product.orderedQtyFromOrder = getDeliveryProductQuantityAmountFromSummary('qty',product.orderProductId)}}</span>
+                                <span>{{product.orderedQtyFromOrderUom = getDeliveryProductQuantityAmountFromSummary('uom',product.orderProductId)}}</span>
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="right-arrow arrow">
+                <button ng-click="start1 = start1 + 1" ng-disabled="formValues.deliveryProducts.length - end1  <= start1" ng-class="formValues.deliveryProducts.length - end1 <= start1 ? 'disabled' : ''">
+                    <i class="fa fa-caret-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end products list -->
+<!-- add new product -->
+<div class="row margin-top-10">
+    <div class="col-sm-5 col-md-3">
+        <div class="form-group row">
+            <label for="product" class="simpleLookupLabel" style="max-height: initial;">
+                {{ CM.app_id + '.PRODUCT' | translate }}
+            </label>
+            <div class="input-group form_input form_input_product">
+			    <!-- {{formValues.temp.deliverysummary.products}}  -->
+                <select class="form-control bs-select changeIT" ng-options="item as (sumThose(index, 1) + ' - ' + item.product.name ) for (index, item) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'" id="bunkerOperator" ng-model="selectedProductToAddInDelivery"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5 col-md-3">
+        <button ng-disabled="formValues.deliveryStatus.name == 'Verified'" class="add-product-btn btn btn-default btn-outline orange" ng-click="add_delivery_product(selectedProductToAddInDelivery)" >{{ CM.app_id + '.ADD_PRODUCT' | translate }}</button>
+    </div>
+</div>
+<!-- end add new product -->
+<!-- product details portlets -->
+<span ng-repeat="(productIndex, product) in formValues.deliveryProducts" ng-show="CM.selectedProduct == productIndex">
+	<div class="row bg-grey-steel margin-top-10 delivery_product_details">
+	    <div class="col-xs-12">
+	        <span ng-include="'app-general-components/views/screen_parts/delivery/product_quantityDetails.html'"></span>
+	    </div>
+	</div>
+	<div class="row bg-grey-steel margin-top-10 delivery_product_details">
+	    <div class="col-xs-12">
+	        <span ng-include="'app-general-components/views/screen_parts/delivery/product_quality.html'"></span>
+	        <!-- <span ng-include="'app-general-components/views/screen_parts/delivery/deliveryQuality.html'"></span> -->
+	    </div>
+	</div>
+	<div class="row bg-grey-steel margin-top-10 delivery_product_details" ng-if="formValues.temp.isShowQuantityReconciliationSection">
+	    <div class="col-xs-12">
+	        <span ng-include="'app-general-components/views/screen_parts/delivery/product_quantityReconciliation.html'"></span>
+	    </div>
+	</div>
+</span>
+<!-- end product details portlets -->

@@ -1,0 +1,22 @@
+<div class="form-group  row" dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.'+ field.Label | translate }}
+        <span ng-if="field.Required" class="orange-txt">
+            *
+        </span>
+    </label>
+    <span>
+	    <span ng-init='isEdit ? myStyle = {
+	    "float" : "left",
+	    "width" : "calc(100% - 50px)"
+	  } : "" '></span>
+    </span>
+    <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+        <input type="text" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}"  dynamic-model="'formValues.' + field.Unique_ID " ng-trim="true" ng-required='field.Required && isVisible(field.Name)' dynamic-condition="{{field.Conditional}}" dynamic-condition-type="{{field.ConditionalType}}" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  dynamic-pattern="{{field.Pattern}}" ng-model-options="{ debounce: 400}" ng-change="triggerChangeFields(field.Name, field.Unique_ID)" ng-style="myStyle">
+       <div ng-if="isEdit" style="width:50px;float: left;line-height: 34px;text-align: center;font-size: 25px;">
+           <!-- <a style="color: #c2cad8" href="/#/claims/claim/emailpreview/{{CM.entity_id}}" target="_blank"><i class="glyphicon glyphicon-envelope"></i></a> -->
+           <a style="color: #c2cad8" ng-click="CM.openEmailPreview('/claims/claim/emailpreview', CM.entity_id)" href="javascript:;" ><i class="glyphicon glyphicon-envelope"></i></a>
+        </div>
+    </div>
+</div>
+<div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError(  CM.app_id + '.'+ field.Label | translate, CM.editInstance[field.Name])"></div>

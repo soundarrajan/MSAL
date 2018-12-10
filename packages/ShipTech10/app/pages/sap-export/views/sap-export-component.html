@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="portlet light stretch-vertical">
+        <div class="portlet-title">
+            <div class="caption-subject">
+                {{ 'PAGES.SAP_EXPORT.SAP_EXPORT_ORDER' | translate }}
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-xs-8">
+                     <clc-table-list id="'orders_sap_export'" app="'orders'" screen="'sap_export'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+                </div>
+                <div class="col-xs-4">
+                    <div class="sap_export_button_wrapper">
+                        <button class="export-btn btn btn-default btn-outline orange" ng-click="$ctrl.sapExport()">{{ 'PAGES.SAP_EXPORT.EXPORT' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

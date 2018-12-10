@@ -1,0 +1,36 @@
+<span ng-init="CM.getOptions(field);dummyModel = ''; "></span>
+<div class="form-group  row textUOM"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}" ng-class="field.ReadOnly ? 'read-only-group-control' : 'editable-group-control'">
+    <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
+        {{ CM.app_id + '.' + field.Label | translate }}
+        <span ng-if="$eval(field.Required) == true || field.Required == true ? true : false" class="orange-txt">
+            *
+        </span>
+    </label>
+    <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
+		<!-- If it's currency display before amount/price -->
+		<span class="hidden">
+	    	{{ tenantFormatPrecision = 3 }}
+	    	{{ field.Name.toLowerCase().indexOf('amount') != -1 ? tenantFormatPrecision = tenantSetting.defaultValues.amountPrecision : "" }}
+	    	{{ field.Name.toLowerCase().indexOf('quantity') != -1 ? tenantFormatPrecision = tenantSetting.defaultValues.quantityPrecision : "" }}
+		</span>
+        <span class="input-group-addon uom_group pseudoSelect" ng-if="field.UOMType == 'Currency'">
+            <select  id="{{ field.Name }}" name="{{ field.Name }} Option" class="bs-select" data-width="fit" ng-model="dummyModel" dynamic-model="'formValues.' + field.UOMUnique_ID "  ng-change=" convertValues({{ 'formValues.'+field.UOMUnique_ID + '.id' }}, dummyModel, field.UOMType, field.Name) ; triggerChangeFields(field.Name, field.Unique_ID)"  ng-if="field.UOMUnique_ID" data-val="{{ $eval('formValues.'+field.UOMUnique_ID + '.id') }}"  ng-options="item as item.name for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true|| field.ReadOnlyUom == true ? true : false" ng-required='$eval(field.Required) == true || field.Required == true ? true : false && isVisible(field.Name + field.UOMType)'>
+                <option></option>
+            </select>
+        </span>
+		<!-- {{$eval('formValues.'+field.Unique_ID)}} -->
+        <input type="text"  id="{{ field.Name }}{{ field.UOMType }}" name="{{ field.Name }}" class="form-control uomInput" compute-formula="$eval(field.Formula)" dynamic-model="'formValues.' + field.Unique_ID " ng-required='field.Required && isVisible(field.Name + field.UOMType)'  ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-change="triggerChangeFields(field.Name, field.Unique_ID);" format="number:{{ field.UOMType.toLowerCase() == 'currency' ? tenantSetting.defaultValues.pricePrecision : 3 }}"/>
+
+
+
+        <span class="input-group-addon uom_group pseudoSelect" ng-if="field.UOMType != 'Currency'">
+            <select  id="{{ field.Name }}" name="{{ field.Name }} Option" class="bs-select" data-width="fit" ng-model="dummyModel" dynamic-model="'formValues.' + field.UOMUnique_ID "  ng-change=" convertValues({{ 'formValues.'+field.UOMUnique_ID + '.id' }}, dummyModel, field.UOMType, field.Name) ; triggerChangeFields(field.Name, field.Unique_ID)"  ng-if="field.UOMUnique_ID" data-val="{{ $eval('formValues.'+field.UOMUnique_ID + '.id') }}"  ng-options="item as item.name for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true|| field.ReadOnlyUom == true ? true : false" ng-required="$eval(field.Required) == true || field.Required == true ? true : false && isVisible(field.Name + field.UOMType) || ( $eval('formValues.' + field.Unique_ID) != null && $eval('formValues.' + field.Unique_ID) != '')">
+                <!-- $eval('formValues.' + field.Unique_ID) != null && $eval('formValues.' + field.Unique_ID) != ''" " -->
+                <!-- isFilledValue({{field.Unique_ID}}) -->
+                <option></option>
+            </select>
+        </span>
+
+    </div>
+</div>
+<div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError( field.Label, CM.editInstance[field.Name])"></div>

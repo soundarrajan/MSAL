@@ -1,0 +1,162 @@
+
+<span ng-if="formValues.order.id" ng-init="formValues.temp.deliverysummary = getDeliveryOrderSummary(formValues.order.id)"></span>
+<span ng-if="formValues.temp.deliverysummary" ng-init="orderProductsByProductType('summaryProducts')"></span>
+<div class="">
+    <div class="mt-element-ribbon bg-grey-steel">
+        <table class="col-md-12 order_summary_table">
+            <tr width="100%">
+                <td width="30%">
+                    <span class="order_summary_label">
+                       {{ CM.app_id + '.ORDER_ID' | translate }}
+                    </span>
+                </td>
+                <td width="60%">
+                    <a ng-href="#/edit-order/{{ formValues.temp.deliverysummary.order.id }}">
+                        {{formValues.temp.deliverysummary.order.name }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.ORDER_DATE' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="font-grey-silver table_data" ng-bind="CM.formatDate(formValues.temp.deliverysummary.orderDate, '{{tenantSetting.tenantFormats.dateFormat.name}}')">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.VESSEL_NAME' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data font-grey-silver">
+                        {{ formValues.temp.deliverysummary.vesselName }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.VOYAGE_ID' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data font-grey-silver">
+                        {{ formValues.temp.deliverysummary.voyageId }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.SELLER' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data font-grey-silver">
+                        {{ formValues.temp.deliverysummary.counterparty.name }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.SURVEYOR' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data font-grey-silver">
+                        {{ formValues.temp.deliverysummary.surveyor ?  formValues.temp.deliverysummary.surveyor : '-'}}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.LOCATION' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data font-grey-silver">
+                        {{ formValues.temp.deliverysummary.location }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.BUYER' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data font-grey-silver">
+                        {{ formValues.temp.deliverysummary.buyer }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.STATUS' | translate }}
+                    </span>
+                </td>
+                <td>
+                    <span class="table_data delivery_result" style="color: white; background: {{ CM.getColorCodeFromLabels(formValues.temp.deliverysummary.status) }}" ng-if="formValues.temp.deliverysummary.status.displayName">
+                        {{ formValues.temp.deliverysummary.status.displayName }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="order_summary_label">
+                        {{ CM.app_id + '.PRODUCT_QTY' | translate }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table class="order_summary_products_table" border="1">
+                        <thead>
+                            <tr>
+                                <td width="40%"><span></span></td>
+                                <td width="20%"><span>Ord.</span></td>
+                                <td width="20%"><span>Del.</span></td>
+                                <td width="20%"><span>Rem.</span></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key, value) in formValues.temp.deliverysummary.products">
+                                <td width="40%">
+                                    <span>
+                                        {{ value.product.name }}
+                                    </span>
+                                </td>
+                                <td width="20%">
+                                    <span ng-if="value.orderedQuantity.amount" ng-bind="value.orderedQuantity.amount | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
+                                    <span ng-if="!value.orderedQuantity.amount" ng-bind="0.000000 | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
+                                    <span ng-if="value.orderedQuantity.uom.name">{{ value.orderedQuantity.uom.name }}</span>
+                                </td>
+                                <td width="20%">
+                                    <span ng-if="value.deliveredQuantity.amount" ng-bind="value.deliveredQuantity.amount | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
+                                    <span ng-if="!value.deliveredQuantity.amount" ng-bind="0.000000 | number: {{tenantSetting.defaultValues.quantityPrecision }}"> - </span>
+                                    <span ng-if="value.deliveredQuantity.uom.name">{{ value.deliveredQuantity.uom.name }}</span>
+                                </td>
+                                <td width="20%" >
+                                    <span ng-if="value.remainingQuantity.amount" ng-bind="value.remainingQuantity.amount | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
+                                    <span ng-if="!value.remainingQuantity.amount" ng-bind="0.000000 | number: {{tenantSetting.defaultValues.quantityPrecision }}"> - </span>
+                                    <span ng-if="value.remainingQuantity.uom.name">{{ value.remainingQuantity.uom.name }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+</div>

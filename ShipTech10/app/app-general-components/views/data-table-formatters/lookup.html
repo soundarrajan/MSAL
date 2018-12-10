@@ -1,0 +1,45 @@
+<span ng-if="col.colDef.cellFilter" ng-init='col.colDef.cellObject.Filter={"column":col.colDef.cellFilter, "value":$eval(col.colDef.cellFilterValue)};'></span>
+
+<div class="input-group" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
+data-original-title="{{ col.colDef.name ==	'product' || col.colDef.name ==	'Product' ? getProductTooltipByProductId(MODEL_COL_FIELD.id) : '' }}">
+    <input ng-model="MODEL_COL_FIELD" 
+    ng-class="'colt' + col.uid" 
+    uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | filter:{name:$viewValue}"  
+    class="form-control "  
+    typeahead-show-hint="true" 
+    typeahead-min-length="1" 
+    typeahead-append-to-body="true" 
+    typeahead-wait-ms="100" 
+    id="{{ field.masterSource }}{{ field.Name }}" 
+    ng-required="$eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false" 
+    name="{{ col.colDef.name }}"    
+    autocomplete="off"  
+    dynamic-condition="{{ col.colDef.cellCondition }}" 
+    dynamic-condition-type="{{ col.colDef.cellConditionType }}" 
+    data-row-index="{{ rowRenderIndex }}" 
+    typeahead-on-select="triggerChangeFields(col.colDef.name); $eval(col.colDef.cellObject.customChangeAction)" 
+    data-cell-id="{{MODEL_COL_FIELD.id}}" 
+    ng-disabled="$eval(col.colDef.cellObject.Disabled)"
+    ng-blur="!MODEL_COL_FIELD.id ? MODEL_COL_FIELD = null : ''"/>
+    <span class="input-group-addon "  
+    ng-click="triggerModal('general', col.colDef.cellObject.clc_id, col.colDef.displayName , col.colDef.name,grid.options.data, rowRenderIndex, null, col.colDef.cellObject.filter);" 
+    ng-if="col.colDef.name != 'formula' && !$eval(col.colDef.cellCondition)"
+    ng-class="{'disabled': $eval(col.colDef.cellObject.Disabled)}"
+    >
+        <a   class=" btn default">
+            <i class="fa fa-search"></i>
+        </a> 
+    </span>
+    
+    <span class="input-group-addon"  
+    ng-click="triggerModal('formula', col.colDef.cellObject.clc_id, col.colDef.displayName , col.colDef.name,grid.options.data, rowRenderIndex);" 
+    ng-if="col.colDef.name == 'formula' && !$eval(col.colDef.cellCondition)"
+    ng-class="{'disabled': $eval(col.colDef.cellObject.Disabled)}"
+        >
+        <a class=" btn default">
+            <i class="fa fa-search"></i>
+        </a>
+    </span>
+
+</div>
+

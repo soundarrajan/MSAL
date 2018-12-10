@@ -1,0 +1,1766 @@
+{
+    "layout": {
+        "children": {
+            "entity_documents": {
+                "General": {
+                    "id": "General",
+                    "name": "General",
+                    "children": [
+                        {
+                            "Unique_ID": "documentType",
+                            "Name": "DocumentType",
+                            "Type": "simpleLookup",
+                            "masterSource": "DocumentType",
+                            "Group": "General",
+                            "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                            "Columns": [{
+                                "Value": "4",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        },
+
+                        {
+                            "Unique_ID": "dropFiles",
+                            "Name": "DropFiles",
+                            "Type": "uploadDocuments",
+                            "Group": "General",
+                            "Label": "DROP_FILES",
+                            "Columns": [{
+                                "Value": "8",
+                                "Type": "dropdown",
+                                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            }],
+                            "Description": "",
+                            "Required": true,
+                            "Hidden": false,
+                            "Added": true,
+                            "Active": false,
+                            "LastOnRow": false
+                        }
+                    ],
+                    "Active": true
+                }
+            },
+            "edit": {
+                "Order Details": {
+                    "id": "Order Details",
+                    "name": "Order Details",
+                    "children": [{
+                        "Unique_ID": "orderDetails.order",
+                        "Name": "OrderID",
+                        "Type": "simpleLookup",
+                        "Group": "Order Details",
+                        "Label": "ORDER_ID",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "clc_id": "orders_orders",
+                        "masterSource": "Order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.orderDate",
+                        "Name": "OrderDate",
+                        "Type": "date",
+                        "Group": "Order Details",
+                        "Label": "ORDER_DATE",
+                        "Parse": "dd/MM/yyyy HH:mm",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.orderStatusName",
+                        "Name": "orderStatus",
+                        "Type": "text",
+                        "Group": "Order Details",
+                        "Label": "ORDER_STATUS",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.deliveryNo",
+                        "Name": "deliveryNumber",
+                        "Type": "dropdown",
+                        "Group": "Order Details",
+                        "Label": "DELIVERY_NUMBER",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Filter": [{
+                            "ColumnName": "OrderId",
+                            "OperationType": 0,
+                            "ValueType": 5,
+                            "ValueFrom": "orderDetails.order.id",
+                            "Value": 0
+                        }],
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Delivery",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.deliveryDate",
+                        "Name": "DeliveryDate",
+                        "Type": "date",
+                        "Parse": "dd/MM/yyyy HH:mm",
+                        "Group": "Order Details",
+                        "Label": "DELIVERY_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.labResult",
+                        "Name": "labResultID",
+                        "Type": "dropdown",
+                        "Group": "Order Details",
+                        "Label": "LAB_RESULT_ID",
+                        "Filter": [{
+                            "ColumnName": "OrderId",
+                            "OperationType": 0,
+                            "ValueType": 5,
+                            "Value": 0,
+                            "ValueFrom": "orderDetails.order.id"
+                        }, {
+                            "ColumnName": "DeliveryId",
+                            "OperationType": 0,
+                            "ValueType": 5,
+                            "Value": 0,
+                            "ValueFrom": "orderDetails.deliveryNo.id"
+                        }],
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.vessel",
+                        "Name": "Vessel",
+                        "Type": "text",
+                        "Group": "Order Details",
+                        "Label": "VESSEL",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.port",
+                        "Name": "Port",
+                        "Type": "text",
+                        "Group": "Order Details",
+                        "Label": "PORT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.counterparty",
+                        "Name": "Counterparty",
+                        "Type": "text",
+                        "Group": "Order Details",
+                        "Label": "COUNTERPARTY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.product",
+                        "Name": "Product",
+                        "Type": "dropdown",
+                        "Group": "Order Details",
+                        "Label": "PRODUCT",
+                        "Filter": [{
+                            "ColumnName": "OrderId",
+                            "OperationType": 0,
+                            "ValueType": 5,
+                            "Value": 0,
+                            "ValueFrom": "orderDetails.order.id"
+                        }, {
+                            "ColumnName": "DeliveryId",
+                            "OperationType": 0,
+                            "ValueType": 5,
+                            "Value": 0,
+                            "ValueFrom": "orderDetails.deliveryNo.id"
+                        }, {
+                            "ColumnName": "LabResultId",
+                            "OperationType": 0,
+                            "ValueType": 5,
+                            "Value": 0,
+                            "ValueFrom": "orderDetails.product.id"
+                        }],
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "product",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.orderPrice",
+                        "Name": "OrderPrice",
+                        "Type": "textUOM",
+                        "UOMUnique_ID": "orderDetails.currency",
+                        "UOMType": "Currency",
+                        "Group": "Order Details",
+                        "Label": "ORDER_PRICE",
+                        "Parse": "number:3",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "orderDetails.company",
+                        "Name": "Company",
+                        "Type": "text",
+                        "Group": "Order Details",
+                        "Label": "COMPANY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "order",
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "12"
+                        }
+                    }
+                },
+                "claimDetails": {
+                    "id": "claimDetails",
+                    "name": "Claim Details",
+                    "children": [{
+                        "Unique_ID": "claimDetails.claimDate",
+                        "Name": "ClaimDate",
+                        "Type": "date",
+                        "Parse": "dd/MM/yyyy HH:mm",
+                        "Group": "claimDetails",
+                        "Label": "CLAIM_DATE",
+                        "DefaultToday": true,
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDetails.settlementDate",
+                        "Name": "SettlementDate",
+                        "Type": "date",
+                        "Parse": "dd/MM/yyyy HH:mm",
+                        "Group": "claimDetails",
+                        "Label": "SETTLEMENT_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": "CM.screen_id > 0",
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDetails.settlementType",
+                        "Name": "SettlementType",
+                        "Type": "dropdown",
+                        "masterSource": "SettlementType",
+                        "Group": "claimDetails",
+                        "Label": "SETTLEMENT_TYPE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "DefaultValue": 2
+                    }, {
+                        "Unique_ID": "claimDetails.estimatedSettlementAmount",
+                        "Name": "EstimatedSettlementAmount",
+                        "Type": "textUOM",
+                        "UOMUnique_ID": "claimDetails.estimatedSettlementAmountCurrency",
+                        "UOMType": "Currency",
+                        "Group": "claimDetails",
+                        "Parse": "number:3",
+                        "Label": "ESTIMATE_SETTLEMENT_AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDetails.actualSettlementAmount",
+                        "Name": "ActualSettlementAmount",
+                        "Type": "textUOM",
+                        "Group": "claimDetails",
+                        "Parse": "number:3",
+                        "Label": "ACTUAL_SETTLEMENT_AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "UOMUnique_ID": "claimDetails.actualSettlementAmountCurrency",
+                        "UOMType": "Currency"
+                    }, {
+                        "Unique_ID": "claimDetails.claimCustomStatus",
+                        "Name": "CustomStatus",
+                        "Type": "dropdown",
+                        "Group": "claimDetails",
+                        "Label": "CUSTOM_STATUS",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "CustomStatus",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDetails.compromisedAmount",
+                        "Name": "CompromisedAmount",
+                        "Type": "textUOM",
+                        "Group": "claimDetails",
+                        "Parse": "number:3",
+                        "Label": "COMPROMISED_AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "UOMUnique_ID": "claimDetails.compromisedAmountCurrency",
+                        "UOMType": "Currency"
+                    }, {
+                        "Unique_ID": "claimDetails.noClaimAmount",
+                        "Name": "NoClaimAmmount",
+                        "Type": "textUOM",
+                        "Group": "claimDetails",
+                        "Parse": "number:3",
+                        "Formula": "formValues.claimDetails.estimatedSettlementAmount - formValues.claimDetails.compromisedAmount - formValues.claimDetails.actualSettlementAmount",
+                        "Label": "NO_CLAIM_AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "UOMUnique_ID": "claimDetails.noClaimAmountCurrency",
+                        "UOMType": "Currency"
+                    }, {
+                        "Unique_ID": "claimDetails.createdBy.name",
+                        "Name": "CreatedBy",
+                        "Type": "text",
+                        "Group": "claimDetails",
+                        "Label": "CREATED_BY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "12"
+                        }
+                    }
+                },
+                "claimType": {
+                    "id": "claimType",
+                    "name": "Claim Type",
+                    "children": [{
+                        "Unique_ID": "claimType.claimType",
+                        "Name": "ClaimType",
+                        "Type": "dropdown",
+                        "Group": "claimType",
+                        "Label": "CLAIM_TYPE",
+                        "masterSource": "ClaimType",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimType.quantityShortage",
+                        "Name": "claimType.quantityShortage",
+                        "Type": "textUOM",
+                        "Group": "claimType",
+                        "Label": "QUANTITY_SHORTAGE",
+                        "UOMUnique_ID": "claimType.quantityShortageUom",
+                        "UOMType": "Uom",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false,
+                        "ConditionalType": "ng-show",
+                        "Conditional": "formValues.claimType.claimType.id == 1"
+                    }, {
+                        "Unique_ID": "ClaimSubType",
+                        "Name": "ClaimSubType",
+                        "screen": "claims_list",
+                        "Type": "ClaimSubType",
+                        "Group": "claimType",
+                        "Label": "CLAIM_SUB_TYPE",
+                        "masterSource": "claims",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "12"
+                        }
+                    }
+                },
+                "debunkerDetails": {
+                    "id": "debunkerDetails",
+                    "name": "Debunker Details",
+                    "children": [{
+                        "Unique_ID": "claimDebunkerDetails.debunkerPort",
+                        "Name": "DebunkerLocation",
+                        "Type": "simpleLookup",
+                        "Group": "debunkerDetails",
+                        "Label": "DEBUNKER_LOCATION",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "clc_id":"masters_locationlist",
+                        "masterSource": "Location",
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.debunkerDate",
+                        "Name": "DebunkerDate",
+                        "Type": "date",
+                        "Parse": "dd/MM/yyyy HH:mm",
+                        "Group": "debunkerDetails",
+                        "Label": "DEBUNKER_DATE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.debunkerQuantity",
+                        "Parse": "number:3",
+                        "Name": "DebunkerQuantitywithUOM",
+                        "Type": "textUOM",
+                        "UOMUnique_ID": "claimDebunkerDetails.debunkerQuantityUom",
+                        "UOMType": "Uom",
+                        "Group": "debunkerDetails",
+                        "Label": "DEBUNKER_QUANTITY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.resaleCounterparty",
+                        "Name": "ResaleCounterparty",
+                        "Type": "simpleLookup",
+                        "Group": "debunkerDetails",
+                        "Label": "RESALE_COUNTERPARTY",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "masterSource": "Counterparty",
+                        "Active": false,
+                        "clc_id":"masters_counterpartylist"
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.resaleDate",
+                        "Name": "ResaleDate",
+                        "Type": "date",
+                        "Group": "debunkerDetails",
+                        "Label": "RESALE_DATE",
+                        "Parse": "dd/MM/yyyy HH:mm",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.orderPrice",
+                        "Name": "SalePricewithCurrency",
+                        "Type": "textUOM",
+                        "Parse": "number:3",
+                        "UOMUnique_ID": "claimDebunkerDetails.orderPriceCurrency",
+                        "UOMType": "Currency",
+                        "Group": "debunkerDetails",
+                        "Label": "SALE_PRICE",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.debunkerAmount",
+                        "UOMUnique_ID": "claimDebunkerDetails.debunkerAmountCurrency",
+                        "UOMType": "Currency",
+                        "Name": "DebunkerAmount",
+                        "Parse": "number:3",
+                        "Type": "textUOM",
+                        "Formula": "formValues.orderDetails.orderPrice * formValues.claimDebunkerDetails.debunkerQuantity",
+                        "Group": "debunkerDetails",
+                        "Label": "DEBUNKER_AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.resaleAmount",
+                        "Parse": "number:3",
+                        "UOMUnique_ID": "claimDebunkerDetails.resaleAmountCurrency",
+                        "Name": "ResaleAmount",
+                        "Formula": "formValues.claimDebunkerDetails.orderPrice * formValues.claimDebunkerDetails.debunkerQuantity",
+                        "Type": "textUOM",
+                        "UOMType": "Currency",
+                        "Group": "debunkerDetails",
+                        "Label": "RESALE_AMOUNT",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }, {
+                        "Unique_ID": "claimDebunkerDetails.referenceClaim.id",
+                        "Name": "ReferenceClaimID",
+                        "Type": "text",
+                        "Group": "debunkerDetails",
+                        "Label": "REFERENCE_CLAIM_ID",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": true,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "12"
+                        }
+                    }
+                },
+                "ClaimNotes": {
+                    "id": "ClaimNotes",
+                    "name": "Claim Notes",
+                    "children": [{
+                        "Unique_ID": "ClaimNotes",
+                        "Name": "ClaimNotes",
+                        "Type": "CLC",
+                        "App": "claims",
+                        "Screen": "claims",
+                        "clc_id": "claimNotes",
+                        "Group": "ClaimNotes",
+                        "Label": "CLAIM_NOTES",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "6"
+                        }
+                    }
+                },
+                "ClaimSummary": {
+                    "id": "ClaimSummary",
+                    "name": "Claim Summary",
+                    "children": [{
+                        "Unique_ID": "claimSummary",
+                        "Name": "ClaimSummary",
+                        "Type": "textarea",
+                        "Group": "ClaimSummary",
+                        "Label": "CLAIM_SUMMARY",
+                        "Columns": [{
+                            "Value": "12",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": false,
+                        "Disabled": false,
+                        "Hidden": false,
+                        "Added": false,
+                        "LastOnRow": false,
+                        "Active": false
+                    }],
+                    "Active": true,
+                    "Columns": {
+                        "0": {
+                            "Value": "6"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "elements": [{
+        "requiredFields": [{
+            "Unique_ID": "OrderID",
+            "Name": "OrderID",
+            "Type": "simpleLookup",
+            "Group": "Order Details",
+            "Label": "ORDER_ID",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "OrderDate",
+            "Name": "OrderDate",
+            "Type": "date",
+            "Group": "Order Details",
+            "Label": "ORDER_DATE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "orderStatus",
+            "Name": "orderStatus",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "ORDER_STATUS",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "deliveryNumber",
+            "Name": "deliveryNumber",
+            "Type": "dropdown",
+            "Group": "Order Details",
+            "Label": "DELIVERY_NUMBER",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "DeliveryDate",
+            "Name": "DeliveryDate",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "DELIVERY_DATE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "labResultID",
+            "Name": "labResultID",
+            "Type": "dropdown",
+            "Group": "Order Details",
+            "Label": "LAB_RESULT_ID",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "Vessel",
+            "Name": "Vessel",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "VESSEL",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "Port",
+            "Name": "Port",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "PORT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "Counterparty",
+            "Name": "Counterparty",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "COUNTERPARTY",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "Product",
+            "Name": "Product",
+            "Type": "dropdown",
+            "Group": "Order Details",
+            "Label": "PRODUCT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "productlist"
+        }, {
+            "Unique_ID": "OrderPrice",
+            "Name": "OrderPrice",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "ORDER_PRICE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }, {
+            "Unique_ID": "Company",
+            "Name": "Company",
+            "Type": "text",
+            "Group": "Order Details",
+            "Label": "COMPANY",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "orderlist"
+        }],
+        "claimDetails": [{
+            "Unique_ID": "ClaimDate",
+            "Name": "ClaimDate",
+            "Type": "date",
+            "Group": "claimDetails",
+            "Label": "CLAIM_DATE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "SettlementDate",
+            "Name": "SettlementDate",
+            "Type": "date",
+            "Group": "claimDetails",
+            "Label": "SETTLEMENT_DATE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "SettlementType",
+            "Name": "SettlementType",
+            "Type": "dropdown",
+            "Group": "claimDetails",
+            "Label": "SETTLEMENT_TYPE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "options": [{
+                "pay": "Pay",
+                "receive": "Receive"
+            }]
+        }, {
+            "Unique_ID": "EstimatedSettlementAmount",
+            "Name": "EstimatedSettlementAmount",
+            "Type": "textUOM",
+            "Group": "claimDetails",
+            "Label": "ESTIMATE_SETTLEMENT_AMOUNT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ActualSettlementAmount",
+            "Name": "ActualSettlementAmount",
+            "Type": "textUOM",
+            "Group": "claimDetails",
+            "Label": "ACTUAL_SETTLEMENT_AMOUNT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CustomStatus",
+            "Name": "CustomStatus",
+            "Type": "dropdown",
+            "Group": "claimDetails",
+            "Label": "CUSTOM_STATUS",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "statuslist"
+        }, {
+            "Unique_ID": "CompromisedAmount",
+            "Name": "CompromisedAmount",
+            "Type": "textUOM",
+            "Group": "claimDetails",
+            "Label": "COMPROMISED_AMOUNT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "NoClaimAmmount",
+            "Name": "NoClaimAmmount",
+            "Type": "textUOM",
+            "Group": "claimDetails",
+            "Label": "NO_CLAIM_AMOUNT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "CreatedBy",
+            "Name": "CreatedBy",
+            "Type": "text",
+            "Group": "claimDetails",
+            "Label": "CREATED_BY",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "claimType": [{
+            "Unique_ID": "claimType.claimType.id",
+            "Name": "ClaimType",
+            "Type": "dropdown",
+            "Group": "claimType",
+            "Label": "CLAIM_TYPE",
+            "masterSource": "ClaimType",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ClaimSubType",
+            "Name": "ClaimSubType",
+            "Type": "CLC",
+            "Group": "claimType",
+            "screen": "claims_list",
+            "Label": "CLAIM_SUB_TYPE",
+            "masterSource": "claimlist",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "debunkerDetails": [{
+            "Unique_ID": "DebunkerLocation",
+            "Name": "DebunkerLocation",
+            "Type": "dropdown",
+            "Group": "debunkerDetails",
+            "Label": "DEBUNKER_LOCATION",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "portMaster"
+        }, {
+            "Unique_ID": "DebunkerDate",
+            "Name": "DebunkerDate",
+            "Type": "date",
+            "Group": "debunkerDetails",
+            "Label": "DEBUNKER_DATE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "DebunkerQuantitywithUOM",
+            "Name": "DebunkerQuantitywithUOM",
+            "Type": "testUOM",
+            "Group": "debunkerDetails",
+            "Label": "DEBUNKER_QUANTITY",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ResaleCounterparty",
+            "Name": "ResaleCounterparty",
+            "Type": "dropdown",
+            "Group": "debunkerDetails",
+            "Label": "RESALE_COUNTERPARTY",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false,
+            "masterSource": "counterpartylist"
+        }, {
+            "Unique_ID": "ResaleDate",
+            "Name": "ResaleDate",
+            "Type": "date",
+            "Group": "debunkerDetails",
+            "Label": "RESALE_DATE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "SalePricewithCurrency",
+            "Name": "SalePricewithCurrency",
+            "Type": "textUOM",
+            "Group": "debunkerDetails",
+            "Label": "SALE_PRICE",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "DebunkerAmount",
+            "Name": "DebunkerAmount",
+            "Type": "textUOM",
+            "Group": "debunkerDetails",
+            "Label": "DEBUNKER_AMOUNT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ResaleAmount",
+            "Name": "ResaleAmount",
+            "Type": "textUOM",
+            "Group": "debunkerDetails",
+            "Label": "RESALE_AMOUNT",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }, {
+            "Unique_ID": "ReferenceClaimID",
+            "Name": "ReferenceClaimID",
+            "Type": "text",
+            "Group": "debunkerDetails",
+            "Label": "REFERENCE_CLAIM_ID",
+            "Columns": [{
+                "Value": "4",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": false,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "claimNotes": [{
+            "Unique_ID": "claimNotes",
+            "Name": "ClaimNotes",
+            "Type": "ClaimNotesGroup",
+            "Group": "ClaimNotes",
+            "Label": "CLAIM_NOTES",
+            "clc_id": "claimNotes",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }],
+        "claimSummary": [{
+            "Unique_ID": "ClaimSummary",
+            "Name": "ClaimSummary",
+            "Type": "ClaimSummaryGroup",
+            "Group": "ClaimSummary",
+            "Label": "CLAIM_SUMMARY",
+            "Columns": [{
+                "Value": "12",
+                "Type": "dropdown",
+                "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }],
+            "Description": "",
+            "Required": true,
+            "Hidden": false,
+            "Added": false,
+            "LastOnRow": false
+        }]
+    }],
+    "clc": {
+        "claims_order_lookup": {
+            "table_name": "Order list",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": false,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "index": "order.id",
+                "label": "id",
+                "name": "order.id",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "order.name",
+                "label": "Name",
+                "name": "order.name",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "orderDate",
+                "label": "Date",
+                "name": "orderDate",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "orderStatusName",
+                "label": "Status",
+                "name": "orderStatusName",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "deliveryDate",
+                "label": "Delivery Date",
+                "name": "deliveryDate",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "vessel",
+                "label": "Vessel",
+                "name": "vessel",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "port",
+                "label": "Port",
+                "name": "port",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "buyer",
+                "label": "Buyer",
+                "name": "buyer",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "eta",
+                "label": "ETA",
+                "name": "eta",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "counterparty",
+                "label": "Counterparty",
+                "name": "counterparty",
+                "width": 150,
+                "sortable": true
+            }, {
+                "index": "company",
+                "label": "Company",
+                "name": "company",
+                "width": 150,
+                "sortable": true
+            }],
+            "rowActions": [],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "claims_claimnotes": {
+            "table_name": "Claim Notes",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": true,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "index": "claim_notes",
+                "label": "Claim Notes",
+                "name": "claim_notes",
+                "width": 150,
+                "formatter": "text_input",
+                "sortable": false
+            }, {
+                "index": "added_by",
+                "label": "Added by",
+                "name": "added_by",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "date_time",
+                "label": "Date & Time",
+                "name": "date_time",
+                "width": 150,
+                "sortable": false
+            }],
+            "rowActions": [{
+                "label": "Add",
+                "class": "insert",
+                "url": ""
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3],
+                "numberOfAdditionalColumns": 0,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "claimsubtypecompliance": {
+            "table_name": "Claim Sub Type Compliance",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": true,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "index": "parameter",
+                "label": "Parameter",
+                "name": "parameter",
+                "width": 150,
+                "formatter": "dropdown",
+                "sortable": false
+            }, {
+                "index": "uom",
+                "label": "UOM",
+                "name": "uom",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "min_value",
+                "label": "Min Value",
+                "name": "min_value",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "max_value",
+                "label": "Max Value",
+                "name": "max_value",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "test_value",
+                "label": "Test Value",
+                "name": "test_value",
+                "width": 150,
+                "formatter": "passed_failed",
+                "sortable": false
+            }],
+            "rowActions": [{
+                "label": "Remove",
+                "class": "remove",
+                "url": ""
+            }, {
+                "label": "Add",
+                "class": "insert",
+                "url": ""
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7],
+                "numberOfAdditionalColumns": 1,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "claimsubtypequantity": {
+            "table_name": "Claim Sub Type Quantity",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": true,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "index": "parameter",
+                "label": "Parameter",
+                "name": "parameter",
+                "width": 150,
+                "formatter": "dropdown",
+                "sortable": false
+            }, {
+                "index": "seller_quantity",
+                "label": "Seller Quantity",
+                "name": "seller_quantity",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "buyer_quantity",
+                "label": "Buyer Quantity",
+                "name": "buyer_quantity",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "recon_status",
+                "label": "Recon Status",
+                "name": "recon_status",
+                "width": 150,
+                "sortable": false
+            }],
+            "rowActions": [{
+                "label": "Remove",
+                "class": "remove",
+                "url": ""
+            }, {
+                "label": "Add",
+                "class": "insert",
+                "url": ""
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6],
+                "numberOfAdditionalColumns": 1,
+                "columnsOrderLoadOnce": false
+            }
+        },
+        "claimsubtypedensity": {
+            "table_name": "Claim Sub Type Density",
+            "datatype": "local",
+            "language": "en",
+            "rowNum": 10,
+            "rowList": [10, 20, 30],
+            "multiselect": false,
+            "viewrecords": true,
+            "sortable": {
+                "options": {
+                    "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+                }
+            },
+            "view_type": "flat",
+            "treeGrid": true,
+            "treeGridModel": "adjacency",
+            "ExpandColumn": "actions-dimensional",
+            "colModel": [{
+                "index": "parameter",
+                "label": "Parameter",
+                "name": "parameter",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "bdn_density",
+                "label": "BDN density",
+                "name": "bdn_density",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "lab_denisty",
+                "label": "Lab denisty",
+                "name": "lab_denisty",
+                "width": 150,
+                "sortable": false
+            }, {
+                "index": "density_difference",
+                "label": "Density Difference",
+                "name": "density_difference",
+                "width": 150,
+                "sortable": false
+            }],
+            "rowActions": [{
+                "label": "Remove",
+                "class": "remove",
+                "url": ""
+            }, {
+                "label": "Add",
+                "class": "insert",
+                "url": "get.php?action=copy"
+            }],
+            "tenantData": {
+                "view": "flat",
+                "views": ["flat", "dimensional"],
+                "hiddenColumns": [],
+                "columnsOrder": [0, 1, 2, 3, 4, 5, 6],
+                "numberOfAdditionalColumns": 1,
+                "columnsOrderLoadOnce": false
+            }
+        }
+    },
+    "id": 101
+}

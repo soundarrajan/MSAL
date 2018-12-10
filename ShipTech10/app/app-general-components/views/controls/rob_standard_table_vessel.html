@@ -1,0 +1,56 @@
+
+<div>
+        <span class="hidden" ng-if="!vm.entity_id" ng-init="initRobTable();"></span>
+        <div class="form-group" ng-if="formValues.robs.keys">
+            <!-- <input type="checkbox" ng-model="formValues.usingVesselTypeRob" ng-change="triggerRobStandard(formValues.usingVesselTypeRob);" /> -->
+            <!-- <label>Use ROB from Vessel Type</label>                    -->
+         	
+                    <label class="mt-checkbox " for="triggerRobStandard">
+                        <input type="checkbox" id="triggerRobStandard" ng-model="formValues.usingVesselTypeRob" ng-change="triggerRobStandard(formValues.usingVesselTypeRob);" /> 
+                        <span></span>
+                        Use ROB from Vessel Type
+                    </label>
+         </div>
+        <table>
+            <tr>
+               
+            </tr>
+            <tr>
+                <th></th>
+                <th class="rob-standard-head">Min QTY</th>
+                <th class="rob-standard-head">Max QTY</th>
+                <th class="rob-standard-head">UOM</th>
+            </tr>
+            <tr ng-repeat="(key,element) in formValues.robs">
+                <td style="padding-right: 50px;">{{element.productType.name}}</td>
+                <td>
+                    <div class="form-group row w100">
+                        <div class="form_input" class="w100">
+                            <input ng-model="element.minQty" ng-disabled="formValues.usingVesselTypeRob" type="text" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" class="form-control " name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" >
+                            <!-- format="number:{{tenantSetting.defaultValues.quantityPrecision}}" -->
+                        </div>
+                    </div>                
+                </td>
+                <td>
+                    <div class="form-group row w100"> 
+                        <div class="form_input">
+                            <input ng-model="element.maxQty" ng-disabled="formValues.usingVesselTypeRob" type="text" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" class="form-control " name="hsfo_max" id="hsfo_max"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" >
+                            <!-- format="number:{{tenantSetting.defaultValues.quantityPrecision}}" -->
+                        </div>
+                    </div>         
+                </td>
+                <td>
+                    <div class="form-group row">
+                        <select ng-model="element.uom.id" ng-disabled="formValues.usingVesselTypeRob" class="w100 form-control" ng-options="element.id as element.name for element in CM.listsCache.Uom">
+                            <option value={{element.id}}>
+                                {{element.name}}
+                            </option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+           
+        </table>
+
+    
+    </div>

@@ -1,0 +1,29 @@
+	<div id="modal_close_bar">
+	    <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+	</div>
+    <div class="portlet">
+        <div class="portlet-title">
+            <span class="caption-subject">
+             Cancel Request
+            </span>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="col-sm-3">
+    		<b>
+		    	<!-- {{ PAGES.NEW_REQUEST.REASON_FOR_CANCELING_REQUEST | translate }} -->
+		    	Reason for canceling request
+    		</b>
+    	</div>
+    	<div class="col-sm-6">
+	    	<select class="form-control" ng-model="$ctrl.requestCancelReasonOption" ng-options="reason as reason.name for reason in $ctrl.listsCache.RequestCancelReasonOptions track by reason.id ">
+	    	</select>
+    	</div> 
+    	<br>
+    	<br>
+    	<div class="col-sm-12">
+	    	<a class="btn btn-default btn-outline pull-right" ng-click="prettyCloseModal(); $ctrl.buttonsDisabled = false">No</a>
+	    	<span class="pull-right">&nbsp;&nbsp;</span>
+	    	<a class="btn orange btn-outline pull-right" ng-click="$ctrl.confirmCancelRequest($ctrl.request.id, $ctrl.requestCancelReasonOption)">Yes</a>
+    	</div>	
+    </div>

@@ -1,0 +1,174 @@
+<span ng-init="alertsGetActivationDetailsOptions(); formValues.deleteNotification == '' || !formValues.deleteNotification ? dummyDeleteNotification=1 : dummyDeleteNotification=2"></span>
+<div class="row">
+	<div class="col-sm-12">
+		<p class="form-label-out">Set the alert reccurence, alert archiving details and rule activation details and save</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<b>Reccurence</b>
+	</div>
+	<div class="col-sm-12">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="form_input">
+					<label class="mt-checkbox form-label-out top-no-padding">
+						<input type="checkbox" name="isRecurrent" id="isRecurrent" ng-model="formValues.isRecurrent" />
+						Remind Every
+						<span></span>
+					</label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form_input">
+					<input type="text" class="form-control" ng-model="formValues.recurrenceValue" style="width:50px;float: left;">
+					<span ng-init="dummyRecurrenceId = {'id':formValues.recurrenceId}"></span>
+					<select name="" id="" class="form-control" style="width: calc(100% - 60px);float: right;" ng-model="dummyRecurrenceId" ng-change="formValues.recurrenceId = dummyRecurrenceId.id" ng-options="item as item.name for item in options['AlertsRecurrences'] track by item.id">
+					</select>
+						<!-- <option ng-repeat="(key, value) in options['AlertsRecurrences']" value="{{value.id}}" ng-checked="dummyRecurrenceId == value.id">{{value.name}}</option> -->
+				</div>
+			</div>
+			<div class="col-md-5 col-md-push-1">
+				<div class="form-group row dropdown-control">
+				    <label class="control-label" style="float: left;">
+				        {{ 'Until status' | translate }}
+				    </label>
+				    <div class="form_input">
+					    <span>
+							<span ng-init="dummyStatusId = {'id':formValues.statusId}"></span>
+							<select name="" id="" class="form-control input-group" ng-model="dummyStatusId" ng-change="formValues.statusId = dummyStatusId.id"  ng-options="item as item.name for item in options['AlertsUntils'] track by item.id">
+							</select>				    	
+					    </span>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-sm-12">
+		<b>Delete Alert</b>
+	</div>
+	<br>
+	<br>
+	<div class="col-sm-2">
+		<div class="form_input">
+			<label class="mt-radio form-label-out top-no-padding">
+				<input type="radio" name="deleteAlert" ng-model="dummyDeleteNotification" id="deleteAlertNever" ng-value="1" ng-change="dummyDeleteNotification == 1 ? formValues.deleteNotification = null : ''"/>
+				Never
+				<span></span>
+			</label>
+		</div>
+	</div>
+	<div class="col-sm-9">
+		<div class="form_input">
+			<label class="mt-radio form-label-out top-no-padding" style="width: 100px;float: left;">
+				<input type="radio" ng-model="dummyDeleteNotification" name="deleteAlert" id="deleteAlertEvery" ng-value="2"  />
+				Every
+				<span></span>
+			</label>
+		</div>
+		<div class="form-input" style="width: 400px;float: left;">
+			<input type="number" class="form-control" ng-model="formValues.deleteNotification" ng-change="formValues.deleteNotification ? dummyDeleteNotification = 2 : dummyDeleteNotification = 1">
+		</div>
+	    <label class="control-label" style="margin-left: 15px" >
+	    	<span class="form-label-out">{{ 'DAYS' | translate }}</span>
+	    </label>
+	</div>
+</div>
+
+<div class="row">
+	<br>
+	<div class="col-sm-12">
+		<b>Set Rule As</b>
+	</div>
+	<br>
+	<br>
+	<div class="col-sm-12">
+		<div class="row">
+		<span ng-init="formValues.isActive = false" ng-if="!formValues.isActive"></span>
+			<div class="col-md-5">
+				<div class="form_input">
+					<label class="mt-radio form-label-out top-no-padding">
+						<input type="radio" name="isActive" id="isActive" ng-value="true" ng-model="formValues.isActive"/>
+						Active
+						<span></span>
+					</label>
+				</div>
+			</div>
+			<div class="col-md-5 col-md-push-2">
+				<div class="form_input">
+					<label class="mt-radio form-label-out top-no-padding">
+						<input type="radio" name="isActive" id="isActive" ng-value="false" ng-model="formValues.isActive"/>
+						Inactive
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<div class="row">
+					<div class="col-sm-2">
+						<label class="mt-checkbox form-label-out">
+							<span ng-init="formValues.activateOn ? formValues.temp.dummyActivateOn = true : formValues.temp.dummyActivateOn = false"></span>
+							<input type="checkbox" ng-model="formValues.temp.dummyActivateOn" name="activateOn" id="activateOn" ng-change="formValues.temp.dummyActivateOn == false ? formValues.activateOn = null : ''"/>
+							Activate on
+							<span></span>
+						</label>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group row">
+							<div class="col-sm-12">
+								<div class="row">
+								    <div class="form_input form_input_activateOn no-label" ng-init="CM.datepickers('activateOn', false, 'date')">
+								        <div class="input-group date-picker date form_meridian_datetime">
+								            <input name="activateOn" class="form-control" type="text" id="activateOn" ng-model="formValues.activateOn">
+								            <span class="formatted-date"  ng-bind="CM.formatDate(formValues.activateOn, 'dd/MM/yyyy')" >
+								            </span>
+								            <span class="input-group-btn" >
+								                <button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyActivateOn">
+								                    <i class="fa fa-calendar"></i>
+								                </button>
+								            </span>
+								        </div>
+								    </div>								
+								</div>
+							</div>
+						</div>
+					</div>
+			
+<!-- 			<div class="col-md-5">
+				<div class="row">
+				</div>
+			</div> -->
+
+			<div class="col-md-5 col-md-push-1">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="float: left; padding-top:0;">
+						<label class="mt-checkbox ">
+							<span ng-init="formValues.deactivateOn ? formValues.temp.dummyDeactivateOn = true : formValues.temp.dummyDeactivateOn = false"></span>
+							<input type="checkbox" ng-model="formValues.temp.dummyDeactivateOn" name="deactivateOn" id="deactivateOn" ng-change="formValues.temp.dummyDeactivateOn == false ? formValues.deactivateOn = null : ''"/>
+							Deactivate on
+							<span></span>
+						</label>
+					</label>
+					<div class="form_input">
+						<div class="input-group date-picker date form_meridian_datetime">
+							<input name="deactivateOn" class="form-control" type="text" id="deactivateOn" ng-model="formValues.deactivateOn">
+							<span class="formatted-date"  ng-bind="CM.formatDate(formValues.deactivateOn, 'dd/MM/yyyy')" >
+							</span>
+							<span class="input-group-btn" >
+								<button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyDeactivateOn">
+									<i class="fa fa-calendar"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

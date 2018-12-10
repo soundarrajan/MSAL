@@ -1,0 +1,117 @@
+<div class="row" ng-if="$ctrl.mySelection.length> 0">
+    <div class="portlet light">
+        <div class="portlet-title ">
+            <div class="tools ">
+                <a href="javascript:; " class="collapse " data-original-title=" " title=" "></a>
+            </div>
+            <div class="caption ">
+                <span class="caption-subject pull-left ">
+                    My Selection
+                </span>
+            </div>
+            <div class="pull-right ">
+                <label class="mt-checkbox mt-checkbox-outline">
+                    <input type="checkbox" ng-checked="$ctrl.isSelectedMySelection()" ng-click="$ctrl.selectMySelection()"/>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row" ng-if="$ctrl.mySelection">
+                <div class="col-sm-9">
+                	<!-- <pre>{{$ctrl.mySelection}}</pre> -->
+                    <div class="row"  >
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-4 mb {{key % 3 == 0 &&  key != 0 ? 'clear' : '' }}" ng-repeat="(key, kValue) in $ctrl.mySelection">
+                                    <div class="small-card bg-grey-steel grey-border">
+                                        <p>
+                                            <b>
+                                                TCO:
+                                            </b>
+                                            {{ kValue.tco | number:3 }}
+                                        </p>
+                                        <p>
+                                            Seller: {{ kValue.seller.name }}
+                                        </p>
+                                        <p>
+                                            Physical Supplier: {{ kValue.physicalSupplier.name }}
+                                        </p>
+                                        <p>
+                                            Vessel: {{ kValue.vessel.name }}
+                                        </p>
+                                        <p>
+                                            <b>
+                                                Request ID:
+                                            </b>
+                                            <span ng-if="!kValue.packageId">
+	                                            {{ kValue.products[0].request.id }}
+                                            </span>
+                                            <span ng-if="kValue.packageId">
+                                            	<span ng-repeat="(ph,pv) in kValue.products | unique : 'request' ">
+                                            		<!-- {{pv}} -->
+		                                            {{ pv.request.id }}
+                                            	</span>
+                                            </span>                                            
+                                        </p>
+                                        <span>
+                                        	<span ng-repeat="(ph,pv) in kValue.products ">
+                                            		<!-- {{pv}} -->
+												{{ pv.product.name }}: {{ pv.maxQuantity | number:2 }}{{ pv.uom.name }} - {{ pv.price | number:3 }} {{ pv.currency.code ?  pv.currency.code : pv.currency.name }};
+											</span>
+                                        </span>
+                                        <div class="location-name">
+                                            <b>
+                                                {{ kValue.location.name }}
+                                            </b>
+                                            <span>
+                                            	<span ng-if="kValue.packageId" class="bg-green-soft font-white">&nbsp;P&nbsp;</span>
+                                                <a ng-click="$ctrl.viewSupplierCardBlade({sellerCounterparty:kValue.seller},null,kValue.products)" class="font-dark">
+                                                    <b>
+                                                        <i class="fa fa-clone"></i>
+                                                    </b>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-2 mb">
+                            <div class="small-card bg-grey-steel">
+                                <b class="totals grey-text">
+                                    REQ {{ kValue[0].request.id}}
+                                </b>
+                                <h5>
+                                    <b>
+                                        Vessel:
+                                    </b>
+                                    {{ $ctrl.getVesselByRequestId(kValue[0].request.id)["name"] }}
+                                </h5>
+                                <h4>
+                                    <b>
+                                        Total:
+                                    </b>
+                                    {{ $ctrl.getTotalMySelectionForRequest(kValue[0].request.id) | number : 3 }}
+                                </h4>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-sm-3 ">
+                    <div class="small-card bg-grey-steel text-center mb">
+                        <h4>
+                            <b class="totals">
+                                Grand Total
+                            </b>
+                            <p>
+                                {{ $ctrl.calculateMySelectionTotal() | number:3 }}
+                            </p>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <pre>{{$ctrl.mySelection}}</pre> -->

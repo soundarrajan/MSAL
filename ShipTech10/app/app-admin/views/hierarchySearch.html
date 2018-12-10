@@ -1,0 +1,41 @@
+
+<span ng-if="(!screenid || screenid == 0) && list" ng-init="selectAll(list, true);sel[datasrc]=true;"></span>
+<div class="">
+    <div class="hierarchy-wrap col-md-12">
+        <div class="hierarchy-header row">
+            <div class="col-md-9">
+                <div class="form-group  form-inline row ">
+                    <label class="mt-checkbox " for="inlineCheckboxSelectAll_{{ datasrc }}">
+                        <input type="checkbox" name="selectAll_{{ datasrc }}" id="inlineCheckboxSelectAll_{{ datasrc }}" dynamic-model="'sel.' + datasrc "  ng-click="selectAll(list, sel[datasrc], datasrc);"/>
+                        <span></span>
+                        Select all
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3 ">
+                <div class="input-group st-content-search-box ng-scope">
+                        <input type="text" class="form-control" ng-model="pattern" placeholder="Search..."/>
+                        <span class="input-group-addon" >
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+
+            </div>
+
+        </div>
+        <div class="no-results" ng-show="emptyData">
+            <strong>
+                No Results Found
+            </strong>
+        </div>
+        <div ng-show="!emptyData" ui-tree="options" data-drag-enabled="false">
+            <ol id="demoTree" ui-tree-nodes="" ng-model="list">
+                <li ng-repeat="item in ::list track by $index" ui-tree-node collapsed="false" ng-include="'app-admin/views/tree_render.html'" ng-hide="filter(item, pattern)"></li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+<!-- <pre>{{ selectedItems}}</pre>
+<pre>{{ list}}</pre> -->

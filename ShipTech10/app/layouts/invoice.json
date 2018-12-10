@@ -1,0 +1,2510 @@
+{
+  "layout": {
+    "children": {
+        "entity_documents": {
+            "General": {
+                "id": "General",
+                "name": "General",
+                "children": [
+                    {
+                        "Unique_ID": "documentType",
+                        "Name": "DocumentType",
+                        "Type": "simpleLookup",
+                        "masterSource": "DocumentType",
+                        "Group": "General",
+                        "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                        "Columns": [{
+                            "Value": "4",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    },
+
+                    {
+                        "Unique_ID": "dropFiles",
+                        "Name": "DropFiles",
+                        "Type": "uploadDocuments",
+                        "Group": "General",
+                        "Label": "DROP_FILES",
+                        "Columns": [{
+                            "Value": "8",
+                            "Type": "dropdown",
+                            "PossibleValue": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                        }],
+                        "Description": "",
+                        "Required": true,
+                        "Hidden": false,
+                        "Added": true,
+                        "Active": false,
+                        "LastOnRow": false
+                    }
+                ],
+                "Active": true
+            }
+        },
+        "edit": {
+            "RelatedInvoices": {
+              "id": "RelatedInvoices",
+              "name": "Related Invoices",
+              "children": [
+                {
+                  "Unique_ID": "relatedInvoices",
+                  "Name": "RelatedInvoices",
+                  "Type": "CLC",
+                  "clc_id": "invoiceRelatedInvoices",
+                  "Group": "RelatedInvoices",
+                  "Label": "RELATED_INVOICES",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "8"
+                }
+              }
+            },
+            "RelatedInvoicesSummary": {
+              "id": "RelatedInvoicesSummary",
+              "name": "Related Invoices Summary",
+              "children": [
+                {
+                  "Unique_ID": "relatedInvoicesSummary.invoiceAmountTotal",
+                  "Name": "InvoiceTotal",
+                  "Type": "label",
+                  "Group": "RelatedInvoicesSummary",
+                  "Label": "INVOICE_TOTAL",
+                  "masterSource": "cost",
+                  "screen": "cost_list",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "relatedInvoicesSummary.paidAmount",
+                  "Name": "PaidAmount",
+                  "Type": "label",
+                  "Group": "RelatedInvoicesSummary",
+                  "Label": "PAID_AMOUNT",
+                  "masterSource": "cost",
+                  "screen": "cost_list",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "relatedInvoicesSummary.netPayable",
+                  "Name": "NetPayable",
+                  "Type": "label",
+                  "Group": "RelatedInvoicesSummary",
+                  "Label": "NET_PAYABLE",
+                  "masterSource": "cost",
+                  "screen": "cost_list",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "4"
+                }
+              }
+            },
+            "invoiceDetails": {
+              "id": "invoiceDetails",
+              "name": "Invoice Details",
+              "children": [
+                {
+                  "Unique_ID": "sellerInvoiceNo",
+                  "Name": "SellerInvoiceNo",
+                  "Type": "text",
+                  "Group": "invoiceDetails",
+                  "Label": "SELLER_INVOICE_NO",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "receivedDate",
+                  "Name": "ReceivedDate",
+                  "Type": "date",
+                  "Group": "invoiceDetails",
+                  "Label": "RECEIVED_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "documentType.name",
+                  "Name": "DocumentType",
+                  "Type": "label",
+                  "masterSource": "DocumentTypeEnum",
+                  "Group": "invoiceDetails",
+                  "Label": "DOCUMENT_TYPE",
+"clc_id":"masters_documenttypelist",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "options": [
+                    {
+                      "isProvisionalInvoice": "Provisional Invoice",
+                      "isFinalInvoice": "Final Invoice",
+                      "isPartInvoice": "Part Invoice",
+                      "isCreditNote": "Credit Note",
+                      "isDebitNote": "Debit Note"
+                    }
+                  ],
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "dueDate",
+                  "Name": "DueDate",
+                  "Type": "date",
+                  "Group": "invoiceDetails",
+                  "Label": "DUE_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "approvedDate",
+                  "Name": "Approveddate",
+                  "Type": "date",
+                  "disabled": true,
+                  "Group": "invoiceDetails",
+                  "Label": "APPROVED_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "workingDueDate",
+                  "Name": "Workingduedate",
+                  "Type": "date",
+                  "disabled": true,
+                  "Group": "invoiceDetails",
+                  "Label": "WORKING_DUE_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "paymentDate",
+                  "Name": "PaymentDate",
+                  "Type": "date",
+                  "Group": "invoiceDetails",
+                  "Label": "PAYMENT_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "sellerInvoiceDate",
+                  "Name": "SellerInvoiceDate",
+                  "Type": "date",
+                  "Group": "invoiceDetails",
+                  "Label": "SELLER_INVOICE_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "sellerDueDate",
+                  "Name": "SellerDueDate",
+                  "Type": "date",
+                  "Group": "invoiceDetails",
+                  "Label": "SELLER_DUE_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "backOfficeComments",
+                  "Name": "BackOfficeComments",
+                  "Type": "text",
+                  "Group": "invoiceDetails",
+                  "Label": "BACK_OFFICE_COMMENTS",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "4"
+                }
+              }
+            },
+            "OrderDetails": {
+              "id": "OrderDetails",
+              "name": "Order Details",
+              "children": [
+                {
+                  "Unique_ID": "orderDetails.order.id",
+                  "Name": "OrderID",
+                  "Type": "link",
+                  "ValueAsLink": true,
+                  "Url": "/#/edit-order/",
+                  "Group": "OrderDetails",
+                  "Label": "ORDER_ID",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.orderDate",
+                  "Name": "OrderDate",
+                  "Type": "date",
+                  "disabled": true,
+                  "Group": "OrderDetails",
+                  "Label": "ORDER_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.companyName",
+                  "Name": "Company",
+                  "Type": "label",
+                  "Group": "OrderDetails",
+                  "Label": "COMPANY",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.paymentCompany",
+                  "Name": "PaymentCompany",
+                  "Type": "simpleLookup",
+                  "masterSource": "Company",
+                  "clc_id": "masters_companylist",
+                  "Group": "OrderDetails",
+                  "Label": "PAYMENT_COMPANY",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.vesselName",
+                  "Name": "Vessel",
+                  "Type": "label",
+                  "Group": "OrderDetails",
+                  "Label": "VESSEL",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.buyerName",
+                  "Name": "Buyer",
+                  "Type": "label",
+                  "Group": "OrderDetails",
+                  "Label": "BUYER",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.portName",
+                  "Name": "Port",
+                  "Type": "label",
+                  "Group": "OrderDetails",
+                  "Label": "PORT",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.eta",
+                  "Name": "ETA",
+                  "Type": "date",
+                  "disabled": true,
+                  "Group": "OrderDetails",
+                  "Label": "ETA",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.deliveryDate",
+                  "Name": "DeliveryDate",
+                  "Type": "date",
+                  "disabled": true,
+                  "Group": "OrderDetails",
+                  "Label": "DELIVERY_DATE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "orderDetails.frontOfficeComments",
+                  "Name": "FrontOfficeComments",
+                  "Type": "text",
+                  "Disabled": true,
+                  "Group": "OrderDetails",
+                  "Label": "FRONT_OFFICE_COMMENTS",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "4"
+                }
+              }
+            },
+            "CounterpartyDetails": {
+              "id": "CounterpartyDetails",
+              "name": "Counterparty Details",
+              "children": [
+                {
+                  "Unique_ID": "counterpartyDetails.sellerName",
+                  "Name": "Seller",
+                  "Type": "label",
+                  "Group": "CounterpartyDetails",
+                  "Label": "SELLER",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "masterSource": "order",
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "counterpartyDetails.payableTo",
+                  "Name": "PayableTo",
+                  "Type": "simpleLookup",
+                  "clc_id": "payableTo",
+                  "masterSource": "payableTo",
+                  "Group": "CounterpartyDetails",
+                  "Label": "PAYABLE_TO",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "counterpartyDetails.paymentTerm",
+                  "Name": "PaymentTerm",
+                  "Type": "simpleLookup",
+                  "clc_id": "masters_paymenttermlist",
+                  "masterSource": "PaymentTerm",
+                  "Group": "CounterpartyDetails",
+                  "Label": "PAYMENT_TERM",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": true,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "counterpartyDetails.brokerName",
+                  "Name": "Broker",
+                  "Type": "label",
+                  "Group": "CounterpartyDetails",
+                  "Label": "BROKER",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "masterSource": "order",
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "4"
+                }
+              }
+            },
+            "PaymentDetails": {
+              "id": "PaymentDetails",
+              "name": "PaymentDetails",
+              "children": [
+                {
+                  "Unique_ID": "paymentDetails.paymentStatus",
+                  "Name": "PaymentStatus",
+                  "Type": "dropdown",
+                  "masterSource": "PaymentStatus",
+                  "Group": "PaymentDetails",
+                  "Label": "PAYMENT_STATUS",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "options": [
+                    {
+                      "isFullyPaid": "Fully paid",
+                      "isPartiallypaid": "Partially paid",
+                      "isInprogress": "In progress",
+                      "isHoldpayment": "Hold payment"
+                    }
+                  ],
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "paymentDetails.paidAmount",
+                  "Name": "PaidAmountwithCurrency",
+                  "Type": "text",
+                  "Group": "PaymentDetails",
+                  "Label": "PAID_AMOUNT",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "4"
+                }
+              }
+            },
+            "InvoiceSummary": {
+              "id": "InvoiceSummary",
+              "name": "Invoice Summary",
+              "children": [
+                {
+                  "Unique_ID": "invoiceSummary.invoiceAmountGrandTotal",
+                  "Name": "InvoiceAmmountGrandTotal",
+                  "Type": "textUOM",
+                  "ReadOnly": true,
+                  "UOMUnique_ID": "costDetails.invoiceRateCurrency",
+                  "UOMType": "Currency",
+                  "Group": "InvoiceSummary",
+                  "Label": "INVOICE_AMMOUNT_GRAND_TOTAL",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "invoiceSummary.estimatedAmountGrandTotal",
+                  "Name": "EstimatedAmmountGrandTotal",
+                  "Type": "textUOM",
+                  "ReadOnly": true,
+                  "UOMUnique_ID": "costDetails.invoiceRateCurrency",
+                  "UOMType": "Currency",
+                  "Group": "InvoiceSummary",
+                  "Label": "ESTIMATED_AMMOUNT_GRAND_TOTAL",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "invoiceSummary.provisionalInvoiceAmount",
+                  "Name": "ProvisionalInvoiceAmmountTotal",
+                  "Type": "textUOM",
+                  "ReadOnly": true,
+                  "UOMUnique_ID": "costDetails.invoiceRateCurrency",
+                  "UOMType": "Currency",
+                  "Group": "InvoiceSummary",
+                  "Label": "PROVISIONAL_INVOICE_AMMOUNT_TOTAL",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                },
+                {
+                  "Unique_ID": "invoiceSummary.totalDifference",
+                  "Name": "Total Difference",
+                  "Type": "textUOM",
+                  "ReadOnly": true,
+                  "UOMUnique_ID": "costDetails.invoiceRateCurrency",
+                  "UOMType": "Currency",
+                  "Group": "InvoiceSummary",
+                  "Label": "TOTAL_DIFFERENCE",
+                  "Columns": [
+                    {
+                      "Value": "6",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "12"
+                }
+              }
+            },
+            "ProductDetails": {
+              "id": "ProductDetails",
+              "name": "Product Details",
+              "children": [
+                {
+                  "Unique_ID": "productDetails",
+                  "Name": "ProductDetails",
+                  "Type": "CLC",
+                  "clc_id": "invoiceProductDetails",
+                  "Group": "ProductDetails",
+                  "Label": "PRODUCT_DETAILS",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "12"
+                }
+              }
+            },
+            "CostDetails": {
+              "id": "CostDetails",
+              "name": "Cost Details",
+              "children": [
+                {
+                  "Unique_ID": "costDetails",
+                  "Name": "CostDetails",
+                  "Type": "CLC",
+                  "clc_id": "invoiceCostDetails",
+                  "Group": "CostDetails",
+                  "Label": "COST_DETAILS",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "12"
+                }
+              }
+            },
+            "ClaimDetails": {
+              "id": "ClaimDetails",
+              "name": "Claim Details",
+              "children": [
+                {
+                  "Unique_ID": "ClaimDetails",
+                  "Name": "ClaimDetails",
+                  "Type": "CLC",
+                  "clc_id": "invoiceClaimDetails",
+                  "Group": "ClaimDetails",
+                  "Label": "CLAIM_DETAILS",
+                  "Columns": [
+                    {
+                      "Value": "12",
+                      "Type": "dropdown",
+                      "PossibleValue": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                      ]
+                    }
+                  ],
+                  "Description": "",
+                  "Required": false,
+                  "Hidden": false,
+                  "Added": false,
+                  "LastOnRow": false,
+                  "Active": false
+                }
+              ],
+              "Active": true,
+              "Columns": {
+                "0": {
+                  "Value": "12"
+                }
+              }
+            }
+        }
+    }
+  },
+  "elements": [
+    {
+      "requiredFields": [
+        {
+          "Unique_ID": "SellerInvoiceNo",
+          "Name": "SellerInvoiceNo",
+          "Type": "text",
+          "Group": "invoice Details",
+          "Label": "Seller Invoice No",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "ReceivedDate",
+          "Name": "ReceivedDate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Received Date",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "DocumentType",
+          "Name": "DocumentType",
+          "Type": "dropdown",
+          "Group": "invoice Details",
+          "Label": "Document Type",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "options": [
+            {
+              "isProvisionalInvoice": "Provisional Invoice",
+              "isFinalInvoice": "Final Invoice",
+              "isPartInvoice": "Part Invoice",
+              "isCreditNote": "Credit Note",
+              "isDebitNote": "Debit Note"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "DueDate",
+          "Name": "DueDate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Due Date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Approveddate",
+          "Name": "Approveddate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Approved date",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Workingduedate",
+          "Name": "Workingduedate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Working   due date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "PaymentDate",
+          "Name": "PaymentDate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Payment Date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "SellerInvoiceDate",
+          "Name": "SellerInvoiceDate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Seller Invoice Date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "SellerDueDate",
+          "Name": "SellerDueDate",
+          "Type": "date",
+          "Group": "invoice Details",
+          "Label": "Seller Due Date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "BackOfficeComments",
+          "Name": "BackOfficeComments",
+          "Type": "text",
+          "Group": "invoice Details",
+          "Label": "Back Office Comments",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "OrderID",
+          "Name": "OrderID",
+          "Type": "hyperlink",
+          "Group": "Order Details",
+          "Label": "Order ID",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "OrderDate",
+          "Name": "OrderDate",
+          "Type": "unknown",
+          "Group": "Order Details",
+          "Label": "Order Date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Company",
+          "Name": "Company",
+          "Type": "text",
+          "Group": "Order Details",
+          "Label": "Company",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "PaymentCompany",
+          "Name": "PaymentCompany",
+          "Type": "simpleLookup",
+          "Group": "Order Details",
+          "Label": "Payment Co.",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "companyMaster"
+        },
+        {
+          "Unique_ID": "Vessel",
+          "Name": "Vessel",
+          "Type": "text",
+          "Group": "Order Details",
+          "Label": "Vessel",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Buyer",
+          "Name": "Buyer",
+          "Type": "text",
+          "Group": "Order Details",
+          "Label": "Buyer",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Port",
+          "Name": "Port",
+          "Type": "text",
+          "Group": "Order Details",
+          "Label": "Port",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "ETA",
+          "Name": "ETA",
+          "Type": "text",
+          "Group": "Order Details",
+          "Label": "ETA",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "DeliveryDate",
+          "Name": "DeliveryDate",
+          "Type": "text",
+          "Group": "Order Details",
+          "Label": "Delivery Date",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "FrontOfficeComments",
+          "Name": "FrontOfficeComments",
+          "Type": "textarea",
+          "Group": "Order Details",
+          "Label": "Front     Office Comments",
+          "Columns": [
+            {
+              "Value": "6",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        },
+        {
+          "Unique_ID": "Seller",
+          "Name": "Seller",
+          "Type": "text",
+          "Group": "Counterparty details",
+          "Label": "Seller",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "order"
+        },
+        {
+          "Unique_ID": "PayableTo",
+          "Name": "PayableTo",
+          "Type": "simpleLookup",
+          "Group": "Counterparty details",
+          "Label": "Payable To",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "counterparty"
+        },
+        {
+          "Unique_ID": "PaymentTerm",
+          "Name": "PaymentTerm",
+          "Type": "simpleLookup",
+          "Group": "Counterparty details",
+          "Label": "Payment Term",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": true,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "delivery"
+        },
+        {
+          "Unique_ID": "Broker",
+          "Name": "Broker",
+          "Type": "text",
+          "Group": "Counterparty details",
+          "Label": "Broker",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "masterSource": "order"
+        },
+        {
+          "Unique_ID": "PaymentStatus",
+          "Name": "PaymentStatus",
+          "Type": "dropdown",
+          "Group": "General",
+          "Label": "Payment Status",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false,
+          "options": [
+            {
+              "isFullyPaid": "Fully paid",
+              "isPartiallypaid": "Partially paid",
+              "isInprogress": "In progress",
+              "isHoldpayment": "Hold payment"
+            }
+          ]
+        },
+        {
+          "Unique_ID": "PaidAmountwithCurrency",
+          "Name": "PaidAmountwithCurrency",
+          "Type": "number",
+          "Group": "General",
+          "Label": "Paid Amount",
+          "Columns": [
+            {
+              "Value": "12",
+              "Type": "dropdown",
+              "PossibleValue": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+              ]
+            }
+          ],
+          "Description": "",
+          "Required": false,
+          "Hidden": false,
+          "Added": false,
+          "LastOnRow": false
+        }
+      ]
+    }
+  ],
+  "clc": {
+    "payableTo": {
+      "table_name": "Invoices app Payable To list",
+      "datatype": "local",
+      "language": "en",
+      "rowNum": 10,
+      "rowList": [
+        10,
+        20,
+        30
+      ],
+      "multiselect": false,
+      "viewrecords": true,
+      "sortable": {
+        "options": {
+          "items": ">th:not(:has([id*=''_cb''],[id*=''_actions'']),:hidden)"
+        }
+      },
+      "view_type": "flat",
+      "treeGrid": false,
+      "treeGridModel": "adjacency",
+      "ExpandColumn": "actions-dimensional",
+      "colModel": [
+        {
+          "label": "Name",
+          "name": "name",
+          "width": 350
+        },
+        {
+          "label": "Parent",
+          "name": "parent.name",
+          "width": 150
+        },
+        {
+          "label": "Total Count",
+          "name": "totalCount",
+          "width": 150
+        }
+      ],
+      "rowActions": [],
+      "tenantData": {
+        "view": "flat",
+        "views": [
+          "flat",
+          "dimensional"
+        ],
+        "hiddenColumns": [],
+        "columnsOrder": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "numberOfAdditionalColumns": 0,
+        "columnsOrderLoadOnce": false
+      }
+    },
+    "invoices_transactionstobeinvoiced": {
+        "table_name": "Invoices app deliveries list",
+        "datatype": "local",
+        "language": "en",
+        "rowNum": 10,
+        "rowList": [10, 20, 30],
+        "multiselect": true,
+        "viewrecords": true,
+        "sortable": {
+            "options": {
+                "items": ">th:not(:has([id*=\"_cb\"],[id*=\"_actions\"]),:hidden)"
+            }
+        },
+        "view_type": "flat",
+        "treeGrid": false,
+        "treeGridModel": "adjacency",
+        "ExpandColumn": "actions-dimensional",
+        "colModel": [
+            {
+                "label": "Order ID",
+                "name": "order.id",
+                "width": 150
+            },
+            {
+                "label": "Del. No",
+                "name": "delivery.name",
+                "width": 150
+            },
+            {
+                "label": "Counterparty",
+                "name": "counterparty.name",
+                "width": 150
+            },
+            {
+                "label": "Port",
+                "name": "port.name",
+                "width": 150
+            },
+            {
+                "label": "Delivery Date",
+                "name": "deliveryDate",
+                "width": 150
+            },
+            {
+                "label": "Vessel",
+                "name": "vessel.name",
+                "width": 150
+            },
+            {
+                "label": "Prod.",
+                "name": "product.name",
+                "width": 150
+            },
+            {
+                "label": "Del. Qty.",
+                "name": "deliveryQuantity",
+                "width": 150
+            },
+            {
+                "label": "Cost Name",
+                "name": "costName.name",
+                "width": 150
+            },
+            {
+                "label": "Cost Type",
+                "name": "costType.name",
+                "width": 150
+            },
+            {
+                "label": "Order Price / Cost Amnt",
+                "name": "estimatedPrice",
+                "width": 150
+            },
+            {
+                "label": "Est. Amount",
+                "name": "estimatedAmount",
+                "width": 150
+            },
+            {
+                "label": "Comp.",
+                "name": "company.name",
+                "width": 150
+            },
+            {
+                "label": "Buyer",
+                "name": "buyer.name",
+                "width": 150
+            },
+            {
+                "label": "Agrmnt Type",
+                "name": "agreementType.name",
+                "width": 150
+            },
+            {
+                "label": "Order Status",
+                "name": "orderStatus.name",
+                "formatter": "status_new_verified",
+                "width": 150
+            }
+        ],
+        "rowActions": [],
+        "tenantData": {
+            "view": "flat",
+            "views": ["flat", "dimensional"],
+            "hiddenColumns": [],
+            "columnsOrder": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            "numberOfAdditionalColumns": 0,
+            "columnsOrderLoadOnce": false
+        }
+    }
+  }
+}

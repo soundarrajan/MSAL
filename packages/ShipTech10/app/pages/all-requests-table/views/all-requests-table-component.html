@@ -1,0 +1,55 @@
+<div data-ng-include="'components/all-requests-content-menu/views/all-requests-content-menu-component.html'" ng-controller="AllRequestsContentMenuController"></div>
+<!--     <general-header actions="{
+    primary: [{
+        label: 'Group',
+        type: 'goto',
+        url: 'edit/'
+    }, {
+        label: 'Create request',
+        type: 'goto',
+        url: 'new-request',
+        absolute: true
+    }, ],
+    secondary: [{
+        label: 'Table View',
+        active: true
+    }],
+    search: true,
+    icons: [{
+        class: 'export-xls',
+        action: 'export_xls'
+    }, {
+        class: 'export-csv',
+        action: 'export_csv'
+    }, {
+        class: 'export-pdf',
+        action: 'export_pdf'
+    }, {
+        class: 'print',
+        action: 'print'
+    }, ]
+}"></general-header> -->
+<div class="row">
+    <div class="portlet light">
+        <div class="portlet-body">
+
+                <clc-table-list id="'procurement_requestslist'" app="'procurement'" screen="'requestslist'" controls="'[entries, columns, info, pager]'"></clc-table-list>
+        </div>
+    </div>
+</div>
+<!-- {{ $ctrl.selectedRequests}} - {{ ctrl.proceedRequest}} -->
+<div class="row">
+    <div class="st-main-content-menu bottom-menu">
+        <div class="pull-right">
+            <a class="btn btn-default" ng-click="$ctrl.groupRequests();" ng-class="{'disabled' : $ctrl.isGroupButtonDisabled() || $ctrl.buttonsDisabled}">
+                Group
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.gotoNewRequest()">
+                Create Request
+            </a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<last-offer-prices-dialog class="modal fade in" id="prices" aria-hidden="true" args="$ctrl.lastOfferArgs" data-width="40%"></last-offer-prices-dialog>
+<proceed-dialog-validated class="modal fade in" id="proceed_validated" aria-hidden="true" data-width="40%" request="$ctrl.proceedRequest"></proceed-dialog-validated>

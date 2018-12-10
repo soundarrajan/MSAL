@@ -1,0 +1,319 @@
+﻿<span ng-if="structure || elements" ng-init="CM.load_dlc_config(structure, elements);CM.replaceAction()"></span>
+<span ng-if="!structure && !elements" ng-init="CM.get_master_structure();CM.replaceAction();CM.delayaddHeadeActions()"></span>
+<span ng-init='customFields = [{"Unique_ID":"customNonMandatoryAttribute1","Name":"CustomFieldText1","Type":"text","Group":"Custom Fields","Label":"Custom Field Text 1","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true},{"Unique_ID":"customNonMandatoryAttribute2","Name":"CustomFieldText2","Type":"text","Group":"Custom Fields","Label":"Custom Field Text 2","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true},{"Unique_ID":"customNonMandatoryAttribute3","Name":"CustomFieldText3","Type":"text","Group":"Custom Fields","Label":"Custom Field Text 3","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true},{"Unique_ID":"customNonMandatoryAttribute4","Name":"CustomFieldDate1","Type":"date","Group":"Custom Fields","Label":"Custom Field Date 1","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true},{"Unique_ID":"customNonMandatoryAttribute5","Name":"CustomFieldDate2","Type":"date","Group":"Custom Fields","Label":"Custom Field Date 2","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true},{"Unique_ID":"customNonMandatoryAttribute6","Name":"CustomFieldDate3","Type":"date","Group":"Custom Fields","Label":"Custom Field Date 3","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true},{"Unique_ID":"customNonMandatoryAttribute7","Name":"CustomFieldNumber1","Type":"text","Group":"Custom Fields","Label":"Custom Field Number 1","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true,"Filter":"number: 3"},{"Unique_ID":"customNonMandatoryAttribute8","Name":"CustomFieldNumber2","Type":"text","Group":"Custom Fields","Label":"Custom Field Number 2","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true,"Filter":"number:3"},{"Unique_ID":"customNonMandatoryAttribute9","Name":"CustomFieldNumber","Type":"text","Group":"Custom Fields","Label":"Custom Field Number 3","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true,"Filter":"number:3"},{"Unique_ID":"customNonMandatoryAttribute10","Name":"CustomFieldText","Type":"text","Group":"Custom Fields","Label":"Custom Field Text 10","Columns":[{"Value":"12","Type":"dropdown","PossibleValue":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"Description":"","Required":false,"Hidden":false,"Added":false,"LastOnRow":false,"isCustomField":true}]'></span> 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" id="sideBar">
+            <div class="tab-content" id="sidebar-tab-content">
+                <div role="tabpanel" class="tab-pane active" id="addFieldTab">
+                    <div ng-repeat="(key, value) in dragElements[0]">
+                        <p>
+                            <a role="button" data-toggle="collapse" href="#{{ key }}">
+                                <i class="fa fa-lg fa-plus-square-o"></i>
+                                <i class="fa fa-lg fa-minus-square-o"></i>
+                                <span ng-if="key=='requiredFields'">
+                                    REQUIRED FIELDS
+                                </span>
+                                <span ng-if="key=='customFields'">
+                                    CUSTOM FIELDS
+                                </span>
+                                <span ng-if="key!='requiredFields' && key!='customFields'">
+                                    {{ value[0].Label }}
+                                </span>
+                            </a>
+                        </p>
+                        <div class="collapse in" id="{{ key }}" ng-if="key != 'customFields'">
+                            <div  data-ng-model="dragElements" class="sortable-stdFields">
+                                <div draggable="true" class="dragElement-wrapper" data-ng-repeat="ele in value">
+                                    <!-- <input type="text" ng-model="ele.Unique_ID"/> -->
+                                    <div class="drag-element" data-ng-click="addElement(ele)">
+                                        {{ ele.Label }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse in" id="{{ key }}" ng-if="key == 'customFields'">
+                            <div  data-ng-model="dragElements" class="sortable-stdFields">
+                                <div draggable="true" class="dragElement-wrapper" data-ng-repeat="ele in customFields">
+                                    <div class="drag-element" data-ng-click="addElement(ele)">
+                                        {{ele.Label}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <a role="button" data-toggle="collapse" href="#Groups">
+                            <i class="fa fa-lg fa-plus-square-o"></i>
+                            <i class="fa fa-lg fa-minus-square-o"></i>
+                            GROUPS
+                        </a>
+                    </p>
+                    <div class="collapse in" id="Groups">
+                        <div  data-ng-model="dragElements" class="sortable-Groups">
+                            <div draggable="true" class="dragElement-wrapper">
+                                <div class="drag-element" data-ng-click="addElement(1)">
+                                    Group
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="fieldSettingTab">
+                    <div ng-if="!current_field.Cloned">
+                        <div class="form-group" ng-if="current_field.Unique_ID" ng-show="0">
+                            <label for="unique_id">
+                                Unique ID
+                            </label>
+                            <input  type="text"  class="form-control" id="unique_id"  placeholder="{{ current_field.Unique_ID }}"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field.Type" ng-show="0">
+                            <label for="type">
+                                Type
+                            </label>
+                            <input  type="text"  class="form-control" id="type"  placeholder="{{ current_field.Type }}" disabled/>
+                        </div>
+                        <div class="form-group" ng-show="current_field.isCustomField">
+                            <label for="label">
+                                Label
+                            </label>
+                            <input  type="text" data-ng-model="current_field.Label"  class="form-control" id="label" placeholder="Label" ng-disabled="!current_field.isCustomField"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field.Description">
+                            <label for="label">
+                                Description
+                            </label>
+                            <input  type="text" data-ng-model="current_field.Description"  class="form-control" id="label" placeholder="Description"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field">
+                            <label for="label">
+                                UOMUnique_ID
+                            </label>
+                            <input  type="text" data-ng-model="current_field.UOMUnique_ID"  class="form-control" id="label" placeholder="UOMUnique_ID"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field">
+                            <label for="label">
+                                UOMType
+                            </label>
+                            <input  type="text" data-ng-model="current_field.UOMType"  class="form-control" id="label" placeholder="UOMType"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field">
+                            <label for="label">
+                                Formula
+                            </label>
+                            <input  type="text" data-ng-model="current_field.Formula"  class="form-control" id="label" placeholder="Formula"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field">
+                            <label for="label">
+                                Condition
+                            </label>
+                            <input  type="text" data-ng-model="current_field.Conditional"  class="form-control" id="label" placeholder="Conditional display"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field">
+                            <label for="label">
+                                Condition attribute
+                            </label>
+                            <input  type="text" data-ng-model="current_field.ConditionalType"  class="form-control" id="label" placeholder="Conditional display"/>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Group">
+                            <label>
+                                Clone in group
+                            </label>
+                            <select class="form-control bs-select" ng-change="changeGroup()" ng-model="current_field.Group">
+                                <option value="" disabled></option>
+                                <option data-ng-repeat="(data, name) in formFields" value="{{ data }}">
+                                    {{ name.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Columns">
+                            <label>
+                                Columns
+                            </label>
+                            <select class="form-control bs-select" data-ng-model="current_field.Columns[0].Value">
+                                <option data-ng-repeat="op in current_field.Columns[0].PossibleValue" value="{{ op }}">
+                                    {{ op }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Unique_ID">
+                            <div class="mt-checkbox-inline">
+                                <label class="mt-checkbox">
+                                    <input  type="checkbox"  ng-model="current_field.Required"/>
+                                    Required
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Unique_ID">
+                            <div class="mt-checkbox-inline">
+                                <label class="mt-checkbox">
+                                    <input  type="checkbox"  ng-model="current_field.Disabled"/>
+                                    Disabled
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Unique_ID">
+                            <div class="mt-checkbox-inline">
+                                <label class="mt-checkbox">
+                                    <input  type="checkbox"  ng-model="current_field.Hidden"/>
+                                    Hidden
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="current_field.Richtext">
+                            <div class="mt-checkbox-inline">
+                                <label class="mt-checkbox">
+                                    <input  type="checkbox"  ng-model="current_field.Richtext"/>
+                                    Richtext
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group "  ng-if="current_field.Unique_ID ">
+                            <div class="mt-checkbox-inline ">
+                                <label class="mt-checkbox ">
+                                    <input  type="checkbox"  ng-model="current_field.LastOnRow "/>
+                                    Single on row
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="current_field.options">
+                            <label class="control-label">
+                                Choices
+                            </label>
+                            <div data-ng-repeat="(id, val) in current_field.options[0]" class="radio" class="form-control">
+                                <input type="text"  value="{{ val }}" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="current_field.Cloned">
+                        <div class="form-group" ng-if="current_field.Unique_ID">
+                            <label for="unique_id">
+                                Unique ID
+                            </label>
+                            <input  type="text"  class="form-control" id="unique_id"  placeholder="{{ current_field.Unique_ID }}" disabled/>
+                        </div>
+                        <div class="form-group" ng-if="current_field.Label">
+                            <label for="label">
+                                Label
+                            </label>
+                            <input  type="text" data-ng-model="current_field.Label"  class="form-control" id="label" placeholder="Label" ng-disabled="true"/>
+                        </div>
+                        <div class="form-group" ng-if="current_field.Description">
+                            <label for="label">
+                                Description
+                            </label>
+                            <input  type="text" data-ng-model="current_field.Description"  class="form-control" id="label" placeholder="Description"/>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Columns">
+                            <label>
+                                Columns
+                            </label>
+                            <select class="form-control" data-ng-model="current_field.Columns[0].Value">
+                                <option data-ng-repeat="op in current_field.Columns[0].PossibleValue" value="{{ op }}">
+                                    {{ op }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group"  ng-if="current_field.Unique_ID ">
+                            <div class="mt-checkbox-inline ">
+                                <label class="mt-checkbox ">
+                                    <input  type="checkbox"  ng-model="current_field.LastOnRow "/>
+                                    Last on row
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="groupSettingTab">
+                    <div class="form-group" ng-if="current_group">
+                        <label for="grp_id">
+                            ID
+                        </label>
+                        <input  type="text"  class="form-control" id="grp_id"  placeholder="{{ current_group.id }}" disabled/>
+                    </div>
+                    <div class="form-group" ng-if="current_group">
+                        <label for="grp_label">
+                            Name
+                        </label>
+                        <input  type="text" data-ng-model="current_group.name"  class="form-control" id="grp_label" placeholder="Name"/>
+                    </div>
+                    <div class="form-group"  ng-if="current_group">
+                        <label>
+                            Columns
+                        </label>
+                        <select class="form-control" data-ng-model="current_group.Columns[0].Value">
+                            <option data-ng-repeat="op in dragElements[0].requiredFields[0].Columns[0].PossibleValue" value="{{ op }}">
+                                {{ op }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 text-center" id="main-content">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active text-left" id="formBuilderContent">
+                    <div class="container-fluid">
+                        <ul class="row sortable-formbuilder formbuilder-group"  ng-model="formFields" >
+                            <li class="portlet light  sortable-field col-md-{{ parents.Columns[0].Value }}" id="{{ parents.id.replace(' ','_') }}"  data-ng-repeat="parents in formFields"  data-index="{{ $index }}" data-ng-click="activeGroup(parents)">
+                                <div class="portlet-title"  >
+                                    <div class="caption">
+                                        <input type="text" class="input-as-label" id="{{ parents.Name.replace(' ','_') }}" value="  {{ parents.name }}" placeholder="{{ parents.name }}" data-ng-model="parents.name "/>
+                                    <a  data-ng-click="deleteGroup(formFields, parents.id)" ><i class ="fa fa-lg fa-minus-square-o remove-ico"></i></a>
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse" data-original-title="" title=""></a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body" id="dropZone">
+                                    <ul class="row sortable-formbuilder"  ui-sortable="formbuilderSortableOpts" d="sortable-formbuilder-ul" ng-model="parents.children">
+                                        <li  data-ng-repeat="field in parents.children"  data-ng-switch on="field.Type" class="sortable-field col-md-{{ field.Columns[0].Value }}" ng-class="field.LastOnRow ? 'clear' : ''"  data-ng-click="$event.stopPropagation();activeField(field)" data-index="{{ $index }}" data-parent = "{{ parents.id }}">
+                                            <div class="form-group "  data-ng-class="field.Active ? 'active-field' : '' ">
+                                                <span class="input-as-label" ng-if="!field.isCustomField"> {{ CM.app_id + '.' + field.Label | translate}}</span>
+                                                <span class="input-as-label" ng-if="field.isCustomField">{{ field.Label }}</span>
+                                                <input type="hidden" ng-model="field.Required"/>
+                                                <span data-ng-if="field.Required" class="orange-txt pull-right">
+                                                    *
+                                                </span>
+                                                <input type="text" class="form-control" id="{{ field.Name.replace(' ','_') + field.id }}" placeholder="{{ field.Unique_ID }}" ng-model="field.Unique_ID" ng-disabled="true" />
+                                                <i class ="fa fa-lg fa-minus-square-o remove-ico" data-ng-click="removeElement(parents.id ,$index, field.Unique_ID)" data-ng-if="field.Active"></i>
+                                            </div>
+                                        </li>
+                                        <div class="clearfix"></div>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div ng-show="host == 'localhost'">
+                    <p>
+                        Elements
+                    </p>
+                    <pre>
+                        {{ dragElements }}
+                    </pre>
+                    <p>
+                        Structure
+                    </p>
+                    <pre>
+                        {{ formFields }}
+                    </pre>
+                     <p>
+                        Sql update
+                    </p>
+                    <pre>
+                        update admin.Screenlayouts set layout = '{{ formFields }} ' where screenid = {{updateScreenID}}
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

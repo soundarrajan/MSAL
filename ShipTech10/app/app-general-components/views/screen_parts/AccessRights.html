@@ -1,0 +1,110 @@
+﻿<ul class="nav nav-tabs">
+    <li class="" ng-repeat="(key, value) in formValues.deepmerge" ng-class="$index == 0 ? 'active in ' : ''">
+        <a href="#tab_{{ key }}" data-toggle="tab">
+            {{ key }}
+        </a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade" ng-repeat="(key, value) in formValues.deepmerge" id="tab_{{ key }}" ng-class="$index == 0 ? 'active in ' : ''">
+        <div class="custom-hardcoded-table admin">
+            <table class="table-head" width="100%">
+                <tr>
+                    <td width="5%" class="text-center">
+                        Expand
+                    </td>
+                    <td width="40%">
+                        Screen/Action
+                    </td>
+                    <td width="10%" class="text-center">
+                        Full Access
+                    </td>
+                    <td width="10%" class="text-center">
+                        View Only
+                    </td>
+                    <td width="10%" class="text-center">
+                        Edit
+                    </td>
+                    <td width="10%" class="text-center">
+                        Create New
+                    </td>
+                </tr>
+            </table>
+            <table class="table-body" width="100%" ng-repeat="(key1, val1) in value" ng-if="key1 != 'module'">
+                <tr ng-class="parent_open ? 'even': ''" >
+                    <td width="5%" class="expand-action">
+                        <i ng-show="getKeysCount(val1)> 4" class="fa fa-caret-up" ng-click="parent_open = !parent_open" ng-class="parent_open ? 'fa-caret-down' : 'fa-caret-up'">
+                        </i>
+                    </td>
+                    <td width="40%">
+	                    <div class="row">
+	                    	<div class="col-sm-6">
+		                        <b>
+		                            {{ key1 }}
+		                        </b>
+	                    	</div>
+	                    	<div class="col-sm-6">
+	                    	<!-- {{val1.selectedScreenTemplate}} -->
+	                    	<span ng-init="!val1.selectedScreenTemplate ? val1.selectedScreenTemplate = val1.definedScreenTemplates[0] : '' "></span>
+		                        <select class="form-control" ng-model="val1.selectedScreenTemplate" ng-options="item as item.name for item in val1.definedScreenTemplates track by item.id" name="{{key}}_{{ key1 }}_screenTemplate" id="{{key}}_{{ key1 }}_screenTemplate" ng-required="false" style="float:right" >
+		                        </select>
+	                    	</div>
+	                    </div>
+                    </td>
+                    <td width="10%" class="text-center">
+                        <span ng-repeat="(key2, val) in val1" ng-if="val.name == 'FullAccess'">
+                            <label class="mt-checkbox">
+                                <input type="checkbox" ng-model="val.isSelected" ng-change="val1 = checkUncheckAllRoles(val1, val.isSelected)"/>
+                                <span></span>
+                                {{ value.name }}
+                            </label>
+                        </td>
+                    </span>
+                    <td width="10%" class="text-center">
+                        <span ng-repeat="(key2, val) in val1" ng-if="val.name == 'ViewOnly'">
+                            <label class="mt-checkbox" ng-if="key1 != 'SellerRating'">
+                                <input ng-if="key1 != 'SellerRating'" type="checkbox" ng-model="val.isSelected"/>
+                                <span></span>
+                                {{ value.name }}
+                            </label>
+                        </td>
+                    </span>
+                    <td width="10%" class="text-center">
+                        <span ng-repeat="(key2, val) in val1" ng-if="val.name == 'Edit'">
+                            <label class="mt-checkbox" ng-if="key1 != 'SellerRating'">
+                                <input ng-if="key1 != 'SellerRating'" type="checkbox" ng-model="val.isSelected"/>
+                                <span></span>
+                                {{ value.name }}
+                            </label>
+                        </span>
+                    </td>
+                    <td width="10%" class="text-center">
+                        <span ng-repeat="(key2, val) in val1" ng-if="val.name == 'CreateNew'">
+                            <label class="mt-checkbox" ng-if="key1 != 'SellerRating'">
+                                <input ng-if="key1 != 'SellerRating'" type="checkbox" ng-model="val.isSelected"/>
+                                <span></span>
+                                {{ value.name }}
+                            </label>
+                        </span>
+                    </td>
+                </tr>
+                <tr ng-class="parent_open ? 'even': ''" ng-show="parent_open" ng-repeat="(key2, val) in val1" ng-if="!(val.name == 'FullAccess' || val.name =='ViewOnly' || val.name =='Edit' || val.name =='CreateNew' || key2 == 'definedScreenTemplates' || key2 == 'selectedScreenTemplate'|| key2 == 'screen'|| key2 == 'idSrv')">
+                    <td width="5%"></td>
+                    <td width="40%">
+                        {{ val.name }}
+                    </td>
+                    <td width="10%" class="text-center">
+                        <label class="mt-checkbox">
+                            <input type="checkbox" ng-model="val.isSelected"/>
+                            <span></span>
+                            {{ value.name }}
+                        </label>
+                    </td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

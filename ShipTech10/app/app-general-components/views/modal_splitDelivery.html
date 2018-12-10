@@ -1,0 +1,93 @@
+<div class="container-fluid" ng-init="initSplitModalContent(); CM.disabledSplitBtn = false">
+    <div id="modal_close_bar" class="row float_right" >
+        <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true" ></button>
+    </div>
+    <div id="modal_split_delivery" class="dynamic_form_editor">
+        <div class="portlet">
+            <div class="portlet-title row">
+                <div class="col-sm-10 caption-subject" >
+                    {{ CM.app_id + '.SPLIT_DELIVERY' | translate }}
+                </div>
+                <button class="save-split-btn btn btn-default btn-outline orange" ng-click="splitDelivery('true')" ng-class="{'disabled' : CM.disabledSplitBtn}" >
+                    {{ CM.app_id + '.SAVE' | translate }}
+                </button>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <span ng-init='CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'></span>
+            <!-- delivery products -->
+            <div class="row" ng-repeat="(index,product) in formValues.splitDelivery.items">
+                <div class="col-xs-12">
+                    <!-- <span> {{ CM.app_id + '.PRODUCT' | translate }} </span> -->
+                    <span class="caption-subject"> {{ product.name }} </span>
+                </div>
+              <!--   <div classs="col-xs-12">
+                 {{product}}
+                </div> -->
+                <div class="col-xs-6 remove-padding">
+                    <div class="form-group row">
+                        <label for="" class="price_label">
+                            {{ CM.app_id + '.INITIAL_CONFIRMED_AMOUNT' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_price">
+                            <input type="text" name="product_{{ index + 1 }}_initialConfirmedAmount" class="form-control" ng-model="product.initialConfirmedAmount"
+                            ng-class="CM.invalid_form ? 'ng-touched' : ''"  disabled format="number:{{tenantSetting.defaultValues.quantityPrecision}}"
+                            ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+                            <span class="input-group-addon uom_group pseudoSelect">
+                                <select class="bs-select" name="product_{{ index + 1 }}_initialConfirmedUom" data-width="fit"  id="product_{{ index + 1 }}_initialConfirmedUom" ng-model="product.initialConfirmedUom" ng-options="item as item.name for item in options.Uom track by item.id" disabled>
+                                    <option></option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <span ng-init="product.remainingConfirmedUom = product.initialConfirmedUom"></span>
+               <div class="col-xs-6 remove-padding">
+                    <div class="form-group row">
+                        <label for="" class="price_label">
+                            {{ CM.app_id + '.REMAINING_CONFIRMED_AMOUNT' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_price" ng-init="splitDeliveryInLimit[$index] = true">
+                            <input type="text" name="product_{{ index + 1 }}_remainingConfirmedAmount" class="form-control" ng-model="product.remainingConfirmedAmount"
+                            ng-class="{'ng-touched' : CM.invalid_form,
+                                      'ng-invalid' : !splitDeliveryInLimit[$index]}"
+                            format="number:{{ tenantSetting.defaultValues.quantityPrecision }}" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" ng-change="splitDeliveryInLimit[$index] = product.remainingConfirmedAmount <= product.orderLimit; CM.disabledSplitBtn = disabledSplitDelivery(splitDeliveryInLimit)"/>
+                            <span class="input-group-addon uom_group pseudoSelect" >
+                                <select name="product_{{ index + 1 }}_remainingConfirmedUom" data-width="fit"  id="product_{{ index + 1 }}_remainingConfirmedUom" ng-model="product.remainingConfirmedUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-required="product.remainingConfirmedAmount" ng-disabled="true">
+                                    <option></option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--   <div class="row">
+                <div class="col-xs-8">
+                    <div class="form-group row">
+                        <div class="form_input form_input_update">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="VRSVerified" id="VRSVerified" ng-model="formValues.splitDelivery.update" /> {{ CM.app_id + '.UPDATE_CONFIRMED_AMOUNT' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->

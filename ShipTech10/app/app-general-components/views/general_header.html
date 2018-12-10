@@ -1,0 +1,244 @@
+﻿<div class="row general-header color-{{ color }}">
+    <span ng-init="GH.getScreenActions(); getAdminConfiguration()"></span>
+    <div class="st-main-content-menu tabbable-line">
+        <span ng-if="actions.title">
+            <h4 class="pull-left title">
+                {{ actions.title }}
+            </h4>
+        </span>
+        <div class="pull-left" ng-show="color != 'white' && formFieldsNew">
+            <div class=" form-inline">
+                <div class="form-group">
+                    <label  for="multiple"  class="select_visible_sections_label">
+                        Display:
+                    </label>
+                    <!-- ng-change="showHideSections(visible_sections)" -->
+                    <select id="multiple" ng-model="visible_sections" class="form-control selectpicker col-md-8 visibleSectionsFilter" multiple ng-options="item.id as item.name for item in formFieldsNew" multi-select data-selected-text-format="count> 3"  data-min-options="1" ng-change="showHideSections(visible_sections)">
+                        <option value="" disabled=""></option>
+                    </select>
+                    <!--    <label class="mt-checkbox" ng-repeat="(key, value) in formFields">
+                                                                <input type="checkbox"  ng-model="visible_sections[value.id]"/>
+                                                                <span></span>
+                                                                {{value.name}}
+                                                            </label> -->
+                    <label class="mt-checkbox" ng-hide="GH.hideMoreInformations">
+                        <input type="checkbox" ng-model="GH.moreInformations" ng-init="formFieldsNew ? GH.moreInformations = true : '' "/>
+                        <span></span>
+                        More Information
+                    </label>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs pull-left" ng-if="!formFieldsNew">
+            <li data-ng-repeat="(key, action) in actions.secondary"  ng-if="!action.id" ng-class="action.active ? 'active' : ''">
+                <span data-vault data-content="{action_url: '{{ action.url }}'}"></span>
+                <a class="btn btn-default" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute)" data-method-param="{{ action.param }}" data-compiled='0' data-method="{{ action.method }}" data-group="extern" dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}">
+                    {{ action.label }} 
+                </a>
+            </li>
+            <li data-ng-repeat="(key, action) in actions.secondary" ng-if="action.id">
+                <span data-vault data-content="{action_url: '{{ action.url }}'}"></span>
+                <a class="btn btn-default" id="{{ action.id }}" href="{{ action.url }}" role="tab" data-toggle="tab" dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}">
+                    {{ action.label }} 
+                </a>
+            </li>
+        </ul>
+        <div class="pull-right">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="filters-box" ng-if="actions.search">
+                        <filters-widget></fitlers-widget>
+                    </div>
+                    <!-- Available icons: edit | export-xls | export-csv | export-pdf | export-doc | print | email -->
+                    <span ng-if="actions.icons">
+                        <div class="st-content-action-icons">
+                            <a ng-repeat="(key, icon) in actions.icons" class="btn" ng-click="GH.export(icon)">
+                                <span class="icon {{ icon.class }}"></span>
+                            </a>
+                        </div>
+                    </span>
+                    <div class="input-group st-content-search-box" ng-if="actions.search">
+                        <input type="search" class="form-control"  ng-model="GH.general_search_terms"  placeholder="Search" aria-controls="schedule_dashboard_table"  ng-keydown="$event.keyCode === 13 && GH.general_search(GH.general_search_terms)"/>
+                        <span class="input-group-addon" ng-click="GH.general_search(GH.general_search_terms)">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                            <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
+                                Clear
+                            </a>
+                    <span data-ng-repeat="(key, action) in actions.primary">
+                        <span ng-if="action.html_element == 'deliveryList'">
+                            <span ng-controller="Controller_Master as CM">
+                                <a ng-disabled="value.disabled" class="btn btn-default btn-outline orange" data-group="extern" ng-click="createDeliveryFromDeliveryList()">
+                                    Add Delivery
+                                </a>
+                            </span>
+                        </span>
+                        <span ng-if="action.html_element == 'ordertoinvoice'">
+                            <!-- <span ng-controller="Controller_Master as CM"> -->
+                              <!-- {{action.html_element}} -->
+                                <a ng-disabled="!formValues.id" class="btn btn-default btn-outline "  ng-href="#/reports/{{action.html_element}}/IID={{formValues.id}}" target="blank">
+                                        {{ action.label }}
+                                </a>
+                            <!-- </span> -->
+                        </span>
+                        <!-- CUSTOM ACTIONS -->
+                        <span ng-if="action.html_element == 'customActionButton'">
+                            <span ng-repeat="(key, value) in screenButtons" ng-if="key < 1">
+                                {{ formValuesLoaded }}
+                                <span ng-controller="Controller_Master as CM">
+                                    <a ng-disabled="value.disabled" class="btn btn-default btn-outline" data-group="extern" ng-click="$eval(value.action)">
+                                        {{ value.label }}
+                                    </a>
+                                </span>
+                            </span>
+                            <span ng-repeat="(key, value) in screenButtons" ng-if="value.label == 'Revert' ">
+                                {{ formValuesLoaded }}
+                                <span ng-controller="Controller_Master as CM">
+									<a ng-disabled="value.disabled" class="btn btn-default btn-outline" data-group="extern" ng-click="revert_invoice()" disabled="disabled">
+									    Revert
+									</a>
+                                </span>
+                            </span>                            
+                            <span style="position:relative" class="btn-group">
+                                <a class="btn btn-default btn-outline" data-group="extern" data-toggle="dropdown">
+                                    ...
+                                </a>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li  ng-repeat="(key, value) in screenButtons" ng-if="key> 0">
+                                        <span ng-controller="Controller_Master as CM">
+                                            <a ng-hide="value.hide" ng-disabled="value.disabled" class="btn btn-default btn-outline"  data-group="extern" style="display:block; border:none" ng-click="$eval(value.action)">
+                                                {{ value.label }}
+                                            </a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </span>
+                        </span>
+                        <!-- CUSTOM ACTIONS -->
+                        <span ng-if="action.html_element == 'contractPreviewDdw'">
+                            <div class="input-group form_input">
+                                <span ng-controller="Controller_Master as CM">
+                                    <span ng-init="getEmailTransactionType('Contract');">
+                                        <span ng-if="emailTemplates" ng-init="selContractTemplate = emailTemplates[0]; previewContract(emailTemplates[0].id, emailTemplates[0].name);">
+                                            <select style="height: 31px;" ng-model="selContractTemplate" class="form-control bs-select changeIT" ng-options="item as item.displayName for item in emailTemplates track by item.id" ng-change="previewContract(emailTemplates[0].id, emailTemplates[0].name)">
+                                            </span>
+                                            <!-- <option value="0"> </option> -->
+                                        </select>
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <!-- printContractPreview -->
+                        <span ng-if="action.html_element == 'printContractPreview'">
+                            <div class="st-content-action-icons" ng-controller="Controller_Master as CM">
+                                <a class="btn">
+                                    <span class="icon print" ng-click="printElem('#contract-preview')"></span>
+                                </a>
+                            </div>
+                        </span>
+                        <span ng-if="action.html_element == 'contractEmailPreviewDdw'">
+                            <div class="input-group form_input">
+                                <span ng-controller="Controller_Master as CM">
+                                    <span ng-init="getEmailTransactionType('ContractChanges');">
+                                        <span ng-if="emailTemplates" ng-init="CM.ContractEmailTemplate=emailTemplates[0]">
+                                            <span ng-init="changeContractEmailTemplate(CM.ContractEmailTemplate);"></span>
+                                            <select style="height: 31px;" ng-model="CM.ContractEmailTemplate" ng-change="changeContractEmailTemplate(CM.ContractEmailTemplate);" class="form-control bs-select changeIT" ng-options="item as item.displayName for item in emailTemplates track by item.id">
+                                            </span>
+                                        </select>
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span ng-if="action.html_element == 'claimEmailPreviewDdw'">
+                            <div class="input-group form_input">
+                                <span ng-controller="Controller_Master as CM">
+                                    <span ng-init="CM.screen_id='claims';CM.formValues = CM.get_master_entity('claim');"></span>
+                                    <!-- {{formValues}} -->
+                                    <span ng-if="formValues.claimType" ng-init="getEmailTransactionType('Claims');">
+                                        <select style="height: 31px;" id="ClaimEmailTemplate" ng-if="ClaimEmailTemplate" ng-model="ClaimEmailTemplate" ng-change="changeClaimEmailTemplate(ClaimEmailTemplate)" class="form-control bs-select changeIT" ng-options="item as item.displayName for item in emailTemplates track by item.id"></select>
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span ng-if="action.html_element == 'checkbox'">
+                            <div class="input-group" style="padding:0 10px">
+                                <div class="icheck-inline">
+                                    <label  class=" mt-checkbox">
+                                        <input class="{{ action.id }}"  type="checkbox" name="{{ action.id }}[]"  id="{{ action.id }}"  dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}"/>
+                                        <span></span>
+                                        {{ action.label }}
+                                    </label>
+                                </div>
+                            </div>
+                        </span>
+                        <span ng-if="action.html_element == 'alerts'">
+                            <span ng-controller="Controller_Configurable_List_Control as CLC">
+                                <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="triggerModal(-1)">
+                                    <span class="ladda-label ng-binding">
+                                        Create rule
+                                    </span>
+                                </a>
+                            </span>
+                        </span>
+                        <span ng-if="!action.html_element">
+                            <span data-ng-if="!action.extern ">
+                                <a data-ng-if="action.special" id="general_action_{{ $index }}" class="btn btn-default orange btn-outline" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute)">
+                                    {{ action.label }}
+                                </a>
+                                <a data-ng-if="!action.special && action.type != 'button-group' && action.type != 'back'" id="general_action_{{ $index }}" class="btn btn-default btn-default" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute, action.new_tab)">
+                                    {{ action.label }}
+                                </a>
+                                <a data-ng-if="action.type == 'back'" id="general_action_{{ $index }}" class="btn btn-default btn-default" back-button>
+                                    {{ action.label }}
+                                </a>
+                                <span ng-if="action.type == 'button-group'" class="btn-group">
+                                    <a id="general_action_{{ $index }}" class="btn btn-default btn-default" data-toggle="dropdown" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute)">
+                                        {{ action.label }}
+                                    </a>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li ng-repeat="field in action.children">
+                                            <a id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+                                                {{ GH.translateLabel(field.label) }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </span>
+                            <span data-ng-if="action.extern ">
+                                <a   type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button" data-method-param="{{ action.param }}" data-method="{{ action.method }}" data-compiled='0'  dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}" ng-click="" ng-class="action.main ?  'orange' : ''; action.orangeButton ? 'bg-yellow-gold-opacity font-white specialOrangeButton' : '' " data-group="extern" data-style="expand-left" ng-disabled="submitedAction">
+                                    <span class="ladda-label">
+                                        {{ action.label }}
+                                    </span>
+                                </a>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="st-main-content-menu tabbable-line tabs_bar"  ng-show="GH.moreInformations">
+        <span ng-if="actions.title">
+            <h4 class="pull-left title">
+                {{ actions.title }}
+            </h4>
+        </span>
+        <ul class="nav nav-tabs pull-left" ng-controller="Controller_Master as CM">
+            <li data-ng-repeat="(key, action) in actions.secondary"  ng-if="!action.id" ng-class="action.active ? 'active' : ''">
+                <span data-vault data-content="{action_url: '{{ action.url }}'}"></span>
+                <a class="btn btn-default" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute, action.new_tab)" data-method-param="{{ action.param }}" data-compiled='0' data-method="{{ action.method }}" data-group="extern" dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}" ng-disabled="!CM.entity_id && $index > 0">
+                    {{ action.label }} 
+                </a>
+            </li>
+            <li data-ng-repeat="(key, action) in actions.secondary" ng-if="action.id">
+                <span data-vault data-content="{action_url: '{{ action.url }}'}"></span>
+                <a class="btn btn-default" id="{{ action.id }}" href="{{ action.url }}" role="tab" data-toggle="tab" dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}" ng-disabled="!CM.entity_id && $index > 0">
+                    {{ action.label }} 
+                </a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+</div>

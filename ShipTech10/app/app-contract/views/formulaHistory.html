@@ -1,0 +1,48 @@
+<div id="modal_close_bar">
+    <button type="button" class="close" ng-click="modalInstance.close()" aria-hidden="true"></button>
+</div>
+
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption-subject">
+            <span class="caption-subject">
+                Formula history
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body ">
+		<div class="custom-hardcoded-table ng-scope" style="max-height: 500px;">
+		    <table class="table-body" width="100%">
+		        <thead>
+		            <tr>
+		            	<!-- <td class="padding">S.no</td> -->
+		            	<td class="padding">Effective From</td>
+		            	<td class="padding">Effective To</td>
+		            	<td class="padding">Contract ID</td>
+		            	<td class="padding">Formula ID</td>
+		            	<td class="padding">MTM Formula ID</td>
+		            	<td class="padding">Created By</td>
+		            	<td class="padding">Created Date</td>
+		            	<td class="padding">Modified By</td>
+		            	<td class="padding">Modified Date</td>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr ng-repeat="(key, value) in formulaHistoryDataResponse" ng-if="value.isDeleted != true" class="ng-scope">
+						<!-- <td class="padding">{{value.id}}</td> -->
+						<td class="padding" ng-controller="Controller_Master as CM">{{CM.formatDate(value.effectiveFrom, 'dd/MM/yyyy') }}</td>
+						<td class="padding" ng-controller="Controller_Master as CM">{{CM.formatDate(value.effectiveTo, 'dd/MM/yyyy') }}</td>
+						<td class="padding">{{value.contractId}}</td>
+						<td class="padding"><a href="#/masters/formula/edit/{{value.formula.id}}" target="_blank">{{value.formula.id}}</a></td>
+						<td class="padding"><a href="#/masters/formula/edit/{{value.mtmFormula.id}}" target="_blank">{{value.mtmFormula.id}}</a></td>
+						<td class="padding">{{value.createdBy.name}}</td>
+						<td class="padding" ng-controller="Controller_Master as CM">{{CM.formatDate(value.createdOn, 'dd/MM/yyyy')}}</td>
+						<td class="padding">{{value.lastModifiedByUser.name}}</td>
+						<td class="padding" ng-controller="Controller_Master as CM">{{CM.formatDate(value.lastModifiedOn, 'dd/MM/yyyy')}}</td>
+		            </tr>		            
+		        </tbody>
+		    </table>
+		</div>
+
+    </div>
+</div>

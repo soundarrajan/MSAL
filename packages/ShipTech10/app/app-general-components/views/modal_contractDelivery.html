@@ -1,0 +1,224 @@
+<div class="clearfix"></div>
+<!-- {{selectedRowData}} -->
+
+
+<span ng-if="triggerContractDeliveryModalType == 'mtm' || triggerContractDeliveryModalType == 'price' ">
+	<span ng-init="triggerContractDeliveryModalType == 'price' ? config_tab = 1 : config_tab = 2"></span>
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" ng-class="config_tab == 1 ? 'active' : '' "><a href="#delivery" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 1">{{'Delivery Pricing' | translate}}</a></li>
+		<li role="presentation" ng-class="config_tab == 2 ? 'active' : ''"><a href="#price" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 2">{{'MTM Schedule' | translate}}</a></li>
+		<li class="last-item" style="float: right;">
+			<span ng-if="config_tab == 1"><b>Last evaluation date <span ng-bind="CM.formatDateTime(contractProductDeliveryPriceModalData.lastEvaluationDate, null, 'default')"></span></b></span>
+			<span ng-if="config_tab == 2"><b>Last evaluation date <span ng-bind="CM.formatDateTime(contractProductDeliveryMtmModalData.lastEvaluationDate, null, 'default')"></span></b></span>
+			<!-- {{selectedRowData.deliveryId}} -->
+			<!-- {{selectedRowData}} -->
+			<span class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope" ng-disabled="selectedRowData.deliveryId != null" ng-click="selectedRowData.deliveryId != null ? '' : saveContractDeliveryModal(config_tab)">Save</span>
+			<button type="button" style="margin-left: 25px;" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+		</li>	
+	</ul>
+	<br>		
+	<div class="tab-content">
+		
+		<div role="tabpanel" class="tab-pane active" id="delivery" ng-if="config_tab == 1">
+			<span ng-init="getContractProductDeliveryPriceModalData(selectedRowData, currentPage)"></span>
+
+			<div class="form-group">
+				<label for="systemInstruments" class="control-label" style="float: left; margin-right: 25px;">Instrument Name</label>
+				<b>{{contractProductDeliveryPriceModalData.systemInstruments}}</b>
+				
+				<!-- <div class="input-group form_input">
+					<select name="systemInstruments"   id="systemInstruments" class="form-control" ng-model="selectedSystemInstrumentPrice" ng-options="item as item.systemInstrument.name for item in contractProductDeliveryPriceModalData.systemInstruments track by item.systemInstrument.id">
+					</select>
+				</div> -->
+			</div>
+			<div class="custom-hardcoded-table">
+				<table  class="table-body" width="100%">
+					<thead>
+						<tr>
+							<td class="padding"> <b>Pricing Day</b></td>
+							<td class="padding"> <b>Quantity (in {{contractProductDeliveryPriceModalData.schedule[0].quantity.uom.name}} )</b></td>
+							<td class="padding"> <b>Market Price</b></td>
+							<td class="padding"> <b>+/-(in {{contractProductDeliveryPriceModalData.systemInstrumentsList[0].currency.name}}	)</b></td>
+							<td class="padding"> <b>Net Price (in {{contractProductDeliveryPriceModalData.schedule[0].quantity.uom.name}} )</b></td>
+							<td class="padding"> <b>Deal Value</b></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, value) in contractProductDeliveryPriceModalData.schedule">
+							<td class="padding">
+								{{ CM.formatSimpleDate(value.quantity.quoteDate) }}
+								<!-- <span ng-bind="CM.formatDateTime(value.quantity.quoteDate, null, 'default')" ></span> -->
+							</td>
+							<td ng-class="selectedRowData.deliveryId != 0 ? '' : 'padding' ">
+								<span ng-if="selectedRowData.deliveryId == 0">{{value.quantity.splittedQuantity| number : 3 }}</span>
+								<span ng-if="selectedRowData.deliveryId != 0">
+									<input type="text" class="form-control" ng-model="value.quantity.splittedQuantity" format="number">
+								</span>	
+							</td>
+							<td class="padding">{{value.price| number : 3 }}</td>
+							<td class="padding">{{value.premium| number : 3 }}</td>
+							<td class="padding">{{ value.premium + value.price | number : 3 }}</td>
+							<td class="padding">{{ value.quantity.splittedQuantity * (value.premium + value.price) | number : 3 }}</td>
+						</tr>
+						<tr>
+							<td class="padding"><b>Total</b></td>
+							<td class="padding">{{ contractProductDeliveryPriceModalData.totalQuantity | number : 3 }}</td>
+							<td class="padding"></td>
+							<td class="padding"></td>
+							<td class="padding"></td>
+							<td class="padding">{{ contractProductDeliveryPriceModalData.totalDealValue | number : 3 }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				Avg. Deal Value : {{contractProductDeliveryPriceModalData.avgDealValue}}
+			</p>
+
+		<div class="col-sm-12">
+			Showing {{(currentPage * entries) - entries + 1}} to {{ currentPage == maxPages ?  contractProductDeliveryPriceModalData.totalCount : (currentPage * entries)}}  of {{ contractProductDeliveryPriceModalData.totalCount }} 
+			<div class="notification-pagination" ng-init="currentPage = 1">
+			Page
+					<span class="prevPage" ng-disabled="currentPage <= 1" ng-click=" currentPage > 1 ? getContractProductDeliveryPriceModalData(selectedRowData, currentPage - 1 ) : '';  currentPage > 1 ? currentPage = currentPage - 1 : '' "> < </span>
+					<span class="currentPage">{{currentPage}}</span>
+					<span class="nextPage" ng-disabled="currentPage >= maxPages" ng-click="currentPage < maxPages ? getContractProductDeliveryPriceModalData(selectedRowData, currentPage + 1 ) : '' ; currentPage < maxPages ? currentPage = currentPage + 1 : '' "> > </span>
+				of {{maxPages}}
+			</div>
+		</div>
+		<br>
+
+
+		</div>
+
+		<div role="tabpanel" class="tab-pane active" id="price" ng-if="config_tab == 2">
+			<span ng-init="currentPage = 1; getContractProductDeliveryMtmModalData(selectedRowData, currentPage)"></span>
+			
+			<div class="form-group">
+				<label for="systemInstruments" class="control-label" style="float: left; margin-right: 25px;">Instrument Name</label>
+				<b>{{contractProductDeliveryMtmModalData.systemInstruments}}</b>
+				<!-- <div class="input-group form_input">
+					<select name="systemInstruments" ng-change="convertProductDeliveryQuantities('mtm', selectedSystemInstrumentMtm)" id="systemInstruments" class="form-control" ng-model="selectedSystemInstrumentMtm" ng-options="item as item.systemInstrument.name for item in contractProductDeliveryMtmModalData.systemInstruments track by item.systemInstrument.id">
+					</select>
+				</div> -->
+			</div>
+			<div class="custom-hardcoded-table">
+				<table  class="table-body" width="100%">
+					<thead>
+						<tr>
+							<td class="padding"> <b>Pricing Day</b></td>
+							<td class="padding"> <b>Quantity (in {{contractProductDeliveryMtmModalData.schedule[0].quantity.uom.name}} )</b></td>
+							<td class="padding"> <b>Market Price</b></td>
+							<td class="padding"> <b>+/-(in {{contractProductDeliveryMtmModalData.systemInstrumentsList[0].currency.name}})</b></td>
+							<td class="padding"> <b>Net Price (in {{contractProductDeliveryMtmModalData.schedule[0].quantity.uom.name}}	)</b></td>
+							<td class="padding"> <b>Deal Value</b></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, value) in contractProductDeliveryMtmModalData.schedule">
+							<td class="padding">
+								{{ CM.formatSimpleDate(value.quantity.quoteDate) }}
+								<!-- <span ng-bind="CM.formatDateTime(value.quantity.quoteDate, null, 'default')"></span> -->
+							</td>
+							<td ng-class="selectedRowData.deliveryId != 0 ? '' : 'padding' ">
+								<span ng-if="selectedRowData.deliveryId == 0">{{value.quantity.splittedQuantity}}</span>
+								<span ng-if="selectedRowData.deliveryId != 0">
+									<input type="text" class="form-control" ng-model="value.quantity.splittedQuantity" format="number">
+								</span>	
+							</td>
+							<td class="padding">{{value.price| number : 3}}</td>
+							<td class="padding">{{value.premium| number : 3}}</td>
+							<td class="padding">{{ value.premium + value.price | number : 3}}</td>
+							<td class="padding">{{ value.quantity.splittedQuantity * (value.premium + value.price) | number : 3}}</td>
+						</tr>
+						<tr>
+							<td class="padding"><b>Total</b></td>
+							<td class="padding">{{ contractProductDeliveryMtmModalData.totalQuantity | number : 3}}</td>
+							<td class="padding"></td>
+							<td class="padding"></td>
+							<td class="padding"></td>
+							<td class="padding">{{ contractProductDeliveryMtmModalData.totalDealValue | number : 3}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				Avg. Deal Value : {{contractProductDeliveryMtmModalData.avgDealValue}}
+			</p>
+			<div class="col-sm-12">
+				Showing {{(currentPage * entries) - entries + 1}} to {{ currentPage == maxPages ?  contractProductDeliveryMtmModalData.totalCount : (currentPage * entries)}}  of {{ contractProductDeliveryMtmModalData.totalCount }} 
+				<div class="notification-pagination" ng-init="currentPage = 1">
+				Page
+					<span class="prevPage" ng-disabled="currentPage <= 1" ng-click=" currentPage > 1 ? getContractProductDeliveryMtmModalData(selectedRowData, currentPage - 1 ) : '';  currentPage > 1 ? currentPage = currentPage - 1 : '' "> < </span>
+					<span class="currentPage">{{currentPage}}</span>
+					<span class="nextPage" ng-disabled="currentPage >= maxPages" ng-click="currentPage < maxPages ? getContractProductDeliveryMtmModalData(selectedRowData, currentPage + 1 ) : '' ; currentPage < maxPages ? currentPage = currentPage + 1 : '' "> > </span>
+					of {{maxPages}}
+				</div>
+			</div>
+			<br>
+
+
+
+
+
+		</div>
+	</div>
+</span>
+
+
+<span ng-if="triggerContractDeliveryModalType == 'exposure'">
+	<button type="button" style="margin-left: 25px;" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+	<span class="portlet-light">
+		<div class="portlet-title">
+			<div class="caption-subject">
+				Exposure Details
+			</div>
+		</div> 	
+		<hr>		
+	</span>
+	<span ng-init="currentPage = 1; getContractProductDeliveryExposureModalData(selectedRowData, currentPage)"></span>
+	<!-- {{contractProductDeliveryExposureModalData}} -->
+			<div class="custom-hardcoded-table">
+				<table  class="table-body">
+					<thead>
+						<tr>
+							<td width="400px"></td>
+							<td width="400px" class="padding" width="200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure" >
+								<span ng-bind="CM.formatDate(value.quoteDate, 'DD/MM/YYYY')"></span>
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td width="200px"></td>
+							<td class="padding" width="200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure">
+								<b ng-bind="value.isPriced ? 'Priced' : 'Unpriced' "></b>
+								<span class="uom" style="background: #eee;padding: 3px 10px;border: 1px solid #c1c1c1; display: block; float: right">{{value.uom}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="200px" class="padding"><b>Pricing Position</b></td>
+							<td width="200px" class="padding" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure"><b>{{value.priceTotal | number : 3}}</b></td>
+						</tr>
+						<tr ng-repeat="(key, value) in exposurePriceQuantitiesSystemInstruments">
+							<td width="200px" class="padding">{{key}}</td>
+							<td class="padding" width="200px" ng-repeat="(k, v) in contractProductDeliveryExposureModalData.exposure">
+								<span>{{v.newPriceQuantities[key].quantity | number : 3}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="200px" class="padding"><b>MTM Position</b></td>
+							<td width="200px" class="padding" width="200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure"><b>{{value.mtmTotal | number : 3}}</b></td>
+						</tr>
+						<tr ng-repeat="(key, value) in exposureMtmQuantitiesSystemInstruments">
+							<td class="padding" width="200px">{{key}}</td>
+							<td class="padding" width="200px" ng-repeat="(k, v) in contractProductDeliveryExposureModalData.exposure">
+								<span>{{v.newMtmQuantities[key].quantity | number : 3}}</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+<!-- 			{{exposureMtmQuantitiesSystemInstruments}} **
+			<br>
+			{{exposurePriceQuantitiesSystemInstruments}} -->
+</span>

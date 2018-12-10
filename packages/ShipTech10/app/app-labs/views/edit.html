@@ -1,0 +1,135 @@
+<general-header actions="{
+    primary: [{
+        label: 'Save',
+        special: 'false',
+        url: '#',
+        method: 'save_master_changes()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name != \'Invalid\''
+    }, {
+        label: 'Clear',
+        url: '#',
+        method: 'locationReload()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-if',
+         Conditional: '!GH.entity_id'
+    }, {
+        label: 'Verify',
+        special: 'true',
+        url: '#',
+        method: 'labsActions(1)',
+        extern: true,
+        main: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name == \'In Spec\' || formValues.status.name == \'Off Spec\''
+    }, {
+        label: 'Dispute/Raise Claim',
+        special: 'false',
+        url: '#',
+        method: 'raiseClaim()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: '(formValues.status.name == \'Verified\' || formValues.status.name == \'Invalid\') && labResults_specParamIds'
+    },
+    {
+        label: 'Invalid',
+        special: 'false',
+        url: '#',
+        method: 'invalidLab()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name == \'In Spec\' || formValues.status.name == \'Off Spec\''
+    },
+    {
+        label: 'Revert Verify',
+        url: '#',
+        method: 'labsActions(2)',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name == \'Verified\''
+    },],
+    secondary: [{
+        label: 'Main Page',
+        active: true,
+    }, {
+        label: 'Documents',
+        type: 'goto',
+        url: 'documents/:entity_id',
+    }, {
+        label: 'Audit Log',
+        type: 'goto',
+        url: 'audit/:entity_id',
+    }, {
+        label: 'Email Log',
+        type: 'goto',
+        url: 'email-log/:entity_id',
+    }, {
+        label: 'Seller Rating',
+        method: 'sellerRatingScreen()',
+        extern:true
+    }, ],
+}"></general-header>
+        <!-- method: 'triggerModal(\'sellerrating\')', -->
+
+<entity-edit-form structure='' type="" screen="'labresult'" edit-action=''></entity-edit-form>
+<general-header actions="{  primary: [{
+        label: 'Save',
+        special: 'false',
+        url: '#',
+        method: 'save_master_changes()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name != \'Invalid\''
+    }, {
+        label: 'Clear',
+        url: '#',
+        method: 'locationReload()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-if',
+         Conditional: '!GH.entity_id'
+    }, {
+        label: 'Verify',
+        special: 'true',
+        url: '#',
+        method: 'labsActions(1)',
+        extern: true,
+        main: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name == \'In Spec\' || formValues.status.name == \'Off Spec\''
+    }, {
+        label: 'Dispute/Raise Claim',
+        special: 'false',
+        url: '#',
+        method: 'raiseClaim()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: '(formValues.status.name == \'Verified\' || formValues.status.name == \'Invalid\') && labResults_specParamIds'
+    },
+    {
+        label: 'Invalid',
+        special: 'false',
+        url: '#',
+        method: 'invalidLab()',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name == \'In Spec\' || formValues.status.name == \'Off Spec\''
+    },
+    {
+        label: 'Revert Verify',
+        url: '#',
+        method: 'labsActions(2)',
+        extern: true,
+        main: false,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.status.name == \'Verified\''
+    },], }" color="'white'"></general-header>

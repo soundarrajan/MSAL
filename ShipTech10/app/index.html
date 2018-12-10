@@ -1,0 +1,518 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="shiptech"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="shiptech"> <![endif]-->
+<!--[if !IE]><!-->
+<!-- <html lang="en" data-ng-app="shiptech"> -->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <title ng-controller="appCtrl" data-ng-bind="pagetitle"></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- build:css vendor.css -->
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"
+    />
+    <link href="assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <!--<link href="assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />-->
+    <link href="assets/global/plugins/angular-ui-grid/custom_style.css" rel="stylesheet" type="text/css" />
+    <link href="vendors/gridstack.min.css" rel="stylesheet" type="text/css" />
+    <link href="vendors/gridstack-extra.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- endbuild -->
+    <!-- BEGIN DYNAMICALLY LOADED CSS FILES(all plugin and page related styles must be loaded between GLOBAL and THEME css files ) -->
+    <!-- <link id="ng_load_plugins_before" /> -->
+    <!-- END DYNAMICALLY LOADED CSS FILES -->
+    <!-- build:css theme.css -->
+    <!-- BEGIN THEME STYLES -->
+    <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
+    <link href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"
+    />
+    <link href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css"
+    />
+    <link href="assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"
+    />
+    <link href="assets/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css"
+    />
+    <link href="assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/jstree/dist/angular-ui-tree.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/treant-js-master/Treant.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/angular-visjs/vis.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/layouts/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="assets/layouts/layout/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="css/plugins/angular-clock.css" rel="stylesheet" type="text/css" />
+    <link href="css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="assets/fonts/fonts.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME STYLES -->
+    <!-- BEGIN JQGRID STYLES -->
+    <link href="assets/global/plugins/jquery-jqgrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/jquery-jqgrid/css/ui.jqgrid-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/jquery-jqgrid/css/ui.jqgrid-bootstrap-ui.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/jquery-ui-multiselect/ui.multiselect.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/jquery-m-custom-scrollbar/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css"
+    />
+    <!-- END JQGRID STYLES -->
+    <!-- BEGIN masters/admin/general-components STYLES -->
+    <link href="app-general-components/assets/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="app-masters/assets/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="app-admin/assets/css/custom.css" rel="stylesheet" type="text/css" />
+    <!-- END masters/admin/general-components STYLES -->
+    <!-- endbuild -->
+    <link rel="shortcut icon" href="data:;base64,iVBORw0KGgo=" />
+ 
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- DOC: Apply "page-header-fixed-mobile" and "page-footer-fixed-mobile" class to body element to force fixed header or footer in mobile devices -->
+<!-- DOC: Apply "page-sidebar-closed" class to the body and "page-sidebar-menu-closed" class to the sidebar menu element to hide the sidebar by default -->
+<!-- DOC: Apply "page-sidebar-hide" class to the body to make the sidebar completely hidden on toggle -->
+<!-- DOC: Apply "page-sidebar-closed-hide-logo" class to the body element to make the logo hidden on sidebar toggle -->
+<!-- DOC: Apply "page-sidebar-hide" class to body element to completely hide the sidebar on sidebar toggle -->
+<!-- DOC: Apply "page-sidebar-fixed" class to have fixed sidebar -->
+<!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
+<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
+<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
+
+<body class="page-header-fixed page-on-load page-sidebar-closed page-sidebar-hide page-sidebar-fixed">
+
+    <div id="app">
+        <!-- BEGIN HEADER -->
+        <div data-ng-include="'components/header/views/header-component.html'" data-ng-controller="HeaderController"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"></div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div data-ng-include="'components/navigation-sidebar/views/navigation-sidebar-component.html'" data-ng-controller="navigationSidebarController"
+                 class="page-sidebar-wrapper"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <div class="page-content" ng-controller="appCtrl" ng-class="pageClass">
+                    <div data-ng-include="'components/breadcrumbs/views/breadcrumbs-component.html'" ng-controller="BreadcrumbsController"></div>
+                    <!-- BEGIN STYLE CUSTOMIZER(optional) -->
+                    <!-- <div data-ng-include="'layouts/theme-panel.html'" data-ng-controller="ThemePanelController" class="theme-panel hidden-xs hidden-sm"> </div> -->
+                    <!-- END STYLE CUSTOMIZER -->
+                    <!-- BEGIN ACTUAL CONTENT -->
+                    <div ui-view class="fade-in-up inside_content">
+                        <div class="fade-in-up h100">
+                            <!-- BEGIN PAGE SPINNER -->
+                            <div ng-spinner-bar class="page-spinner-bar">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
+                            <!-- END PAGE SPINNER -->
+                        </div>
+                    </div>
+                    <!-- END ACTUAL CONTENT -->
+                </div>
+            </div>
+            <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+            <div data-ng-include="'components/sidebar/views/sidebar.html'" data-ng-controller="QuickSidebarController" class="page-quick-sidebar-wrapper"></div>
+            <!-- END QUICK SIDEBAR -->
+            <!-- BLADE -->
+            <div data-ng-include="'components/blade/views/blade.html'" data-ng-controller="BladeController" class="bladeEntity"></div>
+            <!-- END BLADE -->
+
+        </div>
+
+        <div class="screen-loader">
+            <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+
+        <!-- END CONTAINER -->
+        <script src="config/loadConfig.js"></script>
+
+        <!-- BEGIN FOOTER -->
+        <div data-ng-include="'layouts/footer.html'" class="page-footer"></div>
+    </div>
+
+    <!-- END FOOTER -->
+    <!--[if lt IE 9]>
+    <script src="assets/global/plugins/respond.min.js"></script>
+    <script src="assets/global/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- build:js app.js -->
+    <!-- BEGIN CORE JQUERY PLUGINS -->
+    <script src="assets/global/plugins/jquery.min.js"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/jstz.js"></script>
+    <!-- END CORE JQUERY PLUGINS -->
+    <!-- BEGIN JQGRID SCRIPT -->
+    <script src="assets/global/plugins/jquery-ui-multiselect/ui.multiselect.js"></script>
+    <script src="assets/global/plugins/jquery-jqgrid/js/i18n/grid.locale-en.js"></script>
+    <script src="assets/global/plugins/jquery-jqgrid/js/jquery.jqGrid.min.js"></script>
+    <script src="assets/global/plugins/jquery-jqgrid/js/jquery.jqGrid-custom.js"></script>
+    <script src="assets/global/plugins/jquery-m-custom-scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="assets/global/plugins/jquery-m-custom-scrollbar/js/custom.js"></script>
+    <script src="assets/global/plugins/minicolors/jquery.minicolors.min.js"></script>
+    <!-- END JQGRID SCRIPT -->
+    <!-- BEGIN ANGULARJS SCRIPTS -->
+    <script src="vendors/angular.min.js"></script>
+    <script src="vendors/angular-ui-router.min.js"></script>
+    <script src="vendors/angular-resource.min.js"></script>
+    <script src="vendors/angular-sanitize.min.js"></script>
+    <script src="vendors/ui-bootstrap.js"></script>
+
+
+    <script src="vendors/ui-bootstrap-tpls.js"></script>
+    <script src="vendors/lodash.min.js"></script>
+    <script src="vendors/gridstack.min.js"></script>
+    <script src="vendors/sortable.js"></script>
+    <script src="vendors/angular-translate.min.js"></script>
+    <script src="vendors/angular-translate-loader-static-files.min.js"></script>
+    <!-- <script src="vendors/FileSaver.min.js"></script> -->
+    <script src="vendors/angular-filter.min.js"></script>
+    <script src="js/plugins/gridstack-angular.min.js"></script>
+    <script src="js/plugins/angular-clock.min.js"></script>
+    <script src="js/plugins/jquery.signalR.min.js"></script>
+    <script src="js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="js/plugins/jquery.floatHead.min.js"></script>
+    <script src="js/plugins/draganddrop.min.js"></script>
+    <script src="js/plugins/angular-vs-repeat.min.js"></script>
+    <!-- END ANGULARJS SCRIPTS -->
+    <!-- BEGIN API SCRIPTS (angular) -->
+    <script src="app-api.js"></script>
+    <script src="app-api/factories.js"></script>
+    <!-- END API SCRIPTS (angular) -->
+    <!-- BEGIN GENERAL COMPONENTS SCRIPTS (angular) -->
+    <script src="app-general-components.js"></script>
+    <script src="app-general-components/controllers.js"></script>
+    <script src="app-general-components/factories.js"></script>
+    <script src="app-general-components/directives.js"></script>
+    <!-- END GENERAL COMPONENTS SCRIPTS (angular) -->
+    <!-- BEGIN APP LEVEL ANGULARJS SCRIPTS -->
+    <script src="application.js"></script>
+    <script src="application-constants.js"></script>
+    <script src="application-config.js"></script>
+    <script src="application-boot.js"></script>
+    <script src="templates.js"></script>
+    <script src="components/breadcrumbs/breadcrumbs-controller.js"></script>
+    <script src="components/breadcrumbs/breadcrumbs-component.js"></script>
+    <script src="components/header/header-controller.js"></script>
+    <script src="components/header/header-component.js"></script>
+    <script src="components/widgets-container/widgets-container-controller.js"></script>
+    <script src="components/schedule-content-menu/schedule-content-menu-controller.js"></script>
+    <script src="components/schedule-content-menu/schedule-content-menu-component.js"></script>
+    <script src="components/all-requests-content-menu/all-requests-content-menu-controller.js"></script>
+    <script src="components/all-requests-content-menu/all-requests-content-menu-component.js"></script>
+    <script src="components/price-graph-section/price-graph-section-controller.js"></script>
+    <script src="components/price-graph-section/price-graph-section-component.js"></script>
+    <script src="components/group-of-requests-menu/group-of-requests-menu-controller.js"></script>
+    <script src="components/navigation-sidebar/navigation-sidebar-controller.js"></script>
+    <script src="components/navigation-sidebar/navigation-sidebar-component.js"></script>
+    <script src="components/contract-select-dialog/contract-select-dialog-controller.js"></script>
+    <script src="components/contract-select-dialog/contract-select-dialog-component.js"></script>
+    <script src="components/product-select-dialog/product-select-dialog-controller.js"></script>
+    <script src="components/product-select-dialog/product-select-dialog-component.js"></script>
+    <script src="components/lookup-dialog/lookup-dialog-component.js"></script>
+    <script src="components/comments-dialog/comments-dialog-component.js"></script>
+    <script src="components/vessel-schedule/vessel-schedule-component.js"></script>
+    <script src="components/sellers-dialog/sellers-dialog-component.js"></script>
+    <script src="components/suppliers-dialog/suppliers-dialog-component.js"></script>
+    <script src="components/confirm-offers-dialog/confirm-offers-dialog-component.js"></script>
+    <script src="components/confirm-offers-dialog/confirm-order-dialog-component.js"></script>
+    <script src="components/last-offer-prices-dialog/last-offer-prices-dialog-component.js"></script>
+    <script src="components/offer-details-dialog/offer-details-dialog-component.js"></script>
+    <script src="components/proceed-dialog-validated/proceed-dialog-validated-component.js"></script>
+    <script src="components/delink-dialog/delink-dialog-component.js"></script>
+    <script src="components/amend-dialog/amend-dialog-component.js"></script>
+    <script src="components/sweet-confirm-modal/sweet-confirm-modal-controller.js"></script>
+    <script src="components/requote-dialog/requote-dialog-component.js"></script>
+    <script src="components/order-email-dialog/order-email-dialog-component.js"></script>
+    <script src="components/navigation-topbar/navigation-topbar-component.js"></script>
+
+    <script src="directives/calendar-contextmenu.js"></script>
+    <script src="directives/select-tags.js"></script>
+    <script src="directives/st-form.js"></script>
+    <script src="directives/st-table.js"></script>
+    <script src="directives/sorted-form.js"></script>
+    <script src="directives/calendar-popover.js"></script>
+    <script src="directives/st-date-format.js"></script>
+    <script src="directives/date-before.js"></script>
+    <script src="filters/utcToLocal.js"></script>
+    <script src="filters/stDateFormat.filter.js"></script>
+    <script src="directives/st-number-format.js"></script>
+    
+	<script src="directives/multiselect/angular-bootstrap-multiselect.js"></script>
+
+	<!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect-templates.js"></script> -->
+	<!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect.js"></script> -->
+	<!-- <script src="directives/multiselect/angular-bootstrap-multiselect-templates.js"></script> -->
+
+    <!-- END APP LEVEL ANGULARJS SCRIPTS -->
+    <!-- Auth Adal.js -->
+
+    <script src="assets/global/plugins/adaljs/angular-route.js"></script>
+    <script src="assets/global/plugins/adaljs/adal.js"></script>
+    <script src="assets/global/plugins/adaljs/adal-angular.js"></script>
+    <!-- BEGIN ANGULAR MASTERS SCRIPTS (angular) -->
+    <script src="app-masters.js"></script>
+    <script src="app-masters/controllers.js"></script>
+    <script src="app-masters/datatables/datatables-controller.js"></script>
+    <script src="app-masters/factories.js"></script>
+    <script src="app-masters/directive.js"></script>
+    <!-- END ANGULAR MASTERS SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR ADMIN SCRIPTS (angular) -->
+    <script src="app-admin.js"></script>
+    <script src="app-admin/controllers.js"></script>
+    <script src="app-admin/factories.js"></script>
+
+    <!-- END ANGULAR ADMIN SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR Labs SCRIPTS (angular) -->
+    <script src="app-labs.js"></script>
+    <script src="app-labs/controllers.js"></script>
+    <script src="app-labs/factories.js"></script>
+    <!-- END ANGULAR Labs SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR Delivery SCRIPTS (angular) -->
+    <script src="app-delivery.js"></script>
+    <script src="app-delivery/controllers.js"></script>
+    <script src="app-delivery/factories.js"></script>
+    <!-- END ANGULAR Delivery SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR Claims SCRIPTS (angular) -->
+    <script src="app-claims.js"></script>
+    <script src="app-claims/controllers.js"></script>
+    <script src="app-claims/factories.js"></script>
+    <!-- END ANGULAR Claims SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR Recon SCRIPTS (angular) -->
+    <script src="app-recon.js"></script>
+    <script src="app-recon/controllers.js"></script>
+    <script src="app-recon/factories.js"></script>
+    <!-- END ANGULAR Recon SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR Invoice SCRIPTS (angular) -->
+    <script src="app-invoice.js"></script>
+    <script src="app-invoice/controllers.js"></script>
+    <script src="app-invoice/factories.js"></script>
+    <!-- END ANGULAR Invoice SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR Contract-management SCRIPTS (angular) -->
+    <script src="app-contract.js"></script>
+    <script src="app-contract/controllers.js"></script>
+    <script src="app-contract/factories.js"></script>
+    <!-- END ANGULAR Contract-management SCRIPTS (angular) -->
+    <!-- BEGIN ANGULAR DEV PLAYGROUND SCRIPTS (angular) -->
+    <script src="app-dev-playground.js"></script>
+    <!-- END ANGULAR DEV PLAYGROUND SCRIPTS (angular) -->
+    <script src="app-alerts.js"></script>
+    <script src="app-alerts/controllers.js"></script>
+    <script src="app-rating.js"></script>
+    <!-- BEGIN APP LEVEL JQUERY SCRIPTS -->
+    <script src="assets/global/scripts/app.js"></script>
+    <script src="assets/layouts/layout/scripts/layout.js"></script>
+    <script src="assets/layouts/global/scripts/quick-sidebar.js"></script>
+    <script src="assets/global/plugins/select2/js/select2.full.min.js"></script>
+    <script src="assets/global/plugins/select2/js/select2.full.min.js"></script>
+    <script src="assets/global/plugins/moment.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+
+    <script src="assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="assets/global/plugins/typeahead/typeahead.bundle.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+    <script src="assets/global/plugins/bootstrap-modal/js/bootstrap-modal.js"></script>
+    <script src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script src="assets/global/plugins/datatables/datatables.min.js"></script>
+    <script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+    <script src="assets/global/plugins/jstree/dist/angular-ui-tree.min.js"></script>
+    <script src="assets/global/plugins/raphael.min.js"></script>
+    <script src="assets/global/plugins/treant-js-master/Treant.js"></script>
+    <script src="assets/global/plugins/icheck/icheck.min.js"></script>
+    <script src="assets/global/plugins/angular-ui-grid/ui-grid.js"></script>
+    <script src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/plugins/powerbi.js"></script>
+    <script src="js/plugins/datatables-input.js"></script>
+    <script src="js/plugins/dataTables.colResize.js"></script>
+    <!-- <script src="js/plugins/angular-timer.js"></script> -->
+    <!-- <script src="js/custom/datatables.js"></script> -->
+    <script src="js/tags-select.js"></script>
+    <script src="js/custom/port-select2.js"></script>
+    <script src="js/datatables/datatable-schedule-dashboard-table.js"></script>
+    <script src="js/datatables/datatable-calendar.js"></script>
+    <script src="js/datatables/datatable-calendar-popover.js"></script>
+    <script src="js/datatables/datatable-all-requests.js"></script>
+    <script src="js/datatables/datatable-product-info.js"></script>
+    <script src="js/datatables/datatable-new-order-products.js"></script>
+    <script src="js/datatables/datatable-new-order-additional-costs.js"></script>
+    <script src="js/datatables/datatable-order-transaction-kpi-quality.js"></script>
+    <script src="js/datatables/datatable-order-list.js"></script>
+    <script src="js/datatables/datatable-home-widget.js"></script>
+    <script src="js/datatables/datatable-simple-table.js"></script>
+    <script src="js/datatables/datatable-view-rfq-table.js"></script>
+    <script src="js/datatables/datatable-contract-planning.js"></script>
+    <script src="js/datatables/datatable-contract-evaluation.js"></script>
+    <script src="js/datatables/datatable-contract-select.js"></script>
+    <script src="js/datatables/datatable-product-select.js"></script>
+    <script src="js/datatables/datatable-lookup-dialog.js"></script>
+
+    <script src="assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="assets/global/plugins/dropzone/dropzone.min.js"></script>
+    <script src="assets/pages/scripts/components-select2.min.js"></script>
+    <script src="assets/pages/scripts/components-date-time-pickers.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+    <script src="assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script src="assets/global/plugins/fecha-date-format.js"></script>
+    <script src="assets/global/plugins/checklist-model.js"></script>
+    <script src="assets/global/plugins/jquery.multi-select.js"></script>
+    <script src="assets/global/plugins/angular-visjs/vis.min.js"></script>
+    <script src="assets/global/plugins/angular-visjs/angular-vis.js"></script>
+    <!-- END APP LEVEL JQUERY SCRIPTS -->
+    <!-- PROCUREMENT MODELS AND RESOURCES -->
+    <script src="models/schedule-dashboard/resources/schedule-dashboard-calendar-resource.js"></script>
+    <script src="models/schedule-dashboard/resources/schedule-dashboard-status-resource.js"></script>
+    <script src="models/new-request/resources/new-request-resource.js"></script>
+    <script src="models/lists/resources/lists-resource.js"></script>
+    <script src="models/payload-data/payload-data-model.js"></script>
+    <script src="models/resource-interceptor/resource-interceptor.js"></script>
+    <script src="models/schedule-dashboard/schedule-dashboard-calendar-model.js"></script>
+    <script src="models/schedule-dashboard/schedule-dashboard-table-model.js"></script>
+    <script src="models/new-request/new-request-model.js"></script>
+    <script src="models/order/order-model.js"></script>
+    <script src="models/order/resources/order-resource.js"></script>
+    <script src="models/lists/lists-model.js"></script>
+    <script src="models/ui-api/resources/ui-api-resource.js"></script>
+    <script src="models/ui-api/ui-api-model.js"></script>
+    <script src="models/request-list/resources/request-list-table-resource.js"></script>
+    <script src="models/request-list/request-list-table-model.js"></script>
+    <script src="models/lookup/resources/lookup-resource.js"></script>
+    <script src="models/lookup/lookup-model.js"></script>
+    <script src="models/group-of-requests/resources/group-of-requests-resource.js"></script>
+    <script src="models/group-of-requests/group-of-requests-model.js"></script>
+    <script src="models/supplier-portal/resources/supplier-portal-resource.js"></script>
+    <script src="models/supplier-portal/supplier-portal-model.js"></script>
+    <script src="models/screen-actions/screen-actions-model.js"></script>
+    <script src="models/select-contract/select-contract-model.js"></script>
+    <script src="models/select-contract/resources/contract-resource.js"></script>
+    <script src="models/tenant/tenant-model.js"></script>
+    <script src="models/tenant/resources/tenant-resource.js"></script>
+    <script src="models/email/resources/email-resource.js"></script>
+    <script src="models/email/email-model.js"></script>
+    <script src="models/notifications/notifications-model.js"></script>
+    <script src="models/filter-configuration/resources/filter-configuration-resource.js"></script>
+    <script src="models/filter-configuration/filter-configuration-model.js"></script>
+    <script src="services/tenant.service.js"></script>
+    <script src="services/tenant-supplier-portal.service.js"></script>
+    <script src="services/date.service.js"></script>
+    <script src="services/statusColors.service.js"></script>
+    <script src="services/treeNodeService.js"></script>
+    <script src="services/tableDataprocessors.js"></script>
+    <script src="services/getExternalFilters.js"></script>
+    <script src="services/screenLoader.js"></script>
+
+    <!-- END PROCUREMENT MODELS AND RESOURCES -->
+
+    <script src="pages/home/home-page-component.js"></script>
+    <script src="pages/schedule-dashboard-table/schedule-dashboard-table-component.js"></script>
+    <script src="pages/sap-export/sap-export-component.js"></script>
+    <script src="pages/reports/reports-component.js"></script>
+
+    <script src="pages/schedule-dashboard-calendar/schedule-dashboard-calendar-component.js"></script>
+    <script src="pages/new-request/new-request-component.js"></script>
+    <script src="pages/view-request-documents/view-request-documents-component.js"></script>
+    <script src="pages/view-request-auditlog/view-request-auditlog-component.js"></script>
+    <script src="pages/view-request-emaillog/view-request-emaillog-component.js"></script>
+    <script src="pages/group-of-requests-emaillog/group-of-requests-emaillog.js"></script>
+    <script src="pages/all-requests-table/all-requests-table-component.js"></script>
+    <script src="pages/group-of-requests/group-of-requests-component.js"></script>
+    <script src="pages/new-order/new-order-component.js"></script>
+    <script src="pages/view-order-documents/view-order-documents-component.js"></script>
+    <script src="pages/view-group-of-requests-documents/view-group-of-requests-documents-component.js"></script>
+    <script src="pages/view-order-auditlog/view-order-auditlog-component.js"></script>
+    <script src="pages/view-order-emaillog/view-order-emaillog-component.js"></script>
+    <script src="pages/order-list/order-list-component.js"></script>
+    <script src="pages/order-transaction-kpi/order-transaction-kpi-component.js"></script>
+    <script src="pages/select-contract/select-contract-component.js"></script>
+    <script src="pages/supplier-portal/supplier-portal-component.js"></script>
+    <script src="pages/supplier-portal/seller-card-component.js"></script>
+    <script src="pages/preview-email/preview-email-component.js"></script>
+    <script src="pages/view-rfq/view-rfq-component.js"></script>
+    <script src="pages/contract-planning/contract-planning-component.js"></script>
+    <script src="pages/contract-evaluation/contract-evaluation-component.js"></script>
+    <script src="components/sidebar/add-request.js"></script>
+    <script src="components/sidebar/clocks.js"></script>
+    <script src="components/sidebar/counterparty.js"></script>
+    <script src="components/sidebar/directory.js"></script>
+    <script src="components/sidebar/filters.js"></script>
+    <script src="components/sidebar/market-prices.js"></script>
+    <script src="components/sidebar/port-information.js"></script>
+    <script src="components/sidebar/worksheets.js"></script>
+
+
+    <!-- Misc. scripts that do not fit anywhere else (make sure they don't before putting them here).-->
+    <script src="js/utils.js"></script>
+    <script src="js/json-normalizers/general/arrays.js"></script>
+    <script src="js/json-normalizers/datatables/datatables-json-normalizer.js"></script>
+    <script src="js/json-normalizers/lookup/lookup-normalizer.js"></script>
+    <!-- End Misc. scripts-->
+    <!-- JSON mockups. -->
+    <!-- These should be all deleted upon server integration completion. -->
+    <script src="js/mockups/mockup-constants.js"></script>
+    <!-- End JSON mockups -->
+    <!-- endbuild -->
+    <!--SignalR cutom generated script -->
+    <script id="signalrsrc" src="http://mail.24software.ro:8081/Integration102/Shiptech10.Api.Procurement/signalr/hubs"></script>
+    <!--End signalR cutom generated script-->
+    <div id="auth">
+        <!-- <span ng-controller="authCtrl as AU"></span> -->
+    </div>
+
+
+
+    <!--</div>-->
+    <div class="global_elements" ng-controller="appCtrl" ng-class="recordingStatus == 'Stop screen recording' ? 'blink' : ''">
+        <div class="elements_actions">
+            <span class="build_no">
+                Build: 0000
+            </span>
+            <button id="startRecording" class="btn btn-default" ng-click="toggleRecording();" ng-bind="recordingStatus"></button>
+        </div>
+    </div>
+
+<!-- <script>
+	if (location.href.indexOf('localhost') != -1) {
+		window.onbeforeunload = function() {
+		    return "No leave?";
+		}
+	}
+</script> -->
+</body>
+<!-- END BODY -->
+
+</html>
