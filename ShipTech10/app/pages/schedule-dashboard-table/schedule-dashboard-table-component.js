@@ -74,23 +74,16 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
             }
         };
 
-        scheduleDashboardCalendarModel.getStatuses().then(function(data) {
+        scheduleDashboardCalendarModel.getTable(ctrl.startDate, ctrl.endDate).then(function() {
             screenLoader.showLoader();
-            console.log(data);
-            if (data) {
-                statusList = data.labels;
-            }
-            scheduleDashboardCalendarModel.getTable(ctrl.startDate, ctrl.endDate).then(showTable);
-            // handleTableEvents();
+            showTable();
             $rootScope.$broadcast("sdDataLoaded");
         });
         
         // });
         $rootScope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, function(event, args) {
             $rootScope.$broadcast("filters-applied", []);
-        });
-
-       
+        });    
 
         //check if selected requests are already part of a group
         ctrl.isSelectionGrouped = function() {

@@ -198,7 +198,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 //     return false;
                 // }
                 // vm.hasChangedOn_page_filter = true;
-                Elements.settings[table_id].source.on_page_filter(payload);
+                if (Elements.settings[table_id]) {
+                    Elements.settings[table_id].source.on_page_filter(payload);
+                }
                 // console.log(Elements.settings[$rootScope.listTableSelector].source)
             }, 300);
         });

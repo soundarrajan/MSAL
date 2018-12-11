@@ -270,6 +270,9 @@ angular
                     $scope.setPageTitle(toParams.path[toParams.path.length - 1].label);
                 }
 
+                if (!state) {
+                    state = toState;
+                }
                 
                 $scope.pageClass = $scope.pagetitle.toLowerCase().replace(/[^0-9a-zA-Z]/g, "");
                 if (state != toState) {
