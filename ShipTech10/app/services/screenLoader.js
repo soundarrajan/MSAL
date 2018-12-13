@@ -49,6 +49,7 @@ angular.module("shiptech").config([
 			"uib/template/typeahead/typeahead-popup.html",
 			"mail/templates/listByTypeAndProcess",
 			"api/masters/companies/download",
+			"/api/recon/invoicecost",
 			"api/procurement/request/getQuantityAverage",
     	];
 

@@ -191,11 +191,13 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
             });
         }
         if (name == "costType") {
-            if ($scope.formValues.costDetails[id].costType.name == "Flat") {
-                $scope.formValues.costDetails[id].invoiceQuantity = 1;
-            } else {
-                $scope.formValues.costDetails[id].invoiceQuantity = '';
-            }
+        	if ($scope.formValues.costDetails.length > 0) {
+	            if ($scope.formValues.costDetails[id].costType.name == "Flat") {
+	                $scope.formValues.costDetails[id].invoiceQuantity = 1;
+	            } else {
+	                $scope.formValues.costDetails[id].invoiceQuantity = '';
+	            }
+        	}
         }
         if (name == "InvoiceRateCurrency") {
             $.each($scope.formValues.productDetails, function(key, value) {
@@ -711,8 +713,21 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
   
     $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
 
-    	if ($('form[name="CM.editInstance"]').hasClass("ng-pristine")) {
-    		return;
+    	if ($('form[name="CM.editInstance"]').hasClass("ng-pristine") ) {
+    		if (!window.compiledinvoiceConvertUom) {
+    			window.compiledinvoiceConvertUom = [];
+    		}
+    		if (!(window.compiledinvoiceConvertUom[type + "-" + rowIndex] < 2)) {
+				// var myEl = angular.element($(".group_productDetails"));
+				// var myScope = angular.element(myEl).scope();   		
+				// $compile($(".group_productDetails"))(myScope)
+    			window.compiledinvoiceConvertUom[type + "-" + rowIndex] += 1;
+				// myScope.$apply();
+    		} else {
+    			return;
+    		}
+    		// $scope.$apply();	
+    		// return;
     	}
 
         if (typeof($rootScope.additionalCostsData) == 'undefined') {
@@ -725,7 +740,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
                 if (product.invoiceQuantityUom == null || product.invoiceRateUom == null) {
                     return
                 };
-                $scope.getUomConversionFactor(product.product.productId, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
+                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
                 	if (product.sapInvoiceAmount) {
 	                    product.invoiceAmount = product.sapInvoiceAmount;
                 	} else {
@@ -799,13 +814,14 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
 
 
 
+                if ($scope.CM.costType.name == 'Flat') {
+                    formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate;
+                    return;
+                }
                 $scope.getUomConversionFactor($scope.CM.product, 1, quantityUom, rateUom, function(response) {
                     if ($scope.CM.costType) {
                         if ($scope.CM.costType.name == 'Unit') {
                             formValues.costDetails[rowIndex].invoiceAmount = response * $scope.CM.cost.invoiceRate * $scope.CM.cost.invoiceQuantity;
-                        }
-                        if ($scope.CM.costType.name == 'Flat') {
-                            formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate;
                         }
                         if ($scope.CM.costType.name == 'Percent') {
                 //         	sumOfApplicableAmounts = 0
@@ -981,6 +997,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
         $rootScope.transportData.invoiceRateCurrency = null;
         $rootScope.transportData.backOfficeComments = null;
         $rootScope.transportData.paymentDetails = null;
+        $rootScope.transportData.status = null;
         $rootScope.transportData.invoiceSummary = null;
         $rootScope.transportData.invoiceClaimDetails = null;
         $location.path('invoices/invoice/edit/');
@@ -1017,6 +1034,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
                 $rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal = null
                 $rootScope.transportData.invoiceSummary.estimatedAmountGrandTotal = null
                 $rootScope.transportData.invoiceSummary.totalDifference = null
+                $rootScope.transportData.status = null
                 $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = vm.entity_id;
                 
                 $rootScope.transportData.paymentDetails = {};     
@@ -1189,7 +1207,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
     }
 
     $scope.computeInvoiceTotalConversion = function(conversionRoe, conversionTo) {
-    	if (!conversionRoe || !conversionTo) {
+    	if (!conversionRoe || !conversionTo /*|| !$scope.formValues.invoiceSummary*/) {
     		return false;
     	}
     	if (typeof($scope.CM.changedFromCurrency) == 'undefined') {

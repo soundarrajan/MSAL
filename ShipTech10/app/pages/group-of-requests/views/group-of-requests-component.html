@@ -620,6 +620,9 @@
         <div class="pull-right">
             <form class="form-inline">
                 <div class="form-group">
+                    <a ng-show="$ctrl.sendNoQuoteButtonText" class="btn btn-default" ng-click="$ctrl.sendNoQuote()" ng-disabled="$ctrl.checkIfCanSendNoQuote()" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
+                        {{$ctrl.sendNoQuoteButtonText}}
+                    </a>
 		            <a class="btn btn-default" ng-click="$ctrl.sendRequote()" ng-class="{ 'disabled' : $ctrl.buttonsDisabled}">
 						Send Requote
 		            </a>

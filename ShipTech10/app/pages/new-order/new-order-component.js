@@ -1526,7 +1526,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }                        
             if (command == 'confirmToSeller') {
-            	if (ctrl.procurementSettings.order.needConfirmationSellerEmail.name == 'HardStop') {
+            	// if (ctrl.procurementSettings.order.needConfirmationSellerEmail.name == 'HardStop') {
             		isContractOrder = false;
             		$.each(ctrl.data.products, function(k,v){
             			if (v.contractId) {
@@ -1566,10 +1566,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 			                return false;
 		            	}	            	
             		}
-            	}
+            	// }
             }
             if (command == 'confirmToAll') {
-            	if (ctrl.confirmToVesselManual && ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop') {
+            	if (ctrl.confirmToVesselManual /*&& ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop'*/) {
 	                var data = {
 	                    orderId: ctrl.orderId,
                         defaultTemplate : ctrl.confirmToVesselTemplate,

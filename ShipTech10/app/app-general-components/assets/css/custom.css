@@ -2941,7 +2941,7 @@ span.weightage {
     max-height: calc(100% - 200px);
 }
 
-input.form-control[disabled], input.form-control[disabled]+span {
+input.form-control[disabled]:not(.productOfferPrice .groupOfRequestTableTooltip), input.form-control[disabled]+span {
     background-color: #eee !important;
 }
 

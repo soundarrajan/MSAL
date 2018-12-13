@@ -1550,6 +1550,7 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.energyContentExpanded = [];
                 }
                 ctrl.energyContentExpanded["prod" + product.requestId + prodKey] = !ctrl.energyContentExpanded["prod" + product.requestId + prodKey];
+                ctrl.priceExpanded["prod" + product.requestId + prodKey] = !ctrl.priceExpanded["prod" + product.requestId + prodKey];
             } else {
                 if (typeof ctrl.priceExpanded == "undefined") {
                     ctrl.priceExpanded = [];
@@ -3842,7 +3843,7 @@ ctrl.setProductData = function(data, loc) {
                 });
             });
         };
-        ctrl.updatePhysicalSupplierForSellers = function (seller, newSupplier, location, blurOrTypeahead) {
+        ctrl.updatePhysicalSupplierForSellers = function (seller, newSupplier, location, event) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disablePhysicalSupplierLookup = true;
             oldSupplier = seller.oldPhysicalSupplier;
@@ -3861,15 +3862,16 @@ ctrl.setProductData = function(data, loc) {
                     $.each(locV.products, function (prodK, prodV) {
                         $.each(prodV.sellers, function (sellerK, sellerV) {
                             if (sellerV.randUnique == randUnique) {
-                            	if (sellerV.offers) {
+                            	if (sellerV.offers.length > 0) {
 	                                sellerV.offers[0].physicalSupplierCounterparty = oldSupplier;
                             	}
                             }
                         });
                     });
                 });
+                console.log();
                 ctrl.disablePhysicalSupplierLookup = false;
-                if ($($("[uib-typeahead-popup].dropdown-menu").parent(".physicalSupplier")).find($("[uib-typeahead-popup].dropdown-menu")).css("display") == 'none' ) {
+                if ($($(event.target).parent(".physicalSupplier")).find($("[uib-typeahead-popup].dropdown-menu")).css("display") == 'none' ) {
 	                toastr.error("You must select a Physical Supplier");
                 }                
                 return

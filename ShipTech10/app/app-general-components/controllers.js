@@ -199,7 +199,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 // }
                 // vm.hasChangedOn_page_filter = true;
                 if (Elements.settings[table_id]) {
-                    Elements.settings[table_id].source.on_page_filter(payload);
+	                Elements.settings[table_id].source.on_page_filter(payload);
                 }
                 // console.log(Elements.settings[$rootScope.listTableSelector].source)
             }, 300);
@@ -2620,6 +2620,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 	                	if (vm.cpCtr) {
 		                	if (vm.cpCtr[rowIdx]) {
 			                	$rootScope.editableCProwsModel[keyRow]['contract'] = null;
+                                CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null;
 			                	vm.cpCtr[rowIdx] = null;
 			                	$('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", null);
 			                	// vm.getContractTypeaheadListCP(rowIdx);
@@ -2676,8 +2677,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 	            	v[columnKey] = value
             	}
             })
-            console.log($scope.selectedContractPlanningRows);
-            console.log($rootScope.editableCProwsModel);
+            // console.log($scope.selectedContractPlanningRows);
+            // console.log($rootScope.editableCProwsModel);
         };
 
 
@@ -2726,8 +2727,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
 			rowsWithContract = 0;
             $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
-            	if ( (gdv.contract && !$rootScope.editableCProwsModel['row-' + parseFloat( gdk + 1 )].contractChanged) || 
-            		($rootScope.editableCProwsModel['row-' + parseFloat( gdk + 1 )].contractChanged && $rootScope.editableCProwsModel['row-' + parseFloat( gdk + 1 )].contract) ) {
+            	if (gdv.contract) {
             		rowsWithContract += 1;
             	}
             })
@@ -2852,12 +2852,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 							vm.cpCtr[rowId] = null;
 							if (typeof($("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId]) != 'undefined') {
 								$("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId].contract = null;
+                                CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
 							}
-							CLC.jqGrid.Ascensys.gridObject.rows
 							$("#contract-planning-contract-link-"+rowId + ' a').remove();
 							$('[ng-model="CLC.cpCtr['+rowId+']"]').val(null);
                             if ($scope.selectContracts[rowId]) {
                                 $scope.selectContracts[rowId] = false;
+                                CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
                                 setTimeout(function(){
 	                                // $scope.selectContractPlanningRow(rowId, rowId);
 	                                $.each($scope.selectedContractPlanningRows, function(k, v) {
@@ -2876,6 +2877,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             $scope.$apply();
 						}
 					} else {
+                        CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
 						vm.cpCtr[rowId] = null;
 						if (typeof($("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId]) != 'undefined') {
 							$("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId].contract = null;
@@ -3000,8 +3002,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             var rowsWithContract = 0;
             if (CLC.jqGrid.Ascensys.gridObject.page == 1) {
-	            $.each(vm.cpCtr, function(k, v) {
-	                rowsWithContract += !!v;
+	            $.each(CLC.jqGrid.Ascensys.gridData, function(k, v) {
+                    rowsWithContract += !!v.contract;
 	            });
             } else {
             	$.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k,v) {

@@ -237,7 +237,7 @@
                 </th>
     
 
-                <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;" ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
+                <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;  {{$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] ? 'max-width:100px; width:100px;' : 'zzzzz'}} " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
                         <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">CCAI</div>
@@ -246,7 +246,7 @@
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price/Spec Energy</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price Diff</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">TCO</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px" class="energy-content-cell">Add. Cost</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
                             <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Total price</div>
                             <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Amount</div>
                         </div>
@@ -558,7 +558,7 @@
                         class="form-control"
                         placeholder="Physical Supplier"
                         uib-typeahead="seller as seller.name for seller in $ctrl.physicalSupplierList  | filter:$viewValue | limitTo:5"
-                        ng-blur="$ctrl.updatePhysicalSupplierForSellers(seller, seller.offers[0].physicalSupplierCounterparty, location)"
+                        ng-blur="$ctrl.updatePhysicalSupplierForSellers(seller, seller.offers[0].physicalSupplierCounterparty, location, $event)"
                         ng-click="$ctrl.setLookupInput(null); seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty"
                         typeahead-editable="false"
                         ng-disabled="$ctrl.disablePhysicalSupplierLookup"
@@ -868,8 +868,8 @@
                                     <span ng-if="productOffer.id && !seller.isCloned">
                                         <i ng-if="productOffer.price && !seller.isCloned" class="fa fa-external-link clickable pull-right" ng-click="$ctrl.setLatestOfferProduct(product, location, seller)" data-toggle="modal" href="#prices" style="line-height: 35px;margin-left: 10px;"></i>
                                         <input ng-if="productOffer !== null && !seller.isCloned" type="text" ng-disabled="productOffer.hasNoQuote || $ctrl.priceInputsDisabled || productStatus == 'Stemmed'" class="form-control pull-right productOfferPrice" ng-model="productOffer.price" ng-focus="$ctrl.checkIfPriceChanged(productOffer.price); oldPrice = productOffer.price" style="width: calc(100% - 50px);position: absolute;right: 0; {{productOffer.price ? 'width:calc(100% - 75px);right: 25px' : '' }}" ng-blur="$ctrl.savePriceChange(productOffer.price, productOffer.id, seller, location, product)" ng-hide="productOffer.hasNoQuote" productPriceIndexNo="{{1+locationIndex+''+key+''+rpkey+''+pkey}}" ng-keydown="$ctrl.goToNextPriceInput($event)" ng-style="{'background': productOffer.quotedProduct.id !=  productTop.product.id ? 'limegreen' : null, 'color': productOffer.quotedProduct.id !=  productTop.product.id ? 'white' : null }" ng-mouseover="quotedProductTooltip['productOffer.id'] = true">
-                                      <span class="groupOfRequestTableTooltip" ng-show="quotedProductTooltip['productOffer.id'] && (productOffer.quotedProduct.id != productTop.product.id)" style="top: -50%;"> {{ productOffer.quotedProduct.name }} </span>
-
+                                      
+                                        <span ng-style="{'color': productOffer.quotedProduct.id !=  productTop.product.id ? 'white' : 'black' }" class="groupOfRequestTableTooltip" ng-show="quotedProductTooltip['productOffer.id'] && (productOffer.quotedProduct.id != productTop.product.id)" style="top: -50%;"> {{ productOffer.quotedProduct.name }} </span>
                                       <input class="form-control pull-left" style="width: calc(100% - 50px);position: absolute;right: 0; {{productOffer.price ? 'width:calc(100% - 75px);right: 25px' : '' }}" type="text" ng-show="productOffer.hasNoQuote" value="No Quote" disabled>
                                       <label class="mt-checkbox mt-checkbox-outline pull-left" ng-show="productOffer.hasNoQuote" style="width: calc(100% - 50px);position: absolute;left: 0; {{productOffer.price ? 'width:calc(100% - 75px);right: 25px' : '' }}">
 										<input type="checkbox" ng-disabled="!productAvailable" class="checkSlr" product-offer-id="{{productOffer.id}}" has-no-quote="{{productOffer.hasNoQuote}}" ng-model="$ctrl.selectedNoQuoteItems['nq'+productOffer.id]">
@@ -881,7 +881,7 @@
                     </span>
                 </td>
     
-                <td ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" ng-attr-style="padding: 0px !important; {{!productOffer.id && !seller.isCloned && seller.packageId ? 'opacity: 0.5' : '';}}"  >
+                <td ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" ng-attr-style="padding: 0px !important; {{!productOffer.id && !seller.isCloned && seller.packageId ? 'opacity: 0.5' : '';}};"  >
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+pkey]">
                         <div style="width:100px" class="energy-content-cell">
                             {{productOffer.energyParameterValues.ccai == 'NaN' || !productOffer.energyParameterValues.ccai ? '-' : (productOffer.energyParameterValues.ccai | number : $ctrl.numberPrecision.amountPrecision )}}
@@ -901,14 +901,14 @@
                         <div style="width:100px" class="energy-content-cell tco">
                             {{productOffer.energyParameterValues.tco ? (productOffer.energyParameterValues.tco | number : $ctrl.numberPrecision.amountPrecision) : '-'}}
                         </div>
-                        <div style="width:50px" class="energy-content-cell icon text-center">
+<!--                         <div style="width:50px" class="energy-content-cell icon text-center">
                             <span ng-show="productOffer.id && !seller.isCloned && product.isEnergyCalculationRequired" >
                                 <a href="" ng-click="$ctrl.viewEnergyContentBlade(seller, location, requestProducts, productOffer);$ctrl.getSellerOffers(seller, location);"><i class="fa fa-table font-dark"></i></a>
                             </span>
-                        </div>
+                        </div> -->
                     </span>
                     <span ng-show="$ctrl.priceExpanded['prod'+product.requestId+pkey]">
-                        <div style="width:100px; min-width: 130px;" class="energy-content-cell" ng-if="$ctrl.displayAdditionalCostColumn">
+                        <div style="width:100px;" class="energy-content-cell" ng-if="$ctrl.displayAdditionalCostColumn">
                             <!-- add cost -->
                             {{(productOffer !== null) ? (productOffer.additionalCostPerUnit * maxQuantity.qty | number : $ctrl.numberPrecision.amountPrecision) : "-" }}
                         </div>
@@ -920,15 +920,22 @@
                             <!-- amount -->
                             <!-- {{$ctrl.negotiationDisplayDecimal}} -->
                             <!-- {{productOffer.totalAmount}} -->
-                        <span ng-if="$ctrl.negotiationDisplayDecimal">
-                            {{( (!productOffer.totalAmount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (productOffer.totalAmount | number : $ctrl.numberPrecision.amountPrecision))}}
-                        </span>
-                       <span ng-if="!$ctrl.negotiationDisplayDecimal">
-                            {{ !productOffer.totalAmount ? 0 : $ctrl.stripDecimals(productOffer.totalAmount) }}
-                            
-                        </span> 						
+	                        <span ng-if="$ctrl.negotiationDisplayDecimal">
+	                            {{( (!productOffer.totalAmount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (productOffer.totalAmount | number : $ctrl.numberPrecision.amountPrecision))}}
+	                        </span>
+	                       <span ng-if="!$ctrl.negotiationDisplayDecimal">
+	                            {{ !productOffer.totalAmount ? 0 : ($ctrl.stripDecimals(productOffer.totalAmount) | number : 0) }}
+	                            
+	                        </span> 						
                         </div>
                     </span>
+                    <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+pkey]">
+                        <div style="width:50px" class="energy-content-cell icon text-center">
+                            <span ng-show="productOffer.id && !seller.isCloned && product.isEnergyCalculationRequired" >
+                                <a href="" ng-click="$ctrl.viewEnergyContentBlade(seller, location, requestProducts, productOffer);$ctrl.getSellerOffers(seller, location);"><i class="fa fa-table font-dark"></i></a>
+                            </span>
+                        </div>
+                    </span>                    
                 </td>
                 <td ng-repeat-end ng-hide="true"></td>
                 <!-- End expanded request tab -->

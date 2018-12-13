@@ -500,6 +500,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         }
         
         ctrl.sendEmail = function(remainOnSamePage) {
+        	$.each(ctrl.templateList, function(k,v){
+        		if (v.id == ctrl.email.comment.emailTemplate.id) {
+        			ctrl.email.comment.emailTemplate.displayName = v.displayName;
+        		}
+        	})
             if (ctrl.email === null) {
                 return false;
             }

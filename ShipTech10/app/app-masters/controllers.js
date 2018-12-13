@@ -3399,8 +3399,8 @@
 	                if (row.id > 0) {
 	                    row.isDeleted = true;
 	                } else {
-	                    row.isDeleted = true;
-	                    // obj.splice(index, 1);
+	                    // row.isDeleted = true;
+	                    obj.splice(index, 1);
 	                }
                 }
                 return;
@@ -4101,7 +4101,7 @@
                         invoiceQuantityUom: rowData.invoiceQuantityUom,
                         invoiceRateUom: rowData.invoiceRateUom,
                         estimatedExtras: rowData.estimatedExtra,
-                        invoiceExtras: rowData.estimatedExtra,
+                        // invoiceExtras: rowData.estimatedExtra,
                         estimatedExtrasAmount: rowData.estimatedExtraAmount
                     };
                 }

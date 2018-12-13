@@ -89,6 +89,8 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
         * Broadcast an event to reload the page data
         */
         $scope.broadcastRefreshData = function () {
+        	$state.reload();
+        	return;
             $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, status);
         };
 
@@ -277,9 +279,13 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
         	// console.log(data);
         });
         $rootScope.$on("scheduleDashboardTableGetResponse", function(ev, data){
-			$scope.calendarStatusesInScheduleCalendar = null;
-			$scope.calendarStatusesInScheduleTable = data.payload.scheduleDashboardStatus;
-			$scope.getCalendarStatus();
+        	if (typeof(data) != 'undefined') {
+	        	if (typeof(data.payload.scheduleDashboardStatus) != 'undefined') {
+					$scope.calendarStatusesInScheduleCalendar = null;
+					$scope.calendarStatusesInScheduleTable = data.payload.scheduleDashboardStatus;
+					$scope.getCalendarStatus();
+	        	}
+        	}
         	// console.log(data);
         });        
 
