@@ -455,6 +455,10 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
             toastr.error("Please select invoice type");
             return;
         }
+        if (!orderAdditionalCostId) {
+            toastr.error("Please select at least one row");
+            return;
+        }
         if (productIds.length == 0 && orderAdditionalCostId.length == 0) {
             toastr.error("Please select at least one row");
             return;

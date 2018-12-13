@@ -588,7 +588,7 @@ var Cfg = {
             );
         },
         invoice_type_select: function() {
-            return '<div ng-controller="Controller_Master as CM" class="' + Cfg.class.invoice_type_select + '  dynamic_form_editor  "><div class="form-group  "><div class=" col-md-4 col-md-offset-3"><label class="">Invoice Type</label></div><div class="col-md-5"><select ng-if="CM.listsCache" ng-init="initInvoiceTypeOptions()" name="newInvoiceType" class="form-control " id="newInvoiceType"></select></div></div></div>';
+            // return '<div ng-controller="Controller_Master as CM" class="' + Cfg.class.invoice_type_select + '  dynamic_form_editor  "><div class="form-group  "><div class=" col-md-4 col-md-offset-3"><label class="">Invoice Type</label></div><div class="col-md-5"><select ng-if="CM.listsCache" ng-init="initInvoiceTypeOptions()" name="newInvoiceType" class="form-control " id="newInvoiceType"></select></div></div></div>';
         }
     }
 };
