@@ -256,6 +256,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 case EMAIL_TRANSACTION.REQUEST:
                 case "ValidatePreRequest":
                     screenLoader.showLoader();
+                    if (localStorage.getItem('setQuestionnaireTemplate')) {
+                    	ctrl.template = angular.copy(JSON.parse(localStorage.getItem('setQuestionnaireTemplate')));
+                    	localStorage.removeItem("setQuestionnaireTemplate");
+                    }
                     newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId).then(function(data) {
                         ctrl.email = data.payload;
 

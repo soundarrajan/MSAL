@@ -90,13 +90,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         screenLoader.showLoader();
 
         ctrl.disableAllFields = false;
-        // tenantService.emailSettings.then(function(settings){
-        // 	$.each(settings.payload, function(k,v){
-        // 		if (v.process == 'Standard' && v.transactionType.name == "PreRequest" && v.emailType.name == "None") {
-        // 			ctrl.previewEmailDisabled = true;
-        // 		}
-        // 	})
-        // })
+        tenantService.emailSettings.then(function(settings){
+        	$.each(settings.payload, function(k,v){
+        		if (v.process == 'Standard' && v.transactionType.name == "PreRequest" && v.emailType.name == "Manual") {
+        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
+        			ctrl.sendQuestionnaireEmailTemplate = v.template;
+        		}
+        	})
+        })
         emailModel.getTemplates(ctrl.emailTransactionTypeId).then(function(data) {
             if (data.payload.length == 0) {
                 ctrl.previewEmailDisabled = true;
@@ -2349,6 +2350,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             return true;
         };
         ctrl.sendQuestionnaire = function() {
+        	console.log(ctrl.sendQuestionnaireEmailType);
+        	if (ctrl.sendQuestionnaireEmailType == "Manual") {
+        		localStorage.setItem("setQuestionnaireTemplate", JSON.stringify(ctrl.sendQuestionnaireEmailTemplate) );
+        		ctrl.goEmail();
+        		return;
+        	}
             ctrl.buttonsDisabled = true;
             newRequestModel.sendPrerequest(ctrl.request.id).then(
                 function(responseData) {
