@@ -482,7 +482,7 @@
         "LAB_RESULT_ID": "Lab Result ID",
         "VESSEL": "Vessel",
         "PORT": "Port",
-        "COUNTERPARTY": "Counterparty",
+        "COUNTERPARTY": "Seller",
         "PRODUCT": "Product",
         "ORDER_PRICE": "Order Price",
         "COMPANY": "Company",
