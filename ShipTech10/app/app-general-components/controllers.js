@@ -2016,7 +2016,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (typeof vm.changedfields[entityId] == "undefined") {
                         vm.changedfields[entityId] = {};
                     }
-                    vm.changedfields[entityId]["isChecked"] = cellValue;
+                    vm.changedfields[entityId]["isChecked"] = cellValue || rowObject.isAssignedContract;
 
                   
                     var tpl = "<input class='best_contracts_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + ");' /><label class='best_contracts_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";
