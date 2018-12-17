@@ -443,9 +443,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
         $.each($scope.CM.listsCache['DocumentTypeEnum'], function(k,v) {
             $('#newInvoiceType').append($('<option>', {
                 // value: v.name,
-                value: v.name,
+                value: v.internalName,
                 internalName: v.internalName + "",
-                text: v.internalName + ""
+                text: v.name + ""
             }));
         });
     }
