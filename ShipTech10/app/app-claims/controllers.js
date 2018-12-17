@@ -32,6 +32,14 @@ APP_CLAIMS.controller("Controller_Claims", [
         });
         $rootScope.$on("formValues", function(event, data) {
             $scope.formValues = data;
+            if ($scope.formValues.claimDetails.status.name != 'New') {
+                $.each($scope.formFields['Order Details'].children, function(k, v) {
+                    if (v.Name == 'DeliveryDate') {
+                        v.Disabled = true;
+                    }
+                });
+                $scope.formFields.deliveryDate.Disabled = true;
+            }
         });
         $rootScope.$on("editInstance", function(value) {
             vm.editInstance = value;
