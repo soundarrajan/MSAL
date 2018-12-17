@@ -91,12 +91,13 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
         ctrl.disableAllFields = false;
         tenantService.emailSettings.then(function(settings){
-        	$.each(settings.payload, function(k,v){
-        		if (v.process == 'Standard' && v.transactionType.name == "PreRequest" && v.emailType.name == "Manual") {
-        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
-        			ctrl.sendQuestionnaireEmailTemplate = v.template;
-        		}
-        	})
+        	ctrl.emailSettings = settings.payload;
+        	// $.each(settings.payload, function(k,v){
+        	// 	if (v.process == 'Standard' && v.transactionType.name == "PreRequest" && v.emailType.name == "Manual") {
+        	// 		ctrl.sendQuestionnaireEmailType = v.emailType.name;
+        	// 		ctrl.sendQuestionnaireEmailTemplate = v.template;
+        	// 	}
+        	// })
         })
         emailModel.getTemplates(ctrl.emailTransactionTypeId).then(function(data) {
             if (data.payload.length == 0) {
@@ -2351,6 +2352,21 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
         ctrl.sendQuestionnaire = function() {
         	console.log(ctrl.sendQuestionnaireEmailType);
+
+        	$.each(ctrl.emailSettings, function(k,v){
+	        	if (!ctrl.request.footerSection.isRedelivery) {
+	        		if (v.process == 'Standard' && v.transactionType.name == "PreRequest" && v.emailType.name == "Manual") {
+	        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
+	        			ctrl.sendQuestionnaireEmailTemplate = v.template;
+	        		}
+	        	} else {
+	        		if (v.process == 'Redelivery' && v.transactionType.name == "PreRequest" && v.emailType.name == "Manual") {
+	        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
+	        			ctrl.sendQuestionnaireEmailTemplate = v.template;
+	        		}	        		
+	        	}
+        	})
+
         	if (ctrl.sendQuestionnaireEmailType == "Manual") {
         		localStorage.setItem("setQuestionnaireTemplate", JSON.stringify(ctrl.sendQuestionnaireEmailTemplate) );
         		ctrl.goEmail();
