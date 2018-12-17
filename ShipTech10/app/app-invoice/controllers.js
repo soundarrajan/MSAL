@@ -435,14 +435,17 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
             $scope.options = [];
         }
         // $scope.CM.listsCache['DocumentTypeEnum'];
+        $($("[name='newInvoiceType']").parent().parent()[1]).hide();
         $('#newInvoiceType').append($('<option>', {
             value: "",
             text: ""
         }));
-        $.each($scope.CM.listsCache['DocumentTypeEnum'], function() {
+        $.each($scope.CM.listsCache['DocumentTypeEnum'], function(k,v) {
             $('#newInvoiceType').append($('<option>', {
-                value: $(this)[0].name,
-                text: $(this)[0].name
+                // value: v.name,
+                value: v.name,
+                internalName: v.internalName + "",
+                text: v.internalName + ""
             }));
         });
     }
