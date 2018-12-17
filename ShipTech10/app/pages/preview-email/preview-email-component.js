@@ -497,7 +497,8 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             screenLoader.showLoader();
             ctrl.saveComments(action, false).then(function () {
                 if (action != "sendRFQ") {
-                    ctrl.sendEmail(true);
+                    // ctrl.sendEmail(true);
+                    ctrl.sendEmail(false);
                 }
 
             });
@@ -528,6 +529,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         		if (ctrl.email.comment.emailTemplate.name == 'SpotOrderConfirmationToSellerEmail' || ctrl.email.comment.emailTemplate.name == 'ContractOrderConfirmationToSellerEmail') {
 	                orderModel.sendOrderCommand('confirmToSeller', ctrl.email.businessId).
 	                then(function (response) {
+	                	window.history.back();
 	                    ctrl.buttonsDisabled = false;
 	                }).catch(function (error) {
 	                    ctrl.buttonsDisabled = false;
@@ -537,6 +539,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         		if (ctrl.email.comment.emailTemplate.name == 'SpotOrderConfirmationToVesselEmail' || ctrl.email.comment.emailTemplate.name == 'ContractOrderConfirmationToVesselEmail') {
 	                orderModel.sendOrderCommand('confirmToAll', ctrl.email.businessId).
 	                then(function (response) {
+	                	window.history.back();
 	                    ctrl.buttonsDisabled = false;
 	                }).catch(function (error) {
 	                    ctrl.buttonsDisabled = false;
@@ -546,6 +549,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         		if (ctrl.email.comment.emailTemplate.name == 'OrderConfirmationToLabEmail') {
 	                orderModel.sendOrderCommand('confirmToLab', ctrl.email.businessId).
 	                then(function (response) {
+	                	window.history.back();
 	                    ctrl.buttonsDisabled = false;
 	                }).catch(function (error) {
 	                    ctrl.buttonsDisabled = false;
@@ -555,6 +559,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         		if (ctrl.email.comment.emailTemplate.name == 'OrderConfirmationToSurveyorEmail') {
 	                orderModel.sendOrderCommand('confirmToSurveyor', ctrl.email.businessId).
 	                then(function (response) {
+	                	window.history.back();
 	                    ctrl.buttonsDisabled = false;
 	                }).catch(function (error) {
 	                    ctrl.buttonsDisabled = false;

@@ -1855,29 +1855,34 @@ ctrl.setProductData = function(data, loc) {
         ctrl.createSellerRequirements = function (seller, locations, $event) {
             var req, product, locationSeller, productOffer, request, location;
 
-            noQuoteCheckboxes = $($event.target).parents('tr').find('[has-no-quote="true"]');
-            console.log(ctrl.selectedNoQuoteItems);
-            if ($($event.target).prop("checked") == false) {
-            	newSelectedNoQuoteItems = angular.copy(ctrl.selectedNoQuoteItems);
-	            Object.keys(newSelectedNoQuoteItems).map(function (key, value) {
-	                if (newSelectedNoQuoteItems[key]) {
-            	 		newSelectedNoQuoteItems[key] = false;
-	                }
-	            });
-	            setTimeout(function(){
-		            console.log(ctrl.selectedNoQuoteItems);
-		            console.log(newSelectedNoQuoteItems);
-	            	ctrl.selectedNoQuoteItems = newSelectedNoQuoteItems
-		            $scope.$apply();
-		            console.log(ctrl.selectedNoQuoteItems);
+
+            if ($event) {
+	            noQuoteCheckboxes = $($event.target).parents('tr').find('[has-no-quote="true"]');
+	            
+	            console.log(ctrl.selectedNoQuoteItems);
+	            if ($($event.target).prop("checked") == false) {
+	            	newSelectedNoQuoteItems = angular.copy(ctrl.selectedNoQuoteItems);
+		            Object.keys(newSelectedNoQuoteItems).map(function (key, value) {
+		                if (newSelectedNoQuoteItems[key]) {
+	            	 		newSelectedNoQuoteItems[key] = false;
+		                }
+		            });
+		            setTimeout(function(){
+			            console.log(ctrl.selectedNoQuoteItems);
+			            console.log(newSelectedNoQuoteItems);
+		            	ctrl.selectedNoQuoteItems = newSelectedNoQuoteItems
+			            $scope.$apply();
+			            console.log(ctrl.selectedNoQuoteItems);
+		            })
+	            }
+	            $.each($(noQuoteCheckboxes), function(k,v){
+	            	if (!ctrl.selectedNoQuoteItems) {
+	            		ctrl.selectedNoQuoteItems = []
+	            	}
+	            	ctrl.selectedNoQuoteItems["nq" + $(v).attr("product-offer-id")] = true;
 	            })
             }
-            $.each($(noQuoteCheckboxes), function(k,v){
-            	if (!ctrl.selectedNoQuoteItems) {
-            		ctrl.selectedNoQuoteItems = []
-            	}
-            	ctrl.selectedNoQuoteItems["nq" + $(v).attr("product-offer-id")] = true;
-            })
+            
 
             physicalSupplier = {};
             contactCounterparty = {};
