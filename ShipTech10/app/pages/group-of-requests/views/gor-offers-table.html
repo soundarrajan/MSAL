@@ -237,7 +237,8 @@
                 </th>
     
 
-                <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;  {{$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] ? 'max-width:100px; width:100px;' : 'zzzzz'}} " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
+                <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;   " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
+                        <!-- {{$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] ? 'max-width:100px; width:100px;' : ''}} -->
                         <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">CCAI</div>
@@ -396,7 +397,7 @@
                 <td colspan="1" style="width:65px"><b>Check All</b></td>
                 <td colspan="1" width="20">
                     <label class="mt-checkbox mt-checkbox-outline">
-                        <input type="checkbox" ng-click="$ctrl.checkAll(location[0].uniqueLocationIdentifier, $event)"/>
+                        <input type="checkbox" class="checkAllOnLocation" ng-click="$ctrl.checkAll(location[0].uniqueLocationIdentifier, $event)"/>
                         <span style="left: 6px;"></span>
                     </label>
                 </td>

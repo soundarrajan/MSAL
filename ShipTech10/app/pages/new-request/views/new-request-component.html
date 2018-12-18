@@ -903,7 +903,7 @@
 	                                                <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="RobOnArrival" class="form-control input-sm" ng-model="product.robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.DeliveryOption.visible" width="11%">
-	                                                <select ng-options="deliveryOption as deliveryOption.name for deliveryOption in $ctrl.lists.DeliveryOption track by deliveryOption.id" ng-model="product.deliveryOption" class="form-control"  data-original-title="{{ product.deliveryOption.name }}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ||$ctrl.disableAllFields"></select>
+	                                                <select ng-options="deliveryOption as deliveryOption.name for deliveryOption in $ctrl.lists.DeliveryOption track by deliveryOption.id" ng-model="product.deliveryOption" class="form-control"  data-original-title="{{ product.deliveryOption.name }}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields"></select>
 	                                            </td>
 	                                            <!-- ng-init="forms.productForm[$index].MinQuantity_0.$setValidity('required', false)" -->
 	                                            <td ng-if="$ctrl.productInfoColumns.MinQty.visible" width="8%" >

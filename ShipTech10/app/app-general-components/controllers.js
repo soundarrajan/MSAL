@@ -896,7 +896,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         options.rowId +
                         ')" ng-model="CLC.cpCtr[' +
                         options.rowId +
-                        ']" ng-blur="CLC.clearContractLinkCP('+options.rowId+')"  uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP(' +
+                        ']" ng-change="CLC.contractIsEditing = '+options.rowId+'" ng-blur="CLC.clearContractLinkCP('+options.rowId+')"  uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP(' +
                         options.rowId +
                         ')" />';
                     // tpl += options.rowId+'-><span ng-bind="CLC.getContractTypeaheadListCP('+options.rowId+')"></span><-'
@@ -2626,6 +2626,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 			                	// vm.getContractTypeaheadListCP(rowIdx);
 				                	$("#contract-planning-contract-link-"+rowIdx + ' a').remove();
 			                	}
+							$('[ng-model="CLC.cpCtr['+rowIdx+']"]').addClass("ng-dirty")			                	
+							vm.clearContractLinkCP(rowIdx);			     
 	                	}
                 	}
                 	if (!isOnInit) {
@@ -2688,63 +2690,72 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             $scope.selectContracts = []
             $('#jqgh_flat_contract_planning_actions-0').html('<i id="selectAllContractPlanning"' +
                 ' style="font-size: 25px !important; color: #d9d9d9;"' +
-                ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"></i>');
+                ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
             $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
         });
 
+        $scope.evaluateChangedContracts = function() {
+        	if (vm.contractIsEditing) {
+        		vm.clearContractLinkCP(vm.contractIsEditing);
+        		vm.contractIsEditing = null
+        		return;	
+        	}
+        }
+
         $scope.selectAllContractPlanning = function() {
-            var el = $('#selectAllContractPlanning').first();
-            if (el.hasClass('fa-square-o')) {
-                theCLC = $("#flat_contract_planning");
-                for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
-                    if (!$scope.selectContracts[i + 1] && vm.cpCtr[i + 1]) {
-                        $scope.selectContracts[i + 1] = true;
-                        $scope.selectContractPlanningRow(i + 1, i + 1);
-                    }
-                }
-            } else if (el.hasClass('fa-check-square-o')) {
-                for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
-                    if ($scope.selectContracts[i + 1]) {
-                        $scope.selectContracts[i + 1] = false;
-                        $scope.selectContractPlanningRow(i + 1, i + 1);
-                    }
-                }
-            }
-            $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
-                if (typeof $rootScope.editableCProwsModel != "undefined") {
-                    Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
-                        var value = $rootScope.editableCProwsModel[objectKey];
-                        if ("row-" + vsc.rowIndex == objectKey) {
-                        	if (value.contractChanged) {
-	                            vsc.contract = value.contract;
-                        	} else {
-	                            vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
-                        	}
-                        }
-                    });
-                }
-            });  
+        	// $('[ng-model*="CLC.cpCtr"]').blur()
+	            var el = $('#selectAllContractPlanning').first();
+	            if (el.hasClass('fa-square-o')) {
+	                theCLC = $("#flat_contract_planning");
+	                for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+	                    if (!$scope.selectContracts[i + 1] && vm.cpCtr[i + 1]) {
+	                        $scope.selectContracts[i + 1] = true;
+	                        $scope.selectContractPlanningRow(i + 1, i + 1);
+	                    }
+	                }
+	            } else if (el.hasClass('fa-check-square-o')) {
+	                for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+	                    if ($scope.selectContracts[i + 1]) {
+	                        $scope.selectContracts[i + 1] = false;
+	                        $scope.selectContractPlanningRow(i + 1, i + 1);
+	                    }
+	                }
+	            }
+	            $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
+	                if (typeof $rootScope.editableCProwsModel != "undefined") {
+	                    Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+	                        var value = $rootScope.editableCProwsModel[objectKey];
+	                        if ("row-" + vsc.rowIndex == objectKey) {
+	                        	if (value.contractChanged) {
+		                            vsc.contract = value.contract;
+	                        	} else {
+		                            vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+	                        	}
+	                        }
+	                    });
+	                }
+	            });  
 
-			rowsWithContract = 0;
-            $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
-            	if (gdv.contract) {
-            		rowsWithContract += 1;
-            	}
-            })
+				rowsWithContract = 0;
+	            $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
+	            	if (gdv.contract) {
+	            		rowsWithContract += 1;
+	            	}
+	            })
 
-            if ($scope.selectedContractPlanningRows.length < rowsWithContract || rowsWithContract == 0) {
-                var el = $('#selectAllContractPlanning').first();
-                if (el.hasClass('fa-check-square-o')) {
-                    el.removeClass('fa-check-square-o');
-                    el.addClass('fa-square-o');
-                }
-            } else if ($scope.selectedContractPlanningRows.length === rowsWithContract) {
-                var el = $('#selectAllContractPlanning').first();
-                if (el.hasClass('fa-square-o')) {
-                    el.removeClass('fa-square-o');
-                    el.addClass('fa-check-square-o');
-                }
-            }            
+	            if ($scope.selectedContractPlanningRows.length < rowsWithContract || rowsWithContract == 0) {
+	                var el = $('#selectAllContractPlanning').first();
+	                if (el.hasClass('fa-check-square-o')) {
+	                    el.removeClass('fa-check-square-o');
+	                    el.addClass('fa-square-o');
+	                }
+	            } else if ($scope.selectedContractPlanningRows.length === rowsWithContract) {
+	                var el = $('#selectAllContractPlanning').first();
+	                if (el.hasClass('fa-square-o')) {
+	                    el.removeClass('fa-square-o');
+	                    el.addClass('fa-check-square-o');
+	                }
+	            }            
         }
 
         $rootScope.$on("selectedContractFromModal", function(data,res){
@@ -2877,20 +2888,47 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             $scope.$apply();
 						}
 					} else {
-                        CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
-						vm.cpCtr[rowId] = null;
-						if (typeof($("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId]) != 'undefined') {
-							$("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId].contract = null;
-						}
-						$("#contract-planning-contract-link-"+rowId + ' a').remove();
-                        $('[ng-model="CLC.cpCtr['+rowId+']"]').val(null);
-						vm.selectContract(null, rowId);				
+
+							vm.cpCtr[rowId] = null;
+							if (typeof($("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId]) != 'undefined') {
+								$("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId].contract = null;
+                                CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
+							}
+							$("#contract-planning-contract-link-"+rowId + ' a').remove();
+							$('[ng-model="CLC.cpCtr['+rowId+']"]').val(null);
+                            if ($scope.selectContracts[rowId]) {
+                                $scope.selectContracts[rowId] = false;
+                                CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
+                                setTimeout(function(){
+	                                // $scope.selectContractPlanningRow(rowId, rowId);
+	                                $.each($scope.selectedContractPlanningRows, function(k, v) {
+	                                	if (v) {
+							                if (v.rowIndex == rowId) {
+				                                $scope.selectedContractPlanningRows.splice(k, 1);
+							                }
+	                                	}
+						            }); 
+						            if ($rootScope.editableCProwsModel['row-' + parseFloat(rowId) ].contractChanged) {
+						            	$rootScope.editableCProwsModel['row-' + parseFloat(rowId) ].contract = null
+						            }
+	                                $('#' + rowId + '.jqgrow').first().css({'background-color': '#ffffff'});
+                                })
+                            }
+                            $scope.$apply();						
+      //                   CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
+						// vm.cpCtr[rowId] = null;
+						// if (typeof($("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId]) != 'undefined') {
+						// 	$("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowId].contract = null;
+						// }
+						// $("#contract-planning-contract-link-"+rowId + ' a').remove();
+      //                   $('[ng-model="CLC.cpCtr['+rowId+']"]').val(null);
+						// vm.selectContract(null, rowId);				
 					}
 	                if (vm.cpCtr[rowId]) {
 	                	vm.clearContractLinkCP(rowId)
 	                }
 				}
-			},500)
+			},10)
 		}
 
         vm.setContractFiltersContractPlanning = function(rowId) {

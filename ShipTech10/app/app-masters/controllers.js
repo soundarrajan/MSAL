@@ -899,7 +899,8 @@
 	                            	v.isAllProductsCost = false;
 	                            }
                             }
-	                        if (!(v.id == 0 && v.isDeleted)) {
+	                        if ((!!v.id && !(v.id == 0 && v.isDeleted)) || (!v.Id && !v.isDeleted)) {
+                                // v.isDeleted = false;
 	                        	validCostDetails.push(v);
 	                        }
                         });
@@ -911,19 +912,19 @@
                     	if (!$scope.filterFromData.costDetails[i].costType) {
 		                    costTypeError = true;
                     	}
-                     }
-                     if (costTypeError) {
-                     	toastr.error("Please select Cost type");
-                     	$scope.submitedAction = false;
-                     	return false;
-                     }
-                     if ($state.params.screen_id != "claims") {
-	                     if ($filter('filter')($scope.filterFromData.productDetails, {isDeleted: false}).length == 0 && $filter('filter')($scope.filterFromData.costDetails, {isDeleted: false}).length == 0) {
-	                     	toastr.error("Please add at least one product or one cost");
-	                     	$scope.submitedAction = false;
-	                     	return false;
-	                     }
-                     }
+                    }
+                    if (costTypeError) {
+                        toastr.error("Please select Cost type");
+                        $scope.submitedAction = false;
+                        return false;
+                    }
+                    if ($state.params.screen_id != "claims") {
+                        if ($filter('filter')($scope.filterFromData.productDetails, {isDeleted: false}).length == 0 && $filter('filter')($scope.filterFromData.costDetails, {isDeleted: false}).length == 0) {
+                            toastr.error("Please add at least one product or one cost");
+                            $scope.submitedAction = false;
+                            return false;
+                        }
+                    }
                 }
                 if (vm.app_id == "masters" && vm.screen_id == "documenttype") {
                     if((typeof $scope.formValues.id == 'undefined') || ($scope.formValues.id == 0)){
@@ -3378,12 +3379,14 @@
                 }
             });
             if (vm.screen_id == "invoice" && vm.app_id == "invoices") {
-                if ($scope.formValues.status.name == "Approved") {
-                	if (obj[idx].id) {
-	                    toastr.info("You cannot delete product if invoice status is Approved");
-	                    return;
-                	}
-                }
+            	if ($scope.formValues.status) {
+	                if ($scope.formValues.status.name == "Approved") {
+	                	if (obj[idx].id) {
+		                    toastr.info("You cannot delete product if invoice status is Approved");
+		                    return;
+	                	}
+	                }
+            	}
                 if (vm.entity_id) {
                 	 $scope.sweetConfirm("Are you sure you want to delete this item?", function(response){
                 	 	if (response == true) {
@@ -3397,7 +3400,7 @@
                 	 	}
                 	 });
                 } else {
-	                if (row.id > 0) {
+                    if (row.id > 0 || !row.id) {
 	                    row.isDeleted = true;
 	                } else {
 	                    // row.isDeleted = true;

@@ -127,6 +127,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         });
 
         ctrl.initScreenAfterSendOrSkipRfq = function() {
+	        	$(".checkAllOnLocation").prop("checked", false);
                 ctrl.requirements = [];
                 ctrl.selectedNoQuoteItems = [];
                 ctrl.requirementRequestProductIds = [];
@@ -1837,12 +1838,12 @@ ctrl.setProductData = function(data, loc) {
             // $timeout(function () {
             //  $(".locationRowToBeChecked").removeClass("locationRowToBeChecked")
             // }, 1);
-            $("input[uniqueLocationIdentifier]").removeClass("locationRowToBeChecked");
+            $("input[uniqueLocationIdentifier]").removeClass("locationRowToBeChecked"); 
             myCheckInputs = $("input[uniqueLocationIdentifier='" + uniqueLocationIdentifier + "']");
             $(myCheckInputs).each(function () {
                 if ($(this).prop("checked") != currentCheckBool && !$(this).is(":disabled"))
                     $(this)
-                        .prop("checked", currentCheckBool)
+                        // .prop("checked", currentCheckBool)
                         .addClass("locationRowToBeChecked");
             });
             $timeout(function () {
@@ -1855,12 +1856,11 @@ ctrl.setProductData = function(data, loc) {
         ctrl.createSellerRequirements = function (seller, locations, $event) {
             var req, product, locationSeller, productOffer, request, location;
 
-
-            if ($event) {
+            if ($event && ctrl.selectedNoQuoteItems ) {
 	            noQuoteCheckboxes = $($event.target).parents('tr').find('[has-no-quote="true"]');
 	            
 	            console.log(ctrl.selectedNoQuoteItems);
-	            if ($($event.target).prop("checked") == false) {
+	            if ($($event.target).prop("checked") == false && ctrl.selectedNoQuoteItems) {
 	            	newSelectedNoQuoteItems = angular.copy(ctrl.selectedNoQuoteItems);
 		            Object.keys(newSelectedNoQuoteItems).map(function (key, value) {
 		                if (newSelectedNoQuoteItems[key]) {
@@ -1882,7 +1882,6 @@ ctrl.setProductData = function(data, loc) {
 	            	ctrl.selectedNoQuoteItems["nq" + $(v).attr("product-offer-id")] = true;
 	            })
             }
-            
 
             physicalSupplier = {};
             contactCounterparty = {};
@@ -1986,6 +1985,7 @@ ctrl.setProductData = function(data, loc) {
                             ContactCounterpartyId: contactCounterparty.id ? contactCounterparty.id : null,
                             BrokerCounterpartyId: brokerCounterparty.id ? brokerCounterparty.id : null,
                             productHasOffer: productHasOffer,
+                            productHasPrice: productOffer ? (productOffer.price ? true : false) : false,
                             productHasRFQ: productHasRFQ,
                             requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
                             UniqueLocationSellerPhysical: location.uniqueLocationIdentifier + "-" + seller.randUnique,
@@ -2144,6 +2144,7 @@ ctrl.setProductData = function(data, loc) {
                     ContactCounterpartyId: contactCounterparty.id ? contactCounterparty.id : null,
                     BrokerCounterpartyId: brokerCounterparty.id ? brokerCounterparty.id : null,
                     productHasOffer: productHasOffer,
+                     productHasPrice: productOffer ? (productOffer.price ? true : false) : false,
                     productHasRFQ: productHasRFQ,
                     requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
                     UniqueLocationSellerPhysical: location.uniqueLocationIdentifier + "-" + seller.randUnique,
@@ -2225,6 +2226,20 @@ ctrl.setProductData = function(data, loc) {
                 name: timeZoneName
             };
         };
+
+        ctrl.requirementsHasNoPrice = function() {
+        	hasNoPrice = false;
+        	if (ctrl.requirements.length == 0) {
+	        	hasNoPrice = true;
+	        	return hasNoPrice;
+        	}
+        	$.each(ctrl.requirements, function(k,v){
+        		if (!v.productHasPrice) {
+		        	hasNoPrice = true;
+        		}
+        	})
+        	return hasNoPrice;
+        }
         ctrl.checkSludgeSeller = function () {
             var i = 0;
             sludgeMatchSellerProductError = false 
@@ -3231,6 +3246,19 @@ ctrl.setProductData = function(data, loc) {
                 theLocation = locationsList;
             }
             ctrl.createSellerRequirements(seller, theLocation);
+
+    		cannotSendRequote = false;
+            $.each(ctrl.requirements, function(k,v){
+            	if (!v.productHasPrice) {
+            		cannotSendRequote = true;
+            	}
+            })
+
+            if (cannotSendRequote) {
+            	toastr.error("You cannot send requote for the selected seller because not all the offers have been quoted");
+            	return;
+            }
+
             ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
             if (typeof ctrl.blade == "undefined") {
                 ctrl.blade = {};
@@ -3559,7 +3587,11 @@ ctrl.setProductData = function(data, loc) {
                 return false;
             }
             $scope.tempRequestOfferId = requestOfferId;
-            if (isNaN(priceValue)) {
+            if((priceValue < 1 && productSample.productTypeId != 8 && productSample.allowZeroPricing == false)){
+                toastr.error("Please enter a price greater than 0");
+                // return false;
+            }
+            if (isNaN(priceValue) || priceValue == '') {
                 $.each(ctrl.requests, function (reqK, reqV) {
                     $.each(reqV.locations, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
@@ -3585,11 +3617,6 @@ ctrl.setProductData = function(data, loc) {
             	}
             })
 
-            if((priceValue < 1 && productSample.productTypeId != 8 && productSample.allowZeroPricing == false)){
-               
-                toastr.error("Please enter a price greater than 0");
-                return false;
-            }
 
 
             ctrl.priceInputsDisabled = true;

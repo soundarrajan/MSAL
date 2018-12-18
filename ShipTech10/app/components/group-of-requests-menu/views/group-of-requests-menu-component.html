@@ -40,7 +40,7 @@
 					<a ng-show="$ctrl.sendNoQuoteButtonText" class="btn btn-default" ng-click="$ctrl.sendNoQuote()" ng-disabled="$ctrl.checkIfCanSendNoQuote()" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
 					 	{{$ctrl.sendNoQuoteButtonText}}
 					</a>					
-					<a class="btn btn-default" ng-click="$ctrl.sendRequote()" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
+					<a class="btn btn-default" ng-click="$ctrl.sendRequote()" ng-class="{'disabled' : $ctrl.buttonsDisabled || $ctrl.requirementsHasNoPrice()}">
 						Send Requote
 					</a>
 					<a class="btn btn-default" ng-click="$ctrl.sendRFQ()" ng-class="{'disabled' :  !$ctrl.canSendRFQ() || $ctrl.buttonsDisabled}">
