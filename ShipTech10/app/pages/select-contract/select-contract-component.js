@@ -143,6 +143,14 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
             // $state.reload();
         }
 
+        $rootScope.$on("gridDataDone", function(data,res) {
+        	$rootScope.$broadcast('best_contracts_checkbox', $rootScope.defaultSelectedBestContracts);
+    //     	setTimeout(function(){
+	   //          $scope.resetTreasuryCheckboxes();
+	   //          vm.lastCallTableParams = res;
+				// // vm.cpCtr = [];
+    //     	},500)
+        });
 
         $rootScope.$on('best_contracts_checkbox', function(e,arg){
 
