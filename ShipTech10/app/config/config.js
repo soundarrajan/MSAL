@@ -17,7 +17,7 @@ var appConfig = function () {
             "expireOffsetSeconds": 10
         },
         "tenantConfigs": {
-            "translations": "en"
+            "translations": "CMA"
         },
         "STATE": {
             "DEFAULT": "default",
