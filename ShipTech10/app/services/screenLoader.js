@@ -105,11 +105,32 @@ angular.module("shiptech").config([
                     	if (routeExceptions.join("--").indexOf(routeCall) == -1) {
 	                    	window.openedScreenLoaders -= 1;
                     		if (config.data.ErrorMessage && config.status != 200) {
-                    			toastr.error(config.data.ErrorMessage);
+                    			errorText = config.data.ErrorMessage;
+                    			if (config.data.reference) {
+	                    			errorText += ' - ' + config.data.reference;
+                    			}
+                    			if (config.data.Reference) {
+	                    			errorText += ' - ' + config.data.Reference;
+                    			}                    			
+                    			toastr.error(errorText);
                     		} else if (config.data.message && config.status != 200) {
-                    			toastr.error(config.data.message);
+                    			errorText = config.data.message;
+                    			if (config.data.reference) {
+	                    			errorText += ' - ' + config.data.reference;
+                    			}
+                    			if (config.data.Reference) {
+	                    			errorText += ' - ' + config.data.Reference;
+                    			}                      			
+                    			toastr.error(errorText);
                     		} else if (config.data.errorMessage && config.status != 200) {
-                    			toastr.error(config.data.errorMessage);
+                    			errorText = config.data.errorMessage;
+                    			if (config.data.reference) {
+	                    			errorText += ' - ' + config.data.reference;
+                    			}
+                    			if (config.data.Reference) {
+	                    			errorText += ' - ' + config.data.Reference;
+                    			}                      			
+                    			toastr.error(errorText);
                     		} else {
                     			toastr.error("An error has occured");
                     		}
