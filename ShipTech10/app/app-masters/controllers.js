@@ -1789,6 +1789,7 @@
                                         $scope.formValues.claimsPossibleActions = null;
                                         $scope.formValues.isEditable = true;
                                         $scope.formValues.orderDetails = response.orderDetails;
+                                        $scope.formValues.deliveryDate = response.deliveryDate;
                                         $scope.triggerChangeFields("OrderID", "orderDetails.order");
                                     }
                                     if (vm.app_id == "labs" && vm.screen_id == "labresult") {
