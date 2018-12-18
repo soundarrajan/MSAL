@@ -1432,9 +1432,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var contract_link = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.contract) {
-                        var tpl = '  <a  href="#/contracts/contract/edit/' + rowObject.contract.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = '  <a  href="#/contracts/contract/edit/' + rowObject.contract.id + '" target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                     } else {
-                        var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = '  <a  style="width: calc(100% - 20px); target="_blank""><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
                     return tpl;
                 };                
