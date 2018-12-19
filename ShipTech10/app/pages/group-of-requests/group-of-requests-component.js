@@ -18,7 +18,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "API",
     "SCREEN_ACTIONS",
     "screenActionsModel",
-    "listsModel",
     "uiApiModel",
     "lookupModel",
     "groupOfRequestsModel",
@@ -34,7 +33,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "MOCKUP_MAP",
     "PACKAGES_CONFIGURATION",
     "screenLoader",
-    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, listsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader) {
+    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader) {
         $scope.STATE = STATE;
         var ctrl = this;
         var groupId = $stateParams.groupId;
@@ -51,6 +50,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         ctrl.requirements = [];
         ctrl.dataLoaded = false;
         ctrl.listsCache = $listsCache;
+        ctrl.lists = $listsCache;
         ctrl.requirementsToRequote = [];
         ctrl.isEnergyCalculationRequired = true;
         tenantService.tenantSettings.then(function (settings) {
@@ -192,78 +192,76 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                 ctrl.requirements = [];
                 ctrl.requirementRequestProductIds = [];
                 // Get the generic data Lists.
-                listsModel.get().then(function (data) {
-                    ctrl.lists = data;
-                    ctrl.sellerTypeIds = getSellerTypeIds();
-                    lookupModel.getSellerAutocompleteList(ctrl.sellerTypeIds).then(function (server_data) {
-                        ctrl.sellerAutocompleteList = server_data.payload;
-                    });
-                    lookupModel.getSellerAutocompleteList(["1"]).then(function (server_data) {
-                        ctrl.physicalSupplierList = server_data.payload;
-                    });
-                    lookupModel.getSellerAutocompleteList(["3"]).then(function (server_data) {
-                        ctrl.brokerList = server_data.payload;
-                    });
-                    // Get the lookup list for the Request field in the General Information section.
-                    screenLoader.showLoader();
-                    groupOfRequestsModel.getRequests().then(function (data) {
-                        ctrl.autocompleteRequest = data.payload;
-                        $timeout(function () {
-                            initializeLookupInputs();
-                            initializeDateInputs();
-                        });
-                    });
-                    // Get the business data.
-                    groupOfRequestsModel.getGroup(groupId).then(function (data) {
-                    	if (data.payload[0].requestGroup.customNonMandatoryAttribute1) {
-                    		ctrl.sellerSortOrder = data.payload[0].requestGroup.customNonMandatoryAttribute1
-                    	} else {
-                    		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET
-                    	}
-                        parseRequestList(data.payload, true);
-                        initializeDataArrays(data.payload);
-                        getGroupInfo(groupId);
-                        ctrl.priceInputsDisabled = false;
-                        // screenLoader.hideLoader();
-                    });
-
-                    function getGroupInfo(groupId) {
-                        groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
-                        	if (data.payload.internalComments) {
-	                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
-                        	}
-                        	if (data.payload.externalComments) {
-	                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
-                        	}
-                            console.log(data.payload);
-                            if (data.payload.quoteByCurrency !== null) {
-                                ctrl.setQuoteByCurrency(data.payload.quoteByCurrency.id, data.payload.quoteByCurrency.name);
-                            }
-                            if (data.payload.quoteByTimeZone !== null) {
-                                ctrl.setQuoteByTimezone(data.payload.quoteByTimeZone.id, data.payload.quoteByTimeZone.name);
-                            }
-                            ctrl.quoteByDate = data.payload.quoteByDate;
-                            ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
-                            if (ctrl.quoteByDateFrom == "" || ctrl.quoteByDateFrom == null) {
-                                var d = new Date();
-                                month = d.getMonth() + 1;
-                                day = d.getDate();
-                                hours = d.getHours();
-                                minutes = d.getMinutes();
-                                seconds = d.getSeconds();
-                                if (month < 10) month = "0" + month;
-                                if (day < 10) day = "0" + day;
-                                if (hours < 10) hours = "0" + hours;
-                                if (minutes < 10) minutes = "0" + minutes;
-                                if (seconds < 10) seconds = "0" + seconds;
-                                if (ctrl.isQuoteDateAutoPopulated) {
-	                                ctrl.quoteByDateFrom = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
-                                }
-                            }
-                            ctrl.isReviewed = data.payload.isReviewed;
-                        });
-                    }
+                
+                ctrl.sellerTypeIds = getSellerTypeIds();
+                lookupModel.getSellerAutocompleteList(ctrl.sellerTypeIds).then(function (server_data) {
+                    ctrl.sellerAutocompleteList = server_data.payload;
                 });
+                lookupModel.getSellerAutocompleteList(["1"]).then(function (server_data) {
+                    ctrl.physicalSupplierList = server_data.payload;
+                });
+                lookupModel.getSellerAutocompleteList(["3"]).then(function (server_data) {
+                    ctrl.brokerList = server_data.payload;
+                });
+                // Get the lookup list for the Request field in the General Information section.
+                screenLoader.showLoader();
+                groupOfRequestsModel.getRequests().then(function (data) {
+                    ctrl.autocompleteRequest = data.payload;
+                    $timeout(function () {
+                        initializeLookupInputs();
+                        initializeDateInputs();
+                    });
+                });
+                // Get the business data.
+                groupOfRequestsModel.getGroup(groupId).then(function (data) {
+                	if (data.payload[0].requestGroup.customNonMandatoryAttribute1) {
+                		ctrl.sellerSortOrder = data.payload[0].requestGroup.customNonMandatoryAttribute1
+                	} else {
+                		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET
+                	}
+                    parseRequestList(data.payload, true);
+                    initializeDataArrays(data.payload);
+                    getGroupInfo(groupId);
+                    ctrl.priceInputsDisabled = false;
+                    // screenLoader.hideLoader();
+                });
+
+                function getGroupInfo(groupId) {
+                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
+                    	if (data.payload.internalComments) {
+                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
+                    	}
+                    	if (data.payload.externalComments) {
+                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
+                    	}
+                        console.log(data.payload);
+                        if (data.payload.quoteByCurrency !== null) {
+                            ctrl.setQuoteByCurrency(data.payload.quoteByCurrency.id, data.payload.quoteByCurrency.name);
+                        }
+                        if (data.payload.quoteByTimeZone !== null) {
+                            ctrl.setQuoteByTimezone(data.payload.quoteByTimeZone.id, data.payload.quoteByTimeZone.name);
+                        }
+                        ctrl.quoteByDate = data.payload.quoteByDate;
+                        ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
+                        if (ctrl.quoteByDateFrom == "" || ctrl.quoteByDateFrom == null) {
+                            var d = new Date();
+                            month = d.getMonth() + 1;
+                            day = d.getDate();
+                            hours = d.getHours();
+                            minutes = d.getMinutes();
+                            seconds = d.getSeconds();
+                            if (month < 10) month = "0" + month;
+                            if (day < 10) day = "0" + day;
+                            if (hours < 10) hours = "0" + hours;
+                            if (minutes < 10) minutes = "0" + minutes;
+                            if (seconds < 10) seconds = "0" + seconds;
+                            if (ctrl.isQuoteDateAutoPopulated) {
+                                ctrl.quoteByDateFrom = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
+                            }
+                        }
+                        ctrl.isReviewed = data.payload.isReviewed;
+                    });
+                }
             });
         };
         ctrl.initScreen();

@@ -21,6 +21,10 @@ angular.module('shiptech.models')
     * @return {object} all lists.
     */
     function get() {
+        if (angular.module("shiptech").value("$listsCache")) {
+            return angular.module("shiptech").value("$listsCache");
+        }
+
         request_data = payloadDataModel.create();
 
         return listsResource.get(request_data).$promise.then(function (data) {
