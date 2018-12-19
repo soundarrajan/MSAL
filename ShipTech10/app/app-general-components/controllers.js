@@ -1405,10 +1405,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if(options.colModel.name == "contract.id") entity_name = "contracts/contract";
                         if(options.colModel.name == "formulaId") entity_name = "masters/formula";
 
-                        var tpl = '<a ng-href="#/' + entity_name + '/edit/' + cellValue + '"  target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = '<a ng-href="#/' + entity_name + '/edit/' + cellValue + '" data-html="true" target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + cellValue + "</span></a>";
 
                         if (options.colModel.name == "formulaId") {
-	                        var tpl = '<a ng-href="#/' + entity_name + '/edit/' + cellValue + '"  target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + rowObject["formulaDescription"] + "</span></a>";
+	                        var tpl = '<a ng-href="#/' + entity_name + '/edit/' + cellValue + '" data-html="true" target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + rowObject["formulaDescription"] + "</span></a>";
                         }
                         if (cellValue != null) {
                             return tpl;
@@ -1995,16 +1995,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     } 
 
                     $.each(rowObject[currentCellKey], function(key,val){
-                        cellList = cellList + "<li>" + (val.name ? val.name : val);
+                        cellList = cellList + "<div>" + (val.name ? val.name : val);
                         if(key != (rowObject[currentCellKey].length - 1)){
-                            cellList = cellList + ",</li>";
+                            cellList = cellList + ",</div>";
                         }else{
-                            cellList = cellList + "</li>";
+                            cellList = cellList + "</div>";
                         }
                         
                     })
            
-                    var tpl = '<span class="best_contract_loop"><ul style="overflow:hidden" tooltip data-original-title="'+cellList+'">'+ cellList + '</ul></span>';
+                    var tpl = '<span class="best_contract_loop"><ul style="overflow:hidden" data-html="true" tooltip data-original-title="'+cellList+'">'+ cellList + '</ul></span>';
                     return tpl;
                 };
 

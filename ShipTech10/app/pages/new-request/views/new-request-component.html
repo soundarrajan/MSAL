@@ -281,7 +281,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="chartererName" readonly="" class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
+							        <input  name="chartererName" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
 							    </div>
 							</div>
 		        		</div>
@@ -293,7 +293,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="delivery" readonly="" class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.delivery">
+							        <input  name="delivery" readonly="" disabled class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.delivery">
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
 							        </span>
@@ -308,7 +308,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="expiry" readonly="" class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.expiry" >
+							        <input  name="expiry" readonly="" disabled class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.expiry" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
 							        </span>
@@ -323,7 +323,7 @@
                             </label>
                             <div class="form-group-sm00">
                                 <div class="input-group col-md-7">
-                                    <input name="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.earliestRedeliveryDate" st-date-format readonly="" >
+                                    <input name="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.earliestRedeliveryDate" st-date-format disabled readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
                                     </span>
@@ -338,7 +338,7 @@
                             </label>
                             <div class="form-group-sm00">
                                 <div class="input-group col-md-7">
-                                    <input name="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.estimatedRedeliveryDate" st-date-format readonly="" >
+                                    <input name="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.estimatedRedeliveryDate" st-date-format readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
                                     </span>
@@ -353,7 +353,7 @@
                             </label>
                             <div class="form-group-sm00">
                                 <div class="input-group col-md-7">
-                                    <input name="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.latestRedeliveryDate" st-date-format readonly="" >
+                                    <input name="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.latestRedeliveryDate" st-date-format readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
                                     </span>
@@ -368,7 +368,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="redeliveryLocation" readonly="" class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
+							        <input  name="redeliveryLocation" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
                                     <span class="input-group-addon bg-grey-steel disabled"  ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_location', 'Select Latest Redelivery Port', '', '', '', 'ports', $ctrl.vesselCharteredDetails.redeliveryLocation.name)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                         <!-- procurement_bunkerableport -->
                                         <!-- masters_locationlist -->
@@ -393,7 +393,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robDate" st-date-format >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDate" st-date-format >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
 							        </span>
@@ -410,7 +410,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robHsfoDeliveryQuantity" >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robHsfoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robHsfoDeliveryUom.name}}
 							        </span>
@@ -425,7 +425,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robLsfoDeliveryQuantity" >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robLsfoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robLsfoDeliveryUom.name}}
 							        </span>
@@ -440,7 +440,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robDoGoDeliveryQuantity" >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDoGoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robDoGoDeliveryUom.name}}
 							        </span>
@@ -455,7 +455,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robHsfoRedeliveryQuantity" >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robHsfoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robHsfoRedeliveryUom.name}}
 							        </span>
@@ -470,7 +470,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robLsfoRedeliveryQuantity" >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robLsfoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robLsfoRedeliveryUom.name}}
 							        </span>
@@ -485,7 +485,7 @@
 							</label>
 							<div class="form-group-sm00" >
 							    <div class="input-group col-sm-7">
-							        <input  name="robDate" readonly="" class="form-control" ng-model="$ctrl.robDetails.robDoGoRedeliveryQuantity" >
+							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDoGoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robDoGoRedeliveryUom.name}}
 							        </span>
@@ -595,14 +595,14 @@
 	                                                    <!-- ng-if="!$ctrl.isEnabledEta(locationIdx)" -->
 	                                                	<!-- disabled ETA -->
 	                                                    <div class="input-group col-md-8">
-		                                                	<input class="form-control" disabled readonly="" type="text" ng-model="location.eta" name="{{ $ctrl.productInfoFields.Eta.name }}" st-date-format>
+		                                                	<input class="form-control" disabled readonly="" disabled type="text" ng-model="location.eta" name="{{ $ctrl.productInfoFields.Eta.name }}" st-date-format>
 		                                                </div>
 	                                                </div>
 	                                                <!-- !location.eta || $ctrl.isEnabledEta() || ($ctrl.isEnabledEta() && !location.id) -->
 	                                                <div class="form-group-sm00" ng-if="$ctrl.etaEnabled[locationIdx]">
 	                                                	<!-- enabled ETA -->
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input  name="{{ $ctrl.productInfoFields.Eta.name }}" readonly="" id="id_{{ $ctrl.productInfoFields.Eta.name }}" class="form-control" ng-model="location.eta" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.etaChanged(location, $event)" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input  name="{{ $ctrl.productInfoFields.Eta.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Eta.name }}" class="form-control" ng-model="location.eta" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.etaChanged(location, $event)" ng-disabled="$ctrl.disableAllFields">
 	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
@@ -622,7 +622,7 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="{{ $ctrl.productInfoFields.Etb.name }}" readonly="" id="id_{{ $ctrl.productInfoFields.Etb.name }}" class="form-control" date-before="{{ location.etd }}" ng-model="location.etb" st-date-format required ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="{{ $ctrl.productInfoFields.Etb.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Etb.name }}" class="form-control" date-before="{{ location.etd }}" ng-model="location.etb" st-date-format required ng-disabled="$ctrl.disableAllFields">
 	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm">
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
@@ -642,7 +642,7 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="{{ $ctrl.productInfoFields.Etd.name }}" readonly="" id="id_{{ $ctrl.productInfoFields.Etd.name }}" class="form-control" ng-model="location.etd" st-date-format required  ng-class="{'etb_invalid': location.etb > location.etd}" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="{{ $ctrl.productInfoFields.Etd.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Etd.name }}" class="form-control" ng-model="location.etd" st-date-format required  ng-class="{'etb_invalid': location.etb > location.etd}" ng-disabled="$ctrl.disableAllFields">
 	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm">
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
@@ -663,7 +663,7 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="Recent ETA" readonly="" id="id_Recent_ETA" class="form-control" ng-model="location.recentEta" st-date-format ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="Recent ETA" readonly="" disabled id="id_Recent_ETA" class="form-control" ng-model="location.recentEta" st-date-format ng-disabled="$ctrl.disableAllFields">
 	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm" >
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
@@ -685,7 +685,7 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="Delivery From" readonly="" id="id_delivery_from" class="form-control" ng-model="location.deliveryFrom" st-date-format ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" ng-required="true" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="Delivery From" readonly="" disabled id="id_delivery_from" class="form-control" ng-model="location.deliveryFrom" st-date-format ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" ng-required="true" ng-disabled="$ctrl.disableAllFields">
 	                                                         <!-- date-before="{{ location.deliveryTo }}" -->
 	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm">
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
@@ -706,7 +706,7 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="Delivery To" readonly="" id="id_delivery_to" class="form-control" ng-model="location.deliveryTo" st-date-format ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" ng-required="true" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="Delivery To" readonly="" disabled id="id_delivery_to" class="form-control" ng-model="location.deliveryTo" st-date-format ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" ng-required="true" ng-disabled="$ctrl.disableAllFields">
 	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm" >
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
