@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('SellerCardController', ['$scope', '$rootScope', "Factory_Master", '$element', '$attrs', '$timeout', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP',
-    function($scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP) {
+angular.module('shiptech.pages').controller('SellerCardController', ['$scope', '$rootScope', "Factory_Master", '$element', '$attrs', '$timeout', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP', '$listsCache',
+    function($scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, $listsCache) {
         var ctrl = this;
         ctrl.token = $stateParams.token;
         $scope.forms = {};
@@ -20,6 +20,7 @@ angular.module('shiptech.pages').controller('SellerCardController', ['$scope', '
         ctrl.COST_TYPE_UNIT_ID = 2;
         ctrl.invalidFields = [];
         ctrl.contact = null;
+        ctrl.lists = $listsCache;
         tenantSupplierPortalService.tenantSettings.then(function(settings) {
             ctrl.numberPrecision = settings.payload.defaultValues;
             ctrl.currency = settings.payload.tenantFormats.currency;
@@ -113,73 +114,69 @@ angular.module('shiptech.pages').controller('SellerCardController', ['$scope', '
                             ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
                             ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
                             ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
-                            listsModel.get().then(function(data) {
-                                ctrl.lists = data;
-                                console.log(ctrl.lists);
-                                ctrl.requests = [];
-                                ctrl.activerequestid = null;
-                                lookupModel.getAdditionalCostTypes().then(function(data) {
-                                    setTimeout(function() {
-                                        ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
-                                        ctrl.locations = [];
-                                        ctrl.requests = change.source.currentValue;
-                                        ctrl.request = ctrl.requests[0];
-                                        ctrl.locations[0] = ctrl.request.locations[0];
-                                        ctrl.displayLocations = [];
-                                        $.each(ctrl.requests, function(k, v) {
-                                            ctrl.displayLocations.push(v.locations[0]);
+                            ctrl.requests = [];
+                            ctrl.activerequestid = null;
+                            lookupModel.getAdditionalCostTypes().then(function(data) {
+                                setTimeout(function() {
+                                    ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
+                                    ctrl.locations = [];
+                                    ctrl.requests = change.source.currentValue;
+                                    ctrl.request = ctrl.requests[0];
+                                    ctrl.locations[0] = ctrl.request.locations[0];
+                                    ctrl.displayLocations = [];
+                                    $.each(ctrl.requests, function(k, v) {
+                                        ctrl.displayLocations.push(v.locations[0]);
+                                    })
+                                    if (typeof(change.activerequestid) != 'undefined') {
+                                        ctrl.activerequestid = change.activerequestid.currentValue
+                                    }
+                                    console.log(ctrl.locations)
+                                    // getLocationsSuppliers();
+                                    calculateProductAmountsAllLocations();
+                                    initNoQuoteCheckBoxAllLocations(ctrl.locations);
+                                    // Holds the IDs of the locations checked in the Bunkerable Ports section.
+                                    // It is bound there in the template, so updating it is reflected automagically
+                                    // in the view.
+                                    ctrl.selectedLocationIds = selectAllLocationIds(ctrl.locations);
+                                    ctrl.offer = ctrl.locations[0].products[0].sellers[0].offers[0];
+                                    // ctrl.active_req = ctrl.request.id
+                                    // console.log(ctrl.request);
+                                    /**
+                                     * Mock quote by date & timezone functionality.
+                                     * Delete this to work with real data!
+                                     * TODO: delete this after feature fully tested with live data.
+                                     */
+                                    // ctrl.offer.quoteByDate = mockQuoteDates.quoteByDate;
+                                    // ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry = VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    /* End mockup. */
+                                    quoteByDateInUtc = parseFloat(moment(moment(ctrl.offer.quoteByDate)).format('x')) - parseFloat(ctrl.offer.utcOffset * 60 * 1000);
+                                    timeNowUtc = new Date().getTime();
+                                    quoteByDateExpired = quoteByDateInUtc < timeNowUtc;
+                                    ctrl.tenantQuoteDisabled = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.HARD;
+                                    ctrl.tenantQuoteWarning = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    // ctrl.tenantQuoteWarning = moment(ctrl.offer.quoteByDate).isBefore() &&
+                                    //                         ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    // console.log(ctrl.offer);
+                                    addFirstAdditionalCost(null);
+                                    // Get the counterparty contacts to use in the Quoted by select control.
+                                    lookupModel.getCounterpartyContacts(getContactCounterparty().id).then(function(data) {
+                                        ctrl.counterpartyContacts = data.payload;
+                                    });
+                                    // lookupModel.getNoQuoteReason().then(function(data) {
+                                    //     ctrl.reasons = data.payload;
+                                    // });
+                                    $.each(ctrl.displayLocations, function(k, v) {
+                                        var addCost = ctrl.getAdditionalCosts(v);
+                                        $.each(addCost, function(k1, v1) {
+                                            addPriceUomChg(v1, v)
                                         })
-                                        if (typeof(change.activerequestid) != 'undefined') {
-                                            ctrl.activerequestid = change.activerequestid.currentValue
-                                        }
-                                        console.log(ctrl.locations)
-                                        // getLocationsSuppliers();
-                                        calculateProductAmountsAllLocations();
-                                        initNoQuoteCheckBoxAllLocations(ctrl.locations);
-                                        // Holds the IDs of the locations checked in the Bunkerable Ports section.
-                                        // It is bound there in the template, so updating it is reflected automagically
-                                        // in the view.
-                                        ctrl.selectedLocationIds = selectAllLocationIds(ctrl.locations);
-                                        ctrl.offer = ctrl.locations[0].products[0].sellers[0].offers[0];
-                                        // ctrl.active_req = ctrl.request.id
-                                        // console.log(ctrl.request);
-                                        /**
-                                         * Mock quote by date & timezone functionality.
-                                         * Delete this to work with real data!
-                                         * TODO: delete this after feature fully tested with live data.
-                                         */
-                                        // ctrl.offer.quoteByDate = mockQuoteDates.quoteByDate;
-                                        // ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry = VALIDATION_STOP_TYPE_IDS.SOFT;
-                                        /* End mockup. */
-                                        quoteByDateInUtc = parseFloat(moment(moment(ctrl.offer.quoteByDate)).format('x')) - parseFloat(ctrl.offer.utcOffset * 60 * 1000);
-                                        timeNowUtc = new Date().getTime();
-                                        quoteByDateExpired = quoteByDateInUtc < timeNowUtc;
-                                        ctrl.tenantQuoteDisabled = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.HARD;
-                                        ctrl.tenantQuoteWarning = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
-                                        // ctrl.tenantQuoteWarning = moment(ctrl.offer.quoteByDate).isBefore() &&
-                                        //                         ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
-                                        // console.log(ctrl.offer);
-                                        addFirstAdditionalCost(null);
-                                        // Get the counterparty contacts to use in the Quoted by select control.
-                                        lookupModel.getCounterpartyContacts(getContactCounterparty().id).then(function(data) {
-                                            ctrl.counterpartyContacts = data.payload;
-                                        });
-                                        // lookupModel.getNoQuoteReason().then(function(data) {
-                                        //     ctrl.reasons = data.payload;
-                                        // });
-                                        $.each(ctrl.displayLocations, function(k, v) {
-                                            var addCost = ctrl.getAdditionalCosts(v);
-                                            $.each(addCost, function(k1, v1) {
-                                                addPriceUomChg(v1, v)
-                                            })
-                                        })
-                                        // Bind Select2 selects.
-                                        // $('.select2').select2({
-                                        //     width: null
-                                        // });
-                                        // initializeDateInputs();
-                                    }, 10);
-                                });
+                                    })
+                                    // Bind Select2 selects.
+                                    // $('.select2').select2({
+                                    //     width: null
+                                    // });
+                                    // initializeDateInputs();
+                                }, 10);
                             });
                         });
                     });

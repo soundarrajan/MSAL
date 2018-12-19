@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('ContractPlanningController', ['$scope', '$rootScope', '$element', '$attrs', '$timeout','$sce','$filter','$compile', '$state', '$stateParams', 'STATE', 'LOOKUP_MAP', 'listsModel', 'uiApiModel', 'selectContractModel', 'newRequestModel', 'tenantService', 'IDS', 'EMAIL_TRANSACTION', 'emailModel', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'groupOfRequestsModel', '$uibModal','scheduleDashboardStatusResource', 'ContractPlanningDataSharing','Factory_Master',
-    function($scope, $rootScope, $element, $attrs, $timeout, $sce, $filter,$compile, $state, $stateParams, STATE, LOOKUP_MAP, listsModel, uiApiModel, selectContractModel, newRequestModel, tenantService, IDS, EMAIL_TRANSACTION, emailModel, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, groupOfRequestsModel, $uibModal, scheduleDashboardStatusResource, ContractPlanningDataSharing, Factory_Master) {
+angular.module('shiptech.pages').controller('ContractPlanningController', ['$scope', '$rootScope', '$element', '$attrs', '$timeout','$sce','$filter','$compile', '$state', '$stateParams', 'STATE', 'LOOKUP_MAP', 'uiApiModel', 'selectContractModel', 'newRequestModel', 'tenantService', 'IDS', 'EMAIL_TRANSACTION', 'emailModel', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'groupOfRequestsModel', '$uibModal','scheduleDashboardStatusResource', 'ContractPlanningDataSharing','Factory_Master', '$listsCache',
+    function($scope, $rootScope, $element, $attrs, $timeout, $sce, $filter,$compile, $state, $stateParams, STATE, LOOKUP_MAP, uiApiModel, selectContractModel, newRequestModel, tenantService, IDS, EMAIL_TRANSACTION, emailModel, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, groupOfRequestsModel, $uibModal, scheduleDashboardStatusResource, ContractPlanningDataSharing, Factory_Master, $listsCache) {
         $scope.STATE = STATE;
         $scope.Math = window.Math;
         var ctrl = this;
@@ -30,9 +30,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         ctrl.tableOptions.currentPage = 1;
         ctrl.tableOptions.totalRows = 0;
         ctrl.tableOptions.searchTerm = null;
-        listsModel.get().then(function(data) {
-            ctrl.lists = data;
-        })
+        ctrl.lists = $listsCache;
         //  contract planning data used in clc table
         // $rootScope.contractPlanningData = {
         //     selectedContracts: null

@@ -1,8 +1,8 @@
 angular.module('shiptech.components')
-    .controller('OfferDetailsDialogController', ['$scope', '$element', '$attrs', '$filter', '$timeout', 'listsModel', 'lookupModel', 'uiApiModel', 
-                'newRequestModel', 'groupOfRequestsModel', 'tenantService', 'MOCKUP_MAP', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'COST_TYPE_IDS','COMPONENT_TYPE_IDS',
-        function($scope, $element, $attrs, $filter, $timeout, listsModel, lookupModel, uiApiModel, newRequestModel, groupOfRequestsModel, tenantService,
-                MOCKUP_MAP, LOOKUP_MAP, LOOKUP_TYPE, COST_TYPE_IDS, COMPONENT_TYPE_IDS) {
+    .controller('OfferDetailsDialogController', ['$scope', '$element', '$attrs', '$filter', '$timeout', 'lookupModel', 'uiApiModel', 
+                'newRequestModel', 'groupOfRequestsModel', 'tenantService', 'MOCKUP_MAP', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'COST_TYPE_IDS','COMPONENT_TYPE_IDS', '$listsCache',
+        function($scope, $element, $attrs, $filter, $timeout, lookupModel, uiApiModel, newRequestModel, groupOfRequestsModel, tenantService,
+                MOCKUP_MAP, LOOKUP_MAP, LOOKUP_TYPE, COST_TYPE_IDS, COMPONENT_TYPE_IDS, $listsCache) {
             
             $scope.forms = {};
 
@@ -18,6 +18,7 @@ angular.module('shiptech.components')
             ctrl.requestProduct = null;
             ctrl.requestLocation = null;
             ctrl.productTableNoQuoteCheckAll = false;
+            ctrl.lists = $listsCache;
 
             tenantService.tenantSettings
                         .then(function(settings){
@@ -26,31 +27,25 @@ angular.module('shiptech.components')
                         });
 
             ctrl.$onInit = function() {
-
                 // Get the UI data.
                 uiApiModel.get(MOCKUP_MAP['unrouted.offer-details-dialog'])
-                            .then(function(data){
-                                ctrl.ui = data;
+                    .then(function(data){
+                        ctrl.ui = data;
 
-                                //Normalize relevant data for use in the template.
-                                ctrl.generalInformationFields = normalizeArrayToHash(ctrl.ui.generalInformation.fields, 'name');
-                                ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
-                                ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
-                                ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
+                        //Normalize relevant data for use in the template.
+                        ctrl.generalInformationFields = normalizeArrayToHash(ctrl.ui.generalInformation.fields, 'name');
+                        ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
+                        ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
+                        ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
 
-                                // Get the business data.
-                                listsModel.get()
-                                            .then(function(data) {                                                
-                                                ctrl.lists = data;
-                                                
-                                                lookupModel.getAdditionalCostTypes()
-                                                    .then(function(data) {
-                                                        ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
-                                                    });
-                                            });
+                        // Get the business data.
 
+                                        
+                        lookupModel.getAdditionalCostTypes()
+                            .then(function(data) {
+                                ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
                             });
-
+                        });
             };         
 
             ctrl.$onChanges = function(changes) {

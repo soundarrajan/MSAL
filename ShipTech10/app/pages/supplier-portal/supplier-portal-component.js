@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope', '$rootScope', "Factory_Master", '$element', '$attrs', '$timeout', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP', 'PACKAGES_CONFIGURATION','tenantService','$compile','screenLoader',
-    function($scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, tenantService, $compile,screenLoader) {
+angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope', '$rootScope', "Factory_Master", '$element', '$attrs', '$timeout', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP', 'PACKAGES_CONFIGURATION','tenantService','$compile','screenLoader', '$listsCache',
+    function($scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, tenantService, $compile, screenLoader, $listsCache) {
         var ctrl = this;
         ctrl.token = $stateParams.token;
         $scope.forms = {};
@@ -8,11 +8,13 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
         ctrl.additionalCosts = [];
         ctrl.isSupportedBrowser = true;
         // ctrl.packages = [];
+        ctrl.lists = $listsCache;
+        ctrl.reasons = ctrl.lists.NoQuoteReason;
         ctrl.lookupType = null;
         ctrl.sellerPortalModule = null;
         ctrl.additionalCostApplicableFor = {};
         ctrl.additionalCostTotalAmountSums = {};
-        ctrl.tenantSettings = null;
+        ctrl.tenantSettings = tenantSupplierPortalService.tenantSettings;
         ctrl.offer = null;
         ctrl.loaded = false;
         ctrl.tenantQuoteDisabled = null;
@@ -36,11 +38,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             ctrl.supplierPortalFlag = false;
         }
         ctrl.loadedData = false;
-        tenantSupplierPortalService.tenantSettings.then(function(settings) {
-            ctrl.numberPrecision = settings.payload.defaultValues;
-            ctrl.currency = settings.payload.tenantFormats.currency;
-            ctrl.tenantDefaultUom = settings.payload.tenantFormats.uom;
-        });
+        ctrl.numberPrecision = ctrl.tenantSettings.payload.defaultValues;
+        ctrl.currency = ctrl.tenantSettings.payload.tenantFormats.currency;
+        ctrl.tenantDefaultUom = ctrl.tenantSettings.payload.tenantFormats.uom;
         if ($stateParams.token) {
             browser = browserInfo();
             Payload = {
@@ -220,181 +220,171 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                 ctrl.packages = null;
                 if (typeof(change.source) != 'undefined') {
                     if (change.source.currentValue) {
-                        tenantModel.get().then(function(data) {
-                            ctrl.tenantSettings = data.payload;
-                            // ctrl.currency = ctrl.tenantSettings.tenantFormats.currency;
-                            // console.log('Tenant Settings: ', ctrl.tenantSettings);
-                            uiApiModel.get(MOCKUP_MAP['unrouted.seller-card']).then(function(data) {
-                                ctrl.lookupType = 'products';
-                                ctrl.ui = data;
-                                //Normalize relevant data for use in template.
-                                ctrl.requestDetailsFields = normalizeArrayToHash(ctrl.ui.requestDetails.fields, 'name');
-                                ctrl.bunkerablePortsFields = normalizeArrayToHash(ctrl.ui.bunkerablePorts.fields, 'name');
-                                ctrl.commentsFields = normalizeArrayToHash(ctrl.ui.comments.fields, 'name');
-                                ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
-                                ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
-                                ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
-                                listsModel.get().then(function(data) {
-                                    ctrl.lists = data;
-                                    ctrl.reasons = ctrl.lists.NoQuoteReason;
-                                    console.log(ctrl.lists);
-                                    ctrl.requests = [];
-                                    ctrl.activerequestid = null;
-                                    lookupModel.getAdditionalCostTypes().then(function(data) {
-                                        setTimeout(function() {
-                                            ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
-                                            if (!change.source.currentValue.payload) {
-                                            	return false;
-                                            }
-                                            ctrl.individuals = change.source.currentValue.payload.data.payload.individuals;
-                                            ctrl.packages = change.source.currentValue.payload.data.payload.packages;
-                                            ctrl.cardInitData = change.source.currentValue.initData;
-                                            /*calculate active tab*/
-                                            ctrl.activeTabParams = change.source.currentValue.activeSellerCardTab
-                                            if (ctrl.activeTabParams) {
-                                                if (ctrl.activeTabParams.requestId) {
-                                                    ctrl.active_req = ctrl.activeTabParams.requestId
-                                                    ctrl.tabType = 'individual';
-                                                    $.each(ctrl.individuals, function(k, v) {
-                                                        if (v.request.id == ctrl.activeTabParams.requestId) {
-                                                            activeRequest = v;
-                                                        }
-                                                    })
-                                                    // ctrl.request = activeRequest;
-                                                    // ctrl.onTabClick(activeRequest);
-                                                    if (ctrl.activeTabParams.packageType != 'individual') {
-                                                        if (ctrl.activeTabParams.rfqId != null) {
-                                                            ctrl.tabType = 'package'
-                                                            ctrl.activeRFQ = ctrl.activeTabParams.rfqId;
-                                                            ctrl.isPackageOffer = false
-                                                        } else {
-                                                            ctrl.tabType = 'package';
-                                                            ctrl.activeRFQ = 'surrogate';
-                                                            ctrl.isPackageOffer = false
-                                                        }
-                                                    }
+                        uiApiModel.get(MOCKUP_MAP['unrouted.seller-card']).then(function(data) {
+                            ctrl.lookupType = 'products';
+                            ctrl.ui = data;
+                            //Normalize relevant data for use in template.
+                            ctrl.requestDetailsFields = normalizeArrayToHash(ctrl.ui.requestDetails.fields, 'name');
+                            ctrl.bunkerablePortsFields = normalizeArrayToHash(ctrl.ui.bunkerablePorts.fields, 'name');
+                            ctrl.commentsFields = normalizeArrayToHash(ctrl.ui.comments.fields, 'name');
+                            ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
+                            ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
+                            ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
+                            ctrl.requests = [];
+                            ctrl.activerequestid = null;
+                            lookupModel.getAdditionalCostTypes().then(function(data) {
+                                setTimeout(function() {
+                                    ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
+                                    if (!change.source.currentValue.payload) {
+                                        return false;
+                                    }
+                                    ctrl.individuals = change.source.currentValue.payload.data.payload.individuals;
+                                    ctrl.packages = change.source.currentValue.payload.data.payload.packages;
+                                    ctrl.cardInitData = change.source.currentValue.initData;
+                                    /*calculate active tab*/
+                                    ctrl.activeTabParams = change.source.currentValue.activeSellerCardTab
+                                    if (ctrl.activeTabParams) {
+                                        if (ctrl.activeTabParams.requestId) {
+                                            ctrl.active_req = ctrl.activeTabParams.requestId
+                                            ctrl.tabType = 'individual';
+                                            $.each(ctrl.individuals, function(k, v) {
+                                                if (v.request.id == ctrl.activeTabParams.requestId) {
+                                                    activeRequest = v;
+                                                }
+                                            })
+                                            // ctrl.request = activeRequest;
+                                            // ctrl.onTabClick(activeRequest);
+                                            if (ctrl.activeTabParams.packageType != 'individual') {
+                                                if (ctrl.activeTabParams.rfqId != null) {
+                                                    ctrl.tabType = 'package'
+                                                    ctrl.activeRFQ = ctrl.activeTabParams.rfqId;
+                                                    ctrl.isPackageOffer = false
+                                                } else {
+                                                    ctrl.tabType = 'package';
+                                                    ctrl.activeRFQ = 'surrogate';
+                                                    ctrl.isPackageOffer = false
                                                 }
                                             }
-                                            /* end calculate active tab*/
-                                            ctrl.requests = [];
-                                            ctrl.loaded = true;
-                                            if (typeof(ctrl.currency) == 'undefined') {
-                                                $.each(ctrl.individuals, function(indK, indV) {
-                                                    $.each(indV.products, function(prodK, prodV) {
-                                                        $.each(prodV.sellers, function(selK, selV) {
-                                                            if (selV.quotedByCurrency.id && !ctrl.currency.id) {
-                                                                ctrl.currency = selV.quotedByCurrency
-                                                            }
-                                                        })
-                                                    })
+                                        }
+                                    }
+                                    /* end calculate active tab*/
+                                    ctrl.requests = [];
+                                    ctrl.loaded = true;
+                                    if (typeof(ctrl.currency) == 'undefined') {
+                                        $.each(ctrl.individuals, function(indK, indV) {
+                                            $.each(indV.products, function(prodK, prodV) {
+                                                $.each(prodV.sellers, function(selK, selV) {
+                                                    if (selV.quotedByCurrency.id && !ctrl.currency.id) {
+                                                        ctrl.currency = selV.quotedByCurrency
+                                                    }
                                                 })
-                                                $.each(ctrl.packages, function(indK, indV) {
-                                                    $.each(indV.rfqs, function(rfqK, rfqV) {
-                                                        $.each(rfqV.requests, function(reqK, reqV) {
-                                                            $.each(reqV.locations, function(locK, locV) {
-                                                                $.each(locV.products, function(prodK, prodV) {
-                                                                    $.each(prodV.sellers, function(selK, selV) {
-                                                                        if (selV.quotedByCurrency.id && !ctrl.currency.id) {
-                                                                            ctrl.currency = selV.quotedByCurrency
-                                                                        }
-                                                                    })
-                                                                })
+                                            })
+                                        })
+                                        $.each(ctrl.packages, function(indK, indV) {
+                                            $.each(indV.rfqs, function(rfqK, rfqV) {
+                                                $.each(rfqV.requests, function(reqK, reqV) {
+                                                    $.each(reqV.locations, function(locK, locV) {
+                                                        $.each(locV.products, function(prodK, prodV) {
+                                                            $.each(prodV.sellers, function(selK, selV) {
+                                                                if (selV.quotedByCurrency.id && !ctrl.currency.id) {
+                                                                    ctrl.currency = selV.quotedByCurrency
+                                                                }
                                                             })
                                                         })
                                                     })
                                                 })
-                                            }
-                                            // ctrl.request = ctrl.requests[0];
-                                            req_ids = [];
-                                            $.each(ctrl.individuals, function(k, v) {
-                                                request = v.request;
-                                                request.location = v.requestLocation;
-                                                if (v.physicalSupplier) {
-                                                    v.rand = 'i_' + v.id + '_' + v.physicalSupplier.id;
-                                                } else {
-                                                    v.rand = 'i_' + v.id + '_null';
-                                                }
-                                                if ($.inArray(request.id, req_ids) == -1) {
-                                                    req_ids.push(request.id);
-                                                    ctrl.requests.push(request);
-                                                }
                                             })
-                                            $.each(ctrl.packages, function(k, v) {
-                                                if (v.physicalSupplier) {
-                                                    v.rand = 'p_' + v.id + '_' + v.physicalSupplier.id + '_null';
-                                                } else {
-                                                    v.rand = 'p_' + v.id + '_null' + '_null';
-                                                }
-                                            })
-                                            ctrl.locations = getAllLocations();
-                                            console.log(ctrl.locations)
-                                            /**
-                                             * To be checked
-                                             */
-                                            // for (var i = 0; i < ctrl.individuals.length; i++) {
-                                            //     var offersPS = $filter("filter")(ctrl.request.offers, {
-                                            //         requestLocationId: ctrl.locations.id
-                                            //     });
-                                            //     for (var j = 0; j < offersPS.length; j++) {
-                                            //         for (var k = 0; k < ctrl.individuals[i].products.length; k++) {
-                                            //             for (var l = 0; l < ctrl.individuals[i].products[k].sellers.length; l++) {
-                                            //                 if (ctrl.individuals[i].products[k].sellers[l].offers[0].offer.id == offersPS[j].id) offersPS[j].physicalSupplier = ctrl.individuals[i].products[k].sellers[l].offers[0].physicalSupplierCounterparty;
-                                            //             }
-                                            //         }
-                                            //     }
-                                            // }
-                                            // getLocationsSuppliers();
-                                            // getPackages();
-                                            calculateProductAmountsAllLocations();
-                                            initNoQuoteCheckBoxAllLocations(ctrl.locations);
-                                            // Holds the IDs of the locations checked in the Bunkerable Ports section.
-                                            // It is bound there in the template, so updating it is reflected automagically
-                                            // in the view.
-                                            ctrl.selectedLocationIds = selectAllLocationIds(ctrl.locations);
-                                            ctrl.offer = ctrl.locations[0].products[0].sellers[0].offers[0];
-                                            // if (ctrl.requests.length > 0) {
-                                            //     ctrl.active_req = ctrl.requests[0].id
-                                            // }
-                                            // console.log(ctrl.request);
-                                            /**
-                                             * Mock quote by date & timezone functionality.
-                                             * Delete this to work with real data!
-                                             * TODO: delete this after feature fully tested with live data.
-                                             */
-                                            // ctrl.offer.quoteByDate = mockQuoteDates.quoteByDate;
-                                            // ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry = VALIDATION_STOP_TYPE_IDS.SOFT;
-                                            /* End mockup. */
-                                            quoteByDateInUtc = parseFloat(moment(moment(ctrl.offer.quoteByDate)).format('x')) - parseFloat(ctrl.offer.utcOffset * 60 * 1000);
-                                            timeNowUtc = new Date().getTime();
-                                            quoteByDateExpired = quoteByDateInUtc < timeNowUtc;
-                                            ctrl.tenantQuoteDisabled = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.HARD;
-                                            ctrl.tenantQuoteWarning = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
-                                            // ctrl.tenantQuoteWarning = moment(ctrl.offer.quoteByDate).isBefore() &&
-                                            //                         ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
-                                            // console.log(ctrl.offer);
-                                            addFirstAdditionalCost(null);
-                                            // Get the counterparty contacts to use in the Quoted by select control.
-                                            // lookupModel.getCounterpartyContacts(ctrl.token, getContactCounterparty().id).then(function(data) {
-                                            //     ctrl.counterpartyContacts = data.payload;
-                                            // });
-                                            // lookupModel.getNoQuoteReason(ctrl.token).then(function(data) {
-                                            //     ctrl.reasons = data.payload;
-                                            // });
-                                            $.each(ctrl.locations, function(k, v) {
-                                                var addCost = ctrl.getAdditionalCosts(v);
-                                                $.each(addCost, function(k1, v1) {
-                                                    addPriceUomChg(v1, v)
-                                                })
-                                            })
-                                            // Bind Select2 selects.
-                                            // $('.select2').select2({
-                                            //     width: null
-                                            // });
-                                            ctrl.initializeDateInputs();
-                                            ctrl.initSellersCardNavigation()
-                                        }, 10);
-                                    });
-                                });
+                                        })
+                                    }
+                                    // ctrl.request = ctrl.requests[0];
+                                    req_ids = [];
+                                    $.each(ctrl.individuals, function(k, v) {
+                                        request = v.request;
+                                        request.location = v.requestLocation;
+                                        if (v.physicalSupplier) {
+                                            v.rand = 'i_' + v.id + '_' + v.physicalSupplier.id;
+                                        } else {
+                                            v.rand = 'i_' + v.id + '_null';
+                                        }
+                                        if ($.inArray(request.id, req_ids) == -1) {
+                                            req_ids.push(request.id);
+                                            ctrl.requests.push(request);
+                                        }
+                                    })
+                                    $.each(ctrl.packages, function(k, v) {
+                                        if (v.physicalSupplier) {
+                                            v.rand = 'p_' + v.id + '_' + v.physicalSupplier.id + '_null';
+                                        } else {
+                                            v.rand = 'p_' + v.id + '_null' + '_null';
+                                        }
+                                    })
+                                    ctrl.locations = getAllLocations();
+                                    console.log(ctrl.locations)
+                                    /**
+                                     * To be checked
+                                     */
+                                    // for (var i = 0; i < ctrl.individuals.length; i++) {
+                                    //     var offersPS = $filter("filter")(ctrl.request.offers, {
+                                    //         requestLocationId: ctrl.locations.id
+                                    //     });
+                                    //     for (var j = 0; j < offersPS.length; j++) {
+                                    //         for (var k = 0; k < ctrl.individuals[i].products.length; k++) {
+                                    //             for (var l = 0; l < ctrl.individuals[i].products[k].sellers.length; l++) {
+                                    //                 if (ctrl.individuals[i].products[k].sellers[l].offers[0].offer.id == offersPS[j].id) offersPS[j].physicalSupplier = ctrl.individuals[i].products[k].sellers[l].offers[0].physicalSupplierCounterparty;
+                                    //             }
+                                    //         }
+                                    //     }
+                                    // }
+                                    // getLocationsSuppliers();
+                                    // getPackages();
+                                    calculateProductAmountsAllLocations();
+                                    initNoQuoteCheckBoxAllLocations(ctrl.locations);
+                                    // Holds the IDs of the locations checked in the Bunkerable Ports section.
+                                    // It is bound there in the template, so updating it is reflected automagically
+                                    // in the view.
+                                    ctrl.selectedLocationIds = selectAllLocationIds(ctrl.locations);
+                                    ctrl.offer = ctrl.locations[0].products[0].sellers[0].offers[0];
+                                    // if (ctrl.requests.length > 0) {
+                                    //     ctrl.active_req = ctrl.requests[0].id
+                                    // }
+                                    // console.log(ctrl.request);
+                                    /**
+                                     * Mock quote by date & timezone functionality.
+                                     * Delete this to work with real data!
+                                     * TODO: delete this after feature fully tested with live data.
+                                     */
+                                    // ctrl.offer.quoteByDate = mockQuoteDates.quoteByDate;
+                                    // ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry = VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    /* End mockup. */
+                                    quoteByDateInUtc = parseFloat(moment(moment(ctrl.offer.quoteByDate)).format('x')) - parseFloat(ctrl.offer.utcOffset * 60 * 1000);
+                                    timeNowUtc = new Date().getTime();
+                                    quoteByDateExpired = quoteByDateInUtc < timeNowUtc;
+                                    ctrl.tenantQuoteDisabled = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.HARD;
+                                    ctrl.tenantQuoteWarning = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    // ctrl.tenantQuoteWarning = moment(ctrl.offer.quoteByDate).isBefore() &&
+                                    //                         ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    // console.log(ctrl.offer);
+                                    addFirstAdditionalCost(null);
+                                    // Get the counterparty contacts to use in the Quoted by select control.
+                                    // lookupModel.getCounterpartyContacts(ctrl.token, getContactCounterparty().id).then(function(data) {
+                                    //     ctrl.counterpartyContacts = data.payload;
+                                    // });
+                                    // lookupModel.getNoQuoteReason(ctrl.token).then(function(data) {
+                                    //     ctrl.reasons = data.payload;
+                                    // });
+                                    $.each(ctrl.locations, function(k, v) {
+                                        var addCost = ctrl.getAdditionalCosts(v);
+                                        $.each(addCost, function(k1, v1) {
+                                            addPriceUomChg(v1, v)
+                                        })
+                                    })
+                                    // Bind Select2 selects.
+                                    // $('.select2').select2({
+                                    //     width: null
+                                    // });
+                                    ctrl.initializeDateInputs();
+                                    ctrl.initSellersCardNavigation()
+                                }, 10);
                             });
                         });
                     }
@@ -403,9 +393,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
         }
 
         ctrl.stripDecimals = function(value) {
-        	if (!ctrl.negotiationDisplayDecimal) {
-	        	return Math.round(value);
-        	} else {
+            if (!ctrl.negotiationDisplayDecimal) {
+                return Math.round(value);
+            } else {
         		return value;
         	}
         }

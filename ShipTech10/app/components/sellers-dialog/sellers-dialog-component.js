@@ -38,6 +38,9 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             });
         };
         ctrl.$onChanges = function(changes) {
+            if (!ctrl.ui) {
+                return;
+            }
             var call;
             if (changes.sellerTypes) {
                 ctrl.sellerTypes = changes.sellerTypes.currentValue;

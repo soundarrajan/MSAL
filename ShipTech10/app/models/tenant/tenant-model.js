@@ -26,7 +26,7 @@ angular.module('shiptech.models')
                 return data;
             });
         } else {
-            return data;
+            return tenant;
         }
     }
 

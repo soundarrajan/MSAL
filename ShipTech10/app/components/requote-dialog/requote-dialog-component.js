@@ -1,9 +1,10 @@
 angular.module('shiptech.components')
-    .controller('RequoteDialogController', ['$scope', '$element', '$attrs', '$timeout', 'listsModel', 'MOCKUP_MAP', 'groupOfRequestsModel', 'tenantService', '$state',
-        'EMAIL_TRANSACTION', 'STATE',
-        function($scope, $element, $attrs, $timeout, listsModel, MOCKUP_MAP, groupOfRequestsModel, tenantService, $state,
-            EMAIL_TRANSACTION, STATE) {
+    .controller('RequoteDialogController', ['$scope', '$element', '$attrs', '$timeout', 'MOCKUP_MAP', 'groupOfRequestsModel', 'tenantService', '$state',
+        'EMAIL_TRANSACTION', 'STATE', '$listsCache',
+        function($scope, $element, $attrs, $timeout, MOCKUP_MAP, groupOfRequestsModel, tenantService, $state,
+            EMAIL_TRANSACTION, STATE, $listsCache) {
             var ctrl = this;
+            ctrl.lists = $listsCache;
             // console.log(tenantService.tenantSettings)
             tenantService.tenantSettings.then(function(settings) {
                 ctrl.quoteByTimezone = settings.payload.tenantFormats.timeZone;
@@ -15,10 +16,6 @@ angular.module('shiptech.components')
             tenantService.procurementSettings.then(function(settings) {
 				ctrl.isQuoteDateAutoPopulated = settings.payload.offer.isQuoteDateAutoPopulated;
 			})
-            listsModel.get().then(function(data) {
-                ctrl.lists = data;
-            });
-
 
             function initializeDateInputs() {
                 var date = $(".form_meridian_datetime");

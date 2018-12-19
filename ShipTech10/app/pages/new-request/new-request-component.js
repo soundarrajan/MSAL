@@ -516,7 +516,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         ctrl.buttonsDisabled = false;
                         requestGroup = data.payload;
                         $state.go(STATE.GROUP_OF_REQUESTS, {
-                            group: requestGroup,
+                            // group: requestGroup,
                             groupId: requestGroup[0].requestGroup.id
                         });
                     },

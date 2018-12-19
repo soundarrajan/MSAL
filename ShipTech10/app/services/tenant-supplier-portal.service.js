@@ -11,10 +11,9 @@ angular.module('shiptech')
 	                $tenantSettings = tenantModel.getGlobalConfiguration();
                 }
 
-                $tenantSettings.then(function(data) {
-                                tenantSettings = data.payload;
-                            });
-                
+                tenantSettings = $tenantSettings.payload;
+
+
                 function getDateFormatForPicker() {
                     return dateService.getDateFormatForPicker(tenantSettings);
                 }

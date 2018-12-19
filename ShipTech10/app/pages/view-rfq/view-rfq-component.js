@@ -1,8 +1,8 @@
 angular.module('shiptech.pages')
     .controller('ViewRfqController', ['$scope','$rootScope', '$element', '$attrs', '$timeout', '$state', '$stateParams', 'uiApiModel', 'groupOfRequestsModel', 'tenantService',
-        'listsModel', 'screenActionsModel', 'STATE', 'EMAIL_TRANSACTION', 'SCREEN_ACTIONS', 'screenLoader',
+        'screenActionsModel', 'STATE', 'EMAIL_TRANSACTION', 'SCREEN_ACTIONS', 'screenLoader', '$listsCache',
         function($scope, $rootScope, $element, $attrs, $timeout, $state, $stateParams, uiApiModel, groupOfRequestsModel, tenantService,
-            listsModel, screenActionsModel, STATE, EMAIL_TRANSACTION, SCREEN_ACTIONS, screenLoader) {
+            screenActionsModel, STATE, EMAIL_TRANSACTION, SCREEN_ACTIONS, screenLoader, $listsCache) {
 
             var ctrl = this;
 
@@ -16,6 +16,7 @@ angular.module('shiptech.pages')
             ctrl.buttonsDisabled = false;
             ctrl.multipleRequests = false;
             ctrl.STATUS = {};
+            ctrl.lists = $listsCache;
 
             tenantService.tenantSettings
                         .then(function(settings){
@@ -30,56 +31,52 @@ angular.module('shiptech.pages')
                 ctrl.ui = data;
                 screenLoader.showLoader();
                 // Get the generic data Lists.
-               
-                listsModel.get().then(function(data) {
-        
-                    ctrl.lists = data;
-                    if ($rootScope.bladeRfqGroupId) {ctrl.groupId = $rootScope.bladeRfqGroupId}
-                    if ($rootScope.bladeFilteredRfq) {
-                    	SellerId = $rootScope.bladeFilteredRfq.randUnique.split("-")[0];
-                    	PhysicalSupplierId = $rootScope.bladeFilteredRfq.randUnique.split("-")[1];
-                    	if (PhysicalSupplierId == '') {PhysicalSupplierId = null}
-                    	// LocationId = $rootScope.bladeFilteredRfq.requestLocationId;
-                    	if ($rootScope.bladeFilteredRfq.locationData.location) {
-	                    	LocationId = $rootScope.bladeFilteredRfq.locationData.location.id;
-                    	} else {
-	                    	LocationId = $rootScope.bladeFilteredRfq.locationData.id;
-                    	}
-                    	data = {
-                    		"SellerId" : SellerId,
-                    		"PhysicalSupplierId" : PhysicalSupplierId,
-                    		"LocationId" : LocationId,
-                    		"RequestGroupId" : ctrl.groupId
-                    	}
-                    } else {
-                    	data = {
-                    		"RequestGroupId" : ctrl.groupId
-                    	}
-                    }
-                  
-                    groupOfRequestsModel.getViewRFQ(data).then(function(data){
-                        screenLoader.hideLoader();
-                        ctrl.rfqs = data.payload;
-                        if(ctrl.rfqs.length) {
-                            var id = ctrl.rfqs[0].requestId;
 
-                            //check if multiple requests are selected
-                            for (var i = 1; i < ctrl.rfqs.length; i++) {
-                                if (ctrl.rfqs[i].requestId != id) {
-                                    ctrl.multipleRequests = true;
-                                    break;
-                                }
+                if ($rootScope.bladeRfqGroupId) {ctrl.groupId = $rootScope.bladeRfqGroupId}
+                if ($rootScope.bladeFilteredRfq) {
+                    SellerId = $rootScope.bladeFilteredRfq.randUnique.split("-")[0];
+                    PhysicalSupplierId = $rootScope.bladeFilteredRfq.randUnique.split("-")[1];
+                    if (PhysicalSupplierId == '') {PhysicalSupplierId = null}
+                    // LocationId = $rootScope.bladeFilteredRfq.requestLocationId;
+                    if ($rootScope.bladeFilteredRfq.locationData.location) {
+                        LocationId = $rootScope.bladeFilteredRfq.locationData.location.id;
+                    } else {
+                        LocationId = $rootScope.bladeFilteredRfq.locationData.id;
+                    }
+                    data = {
+                        "SellerId" : SellerId,
+                        "PhysicalSupplierId" : PhysicalSupplierId,
+                        "LocationId" : LocationId,
+                        "RequestGroupId" : ctrl.groupId
+                    }
+                } else {
+                    data = {
+                        "RequestGroupId" : ctrl.groupId
+                    }
+                }
+              
+                groupOfRequestsModel.getViewRFQ(data).then(function(data){
+                    screenLoader.hideLoader();
+                    ctrl.rfqs = data.payload;
+                    if(ctrl.rfqs.length) {
+                        var id = ctrl.rfqs[0].requestId;
+
+                        //check if multiple requests are selected
+                        for (var i = 1; i < ctrl.rfqs.length; i++) {
+                            if (ctrl.rfqs[i].requestId != id) {
+                                ctrl.multipleRequests = true;
+                                break;
                             }
                         }
+                    }
 
-                        $timeout(function(){
-                            ViewRfqDataTable.init({
-                                selector: '#view_rfq_table',
-                                dom:'lBfrtip'
-                            });
-
-                            initializeDateInputs();
+                    $timeout(function(){
+                        ViewRfqDataTable.init({
+                            selector: '#view_rfq_table',
+                            dom:'lBfrtip'
                         });
+
+                        initializeDateInputs();
                     });
                 });
             }).finally(function(){
