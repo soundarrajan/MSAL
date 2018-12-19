@@ -2017,6 +2017,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         vm.changedfields[entityId] = {};
                     }
                     vm.changedfields[entityId]["isChecked"] = cellValue || rowObject.isAssignedContract;
+                    if (!$rootScope.defaultSelectedBestContracts) {
+                    	$rootScope.defaultSelectedBestContracts = [{isChecked:false}];
+                    }
+                    $rootScope.defaultSelectedBestContracts.push(
+                    	{isChecked : rowObject.isAssignedContract}
+                    )
+                    // if (rowObject.isAssignedContract) {
+                    // 	$rootScope.$emit('best_contracts_checkbox', {isChecked: true});
+	                   //  vm.checkChange(entityId);
+                    // }
 
                   
                     var tpl = "<input class='best_contracts_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + ");' /><label class='best_contracts_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";
@@ -3322,6 +3332,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 vm.prepareTableForPrint(tableWidth);
                 window.print();
                 return;
+            }
+            if (icon.action == "delete_layout") {
+            	selectedConfiguration = $("#configurations_list").val();
+            	if (selectedConfiguration) {
+            		filtersScope = angular.element($("#filters-widget-scope")).scope();
+            		filtersScope.deleteConfig({id:selectedConfiguration});
+            		return;
+            	} else {
+            		toastr.error("Please select configuration to be deleted");
+            		return;
+            	}
             }
             if (icon.action == "save_layout") {
               if((!$scope.selectedConfig || ($scope.selectedConfig && !$scope.selectedConfig.name)) &&
