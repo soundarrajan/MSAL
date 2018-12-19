@@ -543,19 +543,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         });
                         break;
                     }
-                    Factory_General_Components.entity_delete(id, Payload, function(callback) {
-                        var confirm = window.confirm('Delete File "' + Payload.name + '"?');
-                        if (confirm) {
-                            if (callback) {
-                                toastr.success("Delete done");
-                                $('[id*="documents_list"]').trigger("reloadGrid");
-                            } else {
-                                toastr.error("Error occured");
-                            }
-                        } else {
-                            toastr.info("Delete cancelled!");
-                        }
-                    });
+                	$scope.showSweetConfirm("Controller_Configurable_List_Control", "The alert is not saved, are you sure you want to close it?", "deleteDocumentFromList("+id+")");
                     break;
                 case "insert":
                     console.log("insert new row");
@@ -565,6 +553,29 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     break;
             }
         };
+
+        $scope.deleteDocumentFromList = function(id) {
+        	$('[id*="documents_list"]').jqGrid.Ascensys.gridData.forEach(function(val, key) {
+                if (id == val.id) {
+                    Payload = val;
+                }
+            });
+            Factory_General_Components.entity_delete(id, Payload, function(callback) {
+                // var confirm = window.confirm('Delete File "' + Payload.name + '"?');
+                if (confirm) {
+                    if (callback) {
+                        toastr.success("Delete done");
+                        $('[id*="documents_list"]').trigger("reloadGrid");
+                    } else {
+                        toastr.error("Error occured");
+                    }
+                } else {
+                    toastr.info("Delete cancelled!");
+                }
+            });        	
+        }
+
+
         $scope.triggerModal = function(id, copy) {
             $rootScope.modal = {
                 source: id
