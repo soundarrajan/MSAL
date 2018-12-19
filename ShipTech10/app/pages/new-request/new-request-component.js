@@ -68,6 +68,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.productIds = [];
         ctrl.tableEntries = 10;
         ctrl.listsCache = $listsCache;
+        ctrl.lists = $listsCache;
         ctrl.tenantSettings = $tenantSettings;
         ctrl.RequestStatusesOrdered = [];
         ctrl.etaEnabled = [];
@@ -164,13 +165,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     ctrl.productInfoFields = normalizeArrayToHash(ctrl.ui.Locations.fields, "name");
                     ctrl.productInfoColumns = normalizeArrayToHash(ctrl.ui.Locations.columns, "name");
                     ctrl.footerSectionFields = normalizeArrayToHash(ctrl.ui.FooterSection.fields, "name");
-                    listsModel.get().then(function(data) {
-                        ctrl.lists = data;
                         $timeout(function() {
                             ctrl.agentCounterpartyTypeId = [IDS.AGENT_COUNTERPARTY_ID];
                             initializeLookupInputs();
                         });
-                    });
+                    // listsModel.get().then(function(data) {
+                    // });
                     if ($stateParams.copyFrom) {
                         newRequestModel.getDefaultBuyer($stateParams.copyFrom.vesselId).then(function(data) {
                             ctrl.disableAllFields = false;// fields enabled at copy

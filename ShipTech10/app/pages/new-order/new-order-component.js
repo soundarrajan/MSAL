@@ -28,6 +28,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
         ctrl.listsCache = $listsCache;
 
+        ctrl.lists = $listsCache;
+
         ctrl.orderConfirmationEmailToLabs = { id: 0, name: '' };
         ctrl.orderConfirmationEmailToSurveyor = { id: 0, name: '' };
         tenantService.tenantSettings.then(function (settings) {
@@ -117,8 +119,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 });
 
                 // Get general-purpose data to be used in lookups etc.
-                listsModel.get().then(function (data) {
-                    ctrl.lists = data;
+                    // ctrl.lists = data;
                     ctrl.lists.Seller = angular.merge(ctrl.lists.Seller, ctrl.lists.ServiceProvider);
                     setAdditionalCostAllowNegative();
 
@@ -140,7 +141,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     lookupModel.getSellerAutocompleteList([IDS.BARGE_COUNTERPARTY_ID]).then(function (data) {
                         ctrl.lists.bargeCounterparties = data.payload;
                     });
-                });
+                // listsModel.get().then(function (data) {
+                // });
 
 		        Factory_Admin.getAgreementTypeIndividualList(true, function(response) {
 		        	ctrl.contractAgreementTypesList = response.payload.contractAgreementTypesList;
