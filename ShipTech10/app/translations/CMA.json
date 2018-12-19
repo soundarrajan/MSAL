@@ -1060,6 +1060,8 @@
     "admin": {
         "NEED_SUPLIER_QUOTE_VALIDITY_DATE_EXPIRY_CHECK": "Need suplier quote validity date expiry check",
         "DISPLYA_PRODUCT_TYPE_IN_REQUEST": "Display product type in request",
+        "OVERRIDE_SELLER_EMAIL_WITH_BROKER_EMAIL?": "Override seller email with broker email?",
+        "POPULATE_REQUEST_COMMENTS_TO": "Populate request comments to",
         "DISPLAY_PRODUCT_TYPE": "Display product type",
 		"DEFAULT_CARRIER_IF_NOT_PAYMENT_COMPANY": "Default carrier if not payment company",
         "IS_NEED_FOR_SUBMIT_FOR_APPROVAL": "Is need for submit for approval",

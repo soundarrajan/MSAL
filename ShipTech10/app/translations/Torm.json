@@ -1060,6 +1060,7 @@
         "NEED_SUPLIER_QUOTE_VALIDITY_DATE_EXPIRY_CHECK": "Need suplier quote validity date expiry check",
         "DISPLYA_PRODUCT_TYPE_IN_REQUEST": "Display product type in request",
         "EMAIL_SERVER_TYPE": "Email server type", 
+        "OVERRIDE_SELLER_EMAIL_WITH_BROKER_EMAIL?": "Override seller email with broker email?",
         "DISPLAY_PRODUCT_TYPE": "Display product type",
         "EMAIL_SERVER_TYPE": "Email server type",
         "INTEGRATIONS_URL": "Integrations URL",
