@@ -12,20 +12,21 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
     "STATE",
     "emailModel",
     "newRequestModel",
-    "listsModel",
     "orderModel",
     "groupOfRequestsModel",
     "$sce",
     "$tenantSettings",
     "payloadDataModel",
     "screenLoader",
-    function($window, $rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, EMAIL_TRANSACTION, STATE, emailModel, newRequestModel, listsModel, orderModel, groupOfRequestsModel, $sce, $tenantSettings, payloadDataModel, screenLoader) {
+    "$listsCache",
+    function($window, $rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, EMAIL_TRANSACTION, STATE, emailModel, newRequestModel, orderModel, groupOfRequestsModel, $sce, $tenantSettings, payloadDataModel, screenLoader, $listsCache) {
         var ctrl = this;
         ctrl.state = $state;
         ctrl.STATE = STATE;
         ctrl.templateList = [];
         ctrl.emailTransactionTypeId = 10;
         ctrl.data = $stateParams.data;
+        ctrl.lists = $listsCache;
         ctrl.transaction = $stateParams.transaction;
         ctrl.multipleRequests = $stateParams.multipleRequests;
         ctrl.template = {
@@ -64,54 +65,31 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         
         //Normalize relevant data for use in the template.
         // Get the generic data Lists.
-        listsModel.get().then(function(data) {
-            ctrl.lists = data;
-            if (ctrl.data.requestStatus) {
-                // if (ctrl.data.requestStatus.name == 'Questionnaire') {
-                //     ctrl.transaction = "ValidatePreRequest";
-                //     ctrl.template = {
-                //         id: 62,
-                //         name: 'Questionnaire'
-                //     };
-                // }
-            }
-            if (ctrl.transaction == "OrderConfirmationToSellerOrVessel") {
-                transactionTypeId = [];
-                $.each(ctrl.lists.EmailTransactionType, function(key, value) {
-                    if (value.name == ctrl.transaction) transactionTypeId.push(value.id);
-                    if (value.name == "OrderReConfirmationToSellerOrVessel") transactionTypeId.push(value.id);
-                    if (value.name == "OrderConfirmationToLabEmail") transactionTypeId.push(value.id);
-                });
-                if (transactionTypeId.length > 1) {
-                    ctrl.emailTransactionTypeId = transactionTypeId.join(",");
-                }
-            } else {
-                var transactionTypeId = $filter("filter")(
-                    ctrl.lists.EmailTransactionType,
-                    {
-                        name: ctrl.transaction
-                    },
-                    true
-                );
-                if (transactionTypeId.length > 0) {
-                    ctrl.emailTransactionTypeId = transactionTypeId[0].id;
-                }
-                if (ctrl.transaction == EMAIL_TRANSACTION.ORDER) {
-                    ctrl.emailTransactionTypeId = '3,14,27,34,24';
-                }
-            }
- 
-            ctrl.loadTemplateList().then(function() {
-                // Get the default template data.
-                if (ctrl.defaultTemplate) {
-                	ctrl.loadTemplate(ctrl.defaultTemplate);
-                	$state.defaultTemplate = null;
-                }else {
-					ctrl.loadTemplate(ctrl.template);
-                } 
+        if (ctrl.transaction == "OrderConfirmationToSellerOrVessel") {
+            transactionTypeId = [];
+            $.each(ctrl.lists.EmailTransactionType, function(key, value) {
+                if (value.name == ctrl.transaction) transactionTypeId.push(value.id);
+                if (value.name == "OrderReConfirmationToSellerOrVessel") transactionTypeId.push(value.id);
+                if (value.name == "OrderConfirmationToLabEmail") transactionTypeId.push(value.id);
             });
-
-        });
+            if (transactionTypeId.length > 1) {
+                ctrl.emailTransactionTypeId = transactionTypeId.join(",");
+            }
+        } else {
+            var transactionTypeId = $filter("filter")(
+                ctrl.lists.EmailTransactionType,
+                {
+                    name: ctrl.transaction
+                },
+                true
+            );
+            if (transactionTypeId.length > 0) {
+                ctrl.emailTransactionTypeId = transactionTypeId[0].id;
+            }
+            if (ctrl.transaction == EMAIL_TRANSACTION.ORDER) {
+                ctrl.emailTransactionTypeId = '3,14,27,34,24';
+            }
+        }
 
         if (ctrl.transaction == EMAIL_TRANSACTION.REQUEST) {
         	if (ctrl.state.params) {
@@ -218,6 +196,16 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 });
             });
         };
+
+        ctrl.loadTemplateList().then(function() {
+            // Get the default template data.
+            if (ctrl.defaultTemplate) {
+                ctrl.loadTemplate(ctrl.defaultTemplate);
+                $state.defaultTemplate = null;
+            } else {
+                ctrl.loadTemplate(ctrl.template);
+            } 
+        });
 
         ctrl.formEmailString = function(data){
             if(typeof data == "object"){
