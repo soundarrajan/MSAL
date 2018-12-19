@@ -2016,13 +2016,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (typeof vm.changedfields[entityId] == "undefined") {
                         vm.changedfields[entityId] = {};
                     }
-                    vm.changedfields[entityId]["isChecked"] = cellValue || rowObject.isAssignedContract;
+                    vm.changedfields[rowObject.id]["isChecked"] = cellValue || rowObject.isAssignedContract;
                     if (!$rootScope.defaultSelectedBestContracts) {
-                    	$rootScope.defaultSelectedBestContracts = [{isChecked:false}];
+                    	$rootScope.defaultSelectedBestContracts = vm.changedfields;
                     }
-                    $rootScope.defaultSelectedBestContracts.push(
-                    	{isChecked : rowObject.isAssignedContract}
-                    )
                     // if (rowObject.isAssignedContract) {
                     // 	$rootScope.$emit('best_contracts_checkbox', {isChecked: true});
 	                   //  vm.checkChange(entityId);

@@ -144,7 +144,9 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
         }
 
         $rootScope.$on("gridDataDone", function(data,res) {
-        	$rootScope.$broadcast('best_contracts_checkbox', $rootScope.defaultSelectedBestContracts);
+        	setTimeout(function(){
+	        	$rootScope.$broadcast('best_contracts_checkbox', $rootScope.defaultSelectedBestContracts);
+        	})
     //     	setTimeout(function(){
 	   //          $scope.resetTreasuryCheckboxes();
 	   //          vm.lastCallTableParams = res;
