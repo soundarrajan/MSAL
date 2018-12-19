@@ -38,9 +38,11 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             ctrl.supplierPortalFlag = false;
         }
         ctrl.loadedData = false;
-        ctrl.numberPrecision = ctrl.tenantSettings.payload.defaultValues;
-        ctrl.currency = ctrl.tenantSettings.payload.tenantFormats.currency;
-        ctrl.tenantDefaultUom = ctrl.tenantSettings.payload.tenantFormats.uom;
+        setTimeout(function() {
+            ctrl.numberPrecision = ctrl.tenantSettings.payload.defaultValues;
+            ctrl.currency = ctrl.tenantSettings.payload.tenantFormats.currency;
+            ctrl.tenantDefaultUom = ctrl.tenantSettings.payload.tenantFormats.uom;
+        });
         if ($stateParams.token) {
             browser = browserInfo();
             Payload = {
