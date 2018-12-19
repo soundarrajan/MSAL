@@ -38,11 +38,17 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             ctrl.supplierPortalFlag = false;
         }
         ctrl.loadedData = false;
-        setTimeout(function() {
-            ctrl.numberPrecision = ctrl.tenantSettings.payload.defaultValues;
-            ctrl.currency = ctrl.tenantSettings.payload.tenantFormats.currency;
-            ctrl.tenantDefaultUom = ctrl.tenantSettings.payload.tenantFormats.uom;
-        });
+        if ($state.current.name == "default.group-of-requests") {
+            ctrl.numberPrecision = tenantSupplierPortalService.tenantSettings.payload.defaultValues;
+            ctrl.currency = tenantSupplierPortalService.tenantSettings.payload.tenantFormats.currency;
+            ctrl.tenantDefaultUom = tenantSupplierPortalService.tenantSettings.payload.tenantFormats.uom;
+        } else {
+            tenantSupplierPortalService.tenantSettings.then(function(settings) {
+                ctrl.numberPrecision = settings.payload.defaultValues;
+                ctrl.currency = settings.payload.tenantFormats.currency;
+                ctrl.tenantDefaultUom = settings.payload.tenantFormats.uom;
+            });
+        }
         if ($stateParams.token) {
             browser = browserInfo();
             Payload = {
