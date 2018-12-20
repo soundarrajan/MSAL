@@ -6276,15 +6276,32 @@
             }
             function fromMaskFormat(format){
                 // debugger;
-                format = format.toLowerCase();
                 var idx = 0;
-                var mask = "";
-                for(idx = 0; idx < format.length; idx++){
-                    if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
-                        mask = mask + "0"; // allow any number
-                   }else{
-                    mask = mask + format[idx];
-                   }
+                var mask = "";  
+                format = format.toLowerCase();
+                if(format.indexOf('mmm') < 0){
+                    // only numbers
+                    for(idx = 0; idx < format.length; idx++){
+                        if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                            mask = mask + "0"; // allow any number
+                       }else{
+                        mask = mask + format[idx];
+                       }
+                    }
+                }else{
+                    // for 'MMM' allow letters
+                    for(idx = 0; idx < format.length; idx++){
+                        if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                            if(format.charCodeAt(idx) == 109){
+                                mask = mask + "A"; // allow any number
+                            }else{
+                                mask = mask + "0"; // allow any number
+                            }
+             
+                       }else{
+                            mask = mask + format[idx];
+                       }
+                    }
                 }
                return mask;
             }
@@ -6374,7 +6391,7 @@
 
         vm.formatDateTimeReverse = function (value){
             var val = moment(value, vm.DATE_OPTIONS.momentFormat, true)
-            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ssZ');
+            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
             return null;
         }
 
@@ -6393,7 +6410,7 @@
                     // every changes goes here
                     var copy = angular.copy($scope.formatDates[name]);
                     $scope.formValues[name] = vm.formatDateTimeReverse(copy);
-                    // console.log( $scope.formatDates[name], $scope.formValues[name]);
+                   // console.log( $scope.formatDates[name], $scope.formValues[name]);
                 },2);
             }
         }
