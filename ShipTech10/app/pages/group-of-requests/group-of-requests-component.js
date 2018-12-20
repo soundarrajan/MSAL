@@ -2244,7 +2244,14 @@ ctrl.setProductData = function(data, loc) {
             var msg= "A Service Provider Seller is required for Sludge Product Type";
 
             $.each(ctrl.requirements, function (requirementK, requirementV) {
-                var product = _.find(_.find(ctrl.locations, { id: requirementV.RequestLocationId }).products, { id: requirementV.RequestProductId });
+                var product = _.find(ctrl.locations, { id: requirementV.RequestLocationId });
+                if (!product || !product.products) {
+                    return false;
+                }
+                product = _.find(product.products, { id: requirementV.RequestProductId });
+                if (!product || !product.productTypeId) {
+                    return false;
+                }
                 var productTypeId = product.productTypeId;
                 var seller = _.find(product.sellers, { sellerCounterparty: { id: requirementV.SellerId } });
                 sellerTypeSludge = false
