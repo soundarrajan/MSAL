@@ -5331,6 +5331,17 @@ APP_API.factory("$Api_Service", [
                     }
 
 
+                    if (param.clc_id == "procurement_contractplanning") {
+                    	if (window.lastCallData) {
+	                    	if ( (JSON.stringify(window.lastCallData.Payload) == JSON.stringify(apiJSON)) && (new Date() - window.lastCallData.Time) < 1000 ) {
+	                    		return;
+	                    	}
+                    	}
+                    	window.lastCallData = {
+                    		'Payload' : apiJSON,
+                    		'Time' : new Date()
+                    	};
+                    }
 
                     $http.post(url, angular.toJson(apiJSON)).then(
                         function successCallback(response) {
