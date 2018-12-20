@@ -6270,11 +6270,12 @@
                 return str;
             }
 
-            function formMomentFormat(format){
+            function formMomentFormat(format, dateOnly){
                 var date = format.split(" ")[0].toUpperCase();
+                if(dateOnly) return date;
                 return date + " HH:mm"; // default 24hours and minutes
             }
-            function fromMaskFormat(format){
+            function formMaskFormat(format, dateOnly){
                 // debugger;
                 var idx = 0;
                 var mask = "";  
@@ -6293,7 +6294,7 @@
                     for(idx = 0; idx < format.length; idx++){
                         if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
                             if(format.charCodeAt(idx) == 109){
-                                mask = mask + "A"; // allow any number
+                                mask = mask + "A"; // allow any letter
                             }else{
                                 mask = mask + "0"; // allow any number
                             }
@@ -6303,7 +6304,8 @@
                        }
                     }
                 }
-               return mask;
+                if(dateOnly) return mask.split(" ")[0];
+                return mask;
             }
 
             // end helper functions
@@ -6315,73 +6317,85 @@
             var SEPARATOR = findSeparator(currentFormat);
       
             var momentFormat = formMomentFormat(currentFormat);
-            var maskFormat = fromMaskFormat(currentFormat);
+            var momentFormatDateOnly = formMomentFormat(currentFormat, true);
+            var maskFormat = formMaskFormat(currentFormat);
+            var maskFormatDateOnly = formMaskFormat(currentFormat, true);
 
 
             vm.DATE_OPTIONS = {
                 datePositions: DATE_POSITIONS,
                 separator: SEPARATOR,
                 momentFormat: momentFormat,
-                maskFormat: maskFormat
+                momentFormatDateOnly: momentFormatDateOnly,
+                maskFormat: maskFormat,
+                maskFormatDateOnly: maskFormatDateOnly
             }
 
             /// end variables initialization
         
 
-
             // mask options
             var options =  {
                 translation: {
                     //-----  date 
-
                     //1. day
                     d: {pattern: /[0-2]/}, // fist digit of day ( 0 / 2 ),
                     e: {pattern: /[0-9]/}, // second digit of day ( 0 / 9 ),
                     f: {pattern: /[0-1]/}, // second digit of day ( 0 / 1 ),
-
                     // 2. month
                     m: {pattern: /[0-1]/}, // first digit of month ( 0 / 1)
                     n: { pattern: /[0-9]/}, // second digit of month ( 0 -9 )
                     o: { pattern: /[0-2]/ },// second digit of month ( 0 -2 )
-
                     // 3. year
                     y: {pattern: /[0-9]/},
-             
-
                     // ----- hour
-
                     // 4. hour
                     h: { pattern: /[0-2]/}, // first digit of hour ( 0 - 2)
                     j: { pattern: /[0-9]/}, // second digit of hour ( 0 - 9 )
                     K: { pattern: /[0-4]/}, // second digit of hour ( 0 - 4)
-
                     // 5. min
                     a: { pattern: /[0-5]/}, // first digit of minute ( 0 - 5 )
                     b: { pattern: /[0-9]/}, // second digit of minute ( 0 - 9)
                 },
                 onKeyPress: function(value, e, field, options) {
-                    // console.log(momentFormat, value);
-                    // console.log(val.toDate(), val.isValid());
-
-                    var val = moment(value, momentFormat, true);
-
-                    if(val.isValid()){
-                        vm.invalidDate['berthingTime'] = false;
+                    // select formatter
+                    var formatUsed = "";
+                    if(field.hasClass('date-only')){
+                        formatUsed  = vm.DATE_OPTIONS.momentFormatDateOnly;
                     }else{
-                        vm.invalidDate['berthingTime'] = true;
+                        formatUsed  = vm.DATE_OPTIONS.momentFormat;
                     }
-                },
-                onClick: function(value,e,field,options){
-                    debugger;
+                   
+                    // process date
+                    var val = moment(value, formatUsed, true);
+
+                    // console.log(field.hasClass('date-only'))
+                    // console.log(val, val.isValid());
+                    
+                    // test date validity
+                    if(val.isValid()){
+                        vm.invalidDate[field[0].name] = false;
+                    }else{
+                        vm.invalidDate[field[0].name] = true;
+                    }
                 }
             }
             // end mask options
 
-            console.log("set mask format", maskFormat);
 
             // ACTUAL MASK INITIALIZATION
 
-            $('.formatted-date-input').mask(maskFormat, options);
+            var dateTime = $('.formatted-date-input.date-time');
+            $.each(dateTime, function(key){
+                $(dateTime[key]).mask(maskFormat, options);
+            })
+            var dateOnly = $('.formatted-date-input.date-only');
+            $.each(dateOnly, function(key){
+                $(dateOnly[key]).mask(maskFormatDateOnly, options);
+            })
+
+            // END ACTUAL MASK INITIALIZATION
+            
         }
 
         vm.initValidityForDate = function(name){
@@ -6395,12 +6409,17 @@
             return null;
         }
 
-        vm.setValue = function(name, direction){
+        vm.setValue = function(name, direction, simpleDate, app){
             // debugger;
             if(direction == 1){
                 // datepicker input -> date typing input
-                $timeout(function() { 
-                    $scope.formatDates[name] = vm.formatDateTime($scope.formValues[name], $scope.tenantSetting.tenantFormats.dateFormat);
+                $timeout(function() {
+                    if(simpleDate){
+                        $scope.formatDates[name] = vm.formatSimpleDate($scope.formValues[name],$scope.tenantSetting.tenantFormats.dateFormat, app)
+                    } else{
+
+                        $scope.formatDates[name] = vm.formatDateTime($scope.formValues[name], $scope.tenantSetting.tenantFormats.dateFormat);
+                    }
                     // console.log( $scope.formatDates[name], $scope.formValues[name]);
                 },2);
             }

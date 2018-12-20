@@ -585,14 +585,14 @@ span.variance {
     z-index: 1;
     border: 1px solid #c2cad8;
     width: 89%;
-    height: 97%;
+    height: 98%;
     background-color: white !important;
 	outline: none;
 }
 .input-group .formatted-date-input[ng-invalid="true"]{
     border: 1px solid red;
 }
-.hidden-from-input{
+.hidden-form-input{
     display: none !important;
 }
 
