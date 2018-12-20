@@ -29,13 +29,16 @@
             <div class="form_input form_input_berthing_time">
          
                     
-                <div class="input-group date-picker datetime-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''" id="berthingTimeDP">
-                    <!-- datepicker input -->
-                    <input class="form-control" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="triggerChangeFields('berthingTime','berthingTime'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside); CM.setValue('berthingTime', 1) " ng-invalid="{{ CM.invalidDate['berthingTime'] && !inputFocus['berthingTime'] }}" />
+                <div class="input-group " ng-class="field.disabled ? 'disabled' : ''" id="berthingTimeDP">
+ 
                     <!-- manual input -->
-                    <input class="formatted-date-input" ng-model="formatDates.berthingTime" ng-change="CM.setValue('berthingTime', 2)" ng-focus="inputFocus['berthingTime'] = true;" ng-blur="inputFocus['berthingTime'] = false;">
+                    <input class="formatted-date-input" ng-model="formatDates.berthingTime" ng-change="CM.setValue('berthingTime', 2)" ng-focus="inputFocus['berthingTime'] = true; $event.stopPropagation();" ng-blur="inputFocus['berthingTime'] = false;" ng-invalid="{{ CM.invalidDate['berthingTime'] && !inputFocus['berthingTime'] }}" >
+
                     <span ng-init="setLimitForPickers('berthing',formValues.berthingTime); CM.setValue('berthingTime', 1)" ng-if="formValues.berthingTime"></span>
-                    <span class="input-group-btn ">
+
+                    <span class="input-group-btn date-picker datetime-picker  date form_meridian_datetime">
+                        <!-- datepicker input -->
+                        <input class="form-control hidden-from-input" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="triggerChangeFields('berthingTime','berthingTime'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside); CM.setValue('berthingTime', 1) "  visibility="hidden"/>
                         <button class="btn default date-set" type="button">
                             <i class="fa fa-calendar"></i>
                         </button>

@@ -6397,6 +6397,10 @@
                 },2);
             }
         }
+        vm.stopPropagation = function($event){
+            console.log($event);
+            $event.stopPropagation();
+        }
 
     }
 ]);

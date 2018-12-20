@@ -579,15 +579,21 @@ span.variance {
 }
 .input-group .formatted-date-input{
 	position: absolute;
-    top: 1px;
+    top: 0px;
     left: 1px;
     padding-left: 7px;
     z-index: 1;
-    border: 0;
-    width: 88%;
-    height: 93%;
+    border: 1px solid #c2cad8;
+    width: 89%;
+    height: 97%;
     background-color: white !important;
 	outline: none;
+}
+.input-group .formatted-date-input[ng-invalid="true"]{
+    border: 1px solid red;
+}
+.hidden-from-input{
+    display: none !important;
 }
 
 .date-picker button.date-set[disabled="disabled"] {
