@@ -324,6 +324,10 @@ clc-table-list>.jqgrid_component {
     border-color: red!important;
 }
 
+input[ng-invalid="true"]{
+    border-color: red!important;
+}
+
 /*input.ng-invalid, select.ng-invalid, button.ng-invalid, button.grey.ng-invalid,.dynamic_form_editor input.ng-invalid ~ .formatted-date {
     border-color: #e73d4a!important;
 }*/
@@ -382,8 +386,9 @@ textarea#reasonToStopSellerPayment {
 }
 
 .dynamic_form_editor .portlet .form-group .form_input .form-control, .form_input_Contacts input, .dynamic_form_editor .form_input_Contacts .input-group {
-    width: 100%
+    width: 100%;
 }
+
 
 .dynamic_form_editor .portlet .form-group .form_input .form-control.bootstrap-select {
     width: 100% !important;
@@ -568,6 +573,21 @@ span.variance {
     border: 1px solid #c2cad8;
     padding: 6px 12px;
     padding-right: 40px;
+}
+.input-group input.form-control{
+	z-index:0
+}
+.input-group .formatted-date-input{
+	position: absolute;
+    top: 1px;
+    left: 1px;
+    padding-left: 7px;
+    z-index: 1;
+    border: 0;
+    width: 88%;
+    height: 93%;
+    background-color: white !important;
+	outline: none;
 }
 
 .date-picker button.date-set[disabled="disabled"] {

@@ -18,17 +18,24 @@
     </div>
 
     <!-- berthing time -->
-    <div class="col-md-4" ng-init="CM.datepickers(); setLimitForPickers()">
+    <div class="col-md-4" ng-init="CM.datepickers(); setLimitForPickers(); CM.initMask(); CM.initValidityForDate()">
         <div class="form-group row">
             <label for="berthingTime" class="berthing_time_label">
                 {{ CM.app_id + '.BERTHING_TIME' | translate }}
+
+                <!-- {{ formValues.berthingTime }}
+                {{ formatDates.berthingTime }} -->
             </label>
             <div class="form_input form_input_berthing_time">
+         
+                    
                 <div class="input-group date-picker datetime-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''" id="berthingTimeDP">
-                    <input class="form-control" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="triggerChangeFields('berthingTime','berthingTime'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside)"/>
-                    <span class="formatted-date" ng-bind="CM.formatDateTime(formValues.berthingTime, tenantSetting.tenantFormats.dateFormat)" ></span>
-                    <span ng-init="setLimitForPickers('berthing',formValues.berthingTime)" ng-if="formValues.berthingTime"></span>
-                    <span class="input-group-btn">
+                    <!-- datepicker input -->
+                    <input class="form-control" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="triggerChangeFields('berthingTime','berthingTime'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside); CM.setValue('berthingTime', 1) " ng-invalid="{{ CM.invalidDate['berthingTime'] && !inputFocus['berthingTime'] }}" />
+                    <!-- manual input -->
+                    <input class="formatted-date-input" ng-model="formatDates.berthingTime" ng-change="CM.setValue('berthingTime', 2)" ng-focus="inputFocus['berthingTime'] = true;" ng-blur="inputFocus['berthingTime'] = false;">
+                    <span ng-init="setLimitForPickers('berthing',formValues.berthingTime); CM.setValue('berthingTime', 1)" ng-if="formValues.berthingTime"></span>
+                    <span class="input-group-btn ">
                         <button class="btn default date-set" type="button">
                             <i class="fa fa-calendar"></i>
                         </button>

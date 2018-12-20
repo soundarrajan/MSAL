@@ -6212,7 +6212,191 @@
 	    $rootScope.$on("setInvoiceApplicableFor", function(e, data){
 	    	$scope.dtMasterSource.applyFor = data;
 	    	vm.invoiceApplicableForProducts = data;
-	    })
+        })
+        
+        vm.initMask = function(){
+            vm.formatted = "";
+            if(!$scope.formatDates)  $scope.formatDates = {};
+
+            //  helper functions 
+            var datePositions = {
+                day: 0,
+                month: 0,
+                year: 0
+            }
+            var charCodes = {
+                47: "/",
+                45: "-",
+                46: "."
+            }
+            function parseHour(str){
+                str = str.split(" ")[1];
+                return {
+                    hours: str.split(":")[0],
+                    minutes: str.split(":")[1]
+                }
+            }
+            function parseDate(str, separator, positions){
+                str = str.split(" ")[0];
+                return {
+                    day: str.split(separator)[positions['day']],
+                    month: str.split(separator)[positions['month']],
+                    year: str.split(separator)[positions['year']]
+                }
+            }
+
+            function findSeparator(str){
+                var idx = 0;
+                while(charCodes[str[idx].charCodeAt(0)] === undefined) idx++;
+                return str[idx];
+            }
+
+
+            function calculateDatePositions(format){
+                format = format.toLowerCase();
+                format = format.split(" ")[0]; // remove hour
+                var separator = findSeparator(format)
+                var bits = format.split(separator);
+                $.each(bits, function(key,val){
+                     if(val.indexOf("y") >= 0) datePositions['year'] = key;
+                     if(val.indexOf("m") >= 0) datePositions['month'] = key;
+                     if(val.indexOf("d") >= 0) datePositions['day'] = key;
+                })
+
+                return datePositions;
+            }
+            function normalizeFormatter(str){
+                str.replace("MMM","MM");
+                return str;
+            }
+
+            function formMomentFormat(format){
+                var date = format.split(" ")[0].toUpperCase();
+                return date + " HH:mm"; // default 24hours and minutes
+            }
+            function fromMaskFormat(format){
+                // debugger;
+                format = format.toLowerCase();
+                var idx = 0;
+                var mask = "";
+                for(idx = 0; idx < format.length; idx++){
+                    if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                        mask = mask + "0"; // allow any number
+                   }else{
+                    mask = mask + format[idx];
+                   }
+                }
+               return mask;
+            }
+
+            // end helper functions
+
+            /// initialization
+            var currentFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+
+            var DATE_POSITIONS = calculateDatePositions(currentFormat);
+            var SEPARATOR = findSeparator(currentFormat);
+      
+            var momentFormat = formMomentFormat(currentFormat);
+            var maskFormat = fromMaskFormat(currentFormat);
+
+
+            vm.DATE_OPTIONS = {
+                datePositions: DATE_POSITIONS,
+                separator: SEPARATOR,
+                momentFormat: momentFormat,
+                maskFormat: maskFormat
+            }
+
+            /// end variables initialization
+        
+
+
+            // mask options
+            var options =  {
+                translation: {
+                    //-----  date 
+
+                    //1. day
+                    d: {pattern: /[0-2]/}, // fist digit of day ( 0 / 2 ),
+                    e: {pattern: /[0-9]/}, // second digit of day ( 0 / 9 ),
+                    f: {pattern: /[0-1]/}, // second digit of day ( 0 / 1 ),
+
+                    // 2. month
+                    m: {pattern: /[0-1]/}, // first digit of month ( 0 / 1)
+                    n: { pattern: /[0-9]/}, // second digit of month ( 0 -9 )
+                    o: { pattern: /[0-2]/ },// second digit of month ( 0 -2 )
+
+                    // 3. year
+                    y: {pattern: /[0-9]/},
+             
+
+                    // ----- hour
+
+                    // 4. hour
+                    h: { pattern: /[0-2]/}, // first digit of hour ( 0 - 2)
+                    j: { pattern: /[0-9]/}, // second digit of hour ( 0 - 9 )
+                    K: { pattern: /[0-4]/}, // second digit of hour ( 0 - 4)
+
+                    // 5. min
+                    a: { pattern: /[0-5]/}, // first digit of minute ( 0 - 5 )
+                    b: { pattern: /[0-9]/}, // second digit of minute ( 0 - 9)
+                },
+                onKeyPress: function(value, e, field, options) {
+                    // console.log(momentFormat, value);
+                    // console.log(val.toDate(), val.isValid());
+
+                    let val = moment(value, momentFormat, true);
+
+                    if(val.isValid()){
+                        vm.invalidDate['berthingTime'] = false;
+                    }else{
+                        vm.invalidDate['berthingTime'] = true;
+                    }
+                },
+                onClick: function(value,e,field,options){
+                    debugger;
+                }
+            }
+            // end mask options
+
+            console.log("set mask format", maskFormat);
+
+            // ACTUAL MASK INITIALIZATION
+
+            $('.formatted-date-input').mask(maskFormat, options);
+        }
+
+        vm.initValidityForDate = function(name){
+            if(vm.invalidDate === undefined) vm.invalidDate = {};
+            vm.invalidDate[name] = false;
+        }
+
+        vm.formatDateTimeReverse = function (value){
+            var val = moment(value, vm.DATE_OPTIONS.momentFormat, true)
+            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ssZ');
+            return null;
+        }
+
+        vm.setValue = function(name, direction){
+            // debugger;
+            if(direction == 1){
+                // datepicker input -> date typing input
+                $timeout(function() { 
+                    $scope.formatDates[name] = vm.formatDateTime($scope.formValues[name], $scope.tenantSetting.tenantFormats.dateFormat);
+                    // console.log( $scope.formatDates[name], $scope.formValues[name]);
+                },2);
+            }
+            if(direction == 2){
+                // date typing input -> datepicker input 
+                $timeout(function() { 
+                    // every changes goes here
+                    var copy = angular.copy($scope.formatDates[name]);
+                    $scope.formValues[name] = vm.formatDateTimeReverse(copy);
+                    // console.log( $scope.formatDates[name], $scope.formValues[name]);
+                },2);
+            }
+        }
 
     }
 ]);
