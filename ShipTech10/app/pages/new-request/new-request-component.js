@@ -602,7 +602,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         if (_.isEmpty(ctrl.request.locations[i].agent)) ctrl.request.locations[i].agent = null;
                     }
                 }
-                ctrl.request.footerSection.isPrerequest = ctrl.requestTenantSettings.isPrerequestEnabled;
+                if (ctrl.request.footerSection) {
+	                ctrl.request.footerSection.isPrerequest = ctrl.requestTenantSettings.isPrerequestEnabled;
+                }
                 if (ctrl.isNewRequest) {
                     screenLoader.showLoader();
                     newRequestModel.createRequest(ctrl.request).then(
@@ -1558,7 +1560,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 }
             });
             // console.log(ctrl.request);
-            ctrl.request.footerSection.validatedBy = ctrl.request.footerSection.validatedBy ? ctrl.request.footerSection.validatedBy : ctrl.lists.contacts[0];
+            if (ctrl.request.footerSection) {
+	            ctrl.request.footerSection.validatedBy = ctrl.request.footerSection.validatedBy ? ctrl.request.footerSection.validatedBy : ctrl.lists.contacts[0];
+            }
         };
         ctrl.selectPort = function(locationId, extraInfo) {
             if ($scope.portsModal) {
