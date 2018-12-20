@@ -6346,7 +6346,7 @@
                     // console.log(momentFormat, value);
                     // console.log(val.toDate(), val.isValid());
 
-                    let val = moment(value, momentFormat, true);
+                    var val = moment(value, momentFormat, true);
 
                     if(val.isValid()){
                         vm.invalidDate['berthingTime'] = false;
