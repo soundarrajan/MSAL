@@ -23,7 +23,8 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
 
     tenantService.tenantSettings.then(function (settings) {
         ctrl.defaultContractAgreementType = settings.payload.defaultValues.defaultContractAgreementType;
-        if(!$scope.formValues.agreementType) {
+        if(!$scope.formValues.agreementType && !$rootScope.defaultedContractAgreementType) {
+        	$rootScope.defaultedContractAgreementType = true;
             $scope.formValues.agreementType =  ctrl.defaultContractAgreementType;
 	        $scope.triggerChangeFieldsAppSpecific("AgreementType")
         }
