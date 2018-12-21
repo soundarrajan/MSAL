@@ -25,37 +25,43 @@
         <div class="row margin-top-10">
 
             <!--  current product: -->
-            <!-- formValues['deliveryProducts']['productIndex']['qualityHeader']['analysedOn'] -->
+            <!-- formValues.deliveryProducts[productIndex].qualityHeader.analysedOn -->
   
             <span ng-init="CM.initMask()"></span>
             <div class="col-xs-4" ng-init="CM.datepickers(null, nuul, 'date');">
                 <div class="form-group row">
                     <label for="Product_{{ productIndex }}_analysedOn" class="analysed_on_label">
                         {{ CM.app_id + '.ANALYSED_ON' | translate }} 
-<!-- {{ productIndex }} -->
-                        <!-- {{ formValues['deliveryProducts'][productIndex]['qualityHeader']['analysedOn']  }} -->
-                        <!-- [productIndex] -->
+
                     </label>
                     <div class="form_input form_input_analysed_on">
                         <div class="input-group " ng-class="field.disabled ? 'disabled' : ''">
-                                <span ng-init="CM.setValue('['deliveryProducts'][productIndex]['qualityHeader']['analysedOn']', 1, true)" 
+                                <span ng-init="CM.setValue({
+                                    path: 'formValues.deliveryProducts[' + productIndex + '].qualityHeader.analysedOn',
+                                    root: '$scope',
+                                    pickerId: productIndex + '_analysedOn'
+                                }, 1, true)" 
                                       ng-if="formValues['deliveryProducts'][productIndex]['qualityHeader']['analysedOn']"></span>
                        
                                 <!-- manual input -->
                                 <input class="formatted-date-input date-only" 
-                                      ng-model="formatDates['deliveryProducts'][productIndex]['qualityHeader']['analysedOn']" 
+                                      ng-model="formatDates.formValues.deliveryProducts[productIndex].qualityHeader.analysedOn" 
                                       ng-change="CM.setValue({
-                                          type: 'eval',
-                                          path: 'formValues.deliveryProducts[' + productIndex + '].qualityHeader.analysedOn',
-                                          event: event
+                                        path: 'formValues.deliveryProducts[' + productIndex + '].qualityHeader.analysedOn',
+                                        root: '$scope',
+                                        pickerId: productIndex + '_analysedOn'
                                       }, 2, true)" 
                                       ng-focus="inputFocus[productIndex + '_ analysedOn'] = true; $event.stopPropagation(); event = $event" 
                                       ng-blur="inputFocus[productIndex + '_ analysedOn'] = false;" 
-                                      ng-invalid="{{ CM.invalidDate[productIndex + '_ analysedOn'] && !inputFocus[productIndex + '_ analysedOn'] }}" name="productIndex + '_ analysedOn'">
+                                      ng-invalid="{{ CM.invalidDate[productIndex + '_ analysedOn'] && !inputFocus[productIndex + '_ analysedOn'] }}" name="productIndex + '_analysedOn'">
 
-                            <span class="input-group-btn date-picker date form_meridian_datetime" id="['deliveryProducts'][ {{ productIndex }} ]['qualityHeader']['analysedOn']" >
+                            <span class="input-group-btn date-picker date form_meridian_datetime" id="productIndex + '_analysedOn'" >
                                 <!-- datepicker input -->
-                                <input class="form-control hidden-form-input" type="text" id="Product_{{ productIndex }}_analysedOn" ng-model="product.qualityHeader.analysedOn" ng-required="false" name="Product_{{ productIndex }}_analysedOn" />
+                                <input class="form-control hidden-form-input" type="text" id="Product_{{ productIndex }}_analysedOn" ng-model="product.qualityHeader.analysedOn" ng-required="false" name="Product_{{ productIndex }}_analysedOn" ng-change="CM.setValue({
+                                    path: 'formValues.deliveryProducts[' + productIndex + '].qualityHeader.analysedOn',
+                                    root: '$scope',
+                                    pickerId: productIndex + '_analysedOn'
+                                }, 1, true)" />
                                 <button class="btn default date-set" type="button" visibility="hidden">
                                     <i class="fa fa-calendar"></i>
                                 </button>
