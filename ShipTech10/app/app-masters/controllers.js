@@ -6416,10 +6416,13 @@
         vm.setValue = function(name, direction, simpleDate, app){
             // debugger;
 
+
 			if(typeof name == "object") {
 	            modelElementScope = angular.element($(event.target).parent()).scope();
 	            KBmodifiedDateVal = $(event.target).val();
+				
 			}
+
 
             if(direction == 1){
                 // datepicker input -> date typing input
