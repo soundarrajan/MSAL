@@ -33,7 +33,7 @@
 
                     <span ng-init="setLimitForPickers('berthing',formValues.berthingTime); CM.setValue('berthingTime', 1)" ng-if="formValues.berthingTime"></span>
 
-                    <span class="input-group-btn date-picker datetime-picker  date form_meridian_datetime">
+                    <span class="input-group-btn date-picker datetime-picker  date form_meridian_datetime" id="berthingTime">
                         <!-- datepicker input -->
                         <input class="form-control hidden-form-input" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="triggerChangeFields('berthingTime','berthingTime'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside); CM.setValue('berthingTime', 1) "  visibility="hidden"/>
                         <button class="btn default date-set" type="button">
@@ -62,7 +62,7 @@
                     <!-- manual input -->
                     <input class="formatted-date-input date-time" ng-model="formatDates.bargeAlongside" ng-change="CM.setValue('bargeAlongside', 2)" ng-focus="inputFocus['bargeAlongside'] = true; $event.stopPropagation();" ng-blur="inputFocus['bargeAlongside'] = false;" ng-invalid="{{ CM.invalidDate['bargeAlongside'] && !inputFocus['bargeAlongside'] }}" name="bargeAlongside">
 
-                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime">
+                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="bargeAlongside">
                         <!-- datepicker input -->
                         <input class="form-control hidden-form-input" type="text" id="bargeAlongside" ng-model="formValues.bargeAlongside" name="bargeAlongside" ng-change="triggerChangeFields('bargeAlongside','bargeAlongside'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside); CM.setValue('bargeAlongside', 1) " visibility="hidden"/>
                         <button class="btn default date-set" type="button">
@@ -106,7 +106,7 @@
                     <!-- manual input -->
                     <input class="formatted-date-input date-time" ng-model="formatDates.bargePumpingRateStartTime" ng-change="CM.setValue('bargePumpingRateStartTime', 2)" ng-focus="inputFocus['bargePumpingRateStartTime'] = true; $event.stopPropagation();" ng-blur="inputFocus['bargePumpingRateStartTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateStartTime'] && !inputFocus['bargePumpingRateStartTime'] }}" name="bargePumpingRateStartTime">
             
-                    <span class="input-group-btn  date-picker datetime-picker date form_meridian_datetime" id="pumpingStartDP">
+                    <span class="input-group-btn  date-picker datetime-picker date form_meridian_datetime" id="bargePumpingRateStartTime">
                           <!-- datepicker input -->
                           <input class="form-control hidden-form-input" type="text" id="pumpingStart" ng-model="formValues.bargePumpingRateStartTime" ng-change="triggerChangeFields('pumpingStart','pumpingStart'); formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime); calculatePumpingRate(formValues.pumpingDuration,0); CM.setValue('bargePumpingRateStartTime', 1)" visibility="hidden"/>
 
@@ -139,7 +139,7 @@
                     <!-- manual input -->
                     <input class="formatted-date-input date-time" ng-model="formatDates.bargePumpingRateEndTime" ng-change="CM.setValue('bargePumpingRateEndTime', 2)" ng-focus="inputFocus['bargePumpingRateEndTime'] = true; $event.stopPropagation();" ng-blur="inputFocus['bargePumpingRateEndTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateEndTime'] && !inputFocus['bargePumpingRateEndTime'] }}" name="bargePumpingRateEndTime">
                    
-                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime">
+                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="bargePumpingRateEndTime">
                         <!-- datepicker input -->
                         <input class="form-control hidden-form-input" type="text" id="pumpingEnd" ng-model="formValues.bargePumpingRateEndTime" ng-min="formValues.bargePumpingRateStartTime" ng-change="triggerChangeFields('pumpingEnd','pumpingEnd'); formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime); calculatePumpingRate(formValues.pumpingDuration,0); CM.setValue('bargePumpingRateEndTime', 1)" visibility="hidden"/>
                         <button class="btn default date-set" type="button">
@@ -198,9 +198,9 @@
                     <span ng-init="CM.setValue('deliveryDate', 1, true, 'delivery')" ng-if="formValues.deliveryDate"></span>
 
                     <!-- manual input -->
-                    <input class="formatted-date-input date-only" ng-model="formatDates.deliveryDate" ng-change="CM.setValue('deliveryDate', 2)" ng-focus="inputFocus['deliveryDate'] = true; $event.stopPropagation();" ng-blur="inputFocus['deliveryDate'] = false;" ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] }}" name="deliveryDate">
+                    <input class="formatted-date-input date-only" ng-model="formatDates.deliveryDate" ng-change="CM.setValue('deliveryDate', 2, true)" ng-focus="inputFocus['deliveryDate'] = true; $event.stopPropagation();" ng-blur="inputFocus['deliveryDate'] = false;" ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] }}" name="deliveryDate">
 
-                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable">
+                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" id="deliveryDate">
                         <!-- datepicker input -->
                         <input class="form-control hidden-form-input" type="text" id="deliveryDate" ng-model="formValues.deliveryDate" name="deliveryDate" ng-disabled="!CM.isEditable" ng-change="CM.setValue('deliveryDate', 1, true, 'delivery')"/>
                         <button class="btn default date-set" type="button" ng-disabled="!CM.isEditable">
@@ -233,10 +233,10 @@
                     <span ng-init="CM.setValue('bdnDate', 1, true, 'delivery')" ng-if="formValues.bdnDate"></span>
 
                      <!-- manual input -->
-                     <input class="formatted-date-input date-only" ng-model="formatDates.bdnDate" ng-change="CM.setValue('bdnDate', 2)" ng-focus="inputFocus['bdnDate'] = true; $event.stopPropagation();" ng-blur="inputFocus['bdnDate'] = false;" ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] }}" name="bdnDate">
+                     <input class="formatted-date-input date-only" ng-model="formatDates.bdnDate" ng-change="CM.setValue('bdnDate', 2, true)" ng-focus="inputFocus['bdnDate'] = true; $event.stopPropagation();" ng-blur="inputFocus['bdnDate'] = false;" ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] }}" name="bdnDate">
                    
                     <!-- <span class="formatted-date" ng-bind="CM.formatSimpleDate(formValues.bdnDate, tenantSetting.tenantFormats.dateFormat)" ng-disabled="!CM.isEditable"></span> -->
-                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" ng-disabled="!CM.isEditable">
+                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" ng-disabled="!CM.isEditable" id="bdnDate">
                         <!-- datepicker input -->
                         <input class="form-control hidden-form-input" type="text" id="bdnDate" ng-model="formValues.bdnDate" ng-required="true" ng-disabled="!CM.isEditable" ng-change="triggerChangeFields('bdnDate','bdnDate'); CM.setValue('bdnDate', 1, true, 'delivery')" ng-disabled="!CM.isEditable" name="bdnDate" visibility="hidden"/>
                         <button class="btn default date-set" type="button" ng-disabled="!CM.isEditable">

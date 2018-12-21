@@ -27,7 +27,8 @@
     "payloadDataModel",
     "statusColors",
     "screenLoader",
-    function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader) {
+    "$parse",
+    function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse) {
         var vm = this;
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split(".")[0];
@@ -6403,8 +6404,11 @@
             vm.invalidDate[name] = false;
         }
 
-        vm.formatDateTimeReverse = function (value){
-            var val = moment(value, vm.DATE_OPTIONS.momentFormat, true)
+        vm.formatDateTimeReverse = function (value, simpleDate){
+            var val = null;
+            if(simpleDate) val = moment(value, vm.DATE_OPTIONS.momentFormatDateOnly, true)
+            else val = moment(value, vm.DATE_OPTIONS.momentFormat, true)
+        
             if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
             return null;
         }
@@ -6427,9 +6431,23 @@
                 // date typing input -> datepicker input 
                 $timeout(function() { 
                     // every changes goes here
-                    var copy = angular.copy($scope.formatDates[name]);
-                    $scope.formValues[name] = vm.formatDateTimeReverse(copy);
-                   // console.log( $scope.formatDates[name], $scope.formValues[name]);
+
+                    if(typeof name == "string"){
+                        // only one level
+                        var copy = angular.copy($scope.formatDates[name]);
+                        $scope.formValues[name] = vm.formatDateTimeReverse(copy, simpleDate);
+                       // set date for datepicker
+                       $('.date-picker#' + name).datetimepicker('setDate', new Date($scope.formValues[name]));
+                    }else if(typeof name == "object"){
+                        if(name.type == "eval"){
+                            var value = eval("$scope.formatDates." + name.path);
+                            var date = vm.formatDateTimeReverse(value, simpleDate);
+                            // set date for datepicker
+                            $('.date-picker#' + name.pickerId).datetimepicker('setDate', new Date(date));
+                            $parse("$scope.formValues." + name.path).assign(date);
+
+                        }
+                    }
                 },2);
             }
         }
