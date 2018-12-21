@@ -46,9 +46,10 @@
                                       ng-model="formatDates['deliveryProducts'][productIndex]['qualityHeader']['analysedOn']" 
                                       ng-change="CM.setValue({
                                           type: 'eval',
-                                          path: 'deliveryProducts[' + productIndex + '].qualityHeader.analysedOn'
+                                          path: 'formValues.deliveryProducts[' + productIndex + '].qualityHeader.analysedOn',
+                                          event: event
                                       }, 2, true)" 
-                                      ng-focus="inputFocus[productIndex + '_ analysedOn'] = true; $event.stopPropagation();" 
+                                      ng-focus="inputFocus[productIndex + '_ analysedOn'] = true; $event.stopPropagation(); event = $event" 
                                       ng-blur="inputFocus[productIndex + '_ analysedOn'] = false;" 
                                       ng-invalid="{{ CM.invalidDate[productIndex + '_ analysedOn'] && !inputFocus[productIndex + '_ analysedOn'] }}" name="productIndex + '_ analysedOn'">
 

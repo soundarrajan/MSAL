@@ -6415,14 +6415,20 @@
 
         vm.setValue = function(name, direction, simpleDate, app){
             // debugger;
+
+			if(typeof name == "object") {
+	            modelElementScope = angular.element($(event.target).parent()).scope();
+	            KBmodifiedDateVal = $(event.target).val();
+			}
+
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
                     if(simpleDate){
-                        $scope.formatDates[name] = vm.formatSimpleDate($scope.formValues[name],$scope.tenantSetting.tenantFormats.dateFormat, app)
+                        $scope.formatDates[name] = vm.formatSimpleDate(eval('modelElementScope.'+name.path),$scope.tenantSetting.tenantFormats.dateFormat, app)
                     } else{
 
-                        $scope.formatDates[name] = vm.formatDateTime($scope.formValues[name], $scope.tenantSetting.tenantFormats.dateFormat);
+                        $scope.formatDates[name] = vm.formatDateTime(eval('modelElementScope.'+name.path), $scope.tenantSetting.tenantFormats.dateFormat);
                     }
                     // console.log( $scope.formatDates[name], $scope.formValues[name]);
                 },2);
@@ -6440,11 +6446,19 @@
                        $('.date-picker#' + name).datetimepicker('setDate', new Date($scope.formValues[name]));
                     }else if(typeof name == "object"){
                         if(name.type == "eval"){
-                            var value = eval("$scope.formatDates." + name.path);
-                            var date = vm.formatDateTimeReverse(value, simpleDate);
+                            // var value = eval("$scope.formatDates." + name.path);
+                            var date = vm.formatDateTimeReverse(KBmodifiedDateVal, simpleDate);
+// function index(modelElementScope,i) {return modelElementScope[i]}
+// dateObjectModel = name.path.split('.').reduce(index, modelElementScope)
+// dateObjectModel = eval(modelElementScope + "." + name.path)
+
+// dateObjectModel = _.get(modelElementScope, name.path);
                             // set date for datepicker
                             $('.date-picker#' + name.pickerId).datetimepicker('setDate', new Date(date));
-                            $parse("$scope.formValues." + name.path).assign(date);
+                            // modelElementScope.$apply(function(){
+                            // })
+	                            eval('modelElementScope.'+name.path +' = '+ '"'+date+'"');
+                            // $parse("modelElementScope." + name.path).assign(date);
 
                         }
                     }
