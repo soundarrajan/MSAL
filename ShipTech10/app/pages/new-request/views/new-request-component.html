@@ -568,6 +568,7 @@
             <div class=" product-info" ng-controller="Controller_Master as CM">
                 <div ng-repeat="(locationIdx, location) in $ctrl.request.locations track by $index" ng-if="!location.isDeleted && location.location !== null">
                     <div class="" ng-init="$ctrl.initializeDateInputs(); $ctrl.isEnabledEta(locationIdx)" ng-mouseover="$ctrl.initializeDateInputs()">
+                    <span ng-init="CM.initMask()"></span>  <!-- datepicker mask initialization  -->
                         <div class="col-md-12 location-label">
                             <span class="caption-subject row">
                                 <a role="button" data-toggle="collapse" href="#location{{ $index }}"  >
@@ -589,28 +590,68 @@
 	                                                <label class="control-label col-md-4">
 	                                                    {{ $ctrl.productInfoFields.Eta.caption | translate }}
 	                                                </label>
-	                                            <!--     <pre>{{$ctrl.requestTenantSettings}}</pre> -->
-	                                            <!-- ng-if="$ctrl.isEnabledEta() && location.eta && location.id" -->
+                                              
+                                                    <!-- disabled ETA -->
 	                                                <div class="form-group-sm00" ng-if="!$ctrl.etaEnabled[locationIdx]">
-	                                                    <!-- ng-if="!$ctrl.isEnabledEta(locationIdx)" -->
-	                                                	<!-- disabled ETA -->
 	                                                    <div class="input-group col-md-8">
 		                                                	<input class="form-control" disabled readonly="" disabled type="text" ng-model="location.eta" name="{{ $ctrl.productInfoFields.Eta.name }}" st-date-format>
 		                                                </div>
 	                                                </div>
-	                                                <!-- !location.eta || $ctrl.isEnabledEta() || ($ctrl.isEnabledEta() && !location.id) -->
+                                                    <!-- end disabled ETA -->
+                                                    
+                                                    <!-- enabled ETA -->
 	                                                <div class="form-group-sm00" ng-if="$ctrl.etaEnabled[locationIdx]">
-	                                                	<!-- enabled ETA -->
-	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input  name="{{ $ctrl.productInfoFields.Eta.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Eta.name }}" class="form-control" ng-model="location.eta" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.etaChanged(location, $event)" ng-disabled="$ctrl.disableAllFields">
-	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
+	                                                    <div class="input-group col-md-8">
+
+                                                            <!-- value initialization -->
+                                                            <!-- $ctrl.request.locations[locationIdx].eta -->
+                                                            <span ng-init="$ctrl.setValue({
+                                                                path: 'request.locations[' + locationIdx + '].eta',
+                                                                root: '$ctrl',
+                                                                pickerId: locationIdx + '_eta',
+                                                                fieldId: 'eta'
+                                                            }, 1, false)" ng-if="location.eta"></span>
+
+                                                            <!-- manual input -->
+                                                            <input class="formatted-date-input date-time"
+                                                            ng-model="$ctrl.formatDates.request.locations[locationIdx].eta" 
+                                                            ng-change="$ctrl.setValue({
+                                                                path: 'request.locations[' + locationIdx + '].eta',
+                                                                root: '$ctrl',
+                                                                pickerId: locationIdx + '_eta',
+                                                                fieldId: 'eta'
+                                                            }, 2, false)" 
+                                                            ng-focus="inputFocus[locationIdx + '_eta'] = true; $event.stopPropagation(); event = $event" 
+                                                            ng-blur="inputFocus[locationIdx + '_eta'] = false;"
+                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_eta'] && !inputFocus[locationIdx + '_eta'] }}"
+                                                            ng-disabled="$ctrl.disableAllFields"
+                                                            name="{{ locationIdx }}_eta">
+                                                            <!-- manual input -->
+                                                      
+                                                            
+                                                            <!-- button editable -->
+	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields" id="{{ locationIdx }}_eta">
+
+                                                                <!-- datepicker input -->
+                                                                <input  class="form-control hidden-form-input" name="{{ $ctrl.productInfoFields.Eta.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Eta.name }}"  ng-model="location.eta" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.setValue({
+                                                                    path: 'request.locations[' + locationIdx + '].eta',
+                                                                    root: '$ctrl',
+                                                                    pickerId: locationIdx + '_eta',
+                                                                    fieldId: 'eta'
+                                                                }, 1, false); $ctrl.etaChanged(location, $event)" ng-disabled="$ctrl.disableAllFields" visibility="hidden">
+                                                                <!-- end datepicker input -->
+
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
 	                                                            </button>
-	                                                        </span>
+                                                            </span>
+                                                            <!-- button editable -->
+                                                            
+                                                            <!-- button readonly -->
 	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-calendar"></i>
-	                                                        </span>
+                                                            </span>
+                                                            <!-- button readonly -->
 	                                                    </div>
 	                                                </div>
 	                                            </div>

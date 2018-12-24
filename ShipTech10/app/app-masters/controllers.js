@@ -6452,7 +6452,6 @@
                 2. @variable DATE_FORMAT is set to $scope.tenantSetting.tenantFormats.dateFormat
                   This needs to be changed if it has other path in other controller
              */
-
             var DATE_FORMAT = $scope.tenantSetting.tenantFormats.dateFormat;
 
             var rootMap = {
@@ -6487,31 +6486,6 @@
                     // also change datepicker value
                     $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
 
-
-                    // if(typeof name == "string"){
-                    //     // only one level
-                    //     var copy = angular.copy($scope.formatDates[name]);
-                    //     $scope.formValues[name] = vm.formatDateTimeReverse(copy, simpleDate);
-                    //    // set date for datepicker
-                    //    $('.date-picker#' + name).datetimepicker('setDate', new Date($scope.formValues[name]));
-                    // }else if(typeof name == "object"){
-                    //     if(name.type == "eval"){
-                    //         // var value = eval("$scope.formatDates." + name.path);
-                    //         var date = vm.formatDateTimeReverse(KBmodifiedDateVal, simpleDate);
-                    //         // function index(modelElementScope,i) {return modelElementScope[i]}
-                    //         // dateObjectModel = name.path.split('.').reduce(index, modelElementScope)
-                    //         // dateObjectModel = eval(modelElementScope + "." + name.path)
-
-                    //         // dateObjectModel = _.get(modelElementScope, name.path);
-                    //         // set date for datepicker
-
-                    //         // modelElementScope.$apply(function(){
-                    //         // })
-	                //             eval('modelElementScope.'+name.path +' = '+ '"'+date+'"');
-                    //         // $parse("modelElementScope." + name.path).assign(date);
-
-                    //     }
-                    // }
                 },2);
             }
         }

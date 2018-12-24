@@ -622,7 +622,15 @@ span.variance {
 .hidden-form-input{
     display: none !important;
 }
-
+.formatted-date-button button {
+    background-color: white;
+    border: 1px solid #ccc;
+    margin-right: 1px;
+}
+.formatted-date-button button:hover {
+    background-color: #C5CDDA;
+    border: 1px solid #C5CDDA;
+}
 .date-picker button.date-set[disabled="disabled"] {
     pointer-events: none;
 }

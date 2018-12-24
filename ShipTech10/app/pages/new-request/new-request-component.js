@@ -38,8 +38,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
     "statusColors",
     "$location",
 	"screenLoader",
-	"Factory_Admin",
-    function($rootScope, $scope, $q, $listsCache, $element, $attrs, $timeout, $state, $filter, $stateParams, $tenantSettings, newRequestModel, orderModel, listsModel, uiApiModel, lookupModel, groupOfRequestsModel, screenActionsModel, tenantService, Factory_Master, STATE, LOOKUP_MAP, LOOKUP_TYPE, SCREEN_LAYOUTS, SCREEN_ACTIONS, IDS, VALIDATION_MESSAGES, STATUS, PRODUCT_STATUS_IDS, EMAIL_TRANSACTION, $uibTooltip, selectContractModel, $uibModal, $templateCache, $compile, emailModel, statusColors, $location, screenLoader, Factory_Admin) {
+    "Factory_Admin",
+    "Factory_App_Dates_Processing",
+    function($rootScope, $scope, $q, $listsCache, $element, $attrs, $timeout, $state, $filter, $stateParams, $tenantSettings, newRequestModel, orderModel, listsModel, uiApiModel, lookupModel, groupOfRequestsModel, screenActionsModel, tenantService, Factory_Master, STATE, LOOKUP_MAP, LOOKUP_TYPE, SCREEN_LAYOUTS, SCREEN_ACTIONS, IDS, VALIDATION_MESSAGES, STATUS, PRODUCT_STATUS_IDS, EMAIL_TRANSACTION, $uibTooltip, selectContractModel, $uibModal, $templateCache, $compile, emailModel, statusColors, $location, screenLoader, Factory_Admin, Factory_App_Dates_Processing) {
         var ctrl = this;
 
         var voyageId = $stateParams.voyageId;
@@ -2910,66 +2911,60 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             return found;
         };
 
-        // ctrl.getOptions = function(field) {
-        //     //Move this somewhere nice and warm
-        //     var objectByString = function(obj, string) {
-        //         if (string.includes(".")) {
-        //             return objectByString(obj[string.split(".", 1)], string.replace(string.split(".", 1) + ".", ""));
-        //         } else {
-        //             return obj[string];
-        //         }
-        //     }
-        //     if (field) {
-        //         if (field.Filter && typeof($scope.formValues) != 'undefined') {
-        //             field.Filter.forEach(function(entry) {
-        //                 if (entry.ValueFrom == null) return;
-        //                 var temp = 0;
-        //                 try {
-        //                     temp = eval('$scope.formValues.' + entry.ValueFrom);
-        //                 } catch (error) {}
-        //                 entry.Value = temp;
-        //             });
-        //         }
-        //         if(field.Name == "BunkerablePort"){
-        //             //add vessel/voyage filters
-        //             if(typeof ctrl.request != 'undefined'){
-        //                 if(typeof ctrl.request.vesselDetails != 'undefined'){
-        //                     if(typeof ctrl.request.vesselDetails.vessel != 'undefined'){
-        //                         field.filters = [{
-        //                             "ColumnName": "VesselId",
-        //                             "Value": ctrl.request.vesselDetails.vessel.id
-        //                         },
-        //                         {
-        //                             "ColumnName": "VesselVoyageDetailId",
-        //                             "Value": null
-        //                         }];
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //         if (!$scope.options) {
-        //             $scope.options = [];
-        //         }
-        //         Factory_Master.get_master_list('procurement', 'request', field, function(callback) {
-        //             if (callback) {
-        //                 $scope.options[field.Name] = callback;
-        //                 $scope.$watchGroup([$scope.formValues, $scope.options], function() {
-        //                     $timeout(function() {
-        //                         if (field.Type == 'textUOM') {
-        //                             id = '#' + field.Name;
-        //                         } else {
-        //                             id = '#' + field.masterSource + field.Name;
-        //                         }
-        //                         if ($(id).data('val')) {
-        //                             $(id).val($(id).data('val'));
-        //                         }
-        //                     }, 50);
-        //                 })
-        //             }
-        //         });
-        //     }
-        // };
+        ctrl.initMask = function(){
+            Factory_App_Dates_Processing.doMaskInitialization();
+        }
+        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
+            
+            /** See @param inputDetails
+            /**     @param direction
+            /**     @param simpleDate
+            /**     @param app
+             *   explained in controller_master
+             */
+
+
+            var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
+    
+            var rootMap = {
+                '$scope': $scope,
+                '$rootScope': $rootScope,
+                '$ctrl': ctrl
+            }
+    
+            if(direction == 1){
+                // datepicker input -> date typing input
+                $timeout(function() {
+                    if(simpleDate){
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    } else{
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    }
+                },2);
+            }
+            if(direction == 2){
+                // date typing input -> datepicker input 
+                $timeout(function() { 
+                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
+                    var copy = angular.copy(date);
+                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
+                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+    
+                    // also change datepicker value
+                    $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+    
+                },2);
+            }
+        }
     }
+
+
+
+   
 ]);
 angular.module("shiptech.pages").component("newRequest", {
     templateUrl: "pages/new-request/views/new-request-component.html",
