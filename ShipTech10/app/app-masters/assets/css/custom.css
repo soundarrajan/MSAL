@@ -577,7 +577,7 @@ span.variance {
 .input-group input.form-control{
 	z-index:0
 }
-.input-group .formatted-date-input{
+.input-group .formatted-date-input {
 	position: absolute;
     top: 0px;
     left: 1px;
@@ -586,24 +586,10 @@ span.variance {
     border: 1px solid #c2cad8;
     width: 89%;
     height: 98%;
-    background-color: white !important;
+    background-color: white;
 	outline: none;
 	width: calc(100% - 40px);
 	height: 100%;
-}
-.formatted-date-input-disabled {
-    position: absolute;
-    top: 0px;
-    left: 1px;
-    padding-left: 7px;
-    z-index: 1;
-    border: 1px solid #c2cad8;
-    width: 89%;
-    height: 98%;
-    background-color: #eef1f5 !important;
-    outline: none;
-    width: calc(100% - 40px);
-    height: 100%;
 }
 .input-group .formatted-date-input.bg-grey {
     background: #E5E5E5 !important;

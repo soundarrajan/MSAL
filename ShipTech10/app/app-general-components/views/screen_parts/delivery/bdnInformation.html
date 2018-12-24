@@ -264,8 +264,8 @@
                     }, 1, true, 'delivery')" ng-if="formValues.deliveryDate"></span>
 
                     <!-- manual input -->
-                    <input class="date-only"
-                        ng-class="{'formatted-date-input': CM.isEditable, 'formatted-date-input-disabled': !CM.isEditable}"
+                     <input class="date-only formatted-date-input"
+                        ng-style="!CM.isEditable && {'background-color': '#eef1f5 !important'}"
                         ng-model="formatDates.formValues.deliveryDate" 
                         ng-change="CM.setValue({
                             path: 'formValues.deliveryDate',
@@ -319,8 +319,8 @@
                     }, 1, true, 'delivery')" ng-if="formValues.bdnDate"></span>
 
                      <!-- manual input -->
-                     <input class="date-only"
-                        ng-class="{'formatted-date-input': CM.isEditable, 'formatted-date-input-disabled': !CM.isEditable}"
+                     <input class="date-only formatted-date-input"
+                        ng-style="!CM.isEditable && {'background-color': '#eef1f5 !important'}"
                         ng-model="formatDates.formValues.bdnDate" 
                         ng-change="CM.setValue({
                             path: 'formValues.bdnDate',
