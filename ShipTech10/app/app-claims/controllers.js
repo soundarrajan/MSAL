@@ -38,7 +38,9 @@ APP_CLAIMS.controller("Controller_Claims", [
                         v.Disabled = true;
                     }
                 });
-                $scope.formFields.deliveryDate.Disabled = true;
+                if ($scope.formFields.deliveryDate) {
+                    $scope.formFields.deliveryDate.Disabled = true;
+                }
             }
         });
         $rootScope.$on("editInstance", function(value) {

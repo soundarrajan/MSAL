@@ -591,6 +591,20 @@ span.variance {
 	width: calc(100% - 40px);
 	height: 100%;
 }
+.formatted-date-input-disabled {
+    position: absolute;
+    top: 0px;
+    left: 1px;
+    padding-left: 7px;
+    z-index: 1;
+    border: 1px solid #c2cad8;
+    width: 89%;
+    height: 98%;
+    background-color: #eef1f5 !important;
+    outline: none;
+    width: calc(100% - 40px);
+    height: 100%;
+}
 .input-group .formatted-date-input[ng-invalid="true"]{
     border: 1px solid red;
 }

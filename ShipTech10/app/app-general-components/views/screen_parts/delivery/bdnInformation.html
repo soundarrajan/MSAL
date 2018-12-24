@@ -44,7 +44,7 @@
                                         pickerId: 'berthingTime'
                                       }, 1)" ng-if="formValues.berthingTime"></span>
 
-                    <span class="input-group-btn date-picker datetime-picker  date form_meridian_datetime" id="berthingTime">
+                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="berthingTime">
                         <!-- datepicker input -->
                         <input class="form-control hidden-form-input" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="CM.setValue({
                             path: 'formValues.berthingTime',
@@ -264,13 +264,19 @@
                     }, 1, true, 'delivery')" ng-if="formValues.deliveryDate"></span>
 
                     <!-- manual input -->
-                    <input class="formatted-date-input date-only" ng-model="formatDates.formValues.deliveryDate" 
-                    ng-change="CM.setValue({
-                        path: 'formValues.deliveryDate',
-                        root: '$scope',
-                        pickerId: 'deliveryDate'
-                    }, 2, true)" 
-                    ng-focus="inputFocus['deliveryDate'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['deliveryDate'] = false;" ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] }}" name="deliveryDate">
+                    <input class="date-only"
+                        ng-class="{'formatted-date-input': CM.isEditable, 'formatted-date-input-disabled': !CM.isEditable}"
+                        ng-model="formatDates.formValues.deliveryDate" 
+                        ng-change="CM.setValue({
+                            path: 'formValues.deliveryDate',
+                            root: '$scope',
+                            pickerId: 'deliveryDate'
+                        }, 2, true)" 
+                        ng-focus="inputFocus['deliveryDate'] = true; $event.stopPropagation(); event = $event"
+                        ng-blur="inputFocus['deliveryDate'] = false;"
+                        ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] }}"
+                        ng-disabled="!CM.isEditable"
+                        name="deliveryDate">
 
                     <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" id="deliveryDate">
                         <!-- datepicker input -->
@@ -313,14 +319,19 @@
                     }, 1, true, 'delivery')" ng-if="formValues.bdnDate"></span>
 
                      <!-- manual input -->
-                     <input class="formatted-date-input date-only" ng-model="formatDates.formValues.bdnDate" 
-                     ng-change="CM.setValue({
-                        path: 'formValues.bdnDate',
-                        root: '$scope',
-                        pickerId: 'bdnDate'
-                    }, 2, true)" 
-                     ng-focus="inputFocus['bdnDate'] = true; $event.stopPropagation(); event = $event" 
-                     ng-blur="inputFocus['bdnDate'] = false;" ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] }}" name="bdnDate">
+                     <input class="date-only"
+                        ng-class="{'formatted-date-input': CM.isEditable, 'formatted-date-input-disabled': !CM.isEditable}"
+                        ng-model="formatDates.formValues.bdnDate" 
+                        ng-change="CM.setValue({
+                            path: 'formValues.bdnDate',
+                            root: '$scope',
+                            pickerId: 'bdnDate'
+                        }, 2, true)" 
+                        ng-focus="inputFocus['bdnDate'] = true; $event.stopPropagation(); event = $event" 
+                        ng-blur="inputFocus['bdnDate'] = false;"
+                        ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] }}"
+                        ng-disabled="!CM.isEditable"
+                        name="bdnDate">
                    
                     <!-- <span class="formatted-date" ng-bind="CM.formatSimpleDate(formValues.bdnDate, tenantSetting.tenantFormats.dateFormat)" ng-disabled="!CM.isEditable"></span> -->
                     <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" ng-disabled="!CM.isEditable" id="bdnDate">
