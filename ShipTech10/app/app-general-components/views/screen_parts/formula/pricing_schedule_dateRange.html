@@ -20,17 +20,45 @@
             </div>
         </div>
         <div class="row">
+
+            <span ng-init="CM.initMask()"></span>
+
             <div class="col-md-3">
                 <div class="form-group  row "  ng-init="CM.datepickers('Date')">
                     <label  for="pricing_schedule_from" class="pricing_schedule_from_label">
                         {{ CM.app_id + '.DATE' | translate }}
                     </label>
                     <div class="form_input form_input_pricing_schedule_from">
-                        <div class="input-group date-picker date form_meridian_date" ng-class="field.disabled ? 'disabled' : ''">
-                            <input class="form-control" type="text" id="pricing_schedule_from" ng-model="formValues.pricingScheduleOptionDateRange.from"/>
-                            {{tenantSetting.tenantFormats.dateFormat.split(' ')[0]}}
-                            <span class="formatted-date"  ng-bind="CM.formatDate(formValues.pricingScheduleOptionDateRange.from, tenantSetting.tenantFormats.dateFormat, 'eta').split(' ')[0]"></span>
-                            <span class="input-group-btn">
+                        <div class="input-group" ng-class="field.disabled ? 'disabled' : ''">
+
+                            <!-- manual input -->
+                            <input class="formatted-date-input date-time" ng-model="formatDates.formValues.pricingScheduleOptionDateRange.from" 
+                            ng-change="CM.setValue({
+                                  path: 'formValues.pricingScheduleOptionDateRange.from',
+                                  root: '$scope',
+                                  pickerId: 'pricing_schedule_from'
+                              }, 2)" 
+                            ng-focus="inputFocus['pricing_schedule_from'] = true; $event.stopPropagation();" 
+                            ng-blur="inputFocus['pricing_schedule_from'] = false;" ng-invalid="{{ CM.invalidDate['pricing_schedule_from'] && !inputFocus['pricing_schedule_from'] }}" name="pricing_schedule_from">
+
+                              <span ng-init="CM.setValue({
+                                path: 'formValues.pricingScheduleOptionDateRange.from',
+                                root: '$scope',
+                                pickerId: 'pricing_schedule_from'
+                              }, 1)" ng-if="formValues.pricingScheduleOptionDateRange.from"></span>
+
+                            <span class="input-group-btn date-picker date form_meridian_date">
+                            <!-- datepicker input -->
+                                <input class="form-control hidden-form-input"
+                                    type="text" id="pricing_schedule_from"
+                                    ng-model="formValues.pricingScheduleOptionDateRange.from"
+                                    name="pricing_schedule_from"
+                                    ng-change="CM.setValue({
+                                        path: 'formValues.pricingScheduleOptionDateRange.from',
+                                        root: '$scope',
+                                        pickerId: 'pricing_schedule_from'
+                                    }, 1); triggerChangeFields('pricing_schedule_from','pricing_schedule_from');"
+                                    visibility="hidden"/>
                                 <button class="btn default date-set" type="button">
                                     <i class="fa fa-calendar"></i>
                                 </button>
@@ -43,15 +71,41 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-group  row "  ng-init="CM.datepickers('Date')">
+                <div class="form-group  row "  ng-init="CM.datepickers('Date'); CM.initValidityForDate('pricing_schedule_to')"">
                     <label  for="pricing_schedule_to" class="pricing_schedule_to_label">
                         -
                     </label>
                     <div class="form_input form_input_pricing_schedule_to">
-                        <div class="input-group date-picker date form_meridian_date" ng-class="field.disabled ? 'disabled' : ''">
-                            <input class="form-control" type="text" id="pricing_schedule_to" ng-model="formValues.pricingScheduleOptionDateRange.to"/>
-                            <span class="formatted-date"  ng-bind="CM.formatDate(formValues.pricingScheduleOptionDateRange.to, tenantSetting.tenantFormats.dateFormat, 'eta').split(' ')[0]"></span>
-                            <span class="input-group-btn">
+                        <div class="input-group" ng-class="field.disabled ? 'disabled' : ''">
+
+                            <!-- manual input -->
+                            <input class="formatted-date-input date-time" ng-model="formatDates.formValues.pricingScheduleOptionDateRange.to" 
+                            ng-change="CM.setValue({
+                                  path: 'formValues.pricingScheduleOptionDateRange.to',
+                                  root: '$scope',
+                                  pickerId: 'pricing_schedule_to'
+                              }, 2)" 
+                            ng-focus="inputFocus['pricing_schedule_to'] = true; $event.stopPropagation();" 
+                            ng-blur="inputFocus['pricing_schedule_to'] = false;" ng-invalid="{{ CM.invalidDate['pricing_schedule_to'] && !inputFocus['pricing_schedule_to'] }}" name="pricing_schedule_to">
+
+                              <span ng-init="CM.setValue({
+                                path: 'formValues.pricingScheduleOptionDateRange.to',
+                                root: '$scope',
+                                pickerId: 'pricing_schedule_to'
+                              }, 1)" ng-if="formValues.pricingScheduleOptionDateRange.to"></span>
+
+                            <span class="input-group-btn date-picker date form_meridian_date">
+                            <!-- datepicker input -->
+                                <input class="form-control hidden-form-input"
+                                    type="text" id="pricing_schedule_to"
+                                    ng-model="formValues.pricingScheduleOptionDateRange.to"
+                                    name="pricing_schedule_to"
+                                    ng-change="CM.setValue({
+                                        path: 'formValues.pricingScheduleOptionDateRange.to',
+                                        root: '$scope',
+                                        pickerId: 'pricing_schedule_to'
+                                    }, 1); triggerChangeFields('pricing_schedule_to','pricing_schedule_to');"
+                                    visibility="hidden"/>
                                 <button class="btn default date-set" type="button">
                                     <i class="fa fa-calendar"></i>
                                 </button>
