@@ -40,13 +40,43 @@
         </div>
     </div>
     <div class="col-md-3">
+        
+        <span ng-init="CM.initMask()"></span>
         <div class="form-group  row "  ng-init="CM.datepickers()" ng-show="formValues.pricingScheduleOptionEventBasedContinuous.event.id == -1">
 
-            <div class="form_input form_input_pricing_schedule_to">
-                <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''">
-                    <input class="form-control" type="text" id="pricing_schedule_to" ng-model="formValues.pricingScheduleOptionEventBasedSimple.date" ng-required="formValues.pricingScheduleOptionEventBasedContinuous.event.id == -1"/>
-                    <span class="formatted-date"  ng-bind="CM.formatDateTime(formValues.pricingScheduleOptionEventBasedSimple.date, tenantSetting.tenantFormats.dateFormat)"></span>
-                    <span class="input-group-btn">
+            <div class="form_input form_input_pricing_schedule_cont_date">
+                <div class="input-group" ng-class="field.disabled ? 'disabled' : ''">
+
+                    <!-- manual input -->
+                    <input class="formatted-date-input date-time" ng-model="formatDates.formValues.formValues.pricingScheduleOptionEventBasedSimple.date" 
+                        ng-change="CM.setValue({
+                              path: 'formValues.formValues.pricingScheduleOptionEventBasedSimple.date',
+                              root: '$scope',
+                              pickerId: 'pricing_schedule_cont_date'
+                          }, 2)" 
+                        ng-focus="inputFocus['pricing_schedule_cont_date'] = true; $event.stopPropagation();" 
+                        ng-required="formValues.pricingScheduleOptionEventBasedContinuous.event.id == -1"
+                        ng-blur="inputFocus['pricing_schedule_cont_date'] = false;" ng-invalid="{{ CM.invalidDate['pricing_schedule_cont_date'] && !inputFocus['pricing_schedule_cont_date'] }}"
+                        name="pricing_schedule_cont_date">
+
+                      <span ng-init="CM.setValue({
+                        path: 'formValues.formValues.pricingScheduleOptionEventBasedSimple.date',
+                        root: '$scope',
+                        pickerId: 'pricing_schedule_cont_date'
+                      }, 1)" ng-if="formValues.formValues.pricingScheduleOptionEventBasedSimple.date"></span>
+
+                    <span class="input-group-btn date-picker date form_meridian_date">
+                    <!-- datepicker input -->
+                        <input class="form-control hidden-form-input"
+                            type="text" id="pricing_schedule_cont_date"
+                            ng-model="formValues.formValues.pricingScheduleOptionEventBasedSimple.date"
+                            name="pricing_schedule_cont_date"
+                            ng-change="CM.setValue({
+                                path: 'formValues.formValues.pricingScheduleOptionEventBasedSimple.date',
+                                root: '$scope',
+                                pickerId: 'pricing_schedule_cont_date'
+                            }, 1); triggerChangeFields('pricing_schedule_cont_date','pricing_schedule_cont_date');"
+                            visibility="hidden"/>
                         <button class="btn default date-set" type="button">
                             <i class="fa fa-calendar"></i>
                         </button>
