@@ -605,6 +605,17 @@ span.variance {
     width: calc(100% - 40px);
     height: 100%;
 }
+.input-group .formatted-date-input.bg-grey {
+    background: #E5E5E5 !important;
+    width: 100%;
+}
+.input-group .formatted-date-input[disabled="true"]{
+    pointer-events: none !important;
+}
+.input-group-date-control {
+    height: 33.2px;
+    width: 100%;
+}
 .input-group .formatted-date-input[ng-invalid="true"]{
     border: 1px solid red;
 }

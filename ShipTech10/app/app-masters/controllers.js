@@ -6215,7 +6215,7 @@
 	    	vm.invoiceApplicableForProducts = data;
         })
         
-        vm.initMask = function(){
+        vm.initMask = function(timeout){
             vm.formatted = "";
             if(!$scope.formatDates)  $scope.formatDates = {};
 
@@ -6374,6 +6374,7 @@
                     // console.log(val, val.isValid());
                     
                     // test date validity
+                    if(vm.invalidDate === undefined) vm.invalidDate = {};
                     if(val.isValid()){
                         vm.invalidDate[field[0].name] = false;
                     }else{
@@ -6385,15 +6386,22 @@
 
 
             // ACTUAL MASK INITIALIZATION
-
-            var dateTime = $('.formatted-date-input.date-time');
-            $.each(dateTime, function(key){
-                $(dateTime[key]).mask(maskFormat, options);
-            })
-            var dateOnly = $('.formatted-date-input.date-only');
-            $.each(dateOnly, function(key){
-                $(dateOnly[key]).mask(maskFormatDateOnly, options);
-            })
+            function init(){
+                var dateTime = $('.formatted-date-input.date-time');
+                $.each(dateTime, function(key){
+                    $(dateTime[key]).mask(maskFormat, options);
+                })
+                var dateOnly = $('.formatted-date-input.date-only');
+                $.each(dateOnly, function(key){
+                    $(dateOnly[key]).mask(maskFormatDateOnly, options);
+                })
+            }
+            if(timeout){
+                setTimeout(init,2000);
+            }else{
+                init();
+            }
+   
 
             // END ACTUAL MASK INITIALIZATION
             

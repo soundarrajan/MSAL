@@ -252,6 +252,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
         // }
         if (name == "Evergreen") {
             $scope.formValues.validTo = null;
+            $scope.formatDates.formValues.validTo = null;
         }
         if (name == "Company") {
         	if (vm.entity_id == 0 || !vm.entity_id) {
