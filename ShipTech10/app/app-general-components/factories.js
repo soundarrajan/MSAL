@@ -444,7 +444,13 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
             if (fieldUniqueId == "invoiceDate" && vm.app_id == "invoices") {
                 return vm.formatDate(elem, "dd/MM/yyyy");
             }
-            if (fieldUniqueId == "eta" || fieldUniqueId == "orderDetails.eta" || fieldUniqueId == "etb" || fieldUniqueId == "etd" || fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || fieldUniqueId == "pricingDate") {
+            if (fieldUniqueId == "eta" || 
+                fieldUniqueId == "orderDetails.eta" || 
+                fieldUniqueId == "etb" || 
+                fieldUniqueId == "etd" || 
+                fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || 
+                fieldUniqueId.toLowerCase().indexOf("eta") >= 0 || 
+                fieldUniqueId == "pricingDate") {
                 // debugger;
                 // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
                 utcDate = moment.utc(elem).format();

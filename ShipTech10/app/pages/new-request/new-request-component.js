@@ -585,6 +585,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 var forms_validation = validateForms();
                 if (forms_validation !== null) {
                     toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                    ctrl.initMask(); // reinit mask for date inputs
                     return false;
                 }
                 ctrl.buttonsDisabled = true;
@@ -1258,6 +1259,13 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     location.eta = eta;
                     location.etb = etb;
                     location.etd = etd;
+                       
+                    // also set manual type locations dates
+                    var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
+                    // use formatSimpleDate bc eta, etb come int iso format, for manual date input you need formatted string
+                    _.set(ctrl, 'formatDates.request.locations[' + i + '].eta', Factory_App_Dates_Processing.formatSimpleDate(eta, DATE_FORMAT));
+                    _.set(ctrl, 'formatDates.request.locations[' + i + '].etb', Factory_App_Dates_Processing.formatSimpleDate(etb, DATE_FORMAT));
+                    _.set(ctrl, 'formatDates.request.locations[' + i + '].etd', Factory_App_Dates_Processing.formatSimpleDate(etd, DATE_FORMAT));
                 }
             }
         }
@@ -2396,10 +2404,29 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.reloadRequest = function() {
             $state.reload();
         };
-        ctrl.etaChanged = function(location) {
-            location.etb = location.etb || location.eta;
-            location.etd = location.etd || location.eta;
-            location.recentEta = location.eta;
+        ctrl.etaChanged = function(location, locationIdx) {
+            $timeout(function(){
+                //
+                // 1. picker change 
+                //      - change other pickers
+                //      - change other dates
+                // 2. typing change
+                //      - change other pickers
+                //      - change other dates
+
+                location.etb = location.etb || location.eta;
+                location.etd = location.etd || location.eta;
+                location.recentEta = location.eta;
+    
+                // also set manual type locations dates 
+                if(location.eta){
+                    if(locationIdx !== undefined){
+                        ctrl.formatDates.request.locations[locationIdx].etb = ctrl.formatDates.request.locations[locationIdx].etb || ctrl.formatDates.request.locations[locationIdx].eta;
+                        ctrl.formatDates.request.locations[locationIdx].etd = ctrl.formatDates.request.locations[locationIdx].etd || ctrl.formatDates.request.locations[locationIdx].eta;
+                        ctrl.formatDates.request.locations[locationIdx].recentEta = ctrl.formatDates.request.locations[locationIdx].eta;
+                    }
+                }
+            },5);
         };
 
         $scope.updateDestinations = function(val, index) {
@@ -2944,7 +2971,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
-                },2);
+                });
             }
             if(direction == 2){
                 // date typing input -> datepicker input 
@@ -2956,8 +2983,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
     
                     // also change datepicker value
                     $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-    
-                },2);
+                });
             }
         }
     }

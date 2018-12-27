@@ -4128,6 +4128,9 @@ span.warning.lowercase.min100 {
 input.etb_invalid {
     border: 1px solid red !important;
 }
+input.invalid {
+    border: 1px solid red !important;
+}
 
 span.isMatch {
     display: inline-block;
