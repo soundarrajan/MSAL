@@ -2092,6 +2092,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 return tpl;
             };
             var date = function(cellValue, options, rowObject) {
+                // this is the editable date formatter 
+
                 if (cellValue == null || typeof cellValue == "undefined") {
                     cellValue = "";
                 }
@@ -2103,19 +2105,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
                 dateFormat = 'dd/MM/yyyy';
                 tpl =
-                    "<div class='input-group date date-picker' data-date-format='yyyy-mm-ddT12:00:00Z' data-provide='datepicker'><span class='dateFormatted'>{{CLC.formatDate(CLC.changedfields[" +
-                    entityId +
-                    "]." +
-                    name +
-                    ", '" +
-                    dateFormat +
-                    "')}}</span><input type='text' class='form-control hidden' readonly='' ng-change='CLC.checkChange(" +
-                    entityId +
-                    ")' ng-model='CLC.changedfields[" +
-                    entityId +
-                    "]." +
-                    name +
-                    "'> <span class='input-group-btn'> <button class='btn default' type='button'><i class='fa fa-calendar' style='font-size:15px;'></i></button> </span> </div>";
+                    `<div class='input-group date date-picker' data-date-format='yyyy-mm-ddT12:00:00Z' data-provide='datepicker'><span class='dateFormatted'>{{CLC.formatDate(CLC.changedfields[
+                    ${entityId}
+                    "]."
+                    ${name}
+                    ", '"
+                    ${dateFormat}
+                    "')}}</span><input type='text' class='form-control hidden' readonly='' ng-change='CLC.checkChange("
+                    ${entityId}
+                    ")' ng-model='CLC.changedfields["
+                    ${entityId}
+                    "]."
+                    ${name}
+                    "'> <span class='input-group-btn'> <button class='btn default' type='button'><i class='fa fa-calendar' style='font-size:15px;'></i></button> </span> </div>`;
                 return tpl;
             };
             var ftpActiveCheckbox = function(cellValue, options, rowObject) {
