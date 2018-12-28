@@ -341,7 +341,9 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
     // end helper functions
 
     /// initialization
+    //  --------------- 1. normal dates
     var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
+
     var DATE_POSITIONS = calculateDatePositions(currentFormat);
     var SEPARATOR = findSeparator(currentFormat);
     var momentFormat = formMomentFormat(currentFormat);
@@ -357,6 +359,26 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         maskFormat: maskFormat,
         maskFormatDateOnly: maskFormatDateOnly
     }
+
+    // -------------- 2. filter dates
+    var filterFormat = null;
+    var FILTER_DATE_POSITIONS = null;
+    var FILTER_SEPARATOR = null;
+    var f_momentFormat = null;
+    var f_momentFormatDateOnly = null;
+    var f_maskFormat = null;
+    var f_maskFormatDateOnly = null;
+    var filterDatesInitialized = false;
+
+    var FILTER_DATE_OPTIONS = {
+        datePositions: null,
+        separator: null,
+        momentFormat: null,
+        momentFormatDateOnly: null,
+        maskFormat: null,
+        maskFormatDateOnly: null
+    }
+
 
      // mask options
     var options =  {
@@ -489,11 +511,48 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         return;
     };
 
+    getDateOptions = function() {
+        return DATE_OPTIONS;
+    }
+
+
+    doFilterDatesInitialization = function(){
+        filterFormat = window.tenantFormatsDateFormat;
+        if(filterFormat){
+            FILTER_DATE_POSITIONS = calculateDatePositions(filterFormat);
+            FILTER_SEPARATOR = findSeparator(filterFormat);
+            f_momentFormat = formMomentFormat(filterFormat);
+            f_momentFormatDateOnly = formMomentFormat(filterFormat, true);
+            f_maskFormat = formMaskFormat(filterFormat);
+            f_maskFormatDateOnly = formMaskFormat(filterFormat, true);
+        
+            FILTER_DATE_OPTIONS = {
+                datePositions: FILTER_DATE_POSITIONS,
+                separator: FILTER_SEPARATOR,
+                momentFormat: f_momentFormat,
+                momentFormatDateOnly: f_momentFormatDateOnly,
+                maskFormat: f_maskFormat,
+                maskFormatDateOnly: f_maskFormatDateOnly
+            }
+        }
+    }
+
+    getDateOptionsForFilters = function(){
+        if(!filterDatesInitialized){
+            doFilterDatesInitialization();
+            if(filterFormat) filterDatesInitialized = true;
+        }
+        if(filterFormat)  return FILTER_DATE_OPTIONS;
+        return DATE_OPTIONS;
+    }
+
 
     return {
         formatDateTime: formatDateTime,
         formatSimpleDate: formatSimpleDate,
         formatDateTimeReverse: formatDateTimeReverse,
-        doMaskInitialization: doMaskInitialization
+        doMaskInitialization: doMaskInitialization,
+        getDateOptions: getDateOptions,
+        getDateOptionsForFilters: getDateOptionsForFilters
     }
 }]);

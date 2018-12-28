@@ -605,6 +605,34 @@ span.variance {
 .input-group .formatted-date-input[ng-invalid="true"]{
     border: 1px solid red;
 }
+.table-formatted-input {
+    width: 150px;
+    margin-left: -15px;
+    margin-bottom: -10px;
+    font-size: 14px;
+}
+.table-formatted-input .formatted-date-button button {
+    padding-bottom: 7px !important;
+    z-index: auto !important;
+}
+.popover-filter-dates .between .formatted-date-input {
+    width: 100%;
+}
+
+.popover-filter-dates .between .formatted-date-button,
+.popover-filter-date .formatted-date-button {
+    width: 37px;
+    float: right;
+    margin-right: -2px;
+}
+.popover-filter-date .formatted-date-button {
+    margin-right: 2px;
+}
+.popover-filter-dates .between,
+.popover-filter-date {
+    width: 95%;
+}
+
 .hidden-form-input{
     display: none !important;
 }

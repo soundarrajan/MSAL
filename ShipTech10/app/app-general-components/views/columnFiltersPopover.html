@@ -73,41 +73,135 @@
                                     <!-- two filter values -->
                                     <span ng-switch-when="2">
                                         <div class="form_group no-label">
-                                            <div class="between" ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
-                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control " ng-model="columnFilters[column][key].value[0]"
-                                                    name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
-                                                    format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
-                                                />
+                                            <!-- 1. type date -->
+                                            <div ng-if="columnFilters[column][key].column.columnType == 'Date'" class="popover-filter-dates">
+                                                <div class="between input-group">
+                                                    <!-- mask initialization -->
+                                                    <span ng-init="initMask(true)"></span>
 
-                                                <span class="input-group-btn" ng-if="columnFilters[column][key].column.columnType == 'Date'">
-                                                    <button class="btn default date-set" type="button">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </button>
-                                                </span>
+                                                    <!-- model initialization -->
+                                                    <span ng-init="initModelValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                        root: '$scope',
+                                                    })"></span>
+
+                                                    <!-- value initialization -->
+                                                    <span ng-init="setValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                        root: '$scope',
+                                                        pickerId: 'date_0',
+                                                    }, 1, true)" ng-if="columnFilters[column][key].value[0]"></span>
+                                                  
+
+                                                    <!-- manual input -->
+                                                    <input class="formatted-date-input date-only"
+                                                    ng-model="formatDates.columnFilters[column][key].value[0]" 
+                                                    ng-change="setValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                        root: '$scope',
+                                                        pickerId: 'date_0',
+                                                    }, 2, true);"
+                                                    ng-focus="inputFocus['date_0'] = true; $event.stopPropagation(); event = $event" 
+                                                    ng-blur="inputFocus['date_0'] = false;"
+                                                    ng-invalid="{{ invalidDate['date_0'] && !inputFocus['date_0'] }}"
+                                                    name="date_0">
+                                                    <!-- manual input -->
+                                                    
+                                                    <!-- button -->
+                                                    <span class="input-group-btn date-picker date form_meridian_datetime formatted-date-button" id="date_0">
+                                                        <!-- datepicker input -->
+                                                        <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control hidden-form-input " ng-model="columnFilters[column][key].value[0]"
+                                                        name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  visibility="hidden" ng-change="setValue({
+                                                            path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                            root: '$scope',
+                                                            pickerId: 'date_0',
+                                                        }, 1, true)"/>
+                                                        <!-- datepicker input -->
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                    <!-- button -->
+                                                </div>
+                                                <div class="between input-group">
+                                                    <!-- mask initialization -->
+                                                    <span ng-init="initMask(true)"></span>
+
+                                                    <!-- model initialization -->
+                                                    <span ng-init="initModelValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[1]',
+                                                        root: '$scope',
+                                                    })"></span>
+
+                                                    <!-- value initialization -->
+                                                    <span ng-init="setValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[1]',
+                                                        root: '$scope',
+                                                        pickerId: 'date_1',
+                                                    }, 1, true)" ng-if="columnFilters[column][key].value[1]"></span>
+ 
+                                                    <!-- manual input -->
+                                                    <input class="formatted-date-input date-only"
+                                                    ng-model="formatDates.columnFilters[column][key].value[1]" 
+                                                    ng-change="setValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[1]',
+                                                        root: '$scope',
+                                                        pickerId: 'date_1',
+                                                    }, 2, true);"
+                                                    ng-focus="inputFocus['date_1'] = true; $event.stopPropagation(); event =$event" 
+                                                    ng-blur="inputFocus['date_1'] = false;"
+                                                    ng-invalid="{{ invalidDate['date_1'] && !inputFocus['date_1'] }}"
+                                                    name="date_1">
+                                                    <!-- manual input -->
+                                              
+                                                    <!-- button -->
+                                                    <span class="input-group-btn date-picker date form_meridian_datetime formatted-date-button" id="date_1">
+                                                        <!-- datepicker input -->
+                                                            <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control hidden-form-input" ng-model="columnFilters[column][key].value[1]"
+                                                            name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                        visibility="hidden" ng-change="setValue({
+                                                            path: 'columnFilters[\'' + column + '\'][' + key + '].value[1]',
+                                                            root: '$scope',
+                                                            pickerId: 'date_1',
+                                                        }, 1, true);"/>
+                                                        <!-- datepicker input -->
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                    <!-- buttom -->
+                                                </div>
                                             </div>
-                                            <div class="between" ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
-                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}1" class="form-control" ng-model="columnFilters[column][key].value[1]"
-                                                    name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
-                                                    format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
-                                                />
-
-                                                <span class="input-group-btn" ng-if="columnFilters[column][key].column.columnType == 'Date'">
-                                                    <button class="btn default date-set" type="button">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </button>
-                                                </span>
+                                            <!-- 2. type number / amount etc-->
+                                             <!-- {{ columnFilters[column][key].column.columnType }}  -->
+                                            <div ng-if="columnFilters[column][key].column.columnType == 'Number' || 
+                                                        columnFilters[column][key].column.columnType == 'Quantity' ||
+                                                        columnFilters[column][key].column.columnType == 'Price'">
+                                                <div class="between">
+                                                    <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control " ng-model="columnFilters[column][key].value[0]"
+                                                        name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                        format="number:3"
+                                                    />
+                                                </div>
+                                                <div class="between">
+                                                    <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}1" class="form-control" ng-model="columnFilters[column][key].value[1]"
+                                                        name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                        format="number:3"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </span>
                                     <!-- one filter value -->
                                     <span ng-switch-when="1" >
                                         <div class="form_input no-label">
-                                            <div ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                            <div ng-class="columnFilters[column][key].column.columnType == 'Date' ? 'input-group popover-filter-date' : ''">
                                                 <!-- type number & type text -->
                                                 <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control" ng-model="columnFilters[column][key].value[0]"
                                                     name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
                                                     format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
-                                                    ng-if="columnFilters[column][key].column.columnType != 'Bool'" />
+                                                    ng-if="columnFilters[column][key].column.columnType != 'Bool' &&
+                                                    columnFilters[column][key].column.columnType != 'Date'" />
 
                                                 <!--  type bool -->
                                                 <select name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
@@ -118,13 +212,53 @@
                                                 </select>
 
                                                 <!--  type date -->
-                                                <span ng-if="columnFilters[column][key].column.columnType == 'Date'" class="formatted-date" ng-controller="Controller_Master as CM"
-                                                    ng-bind="CM.formatSimpleDate(columnFilters[column][key].value[0], tenantSetting.tenantFormats.dateFormat)"></span>
-                                                <span class="input-group-btn" ng-if="columnFilters[column][key].column.columnType == 'Date'">
-                                                    <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}"
-                                                        dynamic-condition-type="{{ field.ConditionalType }}">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </button>
+                                                <span ng-if="columnFilters[column][key].column.columnType == 'Date'" >
+                                                    <!-- mask initialization -->
+                                                    <span ng-init="initMask(true)"></span>
+
+                                                    <!-- model initialization -->
+                                                    <span ng-init="initModelValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                        root: '$scope',
+                                                    })"></span>
+
+                                                    <!-- value initialization -->
+                                                    <span ng-init="setValue({
+                                                        path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                        root: '$scope',
+                                                        pickerId: 'date_0',
+                                                    }, 1, true)" ng-if="columnFilters[column][key].value[0]"></span>
+
+                                                       <!-- manual input -->
+                                                        <input class="formatted-date-input date-only"
+                                                        ng-model="formatDates.columnFilters[column][key].value[0]" 
+                                                        ng-change="setValue({
+                                                            path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                            root: '$scope',
+                                                            pickerId: 'date_0',
+                                                        }, 2, true);"
+                                                        ng-focus="inputFocus['date_0'] = true; $event.stopPropagation(); event =$event" 
+                                                        ng-blur="inputFocus['date_0'] = false;"
+                                                        ng-invalid="{{ invalidDate['date_0'] && !inputFocus['date_0'] }}"
+                                                        name="date_0">
+                                                        <!-- manual input -->
+
+                                                        <!-- button -->
+                                                        <span class="input-group-btn date-picker date form_meridian_datetime formatted-date-button" id="date_0">
+                                                            <!-- datepicker input -->
+                                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control hidden-form-input" ng-model="columnFilters[column][key].value[0]"
+                                                                name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
+                                                                visibility="hidden" ng-change="setValue({
+                                                                path: 'columnFilters[\'' + column + '\'][' + key + '].value[0]',
+                                                                root: '$scope',
+                                                                pickerId: 'date_0',
+                                                            }, 0, true);" />
+                                                            <!-- datepicker input -->
+                                                            <button class="btn default date-set" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                        <!-- buttom -->
                                                 </span>
                                             </div>
                                         </div>

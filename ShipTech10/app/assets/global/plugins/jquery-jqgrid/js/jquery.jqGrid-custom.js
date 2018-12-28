@@ -535,13 +535,14 @@ var Cfg = {
 			            if (condition != 'Is between') {
 			            	value = moment.utc(value).format(dateFormat);
 			            } else {
-                            dates = value.split('-');
+                            dates = value.split(' - ');
                             for (var i = 0; i < dates.length; i++) {
                                 dates[i] = moment.utc(dates[i].trim()).format(dateFormat);
                             }
                             value = dates.join(' - ');
                         }
-		            }
+                    }
+                    
 
                     conditions += concat + ' <div class="filterCondition">' + v.column.columnName + " " + condition + ' <span class="filterVal">' + value + "</span></div>";
                 }
