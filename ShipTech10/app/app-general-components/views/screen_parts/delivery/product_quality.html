@@ -53,7 +53,7 @@
                                       }, 2, true)" 
                                       ng-focus="inputFocus[productIndex + '_ analysedOn'] = true; $event.stopPropagation(); event = $event" 
                                       ng-blur="inputFocus[productIndex + '_ analysedOn'] = false;" 
-                                      ng-invalid="{{ CM.invalidDate[productIndex + '_ analysedOn'] && !inputFocus[productIndex + '_ analysedOn'] }}" name="productIndex + '_analysedOn'">
+                                      ng-invalid="{{ CM.invalidDate[productIndex + '_ analysedOn'] && !inputFocus[productIndex + '_ analysedOn'] && CM.overrideInvalidDate[productIndex + '_ analysedOn'] }}" name="productIndex + '_analysedOn'">
 
                             <span class="input-group-btn date-picker date form_meridian_datetime" id="productIndex + '_analysedOn'" >
                                 <!-- datepicker input -->

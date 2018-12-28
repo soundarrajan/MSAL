@@ -88,6 +88,9 @@
                 $scope: $scope
             });
         }
+        if (!vm.overrideInvalidDate) {
+            vm.overrideInvalidDate = {}
+        }
 
 		// angular.element(document).ready(function () {
 		// 	setTimeout(function(){
@@ -6460,6 +6463,11 @@
                 'vm': vm
             }
 
+            if (!vm.overrideInvalidDate) {
+                vm.overrideInvalidDate = {}
+            }
+            vm.overrideInvalidDate[inputDetails.pickerId] = true;
+
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
@@ -6472,6 +6480,7 @@
                         var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
+                    vm.overrideInvalidDate[inputDetails.pickerId] = false;
                 },2);
             }
             if(direction == 2){
@@ -6485,7 +6494,6 @@
 
                     // also change datepicker value
                     $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-
                 },2);
             }
         }

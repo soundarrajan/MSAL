@@ -39,7 +39,7 @@
                                   pickerId: 'pricing_schedule_from'
                               }, 2)" 
                             ng-focus="inputFocus['pricing_schedule_from'] = true; $event.stopPropagation();" 
-                            ng-blur="inputFocus['pricing_schedule_from'] = false;" ng-invalid="{{ CM.invalidDate['pricing_schedule_from'] && !inputFocus['pricing_schedule_from'] }}" name="pricing_schedule_from">
+                            ng-blur="inputFocus['pricing_schedule_from'] = false;" ng-invalid="{{ invalidDate['pricing_schedule_from'] && !inputFocus['pricing_schedule_from'] && CM.overrideInvalidDate['pricing_schedule_from'] }}" name="pricing_schedule_from">
 
                               <span ng-init="CM.setValue({
                                 path: 'formValues.pricingScheduleOptionDateRange.from',

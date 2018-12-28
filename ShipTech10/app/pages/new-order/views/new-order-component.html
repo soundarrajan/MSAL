@@ -331,7 +331,7 @@
                                                             path: 'data.orderDate',
                                                             root: '$ctrl',
                                                             pickerId: 'orderDate',
-                                                        }, 1, true)"
+                                                        }, 1, true); $ctrl.invalidDate['orderDate'] = false;"
                                                         />
                                                         <!-- datepicker input -->
                                                         <button class="btn date-set" type="button">
@@ -559,7 +559,7 @@
                                                                                 path: 'data.eta',
                                                                                 root: '$ctrl',
                                                                                 pickerId: 'eta',
-                                                                            }, 1, false); $ctrl.inputChangeProcessing('eta')"
+                                                                            }, 1, false); $ctrl.inputChangeProcessing('eta');  $ctrl.invalidDate['eta'] = false;"
                                                                 required visibility="hidden"/>
                                                                 <!-- datepicker input -->
 
@@ -658,7 +658,7 @@
                                                                     root: '$ctrl',
                                                                     pickerId: 'recentEta',
                                                                     fieldId: 'recentEta'
-                                                                }, 1, false); $ctrl.inputChangeProcessing('recentEta')" visibility="hidden"/>
+                                                                }, 1, false); $ctrl.inputChangeProcessing('recentEta'); $ctrl.invalidDate['recentEta'] = false;" visibility="hidden"/>
                                                                 <!-- datepicker input -->
 
 
@@ -762,7 +762,7 @@
                                                                         root: '$ctrl',
                                                                         pickerId: 'deliveryDate',
                                                                         fieldId: 'deliveryDate'
-                                                                    }, 1, true);"/>
+                                                                    }, 1, true); $ctrl.invalidDate['deliveryDate'] = false;"/>
                                                                     <!-- datepicker input -->
 
                                                                     <button class="btn date-set" type="button" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
@@ -1362,7 +1362,7 @@
                                                         path: 'data.products[' + key + '].pricingDate',
                                                         root: '$ctrl',
                                                         pickerId: key + '_pricingDate',
-                                                    }, 1, true);"/>
+                                                    }, 1, true); $ctrl.invalidDate[key + '_pricingDate'] = false;"/>
                                                     <!-- datepicker input -->
                                                     <button class="btn date-set" type="button" >
                                                             <!-- ng-disabled="$ctrl.disabledProduct[product.id] || !product.manualPricingDateOverride" -->
@@ -1408,7 +1408,7 @@
                                                         path: 'data.products[' + key + '].nominationDate',
                                                         root: '$ctrl',
                                                         pickerId: key + '_nominationDate',
-                                                    }, 1, true);"/>
+                                                    }, 1, true); $ctrl.invalidDate[key + '_nominationDate'] = false;"/>
                                                     <!-- datepicker input -->
                                                     <button class="btn date-set" type="button" ng-disabled="$ctrl.disabledProduct[product.id]">
                                                         <i class="fa fa-calendar"></i>

@@ -56,7 +56,7 @@
                           }, 2)" 
                         ng-focus="inputFocus['pricing_schedule_cont_date'] = true; $event.stopPropagation();" 
                         ng-required="formValues.pricingScheduleOptionEventBasedContinuous.event.id == -1"
-                        ng-blur="inputFocus['pricing_schedule_cont_date'] = false;" ng-invalid="{{ CM.invalidDate['pricing_schedule_cont_date'] && !inputFocus['pricing_schedule_cont_date'] }}"
+                        ng-blur="inputFocus['pricing_schedule_cont_date'] = false;" ng-invalid="{{ CM.invalidDate['pricing_schedule_cont_date'] && !inputFocus['pricing_schedule_cont_date'] && CM.overrideInvalidDate['pricing_schedule_cont_date'] }}"
                         name="pricing_schedule_cont_date">
 
                       <span ng-init="CM.setValue({

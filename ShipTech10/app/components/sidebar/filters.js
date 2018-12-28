@@ -892,7 +892,12 @@ angular.module("shiptech.components").controller("FiltersController", [
                 '$rootScope': $rootScope,
                 '$ctrl': ctrl
             }
-             console.log($scope.formatDates);
+            
+            if (!ctrl.overrideInvalidDate) {
+                ctrl.overrideInvalidDate = {}
+            }
+            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
+
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
@@ -918,7 +923,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                     // also change datepicker value
                     console.log('.date-picker#' + inputDetails.pickerId);
                     $('.date-picker#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
-                    
+                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
                 });
             }
         }

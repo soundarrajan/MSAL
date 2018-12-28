@@ -36,7 +36,7 @@
                                           pickerId: 'berthingTime'
                                       }, 2)" 
                     ng-focus="inputFocus['berthingTime'] = true; $event.stopPropagation();" 
-                    ng-blur="inputFocus['berthingTime'] = false;" ng-invalid="{{ CM.invalidDate['berthingTime'] && !inputFocus['berthingTime'] }}" name="berthingTime">
+                    ng-blur="inputFocus['berthingTime'] = false;" ng-invalid="{{ CM.invalidDate['berthingTime'] && !inputFocus['berthingTime'] && CM.overrideInvalidDate['berthingTime'] }}" name="berthingTime">
 
                     <span ng-init="setLimitForPickers('berthing',formValues.berthingTime); CM.setValue({
                                         path: 'formValues.berthingTime',
@@ -86,7 +86,7 @@
                         root: '$scope',
                         pickerId: 'bargeAlongside'
                     }, 2)" 
-                    ng-focus="inputFocus['bargeAlongside'] = true; $event.stopPropagation();" ng-blur="inputFocus['bargeAlongside'] = false;" ng-invalid="{{ CM.invalidDate['bargeAlongside'] && !inputFocus['bargeAlongside'] }}" name="bargeAlongside">
+                    ng-focus="inputFocus['bargeAlongside'] = true; $event.stopPropagation();" ng-blur="inputFocus['bargeAlongside'] = false;" ng-invalid="{{ CM.invalidDate['bargeAlongside'] && !inputFocus['bargeAlongside'] && CM.overrideInvalidDate['bargeAlongside'] }}" name="bargeAlongside">
 
                     <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="bargeAlongside">
                         <!-- datepicker input -->
@@ -145,7 +145,7 @@
                         root: '$scope',
                         pickerId: 'bargePumpingRateStartTime'
                     }, 2)" 
-                    ng-focus="inputFocus['bargePumpingRateStartTime'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['bargePumpingRateStartTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateStartTime'] && !inputFocus['bargePumpingRateStartTime'] }}" name="bargePumpingRateStartTime">
+                    ng-focus="inputFocus['bargePumpingRateStartTime'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['bargePumpingRateStartTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateStartTime'] && !inputFocus['bargePumpingRateStartTime'] && CM.overrideInvalidDate['bargePumpingRateStartTime'] }}" name="bargePumpingRateStartTime">
             
                     <span class="input-group-btn  date-picker datetime-picker date form_meridian_datetime" id="bargePumpingRateStartTime">
                           <!-- datepicker input -->
@@ -193,7 +193,7 @@
                         root: '$scope',
                         pickerId: 'bargePumpingRateEndTime'
                     }, 2)" 
-                    ng-focus="inputFocus['bargePumpingRateEndTime'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['bargePumpingRateEndTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateEndTime'] && !inputFocus['bargePumpingRateEndTime'] }}" name="bargePumpingRateEndTime">
+                    ng-focus="inputFocus['bargePumpingRateEndTime'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['bargePumpingRateEndTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateEndTime'] && !inputFocus['bargePumpingRateEndTime'] && CM.overrideInvalidDate['bargePumpingRateEndTime'] }}" name="bargePumpingRateEndTime">
                    
                     <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="bargePumpingRateEndTime">
                         <!-- datepicker input -->
@@ -274,7 +274,7 @@
                         }, 2, true)" 
                         ng-focus="inputFocus['deliveryDate'] = true; $event.stopPropagation(); event = $event"
                         ng-blur="inputFocus['deliveryDate'] = false;"
-                        ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] }}"
+                        ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] && CM.overrideInvalidDate['deliveryDate'] }}"
                         ng-disabled="!CM.isEditable"
                         name="deliveryDate">
 
@@ -329,7 +329,7 @@
                         }, 2, true)" 
                         ng-focus="inputFocus['bdnDate'] = true; $event.stopPropagation(); event = $event" 
                         ng-blur="inputFocus['bdnDate'] = false;"
-                        ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] }}"
+                        ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] && CM.overrideInvalidDate['bdnDate'] }}"
                         ng-disabled="!CM.isEditable"
                         name="bdnDate">
                    

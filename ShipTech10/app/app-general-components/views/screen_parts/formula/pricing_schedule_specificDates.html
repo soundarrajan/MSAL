@@ -48,7 +48,7 @@
                               }, 2)" 
                               ng-focus="inputFocus[key + '_pricing_schedule_from'] = true; $event.stopPropagation(); event = $event" 
                               ng-blur="inputFocus[key + '_pricing_schedule_from'] = false;" 
-                              ng-invalid="{{ CM.invalidDate[key + '_pricing_schedule_from'] && !inputFocus[key + '_pricing_schedule_from'] }}" name="key + '_pricing_schedule_from'">
+                              ng-invalid="{{ CM.invalidDate[key + '_pricing_schedule_from'] && !inputFocus[key + '_pricing_schedule_from'] && CM.overrideInvalidDate[key + '_pricing_schedule_from'] }}" name="key + '_pricing_schedule_from'">
 
                     <span class="input-group-btn date-picker date form_meridian_datetime" id="key + '_pricing_schedule_from'" >
                         <!-- datepicker input -->

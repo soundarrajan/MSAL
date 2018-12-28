@@ -62,7 +62,7 @@
                     root: '$scope',
                     pickerId: 'dp_' + field.Unique_ID
                 }, 1, field.PickerType == 'date' || field.Name.indexOf('Date') > -1);
-                triggerChangeFields(field.Name, field.Unique_ID);" visibility="hidden">
+                triggerChangeFields(field.Name, field.Unique_ID); CM.invalidDate[field.Name] = false;" visibility="hidden">
                 <!-- end datepicker input -->
                 
                 

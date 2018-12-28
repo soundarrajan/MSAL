@@ -2963,7 +2963,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 ctrl.overrideInvalidDate = {}
             }
             ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
-
     
             if(direction == 1){
                 // datepicker input -> date typing input
