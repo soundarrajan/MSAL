@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$element', '$listsCache', '$attrs', '$timeout', '$state', '$filter', '$stateParams', '$templateCache', '$tenantSettings', '$uibModal', 'STATE', 'SCREEN_LAYOUTS', 'LOOKUP_TYPE', 'LOOKUP_MAP', 'IDS', 'ORDER_COMMANDS', 'VALIDATION_MESSAGES', 'SCREEN_ACTIONS', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'EMAIL_TRANSACTION', 'uiApiModel', 'listsModel', 'orderModel', 'lookupModel', 'screenActionsModel', 'tenantService', 'newRequestModel', '$uibModal', 'Factory_Master','Factory_Admin', '$rootScope', '$compile', 'statusColors','$window', 'screenLoader','$location',
-    function ($scope, $element, $listsCache, $attrs, $timeout, $state, $filter, $stateParams, $templateCache, $tenantSettings, uibModal, STATE, SCREEN_LAYOUTS, LOOKUP_TYPE, LOOKUP_MAP, IDS, ORDER_COMMANDS, VALIDATION_MESSAGES, SCREEN_ACTIONS, COST_TYPE_IDS, COMPONENT_TYPE_IDS, EMAIL_TRANSACTION, uiApiModel, listsModel, orderModel, lookupModel, screenActionsModel, tenantService, newRequestModel, $uibModal, Factory_Master, Factory_Admin, $rootScope, $compile, statusColors,$window,screenLoader, $location) {
+angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$element', '$listsCache', '$attrs', '$timeout', '$state', '$filter', '$stateParams', '$templateCache', '$tenantSettings', '$uibModal', 'STATE', 'SCREEN_LAYOUTS', 'LOOKUP_TYPE', 'LOOKUP_MAP', 'IDS', 'ORDER_COMMANDS', 'VALIDATION_MESSAGES', 'SCREEN_ACTIONS', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'EMAIL_TRANSACTION', 'uiApiModel', 'listsModel', 'orderModel', 'lookupModel', 'screenActionsModel', 'tenantService', 'newRequestModel', '$uibModal', 'Factory_Master','Factory_Admin', '$rootScope', '$compile', 'statusColors','$window', 'screenLoader','$location', 'Factory_App_Dates_Processing',
+    function ($scope, $element, $listsCache, $attrs, $timeout, $state, $filter, $stateParams, $templateCache, $tenantSettings, uibModal, STATE, SCREEN_LAYOUTS, LOOKUP_TYPE, LOOKUP_MAP, IDS, ORDER_COMMANDS, VALIDATION_MESSAGES, SCREEN_ACTIONS, COST_TYPE_IDS, COMPONENT_TYPE_IDS, EMAIL_TRANSACTION, uiApiModel, listsModel, orderModel, lookupModel, screenActionsModel, tenantService, newRequestModel, $uibModal, Factory_Master, Factory_Admin, $rootScope, $compile, statusColors,$window,screenLoader, $location, Factory_App_Dates_Processing) {
         var ctrl = this;
         ctrl.state = $state;
         ctrl.STATE = STATE;
@@ -2723,6 +2723,122 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 	        	$scope.$apply();
         	})
         })
+
+
+        ctrl.initMask = function(timeout){
+
+            var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptions();
+        
+            // mask options
+            var options =  {
+                onKeyPress: function(value, e, field, options) {
+                    // select formatter
+                    var formatUsed = "";
+                    if(field.hasClass('date-only')){
+                        formatUsed  = DATE_OPTIONS.momentFormatDateOnly;
+                    }else{
+                        formatUsed  = DATE_OPTIONS.momentFormat;
+                    }
+                    // process date
+                    var val = moment(value, formatUsed, true);
+                    // test date validity
+                    if(ctrl.invalidDate === undefined) ctrl.invalidDate = {};
+                    if(val.isValid()){
+                        ctrl.invalidDate[field[0].name] = false;
+                    }else{
+                        ctrl.invalidDate[field[0].name] = true;
+                    }
+                }
+            }
+            // end mask options
+    
+            // ACTUAL MASK INITIALIZATION
+            function init(){
+                var dateTime = $('.formatted-date-input.date-time');
+                $.each(dateTime, function(key){
+                    $(dateTime[key]).mask(DATE_OPTIONS.maskFormat, options);
+                })
+                var dateOnly = $('.formatted-date-input.date-only');
+                $.each(dateOnly, function(key){
+                    $(dateOnly[key]).mask(DATE_OPTIONS.maskFormatDateOnly, options);
+                })
+            }
+            if(timeout){
+                setTimeout(init,2000);
+            }else{
+                init();
+            }
+            // END ACTUAL MASK INITIALIZATION
+        }
+        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
+            
+            /** See @param inputDetails
+            /**     @param direction
+            /**     @param simpleDate
+            /**     @param app
+             *   explained in controller_master
+             */
+
+
+            var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
+    
+            var rootMap = {
+                '$scope': $scope,
+                '$rootScope': $rootScope,
+                '$ctrl': ctrl
+            }
+    
+            if(direction == 1){
+                // datepicker input -> date typing input
+                $timeout(function() {
+                    if(simpleDate){
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    } else{
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    }
+                });
+            }
+            if(direction == 2){
+                // date typing input -> datepicker input 
+                $timeout(function() { 
+                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
+                    var copy = angular.copy(date);
+                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
+                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+    
+                    // also change datepicker value
+                    // when using st-date-format for datepicker, date-only uses datepicker and date-time uses datetimepicker
+                    if(simpleDate){
+                        $('.formatted-date-button#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
+                    }else{
+                        $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+                    }
+                });
+            }
+        }
+
+        ctrl.inputChangeProcessing = function(inputName){
+
+            $timeout(function(){
+                switch(inputName){
+                    case 'eta':
+                        ctrl.data.deliveryDate = ctrl.data.eta; 
+                        ctrl.formatDates.data.deliveryDate = ctrl.formatDates.data.eta;
+                        ctrl.isRecentETA ? ctrl.data.recentEta = ctrl.data.eta : '';
+                        ctrl.isRecentETA ? ctrl.formatDates.data.recentEta = ctrl.formatDates.data.eta : ''
+                        break;
+                    case 'recentEta': 
+                        ctrl.data.deliveryDate = ctrl.data.recentEta;
+                        ctrl.formatDates.data.deliveryDate = ctrl.formatDates.data.recentEta;
+                        break;
+                    
+                }
+            },1);
+        }
 
     }
 ]);
