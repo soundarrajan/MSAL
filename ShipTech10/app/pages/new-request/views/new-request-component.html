@@ -623,7 +623,7 @@
                                                             }, 2, false); $ctrl.etaChanged(location, locationIdx)" 
                                                             ng-focus="inputFocus[locationIdx + '_eta'] = true; $event.stopPropagation(); event = $event" 
                                                             ng-blur="inputFocus[locationIdx + '_eta'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_eta'] && !inputFocus[locationIdx + '_eta'] }}"
+                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_eta'] && !inputFocus[locationIdx + '_eta'] && $ctrl.overrideInvalidDate[locationIdx + '_eta'] }}"
                                                             ng-disabled="$ctrl.disableAllFields"
                                                             name="{{ locationIdx }}_eta">
                                                             <!-- manual input -->
@@ -682,7 +682,7 @@
                                                             }, 2, false)" 
                                                             ng-focus="inputFocus[locationIdx + '_etb'] = true; $event.stopPropagation(); event = $event" 
                                                             ng-blur="inputFocus[locationIdx + '_etb'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_etb'] && !inputFocus[locationIdx + '_etb'] }}"
+                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_etb'] && !inputFocus[locationIdx + '_etb'] && $ctrl.overrideInvalidDate[locationIdx + '_etb'] }}"
                                                             ng-class="{'invalid': location.eta > location.etb}"
                                                             ng-disabled="$ctrl.disableAllFields"
                                                             name="{{ locationIdx }}_etb">
@@ -741,7 +741,7 @@
                                                             }, 2, false)" 
                                                             ng-focus="inputFocus[locationIdx + '_etd'] = true; $event.stopPropagation(); event = $event" 
                                                             ng-blur="inputFocus[locationIdx + '_etd'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_etd'] && !inputFocus[locationIdx + '_etd'] }}"
+                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_etd'] && !inputFocus[locationIdx + '_etd'] && $ctrl.overrideInvalidDate[locationIdx + '_etd'] }}"
                                                             ng-class="{'invalid': location.etb > location.etd}"
                                                             ng-disabled="$ctrl.disableAllFields"
                                                             name="{{ locationIdx }}_etd">
@@ -799,7 +799,7 @@
                                                             }, 2, false)" 
                                                             ng-focus="inputFocus[locationIdx + '_recentEta'] = true; $event.stopPropagation(); event = $event" 
                                                             ng-blur="inputFocus[locationIdx + '_recentEta'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_recentEta'] && !inputFocus[locationIdx + '_recentEta'] }}"
+                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_recentEta'] && !inputFocus[locationIdx + '_recentEta'] && $ctrl.overrideInvalidDate[locationIdx + '_recentEta'] }}"
                                                             ng-disabled="$ctrl.disableAllFields"
                                                             name="{{ locationIdx }}_recentEta">
                                                             <!-- manual input -->

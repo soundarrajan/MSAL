@@ -2958,6 +2958,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 '$rootScope': $rootScope,
                 '$ctrl': ctrl
             }
+
+            if (!ctrl.overrideInvalidDate) {
+                ctrl.overrideInvalidDate = {}
+            }
+            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
+
     
             if(direction == 1){
                 // datepicker input -> date typing input
@@ -2971,6 +2977,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
+                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
                 });
             }
             if(direction == 2){
