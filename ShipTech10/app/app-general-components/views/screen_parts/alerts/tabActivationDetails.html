@@ -108,67 +108,107 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-12">
+	<div class="col-sm-12" ng-controller="Controller_Master as CM">
+		<span ng-init="CM.initMask(); CM.datepickers();"></span>
 		<div class="row">
-					<div class="col-sm-2">
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label">
 						<label class="mt-checkbox form-label-out">
 							<span ng-init="formValues.activateOn ? formValues.temp.dummyActivateOn = true : formValues.temp.dummyActivateOn = false"></span>
 							<input type="checkbox" ng-model="formValues.temp.dummyActivateOn" name="activateOn" id="activateOn" ng-change="formValues.temp.dummyActivateOn == false ? formValues.activateOn = null : ''"/>
 							Activate on
 							<span></span>
 						</label>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group row">
-							<div class="col-sm-12">
-								<div class="row">
-								    <div class="form_input form_input_activateOn no-label" ng-init="CM.datepickers('activateOn', false, 'date')">
-								        <div class="input-group date-picker date form_meridian_datetime">
-								            <input name="activateOn" class="form-control" type="text" id="activateOn" ng-model="formValues.activateOn">
-								            <span class="formatted-date"  ng-bind="CM.formatDate(formValues.activateOn, 'dd/MM/yyyy')" >
-								            </span>
-								            <span class="input-group-btn" >
-								                <button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyActivateOn">
-								                    <i class="fa fa-calendar"></i>
-								                </button>
-								            </span>
-								        </div>
-								    </div>								
-								</div>
-							</div>
-						</div>
-					</div>
-			
-<!-- 			<div class="col-md-5">
-				<div class="row">
-				</div>
-			</div> -->
+					</label>
+					<div class="input-group">
+						<input class="formatted-date-input form-control date-time"
+			            	ng-model="formatDates.formValues.activateOn"
+			            	ng-change="CM.setValue({
+			                      path: 'formValues.activateOn',
+			                      root: '$scope',
+			                      pickerId: 'activateOn'
+			                  }, 2, true)" 
+			            	ng-focus="inputFocus['activateOn'] = true; $event.stopPropagation();" 
+			            	ng-blur="inputFocus['activateOn'] = false;" 
+			            	ng-invalid="{{ CM.invalidDate['activateOn'] && !inputFocus['activateOn'] }}"
+			            	ng-disabled="!formValues.temp.dummyActivateOn"
+							name="activateOn">
 
-			<div class="col-md-5 col-md-push-1">
+				            <span ng-init="CM.setValue({
+				                path: 'formValues.activateOn',
+				                root: '$scope',
+				                pickerId: 'activateOn'
+				            }, 1)" ng-if="formValues.activateOn"></span>
+			            
+			            <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!formValues.temp.dummyActivateOn">
+			                <input class="form-control hidden-form-input"
+			                   type="text" 
+			                   id="activateOn"
+			                   ng-model="formValues.activateOn" 
+			                   name="activateOn"
+			                   ng-change=" CM.setValue({
+			                    path: 'formValues.activateOn',
+			                    root: '$scope',
+			                    pickerId: 'activateOn'
+			                }, 1); triggerChangeFields('activateOn','activateOn'); CM.invalidDate['activateOn'] = false;"
+			                visibility="hidden"/>
+			                <button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyActivateOn">
+			                    <i class="fa fa-calendar"></i>
+			                </button>
+			            </span>
+		        	</div>
+	       		</div>
+			</div>
+			<div class="col-sm-4 pull-right">
 				<div class="form-group row dropdown-control">
-					<label class="control-label" style="float: left; padding-top:0;">
-						<label class="mt-checkbox ">
+					<label class="control-label">
+						<label class="mt-checkbox">
 							<span ng-init="formValues.deactivateOn ? formValues.temp.dummyDeactivateOn = true : formValues.temp.dummyDeactivateOn = false"></span>
 							<input type="checkbox" ng-model="formValues.temp.dummyDeactivateOn" name="deactivateOn" id="deactivateOn" ng-change="formValues.temp.dummyDeactivateOn == false ? formValues.deactivateOn = null : ''"/>
 							Deactivate on
 							<span></span>
 						</label>
 					</label>
-					<div class="form_input">
-						<div class="input-group date-picker date form_meridian_datetime">
-							<input name="deactivateOn" class="form-control" type="text" id="deactivateOn" ng-model="formValues.deactivateOn">
-							<span class="formatted-date"  ng-bind="CM.formatDate(formValues.deactivateOn, 'dd/MM/yyyy')" >
-							</span>
-							<span class="input-group-btn" >
-								<button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyDeactivateOn">
-									<i class="fa fa-calendar"></i>
-								</button>
-							</span>
-						</div>
+					<div class="input-group">
+						<input class="formatted-date-input form-control date-time"
+							ng-model="formatDates.formValues.deactivateOn"
+							ng-change="CM.setValue({
+						          path: 'formValues.deactivateOn',
+						          root: '$scope',
+						          pickerId: 'deactivateOn'
+						      }, 2, true)" 
+							ng-focus="inputFocus['deactivateOn'] = true; $event.stopPropagation();" 
+							ng-blur="inputFocus['deactivateOn'] = false;" 
+							ng-invalid="{{ CM.invalidDate['deactivateOn'] && !inputFocus['deactivateOn'] }}"
+							ng-disabled="!formValues.temp.dummyDeactivateOn"
+							name="deactivateOn">
+
+					    <span ng-init="CM.setValue({
+					        path: 'formValues.deactivateOn',
+					        root: '$scope',
+					        pickerId: 'deactivateOn'
+					    }, 1)" ng-if="formValues.deactivateOn"></span>
+
+						<span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!formValues.temp.dummyDeactivateOn">
+						    <input class="form-control hidden-form-input"
+						       type="text" 
+						       id="deactivateOn"
+						       ng-model="formValues.deactivateOn" 
+						       name="deactivateOn"
+						       ng-change=" CM.setValue({
+						        path: 'formValues.deactivateOn',
+						        root: '$scope',
+						        pickerId: 'deactivateOn'
+						    }, 1); triggerChangeFields('deactivateOn','deactivateOn'); CM.invalidDate['deactivateOn'] = false;"
+						    visibility="hidden"/>
+						    <button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyDeactivateOn">
+						        <i class="fa fa-calendar"></i>
+						    </button>
+						</span>
 					</div>
 				</div>
-			</div>
-
+			</div>						
 		</div>
 	</div>
 </div>

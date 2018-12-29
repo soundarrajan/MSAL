@@ -62,6 +62,7 @@
 					<!-- Date -->
 					<div class="form-group row"  ng-init="CM.datepickers('triggerRules[key]', false, 'date')" ng-if="parameterTypeId[formValues.triggerRules[key].parameterId].id == 2">
 					    <div class="form_input form_input_triggerRules[key] no-label" ng-show="formValues.triggerRules[key].isDate == 'true' || formValues.triggerRules[key].isDate == true ">
+					    	<!--
 					        <div class="input-group date-picker date form_meridian_datetime">
 					            <input name="triggerRules[key]" class="form-control" type="text" id="triggerRules[key]_value" ng-model="formValues.triggerRules[key].value">
 					            <span class="formatted-date"  ng-bind="CM.formatDate(formValues.triggerRules[key].value, 'dd/MM/yyyy')" >
@@ -72,6 +73,47 @@
 					                </button>
 					            </span>
 					        </div>
+					    	-->
+		                    <div class="input-group " ng-class="field.disabled ? 'disabled' : ''" ng-controller="Controller_Master as CM">
+                	            <span ng-init="CM.initMask()"></span>
+	                            <span ng-init="CM.setValue({
+	                                path: 'formValues.triggerRules[' + key + '].value',
+	                                root: '$scope',
+	                                pickerId: key + '_value'
+	                            }, 1, true)" 
+	                            ng-if="formValues['triggerRules'][key]['value']"></span>
+	                   
+	                            <!-- manual input -->
+	                            <input class="formatted-date-input date-only" 
+	                                  ng-model="formatDates.formValues.triggerRules[key].value" 
+	                                  ng-change="CM.setValue({
+	                                    path: 'formValues.triggerRules[' + key + '].value',
+	                                    root: '$scope',
+	                                    pickerId: key + '_value'
+	                                  }, 2, true)" 
+	                                  ng-focus="inputFocus[key + '_value'] = true; $event.stopPropagation(); event = $event" 
+	                                  ng-blur="inputFocus[key + '_value'] = false;" 
+	                                  ng-invalid="{{ CM.invalidDate[key + '_value'] && !inputFocus[key + '_value'] && CM.overrideInvalidDate[key + '_value'] }}"
+	                                  name="key + '_value'">
+
+		                        <span class="input-group-btn date-picker date form_meridian_datetime" id="key + 'value'" >
+		                            <!-- datepicker input -->
+		                            <input class="form-control hidden-form-input" type="text"
+		                            	id="TriggerRule_{{ key }}_value"
+		                            	ng-model="formValues.triggerRules[key].value"
+		                            	ng-required="false"
+		                            	name="TriggerRule_{{ key }}_value"
+		                            	ng-change="CM.setValue({
+			                                path: 'formValues.triggerRules[' + key + '].value',
+			                                root: '$scope',
+			                                pickerId: key + '_value'
+			                            }, 1, true)" 
+			                            visibility="hidden" />
+		                            <button class="btn default date-set" type="button">
+		                                <i class="fa fa-calendar"></i>
+		                            </button>
+		                        </span>
+		                    </div>
 					    </div>
 					    <span ng-show="formValues.triggerRules[key].isDate == 'false' || formValues.triggerRules[key].isDate == false">
 					    	<input type="text" class="form-control" ng-model="formValues.triggerRules[key].value">
