@@ -10,46 +10,46 @@
 			<div class="row">
 				<br><br>
 				<div class="col-sm-12">
-                    <label for="date" class="simpleLookupLabel col-sm-4" style="max-height: initial;">
-                       <b>Effective From</b> 
-                    </label>
-                    <div class="input-group col-sm-8" id="effectiveFromDP" >
-                        <!-- manual input -->
-                        <input class="formatted-date-input date-only"
-                           ng-model="formatDates.formValues.effectiveFrom"
-                           ng-change="CM.setValue({
-                                  path: 'formValues.effectiveFrom',
-                                  root: '$scope',
-                                  pickerId: 'effectiveFrom'
-                              }, 2, true)" 
-                           ng-focus="inputFocus['effectiveFrom'] = true; $event.stopPropagation();" 
-                           ng-blur="inputFocus['effectiveFrom'] = false;" 
-                           ng-invalid="{{ CM.invalidDate['effectiveFrom'] && !inputFocus['effectiveFrom'] }}" 
-           name="effectiveFrom">
+          <label for="date" class="simpleLookupLabel col-sm-4" style="max-height: initial;">
+             <b>Effective From</b> 
+          </label>
+          <div class="input-group col-sm-8" id="effectiveFromDP" >
+              <!-- manual input -->
+              <input class="formatted-date-input date-only"
+                 ng-model="formatDates.formValues.effectiveFrom"
+                 ng-change="CM.setValue({
+                        path: 'formValues.effectiveFrom',
+                        root: '$scope',
+                        pickerId: 'effectiveFrom'
+                    }, 2, true)" 
+                 ng-focus="inputFocus['effectiveFrom'] = true; $event.stopPropagation();" 
+                 ng-blur="inputFocus['effectiveFrom'] = false;" 
+                 ng-invalid="{{ CM.invalidDate['effectiveFrom'] && !inputFocus['effectiveFrom'] }}" 
+                 name="effectiveFrom">
 
-                        <span ng-init="CM.setValue({
-                            path: 'formValues.effectiveFrom',
-                            root: '$scope',
-                            pickerId: 'effectiveFrom'
-                        }, 1, true)" ng-if="formValues.effectiveFrom"></span>
-                        
-                        <span class="input-group-btn date-picker date form_meridian_datetime">
-                            <input class="form-control hidden-form-input"
-                               type="text" 
-                               id="effectiveFrom"
-                               ng-model="formValues.effectiveFrom" 
-                               name="effectiveFrom"
-                               ng-change=" CM.setValue({
-                                path: 'formValues.effectiveFrom',
-                                root: '$scope',
-                                pickerId: 'effectiveFrom'
-                            }, 1, true, 'effectiveFrom'); triggerChangeFields('effectiveFrom','effectiveFrom'); CM.invalidDate['effectiveFrom'] = false;"
-                            visibility="hidden"/>
-                            <button class="btn default date-set" type="button">
-                                <i class="fa fa-calendar"></i>
-                            </button>
-                        </span>
-                    </div>								
+              <span ng-init="CM.setValue({
+                  path: 'formValues.effectiveFrom',
+                  root: '$scope',
+                  pickerId: 'effectiveFrom'
+              }, 1, true)" ng-if="formValues.effectiveFrom"></span>
+              
+              <span class="input-group-btn date-picker date form_meridian_datetime">
+                  <input class="form-control hidden-form-input"
+                     type="text" 
+                     id="effectiveFrom"
+                     ng-model="formValues.effectiveFrom" 
+                     name="effectiveFrom"
+                     ng-change=" CM.setValue({
+                      path: 'formValues.effectiveFrom',
+                      root: '$scope',
+                      pickerId: 'effectiveFrom'
+                  }, 1, true, 'effectiveFrom'); triggerChangeFields('effectiveFrom','effectiveFrom'); CM.invalidDate['effectiveFrom'] = false;"
+                  visibility="hidden"/>
+                  <button class="btn default date-set" type="button">
+                      <i class="fa fa-calendar"></i>
+                  </button>
+              </span>
+          </div>								
 				</div>
 			</div>
         </div>   

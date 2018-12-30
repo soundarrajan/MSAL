@@ -256,28 +256,81 @@
                         </div> -->
             <div class="pull-right">
                 <form class="form-inline">
-                    <div class="form-group">
+                    <div class="form-group" ng-init="$ctrl.initMask(); $ctrl.datepickers();">
                         <b>
                             Quote By
                         </b>
-                        <div class="input-group date form_meridian_datetime">
-                            <input class="form-control hidden" ng-model="$ctrl.quoteByDateFrom" st-date-format ng-change="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)" />
-                            <span ng-controller="Controller_Master as CM" class="form-control" ng-bind="CM.formatDateTime($ctrl.quoteByDateFrom, '', 'eta')" style="min-width:150px;"></span>
-                            <i ng-show="$ctrl.quoteByDateFrom && !$ctrl.isQuoteDateAutoPopulated" class="fa fa-close font-red" ng-click="$ctrl.quoteByDateFrom = null; $ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)"style="position: absolute;z-index: 999;right: 45px;top: 9px;" ></i>
-                            <span class="input-group-btn">
-                                <button class="btn date-set" type="button">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
+                        <div class="input-group">
+                            <!-- manual input -->
+                            <input class="formatted-date-input date-time" style="width: 200px; position: relative; height: 33px;"
+                                ng-model="$ctrl.formatDates.quoteByDateFrom"
+                                ng-change="$ctrl.setValue({
+                                        path: 'quoteByDateFrom',
+                                        root: 'ctrl',
+                                        pickerId: 'quoteByDateFrom'
+                                    }, 2); ($ctrl.formatDates.quoteByDateFrom && !$ctrl.invalidDate['quoteByDateFrom']) ? $ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments) : '';" 
+                                ng-focus="inputFocus['quoteByDateFrom'] = true; $event.stopPropagation();" 
+                                ng-blur="inputFocus['quoteByDateFrom'] = false;" 
+                                ng-invalid="{{ $ctrl.invalidDate['quoteByDateFrom'] && !inputFocus['quoteByDateFrom'] }}" 
+                                name="quoteByDateFrom">
+                            <span ng-init="$ctrl.setValue({
+                              path: 'quoteByDateFrom',
+                              root: 'ctrl',
+                              pickerId: 'quoteByDateFrom'
+                            }, 1)" ng-if="$ctrl.quoteByDateFrom"></span>
+                              
+                            <span class="input-group-btn date-picker date form_meridian_datetime">
+                              <input class="form-control hidden-form-input"
+                                 type="text" 
+                                 id="quoteByDateFrom"
+                                 ng-model="$ctrl.quoteByDateFrom" 
+                                 name="quoteByDateFrom"
+                                 ng-change="$ctrl.setValue({
+                                  path: 'quoteByDateFrom',
+                                  root: 'ctrl',
+                                  pickerId: 'quoteByDateFrom'
+                              }, 1); $ctrl.invalidDate['quoteByDateFrom'] = false; $ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments);"
+                              visibility="hidden"/>
+                              <button class="btn default date-set" type="button">
+                                  <i class="fa fa-calendar"></i>
+                              </button>
                             </span>
                         </div>
-                        &nbsp;&nbsp;-&nbsp;
-                        <div class="input-group date form_meridian_datetime" ng-if="$ctrl.isQuoteByEndDateValidated">
-                            <span ng-controller="Controller_Master as CM" class="form-control" ng-bind="CM.formatDateTime($ctrl.quoteByDate, '', 'eta')" style="min-width:150px;"></span>
-                            <input class="form-control hidden" readonly="" ng-model="$ctrl.quoteByDate" st-date-format/>
-                            <span class="input-group-btn">
-                                <button class="btn date-set" type="button">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
+
+                        <div class="input-group" ng-if="$ctrl.isQuoteByEndDateValidated">
+                            <!-- manual input -->
+                            <input class="formatted-date-input date-time" style="width: 200px; position: relative; height: 33px;"
+                                ng-model="$ctrl.formatDates.quoteByDate"
+                                ng-change="$ctrl.setValue({
+                                        path: 'quoteByDate',
+                                        root: 'ctrl',
+                                        pickerId: 'quoteByDate'
+                                    }, 2);" 
+                                ng-focus="inputFocus['quoteByDate'] = true; $event.stopPropagation();" 
+                                ng-blur="inputFocus['quoteByDate'] = false;" 
+                                ng-invalid="{{ $ctrl.invalidDate['quoteByDate'] && !inputFocus['quoteByDate'] }}" 
+                                name="quoteByDate">
+                            <span ng-init="$ctrl.setValue({
+                              path: 'quoteByDate',
+                              root: 'ctrl',
+                              pickerId: 'quoteByDate'
+                            }, 1)" ng-if="$ctrl.quoteByDate"></span>
+                              
+                            <span class="input-group-btn date-picker date form_meridian_datetime">
+                              <input class="form-control hidden-form-input"
+                                 type="text" 
+                                 id="quoteByDate"
+                                 ng-model="$ctrl.quoteByDate" 
+                                 name="quoteByDate"
+                                 ng-change="$ctrl.setValue({
+                                  path: 'quoteByDate',
+                                  root: 'ctrl',
+                                  pickerId: 'quoteByDate'
+                              }, 1); $ctrl.invalidDate['quoteByDate'] = false;"
+                              visibility="hidden"/>
+                              <button class="btn default date-set" type="button">
+                                  <i class="fa fa-calendar"></i>
+                              </button>
                             </span>
                         </div>
                         <div class="input-group">
@@ -623,9 +676,9 @@
                     <a ng-show="$ctrl.sendNoQuoteButtonText" class="btn btn-default" ng-click="$ctrl.sendNoQuote()" ng-disabled="$ctrl.checkIfCanSendNoQuote()" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
                         {{$ctrl.sendNoQuoteButtonText}}
                     </a>
-		            <a class="btn btn-default" ng-click="$ctrl.sendRequote()"  ng-class="{'disabled' : $ctrl.buttonsDisabled || $ctrl.requirementsHasNoPrice()}">
-						Send Requote
-		            </a>
+                <a class="btn btn-default" ng-click="$ctrl.sendRequote()"  ng-class="{'disabled' : $ctrl.buttonsDisabled || $ctrl.requirementsHasNoPrice()}">
+            Send Requote
+                </a>
                     <a class="btn btn-default" ng-click="$ctrl.sendRFQ()" ng-class="{ 'disabled' : !$ctrl.canSendRFQ() || $ctrl.buttonsDisabled}">
                         Send RFQ
                     </a>
@@ -649,39 +702,39 @@
 
 
 <div class="confirmBladeClose fade bs-modal hide" tabindex="-1" style="z-index: 99999; transform: translateY(50%);" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
-			</div>
-			<div class="modal-body">
-				Are you sure you want to close? You may have unsaved data
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default confirmBladeCloseNo" data-dismiss="modal" >No</button>
-				<button ng-controller="Controller_Master as CM" type="button" class="btn btn-default  btn-outline orange confirmBladeCloseYes" ng-click="confirmCloseBlade()" data-dismiss="modal">Yes</button>
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to close? You may have unsaved data
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmBladeCloseNo" data-dismiss="modal" >No</button>
+        <button ng-controller="Controller_Master as CM" type="button" class="btn btn-default  btn-outline orange confirmBladeCloseYes" ng-click="confirmCloseBlade()" data-dismiss="modal">Yes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="confirmNavigateBlade fade bs-modal hide" tabindex="-1" style="z-index: 99999; transform: translateY(50%);" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
-			</div>
-			<div class="modal-body">
-				Are you sure you want to exit? You may have unsaved data
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default confirmBladeCloseNo" data-dismiss="modal" >No</button>
-				<button type="button" class="btn btn-default  btn-outline orange confirmBladeCloseYes" ng-click="$ctrl.confirmNavigateBlade()" data-dismiss="modal">Yes</button>
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to exit? You may have unsaved data
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default confirmBladeCloseNo" data-dismiss="modal" >No</button>
+        <button type="button" class="btn btn-default  btn-outline orange confirmBladeCloseYes" ng-click="$ctrl.confirmNavigateBlade()" data-dismiss="modal">Yes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <style>

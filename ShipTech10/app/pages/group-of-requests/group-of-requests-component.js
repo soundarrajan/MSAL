@@ -33,7 +33,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "MOCKUP_MAP",
     "PACKAGES_CONFIGURATION",
     "screenLoader",
-    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader) {
+    "$tenantSettings",
+    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, $tenantSettings) {
         $scope.STATE = STATE;
         var ctrl = this;
         var groupId = $stateParams.groupId;
@@ -53,6 +54,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         ctrl.lists = $listsCache;
         ctrl.requirementsToRequote = [];
         ctrl.isEnergyCalculationRequired = true;
+        $scope.tenantSetting = $tenantSettings;
+        ctrl.tenantSetting = $tenantSettings;
         tenantService.tenantSettings.then(function (settings) {
             ctrl.quoteByCurrency = settings.payload.tenantFormats.currency;
             ctrl.quoteByTimezone = settings.payload.tenantFormats.timeZone;
@@ -6209,6 +6212,326 @@ ctrl.setProductData = function(data, loc) {
             groupOfRequestsModel.switchHasNoQuote(ctrl.sendNoQuotePayload).then(function(response) {
                 ctrl.initScreenAfterSendOrSkipRfq();
             });        	
+        }
+
+        ctrl.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
+            // console.log(fieldUniqueId)
+            if (elem) {
+                dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+                dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+                if (typeof fieldUniqueId == "undefined") {
+                    fieldUniqueId = "date";
+                }
+                if (fieldUniqueId == "deliveryDate" && ctrl.app_id == "recon") {
+                    return ctrl.formatDate(elem, "dd/MM/yyyy");
+                }
+                if (fieldUniqueId == "invoiceDate" && ctrl.app_id == "invoices") {
+                    return ctrl.formatDate(elem, "dd/MM/yyyy");
+                }
+                if (fieldUniqueId == "eta" || fieldUniqueId == "orderDetails.eta" || fieldUniqueId == "etb" || fieldUniqueId == "etd" || fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || fieldUniqueId == "pricingDate") {
+                    // debugger;
+                    // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
+                    utcDate = moment.utc(elem).format();
+                    formattedDate = $filter("date")(utcDate, dateFormat, 'UTC');
+                    // return moment.utc(elem).format(dateFormat);
+                } else {
+                    formattedDate = $filter("date")(elem, dateFormat);
+                }
+                return formattedDate;
+            }
+        };
+        ctrl.formatSimpleDate = function(date) {
+            dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            window.tenantFormatsDateFormat = dateFormat;
+            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+            if (date) {
+                return moment.utc(date).format(dateFormat);
+            }
+            return;
+        };
+
+        ctrl.initMask = function(timeout){
+            ctrl.formatted = "";
+            if(!$scope.formatDates)  $scope.formatDates = {};
+
+            //  helper functions 
+            var datePositions = {
+                day: 0,
+                month: 0,
+                year: 0
+            }
+            var charCodes = {
+                47: "/",
+                45: "-",
+                46: "."
+            }
+            function parseHour(str){
+                str = str.split(" ")[1];
+                return {
+                    hours: str.split(":")[0],
+                    minutes: str.split(":")[1]
+                }
+            }
+            function parseDate(str, separator, positions){
+                str = str.split(" ")[0];
+                return {
+                    day: str.split(separator)[positions['day']],
+                    month: str.split(separator)[positions['month']],
+                    year: str.split(separator)[positions['year']]
+                }
+            }
+
+            function findSeparator(str){
+                var idx = 0;
+                while(charCodes[str[idx].charCodeAt(0)] === undefined) idx++;
+                return str[idx];
+            }
+
+
+            function calculateDatePositions(format){
+                format = format.toLowerCase();
+                format = format.split(" ")[0]; // remove hour
+                var separator = findSeparator(format)
+                var bits = format.split(separator);
+                $.each(bits, function(key,val){
+                     if(val.indexOf("y") >= 0) datePositions['year'] = key;
+                     if(val.indexOf("m") >= 0) datePositions['month'] = key;
+                     if(val.indexOf("d") >= 0) datePositions['day'] = key;
+                })
+
+                return datePositions;
+            }
+            function normalizeFormatter(str){
+                str.replace("MMM","MM");
+                return str;
+            }
+
+            function formMomentFormat(format, dateOnly){
+                var date = format.split(" ")[0].toUpperCase();
+                if(dateOnly) return date;
+                return date + " HH:mm"; // default 24hours and minutes
+            }
+            function formMaskFormat(format, dateOnly){
+                // debugger;
+                var idx = 0;
+                var mask = "";  
+                format = format.toLowerCase();
+                if(format.indexOf('mmm') < 0){
+                    // only numbers
+                    for(idx = 0; idx < format.length; idx++){
+                        if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                            mask = mask + "0"; // allow any number
+                       }else{
+                        mask = mask + format[idx];
+                       }
+                    }
+                }else{
+                    // for 'MMM' allow letters
+                    for(idx = 0; idx < format.length; idx++){
+                        if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                            if(format.charCodeAt(idx) == 109){
+                                mask = mask + "A"; // allow any letter
+                            }else{
+                                mask = mask + "0"; // allow any number
+                            }
+             
+                       }else{
+                            mask = mask + format[idx];
+                       }
+                    }
+                }
+                if(dateOnly) return mask.split(" ")[0];
+                return mask;
+            }
+
+            // end helper functions
+
+            /// initialization
+            var currentFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+
+            var DATE_POSITIONS = calculateDatePositions(currentFormat);
+            var SEPARATOR = findSeparator(currentFormat);
+      
+            var momentFormat = formMomentFormat(currentFormat);
+            var momentFormatDateOnly = formMomentFormat(currentFormat, true);
+            var maskFormat = formMaskFormat(currentFormat);
+            var maskFormatDateOnly = formMaskFormat(currentFormat, true);
+
+
+            ctrl.DATE_OPTIONS = {
+                datePositions: DATE_POSITIONS,
+                separator: SEPARATOR,
+                momentFormat: momentFormat,
+                momentFormatDateOnly: momentFormatDateOnly,
+                maskFormat: maskFormat,
+                maskFormatDateOnly: maskFormatDateOnly
+            }
+
+            /// end variables initialization
+        
+
+            // mask options
+            var options =  {
+                translation: {
+                    //-----  date 
+                    //1. day
+                    d: {pattern: /[0-2]/}, // fist digit of day ( 0 / 2 ),
+                    e: {pattern: /[0-9]/}, // second digit of day ( 0 / 9 ),
+                    f: {pattern: /[0-1]/}, // second digit of day ( 0 / 1 ),
+                    // 2. month
+                    m: {pattern: /[0-1]/}, // first digit of month ( 0 / 1)
+                    n: { pattern: /[0-9]/}, // second digit of month ( 0 -9 )
+                    o: { pattern: /[0-2]/ },// second digit of month ( 0 -2 )
+                    // 3. year
+                    y: {pattern: /[0-9]/},
+                    // ----- hour
+                    // 4. hour
+                    h: { pattern: /[0-2]/}, // first digit of hour ( 0 - 2)
+                    j: { pattern: /[0-9]/}, // second digit of hour ( 0 - 9 )
+                    K: { pattern: /[0-4]/}, // second digit of hour ( 0 - 4)
+                    // 5. min
+                    a: { pattern: /[0-5]/}, // first digit of minute ( 0 - 5 )
+                    b: { pattern: /[0-9]/}, // second digit of minute ( 0 - 9)
+                },
+                onKeyPress: function(value, e, field, options) {
+                    // select formatter
+                    var formatUsed = "";
+                    if(field.hasClass('date-only')){
+                        formatUsed  = ctrl.DATE_OPTIONS.momentFormatDateOnly;
+                    }else{
+                        formatUsed  = ctrl.DATE_OPTIONS.momentFormat;
+                    }
+                   
+                    // process date
+                    var val = moment(value, formatUsed, true);
+
+                    // console.log(field.hasClass('date-only'))
+                    // console.log(val, val.isValid());
+                    
+                    // test date validity
+                    if(ctrl.invalidDate === undefined) ctrl.invalidDate = {};
+                    if(val.isValid()){
+                        ctrl.invalidDate[field[0].name] = false;
+                    }else{
+                        ctrl.invalidDate[field[0].name] = true;
+                    }
+                }
+            }
+            // end mask options
+
+
+            // ACTUAL MASK INITIALIZATION
+            function init(){
+                var dateTime = $('.formatted-date-input.date-time');
+                $.each(dateTime, function(key){
+                    $(dateTime[key]).mask(maskFormat, options);
+                })
+                var dateOnly = $('.formatted-date-input.date-only');
+                $.each(dateOnly, function(key){
+                    $(dateOnly[key]).mask(maskFormatDateOnly, options);
+                })
+            }
+            if(timeout){
+                setTimeout(init,2000);
+            }else{
+                init();
+            }
+   
+
+            // END ACTUAL MASK INITIALIZATION
+            
+        }
+
+        ctrl.initValidityForDate = function(name){
+            if(ctrl.invalidDate === undefined) ctrl.invalidDate = {};
+            ctrl.invalidDate[name] = false;
+        }
+
+        ctrl.formatDateTimeReverse = function (value, simpleDate){
+            var val = null;
+            if(simpleDate) val = moment(value, ctrl.DATE_OPTIONS.momentFormatDateOnly, true)
+            else val = moment(value, ctrl.DATE_OPTIONS.momentFormat, true)
+        
+            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
+            return null;
+        }
+
+        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
+            
+
+            /**  @param inputDetails - object w. the inputs details:
+             * 
+             *    - root: CM/$scope/$rootScope/any other controller
+             *    - path: string path to the object, can be nested: "formValues.deliveryProducts[0].headers.myValue"
+             *    - isNested: true if path is nested, false otherwise
+             *    - pickerId: id set to <span class="input-group-btn date-picker">, used to set date inside the datepicker after date is set manually
+             * 
+             *    Note: deep nested properties will be accessed using lodash
+             *    _.get(root, path) _.get(object, 'a[0].b.c');
+             *    _.set(root, path, valueToSet); // _.set(object, 'a[0].b.c', 4);
+             * 
+             *   @param direction - number (1 / 2)
+             *    - whether function is called after datepicker changes date (1) or after date is changed by typing (2)
+             * 
+             *   @param simpleDate - boolean 
+             *    - true if date is date-only
+             * 
+             *   @param app - string
+             *    - sometimes this is needed when calling ctrl.formatSimpleDate
+             * 
+             *   ------------------------------------------------------------------------------
+             * 
+             *  1. Date formed by typing is stored in root.formatDates[path]
+                So if i have Some_Controller.nested.nested2.value => the formated value will be in Some_Controller.formatDates.nested.nested2.value 
+
+                2. @variable DATE_FORMAT is set to $scope.tenantSetting.tenantFormats.dateFormat
+                  This needs to be changed if it has other path in other controller
+             */
+            var DATE_FORMAT = $scope.tenantSetting.tenantFormats.dateFormat;
+
+            var rootMap = {
+                '$scope': $scope,
+                '$rootScope': $rootScope,
+                'ctrl': ctrl
+            }
+
+            if (!ctrl.overrideInvalidDate) {
+                ctrl.overrideInvalidDate = {}
+            }
+            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
+
+            if(direction == 1){
+                // datepicker input -> date typing input
+                $timeout(function() {
+                    if(simpleDate){
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = ctrl.formatSimpleDate(dateValue, DATE_FORMAT, app);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    } else{
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = ctrl.formatDateTime(dateValue, DATE_FORMAT);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    }
+                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
+                },2);
+            }
+            if(direction == 2){
+                // date typing input -> datepicker input 
+                $timeout(function() { 
+                    
+                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
+                    var copy = angular.copy(date);
+                    var formattedDate = ctrl.formatDateTimeReverse(copy, simpleDate);
+                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+
+                    // also change datepicker value
+                    $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+                },2);
+            }
+        }
+        ctrl.stopPropagation = function($event){
+            console.log($event);
+            $event.stopPropagation();
         }
 
 
