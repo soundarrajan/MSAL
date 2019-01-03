@@ -1,9 +1,10 @@
 angular.module('shiptech.components')
-    .controller('RequoteDialogController', ['$scope', '$element', '$attrs', '$timeout', 'MOCKUP_MAP', 'groupOfRequestsModel', 'tenantService', '$state',
-        'EMAIL_TRANSACTION', 'STATE', '$listsCache',
-        function($scope, $element, $attrs, $timeout, MOCKUP_MAP, groupOfRequestsModel, tenantService, $state,
-            EMAIL_TRANSACTION, STATE, $listsCache) {
+    .controller('RequoteDialogController', ['$scope', '$element', '$attrs', '$timeout', 'MOCKUP_MAP', 'groupOfRequestsModel', 'tenantService', '$tenantSettings', '$state',
+        'EMAIL_TRANSACTION', 'STATE', '$listsCache','$rootScope', 'Factory_App_Dates_Processing',
+        function($scope, $element, $attrs, $timeout, MOCKUP_MAP, groupOfRequestsModel, tenantService, $tenantSettings, $state,
+            EMAIL_TRANSACTION, STATE, $listsCache, $rootScope, Factory_App_Dates_Processing) {
             var ctrl = this;
+            ctrl.tenantSettings = $tenantSettings;
             ctrl.lists = $listsCache;
             // console.log(tenantService.tenantSettings)
             tenantService.tenantSettings.then(function(settings) {
@@ -114,6 +115,63 @@ angular.module('shiptech.components')
                     $state.go(STATE.PREVIEW_EMAIL, { data: rfq_data, transaction: EMAIL_TRANSACTION.REQUOTE });
                 }
             };
+
+
+			ctrl.initMask = function(){
+	            Factory_App_Dates_Processing.doMaskInitialization();
+	        }
+	        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
+	            
+	            /** See @param inputDetails
+	            /**     @param direction
+	            /**     @param simpleDate
+	            /**     @param app
+	             *   explained in controller_master
+	             */
+
+
+	            var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
+	    
+	            var rootMap = {
+	                '$scope': $scope,
+	                '$rootScope': $rootScope,
+	                '$ctrl': ctrl
+	            }
+
+	            if (!ctrl.overrideInvalidDate) {
+	                ctrl.overrideInvalidDate = {}
+	            }
+	            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
+	    
+	            if(direction == 1){
+	                // datepicker input -> date typing input
+	                $timeout(function() {
+	                    if(simpleDate){
+	                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+	                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
+	                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+	                    } else{
+	                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+	                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
+	                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+	                    }
+	                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
+	                });
+	            }
+	            if(direction == 2){
+	                // date typing input -> datepicker input 
+	                $timeout(function() { 
+	                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
+	                    var copy = angular.copy(date);
+	                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
+	                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+	    
+	                    // also change datepicker value
+	                    $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+	                });
+	            }
+	        }
+
 
         }
     ]);

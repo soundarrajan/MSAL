@@ -6,18 +6,51 @@
 <div class="modal-body">
 	<div class="form-group">
 		<div class="portlet" style="height:30px">
+	       
 	        <div class="col-md-4 row">
 	            <label class="control-label col-md-4">Quote By Date</label>
-	            <div class="input-group date form_meridian_datetime col-md-8">
-	                <input class="form-control" ng-model="$ctrl.quoteByDate" readonly="" st-date-format/>
+	            <div class="input-group col-md-8">
+
+				<span ng-controller="Controller_Master as CM" ng-init="CM.initMask(true)"></span>
+
+				<span ng-init="$ctrl.setValue({
+				    path: 'quoteByDate',
+				    root: '$ctrl',
+				    pickerId: 'quoteByDate',
+				    fieldId: 'quoteByDate'
+				}, 1, false)" ng-if="$ctrl.quoteByDate"></span>
+
+				<input class="formatted-date-input date-time"
+					ng-model="$ctrl.formatDates.quoteByDate" 
+					ng-change="$ctrl.setValue({
+					    path: 'quoteByDate',
+					    root: '$ctrl',
+					    pickerId: 'quoteByDate',
+					    fieldId: 'quoteByDate'
+					}, 2, false); $ctrl.etaChanged(location, locationIdx)" 
+					ng-focus="inputFocus['quoteByDate'] = true; $event.stopPropagation(); event = $event" 
+					ng-blur="inputFocus['quoteByDate'] = false;"
+					ng-invalid="{{ CM.invalidDate['quoteByDate'] && !inputFocus['quoteByDate'] && $ctrl.overrideInvalidDate['quoteByDate'] }}"
+					ng-disabled="$ctrl.disableAllFields"
+					name="quoteByDate">
+
+
+	                <!-- <input class="form-control" ng-model="$ctrl.quoteByDate" readonly="" st-date-format/> -->
 	                <i ng-show="$ctrl.quoteByDate && !$ctrl.isQuoteDateAutoPopulated" class="fa fa-close font-red" ng-click="$ctrl.quoteByDate = null"style="position: absolute;z-index: 999;right: 45px;top: 9px;" ></i>
-	                <span class="input-group-btn">
+	                <span class="input-group-btn formatted-date-button date form_meridian_datetime" id="quoteByDate">
+                        <input class="form-control hidden-form-input" name="quoteByDate" disabled id="id_quoteByDate"  date-before="{{ location.etd }}" ng-model="$ctrl.quoteByDate" st-date-format required ng-disabled="$ctrl.disableAllFields" visibility="hidden"; ng-change="$ctrl.setValue({
+						    path: 'quoteByDate',
+						    root: '$ctrl',
+						    pickerId: 'quoteByDate',
+						    fieldId: 'quoteByDate'
+						}, 1, false);" >
 	                    <button class="btn date-set" type="button">
 	                        <i class="fa fa-calendar"></i>
 	                    </button>
 	                </span>
 	            </div>
 	        </div>
+
 	        <div class="col-md-4 row">
 	            <label class="control-label col-md-3">Time Zone</label>
 	            <div class="input-group col-md-9 pull-left center-block">
