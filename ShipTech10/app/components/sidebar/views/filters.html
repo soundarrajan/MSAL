@@ -85,10 +85,10 @@
                                 <div class="form_input">
                                     <span ng-switch="globalFilters[key].condition.conditionNrOfValues">
                                         <span ng-switch-when="2">
-                                            <div class="form_group no-label">
+                                            <div class="form_group no-label" ng-if="globalFilters[key].column.columnType != 'Date'">
                                                 <div class="between" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
-                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control " ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}"/>
-
+                                                    <input autocomplete="off" type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control " ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}"/>
+                                                
                                                     <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
                                                         <button class="btn default date-set" type="button">
                                                             <i class="fa fa-calendar"></i>
@@ -96,7 +96,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="between" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
-                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}1" class="form-control" ng-model="globalFilters[key].value[1]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                                    <input autocomplete="off" type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}1" class="form-control" ng-model="globalFilters[key].value[1]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
 
                                                     <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
                                                         <button class="btn default date-set" type="button">
@@ -105,13 +105,74 @@
                                                     </span>
                                                 </div>
                                             </div>
+
+
+                                            <div class="form_group no-label" ng-if="globalFilters[key].column.columnType == 'Date'">
+                                                <div class="between" class="date-picker input-group pull=left" style="margin-right:1%;">
+													<span ng-controller="Controller_Master as CM" ng-init="CM.initMask(true)"></span>
+													<input class="formatted-date-input date-time form-control" style="width:97%;" autocomplete="off"
+														ng-model="globalFilters[key].value[0]" 
+														ng-change="$ctrl.setValue({
+														    path: 'globalFilters['+key+'].value[0]',
+														    root: '$scope',
+														    pickerId: 'id_filter'+key+'_'+globalFilters[key].column.columnType+'0',
+														    fieldId: 'filter'+key+'_'+globalFilters[key].column.columnType+'0'
+														}, 2, true); $ctrl.etaChanged(location, locationIdx)" 
+														ng-focus="inputFocus['globalFilters['+key+'].value[0]'] = true; $event.stopPropagation(); event = $event" 
+														ng-blur="inputFocus['globalFilters['+key+'].value[0]'] = false;"
+														ng-invalid="{{ CM.invalidDate['globalFilters['+key+'].value[0]'] && !inputFocus['globalFilters['+key+'].value[0]'] && $ctrl.overrideInvalidDate['globalFilters['+key+'].value[0]'] }}"
+														name="globalFilters['+key+'].value[0]">
+                                                    <span class="input-group-btn date-picker date form_meridian_datetime" id="id_filter{{ key }}_{{ globalFilters[key].column.columnType }}0" ng-if="globalFilters[key].column.columnType == 'Date'" >
+	                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control hidden-form-input" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                                        <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+
+
+                                                <div class="between" class="date-picker input-group pull=left" style="margin-right:1%;">
+													<span ng-controller="Controller_Master as CM" ng-init="CM.initMask(true)"></span>
+													<input class="formatted-date-input date-time form-control" style="width:97%;" autocomplete="off"
+														ng-model="globalFilters[key].value[1]" 
+														ng-change="$ctrl.setValue({
+														    path: 'globalFilters['+key+'].value[1]',
+														    root: '$scope',
+														    pickerId: 'id_filter'+key+'_'+globalFilters[key].column.columnType+'1',
+														    fieldId: 'filter'+key+'_'+globalFilters[key].column.columnType+'1'
+														}, 2, true); $ctrl.etaChanged(location, locationIdx)" 
+														ng-focus="inputFocus['globalFilters['+key+'].value[1]'] = true; $event.stopPropagation(); event = $event" 
+														ng-blur="inputFocus['globalFilters['+key+'].value[1]'] = false;"
+														ng-invalid="{{ CM.invalidDate['globalFilters['+key+'].value[1]'] && !inputFocus['globalFilters['+key+'].value[1]'] && $ctrl.overrideInvalidDate['globalFilters['+key+'].value[1]'] }}"
+														name="globalFilters['+key+'].value[1]">
+                                                    <span class="input-group-btn date-picker date form_meridian_datetime" id="id_filter{{ key }}_{{ globalFilters[key].column.columnType }}1" ng-if="globalFilters[key].column.columnType == 'Date'" >
+	                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}1" class="form-control hidden-form-input" ng-model="globalFilters[key].value[1]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                                        <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+
+                                                <!-- <div class="between" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''">
+                                                    <input autocomplete="off" type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}1" class="form-control" ng-model="globalFilters[key].value[1]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                                
+                                                    <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div> -->
+                                            </div>
+
+
                                         </span>
                                         <span ng-switch-when="1">
                                             <div class="form_input no-label">
                                             	<!-- ng-disabled="value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Request Product Status'" -->
-                                                <div ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''" >
+                                                <div ng-if="globalFilters[key].column.columnType != 'Date'" >
+
                                                     <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
-                                                    <span ng-if="globalFilters[key].column.columnType == 'Date'" class="formatted-date" ng-controller="Controller_Master as CM" ng-bind="CM.formatSimpleDate(globalFilters[key].value[0], tenantSetting.tenantFormats.dateFormat)"></span>
+                                                    <!-- <span ng-if="globalFilters[key].column.columnType == 'Date'" class="formatted-date" ng-controller="Controller_Master as CM" ng-bind="CM.formatSimpleDate(globalFilters[key].value[0], tenantSetting.tenantFormats.dateFormat)"></span> -->
                                                     <!-- ng-bind="CM.formatDate(globalFilters[key].value[0], 'dd/MM/yyyy')" -->
                                                     <span class="input-group-btn" ng-if="globalFilters[key].column.columnType == 'Date'">
                                                         <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
@@ -119,6 +180,35 @@
                                                         </button>
                                                     </span>
                                                 </div>
+
+                                                <div ng-if="globalFilters[key].column.columnType == 'Date'" class="input-group">
+													<span ng-controller="Controller_Master as CM" ng-init="CM.initMask(true)"></span>
+													<input class="formatted-date-input date-time" style="width: calc(100% - 27px);" autocomplete="off"
+														ng-model="globalFilters[key].value[0]" 
+														ng-change="$ctrl.setValue({
+														    path: 'globalFilters['+key+'].value[0]',
+														    root: '$scope',
+														    pickerId: 'id_filter'+key+'_'+globalFilters[key].column.columnType+'0',
+														    fieldId: 'filter'+key+'_'+globalFilters[key].column.columnType+'0'
+														}, 2, true); $ctrl.etaChanged(location, locationIdx)" 
+														ng-focus="inputFocus['globalFilters['+key+'].value[0]'] = true; $event.stopPropagation(); event = $event" 
+														ng-blur="inputFocus['globalFilters['+key+'].value[0]'] = false;"
+														ng-invalid="{{ CM.invalidDate['globalFilters['+key+'].value[0]'] && !inputFocus['globalFilters['+key+'].value[0]'] && $ctrl.overrideInvalidDate['globalFilters['+key+'].value[0]'] }}"
+														name="globalFilters['+key+'].value[0]">
+
+                                                    <span ng-if="globalFilters[key].column.columnType == 'Date'" class="formatted-date" ng-controller="Controller_Master as CM" ng-bind="CM.formatSimpleDate(globalFilters[key].value[0], tenantSetting.tenantFormats.dateFormat)"></span>
+                                                    <!-- ng-bind="CM.formatDate(globalFilters[key].value[0], 'dd/MM/yyyy')" -->
+                                                    <span class="input-group-btn date-picker date form_meridian_datetime" id="id_filter{{ key }}_{{ globalFilters[key].column.columnType }}0" ng-if="globalFilters[key].column.columnType == 'Date'" >
+	                                                    <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control hidden-form-input" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                                        <button class="btn default date-set" type="button" ng-hide="field.disabled " dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+
+
+	
+
                                             </div>
                                         </span>
                                         <span ng-switch-default>
