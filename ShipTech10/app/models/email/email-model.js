@@ -231,6 +231,9 @@ angular.module('shiptech.models').factory('emailModel', ['emailResource', 'paylo
                     "ColumnName": "ProductId",
                     "Value": data.productId
                 }, {
+                    "ColumnName": "RequestProductId",
+                    "Value": data.requestProductId
+                }, {
                     "ColumnName": "TemplateName",
                     "Value": "ContractPlanningEmailTemplate"
                 }]

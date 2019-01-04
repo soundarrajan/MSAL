@@ -632,22 +632,23 @@
                     return;
                     vm.editInstance.$valid = false;
                 }
-                tankErrors = false;
-                $.each($scope.formValues.tanks, function(k, v) {
-                    if (!v.name) {
-                        if (!v.isDeleted) {
-                            tankErrors = true;
-                        }
-                    }
-                });
-                if (tankErrors) {
-                    toastr.error("Please check the vessel tank details for errors");
-                    setTimeout(function() {
-                        $scope.submitedAction = false;
-                    }, 100);
-                    vm.editInstance.$valid = false;
-                    // return
-                }
+                
+		// disabled on 03.01.2019 - de la Teo
+                // tankErrors = false;
+                // $.each($scope.formValues.tanks, function(k, v) {
+                //     if (!v.name) {
+                //         if (!v.isDeleted) {
+                //             tankErrors = true;
+                //         }
+                //     }
+                // });
+                // if (tankErrors) {
+                //     toastr.error("Please check the vessel tank details for errors");
+                //     setTimeout(function() {
+                //         $scope.submitedAction = false;
+                //     }, 100);
+                //     vm.editInstance.$valid = false;
+                // }
 
                 minMaxError = false;
                 $.each($scope.formValues.robs, function(k,v) {

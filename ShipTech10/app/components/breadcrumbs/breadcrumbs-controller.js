@@ -239,17 +239,18 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
                 status.statusDisplayName = adsv.status.displayName;
                 status.label = adsv.label;
                 status.display = true;
-                $.each($scope.calendarStatuses, function (csk, csv) {
+                $.each($scope.calendarStatuses,
+                    function(csk, csv) {
 
-                    if (csv.status.name == adsv.status.name) {
-                        status.style = createStyle(colorCode);
-                        status.count = csv.count;
-                        status.name = adsv.status.name;
-                        status.statusDisplayName = adsv.status.displayName;
-                        status.label = adsv.label;
-                        status.display = true;
-                    }
-                })
+                        if (csv.status.displayName == adsv.status.displayName) {
+                            status.style = createStyle(colorCode);
+                            status.count = csv.count;
+                            status.name = adsv.status.name;
+                            status.statusDisplayName = adsv.status.displayName;
+                            status.label = adsv.label;
+                            status.display = true;
+                        }
+                    });
                 statusIsAlreadyAdded = false;
                 $.each($scope.statusList, function (k, v) {
                     if (v.name == adsv.status.name) {

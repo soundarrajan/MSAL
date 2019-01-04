@@ -497,6 +497,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         		if (v.id == ctrl.email.comment.emailTemplate.id) {
         			ctrl.email.comment.emailTemplate.displayName = v.displayName;
         			ctrl.email.comment.emailTemplate.name = v.name;
+        			ctrl.email.comment.emailTemplate.internalName = v.internalName;
         		}
         	})
             if (ctrl.email === null) {

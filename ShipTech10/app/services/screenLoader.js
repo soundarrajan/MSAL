@@ -62,6 +62,9 @@ angular.module("shiptech").config([
                     	if (request.url.indexOf("/api/") != -1) {
 	                    	routeCall = request.url.split("/api/")[1]
                     	}
+                    	if (routeCall.indexOf('invoice/list') != -1 ) {
+                    		// debugger;
+                    	}
                     	if (routeExceptions.join("--").indexOf(routeCall) == -1) {
 	                    	// console.log("screenLoader OPEN:" + routeCall);
 	                    	// console.log("request:" + window.openedScreenLoaders);

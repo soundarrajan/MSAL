@@ -803,14 +803,17 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 
         function calculateProductAmount(product, loc) {
             sellerKey = ctrl.getSellerKey(loc, product);
-            currentConfirmedQtyPrice = 1
+            currentConfirmedQtyPrice = 1;
+            var quotedPrice = 0;
             if (typeof(product.confirmedQtyPrice) != 'undefined') {
                 currentConfirmedQtyPrice = product.confirmedQtyPrice
             }
             if (product.sellers[sellerKey].offers["0"].hasNoQuote) {
-                product.sellers[sellerKey].offers[0].price = 0;
+                quotedPrice = 0;
+            } else {
+                quotedPrice = product.sellers[sellerKey].offers[0].price;
             }
-            return +currentConfirmedQtyPrice * +product.maxQuantity * +product.sellers[sellerKey].offers[0].price || 0;
+            return +currentConfirmedQtyPrice * +product.maxQuantity * +quotedPrice || 0;
         }
 
         function sumProductMaxQuantities(products, additionalCost) {
@@ -1621,11 +1624,11 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             ctrl.productTableNoQuoteCheckAll[location.rand] = areAllProductsNoQuote(location);
             noQuote = prod.sellers[0].offers[0].hasNoQuote;
             if (typeof noQuote != 'undefined' && !noQuote) {
-                sellerKey = ctrl.getSellerKey(location, prod);
-                prod.sellers[sellerKey].offers[0].price = null;
                 prod.sellers[0].offers[0].noQuoteReason = null;
-                ctrl.productPriceChanged(prod, location)
             }
+            sellerKey = ctrl.getSellerKey(location, prod);
+            prod.sellers[sellerKey].offers[0].price = null;
+            ctrl.productPriceChanged(prod, location);
         };
         ctrl.setLatestOfferParams = function(location) {
             ctrl.latestOfferToken = ctrl.token;

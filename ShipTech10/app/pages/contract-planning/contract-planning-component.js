@@ -414,7 +414,11 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
         $rootScope.contractPreviewEmail = function(contract) {
             //debugger;
-            ctrl.selectedContracts = ctrl.contractPlanningSelectedRows
+            ctrl.selectedContracts = ctrl.contractPlanningSelectedRows;
+            if (_.uniqBy(ctrl.selectedContracts, 'seller.id').length > 1) {
+				toastr.error("You cannot preview email of multiple sellers at once");
+				return;            	
+            }
             var contractList = ctrl.contractPlanningSelectedRows;
             if ($scope.contractPlanningHasChangesMade) {
                 toastr.error("Please save the changes first!");
