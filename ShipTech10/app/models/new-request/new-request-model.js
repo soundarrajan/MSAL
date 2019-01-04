@@ -144,6 +144,14 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             });
         }
 
+       function contractPlanningAutoSave(data) {
+            request_data = payloadDataModel.create(data);
+            return newRequestResource.contractPlanningAutoSave(request_data).$promise.then(function(data) {
+                return new newRequestModel(data);
+            });
+
+        } 
+
         function getLatestOffer(product, seller) {
         	physicalSupplierId = null;
         	if(seller.offers[0].physicalSupplierCounterparty != null){
@@ -333,6 +341,7 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             cancelProduct: cancelProduct,
             cancelRequest: cancelRequest,
             completeRequest: completeRequest,
+            contractPlanningAutoSave: contractPlanningAutoSave,
             cancelLocation: cancelLocation,
             search: search,
             validate: validate,

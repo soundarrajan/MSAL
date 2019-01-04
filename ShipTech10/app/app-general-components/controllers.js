@@ -846,7 +846,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     fieldDisabled = false
                     if (rowObject.requestStatus) {
-                        if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created") {
+                        if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
                             fieldDisabled = true;
                         }
                     }                    
@@ -951,7 +951,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                     fieldDisabled = false
                     if (rowObject.requestStatus) {
-                        if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created") {
+                        if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
                             fieldDisabled = true;
                         }
                     }   
@@ -979,7 +979,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     } else {
                         currentValue = 2;
                     }
-                    tpl = '<select rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ');" ng-init="agrementType[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ');" ng-model="agrementType[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.AgreementType track by item.id" class="form-control w100 contract_planning_agreementtype">';
+                    tpl = '<select rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-init="agrementType[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', true);" ng-model="agrementType[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.AgreementType track by item.id" class="form-control w100 contract_planning_agreementtype">';
                     // tpl += '<option value="null"></option>';
                     // $.each($listsCache.AgreementType, function(key, val) {
                     //     if (rowObject.agreementType) {
@@ -1006,7 +1006,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (rowObject.comment) {
                         textVal = rowObject.comment;
                     }
-                    var tpl = '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ');" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px" >' + textVal + "</textarea>";
+                    var tpl = '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px" >' + textVal + "</textarea>";
                     return tpl;
                 };
                 var order_comments = function(cellValue, options, rowObject) {
@@ -2647,14 +2647,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                     $("#contract-planning-contract-link-"+rowIdx + ' a').remove();
                                 }
                             $('[ng-model="CLC.cpCtr['+rowIdx+']"]').addClass("ng-dirty")                                
-                            vm.clearContractLinkCP(rowIdx);              
+                            vm.clearContractLinkCP(rowIdx);    
                         }
+                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     }
                     if (!isOnInit) {
                         setTimeout(function(){
                             $scope.updateMinMaxQuantities(rowIdx, value.id)
                         })
                     }
+                } else {
+                    if (!isOnInit) {
+                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                    }	
                 }
             }
             if (columnKey == "contract") {
@@ -2683,8 +2688,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $scope.contractWasSelectedFromModal = false;
                     if (value) {
                         vm.selectContract(value.fullValue, rowIdx);
+                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     } else {
                         vm.selectContract(null, rowIdx);
+                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     }
                     // $rootScope.editableCProwsModel[keyRow][columnKey] = value;
                     $('tr#' + rowIdx + '>td:nth-child(14)').prop('title', value.id);

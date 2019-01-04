@@ -315,6 +315,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             noContractAssigned = '';
             noMinMaxQuantity = '';
             noAgreementType = '';
+            requestStatusError = '';
             $.each(contractList, function(k, v) {
                 if (v.requestId == 0 && v.contract == null) {
                     noContractAssigned += v.vessel.name + ", ";
@@ -325,6 +326,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 if (v.agreementType == null) {
                     noAgreementType += v.vessel.name + ", ";
                 }
+	            if (v.requestStatus.name != "Planned" && v.requestStatus.name != "Created" && v.requestStatus.name != "Questionnaire" && v.requestStatus.name != "Validated") {
+                    requestStatusError += v.vessel.name + ", ";
+	            }
 
             })
             if (noContractAssigned.length > 0 || noMinMaxQuantity.length > 0 || noAgreementType.length > 0) {
@@ -339,9 +343,14 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 if (noAgreementType.length > 0) {
                     displayError += "The following vessels: " + noAgreementType + " have no Agreement Types selected";
                 }
+                if (requestStatusError.length > 0) {
+                    displayError += "For the following vessels: " + requestStatusError + " request must be in 'Planned', 'Created', 'Questionnaire' or 'Validated' status";
+                }
                 toastr.error(displayError);
                 return;
             }
+
+
             ctrl.buttonsDisabled = true;
             if (saveAndSend) {
 	            newRequestModel.contractPlanningSaveAndSend(contractList).then(function(response) {
@@ -363,6 +372,46 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 	            });
             }
         };
+
+        ctrl.contractPlanningAutoSave = function(rowIndex) {
+            // $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
+            //     if (typeof $rootScope.editableCProwsModel != "undefined") {
+            //     }
+            // });
+            CLC = $('#flat_contract_planning');
+            rowObject = CLC.jqGrid.Ascensys.gridObject.rows[rowIndex];
+
+            Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+                var value = $rootScope.editableCProwsModel[objectKey];
+                if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
+                    if (value.contractChanged) {
+                        rowObject.contract = value.contract;
+                    } else {
+                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+                    }
+                    rowObject.comment = value.comment ? value.comment : null;
+                    rowObject.agreementType = value.agreementType;
+                    rowObject.product = value.product;
+                    rowObject.contractProductId = value.contractProductId;
+                }
+            });
+
+
+
+            if (rowObject.requestStatus) {
+                if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
+                    toastr.info("Request must be in 'Planned', 'Created', 'Questionnaire' or 'Validated' status to autosave ")
+                    return;
+                }
+            }
+
+        	newRequestModel.contractPlanningAutoSave(rowObject).then(function(response) {
+
+            }).catch(function(error) {
+
+            });
+        }
+
         $rootScope.contractPreviewEmail = function(contract) {
             //debugger;
             ctrl.selectedContracts = ctrl.contractPlanningSelectedRows
@@ -798,9 +847,10 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	ctrl.tableData[ctrl.currentRowIndex-1].maxQuantity = ctrl.currentRowData.maxQuantity;
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit )
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
-        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) +" - "+ $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision))
+        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )) +" - "+ $filter("number")(maxEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )))
         	// $scope.$apply();
         	$compile($('.contract_planning_min_max_qty_wrap'))($scope);
+        	ctrl.contractPlanningAutoSave(ctrl.currentRowIndex-1);
         	// contract_planning_min_max_qty
         	// ctrl.CLC.jqGrid("clearGridData");
         	// $.each(ctrl.tableData, function(k,v){

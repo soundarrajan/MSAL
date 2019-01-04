@@ -164,6 +164,13 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             });
         }
 
+        function getContractProductAdditionalCosts(contractProductId) {
+            var request_data = payloadDataModel.create(contractProductId);
+            return orderResource.getContractProductAdditionalCosts(request_data).$promise.then(function(data) {
+                return data;
+            });
+        }        
+
         function update(data) {
             var request_data = payloadDataModel.create(data);
             screenLoader.showLoader();
@@ -370,15 +377,16 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             confirm: confirm,
             exportList: exportList,
             createOrders: createOrders,
-            createWithContract: createWithContract,
             sendOrderCommand: sendOrderCommand,
-            mailPreviewConfirmToSeller: mailPreviewConfirmToSeller,
-            getOrderEmailTemplate: getOrderEmailTemplate,
-            getOrderConfirmationEmailTemplate: getOrderConfirmationEmailTemplate,
-            getOrderListForRequest : getOrderListForRequest,
-            checkIfOrderCanBeCreatedUsingSelectedContract : checkIfOrderCanBeCreatedUsingSelectedContract,
             getFormulaDetails : getFormulaDetails,
+            createWithContract: createWithContract,
             cancelOrderProduct : cancelOrderProduct,
+            getOrderEmailTemplate: getOrderEmailTemplate,
+            getOrderListForRequest : getOrderListForRequest,
+            mailPreviewConfirmToSeller: mailPreviewConfirmToSeller,
+            getContractProductAdditionalCosts: getContractProductAdditionalCosts,
+            getOrderConfirmationEmailTemplate: getOrderConfirmationEmailTemplate,
+            checkIfOrderCanBeCreatedUsingSelectedContract : checkIfOrderCanBeCreatedUsingSelectedContract,
             getExistingOrders : getExistingOrders
         };
     }

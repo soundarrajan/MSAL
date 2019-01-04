@@ -76,7 +76,14 @@ angular.module('shiptech.models').factory('newRequestResource', ['$resource', 'r
             params: {
                 verb: 'cancelProduct'
             }
+        },    
+        'contractPlanningAutoSave': {
+            method: 'POST',
+            params: {
+                verb: 'contractPlanningAutoSave'
+            }
         },
+
         'cancelLocation': {
             method: 'POST',
             params: {

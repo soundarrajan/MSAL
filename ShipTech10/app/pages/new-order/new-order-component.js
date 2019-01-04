@@ -2522,6 +2522,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     }
                 }
                 productUomChg(ctrl.data.products[idx]);
+                $scope.addAdditionalCostByContractProductId(selection.contractProductId)
             }
             $.each(ctrl.data.products, function(key, value){
                 if(value.id == productUniqueId){
@@ -2533,6 +2534,17 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 }
             })
         }
+
+        $scope.addAdditionalCostByContractProductId = function(contractProductId) {
+			// return beacause is work in progress and not finished yet
+        	return;
+            orderModel.getContractProductAdditionalCosts(contractProductId).
+                then(function (response) {
+                	console.log(response);
+                }).catch(function (error) {
+                });
+        }
+
 
         $scope.$on('dataListModal', function(e,a){
         	if(typeof a.elem != 'undefined'){
