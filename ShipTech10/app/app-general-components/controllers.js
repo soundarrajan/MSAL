@@ -3055,7 +3055,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             vsc.comment = value.comment ? value.comment : null;
                             vsc.agreementType = value.agreementType;
                             vsc.product = value.product;
-                            vsc.contractProductId = value.contractProductId;
+                            if (typeof(value.contractProductId) != 'undefined') {
+	                            vsc.contractProductId = value.contractProductId;
+                            }
                             // if (value.agreementType != null) {
                             //     vsc.agreementType = {};
                             //     vsc.agreementType.id = value.agreementType;
