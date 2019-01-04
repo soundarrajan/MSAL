@@ -326,9 +326,11 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 if (v.agreementType == null) {
                     noAgreementType += v.vessel.name + ", ";
                 }
-	            if (v.requestStatus.name != "Planned" && v.requestStatus.name != "Created" && v.requestStatus.name != "Questionnaire" && v.requestStatus.name != "Validated") {
-                    requestStatusError += v.vessel.name + ", ";
-	            }
+                if (v.requestStatus) {
+		            if (v.requestStatus.name != "Planned" && v.requestStatus.name != "Created" && v.requestStatus.name != "Questionnaire" && v.requestStatus.name != "Validated") {
+	                    requestStatusError += v.vessel.name + ", ";
+		            }
+                }
 
             })
             if (noContractAssigned.length > 0 || noMinMaxQuantity.length > 0 || noAgreementType.length > 0) {
