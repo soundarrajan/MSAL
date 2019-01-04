@@ -6497,6 +6497,23 @@
                 },2);
             }
         }
+
+        jQuery(document).ready(function(){
+        	$(".date-picker").on("mouseover", function(){
+        		if (!vm.DATE_OPTIONS) {
+        			return;
+        		}
+        		dp = $(this).find("input");
+        		val = $(this).prev(".formatted-date-input").val();
+
+	            var formattedDate = vm.formatDateTimeReverse(val, true);
+
+	            // also change datepicker value
+	            $(dp).datetimepicker('setDate', new Date(formattedDate));
+
+        	})
+        })
+
         vm.stopPropagation = function($event){
             console.log($event);
             $event.stopPropagation();
