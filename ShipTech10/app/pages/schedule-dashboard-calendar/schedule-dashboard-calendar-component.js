@@ -106,7 +106,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	            selectTimeScale($stateParams.timescale);
 	    	}
         },500)
-
+ 
         
         // scheduleDashboardCalendarModel.getStatuses().then(function (data) {
         //     ctrl.dashboardConfiguration = data;
