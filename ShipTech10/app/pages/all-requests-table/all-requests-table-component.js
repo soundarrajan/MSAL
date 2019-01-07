@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('AllRequestsTableController', ['$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService', 'notificationsModel', 'scheduleDashboardStatusResource', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
-    function($scope, $element, $attrs, $timeout, $filter, $state, $window, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, notificationsModel, scheduleDashboardStatusResource, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
+angular.module('shiptech.pages').controller('AllRequestsTableController', ['$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService', 'notificationsModel', 'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
+    function($scope, $element, $attrs, $timeout, $filter, $state, $window, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, notificationsModel, scheduleDashboardStatusResource, tenantScheduleDashboardConfiguration, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
         //      var tableSelector = '#all_requests_table';
         // $scope.Math = window.Math;
         $scope.STATE = STATE;
@@ -481,13 +481,24 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
             };
         };
         ctrl.getStatuses = function() {
-            var requestData = {
-                "Payload": true
-            };
-            return scheduleDashboardStatusResource.fetch(requestData).$promise.then(function(data) {
-                ctrl.statuses = data.payload.labels;
-            });
-        }
+        	setTimeout(function(){
+        		$scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
+     //    		if (!window.scheduleDashboardConfiguration) {
+		   //          var requestData = {
+		   //              Payload: true
+		   //          };
+
+					// return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
+					// 	window.scheduleDashboardConfiguration = data;
+					//  //    scheduleDashboardConfiguration = data;
+					//  //    return data;
+					//     ctrl.statuses = data.payload.labels;
+					// })
+     //    		} else {
+				 //    ctrl.statuses = window.scheduleDashboardConfiguration.payload.labels;
+     //    		}
+        	},550)
+        };
         ctrl.getStatuses();
         ctrl.getStatusColor = function(statusName) {
             statusColor = "#fff";

@@ -833,6 +833,82 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
             }
         });
     }
+
+
+vm.setValue = function(inputDetails, direction, simpleDate, app){
+            
+
+        /**  @param inputDetails - object w. the inputs details:
+         * 
+         *    - root: CM/$scope/$rootScope/any other controller
+         *    - path: string path to the object, can be nested: "formValues.deliveryProducts[0].headers.myValue"
+         *    - isNested: true if path is nested, false otherwise
+         *    - pickerId: id set to <span class="input-group-btn date-picker">, used to set date inside the datepicker after date is set manually
+         * 
+         *    Note: deep nested properties will be accessed using lodash
+         *    _.get(root, path) _.get(object, 'a[0].b.c');
+         *    _.set(root, path, valueToSet); // _.set(object, 'a[0].b.c', 4);
+         * 
+         *   @param direction - number (1 / 2)
+         *    - whether function is called after datepicker changes date (1) or after date is changed by typing (2)
+         * 
+         *   @param simpleDate - boolean 
+         *    - true if date is date-only
+         * 
+         *   @param app - string
+         *    - sometimes this is needed when calling vm.formatSimpleDate
+         * 
+         *   ------------------------------------------------------------------------------
+         * 
+         *  1. Date formed by typing is stored in root.formatDates[path]
+            So if i have Some_Controller.nested.nested2.value => the formated value will be in Some_Controller.formatDates.nested.nested2.value 
+
+            2. @variable DATE_FORMAT is set to $scope.tenantSetting.tenantFormats.dateFormat
+              This needs to be changed if it has other path in other controller
+         */
+        var DATE_FORMAT = $scope.tenantSetting.tenantFormats.dateFormat;
+
+        var rootMap = {
+            '$scope': $scope,
+            '$rootScope': $rootScope,
+            'vm': vm
+        }
+
+        if (!vm.overrideInvalidDate) {
+            vm.overrideInvalidDate = {}
+        }
+        vm.overrideInvalidDate[inputDetails.pickerId] = true;
+
+        if(direction == 1){
+            // datepicker input -> date typing input
+            $timeout(function() {
+                if(simpleDate){
+                    var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                    var formattedDate = vm.formatSimpleDate(dateValue, DATE_FORMAT, app);
+                    _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                } else{
+                    var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                    var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT);
+                    _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                }
+                vm.overrideInvalidDate[inputDetails.pickerId] = false;
+            },2);
+        }
+        if(direction == 2){
+            // date typing input -> datepicker input 
+            $timeout(function() { 
+                
+                var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
+                var copy = angular.copy(date);
+                var formattedDate = vm.formatDateTimeReverse(copy, simpleDate);
+                _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+
+                // also change datepicker value
+                $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+            },2);
+        }
+    }
+    
     /*END Notification Page*/
     $scope.loaded = function() {
         $timeout(function() {

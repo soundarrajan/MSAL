@@ -4,6 +4,7 @@
 APP_API.factory("$Api_Service", [
     "$listsCache",
     "$tenantSettings",
+    "tenantModel",
     "API",
     "$q",
     "$http",
@@ -13,7 +14,7 @@ APP_API.factory("$Api_Service", [
     "dataProcessors",
     "$rootScope",
     "screenLoader",
-    function($listsCache, $tenantSettings, API, $q, $http, $state, $translate, $cacheFactory, dataProcessors, $rootScope, screenLoader) {
+    function($listsCache, $tenantSettings, tenantModel, API, $q, $http, $state, $translate, $cacheFactory, dataProcessors, $rootScope, screenLoader) {
         var _debug = true;
         var api_map = {
             general: {
@@ -5476,16 +5477,16 @@ APP_API.factory("$Api_Service", [
                         var procurement = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/procurementConfiguration/get", {
                             Payload: true
                         });
-                        var schedule = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/scheduleDashboardConfiguration/get", {
-                            Payload: true
-                        });
+                        // var schedule = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/scheduleDashboardConfiguration/get", {
+                        //     Payload: true
+                        // });
                         var delivery = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/get", {
                             Payload: true
                         });
                         var invoice = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/invoiceConfiguration/get", {
                             Payload: true
                         });
-                        $q.all([contract, email, general, procurement, schedule, delivery, invoice]).then(function(responses) {
+                        $q.all([contract, email, general, procurement, /*schedule,*/ delivery, invoice]).then(function(responses) {
                             var result = {};
                             if (responses[0].status == 200) {
                                 result["contract"] = responses[0].data.payload;
@@ -5507,17 +5508,18 @@ APP_API.factory("$Api_Service", [
                             } else {
                                 result["procurement"] = [];
                             }
+                            // if (responses[4].status == 200) {
+                            //     result["schedule"] = responses[4].data.payload;
+                            // } else {
+                            //     result["schedule"] = [];
+                            // }
+                            result["schedule"] = tenantModel.getScheduleDashboardConfiguration().payload;
                             if (responses[4].status == 200) {
-                                result["schedule"] = responses[4].data.payload;
-                            } else {
-                                result["schedule"] = [];
-                            }
-                            if (responses[5].status == 200) {
                                 result["delivery"] = responses[5].data.payload;
                             } else {
                                 result["delivery"] = [];
                             }
-                            if (responses[6].status == 200) {
+                            if (responses[5].status == 200) {
                                 result["invoice"] = responses[6].data.payload;
                             } else {
                                 result["invoice"] = [];

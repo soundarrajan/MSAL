@@ -103,6 +103,7 @@ angular.module('shiptech.models')
             };
 
             return tenantScheduleDashboardConfiguration.get(request_data).$promise.then(function (data) {
+            	window.scheduleDashboardConfiguration = data;
                 scheduleDashboardConfiguration = data;
                 return data;
             });

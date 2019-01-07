@@ -272,13 +272,14 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 // JSON-normalize server data to get the DataTable settings format.
                 ctrl.settings = normalizeJSONDataTables(ctrl.ui.tables);
                 //get status map before getting data
-                scheduleDashboardCalendarModel.getStatuses().then(function (data) {
-                    ctrl.dashboardConfiguration = data;
-                    // Initialize everything according to timescale.
-                    selectTimeScale($stateParams.timescale);
-                    statusList = data.labels;
-                    // loadData(ctrl.startDate, ctrl.endDate);
-                });
+                
+                // scheduleDashboardCalendarModel.getStatuses().then(function (data) {
+                //     ctrl.dashboardConfiguration = data;
+                //     // Initialize everything according to timescale.
+                //     selectTimeScale($stateParams.timescale);
+                //     statusList = data.labels;
+                //     // loadData(ctrl.startDate, ctrl.endDate);
+                // });
             });
         /*******************************
          *   END INITIALIZATION

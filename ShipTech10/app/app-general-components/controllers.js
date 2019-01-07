@@ -18,6 +18,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     "$filter",
     "$listsCache",
     "scheduleDashboardStatusResource",
+    "tenantModel",
     "newRequestModel",
     "screenActionsModel",
     "SCREEN_ACTIONS",
@@ -25,7 +26,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     "selectContractModel",
     "$http",
     "statusColors",
-    function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors) {
+    function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors) {
         var vm = this;
         vm.listsCache = $listsCache;
         vm.SCREEN_ACTIONS = SCREEN_ACTIONS;
@@ -395,12 +396,31 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
        */
         $scope.getStatuses = function() {
-            var requestData = {
-                Payload: true
-            };
-            return scheduleDashboardStatusResource.fetch(requestData).$promise.then(function(data) {
-                $scope.statuses = data.payload.labels;
-            });
+        	setTimeout(function(){
+
+		        $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
+
+
+	    //     	if (!window.scheduleDashboardConfiguration) {
+		   //          var requestData = {
+		   //              Payload: true
+		   //          };
+
+					// return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
+					// 	window.scheduleDashboardConfiguration = data;
+					//  //    scheduleDashboardConfiguration = data;
+					//  //    return data;
+		   //      	tenantModel.getScheduleDashboardConfiguration()	
+					//     $scope.statuses = data.payload.labels;
+					// })
+
+		   //          // return tenantScheduleDashboardConfiguration.fetch(requestData).$promise.then(function(data) {
+		   //          //     $scope.statuses = data.payload.labels;
+		   //          // });
+	    //     	} else {
+				 //    $scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
+	    //     	}
+        	},550)
         };
         $scope.getStatuses();
 
