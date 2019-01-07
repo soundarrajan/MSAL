@@ -108,13 +108,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-12" >
-		<!-- ng-controller="Controller_Master as CM" -->
-		<span ng-init="CM.initMask(); CM.datepickers();"></span>
+	<div class="col-sm-12" ng-controller="Controller_Alerts as CA">
+		<span ng-init="CA.initMask(); CA.datepickers();"></span>
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group row dropdown-control">
-		            {{formValues.activateOn}}---
 					<label class="control-label">
 						<label class="mt-checkbox form-label-out">
 							<span ng-init="formValues.activateOn ? formValues.temp.dummyActivateOn = true : formValues.temp.dummyActivateOn = false"></span>
@@ -128,20 +126,21 @@
 			            	ng-model="formatDates.formValues.activateOn"
 			            	ng-change="CA.setValue({
 			                      path: 'formValues.activateOn',
-			                      root: '$rootScope',
+			                      root: '$scope',
 			                      pickerId: 'activateOn'
 			                  }, 2)" 
 			            	ng-focus="inputFocus['activateOn'] = true; $event.stopPropagation();" 
 			            	ng-blur="inputFocus['activateOn'] = false;" 
-			            	ng-invalid="{{ CM.invalidDate['activateOn'] && !inputFocus['activateOn'] }}"
+			            	ng-invalid="{{ CA.invalidDate['activateOn'] && !inputFocus['activateOn'] }}"
 			            	ng-disabled="!formValues.temp.dummyActivateOn"
 							name="activateOn">
 
-				            <span ng-init="CA.setValue({
-				                path: 'formValues.activateOn',
-				                root: '$rootScope',
-				                pickerId: 'activateOn'
-				            }, 1)" ng-if="formValues.activateOn"></span>
+			            <span ng-init="CA.setValue({
+			                path: 'formValues.activateOn',
+			                root: '$scope',
+			                pickerId: 'activateOn'
+			            }, 1)" ng-if="formValues.activateOn"></span>
+
 			            <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!formValues.temp.dummyActivateOn">
 			                <input class="form-control hidden-form-input"
 			                   type="text" 
@@ -150,9 +149,9 @@
 			                   name="activateOn"
 			                   ng-change=" CA.setValue({
 			                    path: 'formValues.activateOn',
-			                    root: '$rootScope',
+			                    root: '$scope',
 			                    pickerId: 'activateOn'
-			                }, 1); triggerChangeFields('activateOn','activateOn'); CM.invalidDate['activateOn'] = false;"
+			                }, 1); triggerChangeFields('activateOn','activateOn'); CA.invalidDate['activateOn'] = false;"
 			                visibility="hidden"/>
 			                <button class="btn default date-set" type="button" ng-disabled="!formValues.temp.dummyActivateOn">
 			                    <i class="fa fa-calendar"></i>
@@ -176,7 +175,7 @@
 							ng-model="formatDates.formValues.deactivateOn"
 							ng-change="CA.setValue({
 						          path: 'formValues.deactivateOn',
-						          root: '$rootScope',
+						          root: '$scope',
 						          pickerId: 'deactivateOn'
 						      }, 2)" 
 							ng-focus="inputFocus['deactivateOn'] = true; $event.stopPropagation();" 
@@ -187,7 +186,7 @@
 
 					    <span ng-init="CA.setValue({
 					        path: 'formValues.deactivateOn',
-					        root: '$rootScope',
+					        root: '$scope',
 					        pickerId: 'deactivateOn'
 					    }, 1)" ng-if="formValues.deactivateOn"></span>
 
@@ -197,9 +196,9 @@
 						       id="deactivateOn"
 						       ng-model="formValues.deactivateOn" 
 						       name="deactivateOn"
-						       ng-change=" CA.setValue({
+						       ng-change="CA.setValue({
 						        path: 'formValues.deactivateOn',
-						        root: '$rootScope',
+						        root: '$scope',
 						        pickerId: 'deactivateOn'
 						    }, 1); triggerChangeFields('deactivateOn','deactivateOn'); CM.invalidDate['deactivateOn'] = false;"
 						    visibility="hidden"/>

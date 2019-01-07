@@ -1,7 +1,7 @@
 /**
  * Labs Controller
  */
-APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Service', 'Factory_Master', 'API', '$state', '$location', '$q', '$compile','$timeout', function($scope, $rootScope, $Api_Service, Factory_Master, API, $state, $location, $q, $compile,  $timeout) {
+APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Service', 'Factory_Master', 'API', '$state', '$location', '$q', '$compile','$timeout', '$filter', function($scope, $rootScope, $Api_Service, Factory_Master, API, $state, $location, $q, $compile, $timeout, $filter) {
     var vm = this;
     var guid = '';
     vm.master_id = $state.params.master_id;
@@ -835,9 +835,8 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
     }
 
 
-vm.setValue = function(inputDetails, direction, simpleDate, app){
+    vm.setValue = function(inputDetails, direction, simpleDate, app){
             
-
         /**  @param inputDetails - object w. the inputs details:
          * 
          *    - root: CM/$scope/$rootScope/any other controller
@@ -908,6 +907,161 @@ vm.setValue = function(inputDetails, direction, simpleDate, app){
             },2);
         }
     }
+    vm.datepickers = function(id, defToday, type, unique) {
+        if (jQuery().datepicker) {
+            // console.log(id)
+            if (id) {
+                if (id.indexOf("Date") > -1) {
+                    type = "date";
+                }
+            }
+            if (type == "date") {
+                pickers = $(".formatted-date");
+                dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+                dateFormat = dateFormat
+                    .replace(/d/g, "D")
+                    .replace(/y/g, "Y")
+                    .split(" ")[0];
+                disabledDates = [];
+                if (unique) {
+                    $.each(pickers, function(key, value) {
+                        var dateTime = $(value).text();
+                        if (dateTime) {
+                            date = fecha.parse(dateTime, dateFormat);
+                            if (!date) {
+                                fecha.masks.customFormat = "DD/MM/YYYY";
+                                date = fecha.parse(dateTime, "customFormat");
+                            }
+                            var utc = date.getTime() - date.getTimezoneOffset() * 60000; // utc time
+                            date = new Date(utc);
+                            date = vm.formatDate(date, "yyyy-MM-dd");
+                            disabledDates.push(date);
+                        }
+                    });
+                }
+                setTimeout(function() {
+                    //datepicker gets innitialized after datetimpepicker.
+                    //if you want datetime-picker, add class datetime-picker
+                    $(".date-picker")
+                        .not(".datetime-picker")
+                        .datetimepicker("remove");
+                    $(".date-picker")
+                        .not(".datetime-picker")
+                        .not(".disabled")
+                        .datetimepicker({
+                            autoclose: true,
+                            format: "yyyy-mm-ddT12:00:00Z",
+                            datesDisabled: disabledDates,
+                            todayHighlight: true,
+                            pickTime: false,
+                            minView: 2
+                        });
+                    // $("#StartDate").datepicker("setDate", startDate);
+                    console.log("init datetimepicker");
+                    // console.log($(this))
+                }, 10);
+            } else {
+                $(".date-picker").datepicker("remove");
+                $(".date-picker")
+                    .not(".disabled")
+                    .not('[data-datepicker-init="true"]')
+                    .datetimepicker({
+                        showMeridian: "true",
+                        autoclose: true,
+                        todayHighlight: true,
+                        todayBtn: false,
+                        format: "yyyy-mm-ddThh:ii:ssZ"
+                    });
+                console.log("init datepicker");
+            }
+            setTimeout(function() {
+                $(".datetimepicker").addClass("ejDatepicker");
+            }, 10);
+            if (defToday) {
+                setTimeout(function() {
+                    var d = new Date();
+                    month = d.getMonth() + 1;
+                    day = d.getDate();
+                    hours = d.getHours();
+                    minutes = d.getMinutes();
+                    seconds = d.getSeconds();
+                    if (month < 10) {
+                        month = "0" + month;
+                    }
+                    if (day < 10) {
+                        day = "0" + day;
+                    }
+                    if (hours < 10) {
+                        hours = "0" + hours;
+                    }
+                    if (minutes < 10) {
+                        minutes = "0" + minutes;
+                    }
+                    if (seconds < 10) {
+                        seconds = "0" + seconds;
+                    }
+                    date = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
+                    $("#" + id)
+                        .val(date)
+                        .datetimepicker("update")
+                        .trigger("change");
+                }, 500);
+            }
+        }
+    };
+    vm.formatDate = function(elem, dateFormat) {
+        if (elem) {
+            formattedDate = elem;
+            var date = Date.parse(elem);
+            date = new Date(date);
+            if (date) {
+                var utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                // var utc = date.getTime();
+                if (dateFormat.name) {
+                    dateFormat = dateFormat.name.replace(/d/g, "D").replace(/y/g, "Y");
+                } else {
+                    dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                }
+                formattedDate = fecha.format(utc, dateFormat);
+            }
+            return formattedDate;
+        }
+    };
+    vm.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
+        // console.log(fieldUniqueId)
+        if (elem) {
+            dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+            if (typeof fieldUniqueId == "undefined") {
+                fieldUniqueId = "date";
+            }
+            if (fieldUniqueId == "deliveryDate" && vm.app_id == "recon") {
+                return vm.formatDate(elem, "dd/MM/yyyy");
+            }
+            if (fieldUniqueId == "invoiceDate" && vm.app_id == "invoices") {
+                return vm.formatDate(elem, "dd/MM/yyyy");
+            }
+            if (fieldUniqueId == "eta" || fieldUniqueId == "orderDetails.eta" || fieldUniqueId == "etb" || fieldUniqueId == "etd" || fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || fieldUniqueId == "pricingDate") {
+                // debugger;
+                // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
+                utcDate = moment.utc(elem).format();
+                formattedDate = $filter("date")(utcDate, dateFormat, 'UTC');
+                // return moment.utc(elem).format(dateFormat);
+            } else {
+                formattedDate = $filter("date")(elem, dateFormat);
+            }
+            return formattedDate;
+        }
+    };
+    vm.formatSimpleDate = function(date) {
+        dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+        window.tenantFormatsDateFormat = dateFormat;
+        dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+        if (date) {
+            return moment.utc(date).format(dateFormat);
+        }
+        return;
+    }; 
     
     /*END Notification Page*/
     $scope.loaded = function() {
@@ -915,4 +1069,5 @@ vm.setValue = function(inputDetails, direction, simpleDate, app){
             console.log(1213)
         }, 0);
     }
+
 }]);
