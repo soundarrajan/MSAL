@@ -683,7 +683,7 @@
                                                             ng-focus="inputFocus[locationIdx + '_etb'] = true; $event.stopPropagation(); event = $event" 
                                                             ng-blur="inputFocus[locationIdx + '_etb'] = false;"
                                                             ng-invalid="{{ CM.invalidDate[locationIdx + '_etb'] && !inputFocus[locationIdx + '_etb'] && $ctrl.overrideInvalidDate[locationIdx + '_etb'] }}"
-                                                            ng-class="{'invalid': location.eta > location.etb}"
+                                                            ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                             ng-disabled="$ctrl.disableAllFields"
                                                             name="{{ locationIdx }}_etb">
                                                             <!-- manual input -->
