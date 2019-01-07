@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$rootScope", "$scope", "$element", "$attrs", "$timeout", "$state", "$stateParams", "$filter", "$filtersData", "STATE", "TIMESCALE", "CUSTOM_EVENTS", "scheduleDashboardCalendarModel", "uiApiModel", 'SCREEN_LAYOUTS', '$tenantSettings', 'tenantService', '$interval', 'statusColors', '$listsCache', 'screenLoader', '$compile',
-    function ($rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, $filtersData, STATE, TIMESCALE, CUSTOM_EVENTS, scheduleDashboardCalendarModel, uiApiModel, SCREEN_LAYOUTS, $tenantSettings, tenantService, $interval, statusColors, $listsCache, screenLoader, $compile) {
+angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$rootScope", "$scope", "$element", "$attrs", "$timeout", "$state", "$stateParams", "$filter", "$filtersData", "STATE", "TIMESCALE", "CUSTOM_EVENTS", "scheduleDashboardCalendarModel", "uiApiModel", 'SCREEN_LAYOUTS', '$tenantSettings', 'tenantService', 'tenantModel', '$interval', 'statusColors', '$listsCache', 'screenLoader', '$compile',
+    function ($rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, $filtersData, STATE, TIMESCALE, CUSTOM_EVENTS, scheduleDashboardCalendarModel, uiApiModel, SCREEN_LAYOUTS, $tenantSettings, tenantService, tenantModel, $interval, statusColors, $listsCache, screenLoader, $compile) {
         /*******************************
          *   INITIALIZATION
          *******************************/
@@ -97,13 +97,24 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             return !ctrl.breadcrumbsFilter || statusList.indexOf(ctrl.breadcrumbsFilter) != -1;
         };
 
-        scheduleDashboardCalendarModel.getStatuses().then(function (data) {
-            ctrl.dashboardConfiguration = data;
-            // Initialize everything according to timescale.
-            selectTimeScale($stateParams.timescale);
-            statusList = data.labels;
-            // loadData(ctrl.startDate, ctrl.endDate);
-        });
+
+        scheduleDashboardConfigurationInterval = setInterval(function(){
+	    	if (window.scheduleDashboardConfiguration) {
+	    		clearInterval(scheduleDashboardConfigurationInterval);
+				ctrl.dashboardConfiguration = window.scheduleDashboardConfiguration.payload
+		        statusList = ctrl.dashboardConfiguration.labels;
+	            selectTimeScale($stateParams.timescale);
+	    	}
+        },500)
+
+        
+        // scheduleDashboardCalendarModel.getStatuses().then(function (data) {
+        //     ctrl.dashboardConfiguration = data;
+        //     // Initialize everything according to timescale.
+        //     selectTimeScale($stateParams.timescale);
+        //     statusList = data.labels;
+        //     // loadData(ctrl.startDate, ctrl.endDate);
+        // });
         
         $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
 
@@ -272,7 +283,19 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 // JSON-normalize server data to get the DataTable settings format.
                 ctrl.settings = normalizeJSONDataTables(ctrl.ui.tables);
                 //get status map before getting data
-                
+
+		        scheduleDashboardConfigurationInterval2 = setInterval(function(){
+			    	if (window.scheduleDashboardConfiguration) {
+			    		clearInterval(scheduleDashboardConfigurationInterval2);
+						$timeout(function() {
+							ctrl.dashboardConfiguration = window.scheduleDashboardConfiguration.payload
+				            selectTimeScale($stateParams.timescale);
+					        statusList = ctrl.dashboardConfiguration.labels;
+						});
+			    	}
+		        },500)                
+
+
                 // scheduleDashboardCalendarModel.getStatuses().then(function (data) {
                 //     ctrl.dashboardConfiguration = data;
                 //     // Initialize everything according to timescale.

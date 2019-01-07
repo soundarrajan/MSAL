@@ -396,9 +396,24 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
        */
         $scope.getStatuses = function() {
-        	setTimeout(function(){
 
-		        $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
+        scheduleDashboardConfigurationInterval = setInterval(function(){
+	    	if (window.scheduleDashboardConfiguration) {
+	    		clearInterval(scheduleDashboardConfigurationInterval);
+				$scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
+            	// $scope.adminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.data.labels, { displayInDashboard : true}, true);
+             //    if ($scope.calendarStatuses) {
+             //    	$scope.createStatusFilters()
+             //    }
+
+	    		// $scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
+		     //    statusList = ctrl.dashboardConfiguration.labels;
+	      //       selectTimeScale($stateParams.timescale);
+	    	}
+        },500)        	
+        	// setTimeout(function(){
+		       //  $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
+        	// },550)
 
 
 	    //     	if (!window.scheduleDashboardConfiguration) {
@@ -420,7 +435,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 	    //     	} else {
 				 //    $scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
 	    //     	}
-        	},550)
         };
         $scope.getStatuses();
 

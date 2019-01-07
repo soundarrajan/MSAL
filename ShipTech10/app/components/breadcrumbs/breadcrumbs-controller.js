@@ -177,15 +177,32 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
                 // }
 	        	console.log(new Date())
 	            if($state.current.name == STATE.DASHBOARD_TABLE || $state.current.name == STATE.DASHBOARD_CALENDAR || $state.current.name == STATE.HOME) { 
-	                scheduleDashboardCalendarModel.getStatuses().then(function(data){
-	                    if (data !== null) {
-	                    	$scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
-			                if ($scope.calendarStatuses) {
-			                	$scope.createStatusFilters()
-			                }
-	                        // updateStatusList(data.labels);
-	                    }
-	                });
+
+		        $scope.scheduleDashboardConfigurationInterval = setInterval(function(){
+			    	if (window.scheduleDashboardConfiguration) {
+			    		clearInterval($scope.scheduleDashboardConfigurationInterval);
+
+		            	$scope.adminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.payload.labels, { displayInDashboard : true}, true);
+		                if ($scope.calendarStatuses) {
+		                	$scope.createStatusFilters()
+		                }
+
+			    		// $scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
+				     //    statusList = ctrl.dashboardConfiguration.labels;
+			      //       selectTimeScale($stateParams.timescale);
+			    	}
+		        },500)
+
+
+	                // scheduleDashboardCalendarModel.getStatuses().then(function(data){
+	                //     if (data !== null) {
+	                //     	$scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
+			              //   if ($scope.calendarStatuses) {
+			              //   	$scope.createStatusFilters()
+			              //   }
+	                //         // updateStatusList(data.labels);
+	                //     }
+	                // });
 	            }                
                 // updateStatusList(model.payload.scheduleDashboardStatus);
             }
