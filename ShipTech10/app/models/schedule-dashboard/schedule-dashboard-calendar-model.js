@@ -111,15 +111,25 @@ angular.module('shiptech.models').factory('scheduleDashboardCalendarModel', ['sc
             return modelReady;
         }
 
-        function getStatuses() {
+        async function getStatuses() {
             if (statuses !== null) {
                 return $q.when(statuses);
             }
             var requestData = payloadDataModel.create();
-            return scheduleDashboardStatusResource.fetch(requestData).$promise.then(function(data) {
-                statuses = data.payload;
-                return statuses;
-            });
+
+            setTimeout(function(){
+	            if (typeof(window.scheduleDashboardConfiguration) != 'undefined') {
+	                statuses = window.scheduleDashboardConfiguration.payload;
+	            	return window.scheduleDashboardConfiguration.payload;
+	            } else {
+		            return scheduleDashboardStatusResource.fetch(requestData).$promise.then(function(data) {
+		                statuses = data.payload;
+		                return statuses;
+		            });
+	            }	
+            })
+            
+
         }
         // return public model API
         return {

@@ -284,25 +284,26 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 ctrl.settings = normalizeJSONDataTables(ctrl.ui.tables);
                 //get status map before getting data
 
-		        scheduleDashboardConfigurationInterval2 = setInterval(function(){
-			    	if (window.scheduleDashboardConfiguration) {
-			    		clearInterval(scheduleDashboardConfigurationInterval2);
-						$timeout(function() {
-							ctrl.dashboardConfiguration = window.scheduleDashboardConfiguration.payload
-				            selectTimeScale($stateParams.timescale);
-					        statusList = ctrl.dashboardConfiguration.labels;
-						});
-			    	}
-		        },500)                
+		    //     scheduleDashboardConfigurationInterval2 = setInterval(function(){
+			   //  	if (window.scheduleDashboardConfiguration) {
+			   //  		clearInterval(scheduleDashboardConfigurationInterval2);
+						// $timeout(function() {
+						// 	ctrl.dashboardConfiguration = window.scheduleDashboardConfiguration.payload
+				  //           selectTimeScale($stateParams.timescale);
+					 //        statusList = ctrl.dashboardConfiguration.labels;
+						// },4220);
+			   //  	}
+		    //     },500)                
 
 
-                // scheduleDashboardCalendarModel.getStatuses().then(function (data) {
-                //     ctrl.dashboardConfiguration = data;
-                //     // Initialize everything according to timescale.
-                //     selectTimeScale($stateParams.timescale);
-                //     statusList = data.labels;
-                //     // loadData(ctrl.startDate, ctrl.endDate);
-                // });
+                scheduleDashboardCalendarModel.getStatuses().then(function (data) {
+                	if (!data) {return}
+                    ctrl.dashboardConfiguration = data;
+                    // Initialize everything according to timescale.
+                    selectTimeScale($stateParams.timescale);
+                    statusList = data.labels;
+                    // loadData(ctrl.startDate, ctrl.endDate);
+                });
             });
         /*******************************
          *   END INITIALIZATION
