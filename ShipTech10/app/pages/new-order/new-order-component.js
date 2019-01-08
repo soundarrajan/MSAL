@@ -1300,7 +1300,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     ctrl.lookupField.product.name = product.name;
                     ctrl.lookupField.product.id = product.id;
                     ctrl.lookupField.specGroup = product.defaultSpecGroup;
-                    ctrl.lookupField.productType = product.productType;
+		            listsModel.getProductTypeByProduct(product.id).then(function(server_data) {
+			            ctrl.lookupField.productType = product.productType;
+			            ctrl.lookupField.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
+		            })                    
+                    // ctrl.lookupField.productType = product.productType;
                     ctrl.lookupField.tempProduct = ctrl.lookupField.product;
                     ctrl.getSpecGroups(ctrl.lookupField);
                     ctrl.getOrderContractOptions({'product': product});
