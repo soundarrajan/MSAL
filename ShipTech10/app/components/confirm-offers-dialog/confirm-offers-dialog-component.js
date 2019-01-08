@@ -98,6 +98,15 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             //         }
             //     }
             // }
+            // 
+            // 
+            
+            if (_.uniqBy(ctrl.requestOfferItems, 'quotedProductGroupId').length != 1) {
+            	ctrl.buttonsDisabled = false;
+	        	toastr.error("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
+		    	return;
+            }
+
             ctrl.BEvalidationMessages = []
             $.each(ctrl.availableContractItems, function(k,v){
             	if (v.validationMessage) {
@@ -204,7 +213,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                     "Comments": ctrl.comments
                 };
                 // $bladeEntity.close();
-                ctrl.buttonsDisabled = true;
+                // ctrl.buttonsDisabled = true;
                 toastr.info("Please wait while the offer is confirmed");
                 setTimeout(function() {
                     groupOfRequestsModel.confirm(rfq_data).then(function(data) {
@@ -218,6 +227,8 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                         // } else if (receivedOffers.length > 1) {
                         //     $state.go(STATE.ORDER_LIST);
                         // }
+                    }, function(){
+                    	ctrl.buttonsDisabled = false;
                     });
                 }, 200)
             }, function(responseData) {
