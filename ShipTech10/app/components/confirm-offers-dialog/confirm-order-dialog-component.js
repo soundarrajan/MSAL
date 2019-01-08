@@ -127,6 +127,13 @@ angular.module("shiptech.components").controller("ConfirmOrderDialogController",
 
 
             // if capture conf qty == "Offer", confirmed qty is visible & required
+
+            if (_.uniqBy(ctrl.requestOfferItems, 'productType.productTypeGroup.id').length != 1) {
+            	ctrl.buttonsDisabled = false;
+	        	toastr.error("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
+		    	return;
+            }            
+
             if(ctrl.captureConfirmedQuantity.name == 'Offer'){
                 var errorConf = false;
                 $.each(ctrl.requestOfferItems, function(key, val){
@@ -250,6 +257,7 @@ angular.module("shiptech.components").controller("ConfirmOrderDialogController",
                     item.offerPrice = pv.price;
                     item.totalPrice = pv.price;
                     item.productId = pv.id;
+                    item.productType = pv.productType;
                     item.requestProductId = pv.requestProductId;
                     item.conversionFactorToUomOfPriceFromContract = pv.conversionFactorToUomOfPriceFromContract;
                     item.physicalSupplierName = pv.physicalSupplier.name;
