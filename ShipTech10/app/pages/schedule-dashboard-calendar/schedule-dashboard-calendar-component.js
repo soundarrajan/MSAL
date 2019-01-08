@@ -96,25 +96,16 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         ctrl.rowHasStatus = function (statusList) {
             return !ctrl.breadcrumbsFilter || statusList.indexOf(ctrl.breadcrumbsFilter) != -1;
         };
-
-
-        scheduleDashboardConfigurationInterval = setInterval(function(){
-	    	if (window.scheduleDashboardConfiguration) {
-	    		clearInterval(scheduleDashboardConfigurationInterval);
-				ctrl.dashboardConfiguration = window.scheduleDashboardConfiguration.payload
-		        statusList = ctrl.dashboardConfiguration.labels;
-	            selectTimeScale($stateParams.timescale);
-	    	}
-        },500)
- 
         
-        // scheduleDashboardCalendarModel.getStatuses().then(function (data) {
-        //     ctrl.dashboardConfiguration = data;
-        //     // Initialize everything according to timescale.
-        //     selectTimeScale($stateParams.timescale);
-        //     statusList = data.labels;
-        //     // loadData(ctrl.startDate, ctrl.endDate);
-        // });
+        /*
+        scheduleDashboardCalendarModel.getStatuses().then(function (data) {
+            ctrl.dashboardConfiguration = data;
+            // Initialize everything according to timescale.
+            statusList = data.labels;
+            selectTimeScale($stateParams.timescale);
+            loadData(ctrl.startDate, ctrl.endDate);
+        });
+        */
         
         $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
 
@@ -284,26 +275,14 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 ctrl.settings = normalizeJSONDataTables(ctrl.ui.tables);
                 //get status map before getting data
 
-		    //     scheduleDashboardConfigurationInterval2 = setInterval(function(){
-			   //  	if (window.scheduleDashboardConfiguration) {
-			   //  		clearInterval(scheduleDashboardConfigurationInterval2);
-						// $timeout(function() {
-						// 	ctrl.dashboardConfiguration = window.scheduleDashboardConfiguration.payload
-				  //           selectTimeScale($stateParams.timescale);
-					 //        statusList = ctrl.dashboardConfiguration.labels;
-						// },4220);
-			   //  	}
-		    //     },500)                
-
-
-                scheduleDashboardCalendarModel.getStatuses().then(function (data) {
-                	if (!data) {return}
-                    ctrl.dashboardConfiguration = data;
-                    // Initialize everything according to timescale.
-                    selectTimeScale($stateParams.timescale);
-                    statusList = data.labels;
-                    // loadData(ctrl.startDate, ctrl.endDate);
-                });
+                setTimeout(function() {
+                    scheduleDashboardCalendarModel.getStatuses().then(function (data) {
+                        ctrl.dashboardConfiguration = data;
+                        statusList = data.labels;
+                        selectTimeScale($stateParams.timescale);
+                        loadData(ctrl.startDate, ctrl.endDate);
+                    });
+                }, 250);
             });
         /*******************************
          *   END INITIALIZATION
