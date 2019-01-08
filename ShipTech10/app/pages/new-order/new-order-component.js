@@ -1756,6 +1756,13 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
              * revert the empty objects we use for binding to nulls, but NOT in ctrl.data -
              * there we still need them as objects - we'll use a local "payload" var.
              */
+
+             if ($scope.checkProductsHaveSameProductType() == false) {
+             	toastr.error("Order can contain only products with same group.");
+             	return;
+             }
+
+
             angular.copy(ctrl.data, payload);
             if ($.isEmptyObject(payload.broker) || !payload.broker.name) {
                 payload.broker = null;
@@ -1833,6 +1840,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
 
         };
+
+        $scope.checkProductsHaveSameProductType = function() {
+        	currentProductTypes = _.uniqBy(ctrl.data.products, 'productType.id');
+        	return currentProductTypes.length == 1;
+        }
 
         ctrl.hasAction = function (action) {
     
@@ -2112,6 +2124,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 toastr.error(message);
                 return;
             }
+			if ($scope.checkProductsHaveSameProductType() == false) {
+				toastr.error("Order can contain only products with same group.");
+				return;
+			}
+            
             if (payload) {
                 ctrl.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRM, payload);
             } else {
@@ -2203,6 +2220,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                         });
                     }
                     // END Save Order before confirming validation
+
+
 
                     ctrl.sendOrderConfirmation(payload);
 
