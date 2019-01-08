@@ -1046,6 +1046,8 @@
         "NEGOTIATION_DISPLAY_DECIMAL": "Decimal",
         "DISPLAY_OF_COMPANY": "Display of company",
         "HIDE_MIN_MAX": "Hide Min and Max",
+        "INTEGRATIONS_URL": "Integrations Url",
+        "EMAIL_SERVER_TYPE": "Email Server Type",        
         "DISPLAY_OF_SERVICE": "Display of service",
         "DISPLAY_AGREEMENT_TYPE": "Display agreement type",
         "DISPLAY_DELIVERY_WINDOW": "Display delivery window",

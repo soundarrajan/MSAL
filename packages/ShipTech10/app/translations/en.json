@@ -1059,6 +1059,8 @@
         "HIDE_CONTRACT_REFERENCED_FORMULAS": "Hide contract referenced formulas",
         "IS_NEED_FOR_SUBMIT_FOR_APPROVAL": "Is need for submit for approval",
         "HIDE_ALLOWED_PRODUCT": "Hide Allowed Product",
+        "INTEGRATIONS_URL": "Integrations Url",
+        "EMAIL_SERVER_TYPE": "Email Server Type",        
         "NEGOTIATION_DISPLAY_DECIMAL": "Decimal",
         "DISPLAY_OF_COMPANY": "Display of company",
         "DEFAULT_SPOT_AGREEMENT_TYPE": "Default spot agreement type",

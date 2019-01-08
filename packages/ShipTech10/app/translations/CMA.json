@@ -1059,6 +1059,8 @@
         "DISPLAY_PRODUCT_TYPE": "Display product type",
         "IS_NEED_FOR_SUBMIT_FOR_APPROVAL": "Is need for submit for approval",
         "NEGOTIATION_DISPLAY_DECIMAL": "Decimal",
+        "INTEGRATIONS_URL": "Integrations Url",
+        "EMAIL_SERVER_TYPE": "Email Server Type",
         "HIDE_CONTRACT_REFERENCED_FORMULAS": "Hide contract referenced formulas",
         "HIDE_ALLOWED_PRODUCT": "Hide Allowed Product",
         "DISPLAY_OF_COMPANY": "Display of company",
