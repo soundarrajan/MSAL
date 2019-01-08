@@ -808,7 +808,7 @@
 	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" >
 
                                                                 <!-- datepicker input -->
-                                                                <input class="form-control hidden-form-input" name="Recent ETA" readonly="" disabled id="id_Recent_ETA"  ng-model="location.recentEta" st-date-format ng-disabled="$ctrl.disableAllFields" visibility="hidden" ng-change="$ctrl.setValue({
+                                                                <input class="form-control hidden-form-input" name="Recent ETA" readonly="" disabled id="id_Recent_ETA"  ng-model="location.recentEta" st-date-format ng-disabled="$ctrl.disableAllFields" visibility="hidden" ng-invalid="{{ CM.invalidDate[locationIdx + '_recentEta'] && !inputFocus[locationIdx + '_recentEta'] && $ctrl.overrideInvalidDate[locationIdx + '_recentEta'] }}" ng-change="$ctrl.setValue({
                                                                     path: 'request.locations[' + locationIdx + '].recentEta',
                                                                     root: '$ctrl',
                                                                     pickerId: locationIdx + '_recentEta',
