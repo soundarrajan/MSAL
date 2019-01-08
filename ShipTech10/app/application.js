@@ -201,7 +201,8 @@ angular
         "$http",
         "$document",
         "screenLoader",
-        function($scope, adalService, $http, $document, screenLoader) {
+        "$compile",
+        function($scope, adalService, $http, $document, screenLoader, $compile) {
             toastr.options = {
                 maxOpened: 1,
                 timeOut: 4000,
@@ -211,6 +212,26 @@ angular
             toastr.subscribe(function(args){
                 screenLoader.hideLoader();
             });
+
+            jQuery(document).ready(function(){
+				$(document).on("blur", ".formatted-date-input", function(){
+					currentEl = this
+					setTimeout(function(){
+						if ($(currentEl).attr("ng-invalid") == "true") {
+							if (!$(currentEl).attr("error-shown")) {
+								toastr.error("Please enter correct date format");
+								$(currentEl).attr("error-shown", "true");
+							}
+						}
+						setTimeout(function(){
+							$(currentEl).removeAttr("error-shown");
+						},300)
+					})
+					// $(this).$valid;
+					// $compile($(this));
+				})
+            })
+
             $scope.pagetitle = "";
             $scope.pageClass = "";
             window.onerror = function(message, url, line) {
@@ -559,6 +580,9 @@ angular.element(document).ready(function() {
         }
     });
 });
+
+
+
 
 angular.module('shiptech').factory('httpRequestInterceptor', function () {
   return {
