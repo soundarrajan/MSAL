@@ -1758,6 +1758,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
              */
 
              if ($scope.checkProductsHaveSameProductType() == false) {
+	        	ctrl.buttonsDisabled = false;
              	toastr.error("Order can contain only products with same group.");
              	return;
              }
@@ -1842,7 +1843,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         };
 
         $scope.checkProductsHaveSameProductType = function() {
-        	currentProductTypes = _.uniqBy(ctrl.data.products, 'productType.id');
+        	currentProductTypes = _.uniqBy(ctrl.data.products, 'productType.productTypeGroup.id');
         	return currentProductTypes.length == 1;
         }
 
@@ -2125,10 +2126,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 return;
             }
 			if ($scope.checkProductsHaveSameProductType() == false) {
+	        	ctrl.buttonsDisabled = false;
 				toastr.error("Order can contain only products with same group.");
 				return;
 			}
-            
+
             if (payload) {
                 ctrl.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRM, payload);
             } else {
