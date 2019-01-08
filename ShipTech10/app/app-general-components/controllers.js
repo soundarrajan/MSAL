@@ -3438,6 +3438,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         $scope.$on("tableLayoutLoaded", function(e, payload) {
             $scope.tableData = payload;
         });
+
+        $scope.deleteSelectedConfiguration = function(){
+            selectedConfiguration = $("#configurations_list").val();
+            if (selectedConfiguration) {
+                filtersScope = angular.element($("#filters-widget-scope")).scope();
+                filtersScope.deleteConfig({id:selectedConfiguration});
+                return;
+            } else {
+                toastr.error("Please select configuration to be deleted");
+                return;
+            }
+        }
         vm.export = function(icon, params) {
      
             var table_id = id;
@@ -3451,15 +3463,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 return;
             }
             if (icon.action == "delete_layout") {
-                selectedConfiguration = $("#configurations_list").val();
-                if (selectedConfiguration) {
-                    filtersScope = angular.element($("#filters-widget-scope")).scope();
-                    filtersScope.deleteConfig({id:selectedConfiguration});
-                    return;
-                } else {
-                    toastr.error("Please select configuration to be deleted");
-                    return;
-                }
+            	sweetConfirmScope = angular.element($("clc-table-list div")).scope();
+            	$scope.confirmModalData = {};
+            	$scope.confirmModalData.text = "Do you want to delete the configuration?";
+                sweetConfirmScope.showSweetConfirm("Controller_General_Header", "Do you want to delete the configuration?", "deleteSelectedConfiguration(false)");
+                return;
             }
             if (icon.action == "save_layout") {
               if((!$scope.selectedConfig || ($scope.selectedConfig && !$scope.selectedConfig.name)) &&

@@ -482,21 +482,21 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
         };
         ctrl.getStatuses = function() {
         	setTimeout(function(){
-        		$scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
-     //    		if (!window.scheduleDashboardConfiguration) {
-		   //          var requestData = {
-		   //              Payload: true
-		   //          };
+        		// $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
+        		if (!window.scheduleDashboardConfiguration) {
+		            var requestData = {
+		                Payload: true
+		            };
 
-					// return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
-					// 	window.scheduleDashboardConfiguration = data;
-					//  //    scheduleDashboardConfiguration = data;
-					//  //    return data;
-					//     ctrl.statuses = data.payload.labels;
-					// })
-     //    		} else {
-				 //    ctrl.statuses = window.scheduleDashboardConfiguration.payload.labels;
-     //    		}
+					return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
+						window.scheduleDashboardConfiguration = data;
+					 //    scheduleDashboardConfiguration = data;
+					 //    return data;
+					    ctrl.statuses = data.payload.labels;
+					})
+        		} else {
+				    ctrl.statuses = window.scheduleDashboardConfiguration.payload.labels;
+        		}
         	},550)
         };
         ctrl.getStatuses();
