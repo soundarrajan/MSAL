@@ -1093,11 +1093,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             listsModel.getSpecGroupByProduct(product.id).then(function (server_data) {
                 newProduct.specGroups = server_data.data.payload;
             });
+            listsModel.getProductTypeByProduct(product.id).then(function(server_data) {
+                console.log("test");
+	            newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
+	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
+                // newProduct.specGroups = server_data.data.payload;
+            })
             newProduct.quantityUom = {};
             newProduct.currency = ctrl.currency;
             newProduct.physicalSupplier = angular.copy(ctrl.data.seller);
             newProduct.additionalCosts = [];
-            newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
             addFirstAdditionalCost();
 
         };
