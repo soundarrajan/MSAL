@@ -5515,12 +5515,12 @@ APP_API.factory("$Api_Service", [
                             // }
                             result["schedule"] = tenantModel.getScheduleDashboardConfiguration().payload;
                             if (responses[4].status == 200) {
-                                result["delivery"] = responses[5].data.payload;
+                                result["delivery"] = responses[4].data.payload;
                             } else {
                                 result["delivery"] = [];
                             }
                             if (responses[5].status == 200) {
-                                result["invoice"] = responses[6].data.payload;
+                                result["invoice"] = responses[5].data.payload;
                             } else {
                                 result["invoice"] = [];
                             }
