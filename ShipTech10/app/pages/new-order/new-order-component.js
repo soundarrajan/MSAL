@@ -2156,7 +2156,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				toastr.error("Order can contain only products with same group.");
 				return;
 			}
-          
+
             ctrl.showSpecGroupModal = false;
             if (ctrl.isAgentFreeText) {
                 // if (!ctrl.data.agentCounterpartyFreeText) {
@@ -2555,7 +2555,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     }
                 }
                 productUomChg(ctrl.data.products[idx]);
-                $scope.addAdditionalCostByContractProductId(selection.contractProductId)
+                $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx)
             }
             $.each(ctrl.data.products, function(key, value){
                 if(value.id == productUniqueId){
@@ -2568,14 +2568,26 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             })
         }
 
-        $scope.addAdditionalCostByContractProductId = function(contractProductId) {
-			// return beacause is work in progress and not finished yet
-        	return;
-            orderModel.getContractProductAdditionalCosts(contractProductId).
-                then(function (response) {
-                	console.log(response);
-                }).catch(function (error) {
-                });
+        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx) {
+        	if (ctrl.data.id) {
+				// applicable only for new order
+        		return
+        	}
+        	cureentContractProductId = contractProductId
+        	currentProductIndex = productIdx
+            orderModel.getContractProductAdditionalCosts(contractProductId).then(function (response) {
+            	console.log(response);
+            	for (var i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
+            		if (ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract) {
+            			ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1)
+            		}
+            	}
+            	$.each(response.payload, function(k,v){
+            		v.isFromContract = true;
+	            	ctrl.data.products[currentProductIndex].additionalCosts.push(v)
+            	})
+            }).catch(function (error) {
+            });
         }
 
 
