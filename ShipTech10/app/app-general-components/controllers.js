@@ -3463,6 +3463,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 return;
             }
             if (icon.action == "delete_layout") {
+            	if ($("#configurations_list").val() == "0" || !$("#configurations_list").val() || $("#configurations_list").val() == 0) {
+	                toastr.error("Please select configuration to be deleted");
+            		return
+            	}
             	sweetConfirmScope = angular.element($("clc-table-list div")).scope();
             	$scope.confirmModalData = {};
             	$scope.confirmModalData.text = "Do you want to delete the configuration?";
