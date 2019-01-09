@@ -1,10 +1,7 @@
 /**
  * Invoice Controller
  */
-APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Service', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', function($scope, $rootScope, $Api_Service, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel) {
-
-
-
+APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', function($scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel) {
     var vm = this;
     var guid = '';
     if ($state.params.path) {

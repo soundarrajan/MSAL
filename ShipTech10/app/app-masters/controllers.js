@@ -333,7 +333,7 @@
         vm.get_master_structure = function(screenChild) {
             screenLoader.showLoader();
             $scope.getAdminConfiguration();
-            if (!vm.entity_id) {
+            if (window.location.href.indexOf('structure') != -1) {
                 vm.get_master_elements(screenChild);
             }
             var generic_layout = false;
