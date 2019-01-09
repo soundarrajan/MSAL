@@ -33,8 +33,9 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "MOCKUP_MAP",
     "PACKAGES_CONFIGURATION",
     "screenLoader",
+    "listsModel",
     "$tenantSettings",
-    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, $tenantSettings) {
+    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings) {
         $scope.STATE = STATE;
         var ctrl = this;
         var groupId = $stateParams.groupId;
@@ -314,6 +315,13 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                                         } else {
                                             packageType = "seller";
                                         }
+                                    }
+                                    if (sellerV.offers[0].quotedProduct.id != prodV.product.id) {
+							            listsModel.getProductTypeByProduct(sellerV.offers[0].quotedProduct.id).then(function(server_data) {
+		                                    sellerV.offers[0].quotedProductGroupId = server_data.data.payload.productTypeGroup.id;
+							            })                                    
+                                    } else {
+	                                    sellerV.offers[0].quotedProductGroupId = prodV.productTypeGroupId;
                                     }
                                     seller.packageId = seller.offers[0].packageId;
                                 }
@@ -1982,6 +1990,8 @@ ctrl.setProductData = function(data, loc) {
                             OrderFields: null,
                             RequestProductId: product.id,
                             ProductTypeId: product.productTypeId,
+                            ProductTypeGroupId: product.productTypeGroupId,
+                            QuotedProductGroupId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.quotedProductGroupId : null,
                             PhysicalSupplierCounterpartyId: physicalSupplier.id,
                             ContactCounterpartyId: contactCounterparty.id ? contactCounterparty.id : null,
                             BrokerCounterpartyId: brokerCounterparty.id ? brokerCounterparty.id : null,
@@ -2141,6 +2151,8 @@ ctrl.setProductData = function(data, loc) {
                     OrderFields: null,
                     RequestProductId: product.id,
                     ProductTypeId: product.productTypeId,
+                    ProductTypeGroupId: product.productTypeGroupId,
+					QuotedProductGroupId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.quotedProductGroupId : null,                    
                     PhysicalSupplierCounterpartyId: physicalSupplier.id,
                     ContactCounterpartyId: contactCounterparty.id ? contactCounterparty.id : null,
                     BrokerCounterpartyId: brokerCounterparty.id ? brokerCounterparty.id : null,
@@ -2590,6 +2602,11 @@ ctrl.setProductData = function(data, loc) {
             return vesselIds.length;
         };
         ctrl.setConfirmationOffers = function () {
+            if (_.uniqBy(ctrl.requirements, 'QuotedProductGroupId').length != 1) {
+	        	toastr.error("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
+		    	return false;
+            }
+
             ctrl.confirmationProductOffers = {
                 requestProductIds: ctrl.requirementRequestProductIds.slice(0),
                 requirements: ctrl.requirements,
@@ -2599,6 +2616,8 @@ ctrl.setProductData = function(data, loc) {
                 comments: null,
                 fullGroupData: ctrl.requests
             };
+
+
             if (ctrl.isOfferReviewMandatory && !ctrl.isReviewed) {
                 toastr.error("Your tenant configuration require that Group should be Reviewed before confirming an Offer");
                 return false;

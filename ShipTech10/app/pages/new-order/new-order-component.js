@@ -2060,6 +2060,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             updateOrderSummary();
         };
         ctrl.sendOrderConfirmation = function (payload) {
+
             removeNullAdditionalCosts();
             if (!payload) payload = angular.copy(ctrl.data);
             if ($.isEmptyObject(payload.broker) || !payload.broker.name) {
@@ -2134,11 +2135,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 toastr.error(message);
                 return;
             }
-			if ($scope.checkProductsHaveSameProductType() == false) {
-	        	ctrl.buttonsDisabled = false;
-				toastr.error("Order can contain only products with same group.");
-				return;
-			}
+
 
             if (payload) {
                 ctrl.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRM, payload);
@@ -2153,6 +2150,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         };
         ctrl.showSpecGroupModal = false;
         ctrl.confirmOrder = function (checkSpecGroup) {
+          
+			if ($scope.checkProductsHaveSameProductType() == false) {
+	        	ctrl.buttonsDisabled = false;
+				toastr.error("Order can contain only products with same group.");
+				return;
+			}
           
             ctrl.showSpecGroupModal = false;
             if (ctrl.isAgentFreeText) {
