@@ -862,10 +862,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var minQty = "";
                     var maxQty = "";
                     theCLC = $("#flat_contract_planning");
-                    // if (typeof(theCLC.jqGrid.Ascensys.gridObject.rows) != 'undefined') {
-                    //  rowObject.minQuantity = theCLC.jqGrid.Ascensys.gridObject.rows[options.rowId - 1].minQuantity;
-                    //  rowObject.maxQuantity = theCLC.jqGrid.Ascensys.gridObject.rows[options.rowId - 1].maxQuantity;
-                    // }
+                    if (typeof(theCLC.jqGrid.Ascensys.gridObject.rows) != 'undefined') {
+                        rowObject.contractMinQuantity = theCLC.jqGrid.Ascensys.gridObject.rows[options.rowId - 1].contractMinQuantity;
+                        rowObject.contractMaxQuantity = theCLC.jqGrid.Ascensys.gridObject.rows[options.rowId - 1].contractMaxQuantity;
+                    }
                     if (options.colModel.dataFrom == "base") {
                         if (rowObject.minQuantity != null) minQty = $filter("number")(rowObject.minQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
                         if (rowObject.maxQuantity != null) maxQty = $filter("number")(rowObject.maxQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);

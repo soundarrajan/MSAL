@@ -180,8 +180,10 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             }
         };
         ctrl.selectContract = function(contract) {
+            ctrl.currentRequest.contractMinQuantity = contract.minQuantity;
+            ctrl.currentRequest.contractMaxQuantity = contract.maxQuantity;
         	$rootScope.$broadcast("selectedContractFromModal", contract);
-        	return;
+            return;
             ctrl.currentRequest.contract = contract.contract;
             ctrl.currentRequest.contractProductId = contract.contractProductId;
             ctrl.currentRequest.seller = contract.seller;
@@ -189,8 +191,6 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.currentRequest.deliveryPrice = contract.deliveryPrice;
             ctrl.currentRequest.premiumDiscount = contract.premiumDiscount;
             ctrl.currentRequest.noOfDaysBeforeExpiry = contract.noOfDaysBeforeExpiry;
-            ctrl.currentRequest.contractMinQuantity = contract.minQuantity;
-            ctrl.currentRequest.contractMaxQuantity = contract.maxQuantity;
             $scope.contractPlanningHasChangesMade = true;
             setTimeout(function() {
                 $(tableSelector).dataTable().fnAdjustColumnSizing(false);
