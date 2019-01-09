@@ -773,14 +773,19 @@
 	                                            </div>
 
 	                                        </div>
-	                                        <div class="col-md-4" ng-if="$ctrl.requestTenantSettings.recentEta.id == 1">
+
+
+	                                        <div ng-if="$ctrl.requestTenantSettings.recentEta.id == 1" class="col-md-4">
 	                                            <div class="row">
 	                                                <label class="control-label col-md-4">
-	                                                    {{ 'PAGES.NEW_REQUEST.RECENT_ETA' | translate }}
+	                                                   {{ 'PAGES.NEW_REQUEST.RECENT_ETA' | translate }}
 	                                                </label>
+
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8">
-                                                            <!-- value initialization --><!-- $ctrl.request.locations[locationIdx].recentEta -->
+
+                                                            <!-- value initialization -->
+                                                            <!-- $ctrl.request.locations[locationIdx].eta -->
                                                             <span ng-init="$ctrl.setValue({
                                                                 path: 'request.locations[' + locationIdx + '].recentEta',
                                                                 root: '$ctrl',
@@ -796,32 +801,32 @@
                                                                 root: '$ctrl',
                                                                 pickerId: locationIdx + '_recentEta',
                                                                 fieldId: 'recentEta'
-                                                            }, 2, false)" 
+                                                            }, 2, false);" 
                                                             ng-focus="inputFocus[locationIdx + '_recentEta'] = true; $event.stopPropagation(); event = $event" 
                                                             ng-blur="inputFocus[locationIdx + '_recentEta'] = false;"
                                                             ng-invalid="{{ CM.invalidDate[locationIdx + '_recentEta'] && !inputFocus[locationIdx + '_recentEta'] && $ctrl.overrideInvalidDate[locationIdx + '_recentEta'] }}"
-                                                            ng-disabled="$ctrl.disableAllFields"
-                                                            name="{{ locationIdx }}_recentEta">
+                                                                                                     name="{{ locationIdx }}_recentEta">
                                                             <!-- manual input -->
+                                                      
                                                             
                                                             <!-- button editable -->
-	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" >
+	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields" id="{{ locationIdx }}_recentEta">
 
                                                                 <!-- datepicker input -->
-                                                                <input class="form-control hidden-form-input" name="Recent ETA" readonly="" disabled id="id_Recent_ETA"  ng-model="location.recentEta" st-date-format ng-disabled="$ctrl.disableAllFields" visibility="hidden" ng-invalid="{{ CM.invalidDate[locationIdx + '_recentEta'] && !inputFocus[locationIdx + '_recentEta'] && $ctrl.overrideInvalidDate[locationIdx + '_recentEta'] }}" ng-change="$ctrl.setValue({
+                                                                <input  class="form-control hidden-form-input" name="Recent ETA" readonly="" disabled id="Recent ETA"  ng-model="location.recentEta" date-before="{{ location.etb }}" st-date-format ng-change="$ctrl.setValue({
                                                                     path: 'request.locations[' + locationIdx + '].recentEta',
                                                                     root: '$ctrl',
                                                                     pickerId: locationIdx + '_recentEta',
                                                                     fieldId: 'recentEta'
                                                                 }, 1, false);">
-                                                                <!-- datepicker input -->
+                                                                <!-- end datepicker input -->
 
 	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
 	                                                                <i class="fa fa-calendar"></i>
 	                                                            </button>
                                                             </span>
                                                             <!-- button editable -->
-
+                                                            
                                                             <!-- button readonly -->
 	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-calendar"></i>
@@ -831,6 +836,7 @@
 	                                                </div>
 	                                            </div>
 	                                        </div>
+	                                        
 
 	                                       <!-- DELIVERYWINDOWDISPLAY -->
 	                                        <div class="col-md-4" ng-if="$ctrl.requestTenantSettings.deliveryWindowDisplay.id == 1"  >
