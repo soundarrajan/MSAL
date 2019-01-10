@@ -590,7 +590,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             		ctrl.buttonsDisabled = false;
             		$state.reload()
             	})
-            } else if (ctrl.data.command) {
+            } /*else if (ctrl.data.command) {
                 orderModel.sendOrderCommand(ctrl.data.command, ctrl.data.orderId)
                 .then(function (response) {
                     ctrl.buttonsDisabled = false;
@@ -603,7 +603,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     $state.reload()
                   
                 });
-            } else {
+            }*/ else {
 	            emailModel.sendEmail(ctrl.email, ctrl.template).then(function() {
 	                if (ctrl.transaction != EMAIL_TRANSACTION.GROUP_OF_REQUESTS) {
                         if(!remainOnSamePage){

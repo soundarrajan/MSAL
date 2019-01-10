@@ -2568,6 +2568,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             })
         }
 
+
+
         $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx) {
     //     	if (ctrl.data.id) {
 				// // applicable only for new order

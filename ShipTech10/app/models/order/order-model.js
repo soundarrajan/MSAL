@@ -164,12 +164,13 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             });
         }
 
+
         function getContractProductAdditionalCosts(contractProductId) {
             var request_data = payloadDataModel.create(contractProductId);
             return orderResource.getContractProductAdditionalCosts(request_data).$promise.then(function(data) {
                 return data;
             });
-        }        
+        } 
 
         function update(data) {
             var request_data = payloadDataModel.create(data);

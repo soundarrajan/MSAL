@@ -187,6 +187,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.currentRequest.contract = contract.contract;
             ctrl.currentRequest.contractProductId = contract.contractProductId;
             ctrl.currentRequest.seller = contract.seller;
+			ctrl.currentRequest.contractProductId = contract.contractProductId;            
             ctrl.currentRequest.formulaDescription = contract.formulaDescription;
             ctrl.currentRequest.deliveryPrice = contract.deliveryPrice;
             ctrl.currentRequest.premiumDiscount = contract.premiumDiscount;
