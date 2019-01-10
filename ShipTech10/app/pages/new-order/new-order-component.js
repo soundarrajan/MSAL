@@ -2569,10 +2569,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         }
 
         $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx) {
-        	if (ctrl.data.id) {
-				// applicable only for new order
-        		return
-        	}
+    //     	if (ctrl.data.id) {
+				// // applicable only for new order
+    //     		return
+    //     	}
         	cureentContractProductId = contractProductId
         	currentProductIndex = productIdx
             orderModel.getContractProductAdditionalCosts(contractProductId).then(function (response) {
@@ -2584,6 +2584,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             	$.each(response.payload, function(k,v){
             		v.isFromContract = true;
+            		v.id = 0;
 	            	ctrl.data.products[currentProductIndex].additionalCosts.push(v)
             	})
             }).catch(function (error) {
