@@ -628,22 +628,24 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
         };
         $scope.getFiltersConfigurations = function() {
-            var data = $scope.currentList;
-            $scope.filtersConfigurations = null;
-            filterConfigurationModel.getFiltersConfigurations(data).then(function(response) {
-                $scope.filtersConfigurations = response.payload;
-                $scope.filtersConfigurations.unshift({
-                    id: 0,
-                    route: $scope.currentList,
-                    name: "Add new configuration"
+            if (!$scope.filtersConfigurations) {
+                var data = $scope.currentList;
+                // $scope.filtersConfigurations = null;
+                filterConfigurationModel.getFiltersConfigurations(data).then(function(response) {
+                    $scope.filtersConfigurations = response.payload;
+                    $scope.filtersConfigurations.unshift({
+                        id: 0,
+                        route: $scope.currentList,
+                        name: "Add new configuration"
+                    });
+                    // $scope.filtersConfigurations.unshift({
+                    //     id: -1,
+                    //     route: $scope.currentList,
+                    //     name: ''
+                    // })
+                    ctrl.hideSidebar();
                 });
-                // $scope.filtersConfigurations.unshift({
-                //     id: -1,
-                //     route: $scope.currentList,
-                //     name: ''
-                // })
-                ctrl.hideSidebar();
-            });
+            }
         };
         $scope.deleteConfig = function(selectedConfig) {
             var data = selectedConfig.id;

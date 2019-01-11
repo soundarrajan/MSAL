@@ -741,8 +741,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         if ($scope.CM.type == 'product') {
             product = formValues.productDetails[rowIndex];
             if (typeof(product.product) != 'undefined' && typeof(product.invoiceQuantityUom) != 'undefined' && typeof(product.invoiceRateUom) !== 'undefined') {
-                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null) {
-                    return
+                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null || typeof(product.invoiceAmount) != 'undefined') {
+                    return;
                 };
                 $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
                 	if (product.sapInvoiceAmount) {
