@@ -619,6 +619,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                     toastr.success("Configuration saved!");
 
                     // $state.reload();globalFilters
+                    $scope.filtersConfigurations = null;
                     $scope.getFiltersConfigurations();
                     $scope.getDefaultFiltersConfiguration(true);
                 })
