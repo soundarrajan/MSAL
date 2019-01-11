@@ -5464,6 +5464,15 @@ APP_API.factory("$Api_Service", [
                     //     return;
                     // }
                     if (param.app == "admin" && param.screen == "configuration") {
+                        if (window.location.href.indexOf("admin") === -1) {
+                            var delivery = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/getCached", {
+                                Payload: true
+                            });
+                        } else {
+                            var delivery = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/get", {
+                                Payload: true
+                            });
+                        }
                         param.id = 0;
                         var contract = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/contractConfiguration/get", {
                             Payload: true
@@ -5480,9 +5489,6 @@ APP_API.factory("$Api_Service", [
                         // var schedule = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/scheduleDashboardConfiguration/get", {
                         //     Payload: true
                         // });
-                        var delivery = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/get", {
-                            Payload: true
-                        });
                         var invoice = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/invoiceConfiguration/get", {
                             Payload: true
                         });
@@ -8606,7 +8612,7 @@ APP_API.factory("$Api_Service", [
                 },
                 getDeliveryConfigurations: function(param, callback) {
                     var apiJSON = param;
-                    var url = API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/get";
+                    var url = API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/getCached";
                     $http.post(url, apiJSON).then(
                         function success(response) {
                             if (response.status == 200) {
