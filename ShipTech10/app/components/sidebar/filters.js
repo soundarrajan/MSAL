@@ -548,7 +548,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         };
         $scope.getDefaultFiltersConfiguration = function(fromSave) {
-        	if (localStorage.getItem("persistentGlobalFilters")) {
+        	if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
         		return;
         	}
             var data = $scope.currentList;
