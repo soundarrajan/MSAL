@@ -52,7 +52,7 @@
                     <!-- Available icons: edit | export-xls | export-csv | export-pdf | export-doc | print | email -->
                     <span ng-if="actions.icons">
                         <div class="st-content-action-icons">
-                            <a ng-repeat="(key, icon) in actions.icons" class="btn" ng-click="GH.export(icon)">
+                            <a ng-repeat="(key, icon) in actions.icons" class="btn {{icon.action}}" ng-click="GH.export(icon)">
                                 <span class="icon {{ icon.class }}"></span>
                             </a>
                         </div>

@@ -3450,6 +3450,29 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 return;
             }
         }
+
+
+        $scope.$watch("selectedConfig", function(){
+        	enableDisableDeleteLayout()
+        })
+        $(document).on("change", "#configurations_list", function() {
+        	enableDisableDeleteLayout()
+        })
+        enableDisableDeleteLayout = function(){
+        	if ($("#configurations_list").val()) {
+        		if ($("#configurations_list").val() != "0") {
+        			$(".st-content-action-icons .delete_layout").css("opacity", 1)
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        		} else {
+        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        		}
+        	} else {
+        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        	}
+        }
+
         vm.export = function(icon, params) {
      
             var table_id = id;
