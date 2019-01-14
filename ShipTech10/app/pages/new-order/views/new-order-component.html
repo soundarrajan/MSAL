@@ -305,14 +305,14 @@
 
                                                     <!-- value initialization -->
                                                     <!-- $ctrl.data.eta -->
-                                                    <span ng-init="$ctrl.setValue({
+                                                    <!-- <span ng-init="$ctrl.setValue({
                                                         path: 'data.orderDate',
                                                         root: '$ctrl',
                                                         pickerId: 'orderDate',
-                                                    }, 1, true)" ng-if="$ctrl.data.orderDate"></span>
+                                                    }, 1, true)" ng-if="$ctrl.data.orderDate"></span> -->
 
                                                     <!-- manual input -->
-                                                    <input class="formatted-date-input date-only"
+                                                    <!-- <input class="formatted-date-input date-only"
                                                     ng-model="$ctrl.formatDates.data.orderDate" 
                                                     ng-change="$ctrl.setValue({
                                                         path: 'data.orderDate',
@@ -322,12 +322,12 @@
                                                     ng-focus="inputFocus['orderDate'] = true; $event.stopPropagation(); event = $event" 
                                                     ng-blur="inputFocus['orderDate'] = false;"
                                                     ng-invalid="{{ $ctrl.invalidDate['orderDate'] && !inputFocus['orderDate'] }}"
-                                                    name="orderDate">
+                                                    name="orderDate"> -->
                                                     <!-- manual input -->
                                                 
                                                     <span class="input-group-btn date form_meridian_date formatted-date-button" id="orderDate">
                                                         <!-- datepicker input -->
-                                                        <input class="form-control hidden-form-input" required st-date-format only-date="true" readonly ng-model="$ctrl.data.orderDate" visibility="hidden" ng-change="$ctrl.setValue({
+                                                        <input editable-date-with-mask class="form-control hidden-form-input" required only-date="true" readonly ng-model="$ctrl.data.orderDate" visibility="hidden" ng-change="$ctrl.setValue({
                                                             path: 'data.orderDate',
                                                             root: '$ctrl',
                                                             pickerId: 'orderDate',
@@ -727,15 +727,15 @@
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
                                                             <div class="input-group ">
-                                                                <span ng-init="$ctrl.setValue({
+                                                                <!-- <span ng-init="$ctrl.setValue({
                                                                     path: 'data.deliveryDate',
                                                                     root: '$ctrl',
                                                                     pickerId: 'deliveryDate',
                                                                     fieldId: 'deliveryDate'
-                                                                }, 1, true)" ng-if="$ctrl.data.deliveryDate"></span>
+                                                                }, 1, true)" ng-if="$ctrl.data.deliveryDate"></span> -->
 
                                                                 <!-- manual input -->
-                                                                <input class="formatted-date-input date-only"
+                                                                <!-- <input class="formatted-date-input date-only"
                                                                 ng-model="$ctrl.formatDates.data.deliveryDate" 
                                                                 ng-change="$ctrl.setValue({
                                                                         path: 'data.deliveryDate',
@@ -748,14 +748,14 @@
                                                                 ng-invalid="{{ $ctrl.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] }}"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                 required
-                                                                name="deliveryDate">
+                                                                name="deliveryDate"> -->
                                                                 <!-- manual input -->
 
                                                                 <!-- button -->
                                                                 <span class="input-group-btn date form_meridian_date formatted-date-button" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" id="deliveryDate"> 
 
                                                                     <!-- datepicker input -->
-                                                                    <input ng-model="$ctrl.data.deliveryDate" readonly="" class="form-control hidden-form-input" st-date-format only-date="true" name="deliveryDate"
+                                                                    <input editable-date-with-mask ng-model="$ctrl.data.deliveryDate" readonly="" class="form-control hidden-form-input" only-date="true" name="deliveryDate"
                                                                     ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                     required visibility="hidden" ng-change="$ctrl.setValue({
                                                                         path: 'data.deliveryDate',
@@ -1378,15 +1378,15 @@
                                             <span ng-if="!product.nominationDate" ng-init="product.nominationDate = $ctrl.data.orderDate;"></span>
                                             <div class="input-group form-input table-formatted-input" >
                                                 <!-- ng-repeat="(key, product) in $ctrl.data.products  -->
-                                                <span ng-init="$ctrl.initMask(); $ctrl.initPickers()"></span>
-                                                <span ng-init="$ctrl.setValue({
+                                                <!-- <span ng-init="$ctrl.initMask(); $ctrl.initPickers()"></span> -->
+                                                <!-- <span ng-init="$ctrl.setValue({
                                                     path: 'data.products[' + key + '].nominationDate',
                                                     root: '$ctrl',
                                                     pickerId: key + '_nominationDate',
-                                                }, 1, true)" ng-if="$ctrl.data.products[key].nominationDate"></span>
+                                                }, 1, true)" ng-if="$ctrl.data.products[key].nominationDate"></span> -->
 
                                                 <!-- manual input -->
-                                                <input class="formatted-date-input date-only"
+                                                <!-- <input class="formatted-date-input date-only"
                                                 ng-model="$ctrl.formatDates.data.products[key].nominationDate" 
                                                 ng-change="$ctrl.setValue({
                                                         path: 'data.products[' + key + '].nominationDate',
@@ -1397,18 +1397,13 @@
                                                 ng-blur="inputFocus[key + '_nominationDate'] = false;"
                                                 ng-invalid="{{ $ctrl.invalidDate[key + '_nominationDate'] && !inputFocus[key + '_nominationDate'] }}"
                                                 ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                name="{{ key }}_nominationDate">
+                                                name="{{ key }}_nominationDate"> -->
                                                 <!-- manual input -->
                                         
                                                 <!-- button -->
                                                 <span class="input-group-btn date form_meridian_date formatted-date-button" ng-disabled="$ctrl.disabledProduct[product.id]" id="{{ key }}_nominationDate">
                                                     <!-- datepicke input -->
-                                                    <input class="form-control hidden-form-input" style="min-width: 110px;" readonly="" st-date-format only-date="true" ng-model="product.nominationDate" ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                    ng-change="$ctrl.setValue({
-                                                        path: 'data.products[' + key + '].nominationDate',
-                                                        root: '$ctrl',
-                                                        pickerId: key + '_nominationDate',
-                                                    }, 1, true); $ctrl.invalidDate[key + '_nominationDate'] = false;"/>
+                                                    <input editable-date-with-mask class="form-control hidden-form-input" style="min-width: 110px;" readonly="" only-date="true" ng-model="product.nominationDate" ng-disabled="$ctrl.disabledProduct[product.id]"/>
                                                     <!-- datepicker input -->
                                                     <button class="btn date-set" type="button" ng-disabled="$ctrl.disabledProduct[product.id]">
                                                         <i class="fa fa-calendar"></i>
