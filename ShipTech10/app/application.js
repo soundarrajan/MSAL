@@ -185,7 +185,7 @@ angular
                 }
 
                 if (window.indexedDB) {
-                    db = new Dexie('Shiptech');
+                    db = new window.Dexie('Shiptech');
 
                     db.version(1).stores({
                         listsCache: 'id, data'
