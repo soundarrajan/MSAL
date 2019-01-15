@@ -133,6 +133,57 @@ angular
                     }),
                 ]
 
+                query.push(
+                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
+                        Payload: false
+                    })
+                )
+
+                function makeQueries(query) {
+                    return $q.all(query).then(
+                        function(response) {
+                            if (response[0].status == 200) {
+                                angular.module("shiptech").value("$tenantSettings", response[0].data.payload);
+                            }
+                            if (query.length === 3) {
+                                if (response[2].status == 200) {
+                                    var lists = new Object();
+                                    response[2].data.forEach(function(entry) {
+                                        lists[entry.name] = entry.items;
+                                    });
+                                    angular.module("shiptech").value("$listsCache", lists);
+                                    if (window.indexedDB) {
+                                        db.listsCache.put({data: JSON.stringify(lists), id: 1}).catch(function(err) { console.log(err); });
+                                    }
+                                    delete lists;
+                                }
+                                if (response[1].status == 200) {
+                                    angular.module("shiptech").value("$filtersData", response[1].data);
+                                }
+                            } else {
+                                if (response[1].status == 200) {
+                                    angular.module("shiptech").value("$filtersData", response[1].data);
+                                }
+
+                            }
+                            bootstrapApplication();
+                        },
+                        function(errorResponse) {
+                            if (errorResponse.status == 401) {
+                                console.log(errorResponse.statusText);
+                                adalService.logOut();
+                                if (!localStorage.getItem("loggedOut")) {
+                                    localStorage.setItem("loggedOut", true);
+                                }
+                                sessionStorage.clear();
+                            } else {
+                                console.log(errorResponse);
+                                console.log("Async initialisation of tenant settings and cache lists failed!");
+                            }
+                        }
+                    );
+                }
+
                 if (window.indexedDB) {
                     db = new Dexie('Shiptech');
 
@@ -168,7 +219,10 @@ angular
                                             listsCache[v.name] = v.items;
                                         });
                                         db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                        makeQueries(query);
                                     });
+                                } else {
+                                    makeQueries(query);
                                 }
                             });
                             angular.module("shiptech").value("$listsCache", listsCache);
@@ -178,6 +232,7 @@ angular
                                     Payload: false
                                 })
                             )
+                            makeQueries(query);
                         }
                     }).catch(function(err) {
                         query.push(
@@ -185,6 +240,7 @@ angular
                                 Payload: false
                             })
                         )
+                        makeQueries(query);
                     });
                 } else {
                     query.push(
@@ -192,56 +248,8 @@ angular
                             Payload: false
                         })
                     )
+                    makeQueries(query);
                 }
-
-                query.push(
-                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
-                        Payload: false
-                    })
-                )
-
-                return $q.all(query).then(
-                    function(response) {
-                        if (response[0].status == 200) {
-                            angular.module("shiptech").value("$tenantSettings", response[0].data.payload);
-                        }
-                        if (query.length === 3) {
-                            if (response[1].status == 200) {
-                                var lists = new Object();
-                                response[1].data.forEach(function(entry) {
-                                    lists[entry.name] = entry.items;
-                                });
-                                angular.module("shiptech").value("$listsCache", lists);
-                                if (window.indexedDB) {
-                                    db.listsCache.put({data: JSON.stringify(lists), id: 1}).catch(function(err) { console.log(err); });
-                                }
-                                delete lists;
-                            }
-                            if (response[2].status == 200) {
-                                angular.module("shiptech").value("$filtersData", response[2].data);
-                            }
-                        } else {
-                            if (response[1].status == 200) {
-                                angular.module("shiptech").value("$filtersData", response[1].data);
-                            }
-
-                        }
-                        bootstrapApplication();
-                    },
-                    function(errorResponse) {
-                        if (errorResponse.status == 401) {
-                            console.log(errorResponse.statusText);
-                            adalService.logOut();
-                            if (!localStorage.getItem("loggedOut")) {
-                                localStorage.setItem("loggedOut", true);
-                            }
-                            sessionStorage.clear();
-                        } else {
-                            console.log(errorResponse);
-                            console.log("Async initialisation of tenant settings and cache lists failed!");
-                        }
-                    }
-                );
             }
             // console.log(WebWorkerService);
             // WebWorkerService.test();
