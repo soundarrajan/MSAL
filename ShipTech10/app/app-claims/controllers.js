@@ -254,6 +254,14 @@ APP_CLAIMS.controller("Controller_Claims", [
                             $scope.formValues.orderDetails.orderStatusName = response.status.displayName;
                         }
                         if (response.deliveryDate) {
+                            $timeout(function(){
+	                            $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate(response.deliveryDate, null, 'eta'));
+	                            if (!angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails) {
+	                            	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
+	                            }
+	                            $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
+	                            $scope.formValues.orderDetails.deliveryDate = response.deliveryDate;
+                            })
                             $scope.formValues.orderDetails.deliveryDate = response.deliveryDate;
                         }
                         if (response.vessel) {
