@@ -121,7 +121,7 @@ angular
             }
             AuthenticationContext.prototype._saveItem("adal.login.error", "");
 
-            async function getSData() {
+            function getSData() {
 
                 if (localStorage.getItem("loggedOut")) {
                     localStorage.removeItem("loggedOut");
@@ -142,7 +142,7 @@ angular
 
                     db.open();
 
-                    await db.listsCache.get(1).then(function(listsCacheDB) {
+                    db.listsCache.get(1).then(function(listsCacheDB) {
                         if (listsCacheDB) {
                             listsCache = JSON.parse(listsCacheDB.data);
                             $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
