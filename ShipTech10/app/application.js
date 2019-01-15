@@ -187,7 +187,11 @@ angular
                                     lists[entry.name] = entry.items;
                                 });
                                 angular.module("shiptech").value("$listsCache", lists);
-                                localStorage.setItem("listsCache", JSON.stringify(lists));
+                                try {
+                                    localStorage.setItem("listsCache", JSON.stringify(lists));
+                                } catch (error) {
+                                    // Do nothing
+                                }
                                 delete lists;
                             }
                             if (response[2].status == 200) {
