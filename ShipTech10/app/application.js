@@ -121,7 +121,7 @@ angular
             }
             AuthenticationContext.prototype._saveItem("adal.login.error", "");
 
-            function getSData() {
+            async function getSData() {
 
                 if (localStorage.getItem("loggedOut")) {
                     localStorage.removeItem("loggedOut");
@@ -133,35 +133,59 @@ angular
                     }),
                 ]
 
-                if (localStorage.getItem("listsCache")) {
-                    listsCache = JSON.parse(localStorage.getItem("listsCache"));
-                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
-                        Payload: false
-                    }).then(function(data) {
-                        currentListsHash = localStorage.getItem('listsHash');
-                        newListsHash = JSON.stringify(data.data);
-                        currentLists = JSON.parse(currentListsHash);
-                        localStorage.setItem('listsHash', newListsHash);
-                        if (currentListsHash && !(newListsHash === currentListsHash)) {
-                            listsToUpdate = [];
-                            $.each(data.data.selectListTimestamps, function(k, v) {
-                                $.each(currentLists.selectListTimestamps, function(k1, v1) {
-                                    if (v1.name === v.name && (v1.lastModificationDate !== v.lastModificationDate)) {
-                                        listsToUpdate.push(v1.name);
-                                    }
-                                })
-                            });
-                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filteredLists", {
-                                Payload: listsToUpdate
-                            }).then(function(res) {
-                                $.each(res.data, function(k, v) {
-                                    listsCache[v.name] = v.items;
-                                });
-                                localStorage.setItem('listsCache', JSON.stringify(listsCache));
-                            });
-                        }
+                if (window.indexedDB) {
+                    db = new Dexie('Shiptech');
+
+                    db.version(1).stores({
+                        listsCache: 'id, data'
                     });
-                    angular.module("shiptech").value("$listsCache", listsCache);
+
+                    db.open();
+
+                    await db.listsCache.get(1).then(function(listsCacheDB) {
+                        if (listsCacheDB) {
+                            listsCache = JSON.parse(listsCacheDB.data);
+                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
+                                Payload: false
+                            }).then(function(data) {
+                                currentListsHash = localStorage.getItem('listsHash');
+                                newListsHash = JSON.stringify(data.data);
+                                currentLists = JSON.parse(currentListsHash);
+                                localStorage.setItem('listsHash', newListsHash);
+                                if (currentListsHash && !(newListsHash === currentListsHash)) {
+                                    listsToUpdate = [];
+                                    $.each(data.data.selectListTimestamps, function(k, v) {
+                                        $.each(currentLists.selectListTimestamps, function(k1, v1) {
+                                            if (v1.name === v.name && (v1.lastModificationDate !== v.lastModificationDate)) {
+                                                listsToUpdate.push(v1.name);
+                                            }
+                                        })
+                                    });
+                                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filteredLists", {
+                                        Payload: listsToUpdate
+                                    }).then(function(res) {
+                                        $.each(res.data, function(k, v) {
+                                            listsCache[v.name] = v.items;
+                                        });
+                                        db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                    });
+                                }
+                            });
+                            angular.module("shiptech").value("$listsCache", listsCache);
+                        } else {
+                            query.push(
+                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                                    Payload: false
+                                })
+                            )
+                        }
+                    }).catch(function(err) {
+                        query.push(
+                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                                Payload: false
+                            })
+                        )
+                    });
                 } else {
                     query.push(
                         $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
@@ -169,6 +193,7 @@ angular
                         })
                     )
                 }
+
                 query.push(
                     $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
                         Payload: false
@@ -187,10 +212,8 @@ angular
                                     lists[entry.name] = entry.items;
                                 });
                                 angular.module("shiptech").value("$listsCache", lists);
-                                try {
-                                    localStorage.setItem("listsCache", JSON.stringify(lists));
-                                } catch (error) {
-                                    // Do nothing
+                                if (window.indexedDB) {
+                                    db.listsCache.put({data: JSON.stringify(lists), id: 1}).catch(function(err) { console.log(err); });
                                 }
                                 delete lists;
                             }
@@ -206,7 +229,6 @@ angular
                         bootstrapApplication();
                     },
                     function(errorResponse) {
-                        // debugger;
                         if (errorResponse.status == 401) {
                             console.log(errorResponse.statusText);
                             adalService.logOut();
