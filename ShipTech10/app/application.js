@@ -122,33 +122,82 @@ angular
             AuthenticationContext.prototype._saveItem("adal.login.error", "");
 
             function getSData() {
+
                 if (localStorage.getItem("loggedOut")) {
                     localStorage.removeItem("loggedOut");
                 }
-                var ts_promise = $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Admin/api/admin/generalConfiguration/get", {
-                    Payload: false
-                });
-                var lists_promise = $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                    Payload: false
-                });
-                var filters_columns = $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
-                    Payload: false
-                });
-                return $q.all([ts_promise, lists_promise, filters_columns]).then(
+
+                var query = [
+                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Admin/api/admin/generalConfiguration/get", {
+                        Payload: false
+                    }),
+                ]
+
+                if (localStorage.getItem("listsCache")) {
+                    listsCache = JSON.parse(localStorage.getItem("listsCache"));
+                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
+                        Payload: false
+                    }).then(function(data) {
+                        currentListsHash = localStorage.getItem('listsHash');
+                        newListsHash = JSON.stringify(data.data);
+                        currentLists = JSON.parse(currentListsHash);
+                        localStorage.setItem('listsHash', newListsHash);
+                        if (currentListsHash && !(newListsHash === currentListsHash)) {
+                            listsToUpdate = [];
+                            $.each(data.data.selectListTimestamps, function(k, v) {
+                                $.each(currentLists.selectListTimestamps, function(k1, v1) {
+                                    if (v1.name === v.name && (v1.lastModificationDate !== v.lastModificationDate)) {
+                                        listsToUpdate.push(v1.name);
+                                    }
+                                })
+                            });
+                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filteredLists", {
+                                Payload: listsToUpdate
+                            }).then(function(res) {
+                                $.each(res.data, function(k, v) {
+                                    listsCache[v.name] = v.items;
+                                });
+                                localStorage.setItem('listsCache', JSON.stringify(listsCache));
+                            });
+                        }
+                    });
+                    angular.module("shiptech").value("$listsCache", listsCache);
+                } else {
+                    query.push(
+                        $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                            Payload: false
+                        })
+                    )
+                }
+                query.push(
+                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
+                        Payload: false
+                    })
+                )
+
+                return $q.all(query).then(
                     function(response) {
                         if (response[0].status == 200) {
                             angular.module("shiptech").value("$tenantSettings", response[0].data.payload);
                         }
-                        if (response[1].status == 200) {
-                            var lists = new Object();
-                            response[1].data.forEach(function(entry) {
-                                lists[entry.name] = entry.items;
-                            });
-                            angular.module("shiptech").value("$listsCache", lists);
-                            delete lists;
-                        }
-                        if (response[2].status == 200) {
-                            angular.module("shiptech").value("$filtersData", response[2].data);
+                        if (query.length === 3) {
+                            if (response[1].status == 200) {
+                                var lists = new Object();
+                                response[1].data.forEach(function(entry) {
+                                    lists[entry.name] = entry.items;
+                                });
+                                angular.module("shiptech").value("$listsCache", lists);
+                                localStorage.setItem("listsCache", JSON.stringify(lists));
+                                delete lists;
+                            }
+                            if (response[2].status == 200) {
+                                angular.module("shiptech").value("$filtersData", response[2].data);
+                            }
+                        } else {
+                            if (response[1].status == 200) {
+                                angular.module("shiptech").value("$filtersData", response[1].data);
+                            }
+
                         }
                         bootstrapApplication();
                     },
