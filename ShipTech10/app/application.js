@@ -205,8 +205,6 @@ angular
                                         if (listsHashDB) {
                                             currentLists = listsHashDB.data;
 
-                                            db.listsHash.update(1, {data: listsHashDB.data});
-
                                             if (new Date(data.data.initTime) > new Date(currentLists.initTime)) {
                                                 query.push(
                                                     $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
@@ -232,7 +230,9 @@ angular
                                                     $.each(res.data, function(k, v) {
                                                         listsCache[v.name] = v.items;
                                                     });
-                                                    db.listsCache.update(1, {data: listsCache});
+                                                    db.listsCache.update(1, {data: listsCache}).then(function() {
+                                                        db.listsHash.update(1, {data: data.data});
+                                                    });
                                                     makeQueries(query);
                                                 });
                                             } else {
