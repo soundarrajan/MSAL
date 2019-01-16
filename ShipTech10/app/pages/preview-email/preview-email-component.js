@@ -560,6 +560,30 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             if (ctrl.transaction == EMAIL_TRANSACTION.REQUOTE) {
             	// ctrl.email.businessId = ctrl.data.groupId;
             }
+
+            if (ctrl.data) {
+	            if (ctrl.data.rfqRequirements && ctrl.email.comment.emailTemplate.name == 'MultipleRfqRevokeRFQEmailTemplate') {
+		            var rfq_data = {
+		                Requirements: ctrl.data.rfqRequirements,
+		                QuoteByTimeZoneId: null,
+		                QuoteByCurrencyId: null,
+		                Comments: null
+		            };
+		            groupOfRequestsModel.revokeRFQ(rfq_data).then(
+						window.history.back()
+		            )
+		            return;
+	            }
+
+	            if (ctrl.data.rfqRequirements && ctrl.email.comment.emailTemplate.name == 'MultipleRfqAmendRFQEmailTemplate') {
+		            var rfq_data = ctrl.data.rfqRequirements;
+		            groupOfRequestsModel.amendRFQ(rfq_data).then(
+						window.history.back()
+		            )
+		            return;
+	            }            
+            }
+
             // ctrl.data.orderCanConfirmSelerEmail = true;
             ctrl.buttonsDisabled = true;
             console.log($scope, ctrl);

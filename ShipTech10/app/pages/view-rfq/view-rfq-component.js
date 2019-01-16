@@ -209,8 +209,25 @@ angular.module('shiptech.pages')
             };
 
             ctrl.previewRFQ = function(rfq) {
+				if (!ctrl.requirements) { ctrl.requirements = [] }
+				req = {
+                    "RequestLocationId": rfq.requestLocationId,
+                    "SellerId": rfq.sellerId,
+                    "RequestId": rfq.requestId,
+                    "VesselId": rfq.vesselId,
+                    "LocationId": rfq.locationId,
+                    "VesselVoyageDetailId": rfq.vesselVoyageDetailId,
+                    "ProductId": rfq.productId,
+                    "RfqId": rfq.rfqId,
+                    "WorkflowId": rfq.workflowId,
+                    "OrderFields": null,
+                    "screenActions": rfq.screenActions,
+                    "productStatusId": rfq.productStatusId
+                };
+                ctrl.requirements.push(req);            	
                 var data = {
                     "rfqId": rfq.rfqId,
+                    "rfqRequirements" : ctrl.requirements
                 };
 
                 $state.go(STATE.PREVIEW_EMAIL, {data: data, transaction: EMAIL_TRANSACTION.VIEW_RFQ, multipleRequests: ctrl.multipleRequests});
