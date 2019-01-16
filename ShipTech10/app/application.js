@@ -153,7 +153,7 @@ angular
                                     });
                                     angular.module("shiptech").value("$listsCache", lists);
                                     if (window.indexedDB) {
-                                        db.listsCache.put({data: JSON.stringify(lists), id: 1}).catch(function(err) { console.log(err); });
+                                        db.listsCache.add({data: lists, id: 1}).catch(function(err) { console.log(err); });
                                     }
                                     delete lists;
                                 }
@@ -188,8 +188,8 @@ angular
                     db = new window.Dexie('Shiptech');
 
                     db.version(1).stores({
-                        listsCache: 'id, data',
-                        listsHash: 'id, data'
+                        listsCache: '++id, data',
+                        listsHash: '++id, data'
                     });
 
                     db.open();
@@ -197,17 +197,15 @@ angular
                     db.transaction("rw", db.listsCache, db.listsHash, function () {
                         db.listsCache.get(1).then(function(listsCacheDB) {
                             if (listsCacheDB) {
-                                listsCache = JSON.parse(listsCacheDB.data);
+                                listsCache = listsCacheDB.data;
                                 $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
                                     Payload: false
                                 }).then(function(data) {
                                     db.listsHash.get(1).then(function(listsHashDB) {
                                         if (listsHashDB) {
-                                            currentListsHash = listsHashDB.data;
-                                            newListsHash = JSON.stringify(data.data);
-                                            currentLists = JSON.parse(currentListsHash);
+                                            currentLists = listsHashDB.data;
 
-                                            db.listsHash.put({data: newListsHash, id: 1});
+                                            db.listsHash.update(1, {data: listsHashDB.data});
 
                                             if (new Date(data.data.initTime) > new Date(currentLists.initTime)) {
                                                 query.push(
@@ -219,7 +217,7 @@ angular
                                                 return;
                                             }
 
-                                            if (currentListsHash && !(newListsHash === currentListsHash)) {
+                                            if (currentLists && !(JSON.stringify(data.data) === JSON.stringify(currentLists))) {
                                                 listsToUpdate = [];
                                                 $.each(data.data.selectListTimestamps, function(k, v) {
                                                     $.each(currentLists.selectListTimestamps, function(k1, v1) {
@@ -234,14 +232,15 @@ angular
                                                     $.each(res.data, function(k, v) {
                                                         listsCache[v.name] = v.items;
                                                     });
-                                                    db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                                    db.listsCache.update(1, {data: listsCache});
                                                     makeQueries(query);
                                                 });
                                             } else {
                                                 makeQueries(query);
                                             }
                                         } else {
-                                            db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                            db.listsHash.add({data: data.data, id: 1});
+                                            // db.listsCache.update(1, {data: listsCache});
                                             makeQueries(query);
                                         }
                                     });
@@ -402,7 +401,7 @@ angular
                 
                 $scope.pageClass = $scope.pagetitle.toLowerCase().replace(/[^0-9a-zA-Z]/g, "");
                 if (state != toState) {
-                    updateLists();
+                    // updateLists();
                     state = toState;
 
                     // setTimeout(function() {
@@ -435,6 +434,7 @@ angular
                         $scope.setPageTitle(pageData.title);
                     }
                 })
+            /*
             function updateLists() {
                 angular.module("shiptech").value("$listsCache", null);
                 $http
@@ -464,6 +464,7 @@ angular
                         }
                     );
             }
+            */
             this.settings = {
                 layoutPath: "assets/layouts/layout",
                 layout: {
