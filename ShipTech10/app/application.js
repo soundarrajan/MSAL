@@ -192,7 +192,7 @@ angular
                         listsHash: 'id, data'
                     });
 
-                    db.open();
+                    // db.open();
 
                     db.listsCache.get(1).then(function(listsCacheDB) {
                         if (listsCacheDB) {
