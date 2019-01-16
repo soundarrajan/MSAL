@@ -47,7 +47,7 @@ angular
                 console.log(event);
                 console.log("adal:error - " + AuthenticationContext.prototype._getItem("adal.login.error"));
                 AuthenticationContext.prototype._saveItem("adal_auth_errors", 0);
-                getSData().then(bootstrapApplication);
+                getSData();
             });
             $rootScope.$on("adal:acquireTokenFailure", handleAuthError);
             $rootScope.$on("adal:loginFailure", handleAuthError);
@@ -92,7 +92,7 @@ angular
             //     }
             // });
             if (adalService.userInfo.loginError == "Nonce is not same as undefined") {
-                getSData().then(bootstrapApplication);
+                getSData();
             } else {
                 if (adalService.userInfo.isAuthenticated == false) {
                     if (window.location.hash.indexOf("#/id_token") > -1 || window.location.hash.indexOf("#id_token") > -1) {
@@ -192,75 +192,77 @@ angular
                         listsHash: 'id, data'
                     });
 
-                    // db.open();
+                    db.open();
 
-                    db.listsCache.get(1).then(function(listsCacheDB) {
-                        if (listsCacheDB) {
-                            listsCache = JSON.parse(listsCacheDB.data);
-                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
-                                Payload: false
-                            }).then(function(data) {
-                                db.listsHash.get(1).then(function(listsHashDB) {
-                                    if (listsHashDB) {
-                                        currentListsHash = listsHashDB.data;
-                                        newListsHash = JSON.stringify(data.data);
-                                        currentLists = JSON.parse(currentListsHash);
+                    db.transaction("rw", db.listsCache, db.listsHash, function () {
+                        db.listsCache.get(1).then(function(listsCacheDB) {
+                            if (listsCacheDB) {
+                                listsCache = JSON.parse(listsCacheDB.data);
+                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
+                                    Payload: false
+                                }).then(function(data) {
+                                    db.listsHash.get(1).then(function(listsHashDB) {
+                                        if (listsHashDB) {
+                                            currentListsHash = listsHashDB.data;
+                                            newListsHash = JSON.stringify(data.data);
+                                            currentLists = JSON.parse(currentListsHash);
 
-                                        db.listsHash.put({data: newListsHash, id: 1});
+                                            db.listsHash.put({data: newListsHash, id: 1});
 
-                                        if (new Date(data.data.initTime) > new Date(currentLists.initTime)) {
-                                            query.push(
-                                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                                    Payload: false
-                                                })
-                                            )
-                                            makeQueries(query);
-                                            return;
-                                        }
-
-                                        if (currentListsHash && !(newListsHash === currentListsHash)) {
-                                            listsToUpdate = [];
-                                            $.each(data.data.selectListTimestamps, function(k, v) {
-                                                $.each(currentLists.selectListTimestamps, function(k1, v1) {
-                                                    if (v1.name === v.name && (v1.lastModificationDate !== v.lastModificationDate)) {
-                                                        listsToUpdate.push(v1.name);
-                                                    }
-                                                })
-                                            });
-                                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                                Payload: listsToUpdate
-                                            }).then(function(res) {
-                                                $.each(res.data, function(k, v) {
-                                                    listsCache[v.name] = v.items;
-                                                });
-                                                db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                            if (new Date(data.data.initTime) > new Date(currentLists.initTime)) {
+                                                query.push(
+                                                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                                                        Payload: false
+                                                    })
+                                                )
                                                 makeQueries(query);
-                                            });
+                                                return;
+                                            }
+
+                                            if (currentListsHash && !(newListsHash === currentListsHash)) {
+                                                listsToUpdate = [];
+                                                $.each(data.data.selectListTimestamps, function(k, v) {
+                                                    $.each(currentLists.selectListTimestamps, function(k1, v1) {
+                                                        if (v1.name === v.name && (v1.lastModificationDate !== v.lastModificationDate)) {
+                                                            listsToUpdate.push(v1.name);
+                                                        }
+                                                    })
+                                                });
+                                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                                                    Payload: listsToUpdate
+                                                }).then(function(res) {
+                                                    $.each(res.data, function(k, v) {
+                                                        listsCache[v.name] = v.items;
+                                                    });
+                                                    db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                                    makeQueries(query);
+                                                });
+                                            } else {
+                                                makeQueries(query);
+                                            }
                                         } else {
+                                            db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
                                             makeQueries(query);
                                         }
-                                    } else {
-                                        db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
-                                        makeQueries(query);
-                                    }
+                                    });
                                 });
-                            });
-                            angular.module("shiptech").value("$listsCache", listsCache);
-                        } else {
+                                angular.module("shiptech").value("$listsCache", listsCache);
+                            } else {
+                                query.push(
+                                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                                        Payload: false
+                                    })
+                                )
+                                makeQueries(query);
+                            }
+                        }).catch(function(err) {
                             query.push(
                                 $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
                                     Payload: false
                                 })
                             )
                             makeQueries(query);
-                        }
-                    }).catch(function(err) {
-                        query.push(
-                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                Payload: false
-                            })
-                        )
-                        makeQueries(query);
+                        });
                     });
                 } else {
                     query.push(
