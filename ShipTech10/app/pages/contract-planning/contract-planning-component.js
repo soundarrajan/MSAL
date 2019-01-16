@@ -175,8 +175,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             }
         }
         ctrl.minQtyBlur = function () {
-            if (parseFloat(ctrl.minMaxModalEdit.maxQuantity) < parseFloat(ctrl.minMaxModalEdit.minQuantity) || !parseFloat(ctrl.minMaxModalEdit.maxQuantity)) {
-                ctrl.minMaxModalEdit.maxQuantity = ctrl.minMaxModalEdit.minQuantity;
+            if (parseFloat($scope.minMaxModalEdit.maxQuantity) < parseFloat($scope.minMaxModalEdit.minQuantity) || !parseFloat($scope.minMaxModalEdit.maxQuantity)) {
+                $scope.minMaxModalEdit.maxQuantity = $scope.minMaxModalEdit.minQuantity;
             }
         };
         ctrl.selectContract = function(contract) {
@@ -281,6 +281,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             }
         };
 
+        ctrl.resetContractPlaning = false;
+		$timeout(function(){ctrl.resetContractPlaning = true;},50);
         /**
          * Saves contract planning data.
          */
@@ -375,6 +377,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 	            });
             }
         };
+
+		$timeout(function(){$scope.resetContractPlaning = true;},50);
 
         ctrl.contractPlanningAutoSave = function(rowIndex) {
             // $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
@@ -811,25 +815,36 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
         ctrl.openMinMaxModalEdit = function(rowData) {
             console.log(rowData);
-            ctrl.minMaxModalEdit = null;
-            ctrl.minMaxModalEdit = rowData
-            if (!ctrl.minMaxModalEdit.qtyUom) {
-                ctrl.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
-            }
-            $rootScope.minMaxModalEdit = ctrl.minMaxModalEdit;
-            // setTimeout(function() {
-            // },10)
+            $scope.minMaxModalEdit = null;
+            // $scope.minMaxModalEdit = $scope.minMaxModalEdit;
+            $timeout(function() {
+	            $scope.minMaxModalEdit = rowData
+	            if (!$scope.minMaxModalEdit.qtyUom) {
+	                $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
+	            }
+                $scope.$apply(function() {
+                	$compile($("#minMaxModal"))($scope)
+		        	$("#minMaxModal").modal();
+                })
+            },10)
         }
         $(document).on("click",".contract_planning_min_max_qty_wrap a", function(e){
         	e.preventDefault()
         	rowIndex = $(this).attr("rowId");
             rowData = $('#flat_contract_planning').jqGrid.Ascensys.gridObject.rows[parseFloat(rowIndex) - 1];
-            $rootScope.$broadcast('contractPlanningChange', $rootScope.contractPlanningChange);
-            ctrl.currentRowIndex = parseFloat(rowIndex);
-        	ctrl.openMinMaxModalEdit(rowData) 
-        	$compile($('#minMaxModal'))($scope);
-        	$scope.$apply();
-        	$("#minMaxModal").modal();
+            // $rootScope.$broadcast('contractPlanningChange', $rootScope.contractPlanningChange);
+            $timeout(function(){
+	            ctrl.currentRowData = rowData
+	            ctrl.currentRowIndex = parseFloat(rowIndex);
+
+	            $scope.minMaxModalEdit = rowData
+	            if (!$scope.minMaxModalEdit.qtyUom) {
+	                $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
+	            }            
+	            $("#minMaxModal").modal();
+            })
+
+        	// ctrl.openMinMaxModalEdit(rowData) 
 
         })
         ctrl.saveMinMaxModal = function(minEdit, maxEdit, qtyUom) {
@@ -848,13 +863,21 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
     		if (!ctrl.currentRowData) {
     			ctrl.currentRowData = {}
     		}
+    		ctrl.CLC = $('#flat_contract_planning');
+            ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
         	ctrl.currentRowData.minQuantity = minEdit;
         	ctrl.currentRowData.maxQuantity = maxEdit;
         	ctrl.tableData[ctrl.currentRowIndex-1].minQuantity = ctrl.currentRowData.minQuantity;
         	ctrl.tableData[ctrl.currentRowIndex-1].maxQuantity = ctrl.currentRowData.maxQuantity;
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit )
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
-        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )) +" - "+ $filter("number")(maxEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )))
+
+        	textForMinEdit = $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
+        	textForMaxEdit = $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
+
+        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text(textForMinEdit) +" - "+ textForMaxEdit;
+        	
+        	// $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )) +" - "+ $filter("number")(maxEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )))
         	// $scope.$apply();
         	$compile($('.contract_planning_min_max_qty_wrap'))($scope);
         	ctrl.contractPlanningAutoSave(ctrl.currentRowIndex-1);
@@ -865,9 +888,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	// });
         	// $rootScope.$broadcast('contractPlanningDataChanged', true);
         	// ctrl.CLC.trigger("reload");
-            /*ctrl.minMaxModalEdit.qtyUom = qtyUom
-            ctrl.minMaxModalEdit.minQuantity = minEdit;
-            ctrl.minMaxModalEdit.maxQuantity = maxEdit;*/
+            /*$scope.minMaxModalEdit.qtyUom = qtyUom
+            $scope.minMaxModalEdit.minQuantity = minEdit;
+            $scope.minMaxModalEdit.maxQuantity = maxEdit;*/
         }
         ctrl.contractPlanningHasChanges = function() {
             $scope.contractPlanningHasChangesMade = true;
