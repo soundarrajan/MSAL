@@ -212,7 +212,7 @@ angular
                                             }
                                         })
                                     });
-                                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filteredLists", {
+                                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
                                         Payload: listsToUpdate
                                     }).then(function(res) {
                                         $.each(res.data, function(k, v) {
