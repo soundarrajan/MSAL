@@ -875,8 +875,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	textForMinEdit = $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
         	textForMaxEdit = $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
 
-        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text(textForMinEdit) +" - "+ textForMaxEdit;
-        	
+        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text(textForMinEdit +" - "+ textForMaxEdit);
+
         	// $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )) +" - "+ $filter("number")(maxEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )))
         	// $scope.$apply();
         	$compile($('.contract_planning_min_max_qty_wrap'))($scope);
