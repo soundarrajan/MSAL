@@ -201,7 +201,7 @@ angular
                                 Payload: false
                             }).then(function(data) {
                                 db.listsHash.get(1).then(function(listsHashDB) {
-                                    if (listsCacheDB) {
+                                    if (listsHashDB) {
                                         currentListsHash = listsHashDB.data;
                                         newListsHash = JSON.stringify(data.data);
                                         currentLists = JSON.parse(currentListsHash);
@@ -241,6 +241,7 @@ angular
                                         }
                                     } else {
                                         db.listsCache.put({data: JSON.stringify(listsCache), id: 1});
+                                        makeQueries(query);
                                     }
                                 });
                             });
