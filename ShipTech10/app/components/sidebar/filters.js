@@ -84,7 +84,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         	hasRequestProductStatusFilter = false;	
         	if ($scope.globalFilters) {
         		for (var i = 0; i < $scope.globalFilters.length; i++) {
-        			if ($scope.globalFilters[i].column && $scope.globalFilters[i].column.columnName == 'Request Product Status') {
+        			if ($scope.globalFilters[i].column && $scope.globalFilters[i].column.columnName == 'Port Status') {
         				$rootScope.listOfAppliedFiltersString.push($scope.globalFilters[i].value[0].toLowerCase());
         				if (!hasRequestProductStatusFilter) {
         					if (!$scope.appliedFiltersFromBreadcrumb) {
@@ -226,6 +226,11 @@ angular.module("shiptech.components").controller("FiltersController", [
         })
 
         $scope.clearUnsavedFilters = function() {
+    		console.log("$scope.clearUnsavedFilters" , new Date() - window.lastclearUnsavedFiltersCall)
+        	if (new Date() - window.lastclearUnsavedFiltersCall < 5000) {
+        		return;
+        	}
+        	window.lastclearUnsavedFiltersCall = new Date();
             var clearedFilters = [];
             $.each($rootScope.rawFilters, function(k, v) {
                 if (!v.unSaved) {

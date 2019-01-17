@@ -2536,8 +2536,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.data.products[idx].price = angular.copy(selection.price);
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
-                  angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType; 
+                angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType; 
                 ctrl.data.products[idx].requiredFields = [];
+				ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
+				if (ctrl.procurementSettings.order.specGroupFlowFromContract.name == "Yes") {
+					ctrl.data.products[idx].specGroup = selection.specGroup;
+				}
 
                 if(selection.pricingType.id == 1){
                     //fixed
@@ -2579,6 +2583,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         	currentProductIndex = productIdx
             orderModel.getContractProductAdditionalCosts(contractProductId).then(function (response) {
             	console.log(response);
+            	if (!ctrl.data.products[currentProductIndex].additionalCosts) {
+            		ctrl.data.products[currentProductIndex].additionalCosts = []
+            	}
             	for (var i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
             		if (ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract) {
             			ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1)

@@ -813,7 +813,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	// $compile(ctrl.CLC)($scope)
         });
 
-        ctrl.openMinMaxModalEdit = function(rowData) {
+		ctrl.openMinMaxModalEdit = function(rowData) {
             console.log(rowData);
             $scope.minMaxModalEdit = null;
             // $scope.minMaxModalEdit = $scope.minMaxModalEdit;
@@ -860,6 +860,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
     // ctrl.CLC.jqGrid('clearGridData')
     //     .jqGrid('setGridParam', { data: results })
     //     .trigger('reloadGrid', [{ page: 1}]);
+        
+    		ctrl.CLC = $('#flat_contract_planning');
+            ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
     		if (!ctrl.currentRowData) {
     			ctrl.currentRowData = {}
     		}

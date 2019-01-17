@@ -1765,6 +1765,9 @@
                                             $.each(v.details, function(k1, v1) {
                                                 v1.id = 0;
                                             });
+                                            $.each(v.additionalCosts, function(k1, v1) {
+                                                v1.id = 0;
+                                            });                                            
                                             v.formula = null;
                                             v.mtmFormula = null;
                                             v.price = null;

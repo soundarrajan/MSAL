@@ -57,11 +57,11 @@
                             <!-- parameter -->
                             <div class="col-sm-4">
                                 <div class="form_input">
-                                	<!-- ng-options="item as item.columnName disable when (item.columnRoute == 'schedule-dashboard-calendar' && item.columnName == 'Request Product Status') for item in currentColumns track by item.columnValue" -->
-                                	<!-- ng-disabled="value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Request Product Status'" -->
-                                    <select ng-model="globalFilters[key].column" class="form-control bs-select" name="rule_{{ key }}_parameter" id="rule_{{ key }}_parameter" ng-options="item as item.columnName for item in currentColumns track by item.columnValue" required ng-change="(value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Request Product Status') ? clearCurrentLine(key,'column') : return;" ></select>
+                                	<!-- ng-options="item as item.columnName disable when (item.columnRoute == 'schedule-dashboard-calendar' && item.columnName == 'Port Status') for item in currentColumns track by item.columnValue" -->
+                                	<!-- ng-disabled="value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status'" -->
+                                    <select ng-model="globalFilters[key].column" class="form-control bs-select" name="rule_{{ key }}_parameter" id="rule_{{ key }}_parameter" ng-options="item as item.columnName for item in currentColumns track by item.columnValue" required ng-change="(value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status') ? clearCurrentLine(key,'column') : return;" ></select>
                                     <div class="hidden">
-	                                    {{value.column.columnName == 'Request Product Status' ? globalFilters[key].condition.conditionValue = '=' : ''}}
+	                                    {{value.column.columnName == 'Port Status' ? globalFilters[key].condition.conditionValue = '=' : ''}}
                                     </div>
                                 </div>
                             </div>
@@ -75,8 +75,8 @@
 									? renderColumnType = 'Number' 
 									: renderColumnType = globalFilters[key].column.columnType}}
 									</span>
-									<!-- || (value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Request Product Status') -->
-                                    <select ng-model="globalFilters[key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition" ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue " ng-disabled="!globalFilters[key].column || value.column.columnName == 'Request Product Status'" required ng-change="clearCurrentLine(key,'condition'); renderColumnType == 'Date' ? datepickers() : ''"></select>
+									<!-- || (value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status') -->
+                                    <select ng-model="globalFilters[key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition" ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue " ng-disabled="!globalFilters[key].column || value.column.columnName == 'Port Status'" required ng-change="clearCurrentLine(key,'condition'); renderColumnType == 'Date' ? datepickers() : ''"></select>
                                 </div>
                             </div>
                             <!-- {{$ctrl.filter_conditions }} -->
@@ -212,7 +212,7 @@
                                             </div>
                                         </span>
                                         <span ng-switch-default>
-                                                <div ng-show="value.column.columnName == 'Request Product Status'" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''" >
+                                                <div ng-show="value.column.columnName == 'Port Status'" ng-class="globalFilters[key].column.columnType == 'Date' ? 'date-picker date form_meridian_datetime input-group' : ''" >
                                                     <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
                                             </div>
                                         </span>

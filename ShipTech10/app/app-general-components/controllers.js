@@ -817,6 +817,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 max = max ? max : "";
                                 var min = rowObject.voyageDetail.request.requestDetail[ options.colModel.schQuantitySource + "MinQuantity" ];
                                 min = min ? min : "";
+                                if (min) {
+                                    min = $filter("number")(min, $scope.tenantSettings.defaultValues.quantityPrecision);
+                                }
+                                if (max) {
+                                    max = $filter("number")(max, $scope.tenantSettings.defaultValues.quantityPrecision);
+                                } 
                                 return min + " - " + max;
                             }
                         }

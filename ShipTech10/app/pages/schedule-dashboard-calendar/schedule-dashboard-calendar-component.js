@@ -154,7 +154,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                                     payload[i]['displayName'] = 'ETB';
                                     break;
                                 case 'VoyageDetail_PortStatus_DisplayName':
-                                    payload[i]['displayName'] = 'Request Product Status';
+                                    payload[i]['displayName'] = 'Port Status';
                                     break;
                                 case 'VoyageDetail_LocationName':
                                     payload[i]['displayName'] = 'Location';
@@ -164,7 +164,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                                     break;
                             }
                             if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {
-                                payload[i].displayName = 'Request Product Status';
+                                payload[i].displayName = 'Port Status';
                             }
                             if (payload[i].displayName) {
 			                    if ($scope.tenantSettings.companyDisplayName == "Pool") {
@@ -199,11 +199,11 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                                     // var packedFilter = {
                                     //     "column": {
                                     //         "columnRoute": "schedule-dashboard-calendar",
-                                    //         "columnName": "Request Product Status",
+                                    //         "columnName": "Port Status",
                                     //         "columnValue": "VoyageDetail_PortStatus_DisplayName",
                                     //         "sortColumnValue": null,
                                     //         "columnType": "Text",
-                                    //         "displayName": "Request Product Status",
+                                    //         "displayName": "Port Status",
                                     //     },
                                     //     "condition": {
                                     //         "conditionName": "Is equal",

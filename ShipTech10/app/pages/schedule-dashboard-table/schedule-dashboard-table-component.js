@@ -89,27 +89,51 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
         ctrl.isSelectionGrouped = function() {
             var request;
             var isGrouped = false;
-            if (ctrl.selectedRequests) {
-                Object.keys(ctrl.selectedRequests).map(function(key, value) {
-                    if (ctrl.selectedRequests[key]) {
-                        request = $filter("filter")(ctrl.tableData.tableData.rows, {
-                            requestId: key
-                        })[0];
-                        if (request && request.requestGroupId !== null) {
-                            isGrouped = true;
-                        }
-                    }
-                });
+            // if ($rootScope.selectedScheduleTableRows) {
+            //     Object.keys($rootScope.selectedScheduleTableRows).map(function(key, value) {
+            //         if ($rootScope.selectedScheduleTableRows[key]) {
+            //             request = $filter("filter")(ctrl.tableData.tableData.rows, {
+            //                 requestId: key
+            //             })[0];
+            //             if (request && (request.requestGroupId !== null && typeof(request.requestGroupId) !== 'undefined' )) {
+            //                 isGrouped = true;
+            //             }
+            //         }
+            //     });
+            // }
+
+            if (!$rootScope.selectedScheduleTableRows) {
+            	return true
             }
+            if ($rootScope.selectedScheduleTableRows.length == 0) {
+            	return true
+            }            
+            $.each($rootScope.selectedScheduleTableRows, function(k,v){
+            	if (v.voyageDetail.request) {
+	            	if ( v.voyageDetail.request.id != 0 && v.voyageDetail.request.requestGroupId) {
+	            		isGrouped = true;
+	            	}
+	            	if (v.voyageDetail.request.id == 0) {
+	            		isGrouped = true;
+	            	}
+            	}
+            	if (!v.voyageDetail.request) {
+            		isGrouped = true;
+            	}
+            })
+
             return isGrouped;
         };
         ctrl.groupRequests = function() {
             var selectedRequestIds = [];
-            Object.keys(ctrl.selectedRequests).map(function(key, value) {
-                if (ctrl.selectedRequests[key]) {
-                    selectedRequestIds.push(key);
-                }
-            });
+            $.each($rootScope.selectedScheduleTableRows, function(k,v){
+            	if (v.voyageDetail.request) {
+	            	if ( v.voyageDetail.request.id != 0 && !v.voyageDetail.request.requestGroupId) {
+			            selectedRequestIds.push(v.voyageDetail.request.id);
+
+	            	}
+            	}
+            })
             if (selectedRequestIds.length === 0) {
                 return false;
             }
@@ -159,6 +183,12 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
         };
 
         ctrl.gotoNewRequest = function() {
+        	if ($rootScope.selectedScheduleTableRows.length != 1 ) {
+        		toastr.error("You have to select one row to proceed to request")
+        		return;
+        	}
+        	ctrl.newRequest($rootScope.selectedScheduleTableRows[0].voyageDetail.id);
+        	return;
             var href = $state.href(STATE.NEW_REQUEST);
             $window.open(href, "_blank");
         };
@@ -230,7 +260,8 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
                     }
                     ctrl.contractPrePlanSelectionAction();
                 });
-                console.log(ctrl.selectedRequestsRows);
+                $rootScope.selectedScheduleTableRows = angular.copy(ctrl.selectedRequestsRows);
+                // console.log(ctrl.selectedRequestsRows);
             });
         });
         ctrl.checkSelected = function(selected, clicked) {

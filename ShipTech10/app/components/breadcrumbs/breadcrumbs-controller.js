@@ -67,11 +67,11 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
             var packedFilter = {
                 "column": {
                     "columnRoute": "schedule-dashboard-calendar",
-                    "columnName": "Request Product Status",
+                    "columnName": "Port Status",
                     "columnValue": "VoyageDetail_PortStatus_DisplayName",
                     "sortColumnValue": null,
                     "columnType": "Text",
-                    "displayName": "Request Product Status",
+                    "displayName": "Port Status",
                 },
                 "condition": {
                     "conditionName": "Is equal",
