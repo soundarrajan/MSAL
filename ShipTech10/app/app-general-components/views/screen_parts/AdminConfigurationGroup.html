@@ -36,6 +36,11 @@
                 {{ 'Contract' | translate }}
             </a>
         </li>
+        <li role="presentation">
+            <a href="#reports" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 9">
+                {{ 'Reports' | translate }}
+            </a>
+        </li>        
         <!--         <li role="presentation"><a href="#ftp" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 8">{{'FTP' | translate}}</a></li> -->
     </ul>
     <!-- Tab panes -->
@@ -1426,5 +1431,19 @@
                 <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationFTP.html'"></span>
             </div>
         </div>
+	    <div role="tabpanel" class="tab-pane " id="reports" ng-if="config_tab == 9">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Reports
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationReports.html'"></span>
+            </div>
+        </div>
+     
     </div>
 </div>
+

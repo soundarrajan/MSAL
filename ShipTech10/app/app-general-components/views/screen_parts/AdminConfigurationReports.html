@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="row">
+
+    	<div class="col-md-4 ">
+            <div class="form-group row">
+                <label for="field_TenantConfigurationId">
+                        {{ CM.app_id + '.TENANT_CONFIGURATION_ID' | translate }}
+                </label>
+	            <div class="input-group form_input form_input_tenantConfigurationId">
+                    <input type="text" class="form-control" name="TenantConfigurationId" id="field_TenantConfigurationId" ng-model="formValues.report.tenantConfigurationId"/>
+                </div>
+            </div>
+    	</div>
+    	<div class="col-md-4 ">
+            <div class="form-group row">
+                <label for="field_reportViewerUrl">
+                        {{ CM.app_id + '.REPORT_VIEWER_URL' | translate }}
+                </label>
+	            <div class="input-group form_input form_input_reportViewerUrl">
+                    <input type="text" class="form-control" name="reportViewerUrl" id="field_reportViewerUrl" ng-model="formValues.report.reportViewerUrl"/>
+                </div>
+            </div>
+    	</div>
+    	<div class="col-md-4 ">
+            <div class="form-group row">
+                <label for="field_PowerBiWorkspaceId">
+                        {{ CM.app_id + '.POWER_BI_WORKSPACE_ID' | translate }}
+                </label>
+	            <div class="input-group form_input form_input_PowerBiWorkspaceId">
+                    <input type="text" class="form-control" name="PowerBiWorkspaceId" id="field_PowerBiWorkspaceId" ng-model="formValues.report.powerBiWorkspaceId"/>
+                </div>
+            </div>
+    	</div>
+    	<div class="col-md-4 ">
+            <div class="form-group row">
+                <label for="field_SsrsServerGuid">
+                        {{ CM.app_id + '.SSRS_SERVER_GUID' | translate }}
+                </label>
+	            <div class="input-group form_input form_input_SsrsServerGuid">
+                    <input type="text" class="form-control" name="SsrsServerGuid" id="field_SsrsServerGuid" ng-model="formValues.report.ssrsServerGuid"/>
+                </div>
+            </div>
+    	</div>
+    	<div class="col-md-4 ">
+            <div class="form-group row">
+                <label for="field_SsrsReportFolderPath">
+                        {{ CM.app_id + '.SSRS_REPORT_FOLDER_PATH' | translate }}
+                </label>
+	            <div class="input-group form_input form_input_SsrsReportFolderPath">
+                    <input type="text" class="form-control" name="SsrsReportFolderPath" id="field_SsrsReportFolderPath" ng-model="formValues.report.ssrsReportFolderPath"/>
+                </div>
+            </div>
+    	</div>
+
+        
+
+    </div>
+</div>

@@ -1057,6 +1057,11 @@
         "COMMENTS": "Comments"
     },
     "admin": {
+		"TENANT_CONFIGURATION_ID": "Tenant configuration id",
+		"REPORT_VIEWER_URL": "Report viewer url",
+		"POWER_BI_WORKSPACE_ID": "Power BI workspace id",
+		"SSRS_SERVER_GUID": "SSRS server guid",
+		"SSRS_REPORT_FOLDER_PATH": "SSRS report folder path",
         "NEED_SUPLIER_QUOTE_VALIDITY_DATE_EXPIRY_CHECK": "Need suplier quote validity date expiry check",
         "DISPLYA_PRODUCT_TYPE_IN_REQUEST": "Display product type in request",
         "EMAIL_SERVER_TYPE": "Email server type", 

@@ -5492,7 +5492,10 @@ APP_API.factory("$Api_Service", [
                         var invoice = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/invoiceConfiguration/get", {
                             Payload: true
                         });
-                        $q.all([contract, email, general, procurement, /*schedule,*/ delivery, invoice]).then(function(responses) {
+                        var reports = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/reportConfiguration/get", {
+                            Payload: true
+                        });                        
+                        $q.all([contract, email, general, procurement, /*schedule,*/ delivery, invoice, reports]).then(function(responses) {
                             var result = {};
                             if (responses[0].status == 200) {
                                 result["contract"] = responses[0].data.payload;
@@ -5530,6 +5533,11 @@ APP_API.factory("$Api_Service", [
                             } else {
                                 result["invoice"] = [];
                             }
+                            if (responses[6].status == 200) {
+                                result["report"] = responses[6].data.payload;
+                            } else {
+                                result["report"] = [];
+                            }                            
                             callback(result);
                         });
                         return;
@@ -5735,7 +5743,10 @@ APP_API.factory("$Api_Service", [
                         var invoice = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/invoiceConfiguration/update", {
                             Payload: data.invoice
                         });
-                        $q.all([contract, email, general, procurement, schedule, delivery, invoice]).then(
+                        var report = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/reportConfiguration/update", {
+                            Payload: data.report
+                        });                        
+                        $q.all([contract, email, general, procurement, schedule, delivery, invoice, report]).then(
                             function(responses) {
                                 var result = {};
                                 result.status = true;
@@ -5775,6 +5786,11 @@ APP_API.factory("$Api_Service", [
                                 } else {
                                     result.message += "Invoice settings failed to save!<br>";
                                 }
+                                if (responses[7].status == 200) {
+                                    result.message += "Report settings saved!<br>";
+                                } else {
+                                    result.message += "Report settings failed to save!<br>";
+                                }                                
                                 callback(result);
                             },
                             function errorCallback(response) {
