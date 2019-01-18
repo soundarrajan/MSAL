@@ -515,7 +515,7 @@ var Cfg = {
 	                        concat = " and ";
                     	}
                     }
-                    if (v.column.columnRoute == 'schedule-dashboard-table') {
+                    if (v.column.columnRoute == 'schedule-dashboard-table' || v.column.columnRoute == 'schedule-dashboard-calendar') {
                     	if (k > 0) {
 	                    	concat = " or "
                     	}

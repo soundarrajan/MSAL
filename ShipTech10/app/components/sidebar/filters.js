@@ -61,9 +61,11 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.globalFilters.push(packedFilter);
         	} else {
         		for (var i = $scope.globalFilters.length - 1; i >= 0; i--) {
-	        		if ($scope.globalFilters[i].value[0].toLowerCase() == packedFilter.value[0].toLowerCase()) {
-                        $scope.globalFilters.splice(i, 1);
-                    }
+        			if ($scope.globalFilters[i].value.length > 0) {
+		        		if ($scope.globalFilters[i].value[0].toLowerCase() == packedFilter.value[0].toLowerCase()) {
+	                        $scope.globalFilters.splice(i, 1);
+	                    }
+        			}
         		}
         	}
         	// Apply filters
@@ -304,7 +306,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                     newFilter.value.push(val2);
                 });
                 $scope.globalFilters.push(newFilter);
-                if (newFilter.column.columnRoute === 'schedule-dashboard-calendar' && newFilter.column.columnName == 'Request Product Status') {
+                if (newFilter.column.columnRoute === 'schedule-dashboard-calendar' && (newFilter.column.columnName == 'Port Status')) {
                     $rootScope.activeBreadcrumbFilters = newFilter.value[0];
                     // $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, newFilter.value[0], 0);
                 }

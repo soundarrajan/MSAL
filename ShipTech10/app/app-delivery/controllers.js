@@ -266,7 +266,9 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         $.each($scope.formValues.deliveryProducts, function(_, deliveryProd) {
             $.each($scope.formValues.temp.deliverysummary.products, function(_, summaryProd) {
                 if (deliveryProd.orderProductId == summaryProd.id) {
-                    deliveryProd.physicalSupplier = angular.copy(summaryProd.physicalSupplier);
+                	if (!deliveryProd.physicalSupplier && !$scope.formValues.id) {
+	                    deliveryProd.physicalSupplier = angular.copy(summaryProd.physicalSupplier);
+                	}
                 }
             })
         })

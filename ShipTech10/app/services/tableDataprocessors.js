@@ -87,11 +87,10 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
             if (obj.name.indexOf("status") > -1 || obj.name.indexOf("Status") > -1) {
             	console.log($state);
 
-                if($state.current.name == "default.dashboard-table"){ // keep formatter set in layout
-                    colmodel[key].formatter = CLC.get_formatter("scheduleDashboard_formatStatus");
-                }else{
+
+                if($state.current.name !== "default.dashboard-table"){ // keep formatter set in layout
                     colmodel[key].formatter = CLC.get_formatter("formatStatus");
-                }
+	            }
 
             }
             if (obj.name == "claimDate" || obj.name == "orderDate" || obj.name == "requestDate" || obj.name == "date" || obj.name == "quoteDate" || obj.name == "validTo" || obj.name == "validFrom" || (obj.name.indexOf("Date") > -1) | (obj.name.indexOf("date") > -1)) {

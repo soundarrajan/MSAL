@@ -780,27 +780,37 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         color,
                         status;
 
-                    if(rowObject.voyageDetail){
-
+                    if(rowObject.voyageDetail) {
                         if (rowObject.voyageDetail.request.id != 0) {
+                            status = rowObject.voyageDetail.request.requestStatus;
+                            label = status.displayName ? status.displayName : status.name;
+
+                            color =  $scope.getStatusColor(null, status);
     
-                            status = rowObject.voyageDetail.request.requestStatusDisplayName ? rowObject.voyageDetail.request.requestStatusDisplayName : rowObject.voyageDetail.request.requestStatus;
-                            label = status.displayName ? status.displayName : status.name;
-                        } else {
-        
-                            status = rowObject.voyageDetail.portStatusDisplayName ? rowObject.voyageDetail.portStatusDisplayName : rowObject.voyageDetail.portStatus;
-                            label = status.displayName ? status.displayName : status.name;
-                            
+                            if (label && color) {
+                                return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
+                            } 
                         }
-    
-                        color =  $scope.getStatusColor(null, status);
-    
-                        if (label && color) {
-                            return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
-                        } 
                     }
                     return "";
+                }
 
+                var scheduleDashboard_formatPortStatus = function(cellValue, options, rowObject) {
+                    var label,
+                        color,
+                        status;
+                    if(rowObject.voyageDetail) {
+	                    if (rowObject.voyageDetail.portStatus) {
+	                        status = rowObject.voyageDetail.portStatus;
+	                        label = status.displayName ? status.displayName : status.name;
+	                        color =  $scope.getStatusColor(null, rowObject.voyageDetail.portStatus);
+
+	                        if (label && color) {
+	                            return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
+	                        } 
+	                    }
+                    }
+                    return "";
                 }
 
                 var scheduleDashboard_fuelOilOfRequestType = function(cellValue, options, rowObject){
