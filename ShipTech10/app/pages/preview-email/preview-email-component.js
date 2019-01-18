@@ -465,6 +465,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             } else {
             	ctrl.buttonsDisabled = true;
                 return emailModel.saveComments(emailData, ctrl.email.comment, ctrl.template, ctrl.email).then(function() {
+    	        	if ($stateParams.data) {
+	    	        	if ($stateParams.data.defaultTemplate) {
+					        $stateParams.data.defaultTemplate = null;
+			        	}
+    	        	}
                     $state.defaultTemplate = ctrl.template;
                    if(refreshAfter){
                         $state.reload();

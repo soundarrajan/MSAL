@@ -605,6 +605,7 @@
                     $scope.formValues.counterpartyTypes = validCounterpartyTypes;
                 }
             }
+
             if(vm.app_id === 'masters' && vm.screen_id === 'buyer') {
             	// if(!$scope.formValues.code) {
 	            	if(!$scope.formValues.code) {
@@ -5224,9 +5225,22 @@
             if (resultOk) {
                 return modelData;
             } else {
+            	toastr.error("Invalid email address");
                 return null;
             }
         };
+
+        $scope.validateContactNamePattern = function(modelData) {
+
+			errorMessage = 'The contacts cannot contain the characters ",", ";", "|"';
+			if (modelData.indexOf(",") == -1 && modelData.indexOf(";") == -1 && modelData.indexOf("|") == -1) {
+                return modelData;
+            } else {
+            	toastr.error(errorMessage);
+                return null;
+            }
+        };
+
         jQuery(document).ready(function() {
             setTimeout(function() {
                 var inputs = document.querySelectorAll(".inputfile");

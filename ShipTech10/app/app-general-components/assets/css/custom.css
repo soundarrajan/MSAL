@@ -4176,6 +4176,11 @@ a.colMenu {
     text-align: center;
     color: #eeeeee;
 }
+
+a[data-table="flat_table_schedule_dashboard"] {
+    display: none;
+}
+
 .ui-jqgrid .ui-jqgrid-resize-ltr {
 	width: 30px;
 }

@@ -513,7 +513,6 @@ window.increment = 0;
                                     params: CLC.tableParams
                                 },
                                 function(callback) {
-                                    screenLoader.hideLoader();
                                     if (callback) {
                                         if(table_id === "flat_email_log_list") {
                                           $.each(callback.rows, function(k, v) {

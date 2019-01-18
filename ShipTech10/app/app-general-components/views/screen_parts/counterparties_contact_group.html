@@ -17,7 +17,7 @@
 			            </span>
                     </label>
                     <div class="form_input form_input_{{ field.Unique_ID }} input-group">
-                        <input type="text" name="contact_{{ $index }}" class="form-control" id="contact" ng-model="formValues.contacts[$index].name" ng-required="true"/>
+                        <input type="text" name="contact_{{ $index }}" class="form-control" id="contact" ng-blur="formValues.contacts[$index]['name'] = validateContactNamePattern(formValues.contacts[$index]['name'])" ng-model="formValues.contacts[$index].name" ng-required="true"/>
                     </div>
                 </div>
             </div>
