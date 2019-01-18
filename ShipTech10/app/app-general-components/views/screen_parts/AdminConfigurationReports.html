@@ -27,7 +27,7 @@
                         {{ CM.app_id + '.POWER_BI_WORKSPACE_ID' | translate }}
                 </label>
 	            <div class="input-group form_input form_input_PowerBiWorkspaceId">
-                    <input type="text" class="form-control" name="PowerBiWorkspaceId" id="field_PowerBiWorkspaceId" ng-model="formValues.report.powerBiWorkspaceId"/>
+                    <input type="text" class="form-control" name="PowerBiWorkspaceId" ng-pattern="/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/" id="field_PowerBiWorkspaceId" ng-model="formValues.report.powerBiWorkspaceId"/>
                 </div>
             </div>
     	</div>
@@ -37,7 +37,7 @@
                         {{ CM.app_id + '.SSRS_SERVER_GUID' | translate }}
                 </label>
 	            <div class="input-group form_input form_input_SsrsServerGuid">
-                    <input type="text" class="form-control" name="SsrsServerGuid" id="field_SsrsServerGuid" ng-model="formValues.report.ssrsServerGuid"/>
+                    <input type="text" class="form-control" name="SsrsServerGuid" ng-pattern="/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/" id="field_SsrsServerGuid" ng-model="formValues.report.ssrsServerGuid"/>
                 </div>
             </div>
     	</div>
