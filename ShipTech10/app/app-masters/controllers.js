@@ -4989,6 +4989,12 @@
                 toastr.error("Please fill the required fields");
                 return;
             } else {
+
+            	if (!$scope.validateEmailPattern(newContact.email)) {
+                    toastr.error("Invalid email address");
+                    return;
+            	}
+
                 $.each(counterpartyData.contacts, function(k, v) {
                     if (v.id == 0) {
                         counterpartyData.contacts.splice(k, 1);
