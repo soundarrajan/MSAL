@@ -1167,8 +1167,8 @@
                                                 name="{{ $ctrl.productColumns.minQuantity.name }}" 
                                                 ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                 ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
+                                                ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && ( product.status ? product.status.id != $ctrl.STATUS['Cancelled'].id : false) " 
                                                 />
-                                                <!-- ng-required="!($ctrl.captureConfirmedQuantity.name == 'Offer' || ( product.status ? product.status.id == $ctrl.STATUS['Cancelled'].id : true) )"  -->
                                             <div class="input-group-btn" ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' ">
 
                                                 <select style="max-width: 50px;" 
@@ -1187,7 +1187,7 @@
                                             	format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                 name="{{ $ctrl.productColumns.maxQuantity.name }}" 
                                                 ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                ng-required="!($ctrl.captureConfirmedQuantity.name == 'Offer' || ( product.status ? product.status.id == $ctrl.STATUS['Cancelled'].id : true) )" 
+                                                ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && ( product.status ? product.status.id != $ctrl.STATUS['Cancelled'].id : false) " 
                                                 ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.defaultMaxQtyFromConfirmed('input', product)"
                                             />
                                             <div class="input-group-btn" style="max-width: 50px;" ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' " ng-disabled="$ctrl.disabledProduct[product.id]">
