@@ -27,7 +27,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.tenantSettings = $tenantSettings;
 
         ctrl.listsCache = $listsCache;
-
+ 
         ctrl.lists = $listsCache;
 
         ctrl.orderConfirmationEmailToLabs = { id: 0, name: '' };
