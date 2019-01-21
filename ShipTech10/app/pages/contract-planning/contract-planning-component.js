@@ -381,10 +381,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 		$timeout(function(){$scope.resetContractPlaning = true;},50);
 
         ctrl.contractPlanningAutoSave = function(rowIndex) {
-            // $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
-            //     if (typeof $rootScope.editableCProwsModel != "undefined") {
-            //     }
-            // });
+
             CLC = $('#flat_contract_planning');
             rowObject = CLC.jqGrid.Ascensys.gridObject.rows[rowIndex];
 
@@ -413,7 +410,23 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             }
 
         	newRequestModel.contractPlanningAutoSave(rowObject).then(function(response) {
-
+        		if (response.payload) {
+		            Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+		                var value = $rootScope.editableCProwsModel[objectKey];
+		                if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
+		                    if (value.contractChanged) {
+		                        rowObject.contract = value.contract;
+		                    } else {
+		                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+		                    }
+		                    rowObject.comment = value.comment ? value.comment : null;
+		                    rowObject.agreementType = value.agreementType;
+		                    rowObject.product = value.product;
+		                    rowObject.contractProductId = value.contractProductId;
+		                    rowObject.preplanningDetailId = response.payload;
+		                }
+		            });        			
+        		}
             }).catch(function(error) {
 
             });
