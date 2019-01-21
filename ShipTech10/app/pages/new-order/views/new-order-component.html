@@ -1148,6 +1148,14 @@
                                                 - product cancelled
                                                 - capture conf qty == "Offer"
                                         -->
+
+										<div class="hidden">
+											--
+	                                        {{$ctrl.captureConfirmedQuantity.name == 'Offer'}} **
+	                                        {{product.status.id == $ctrl.STATUS['Cancelled'].id}} --
+	                                        {{!product.minQuantity}} //
+	                                        {{product.minQuantity != null}} ++
+										</div>
                                         <div class="input-group">
                                             <input type="text" class="form-control" ng-model="product.minQuantity" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                 name="{{ $ctrl.productColumns.minQuantity.name }}" 
