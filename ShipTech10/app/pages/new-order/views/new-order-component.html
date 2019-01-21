@@ -1154,10 +1154,10 @@
                                             	ng-model="product.minQuantity" 
                                             	format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                 name="{{ $ctrl.productColumns.minQuantity.name }}" 
+                                                ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
                                                 ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && product.status && product.status.id != $ctrl.STATUS['Cancelled'].id " 
+                                                ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                 />
-                                                <!-- ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']" -->
-                                                <!-- ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]" -->
                                             <div class="input-group-btn" ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' ">
 
                                                 <select style="max-width: 50px;" 
