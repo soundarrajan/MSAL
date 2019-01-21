@@ -2710,7 +2710,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         })
                     }
                 } else {
-                    if (!isOnInit) {
+                    if (!isOnInit && columnKey != "contract") {
                         angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     }	
                 }
