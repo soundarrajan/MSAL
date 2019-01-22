@@ -2285,6 +2285,9 @@
                     }
 
                     // if()
+                    if (vm.app_id == 'labs') {
+                        return;
+                    }
                     Factory_Master.get_master_list(app_id, screen_id, field, function(callback) {
                         if (callback) {
                             $scope.options[field.Name] = callback;

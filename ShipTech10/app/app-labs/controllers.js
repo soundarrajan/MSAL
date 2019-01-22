@@ -342,7 +342,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 return obj[string];
             }
         }
-        if (field) {
+        if (field && (!$scope.options[field.Name] || $scope.options[field.Name].length == 0)) {
             if (field.Filter && typeof ($scope.formValues) != 'undefined') {
                 field.Filter.forEach(function (entry) {
                     if (entry.ValueFrom == null) return;

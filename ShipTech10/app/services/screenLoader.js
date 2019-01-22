@@ -43,7 +43,6 @@ angular.module("shiptech").config([
 			"api/masters/uoms/convertQuantity",
 			"api/masters/locations/listVesselSearch",
 			"api/infrastructure/navbar/navbaridslist",
-			"api/infrastructure/navbar/navbaridslist",
 			"api/procurement/request/searchForPopup",
 			"api/mail/templates/listByTypeAndProcess",
 			"uib/template/typeahead/typeahead-popup.html",

@@ -35,14 +35,16 @@ angular.module('shiptech').controller('NavigationTopBarController', ['$rootScope
 			//console.error('scope params', $state.params);
 		})     
 
-    	$scope.initNavigation = function(){
-    		$scope.shouldDisplayNavigationBar = false;
-    		createNavigationItems();
-    		setItemsActiveStatus();
-    		setResponsiveItemsNames();
+    	$scope.initNavigation = function(resize){
+			if (!$scope.navigationItems || resize) {
+				$scope.shouldDisplayNavigationBar = false;
+				createNavigationItems();
+				setItemsActiveStatus();
+				setResponsiveItemsNames();
+			}
     	}
     	$(window).resize(function(){
-			$scope.initNavigation();
+			$scope.initNavigation(true);
     	})
 
 

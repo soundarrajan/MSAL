@@ -2,6 +2,11 @@ angular.module('shiptech.models').factory('filterConfigurationModel', ['filterCo
     function(filterConfigurationResource) {
 
         function getDefaultFiltersConfiguration(route) {
+            if(angular.module("shiptech").value("cachedFilterConfigurations[" + route + "]")) {
+                return new Promise(function(resolve, reject) {
+                    resolve(angular.module("shiptech").value("cachedFilterConfigurations[" + route + "]"));
+                })
+            };
             var verb = "get";
             var typeForCall = "filterconfigurations";
             var payload = {
@@ -13,6 +18,7 @@ angular.module('shiptech.models').factory('filterConfigurationModel', ['filterCo
                 type: typeForCall,
             }, payload).$promise.
             then(function(data) {
+                angular.module("shiptech").value("cachedFilterConfigurations[" + route + "]", data);
                 return data;
             });
         }
