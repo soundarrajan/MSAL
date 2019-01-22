@@ -3478,7 +3478,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         	if ($("#configurations_list").val()) {
         		if ($("#configurations_list").val() != "0") {
         			$(".st-content-action-icons .delete_layout").css("opacity", 1)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "initial");
         		} else {
         			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
         			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
