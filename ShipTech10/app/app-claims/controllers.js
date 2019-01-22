@@ -313,6 +313,21 @@ APP_CLAIMS.controller("Controller_Claims", [
                     if (field) vm.getOptions(field);
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
                     $scope.options.Product = {};
+                    deliveryDateFromDelivery = _.find($scope.options['deliveryNumber'], {id:$scope.formValues.orderDetails.deliveryNo.id}).payload.orderDetails.deliveryDate; 
+
+                    if (deliveryDateFromDelivery) {
+                        $timeout(function(){
+                            $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate(deliveryDateFromDelivery, null, 'eta'));
+                            if (!angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails) {
+                            	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
+                            }
+                            $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
+                            $scope.formValues.orderDetails.deliveryDate = deliveryDateFromDelivery;
+                        })
+                        $scope.formValues.orderDetails.deliveryDate = deliveryDateFromDelivery;
+                    }
+                    // $scope.formValues.deliveryDate = deliveryDateFromDelivery ? deliveryDateFromDelivery : $scope.formValues.deliveryDate;
+                    
                     if (field) vm.getOptions(field);
                     delete $scope.formValues.orderDetails.deliveryNo.payload;
                     delete field;
