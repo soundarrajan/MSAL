@@ -2284,28 +2284,31 @@
                         }
                     }
 
-                    // if()
-                    if (vm.app_id == 'labs') {
-                        return;
+                    if (!$scope.optionsCache) {
+                        $scope.optionsCache = {};
                     }
-                    Factory_Master.get_master_list(app_id, screen_id, field, function(callback) {
-                        if (callback) {
-                            $scope.options[field.Name] = callback;
-                            if (vm.app_id == "masters" && vm.screen_id == "vessel") vm.checkSpecGroup(field);
-                            $scope.$watchGroup([$scope.formValues, $scope.options], function() {
-                                $timeout(function() {
-                                    if (field.Type == "textUOM") {
-                                        id = "#" + field.Name;
-                                    } else {
-                                        id = "#" + field.masterSource + field.Name;
-                                    }
-                                    if ($(id).data("val")) {
-                                        $(id).val($(id).data("val"));
-                                    }
-                                }, 50);
-                            });
-                        }
-                    });
+
+                    if (!(JSON.stringify($scope.optionsCache[field.Name]) == JSON.stringify(field))) {
+                        $scope.optionsCache[field.Name] = JSON.stringify(field);
+                        Factory_Master.get_master_list(app_id, screen_id, field, function(callback) {
+                            if (callback) {
+                                $scope.options[field.Name] = callback;
+                                if (vm.app_id == "masters" && vm.screen_id == "vessel") vm.checkSpecGroup(field);
+                                $scope.$watchGroup([$scope.formValues, $scope.options], function() {
+                                    $timeout(function() {
+                                        if (field.Type == "textUOM") {
+                                            id = "#" + field.Name;
+                                        } else {
+                                            id = "#" + field.masterSource + field.Name;
+                                        }
+                                        if ($(id).data("val")) {
+                                            $(id).val($(id).data("val"));
+                                        }
+                                    }, 50);
+                                });
+                            }
+                        });
+                    }
                     // }, 1000)
                 }
             } else {

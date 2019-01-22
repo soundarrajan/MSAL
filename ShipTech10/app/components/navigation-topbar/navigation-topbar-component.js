@@ -36,7 +36,8 @@ angular.module('shiptech').controller('NavigationTopBarController', ['$rootScope
 		})     
 
     	$scope.initNavigation = function(resize){
-			if (!$scope.navigationItems || resize) {
+			if (window.location.href != $scope.lastInitFor) {
+				$scope.lastInitFor = window.location.href;
 				$scope.shouldDisplayNavigationBar = false;
 				createNavigationItems();
 				setItemsActiveStatus();

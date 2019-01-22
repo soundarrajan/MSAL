@@ -342,7 +342,13 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 return obj[string];
             }
         }
-        if (field && (!$scope.options[field.Name] || $scope.options[field.Name].length == 0)) {
+
+        if (!$scope.optionsCache) {
+            $scope.optionsCache = {};
+        }
+
+        if (!(JSON.stringify($scope.optionsCache[field.Name]) == JSON.stringify(field))) {
+            $scope.optionsCache[field.Name] = JSON.stringify(field);
             if (field.Filter && typeof ($scope.formValues) != 'undefined') {
                 field.Filter.forEach(function (entry) {
                     if (entry.ValueFrom == null) return;
