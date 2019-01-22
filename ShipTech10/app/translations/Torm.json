@@ -842,6 +842,7 @@
         "CONTRACT_NAME": "Contract Name",
         "CREATED_BY": "Created By",
         "SELLER": "Seller",
+		"DEAL_DATE": "Deal date",        
         "ALLOWED_POOLS": "Allowed Pools",
         "CREATED_ON": "Created On",
         "AGREEMENT_TYPE": "Agreement Type",

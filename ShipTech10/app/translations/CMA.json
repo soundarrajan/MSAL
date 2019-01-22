@@ -840,6 +840,7 @@
     },
     "contracts": {
         "CONTRACT_NAME": "Contract Name",
+		"DEAL_DATE": "Deal date",
         "IS_VERIFIED": "Is Verified",
         "CREATED_BY": "Created By",
         "SELLER": "Seller",

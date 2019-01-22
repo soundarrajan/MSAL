@@ -843,6 +843,7 @@
     "contracts": {
         "CONTRACT_NAME": "Contract Name",
         "IS_VERIFIED": "Is Verified",
+		"DEAL_DATE": "Deal date",
         "CREATED_BY": "Created By",
         "SELLER": "Seller",
         "ALLOWED_POOLS" : "Allowed Pools",

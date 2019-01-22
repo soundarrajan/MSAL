@@ -233,6 +233,55 @@
                                         </div>
                                     </div>
                                 </div>
+
+								 <div class="col-md-4 form-group">
+
+
+                                    <div class="">
+                                        <label class="control-label">
+                                            {{ CM.app_id + '.DEAL_DATE' | translate }}
+                                        </label>
+                                       
+										<div class="input-group form_input form_input_dealDate">
+											  <input class="formatted-date-input date-only"
+											     ng-model="formatDates.formValues.products[$index].dealDate"
+											     ng-change="CM.setValue({
+											            path: 'formValues.products['+$index+'].dealDate',
+											            root: '$scope',
+											            pickerId: 'dealDate-'+$index
+											        }, 2, true)" 
+											     ng-focus="inputFocus['dealDate'] = true; $event.stopPropagation();" 
+											     ng-blur="inputFocus['dealDate'] = false;" 
+											     ng-invalid="{{ CM.invalidDate['dealDate'] && !inputFocus['dealDate'] }}" 
+											     name="dealDate-{{$index}}">
+
+											  <span ng-init="CM.setValue({
+											      path: 'formValues.products['+$index+'].dealDate',
+											      root: '$scope',
+											      pickerId: 'dealDate-'+$index
+											  }, 1, true)" ng-if="formValues.products[$index].dealDate"></span>
+											  
+											  <span class="input-group-btn date-picker date form_meridian_datetime" id="dealDate-{{$index}}">
+											      <input class="form-control hidden-form-input"
+											         type="text" 
+											         id="dealDate-{{$index}}"
+											         ng-model="formValues.products[$index].dealDate" 
+											         name="dealDate-{{$index}}"
+											         ng-change=" CM.setValue({
+											          path: 'formValues.products['+$index+'].dealDate',
+											          root: '$scope',
+											          pickerId: 'dealDate-'+$index
+											      }, 1, true, 'dealDate'); triggerChangeFields('dealDate','dealDate'); CM.invalidDate['dealDate'] = false;"
+											      visibility="hidden"/>
+											      <button class="btn default date-set" type="button">
+											          <i class="fa fa-calendar"></i>
+											      </button>
+											  </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="row">
 
