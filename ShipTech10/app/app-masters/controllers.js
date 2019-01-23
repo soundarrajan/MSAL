@@ -743,6 +743,14 @@
                     return;
                 }
             }
+            if (vm.app_id == "admin" && vm.screen_id == "users") {
+                if ($scope.formValues.contactInformation.email) {
+                	if (!$scope.validateEmailPattern($scope.formValues.contactInformation.email)) {
+	                    toastr.error("Invalid email address");
+	                    return;
+                	}
+                }
+            }            
 
             if (vm.app_id == "admin" && vm.screen_id == "users") {
                 if ($scope.formValues.contactInformation.email) {

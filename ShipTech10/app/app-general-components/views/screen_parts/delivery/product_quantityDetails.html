@@ -48,11 +48,12 @@
                             <div class="input-group form_input form_input_physicalSupplier">
                                 <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{productIndex}}_physical_supplier" ng-model="product.physicalSupplier" autocomplete="off" />
                                 <!-- ng-model="product.product" -->
-                                <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' , 'formValues.deliveryProducts.'+$index+'.physicalSupplier','','','Counterparty', 'supplierList');"   ng-class="!CM.isEditable ? 'disabled' : ''">
+                                <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' , 'formValues.deliveryProducts.'+$index+'.physicalSupplier','','','Counterparty', 'supplierList');"  >
                                     <a   class=" btn default">
                                         <i class="fa fa-search"></i>
                                     </a>
                                 </span>
+                                 <!-- ng-class="!CM.isEditable ? 'disabled' : ''" -->
                             </div>
                         </div>
                     </div>

@@ -336,6 +336,22 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             });
         }
 
+
+        function amendAndSend(requirements) {
+            var request_data = payloadDataModel.create(requirements);
+            return groupOfRequestsResource.amendAndSend(request_data).$promise.then(function(data) {
+                return data;
+            });
+        }
+
+        function revokeAndSend(requirements) {
+            var request_data = payloadDataModel.create(requirements);
+            return groupOfRequestsResource.revokeAndSend(request_data).$promise.then(function(data) {
+                return data;
+            });
+        }
+        
+
         function requoteRFQ(requirements) {
             var request_data = payloadDataModel.create(requirements);
             return groupOfRequestsResource.requote(request_data).$promise.then(function(data) {
@@ -566,6 +582,8 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             getGroupInfo: getGroupInfo,
             amendRFQ: amendRFQ,
             revokeRFQ: revokeRFQ,
+            revokeAndSend: revokeAndSend,
+            amendAndSend: amendAndSend,
             requoteRFQ: requoteRFQ,
             addRequestsToGroup: addRequestsToGroup,
             delinkRequests: delinkRequests,

@@ -246,7 +246,7 @@ window.increment = 0;
                                 }
 
                                 //debugger;
-                                //2. loop custom col model & match default ones (to keep column order)
+                                //2. loop custom col mod el & match default ones (to keep column order)
                                 $.each(userColumns.clc.colModel, function(_, usr_val) {
                                     //2.1 check for match in default (based on index or name)
                                     $.each(defaultColumns.clc.colModel, function(_, def_val) {

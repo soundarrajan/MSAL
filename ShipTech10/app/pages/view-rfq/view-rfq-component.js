@@ -229,7 +229,6 @@ angular.module('shiptech.pages')
                     "rfqId": rfq.rfqId,
                     "rfqRequirements" : ctrl.requirements
                 };
-
                 $state.go(STATE.PREVIEW_EMAIL, {data: data, transaction: EMAIL_TRANSACTION.VIEW_RFQ, multipleRequests: ctrl.multipleRequests});
             };
 

@@ -84,6 +84,7 @@ $.jgrid.extend({
                 $(this).jqGrid.Ascensys.columnFiltersData = data;
                 $(this).jqGrid("Ascensys.element.filters.init");
             } else {
+                // $(this).jqGrid.Ascensys.columnFiltersData = [];
                 $(this).jqGrid("Ascensys.element.filters.remove");
             }
         },

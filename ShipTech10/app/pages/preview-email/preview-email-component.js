@@ -440,6 +440,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 emailModel.discardPreview(emailData, ctrl.template).then(function() {
                     $state.defaultTemplate = ctrl.template;
                     $state.reload();
+    	        	if ($stateParams.data) {
+	    	        	if ($stateParams.data.defaultTemplate) {
+					        $stateParams.data.defaultTemplate = null;
+			        	}
+    	        	}                    
                 }).finally(function(){
                 	ctrl.buttonsDisabled = false;
                 });

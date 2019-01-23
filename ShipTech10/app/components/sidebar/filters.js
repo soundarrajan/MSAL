@@ -564,9 +564,9 @@ angular.module("shiptech.components").controller("FiltersController", [
                 .getDefaultFiltersConfiguration(data)
                 .then(function(response) {
                     $scope.defaultConfiguration = response.payload;
-                    // if (!response.payload && !fromSave) {
-                    // 	$rootScope.$broadcast("filters-applied", []);
-                    // } 
+                    if (!response.payload && !fromSave) {
+                    	$rootScope.$broadcast("filters-applied", []);
+                    } 
                     if ($scope.defaultConfiguration != null) {
                         retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                         $scope.selectedConfig = $scope.defaultConfiguration;

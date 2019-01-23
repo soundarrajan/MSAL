@@ -23,6 +23,8 @@ return $resource(API.BASE_URL_DATA_PROCUREMENT + '/api/procurement/rfq/:verb/:ac
         'previewRevokeOrAmend': { method:'POST', params:{verb:'previewRevokeOrAmend'}, interceptor: resourceInterceptor},
         'amend': { method:'POST', params: {verb:'amend'}, interceptor: resourceInterceptor},
         'revoke': { method:'POST', params: {verb:'revoke'}, interceptor: resourceInterceptor},
+        'amendAndSend': { method:'POST', params: {verb:'amendAndSend'}, interceptor: resourceInterceptor},
+        'revokeAndSend': { method:'POST', params: {verb:'revokeAndSend'}, interceptor: resourceInterceptor},
         'requote': { method:'POST', params: {verb:'requote'}, interceptor: resourceInterceptor},
         'include': { method:'POST', params: {verb:'include'}, interceptor: resourceInterceptor},
         'delink': { method:'POST', params:{verb:'delink'}, interceptor: resourceInterceptor},
