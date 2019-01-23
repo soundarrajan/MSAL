@@ -279,7 +279,10 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
             $state.params.title = lab + ' - ' + $scope.formValues.order.name + " - DEL " + del;
         }
         if (name == 'Product' && $scope.formValues.product) {
-        	filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0].specGroup;
+        	filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+        	if (filteredSpecGroup) {
+        		filteredSpecGroup = filteredSpecGroup.specGroup;
+        	}
         	if (filteredSpecGroup) {
 	            $scope.formValues.specGroup = filteredSpecGroup.name;
         	}
@@ -315,6 +318,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         }
         if (id) {
             id = id.toLowerCase();
+            if ($scope.formValues.isFromIntegration) { return }
             Factory_Master.getDataTable(app, screen, id, data, function (callback) {
                 if (callback) {
                     $scope.dynamicTable[id] = callback;

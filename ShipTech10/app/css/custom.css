@@ -3980,7 +3980,7 @@ Uncomment to see border around all .col-*
             .fe_entity.edit_form_fields_SealNumber_labs {
                 clear: left;
             }
-
+			
             .form_input_Vessel input[disabled="disabled"] {
                 cursor: default;
             }
