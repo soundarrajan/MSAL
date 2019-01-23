@@ -240,6 +240,7 @@ window.increment = 0;
                                 var newCol = null;
                                 if (userColumns.clc.table_name != defaultColumns.clc.table_name) {
                                 	// $state.reload();
+	                            	userColumns.clc.table_name = defaultColumns.clc.table_name;
                                 	toastr.error("The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.");
                                 	return;
                                 }
