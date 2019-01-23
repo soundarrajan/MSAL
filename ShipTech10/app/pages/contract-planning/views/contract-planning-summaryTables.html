@@ -24,14 +24,14 @@
 			        </thead>
 			        <tbody>
 			            <tr ng-repeat="(key, value) in $ctrl.procurementContractPlanningSummary.plannedQuantitySummary track by $index">
-							<td class="padding">{{value.bunkeringLocation}}</td>
-							<td class="padding">{{value.seller}}</td>
+							<td class="padding">{{value.bunkeringLocation.name}}</td>
+							<td class="padding">{{value.seller.name}}</td>
 							<td class="padding">{{value.contract.name}}</td>
 							<td class="padding">{{value.product.name}}</td>
 							<td class="padding">{{value.contractMaxQuantity}}</td>
 							<td class="padding">{{value.plannedQuantity}}</td>
-							<td class="padding">{{value.seller}}</td>
 							<td class="padding">{{value.utilizedQuantity}}</td>
+							<td class="padding">{{value.availableQuantity}}</td>
 			            </tr>		            
 			        </tbody>
 			    </table>
@@ -63,8 +63,8 @@
 			        </thead>
 			        <tbody>
 			            <tr ng-repeat="(key, value) in $ctrl.procurementContractPlanningSummary.unplannedQuantitySummary">
-							<td class="padding">{{value.bunkeringLocation}}</td>
-							<td class="padding">{{value.product}}</td>
+							<td class="padding">{{value.bunkeringLocation.name}}</td>
+							<td class="padding">{{value.product.name}}</td>
 							<td class="padding">{{value.unplannedQuantity}}</td>
 			            </tr>		            
 			        </tbody>
