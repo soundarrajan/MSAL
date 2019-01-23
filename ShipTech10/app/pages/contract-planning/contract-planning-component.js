@@ -887,6 +887,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
         	ctrl.currentRowData.minQuantity = minEdit;
         	ctrl.currentRowData.maxQuantity = maxEdit;
+        	ctrl.tableData[ctrl.currentRowIndex-1].qtyUom = qtyUom;
         	ctrl.tableData[ctrl.currentRowIndex-1].minQuantity = ctrl.currentRowData.minQuantity;
         	ctrl.tableData[ctrl.currentRowIndex-1].maxQuantity = ctrl.currentRowData.maxQuantity;
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit )
