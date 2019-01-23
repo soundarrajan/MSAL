@@ -19,7 +19,8 @@ angular
         "$window",
         "$interval",
         function($rootScope, adalService, $http, $q, $window, $interval) {
-            angular.module("shiptech").value("$cacheFilterConfigurations", {});
+            // angular.module("shiptech").value("$cacheDefaultFilterConfigurations", {});
+            // angular.module("shiptech").value("$cacheFilterConfigurations", {});
             console.log(adalService);
             console.log("adal:application refresh");
             if (typeof adalService.userInfo.isAuthenticated == "boolean" && typeof adalService.userInfo.loginError == "string") {
