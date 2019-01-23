@@ -7,7 +7,8 @@
     <span ng-init="CM.setValue({
         path: 'formValues.' + field.Unique_ID,
         root: '$scope',
-        pickerId: 'dp_' + field.Unique_ID
+        pickerId: 'dp_' + field.Unique_ID,
+        fieldId: field.Unique_ID
     }, 1, field.PickerType == 'date' || field.Name.indexOf('Date') > -1)" ng-if="$eval('formValues.' + field.Unique_ID)"></span>
 
 
@@ -40,7 +41,8 @@
              ng-change="CM.setValue({
                                    path: 'formValues.' + field.Unique_ID,
                                    root: '$scope',
-                                   pickerId: 'dp_' + field.Unique_ID
+                                   pickerId: 'dp_' + field.Unique_ID,
+                                   fieldId: field.Unique_ID
                                }, 2, field.PickerType == 'date' || field.Name.indexOf('Date') > -1)" 
              ng-focus="inputFocus[field.Name] = true; $event.stopPropagation();" 
              ng-blur="inputFocus[field.Name] = false;" ng-invalid="{{ CM.invalidDate[field.Name] && !inputFocus[field.Name] }}" name="{{ field.Name }}"
@@ -60,7 +62,8 @@
                 ng-change="CM.setValue({
                     path: 'formValues.' + field.Unique_ID,
                     root: '$scope',
-                    pickerId: 'dp_' + field.Unique_ID
+                    pickerId: 'dp_' + field.Unique_ID,
+                    fieldId: field.Unique_ID
                 }, 1, field.PickerType == 'date' || field.Name.indexOf('Date') > -1);
                 triggerChangeFields(field.Name, field.Unique_ID); CM.invalidDate[field.Name] = false;" visibility="hidden">
                 <!-- end datepicker input -->

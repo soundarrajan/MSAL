@@ -6545,7 +6545,7 @@
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     } else{
                         var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT);
+                        var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
                     vm.overrideInvalidDate[inputDetails.pickerId] = false;
