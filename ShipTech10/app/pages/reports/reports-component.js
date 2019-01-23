@@ -122,9 +122,9 @@ angular.module("shiptech.pages").controller("ReportsController", [
             	$.each(response, function(resk,resv){
             		$.each(resv.items, function(itemk,itemv){
                         if (itemv.filterId) {
-	                        itemv.link = itemv.link + '&GUID=' + itemv.filterId;
+	                        itemv.link = itemv.link + encodeURIComponent('GUID=' + itemv.filterId);
                         } else {
-	                        itemv.link = itemv.link + '&' + entity_id;
+	                        itemv.link = itemv.link + encodeURIComponent(entity_id);
                         }
             		})
             	})
@@ -142,10 +142,10 @@ angular.module("shiptech.pages").controller("ReportsController", [
                         ctrl.toggled = true;
                         ctrl.showIframe = true;
                         ctrl.customReports = true;
-                        if (resp.payload.items[0].filterId) {
-	                        resp.payload.items[0].link = resp.payload.items[0].link + '&GUID=' + resp.payload.items[0].filterId;
-                        } else {
-	                        resp.payload.items[0].link = resp.payload.items[0].link + '&' + entity_id;
+                        if (reportType.id == 1) {
+	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent(entity_id);
+                        } else if (reportType.id == 2) {
+	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=' + JSON.stringify(resp.payload.items[0].filterId));
                         }
 
 						// <items[0].link>&GUID=<items[0].filterId>
