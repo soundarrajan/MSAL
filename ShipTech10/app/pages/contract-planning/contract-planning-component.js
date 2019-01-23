@@ -813,6 +813,10 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	ctrl.contractPlanningDataChanged = true;
         });
 
+        $rootScope.$on('procurementContractPlanningSummary', function(event, data){
+        	ctrl.procurementContractPlanningSummary = data;
+        });        
+
 
         $rootScope.$on('contractPlanningChange', function(event, data){
             ctrl.CLC = $('#flat_contract_planning');

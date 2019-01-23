@@ -122,7 +122,7 @@ APP_API.factory("$Api_Service", [
                     },
                     entity: {
                         list: {
-                            endpoint: API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/request/planning"
+                            endpoint: API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/request/getContractPlanningGrids"
                         },
                         export: {
                             endpoint: API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/request/exportPlanning"
@@ -5348,6 +5348,15 @@ APP_API.factory("$Api_Service", [
                         function successCallback(response) {
 
                         	 $rootScope.$broadcast("scheduleDashboardTableGetResponse", response.data);
+							if(param.clc_id == "procurement_contractplanning"){
+								plannedQuantitySummary = response.data.payload.plannedQuantitySummary;
+								unplannedQuantitySummary = response.data.payload.unplannedQuantitySummary;
+								cpSummary = {
+									'plannedQuantitySummary' : plannedQuantitySummary,
+									'unplannedQuantitySummary' : unplannedQuantitySummary
+								}
+								$rootScope.$broadcast("procurementContractPlanningSummary", cpSummary);
+							}
                             if (response.data) {
                                 var res = new Object();
                                 res.records = response.data.matchedCount;
@@ -5357,6 +5366,9 @@ APP_API.factory("$Api_Service", [
 
                                 if(param.clc_id == "procurement_scheduleDashboardTable"){
                                     res.rows = res.rows.scheduleDashboardView;
+                                }
+                                if(param.clc_id == "procurement_contractplanning"){
+                                    res.rows = res.rows.contractPlanningList;
                                 }
                        
                                 // if (api_map[param.app][param.screen]["layout"]["get"]["processResponse"]) {

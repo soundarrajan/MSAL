@@ -1,0 +1,76 @@
+<div class="row">
+	<div class="col-sm-12">
+	    <div class="portlet-title">
+	        <div class="caption-subject">
+	            <span class="caption-subject">
+	                Planned Quantity Summary
+	            </span>
+	        </div>
+	    </div>
+	    <div class="portlet-body ">
+			<div class="custom-hardcoded-table" style="max-height: 200px;">
+			    <table class="table-body" width="100%">
+			        <thead>
+			            <tr>
+			            	<td class="padding bold">Location</td>
+			            	<td class="padding bold">Seller</td>
+			            	<td class="padding bold">Contract Name</td>
+			            	<td class="padding bold">Product</td>
+			            	<td class="padding bold">Contract Qty</td>
+			            	<td class="padding bold">Planned Qty</td>
+			            	<td class="padding bold">Delivered Qty</td>
+			            	<td class="padding bold">Available Qty</td>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <tr ng-repeat="(key, value) in $ctrl.procurementContractPlanningSummary.plannedQuantitySummary track by $index">
+							<td class="padding">{{value.bunkeringLocation}}</td>
+							<td class="padding">{{value.seller}}</td>
+							<td class="padding">{{value.contract.name}}</td>
+							<td class="padding">{{value.product.name}}</td>
+							<td class="padding">{{value.contractMaxQuantity}}</td>
+							<td class="padding">{{value.plannedQuantity}}</td>
+							<td class="padding">{{value.seller}}</td>
+							<td class="padding">{{value.utilizedQuantity}}</td>
+			            </tr>		            
+			        </tbody>
+			    </table>
+			</div>
+
+	    </div>
+	</div>
+</div>
+<br><br>
+<div class="row">
+	<div class="col-sm-12">
+	    <div class="portlet-title">
+	        <div class="caption-subject">
+	            <span class="caption-subject">
+	                Unplanned Quantity Summary
+	            </span>
+	        </div>
+	    </div>
+	    <div class="portlet-body ">
+			<div class="custom-hardcoded-table ng-scope" style="max-height: 200px;">
+			    <table class="table-body" width="100%">
+			        <thead>
+			            <tr>
+			            	<!-- <td class="padding">S.no</td> -->
+			            	<td class="padding bold">Location</td>
+			            	<td class="padding bold">Product</td>
+			            	<td class="padding bold">Unplanned Qty</td>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <tr ng-repeat="(key, value) in $ctrl.procurementContractPlanningSummary.unplannedQuantitySummary">
+							<td class="padding">{{value.bunkeringLocation}}</td>
+							<td class="padding">{{value.product}}</td>
+							<td class="padding">{{value.unplannedQuantity}}</td>
+			            </tr>		            
+			        </tbody>
+			    </table>
+			</div>
+
+	    </div>
+	</div>
+</div>
