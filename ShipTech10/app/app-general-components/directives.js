@@ -239,7 +239,8 @@ window.increment = 0;
                                 var found = false;
                                 var newCol = null;
                                 if (userColumns.clc.table_name != defaultColumns.clc.table_name) {
-                                	$state.reload();
+                                	// $state.reload();
+                                	toastr.error("The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.");
                                 	return;
                                 }
 
