@@ -807,6 +807,7 @@
         "PHYSICAL_SUPPLIER": "Physical Supplier",
         "SURVEYED_HOURS": "Surveyed Hours",
         "SURVEYOR": "Surveyor",
+		"TESTED_PRODUCT": "Tested product",
         "SURVEYOR_NAME": "Surveyor Name",
         "LAB_REMARKS": "Remarks",
         "DELIVERY_DATE": "Delivery Date",

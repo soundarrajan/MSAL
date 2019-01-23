@@ -808,6 +808,7 @@
         "SAMPLE_TOKEN_FROM": "Sample Taken From",
         "PHYSICAL_SUPPLIER": "Physical Supplier",
         "SURVEYED_HOURS": "Surveyed Hours",
+		"TESTED_PRODUCT": "Tested product",
         "SURVEYOR": "Surveyor",
         "SURVEYOR_NAME": "Surveyor Name",
         "LAB_REMARKS": "Remarks",

@@ -807,6 +807,7 @@
         "LAB_REPORT_ID": "Lab Report ID",
         "SAMPLE_TOKEN_FROM": "Sample Taken From",
         "PHYSICAL_SUPPLIER": "Physical Supplier",
+        "TESTED_PRODUCT": "Tested product",
         "SURVEYED_HOURS": "Surveyed Hours",
         "SURVEYOR": "Surveyor",
         "SURVEYOR_NAME": "Surveyor Name",
