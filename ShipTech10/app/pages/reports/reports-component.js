@@ -119,15 +119,6 @@ angular.module("shiptech.pages").controller("ReportsController", [
             reportType = "";
 
             Factory_Master.getReport({ reportSrc: reportSrc, reportType: reportType.id }, function(response) {
-            	$.each(response, function(resk,resv){
-            		$.each(resv.items, function(itemk,itemv){
-                        if (itemv.filterId) {
-	                        itemv.link = itemv.link + encodeURIComponent('GUID=' + itemv.filterId);
-                        } else {
-	                        itemv.link = itemv.link + encodeURIComponent(entity_id);
-                        }
-            		})
-            	})
                 ctrl.standardReports = response;
                 if ($state.params.type) {
                     reportSrc = "getreport";
