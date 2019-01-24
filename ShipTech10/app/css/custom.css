@@ -3402,6 +3402,7 @@ Uncomment to see border around all .col-*
 				overflow: hidden;
 				padding: 0px !important;
 				color: transparent;
+			    text-indent: 99999px;
 			}
             confirm-order-dialog {
                 top: 0!important;
