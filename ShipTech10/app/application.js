@@ -257,7 +257,7 @@ angular
                                                                     }
                                                                 });
                                                                 if (!listFound) {
-                                                                    listsToUpdate.push(v1.name);
+                                                                    listsToUpdate.push(v.name);
                                                                 }
                                                             });
                                                             $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
