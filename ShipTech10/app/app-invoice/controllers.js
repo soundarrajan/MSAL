@@ -185,6 +185,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         if (name == "DueDate") {
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
+                $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
             });
         }
         if (name == "costType") {

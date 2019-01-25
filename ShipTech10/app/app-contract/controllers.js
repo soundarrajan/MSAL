@@ -121,6 +121,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
     	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll select").attr("disabled", "disabled");
     	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll textarea").attr("disabled", "disabled");
     	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll .btn.date-set").attr("disabled", "disabled");
+    	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll .date-picker").attr("disabled", "disabled");
     	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll .add-product").css("pointer-events", "none");
     	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll .input-group-addon").css("pointer-events", "none");
     	$(".dynamic_form_editor.app_contracts_screen_contract.disableAll .remove-product").hide();

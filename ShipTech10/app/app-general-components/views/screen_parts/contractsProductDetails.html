@@ -241,7 +241,7 @@
                                         <label class="control-label">
                                             {{ CM.app_id + '.DEAL_DATE' | translate }}
                                         </label>
-                                       
+                                       <span ng-controller="Controller_Master as CM" ng-init="CM.datepickers('dealDate-'+$index, false, 'date')"></span>
 										<div class="input-group form_input form_input_dealDate">
 											  <input class="formatted-date-input date-only"
 											     ng-model="formatDates.formValues.products[$index].dealDate"
