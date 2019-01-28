@@ -130,6 +130,12 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     $scope.dtMasterSource = {};
     $scope.$watch("formValues", function(val) {
     	if (!val) {return false;}
+		vm.initialDueDate = angular.copy($scope.formValues.dueDate);
+    	if ($scope.formValues.manualDueDate) {
+    		if (vm.initialDueDate != $scope.formValues.manualDueDate) {
+	    		$scope.formValues.dueDate = $scope.formValues.manualDueDate;
+    		}
+    	}	
         if (Object.keys(val).length > 0) {
             $timeout(function() {
                 $scope.dtMasterSource.applyFor = [];
@@ -183,6 +189,11 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         dueDate = $scope.formValues.dueDate;
         $scope.computeInvoiceTotalConversion($scope.CM.conversionRoe, $scope.CM.conversionTo)
         if (name == "DueDate") {
+    		if (vm.initialDueDate.split("T")[0] != $scope.formValues.dueDate) {
+	        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
+    		} else {
+    			$scope.formValues.manualDueDate = null;
+    		}
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
                 $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
