@@ -55,7 +55,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         }, {
             id: 6,
             title: 'Treasury Report',
-            slug: 'treasury_report',
+            slug: 'treasuryreport',
             icon: 'fa fa-folder icon-lg',
             nodes: 1
         }, ];
