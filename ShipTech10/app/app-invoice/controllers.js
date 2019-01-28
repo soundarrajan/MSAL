@@ -479,9 +479,10 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                     if(!$rootScope.transportData.paymentDate) {
                         $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate;
                     }
-                    localStorage.setItem('invoiceFromDelivery', angular.toJson(response.data));
-                    $location.path(vm.app_id + '/' + 'invoice' + '/edit/');
-                    screenLoader.hideLoader();
+                    localStorage.setItem('invoiceFromDelivery', angular.toJson($rootScope.transportData));
+                    window.open("/#/" + vm.app_id + '/' + 'invoice' + '/edit/', '_blank');
+                    // $location.path(vm.app_id + '/' + 'invoice' + '/edit/');
+                    // screenLoader.hideLoader();
                 } else {
                     $scope.loaded = true;
                     toastr.error(response.message);

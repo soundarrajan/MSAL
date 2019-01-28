@@ -1690,7 +1690,10 @@
             $location.path("/masters/" + vm.screen_id + "/structure");
         };
         vm.get_master_entity = function(screenChild) {
-         	
+         	if (localStorage.getItem("invoiceFromDelivery")) {
+         		$rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
+				localStorage.removeItem("invoiceFromDelivery");
+         	}
 
             vm.get_master_structure(screenChild);
             // console.log(screenChild);
@@ -1726,21 +1729,23 @@
                     if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
                         screenLoader.hideLoader();
                         $scope.triggerChangeFields("InvoiceRateCurrency");
-                        if ($scope.formValues.costDetails.length > 0) {
-                            $.each($scope.formValues.costDetails, function(k, v) {
-                                if (v.product == null || v.isAllProductsCost) {
-                                    v.product = {
-                                        id: -1,
-                                        name: "All"
-                                    };
-                                }
-                                if (v.product.id != -1) {
-				                	v.product.productId = angular.copy(v.product.id);
-				                	if (v.deliveryProductId) {
-					                	v.product.id = v.deliveryProductId;
-				                	}
-				                }
-                            });
+                        if ($scope.formValues.costDetails) {
+	                        if ($scope.formValues.costDetails.length > 0) {
+	                            $.each($scope.formValues.costDetails, function(k, v) {
+	                                if (v.product == null || v.isAllProductsCost) {
+	                                    v.product = {
+	                                        id: -1,
+	                                        name: "All"
+	                                    };
+	                                }
+	                                if (v.product.id != -1) {
+					                	v.product.productId = angular.copy(v.product.id);
+					                	if (v.deliveryProductId) {
+						                	v.product.id = v.deliveryProductId;
+					                	}
+					                }
+	                            });
+	                        }
                         }
                     }
                 } else {
@@ -6562,6 +6567,7 @@
 
                     // also change datepicker value
                     $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+                    $('.date-picker#' + inputDetails.pickerId + " input").trigger("change");
                 },2);
             }
         }
