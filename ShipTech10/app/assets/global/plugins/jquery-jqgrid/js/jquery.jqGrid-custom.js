@@ -531,8 +531,12 @@ var Cfg = {
                         }
                     }
     	            if (v.column.columnType == "Date") {
-			            dateFormat = window.tenantFormatsDateFormat;
-			            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+    	            	if (window.tenantFormatsDateFormat) {
+				            dateFormat = window.tenantFormatsDateFormat;
+				            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+    	            	} else {
+    	            		dateFormat = "DD/MM/YYYY";
+    	            	}
 			            if (condition != 'Is between') {
 			            	value = moment.utc(value).format(dateFormat);
 			            } else {
