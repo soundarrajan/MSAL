@@ -224,7 +224,11 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
 
         jQuery(document).on("click", "#clearUnsavedFilters", function() {
-        	$scope.clearUnsavedFilters()
+        	if ($state.current.url == '/schedule-dashboard-table') {
+        		angular.element($(".clearFiltersSidebar")).scope().clearFilters();
+        	} else {
+	        	$scope.clearUnsavedFilters()
+        	}
         })
 
         $scope.clearUnsavedFilters = function() {
@@ -240,7 +244,9 @@ angular.module("shiptech.components").controller("FiltersController", [
                 }
             });
             $rootScope.rawFilters = clearedFilters;
-            $scope.applyFilters($rootScope.rawFilters, true);
+            $timeout(function(){
+	            $scope.applyFilters($rootScope.rawFilters, true);
+            })
         };
 
         $scope.$on("clearUnsavedFilters", function (event) {
@@ -680,6 +686,17 @@ angular.module("shiptech.components").controller("FiltersController", [
             return $q(function(resolve, reject) {
                 // send default config to table build
                 // no default config, send false
+                
+                if ($rootScope.rawFilters && $state.current.url != '/schedule-dashboard-table') {
+			            $scope.packedFilters = $scope.packFilters($rootScope.rawFilters);
+			            $scope.packedFilters.raw = $rootScope.rawFilters;
+			            if ($rootScope.sortList) {
+			                $scope.packedFilters.sortList = $rootScope.sortList;
+			            }
+                }
+
+                // test = $scope.packFilters($rootScope.rawFilters);
+                // console.log($rootScope.rawFilters);
                 resolve($scope.packedFilters);
                 // $scope.$apply();
                 // $scope.$watch("noDefault", function(newVal) {
