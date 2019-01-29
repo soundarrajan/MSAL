@@ -41,10 +41,10 @@
 									<td class="padding">{{value.seller.name}}</td>
 									<td class="padding">{{value.contract.name}}</td>
 									<td class="padding">{{value.product.name}}</td>
-									<td class="padding">{{value.contractMaxQuantity}}</td>
-									<td class="padding">{{value.plannedQuantity}}</td>
-									<td class="padding">{{value.utilizedQuantity}}</td>
-									<td class="padding">{{value.availableQuantity}}</td>
+									<td class="padding">{{value.contractMaxQuantity | number:$ctrl.numberPrecision.quantityPrecision}}</td>
+									<td class="padding">{{value.plannedQuantity | number:$ctrl.numberPrecision.quantityPrecision}}</td>
+									<td class="padding">{{value.utilizedQuantity | number:$ctrl.numberPrecision.quantityPrecision}}</td>
+									<td class="padding">{{value.availableQuantity | number:$ctrl.numberPrecision.quantityPrecision}}</td>
 					            </tr>		            
 					        </tbody>
 					    </table>
@@ -78,7 +78,7 @@
 					            <tr ng-repeat="(key, value) in $ctrl.procurementContractPlanningSummary.unplannedQuantitySummary">
 									<td class="padding">{{value.bunkeringLocation.name}}</td>
 									<td class="padding">{{value.product.name}}</td>
-									<td class="padding">{{value.unplannedQuantity}}</td>
+									<td class="padding">{{value.unplannedQuantity | number:$ctrl.numberPrecision.quantityPrecision}}</td>
 					            </tr>		            
 					        </tbody>
 					    </table>

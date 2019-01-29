@@ -2623,7 +2623,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             return vm.contractPlanningContractTypeaheadOptions["r" + parseFloat(rowId - 1)];
         };
 
-        $scope.updateMinMaxQuantities = function(rowIdx, productId){
+        $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){
             
             ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows
@@ -2650,6 +2650,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)
+                    callback();
                 } else {
                     maxEdit = 0;
                     minEdit = 0;
@@ -2660,7 +2661,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
-                    $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)                  
+                    $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)   
+                    callback();               
                 }
             })
 
@@ -2702,11 +2704,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             $('[ng-model="CLC.cpCtr['+rowIdx+']"]').addClass("ng-dirty")                                
                             vm.clearContractLinkCP(rowIdx);    
                         }
-                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     }
                     if (!isOnInit) {
                         setTimeout(function(){
-                            $scope.updateMinMaxQuantities(rowIdx, value.id)
+                            $scope.updateMinMaxQuantities(rowIdx, value.id, function(){
+		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                            })
                         })
                     }
                 } else {
