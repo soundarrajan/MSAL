@@ -201,11 +201,14 @@ window.increment = 0;
 	                                    	if ($rootScope.adminConfiguration) {
 		                                    	if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
 		                                    		if (callback.clc.table_name == "Available Contracts") {
-		                                    			$.each(callback.clc.colModel, function(k,v){
-		                                    				if (v.label == "Allowed Products") {
-		                                    					callback.clc.colModel.splice(k,1);
+		                                    			for (var i = callback.clc.colModel.length - 1; i >= 0; i--) {
+		                                    				callback.clc.colModel[i]
+		                                    				if (callback.clc.colModel[i].label == "Allowed Products") {
+		                                    					callback.clc.colModel.splice(i,1);
 		                                    				}
-		                                    			})
+		                                    			}
+		                                    			// $.each(callback.clc.colModel, function(k,v){
+		                                    			// })
 		                                    		}
 		                                    	}                                            
 	                                    	}                                            
