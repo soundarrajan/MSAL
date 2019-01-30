@@ -211,6 +211,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                     ctrl.request.locations[i].products[j].workflowId = null;
                                     ctrl.request.locations[i].products[j].requestLocationId = null;
                                     ctrl.request.locations[i].products[j].contract = null;
+                                    ctrl.request.locations[i].products[j].contractProductId = null;
                                     ctrl.request.locations[i].products[j].comments = null;
                                     //get cancel action
                                     cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
