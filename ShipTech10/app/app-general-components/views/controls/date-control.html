@@ -38,7 +38,7 @@
                 'bg-grey': $eval(field.Disabled) || field.Disabled == true ? true : false ||  field.disabled == true ? true : false
              }"
              dynamic-model="'formatDates.formValues.' + field.Unique_ID "
-             ng-change="CM.setValue({
+             ng-blur="CM.setValue({
                                    path: 'formValues.' + field.Unique_ID,
                                    root: '$scope',
                                    pickerId: 'dp_' + field.Unique_ID,
