@@ -294,7 +294,7 @@
 	                                <input type="text" format="number" ng-model="minMaxModalEdit.minQuantity" class="form-control" placeholder="Min" ng-blur="$ctrl.minQtyBlur()" />
 	                            </div>
 	                            <div class="col-sm-5 no-padding">
-	                                <select ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id" ng-model="qtyUom" class="select form-control"></select>
+	                                <select ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id" ng-model="minMaxModalEdit.qtyUom" class="select form-control"></select>
 	                            </div>
 	                        </div>
 	                        <div class="col-sm-6">
@@ -302,7 +302,7 @@
 	                                <input type="text" format="number" ng-model="minMaxModalEdit.maxQuantity" class="form-control" placeholder="Max" />
 	                            </div>
 	                            <div class="col-sm-5 no-padding">
-	                                <select ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id" ng-model="qtyUom" class="select form-control"></select>
+	                                <select ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id" ng-model="minMaxModalEdit.qtyUom" class="select form-control"></select>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -312,7 +312,7 @@
 	            <br />
 	            <div class="row">
 	                <div class="col-sm-12">
-	                    <a class="btn btn-outline orange pull-right" ng-click="$ctrl.saveMinMaxModal(minMaxModalEdit.minQuantity, minMaxModalEdit.maxQuantity, qtyUom)" data-dismiss="modal">
+	                    <a class="btn btn-outline orange pull-right" ng-click="$ctrl.saveMinMaxModal(minMaxModalEdit.minQuantity, minMaxModalEdit.maxQuantity, minMaxModalEdit.qtyUom)" data-dismiss="modal">
 	                        Save
 	                    </a>
 	                </div>

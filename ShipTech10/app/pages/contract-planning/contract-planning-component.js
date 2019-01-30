@@ -832,7 +832,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
 		ctrl.openMinMaxModalEdit = function(rowData) {
             console.log(rowData);
-            $scope.minMaxModalEdit = null;
+            $timeout(function() {
+	            $scope.minMaxModalEdit = null;
+            },50)
             // $scope.minMaxModalEdit = $scope.minMaxModalEdit;
             $timeout(function() {
 	            $scope.minMaxModalEdit = rowData
@@ -843,7 +845,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 	$compile($("#minMaxModal"))($scope)
 		        	$("#minMaxModal").modal();
                 })
-            },10)
+            },100)
         }
         $(document).on("click",".contract_planning_min_max_qty_wrap a", function(e){
         	e.preventDefault()
