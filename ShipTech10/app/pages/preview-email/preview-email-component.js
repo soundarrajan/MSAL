@@ -685,9 +685,18 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             clearEmailInputs();
         };
         ctrl.removeEmail = function(email, list) {
+        	$('[tooltip]').tooltip('destroy');
             console.log(email);
             list.splice(email, 1);
+            setTimeout(function(){
+	            $('[tooltip]').tooltip();
+            },100)
         };
+        jQuery(document).ready(function($){
+        	$(document).on("mouseover", '*[tooltip]', function(){
+	            $('[tooltip]').tooltip();
+        	})
+        })
 
         function clearEmailInputs() {
             ctrl.toEmail = "";
