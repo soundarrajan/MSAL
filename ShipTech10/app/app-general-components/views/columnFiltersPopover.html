@@ -44,7 +44,7 @@
 
 		                    	 {{columnFilters[column][key].column.columnType == 'DateOnly'
 		                    	 ? renderColumnType = 'Date' 
-		                    	 : renderColumnType = columnFilters[column][key].column.columnType}}		                    	 
+		                    	 : '' }}		                    	 
                             	</span>
                                 <select ng-model="columnFilters[column][key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition"
                                     ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue "
