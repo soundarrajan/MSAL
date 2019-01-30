@@ -322,7 +322,7 @@
                      <input class="date-only formatted-date-input"
                         ng-style="!CM.isEditable && {'background-color': '#eef1f5 !important'}"
                         ng-model="formatDates.formValues.bdnDate" 
-                        ng-change="CM.setValue({
+                        ng-blur="CM.setValue({
                             path: 'formValues.bdnDate',
                             root: '$scope',
                             pickerId: 'bdnDate'

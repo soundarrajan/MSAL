@@ -592,7 +592,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellCondition: '!grid.appScope.fVal().formValues.productDetails[grid.appScope.rowIdx(row)].manualPricingDateOverride || grid.appScope.fVal().adminConfiguration.procurement.price.pricingDateStopOption.name != "Invoice" ',
                         cellConditionType: "ng-disabled",
                         cellObject: {
-                            type: "date"
+                            type: "date",
+                            path : 'formValues.productDetails'
                         }
                     },
                     {

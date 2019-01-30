@@ -6469,12 +6469,38 @@
 
         vm.formatDateTimeReverse = function (value, simpleDate){
             var val = null;
-            if(simpleDate) val = moment(value, vm.DATE_OPTIONS.momentFormatDateOnly, true)
+            if(simpleDate) {
+            	if (vm.DATE_OPTIONS) {
+	            	val = moment(value, vm.DATE_OPTIONS.momentFormatDateOnly, true)
+            	}
+            }
             else val = moment(value, vm.DATE_OPTIONS.momentFormat, true)
         
-            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
+        	if (val) {
+	            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
+        	}
             return null;
         }
+
+		vm.formatDateTimeForDB = function(value, simpleDate, dateFormat, event){
+			console.log(event.target);
+			if (dateFormat) {
+				if (simpleDate) {
+			        dateFormat = dateFormat
+			            .replace(/d/g, "D")
+			            .replace(/y/g, "Y")
+			            .split(" ")[0];        			
+			    	val = moment(value, dateFormat, true)
+			    	if (val) {
+						if ($(event.target).hasClass("date-only")) {
+							$(event.target).next(".date-picker").datetimepicker('setDate', new Date( val.format('YYYY-MM-DDTHH:mm:ss') ) )
+						}
+			            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
+			    	}
+				}
+				
+			}
+		}
 
         jQuery(document).ready(function(){
         	$(".date-picker").on("mouseover", function(){

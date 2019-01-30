@@ -1,45 +1,46 @@
-<!--
-<div class="input-group date-picker date form_meridian_datetime" ng-controller="Controller_Master as CM" ng-init="CM.datepickers(null,null, col.colDef.cellObject.type, col.colDef.cellObject.unique )" ng-class="expression">
-    <input class="form-control" type="text" ng-model="MODEL_COL_FIELD" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}" ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false" />
-    <span class="formatted-date"  ng-bind="CM.formatDate(MODEL_COL_FIELD, 'dd/MM/yyyy')"></span>
-    <span class="input-group-btn"  dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
-        <button class="btn default date-set" type="button"  dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
+<div class="input-group" ng-controller="Controller_Master as CM" ng-init="CM.datepickers(null,null, col.colDef.cellObject.type, col.colDef.cellObject.unique )" ng-class="expression" >
+    <input ng-controller="Controller_Master as CM"  style="position: relative;"  class="formatted-date form-control formatted-date-input date-only" ng-model="formatDates.MODEL_COL_FIELD" ng-blur="MODEL_COL_FIELD = CM.formatDateTimeForDB(formatDates.MODEL_COL_FIELD, true, tenantSetting.tenantFormats.dateFormat.name.split(' ')[0], $event)" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}"/>
+    <span class="input-group-btn date-picker date form_meridian_datetime"  dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
+	    <input class="form-control hidden" type="text" ng-model="MODEL_COL_FIELD" ng-change="formatDates.MODEL_COL_FIELD = CM.formatDate(MODEL_COL_FIELD, tenantSetting.tenantFormats.dateFormat.name.split(' ')[0])"  ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}"/>
+        <button class="btn default date-set" type="button" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}" >
             <i class="fa fa-calendar"></i>
         </button>
     </span>
+	<span ng-init="formatDates.MODEL_COL_FIELD = CM.formatDate(MODEL_COL_FIELD, tenantSetting.tenantFormats.dateFormat.name.split(' ')[0]); CM.initMask()"></span>
 </div>
--->
 
-<div class="input-group" ng-controller="Controller_Master as CM" ng-init="CM.initMask(); CM.datepickers(null, null, col.colDef.cellObject.type, col.colDef.cellObject.unique)" ng-class="expression">
+
+
+<!-- <div class="input-group" ng-controller="Controller_Master as CM" ng-init="CM.initMask(); CM.datepickers(null, null, col.colDef.cellObject.type, col.colDef.cellObject.unique)" ng-class="expression">
     <span ng-init="CM.setValue({
-        path: 'row[\'entity\'][\'date\']',
+        path: col.colDef.cellObject.path[rowRenderIndex][col.colDef.name],
         root: '$scope',
-        pickerId: 'rowEntityDate'
+        pickerId: 'rowEntityDate_{{ rowRenderIndex }}'
     }, 1, true)" 
     ng-if="row['entity']['date']"></span>
 
     <input class="formatted-date-input date-only" 
-          ng-model="formatDates.row['entity']['date']"
+          ng-model="MODEL_COL_FIELD"
           ng-change="CM.setValue({
-            path: 'row[\'entity\'][\'date\']',
+            path: col.colDef.cellObject.path[rowRenderIndex][col.colDef.name],
             root: '$scope',
-            pickerId: 'rowEntityDate'
+            pickerId: 'rowEntityDate_{{ rowRenderIndex }}'
           }, 2, true)" 
           ng-focus="inputFocus['rowEntityDate'] = true; $event.stopPropagation(); event = $event" 
           ng-blur="inputFocus['rowEntityDate'] = false;" 
           ng-invalid="{{ CM.invalidDate['rowEntityDate'] && !inputFocus['rowEntityDate']"
           name="rowEntityDate">
 
-    <span class="input-group-btn date-picker date form_meridian_datetime" id="rowEntityDate_{{ colRenderIndex }}">
-        <input class="form-control hidden-form-input" type="text" id="RowEntity_{{ colRenderIndex }}_Date" ng-model="row['entity']['date']"
+    <span class="input-group-btn date-picker date form_meridian_datetime" id="rowEntityDate_{{ rowRenderIndex }}">
+        <input class="form-control hidden-form-input" type="text" id="RowEntity_{{ rowRenderIndex }}_Date" ng-model="MODEL_COL_FIELD"
 	        name="rowEntityDate" ng-change="CM.setValue({
-	            path: 'row[\'entity\'][\'date\']',
+	            path: col.colDef.cellObject.path[rowRenderIndex][col.colDef.name],
 	            root: '$scope',
-	            pickerId: 'rowEntityDate'
+	            pickerId: 'rowEntityDate_{{ rowRenderIndex }}'
 	        }, 1, true)"
         visibility="hidden" />
         <button class="btn default date-set" type="button">
             <i class="fa fa-calendar"></i>
         </button>
     </span>
-</div>
+</div> -->
