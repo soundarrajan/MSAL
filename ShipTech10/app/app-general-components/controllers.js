@@ -1072,7 +1072,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var formatOnlyDate = function(cellValue, options, rowObject) {
                     var tpl = '<span class="formatter">:content</span>';
                     var element = tpl;
-                    formattedDate = $filter("date")(cellValue, "dd/MM/yyyy");
+                    formattedDate = $filter("date")(cellValue, $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0]);
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
                             formattedDate = "";
@@ -1094,7 +1094,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat, "UTC");
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
-                        formattedDate = $filter("date")(cellValue, "dd/MM/yyyy", "UTC");
+                        formattedDate = $filter("date")(cellValue, dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0], "UTC");
                     }
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
