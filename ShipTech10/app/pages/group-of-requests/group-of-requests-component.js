@@ -6553,6 +6553,24 @@ ctrl.setProductData = function(data, loc) {
             $event.stopPropagation();
         }
 
+        ctrl.calculateProductColumnWidth = function() {
+        	numberOfRequests = 0;
+        	numberOfProducts = 0;
+        	$.each(ctrl.requests, function (reqK, reqV) {
+        		numberOfRequests += 1;
+                $.each(reqV.locations, function (locK, locV) {
+                    $.each(locV.products, function (prodK, prodV) {
+		        		numberOfProducts += 1;
+                    })
+                })
+            })
+            width = null;
+            if (numberOfRequests == 1 && numberOfProducts < 5) {
+            	width = 100 / numberOfProducts + "%";
+            }
+            return width
+        }
+
 
     }
 ]);

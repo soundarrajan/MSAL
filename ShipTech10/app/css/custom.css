@@ -4355,3 +4355,6 @@ table#new_order_products td {
     position: relative;
     left: 5px;
 }
+#group_of_requests_table.table-condensed > thead > tr > th, #group_of_requests_table.table-condensed > thead > tr > td {
+	padding: 0px !important;
+}

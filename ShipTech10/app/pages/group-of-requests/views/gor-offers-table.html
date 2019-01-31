@@ -12,7 +12,7 @@
         <thead style="background: #fff;">
             
             <tr>
-                <th  colspan="{{$ctrl.calculateFirsRowColSpan()}}" class="vessel-header text-uppercase font-white" style="background:#557b83; padding: 0px;">
+                <th  colspan="{{$ctrl.calculateFirsRowColSpan()}}" class="vessel-header text-uppercase font-white" style="background:#557b83; padding: 0px; padding-left: 2px !important">
                     
                     <div style="display: inline-block; vertical-align: middle; padding: 2px;">
                             Counterparty Details
@@ -59,7 +59,7 @@
             </tr>
     
             <tr>
-                <th colspan="7" style="position: relative;">
+                <th colspan="7" style="position: relative; padding-left: 2px !important">
                     <form class="form-inline">
                         <div class="form-group-sm">
                             <label class="mt-checkbox mt-checkbox-outline" ng-if="$ctrl.shouldDisplayCounterpartyTypeFilter(2)" style="padding-left: 20px; margin-left:5px; margin-right:5px;">
@@ -202,8 +202,8 @@
                         <div ng-repeat="product in requestProducts" class="form-group-sm">
                             
                             <label class="control-label st-product-name"><strong>{{product.product.name}}</strong></label>
-                            <select ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
-                            </select>
+                            <!-- <select ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
+                            </select> -->
                             <hr ng-hide="$last"/>
                         </div>
                     </form>
@@ -224,13 +224,13 @@
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
                     TOTAL
                 </th>
-                <th ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 180px; max-width: 180px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f;">
+                <th width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 160px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
                     <form class="form-inline" style="width: calc(100% - 20px);">
                         <div class="form-group-sm">
                             
-                            <label class="control-label font-dark" style="margin-top:6px; width: 50%"><b>{{product.product.name}}</b></label>
-                            <select style="width: 50%" ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control pull-right" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
-                            </select>
+                            <label class="control-label font-dark" style="margin-top:6px;"><b>{{product.product.name}}</b></label>
+                            <!-- <select style="width: 50%" ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control pull-right" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
+                            </select> -->
                         </div>
                        
                     </form>
@@ -360,7 +360,7 @@
                             {{maxQuantityUom = $ctrl.getProductMaxQuantityOnLocation(product, location)['uom']}}
                         </span>
                         <span style="margin-top:10px; float: left;">
-	                        <strong> Quantity </strong>
+	                        <strong> Qty </strong>
                         </span>
                         <div class="input-group pull-right" style=" max-width: 110px; float: right;">
                             <input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" disabled ng-model="maxQuantity">
@@ -446,7 +446,7 @@
                     </div>
                 </td>
                 <!-- End collapsed request tab -->
-                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border border-selected-left" colspan="{{$ctrl.counterpartyDetailsIsExpanded ? 3 : 2}}" style="min-width: 145px;" >
+                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border border-selected-left" colspan="{{$ctrl.counterpartyDetailsIsExpanded ? 3 : 2}}" style="min-width: 145px; max-width: 166px;" >
                     <div ng-repeat="individualLocation in location" ng-if="individualLocation.requestId === requestProducts[0].requestId" class="form-group-sm form-inline" style="box-shadow: 0px 0px 8px 1px #3641504f;padding:5px;border: 1px solid #d1d8dd;">
                         <label class="control-label"><strong> ETA: </strong></label>
                         <b>
@@ -460,13 +460,12 @@
                     </div>
                 </td>
     
-                <td ng-repeat-start="productTop in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"
+                <td ng-repeat-start="productTop in requestProducts" style="position: relative;" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"
     
                     ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                     <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
-                        <span style="line-height: 40px;">Price</span>
-                        <span class="pull-right bg-grey-cascade font-white" style="padding: 5px;" tooltip tooltiptrigger="hover" data-html="true" data-placement="top" data-original-title="{{$ctrl.getMarketPricePopup(product, location)}}">
-                            Market <br>
+                        <span style="line-height: 40px;"><b>Market Price</b></span>
+                        <span class="pull-right bg-grey-cascade font-white" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" tooltip tooltiptrigger="hover" data-html="true" data-placement="top" data-original-title="{{$ctrl.getMarketPricePopup(product, location)}}">
                             <span class="pull-right">
                                 {{maxQuantity.quotePrice != null ? (maxQuantity.quotePrice | number : $ctrl.numberPrecision.amountPrecision) : "-"}}
                             </span>
@@ -641,7 +640,7 @@
                     </span>
     
                 </td>
-                <td class="text-center">
+                <td class="text-center" style="max-width: 35px">
                     <!-- tooltip tooltiptrigger="hover" data-placement="top" data-original-title="{{seller.isNotInterested == true ? seller.notInterestedComments : ''}}" -->
                     <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true" ng-mouseout="tooltip['seller.id'] = false">
                         <i class="fa fa-ban" style="position: absolute;left: -2px;font-size: 29px;top: 3px; opacity:0.9" ng-if="seller.isNotInterested == true"></i>
@@ -653,7 +652,7 @@
                         <i class="fa fa-users font-dark"></i>
                     </a>
                 </td>
-                <td>
+                <td style="max-width: 35px">
                     <div style="text-align: center;">
                         <span class="badge bg-dark bg-font-grey-gallery">
                             <i class="fa fa-star"></i>
