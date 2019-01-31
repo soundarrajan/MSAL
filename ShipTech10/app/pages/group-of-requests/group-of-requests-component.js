@@ -35,7 +35,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "screenLoader",
     "listsModel",
     "$tenantSettings",
-    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings) {
+    "$sce",
+    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings, $sce) {
         $scope.STATE = STATE;
         var ctrl = this;
         var groupId = $stateParams.groupId;
@@ -6566,9 +6567,13 @@ ctrl.setProductData = function(data, loc) {
             })
             width = null;
             if (numberOfRequests == 1 && numberOfProducts < 5) {
-            	width = 100 / numberOfProducts + "%";
             }
+            	width = 100 / numberOfProducts + "%";
             return width
+        }
+
+        ctrl.trustAsHtml = function(html){
+        	return $sce.trustAsHtml(html);
         }
 
 

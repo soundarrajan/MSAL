@@ -465,7 +465,9 @@
                     ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                     <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
                         <span style="line-height: 40px;"><b>Market Price</b></span>
-                        <span class="pull-right bg-grey-cascade font-white" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" tooltip tooltiptrigger="hover" data-html="true" data-placement="top" data-original-title="{{$ctrl.getMarketPricePopup(product, location)}}">
+
+                        <span class="pull-right bg-grey-cascade font-white" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="marketPrice['seller.id + product.id'] = true" ng-mouseout="marketPrice['seller.id + product.id'] = false">
+							<span style="z-index: 999" class="groupOfRequestTableTooltip" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
                             <span class="pull-right">
                                 {{maxQuantity.quotePrice != null ? (maxQuantity.quotePrice | number : $ctrl.numberPrecision.amountPrecision) : "-"}}
                             </span>
