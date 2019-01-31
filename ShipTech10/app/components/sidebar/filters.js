@@ -544,6 +544,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
             }, 100);
         };
+        ctrl.datepickers = function() {
+        	$scope.datepickers();
+        }
+
         $scope.formatDate = function(elem, dateFormat) {
             // console.log(1)
             if (elem) {
