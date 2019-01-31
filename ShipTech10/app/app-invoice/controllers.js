@@ -837,6 +837,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                     formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate;
                     formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
                     formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
+                    calculateGrand(formValues);
                     return;
                 }
                 $scope.getUomConversionFactor($scope.CM.product, 1, quantityUom, rateUom, function(response) {
