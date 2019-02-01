@@ -193,6 +193,11 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
 
                             $scope.formValues.specGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0].specGroup.name;
                         }
+                        var products = [];
+                        $.each(response.products, function(k, v) {
+                            products.push(v.product);
+                        });
+                        $scope.options['Product'] = products;
                     }
                     if (typeof ($scope.formValues.reconMatch) != 'undefined') {
                         if ($scope.formValues.reconMatch.name) {
