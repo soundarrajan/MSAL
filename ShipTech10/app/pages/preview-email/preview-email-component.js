@@ -529,7 +529,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             	}
             }
             if (ctrl.transaction == EMAIL_TRANSACTION.ORDER) {
-        		if (ctrl.email.comment.emailTemplate.name == 'SpotOrderConfirmationToSellerEmail' || ctrl.email.comment.emailTemplate.name == 'ContractOrderConfirmationToSellerEmail') {
+        		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
 	                orderModel.sendOrderCommand('confirmToSeller', ctrl.email.businessId).
 	                then(function (response) {
 	                	window.history.back();
@@ -539,7 +539,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                });            			
         			return;
         		}
-        		if (ctrl.email.comment.emailTemplate.name == 'SpotOrderConfirmationToVesselEmail' || ctrl.email.comment.emailTemplate.name == 'ContractOrderConfirmationToVesselEmail') {
+        		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToVessel') != -1) {
 	                orderModel.sendOrderCommand('confirmToAll', ctrl.email.businessId).
 	                then(function (response) {
 	                	window.history.back();
@@ -549,7 +549,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                });            			
         			return;
         		}  
-        		if (ctrl.email.comment.emailTemplate.name == 'OrderConfirmationToLabEmail') {
+        		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToLab') != -1) {
 	                orderModel.sendOrderCommand('confirmToLab', ctrl.email.businessId).
 	                then(function (response) {
 	                	window.history.back();
@@ -559,7 +559,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                });            			
         			return;
         		} 
-        		if (ctrl.email.comment.emailTemplate.name == 'OrderConfirmationToSurveyorEmail') {
+        		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToSurveyor') != -1) {
 	                orderModel.sendOrderCommand('confirmToSurveyor', ctrl.email.businessId).
 	                then(function (response) {
 	                	window.history.back();
@@ -720,12 +720,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     if (ctrl.email.comment.emailTemplate.name == "ContractOrderConfirmationEmail") {
                         if (!ctrl.data.canSendConfirm) return false; 
                     }
-                    if (ctrl.email.comment.emailTemplate.name == "SpotOrderConfirmationToSellerEmail" ||
-                    	ctrl.email.comment.emailTemplate.name == "ContractOrderConfirmationToSellerEmail") {
+                    if (ctrl.email.comment.emailTemplate.name.indexOf("ConfirmationToSeller") != -1 ) {
                         if (!ctrl.data.canSendConfirmToSeller) return false; 
                     }
-                    if (ctrl.email.comment.emailTemplate.name == "SpotOrderConfirmationToVesselEmail" ||
-                    	ctrl.email.comment.emailTemplate.name == "ContractOrderConfirmationToVesselEmail") {
+                    if (ctrl.email.comment.emailTemplate.name.indexOf("ConfirmationToVessel") != -1) {
                         if (!ctrl.data.canSendConfirmToVessel) return false; 
                     }                    
                 }else{

@@ -44,6 +44,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
         ctrl.disabledProduct = [];
         tenantService.emailSettings.then(function (settings) {
+        	ctrl.emailConfiguration = settings.payload;
             $.each(settings.payload, function (k, v) {
                 if (v.process == "Order Confirmation to Lab Email") {
                     ctrl.orderConfirmationEmailToLabs = v.emailType;
@@ -1501,14 +1502,23 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
             }
             if (command == 'confirmToLab') {
-            	if (ctrl.orderConfirmationEmailToLabs.name == 'Manual') {
+        		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
+        		if (minProductType) {
+        			minProductTypeId = minProductType.productType.productTypeGroup.id;
+        		}
+        		foundEmailTemplates = _.filter(ctrl.emailConfiguration, function(email) {
+        			if (email.productTypeGroup) {
+					    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf("Confirmation to Lab") != -1;
+        			}
+				});
+            	if (foundEmailTemplates[0].emailType.name == "Manual") {
 	             //    ctrl.orderConfirmationEmailToLabs = v.emailType;
             		// ctrl.emailToLabsTemplate = v.template;
               //       ctrl.orderConfirmationEmailToSurveyor = v.emailType;
             		// ctrl.emailToSurveyor = v.template;
 	                var data = {
 	                    orderId: ctrl.orderId,
-                        defaultTemplate : ctrl.emailToLabsTemplate,
+                        defaultTemplate : foundEmailTemplates[0].template,
                         canSendConfirm : true,
                         command: command
                     };
@@ -1521,10 +1531,21 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }
             if (command == 'confirmToSurveyor') {
-            	if (ctrl.orderConfirmationEmailToSurveyor.name == 'Manual') {
+        		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
+        		if (minProductType) {
+        			minProductTypeId = minProductType.productType.productTypeGroup.id;
+        		}
+        		foundEmailTemplates = _.filter(ctrl.emailConfiguration, function(email) {
+        			if (email.productTypeGroup) {
+					    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf("Confirmation to Surveyor") != -1;
+        			}
+				});
+				console.log(foundEmailTemplates);
+
+            	if (foundEmailTemplates[0].emailType.name == "Manual") {
 	                var data = {
 	                    orderId: ctrl.orderId,
-                        defaultTemplate : ctrl.emailToSurveyorTemplate,
+                        defaultTemplate : foundEmailTemplates[0].template,
                         canSendConfirm : true,
                         command: command
                     };
@@ -1544,11 +1565,26 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 		            		isContractOrder = true;
             			}
             		})
+
+            		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
+            		if (minProductType) {
+            			minProductTypeId = minProductType.productType.productTypeGroup.id;
+            		}
+            		foundEmailTemplates = _.filter(ctrl.emailConfiguration, function(email) {
+            			if (email.productTypeGroup) {
+						    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf("Confirmation to Seller") != -1;
+            			}
+					});
+            		console.log(foundEmailTemplates);
+
             		if (!isContractOrder) {
+            			defaultTemplate = _.filter(foundEmailTemplates, function(email) {
+						    return email.process.indexOf("Contract") == -1;
+						});
 		            	if (ctrl.confirmToSellerManual) {
 			                var data = {
 			                    orderId: ctrl.orderId,
-		                        defaultTemplate : ctrl.confirmToSellerTemplate,
+		                        defaultTemplate : defaultTemplate[0].template,
 		                        canSendConfirmToSeller : !ctrl.ConfirmToSellerDisabled,
 		                        canSendConfirmToVessel : !ctrl.ConfirmToVesselDisabled,
 		                        command: command
@@ -1561,10 +1597,13 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 			                return false;
 		            	}
             		} else {
+            			defaultTemplate = _.filter(foundEmailTemplates, function(email) {
+						    return email.process.indexOf("Contract") != -1;
+						});
 		            	if (ctrl.confirmToSellerContractManual) {
 			                var data = {
 			                    orderId: ctrl.orderId,
-		                        defaultTemplate : ctrl.confirmToSellerContractTemplate,
+		                        defaultTemplate : defaultTemplate[0].template,
 		                        canSendConfirmToSeller : !ctrl.ConfirmToSellerDisabled,
 		                        canSendConfirmToVessel : !ctrl.ConfirmToVesselDisabled,
 		                        command: command
@@ -1580,10 +1619,38 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	// }
             }
             if (command == 'confirmToAll') {
-            	if (ctrl.confirmToVesselManual /*&& ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop'*/) {
+        		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
+        		if (minProductType) {
+        			minProductTypeId = minProductType.productType.productTypeGroup.id;
+        		}
+        		foundEmailTemplates = _.filter(ctrl.emailConfiguration, function(email) {
+        			if (email.productTypeGroup) {
+					    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf("Confirmation to Vessel") != -1;
+        			}
+				});
+				console.log(foundEmailTemplates);
+
+        		isContractOrder = false;
+        		$.each(ctrl.data.products, function(k,v){
+        			if (v.contractId) {
+	            		isContractOrder = true;
+        			}
+        		})
+
+        		if (isContractOrder) {
+        			defaultTemplate = _.filter(foundEmailTemplates, function(email) {
+					    return email.process.indexOf("Contract") != -1;
+					});
+        		} else {
+        			defaultTemplate = _.filter(foundEmailTemplates, function(email) {
+					    return email.process.indexOf("Contract") == -1;
+					});
+        		}
+
+            	if (defaultTemplate[0].emailType.name == "Manual" /*&& ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop'*/) {
 	                var data = {
 	                    orderId: ctrl.orderId,
-                        defaultTemplate : ctrl.confirmToVesselTemplate,
+                        defaultTemplate : defaultTemplate[0].template,
                         canSendConfirmToVessel : !ctrl.data.ConfirmToVesselDisabled,
                         canSendConfirmToSeller : !ctrl.data.ConfirmToSellerDisabled,
                         command: command
