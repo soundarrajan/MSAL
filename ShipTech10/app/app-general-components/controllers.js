@@ -2156,7 +2156,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
                 vm.changedfields[entityId][name] = cellValue;
                 dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-                dateFormat = 'dd/MM/yyyy';
+                // dateFormat = 'dd/MM/yyyy';
                 tpl =
                     "<div class='input-group date date-picker' data-date-format='yyyy-mm-ddT12:00:00Z' data-provide='datepicker'><span class='dateFormatted'>{{CLC.formatDate(CLC.changedfields[" +
                     entityId +

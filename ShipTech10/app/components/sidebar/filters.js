@@ -540,6 +540,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
                 $(".date-picker").datepicker({
                     autoclose: true,
+                    format: "yyyy-mm-dd",
                     pickerPosition: "bottom-left"
                 });
             }, 100);

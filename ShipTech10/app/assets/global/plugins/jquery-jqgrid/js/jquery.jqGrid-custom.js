@@ -530,7 +530,7 @@ var Cfg = {
                             }
                         }
                     }
-    	            if (v.column.columnType == "Date") {
+    	            if (v.column.columnType == "Date" || v.column.columnType == "DateOnly") {
     	            	if (window.tenantFormatsDateFormat) {
 				            dateFormat = window.tenantFormatsDateFormat;
 				            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
