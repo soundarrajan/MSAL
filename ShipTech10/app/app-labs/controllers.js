@@ -190,14 +190,11 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                             products: response.products
                         }
                         if ($scope.formValues.product) {
-
-                            $scope.formValues.specGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0].specGroup.name;
+                            fil = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+                            if (fil) {
+                                $scope.formValues.specGroup = fil.specGroup.name;
+                            }
                         }
-                        var products = [];
-                        $.each(response.products, function(k, v) {
-                            products.push(v.product);
-                        });
-                        $scope.options['Product'] = products;
                     }
                     if (typeof ($scope.formValues.reconMatch) != 'undefined') {
                         if ($scope.formValues.reconMatch.name) {
@@ -351,7 +348,6 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 return obj[string];
             }
         }
-
         if (!$scope.optionsCache) {
             $scope.optionsCache = {};
         }
