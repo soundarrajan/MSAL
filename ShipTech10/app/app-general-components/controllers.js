@@ -2698,6 +2698,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null;
                                 vm.cpCtr[rowIdx] = null;
                                 $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", null);
+                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", null);
+                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", null);
+                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", null);
+                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", null);
+                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contractProductId", null);
                                 // vm.getContractTypeaheadListCP(rowIdx);
                                     $("#contract-planning-contract-link-"+rowIdx + ' a').remove();
                                 }
@@ -2738,16 +2743,25 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             "contractProductId": value.fullValue.contractProductId,
                             "maxQuantity": value.fullValue.maxQuantity
                         }; 
+
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", value.fullValue.seller);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", value.fullValue.formula);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", value.fullValue.fixedPrice);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", value.fullValue.premiumDiscount);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", value.fullValue.noOfDaysBeforeExpiry);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contractProductId", value.fullValue.contractProductId);                        
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "minQuantity", value.fullValue.minQuantity);                        
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "maxQuantity", value.fullValue.maxQuantity);                        
                         value.fullValue = angular.copy(contractData);               
                     }
                     $rootScope.editableCProwsModel[keyRow]['contractProductId'] = value.fullValue.contractProductId;
                     $scope.contractWasSelectedFromModal = false;
                     if (value) {
                         vm.selectContract(value.fullValue, rowIdx);
-                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                        // angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     } else {
                         vm.selectContract(null, rowIdx);
-                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                        // angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                     }
                     // $rootScope.editableCProwsModel[keyRow][columnKey] = value;
                     $('tr#' + rowIdx + '>td:nth-child(14)').prop('title', value.id);
@@ -2896,6 +2910,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMinQuantity", null);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMaxQuantity", null);
             }
+            angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowId - 1);
 
             // currentRowData = tableData[rowId];
             //    currentRowData.contract = contract.contract;

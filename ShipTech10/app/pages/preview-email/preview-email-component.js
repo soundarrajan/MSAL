@@ -455,7 +455,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     // $rootScope.refreshPending = true;
                     $timeout(function(){
 	                    $state.reload();
-                    })
+                    },200)
                     if (ctrl.state.current.name == "default.group-of-requests") {
 	                    $rootScope.$broadcast("sendEmailRFQ", ctrl.data.Requirements);
                     }
