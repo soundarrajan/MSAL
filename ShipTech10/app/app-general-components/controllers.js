@@ -2697,12 +2697,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 $rootScope.editableCProwsModel[keyRow]['contract'] = null;
                                 CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null;
                                 vm.cpCtr[rowIdx] = null;
-                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", null);
-                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", null);
-                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", null);
-                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", null);
-                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", null);
-                                $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contractProductId", null);
                                 // vm.getContractTypeaheadListCP(rowIdx);
                                     $("#contract-planning-contract-link-"+rowIdx + ' a').remove();
                                 }
@@ -2712,6 +2706,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (!isOnInit) {
                         setTimeout(function(){
+                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null
+                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].seller = null
+                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].formulaDescription = null
+                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].deliveryPrice = null
+                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].premiumDiscount = null
+                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contractProductId = null
+                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", null);
+                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", null);
+                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", null);
+                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", null);
+                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", null);
+                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contractProductId", null);
                             $scope.updateMinMaxQuantities(rowIdx, value.id, function(){
 		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                             })
@@ -2744,11 +2750,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             "maxQuantity": value.fullValue.maxQuantity
                         }; 
 
-                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", value.fullValue.seller);
-                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", value.fullValue.formula);
-                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", value.fullValue.fixedPrice);
-                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", value.fullValue.premiumDiscount);
-                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", value.fullValue.noOfDaysBeforeExpiry);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", value.fullValue.contract);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", value.fullValue.seller);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", value.fullValue.formulaDescription);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", value.fullValue.deliveryPrice);
+                        $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", value.fullValue.premiumDiscount);
                         $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contractProductId", value.fullValue.contractProductId);                        
                         $('#flat_contract_planning').jqGrid("setCell", rowIdx, "minQuantity", value.fullValue.minQuantity);                        
                         $('#flat_contract_planning').jqGrid("setCell", rowIdx, "maxQuantity", value.fullValue.maxQuantity);                        
