@@ -46,13 +46,13 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             slug: 'complete_view',
             icon: 'fa fa-folder icon-lg',
             nodes: 1
-        }, {
+        }, /*{
             id: 5,
             title: 'Filters',
             slug: 'filters',
             icon: 'fa fa-folder icon-lg',
             nodes: 1
-        }, {
+        },*/ {
             id: 6,
             title: 'Treasury Report',
             slug: 'treasuryreport',
