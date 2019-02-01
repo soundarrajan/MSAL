@@ -6805,6 +6805,16 @@ APP_API.factory("$Api_Service", [
                                     }
                                 };
                                 
+                                hasOrderId = true
+                                $.each(param.field.Filter, function(k,v){
+                                	if (v.ColumnName == 'OrderId' && v.Value == 0) {
+		                                hasOrderId = false
+                                	}
+                                })
+                                if (!hasOrderId) {
+                            		return;
+                                }
+
                                 var url = API.BASE_URL_DATA_LABS + "/api/labs/getProductDropdown";
                                 $http.post(url, apiJSON).then(function success(response) {
                                     if (response.status == 200) {
