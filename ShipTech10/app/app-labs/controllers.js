@@ -196,6 +196,13 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                             }
                         }
                     }
+                    //retrigger de dropdowns delivery, labs, products
+                    var field = new Object;
+                    field = vm.formFieldSearch($scope.formFields, 'delivery');
+                    if (field) vm.getOptions(field);
+                    field = vm.formFieldSearch($scope.formFields, 'product');
+                    if (field) vm.getOptions(field);
+                    delete field;
                     if (typeof ($scope.formValues.reconMatch) != 'undefined') {
                         if ($scope.formValues.reconMatch.name) {
                             // $state.params.title = "DEL - " + delID + " - " + $scope.formValues.order.name + ' - ' + $scope.formValues.temp.deliverysummary.vesselName;
@@ -229,13 +236,6 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     } else {
                         $state.params.status_labs = null;
                     }
-                    //retrigger de dropdowns delivery, labs, products
-                    var field = new Object;
-                    field = vm.formFieldSearch($scope.formFields, 'delivery');
-                    if (field) vm.getOptions(field);
-                    field = vm.formFieldSearch($scope.formFields, 'product');
-                    if (field) vm.getOptions(field);
-                    delete field;
                     data = {
                         'Order': $scope.formValues.order.id,
                     };
