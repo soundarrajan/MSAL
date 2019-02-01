@@ -245,7 +245,7 @@
 										<div class="input-group form_input form_input_dealDate">
 											  <input class="formatted-date-input date-only"
 											     ng-model="formatDates.formValues.products[$index].dealDate"
-											     ng-change="CM.setValue({
+											     ng-blur="CM.setValue({
 											            path: 'formValues.products['+$index+'].dealDate',
 											            root: '$scope',
 											            pickerId: 'dealDate-'+$index

@@ -459,7 +459,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "invoiceRate",
                         displayName: "Inv. Rate",
-                        width: 300,
+                        width: 200,
                         cellTemplate: $scope.dataTableTemplates.textUOM,
                         format: vm.amount,
                         cellObject: {
@@ -480,7 +480,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         format: vm.amount,
                         cellTemplate: $scope.dataTableTemplates.simpleTextUOM,
                         cellUomName: "invoiceRateCurrency",
-                        width: 200,
+                        width: 120,
                         cellObject: {
                             Disabled: true
                         }
@@ -605,12 +605,12 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "agreementType.name",
                         displayName: "Agreement",
-                        width: 200
+                        width: 130
                     },
                     {
                         name: "contractId",
                         displayName: "Contract",
-                        width: 200,
+                        width: 120,
 						cellTemplate: $scope.dataTableTemplates.link,
 						cellLink: "#/contracts/contract/edit/"                        
                     },
@@ -627,7 +627,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "reconStatus.name",
                         displayName: "Recon Status",
-                        width: 200,
+                        width: 120,
                         cellTemplate: $scope.dataTableTemplates.matchedUnmatched
                     }                    
                     
