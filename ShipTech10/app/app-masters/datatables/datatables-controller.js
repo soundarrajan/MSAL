@@ -433,7 +433,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "invoicedProduct",
                         displayName: "Inv. Product",
-                        width: 150,
+                        width: 180,
                         cellTemplate: $scope.dataTableTemplates.lookup,
                         cellObject: {
                             Name: "invoicedProduct",
@@ -598,7 +598,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     },
                     {
                         name: "pricingScheduleName",
-                        width: 150,
+                        width: 170,
                         cellTemplate: $scope.dataTableTemplates.textWithTooltip,
                         displayName: "Pricing Schedule",
                     },
@@ -627,7 +627,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "reconStatus.name",
                         displayName: "Recon Status",
-                        width: 120,
+                        width: 150,
                         cellTemplate: $scope.dataTableTemplates.matchedUnmatched
                     }                    
                     
