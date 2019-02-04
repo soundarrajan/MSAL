@@ -72,7 +72,6 @@
                         <!-- value -->
                         <div class="col-sm-12">
                             <div class="form_input">
-                                <!-- {{columnFilters[column][key].column.columnType }} -->
                                 <span ng-switch="columnFilters[column][key].condition.conditionNrOfValues">
                                     <!-- two filter values -->
                                     <span ng-switch-when="2">
@@ -181,6 +180,7 @@
                                              <!-- {{ columnFilters[column][key].column.columnType }}  -->
                                             <div ng-if="columnFilters[column][key].column.columnType == 'Number' || 
                                                         columnFilters[column][key].column.columnType == 'Quantity' ||
+                                                        columnFilters[column][key].column.columnType == 'Amount' ||
                                                         columnFilters[column][key].column.columnType == 'Price'">
                                                 <div class="between">
                                                     <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control " ng-model="columnFilters[column][key].value[0]"
