@@ -385,6 +385,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             CLC = $('#flat_contract_planning');
             rowObject = CLC.jqGrid.Ascensys.gridObject.rows[rowIndex];
 
+            // CLC.jqGrid('setRowData',rowIndex +1 ,rowObject);
+
             Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
                 var value = $rootScope.editableCProwsModel[objectKey];
                 if ("row-" + parseFloat(rowIndex + 1) == objectKey) {

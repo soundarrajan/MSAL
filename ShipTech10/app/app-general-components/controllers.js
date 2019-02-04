@@ -2706,18 +2706,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (!isOnInit) {
                         setTimeout(function(){
-                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null
-                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].seller = null
-                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].formulaDescription = null
-                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].deliveryPrice = null
-                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].premiumDiscount = null
-                        	CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contractProductId = null
-                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contract", null);
-                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "seller", null);
-                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "formulaDescription", null);
-                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "deliveryPrice", null);
-                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "premiumDiscount", null);
-                            $('#flat_contract_planning').jqGrid("setCell", rowIdx, "contractProductId", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contract", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "seller.name", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractProductId", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "formulaDescription", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "deliveryPrice", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "premiumDiscount", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "noOfDaysBeforeExpiry", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMinQuantity", null);
+			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMaxQuantity", null);
                             $scope.updateMinMaxQuantities(rowIdx, value.id, function(){
 		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                             })
