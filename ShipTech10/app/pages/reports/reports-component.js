@@ -136,7 +136,7 @@ angular.module("shiptech.pages").controller("ReportsController", [
                         if (reportType.id == 1) {
 	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent(entity_id);
                         } else if (reportType.id == 2) {
-	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=' + JSON.stringify(resp.payload.items[0].filterId));
+	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=') + resp.payload.items[0].filterId;
                         }
 
 						// <items[0].link>&GUID=<items[0].filterId>
