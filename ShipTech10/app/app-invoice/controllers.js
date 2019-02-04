@@ -459,7 +459,6 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         });
     }
     $scope.createInvoiceFromDelivery = function() {
-        screenLoader.showLoader();
         var productIds = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds;
         var orderAdditionalCostId = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId;
         var invoiceType = $("#newInvoiceType").val();
@@ -480,26 +479,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             "OrderAdditionalCostIds": orderAdditionalCostId,
             "InvoiceTypeName": invoiceType,
         }
-        Factory_Master.create_invoice_from_delivery(data, function(response) {
-            screenLoader.showLoader();
-            if (response) {
-                if (response.status == true) {
-                    $scope.loaded = true;
-                    // toastr.success(response.message);
-                    $rootScope.transportData = response.data;
-                    if(!$rootScope.transportData.paymentDate) {
-                        $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate;
-                    }
-                    localStorage.setItem('invoiceFromDelivery', angular.toJson($rootScope.transportData));
-                    window.open("/#/" + vm.app_id + '/' + 'invoice' + '/edit/', '_blank');
-                    // $location.path(vm.app_id + '/' + 'invoice' + '/edit/');
-                    // screenLoader.hideLoader();
-                } else {
-                    $scope.loaded = true;
-                    toastr.error(response.message);
-                }
-            }
-        })
+        localStorage.setItem('invoiceFromDelivery', angular.toJson(data));
+        window.open("/#/" + vm.app_id + '/' + 'invoice' + '/edit/', '_blank');
+
     }
     /*INVOICES FROM DELIVERIES*/
     /*INVOICES - CLAIMS*/

@@ -1691,8 +1691,45 @@
         };
         vm.get_master_entity = function(screenChild) {
          	if (localStorage.getItem("invoiceFromDelivery")) {
-         		$rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
-				localStorage.removeItem("invoiceFromDelivery");
+         		// $rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
+
+		        Factory_Master.create_invoice_from_delivery(angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery"))), function(response) {
+		            if (response) {
+		                if (response.status == true) {
+		                    $scope.loaded = true;
+		                    $rootScope.transportData = response.data;
+                            $scope.formValues = angular.copy($rootScope.transportData);
+		                    if(!$rootScope.transportData.paymentDate) {
+		                        $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate;
+		                    }
+	                        $scope.triggerChangeFields("InvoiceRateCurrency");
+	                        if ($scope.formValues.costDetails) {
+		                        if ($scope.formValues.costDetails.length > 0) {
+		                            $.each($scope.formValues.costDetails, function(k, v) {
+		                                if (v.product == null || v.isAllProductsCost) {
+		                                    v.product = {
+		                                        id: -1,
+		                                        name: "All"
+		                                    };
+		                                }
+		                                if (v.product.id != -1) {
+						                	v.product.productId = angular.copy(v.product.id);
+						                	if (v.deliveryProductId) {
+							                	v.product.id = v.deliveryProductId;
+						                	}
+						                }
+		                            });
+		                        }
+	                        }		                    
+		                } else {
+		                    $scope.loaded = true;
+		                    toastr.error(response.message);
+		                }
+		            }
+                    $rootScope.transportData = null;
+					localStorage.removeItem("invoiceFromDelivery");
+		        })
+
          	}
 
             vm.get_master_structure(screenChild);
@@ -1728,25 +1765,7 @@
                
                     if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
                         screenLoader.hideLoader();
-                        $scope.triggerChangeFields("InvoiceRateCurrency");
-                        if ($scope.formValues.costDetails) {
-	                        if ($scope.formValues.costDetails.length > 0) {
-	                            $.each($scope.formValues.costDetails, function(k, v) {
-	                                if (v.product == null || v.isAllProductsCost) {
-	                                    v.product = {
-	                                        id: -1,
-	                                        name: "All"
-	                                    };
-	                                }
-	                                if (v.product.id != -1) {
-					                	v.product.productId = angular.copy(v.product.id);
-					                	if (v.deliveryProductId) {
-						                	v.product.id = v.deliveryProductId;
-					                	}
-					                }
-	                            });
-	                        }
-                        }
+
                     }
                 } else {
                     if (localStorage.getItem(vm.app_id + vm.screen_id + "_copy")) {
