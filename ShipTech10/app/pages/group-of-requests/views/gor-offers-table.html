@@ -642,7 +642,7 @@
                     </span>
     
                 </td>
-                <td class="text-center" style="max-width: 35px">
+                <td class="text-center" style="max-width: 65px">
                     <!-- tooltip tooltiptrigger="hover" data-placement="top" data-original-title="{{seller.isNotInterested == true ? seller.notInterestedComments : ''}}" -->
                     <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true" ng-mouseout="tooltip['seller.id'] = false">
                         <i class="fa fa-ban" style="position: absolute;left: -2px;font-size: 29px;top: 3px; opacity:0.9" ng-if="seller.isNotInterested == true"></i>
@@ -654,7 +654,7 @@
                         <i class="fa fa-users font-dark"></i>
                     </a>
                 </td>
-                <td style="max-width: 35px">
+                <td style="max-width: 65px">
                     <div style="text-align: center;">
                         <span class="badge bg-dark bg-font-grey-gallery">
                             <i class="fa fa-star"></i>
@@ -869,11 +869,11 @@
                                     <span ng-show="!productOffer.id || seller.isCloned" >-</span>
                                     <span ng-if="productOffer.id && !seller.isCloned">
                                         <i ng-if="productOffer.price && !seller.isCloned" class="fa fa-external-link clickable pull-right" ng-click="$ctrl.setLatestOfferProduct(product, location, seller)" data-toggle="modal" href="#prices" style="line-height: 35px;margin-left: 10px;"></i>
-                                        <input ng-if="productOffer !== null && !seller.isCloned" type="text" ng-disabled="productOffer.hasNoQuote || $ctrl.priceInputsDisabled || productStatus == 'Stemmed'" class="form-control pull-right productOfferPrice" ng-model="productOffer.price" ng-focus="$ctrl.checkIfPriceChanged(productOffer.price); oldPrice = productOffer.price" style="width: calc(100% - 50px);position: absolute;right: 0; {{productOffer.price ? 'width:calc(100% - 75px);right: 25px' : '' }}" ng-blur="$ctrl.savePriceChange(productOffer.price, productOffer.id, seller, location, product)" ng-hide="productOffer.hasNoQuote" productPriceIndexNo="{{1+locationIndex+''+key+''+rpkey+''+pkey}}" ng-keydown="$ctrl.goToNextPriceInput($event)" ng-style="{'background': productOffer.quotedProduct.id !=  productTop.product.id ? 'limegreen' : null, 'color': productOffer.quotedProduct.id !=  productTop.product.id ? 'white' : null }" ng-mouseover="quotedProductTooltip['productOffer.id'] = true">
+                                        <input ng-if="productOffer !== null && !seller.isCloned" type="text" ng-disabled="productOffer.hasNoQuote || $ctrl.priceInputsDisabled || productStatus == 'Stemmed'" class="form-control pull-right productOfferPrice" ng-model="productOffer.price" ng-focus="$ctrl.checkIfPriceChanged(productOffer.price); oldPrice = productOffer.price" style="max-width:110px; width: calc(100% - 50px);position: absolute;left: 50px; {{productOffer.price ? 'width:calc(100% - 75px);left: 50px' : '' }}" ng-blur="$ctrl.savePriceChange(productOffer.price, productOffer.id, seller, location, product)" ng-hide="productOffer.hasNoQuote" productPriceIndexNo="{{1+locationIndex+''+key+''+rpkey+''+pkey}}" ng-keydown="$ctrl.goToNextPriceInput($event)" ng-style="{'background': productOffer.quotedProduct.id !=  productTop.product.id ? 'limegreen' : null, 'color': productOffer.quotedProduct.id !=  productTop.product.id ? 'white' : null }" ng-mouseover="quotedProductTooltip['productOffer.id'] = true">
                                       
                                         <span ng-style="{'color': productOffer.quotedProduct.id !=  productTop.product.id ? 'white' : 'black' }" class="groupOfRequestTableTooltip" ng-show="quotedProductTooltip['productOffer.id'] && (productOffer.quotedProduct.id != productTop.product.id)" style="top: -50%;"> {{ productOffer.quotedProduct.name }} </span>
-                                      <input class="form-control pull-left" style="width: calc(100% - 50px);position: absolute;right: 0; {{productOffer.price ? 'width:calc(100% - 75px);right: 25px' : '' }}" type="text" ng-show="productOffer.hasNoQuote" value="No Quote" disabled>
-                                      <label class="mt-checkbox mt-checkbox-outline pull-left" ng-show="productOffer.hasNoQuote" style="width: calc(100% - 50px);position: absolute;left: 0; {{productOffer.price ? 'width:calc(100% - 75px);right: 25px' : '' }}">
+                                      <input class="form-control pull-left" style="max-width:110px; width: calc(100% - 50px);position: absolute;left: 50px; {{productOffer.price ? 'width:calc(100% - 75px);left: 50px' : '' }}" type="text" ng-show="productOffer.hasNoQuote" value="No Quote" disabled>
+                                      <label class="mt-checkbox mt-checkbox-outline pull-left" ng-show="productOffer.hasNoQuote" style="width: calc(100% - 50px);position: absolute;left: 0; {{productOffer.price ? 'width:calc(100% - 75px);left: 50px' : '' }}">
 										<input type="checkbox" ng-disabled="!productAvailable" class="checkSlr" product-offer-id="{{productOffer.id}}" has-no-quote="{{productOffer.hasNoQuote}}" ng-model="$ctrl.selectedNoQuoteItems['nq'+productOffer.id]">
 										<span></span>
                                       </label>
