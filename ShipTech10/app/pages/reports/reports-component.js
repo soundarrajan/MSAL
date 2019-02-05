@@ -133,9 +133,9 @@ angular.module("shiptech.pages").controller("ReportsController", [
                         ctrl.toggled = true;
                         ctrl.showIframe = true;
                         ctrl.customReports = true;
-                        if (reportType.id == 1) {
+                        if (reportType.internalName == 'OrderToInvoice' || reportType.internalName == 'OrderNegotiation') {
 	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent(entity_id);
-                        } else if (reportType.id == 2) {
+                        } else if (reportType.internalName == 'Cashflow') {
 	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=') + resp.payload.items[0].filterId;
                         }
 
