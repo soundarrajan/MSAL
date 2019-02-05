@@ -1698,10 +1698,10 @@
 		                if (response.status == true) {
 		                    $scope.loaded = true;
 		                    $rootScope.transportData = response.data;
-                            $scope.formValues = angular.copy($rootScope.transportData);
 		                    if(!$rootScope.transportData.paymentDate) {
 		                        $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate;
 		                    }
+                            $scope.formValues = angular.copy($rootScope.transportData);
 	                        $scope.triggerChangeFields("InvoiceRateCurrency");
 	                        if ($scope.formValues.costDetails) {
 		                        if ($scope.formValues.costDetails.length > 0) {
