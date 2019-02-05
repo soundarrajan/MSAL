@@ -530,7 +530,7 @@ var Cfg = {
                             }
                         }
                     }
-    	            if (v.column.columnType == "Date" || v.column.columnType == "DateOnly") {
+    	            if (v.condition.conditionNrOfValues > 0 && (v.column.columnType == "Date" || v.column.columnType == "DateOnly")) {
     	            	if (window.tenantFormatsDateFormat) {
 				            dateFormat = window.tenantFormatsDateFormat;
 				            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
@@ -547,8 +547,6 @@ var Cfg = {
                             value = dates.join(' - ');
                         }
                     }
-                    
-
                     conditions += concat + ' <div class="filterCondition">' + v.column.columnName + " " + condition + ' <span class="filterVal">' + value + "</span></div>";
                 }
             });
