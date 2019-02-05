@@ -2569,7 +2569,8 @@ span.weightage {
 }
 
 .formatter-uom-value {
-    width: calc(100% - 40px);
+    /*width: calc(100% - 80px);*/
+    float: none;
     height: 40px;
     line-height: 36px;
     text-align: center;
