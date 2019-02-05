@@ -125,7 +125,7 @@ angular.module("shiptech.pages").controller("ReportsController", [
                     // reportSrc = $state.params.type;
                     reportType = _.find(ctrl.listsCache.ReportsCategory, function(o) {
                         // return o.name.toLowerCase() ==  "cashflow";
-                        return o.name.toLowerCase() ==  $state.params.type.toLowerCase();
+                        return o.internalName.toLowerCase() ==  $state.params.type.toLowerCase();
                     });
                     var entity_id = $state.params.entity_id ? $state.params.entity_id : "";
                     Factory_Master.getReport({ reportSrc: reportSrc, reportType: reportType.id }, function(resp) {
