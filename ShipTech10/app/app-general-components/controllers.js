@@ -2171,21 +2171,21 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 tpl = '<span ng-init="CLC.initMask(); CLC.initDatepickers()"></span>';
 
                 // wrapper
-                tpl += '<div class="input-group clc-date-input date"' +
+                tpl += '<div class="input-group clc-date-input date" style="max-width:90%" ' +
                        'ng-init="CLC.initValidityForDate(\'' +  entityId + '\',\'' + name + '\');" ' +
                        'id="clc_' + entityId + '_' + name + '">' ;
                        
                 // datepicker
                 tpl += '<input class="formatted-date-input date-only" ' + 
                         'ng-model="CLC.formatDates.changedfields[\'' + entityId + '\'][\'' + name + '\']" ' +
-                        'ng-change="CLC.setValue(' + vm.dateChange.length + ', 2, true)\" ' +
+                        'ng-blur="CLC.setValue(' + vm.dateChange.length + ', 2, true)\" ' +
                         'ng-focus="CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] = true; $event.stopPropagation();" ' +
                         'ng-blur="CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] = false;" ' +
                         'ng-invalid="{{ CLC.invalidDate[\'' + entityId + '\'][\'' + name + '\'] && !CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] }}" ' + 
                         'name="clc_' + entityId + '_' + name + '">' ;
 
                 // initialization
-                tpl += '<span ng-init="CLC.setValue(' + vm.dateChange.length + ', 1, true)" ng-if="CLC.changedfields[\'' + entityId + '\'][\'' + name + '\']"></span>';
+                tpl += '<span ng-init="CLC.setValue(' + vm.dateChange.length + ', 1, true, true)" ng-if="CLC.changedfields[\'' + entityId + '\'][\'' + name + '\']"></span>';
 
                 // datepicker wrapper
                 tpl += '<span class="input-group-btn date-picker-clc date form_meridian_datetime" id="clc_' + entityId + '_' + name + '">';
@@ -2203,7 +2203,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                 // datepiecker button + end datepicker wrapper
                 tpl += '<button class="btn default date-set" type="button">' +
-                        '<i class="fa fa-calendar"></i>' +
+                        '<i style="font-size: 14px; text-indent: -6px;" class="fa fa-calendar"></i>' +
                         '</button></span>';
 
                 // end wrapper
@@ -3265,6 +3265,21 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             // })
         });
 
+        // jQuery(document).ready(function(){
+        // 	$(document).on("mouseover", ".date-picker-clc", function(){
+
+        // 		dp = $(this).find("input");
+        // 		val = $(this).parent().find(".formatted-date-input").val();
+
+        // 		if (val && val != "") {
+		      //       var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(val, true);
+		      //       $(dp).datepicker('setDate', new Date(formattedDate));
+        // 		}
+
+        // 	})
+        // })
+
+
         // initMask %%%
         vm.initMask = function(timeout){
 
@@ -3312,7 +3327,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
         }
         // setValue %%%
-        vm.setValue = function(inputIdx, direction, simpleDate){
+        vm.setValue = function(inputIdx, direction, simpleDate, isOnInit){
 
             /**
              *  @param inputIdx - input details index in CLC.dateChange
@@ -3341,6 +3356,21 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
+                    if (vm.screen_id == "treasuryreport" && !isOnInit) {
+                    	rowId = inputDetails.pickerId.split("_")[1];
+                    	mapping = inputDetails.pickerId.split("_")[2];
+                    	vm.changedfields[rowId][mapping] = Factory_App_Dates_Processing.formatDateTimeReverse(formattedDate, simpleDate);
+                    	vm.checkChange(rowId);
+                    	// alert("Should save")
+                    }
+                    setTimeout(function(){
+		                if (vm.screen_id == "treasuryreport" && isOnInit) {
+		                	y = dateValue.split("-")[0]
+		                	m = parseFloat(dateValue.split("-")[1]) - 1 
+		                	d = dateValue.split("T")[0].split("-")[2]
+		                    $('.date-picker-clc#' + inputDetails.pickerId).datepicker('setDate', new Date(y,m,d));
+		                }
+                    })
                 },2);
             }
             if(direction == 2){
@@ -3351,6 +3381,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var copy = angular.copy(date);
                     var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
                     _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+
+                    if (vm.screen_id == "treasuryreport" && !isOnInit) {
+                    	rowId = inputDetails.pickerId.split("_")[1];
+                    	mapping = inputDetails.pickerId.split("_")[2];
+                    	vm.changedfields[rowId][mapping] = formattedDate;
+                    	vm.checkChange(rowId);
+                    }
 
                     // also change datepicker value
                     $('.date-picker-clc#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
