@@ -26,7 +26,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     "selectContractModel",
     "$http",
     "statusColors",
-    function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors) {
+    "Factory_App_Dates_Processing",
+    function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors, Factory_App_Dates_Processing) {
         var vm = this;
         vm.listsCache = $listsCache;
         vm.SCREEN_ACTIONS = SCREEN_ACTIONS;
@@ -2151,26 +2152,81 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     cellValue = "";
                 }
                 entityId = rowObject.id;
-                if (typeof vm.changedfields[entityId] == "undefined") {
-                    vm.changedfields[entityId] = {};
-                }
+
+
+                if (typeof vm.changedfields[entityId] == "undefined")  vm.changedfields[entityId] = {};
                 vm.changedfields[entityId][name] = cellValue;
+
                 dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-                // dateFormat = 'dd/MM/yyyy';
-                tpl =
-                    "<div class='input-group date date-picker' data-date-format='yyyy-mm-ddT12:00:00Z' data-provide='datepicker'><span class='dateFormatted'>{{CLC.formatDate(CLC.changedfields[" +
-                    entityId +
-                    "]." +
-                    name +
-                    ", '" +
-                    dateFormat +
-                    "')}}</span><input type='text' class='form-control hidden' readonly='' ng-change='CLC.checkChange(" +
-                    entityId +
-                    ")' ng-model='CLC.changedfields[" +
-                    entityId +
-                    "]." +
-                    name +
-                    "'> <span class='input-group-btn'> <button class='btn default' type='button'><i class='fa fa-calendar' style='font-size:15px;'></i></button> </span> </div>";
+                var obj = {
+                    path: 'changedfields[\'' + entityId + '\'][\'' + name + '\']',
+                    root: 'CLC',
+                    pickerId: 'clc_' + entityId + '_' + name
+                }
+                // dateChange
+                if(vm.dateChange === undefined)  vm.dateChange = [];
+
+        
+                // mask initialization
+                tpl = '<span ng-init="CLC.initMask(); CLC.initDatepickers()"></span>';
+
+                // wrapper
+                tpl += '<div class="input-group clc-date-input date"' +
+                       'ng-init="CLC.initValidityForDate(\'' +  entityId + '\',\'' + name + '\');" ' +
+                       'id="clc_' + entityId + '_' + name + '">' ;
+                       
+                // datepicker
+                tpl += '<input class="formatted-date-input date-only" ' + 
+                        'ng-model="CLC.formatDates.changedfields[\'' + entityId + '\'][\'' + name + '\']" ' +
+                        'ng-change="CLC.setValue(' + vm.dateChange.length + ', 2, true)\" ' +
+                        'ng-focus="CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] = true; $event.stopPropagation();" ' +
+                        'ng-blur="CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] = false;" ' +
+                        'ng-invalid="{{ CLC.invalidDate[\'' + entityId + '\'][\'' + name + '\'] && !CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] }}" ' + 
+                        'name="clc_' + entityId + '_' + name + '">' ;
+
+                // initialization
+                tpl += '<span ng-init="CLC.setValue(' + vm.dateChange.length + ', 1, true)" ng-if="CLC.changedfields[\'' + entityId + '\'][\'' + name + '\']"></span>';
+
+                // datepicker wrapper
+                tpl += '<span class="input-group-btn date-picker-clc date form_meridian_datetime" id="clc_' + entityId + '_' + name + '">';
+
+                // datepicker
+                tpl += '<input class="form-control hidden-form-input"' +
+                        'type="text"' +
+                        'id="clc_' + entityId + '_' + name + '"' +
+                        'ng-model="CLC.changedfields[\'' + entityId + '\'][\'' + name + '\']"' +
+                        'name="clc_' + entityId + '_' + name + '" ' + 
+                        'ng-change="CLC.setValue(' + vm.dateChange.length + ', 1, true);  CLC.invalidDate[\'' + entityId + '\'][\'' + name + '\'] = false;" ' + 
+                        'visibility="hidden"/>';
+               
+
+
+                // datepiecker button + end datepicker wrapper
+                tpl += '<button class="btn default date-set" type="button">' +
+                        '<i class="fa fa-calendar"></i>' +
+                        '</button></span>';
+
+                // end wrapper
+                tpl += "</div>";
+                // tpl =
+                //     "<div class='input-group date date-picker' data-date-format='yyyy-mm-ddT12:00:00Z' data-provide='datepicker'><span class='dateFormatted'>{{CLC.formatDate(CLC.changedfields[" +
+                //     entityId +
+                //     "]." +
+                //     name +
+                //     ", '" +
+                //     dateFormat +
+                //     "')}}</span><input type='text' class='form-control hidden' readonly='' ng-change='CLC.checkChange(" +
+                //     entityId +
+                //     ")' ng-model='CLC.changedfields[" +
+                //     entityId +
+                //     "]." +
+                //     name +
+                //     "'> <span class='input-group-btn'> <button class='btn default' type='button'><i class='fa fa-calendar' style='font-size:15px;'></i></button> </span> </div>";
+
+       
+
+
+                vm.dateChange.push(obj);
                 return tpl;
             };
             var ftpActiveCheckbox = function(cellValue, options, rowObject) {
@@ -3211,13 +3267,55 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
         // initMask %%%
         vm.initMask = function(timeout){
-            console.log("initMask", timeout);
+
+            var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptions();
+
+            var options =  {
+                onKeyPress: function(value, e, field, options) {
+                    // select formatter
+                    var formatUsed = "";
+                    if(field.hasClass('date-only')){
+                        formatUsed  = DATE_OPTIONS.momentFormatDateOnly;
+                    }else{
+                        formatUsed  = DATE_OPTIONS.momentFormat;
+                    }
+                    // process date
+                    var val = moment(value, formatUsed, true);
+                    // test date validity
+                    if(vm.invalidDate === undefined) vm.invalidDate = {};
+                    if(vm.invalidDate[field[0].name.split("_")[1]] === undefined) vm.invalidDate[field[0].name.split("_")[1]] = {};
+                    if(val.isValid()){
+                        vm.invalidDate[field[0].name.split("_")[1]][field[0].name.split("_")[2]] = false;
+                    }else{
+                        vm.invalidDate[field[0].name.split("_")[1]][field[0].name.split("_")[2]]= true;
+                    }
+                }
+            }
+
+
+            function init(){
+                var dateTime = $('.formatted-date-input.date-time');
+                $.each(dateTime, function(key){
+                    $(dateTime[key]).mask(DATE_OPTIONS.maskFormat, options);
+                })
+                var dateOnly = $('.formatted-date-input.date-only');
+                $.each(dateOnly, function(key){
+                    $(dateOnly[key]).mask(DATE_OPTIONS.maskFormatDateOnly, options);
+                })
+
+                if(vm.formatDates === undefined) vm.formatDates = {};
+            }
+            if(timeout){
+                setTimeout(init,2000);
+            }else{
+                init();
+            }
         }
         // setValue %%%
-        vm.setValue = function(inputDetails, direction, simpleDate){
+        vm.setValue = function(inputIdx, direction, simpleDate){
 
             /**
-             *  @param inputDetails - input path and root
+             *  @param inputIdx - input details index in CLC.dateChange
              *  check setValue function in Controller_Master for detalied parameters
              */
             var DATE_FORMAT = $scope.tenantSettings.tenantFormats.dateFormat;
@@ -3228,16 +3326,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 'CLC': vm
             }
 
+            if(typeof inputDetails === 'string') inputDetails = JSON.parse(inputDetails);
+            var inputDetails = angular.copy(vm.dateChange[inputIdx]);
+          
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
                     if(simpleDate){
                         var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = vm.formatSimpleDate(dateValue, DATE_FORMAT, app);
+                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     } else{
                         var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT);
+                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
                 },2);
@@ -3248,11 +3349,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     
                     var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
                     var copy = angular.copy(date);
-                    var formattedDate = vm.formatDateTimeReverse(copy, simpleDate);
+                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
                     _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
 
                     // also change datepicker value
-                    $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+                    $('.date-picker-clc#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
 
                 },2);
             }
@@ -3261,11 +3362,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         // init datepickers %%%
         vm.initDatepickers = function (){
             setTimeout(function() {
-                $(".date-picker").datepicker({
+                $(".date-picker-clc").datepicker({
                     autoclose: true,
                     pickerPosition: "bottom-left"
                 });
             }, 100);
+        }
+
+        //init validity for date %%%
+        vm.initValidityForDate = function(entityId, name){
+            if(vm.invalidDate === undefined) vm.invalidDate = {};
+            if(vm.invalidDate[entityId] === undefined) vm.invalidDate[entityId] = {};
+            vm.invalidDate[entityId][name] = false;
         }
         
 
