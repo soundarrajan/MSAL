@@ -130,7 +130,7 @@
     
                 <!-- Expanded request tab -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + ($ctrl.counterpartyDetailsIsExpanded ? 2 : 1 ) }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
-                    <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;line-height: 45px;color: #000;box-shadow: 0px 0px 8px 1px #3641504f;">
+                    <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;line-height: 45px;color: #000;box-shadow: 0px 0px 8px 1px #3641504f; padding: 0 5px;">
                         <label class="control-label"><b>{{request.name}} - {{request.vesselDetails.vessel.name}}</b></label>
                     </form>
                 </th>
@@ -348,7 +348,7 @@
                 <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left"></th>
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" style="display: none">incoterm</th>
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" ></th>
-                <th ng-repeat-start="productTop in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="no-top-border">
+                <th ng-repeat-start="productTop in requestProducts" class="negotiationProductTh" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="no-top-border">
                     <span ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
     <!--                 	***{{product.id}}*** -->
                     <!-- <span ng-init="product = $ctrl.setProductData(productTop, location) "> -->
