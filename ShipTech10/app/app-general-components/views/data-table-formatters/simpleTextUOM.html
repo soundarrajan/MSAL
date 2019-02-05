@@ -10,6 +10,6 @@
         <div class="formatter-uom-label currency">{{ row['entity'][col.colDef.cellUomName].name }}</div>
     </span>
 	<!-- {{row['entity']}} -->
-    <div ng-if="!col.colDef.cellObject.Formula" class="formatter-uom-value">{{ MODEL_COL_FIELD | number:(col.colDef.format ? col.colDef.format : 3 ) }}</div>
+    <div ng-if="!col.colDef.cellObject.Formula" tooltip data-original-title="{{ MODEL_COL_FIELD | number:(col.colDef.format ? col.colDef.format : 3 ) }}" class="formatter-uom-value">{{ MODEL_COL_FIELD | number:(col.colDef.format ? col.colDef.format : 3 ) }}</div>
     <div ng-if="col.colDef.cellObject.Formula" class="formatter-uom-value input"><input ng-readonly="col.colDef.cellObject.Disabled" class="form-control" type="text" ng-model="MODEL_COL_FIELD"  compute-formula="$eval(col.colDef.cellObject.Formula)"/></div>
 </span>
