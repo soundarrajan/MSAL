@@ -833,6 +833,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         $scope.clearValues = function(column, key) {
             $scope.columnFilters[column][key]["value"] = [];
+            $(".filterRules .formatted-date-input").val("");
         };
 
         $scope.setDefaultConditionType = function(column, key){
