@@ -123,11 +123,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                }
 	            }
 	            console.log("called schedule get with: ",payload);
-	            setTimeout(function(){
-		            scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, payload).then(function (response) {
-		            	showData(response);
-		            });
-	            })
+                if (initDone) {
+    	            setTimeout(function(){
+    		            scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, payload).then(function (response) {
+    		            	showData(response);
+    		            });
+    	            })
+                }
 	        })
         	
                 var conditions = $filtersData.filterConditions;
@@ -387,8 +389,8 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                     // console.log(response)
                     window.scheduleDashboardCalendarModelGetEndTime = (new Date()).getTime()
 	            	console.warn("scheduleDashboardCalendarModel.get done", window.scheduleDashboardCalendarModelGetEndTime);
-
-                    showData(response)
+                    showData(response);
+                    initDone = true;
                 });
         }
         /**
