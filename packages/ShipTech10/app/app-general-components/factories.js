@@ -230,6 +230,8 @@ APP_GENERAL_COMPONENTS.factory('Factory_General_Components', ['$http', '$Api_Ser
             }, function errorCallback(response) {
                 console.log('HTTP ERROR');
                 toastr.error("Error occured");
+            }).finally(function(){
+                toastr.error("Error occured while saving");
             });
         },
         updateDocumentVerify: function(payload, callback) {

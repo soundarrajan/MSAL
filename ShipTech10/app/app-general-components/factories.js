@@ -226,6 +226,8 @@ APP_GENERAL_COMPONENTS.factory('Factory_General_Components', ['$http', '$Api_Ser
             .then(function successCallback(response) {
                 if(response && response.status == 200){
                     callback(response.data);
+                } else {
+	                toastr.error("Error occured while saving");
                 }
             }, function errorCallback(response) {
                 console.log('HTTP ERROR');

@@ -49,6 +49,7 @@ angular.module("shiptech").config([
 			"mail/templates/listByTypeAndProcess",
 			"api/masters/companies/download",
 			"/api/recon/invoicecost",
+			"api/invoice/updateTreasuryInfo",
 			"api/procurement/request/getQuantityAverage",
     	];
 

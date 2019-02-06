@@ -2283,7 +2283,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             };
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
-                    toastr.success("Saved successfully");
+                    // toastr.success("Saved successfully");
                     $(".datepicker").hide();
                     var theCLC = $("#flat_invoices_app_complete_view_list");
                     var rowData = CLC.jqGrid.Ascensys.gridObject.rows;
