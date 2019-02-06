@@ -53,9 +53,12 @@
 	                            </label>
 	                        </td>
 	                        <td><a ng-click="$cntrl.previewRFQ(rfq)">{{rfq.rfqName}}</a></td>
-	                        <td><a ui-sref="default.edit-request({requestId: rfq.requestId})">{{rfq.requestName}}</a></td>
 	                        <td>
-	                            <label class="label label-sm bg-font-porraceous-green">{{rfq.rfqStatusDisplayName}}</label>
+	                        	<a ui-sref="default.edit-request({requestId: rfq.requestId})" >{{rfq.requestName}}</a>
+	                        </td>
+	                        <td>
+	                            <label controller="Controller_Master as CM" 
+	                        	style="display: block; width: 100%; background: {{CM.getColorCodeFromLabels(rfq.rfqStatus)}}" class="label label-sm">{{rfq.rfqStatus.displayName}}</label>
 	                        </td>
 	                        <td>{{rfq.rfqDate | utcToLocal | stDateFormat}}</td>
 	                        <td>{{rfq.quoteByDate | stDateFormat}}</td>
@@ -65,7 +68,7 @@
 	                        <td>{{rfq.minQuantity | number: $cntrl.numberPrecision.quantityPrecision}}</td>
 	                        <td>{{rfq.maxQuantity | number: $cntrl.numberPrecision.quantityPrecision}}</td>
 	                        <td>
-	                            <label class="label label-sm label-warning">{{rfq.productStatusDisplayName}}</label>
+	                            <label controller="Controller_Master as CM" style="display: block; width: 100%; background: {{CM.getColorCodeFromLabels(rfq.rfqStatus)}}" class="label label-sm">{{rfq.productStatus.displayName}}</label>
 	                        </td>
 	                    </tr>
 	                </tbody>

@@ -2140,7 +2140,7 @@
             }
 
             .st-group-of-requests-table .request-tab-expanded {
-                min-width: 550px;
+                /*min-width: 550px;*/
             }
 
             .st-group-of-requests-table .form-inline .mt-checkbox {
@@ -4363,11 +4363,11 @@ table#new_order_products td {
 
 @media (min-width:1404px) {
     #negotiation-table-fixed-container {
-    	zoom: 0.8 !important;
+    	zoom: 0.75 !important;
     }
 }
 @media (min-width:1680px) {
     #negotiation-table-fixed-container {
-    	zoom: 0.9 !important;
+    	zoom: 0.8 !important;
     }
 }

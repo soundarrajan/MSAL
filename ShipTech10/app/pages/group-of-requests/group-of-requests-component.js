@@ -6575,7 +6575,7 @@ ctrl.setProductData = function(data, loc) {
        //      if (numberOfRequests == 1 && numberOfProducts < 5) {
        //      }
 
-        	width = 100 / $(".negotiationProductTh").length + "%";
+        	width = 100 / ($(".negotiationProductTh").length / $(".negotiationLocationRowGroup").length)  + "%";
             return width
         }
 
