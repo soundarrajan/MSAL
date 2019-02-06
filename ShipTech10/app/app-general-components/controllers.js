@@ -3380,14 +3380,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
                     var copy = angular.copy(date);
                     var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
+                	if (_.get(rootMap[inputDetails.root],inputDetails.path) == formattedDate) {
+                		return
+                	}
                     _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
-
                     if (vm.screen_id == "treasuryreport" && !isOnInit) {
                     	rowId = inputDetails.pickerId.split("_")[1];
                     	mapping = inputDetails.pickerId.split("_")[2];
                     	vm.changedfields[rowId][mapping] = formattedDate;
                     	vm.checkChange(rowId);
                     }
+
 
                     // also change datepicker value
                     $('.date-picker-clc#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));

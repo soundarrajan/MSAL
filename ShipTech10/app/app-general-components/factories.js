@@ -226,6 +226,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_General_Components', ['$http', '$Api_Ser
             .then(function successCallback(response) {
                 if(response && response.status == 200){
                     callback(response.data);
+	                toastr.success("Saved successfully");
                 } else {
 	                toastr.error("Error occured while saving");
                 }
