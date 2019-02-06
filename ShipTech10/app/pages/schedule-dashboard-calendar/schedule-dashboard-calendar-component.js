@@ -302,6 +302,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, filterPayload, tablePagination, search).then(function (response) {
                 showData(response);
                 $rootScope.$broadcast('sdDataLoaded');
+                // features
             });
         };
 
@@ -347,6 +348,16 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             //ctrl.calendarDataRows = ctrl.tempData; //s.push(ctrl.tempData[100]);
         	console.warn("showData 2:", (new Date()).getTime() - window.scheduleDashboardCalendarModelGetEndTime );
             console.warn("showData 4:", (new Date()).getTime() - window.scheduleDashboardCalendarModelGetEndTime );
+
+            breadcrumbsScope = angular.element($('[ng-controller="BreadcrumbsController"] > *')).scope();
+            $timeout(function(){
+	            breadcrumbsScope.$apply(function(){
+		            breadcrumbsScope.statusList = breadcrumbsScope.getCalendarStatus();
+	            })
+            })
+            // $copmile(angular.element($('[ng-controller="BreadcrumbsController"] > *')))(breadcrumbsScope);
+			
+
         }
 
         function handleTableEvents() {

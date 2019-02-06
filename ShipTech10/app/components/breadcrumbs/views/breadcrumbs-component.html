@@ -1,4 +1,4 @@
-<div class="page-bar breadcrumbs-container" ng-class="{'no-top-margin' : state.is(STATE.SUPPLIER_PORTAL)}">
+<div class="page-bar breadcrumbs-container" ng-controller="BreadcrumbsController" ng-class="{'no-top-margin' : state.is(STATE.SUPPLIER_PORTAL)}">
     <ul class="page-breadcrumb">
         <li ng-repeat="station in state.params.path">
 

@@ -178,20 +178,20 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
 	        	console.log(new Date())
 	            if($state.current.name == STATE.DASHBOARD_TABLE || $state.current.name == STATE.DASHBOARD_CALENDAR || $state.current.name == STATE.HOME) { 
 
-		        $scope.scheduleDashboardConfigurationInterval = setInterval(function(){
 			    	if (window.scheduleDashboardConfiguration) {
-			    		clearInterval($scope.scheduleDashboardConfigurationInterval);
 
 		            	$scope.adminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.payload.labels, { displayInDashboard : true}, true);
 		                if ($scope.calendarStatuses) {
-		                	$scope.createStatusFilters()
+		                	$scope.statusList = $scope.createStatusFilters()
 		                }
 
 			    		// $scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
 				     //    statusList = ctrl.dashboardConfiguration.labels;
 			      //       selectTimeScale($stateParams.timescale);
 			    	}
-		        },500)
+			    		// clearInterval($scope.scheduleDashboardConfigurationInterval);
+		       //  $scope.scheduleDashboardConfigurationInterval = setInterval(function(){
+		       //  },500)
 
 
 	                // scheduleDashboardCalendarModel.getStatuses().then(function(data){
@@ -278,6 +278,7 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
                     $scope.statusList.push(status);
                 }
             })
+            return $scope.statusList;
         }
 
 
