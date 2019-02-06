@@ -2479,6 +2479,7 @@
             return $scope.claimsOptions;
         };
         vm.datepickers = function(id, defToday, type, unique) {
+        	console.log("Init DATEPICKER");
             if (jQuery().datepicker) {
                 // console.log(id)
                 if (id) {
@@ -2519,6 +2520,7 @@
                         $(".date-picker")
                             .not(".datetime-picker")
                             .not(".disabled")
+                            .not('[data-datepicker-init="true"]')
                             .datetimepicker({
                                 autoclose: true,
                                 format: "yyyy-mm-ddT12:00:00Z",
