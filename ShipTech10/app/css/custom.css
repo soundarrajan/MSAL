@@ -4360,3 +4360,14 @@ table#new_order_products td {
 }
 
 
+
+@media (min-width:1404px) {
+    #negotiation-table-fixed-container {
+    	zoom: 0.8 !important;
+    }
+}
+@media (min-width:1680px) {
+    #negotiation-table-fixed-container {
+    	zoom: 0.9 !important;
+    }
+}
