@@ -2771,6 +2771,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "noOfDaysBeforeExpiry", null);
 			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMinQuantity", null);
 			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMaxQuantity", null);
+							$("#flat_contract_planning").jqGrid.Ascensys.gridData[rowIdx - 1 ]["contractMaxQuantity"] = null;
+							$("#flat_contract_planning").jqGrid.Ascensys.gridData[rowIdx - 1 ]["contractMinQuantity"] = null;
+
+							$('tr#'+rowIdx+' [aria-describedby="flat_contract_planning_contractMaxQuantity"]').text(" - ");
+
                             $scope.updateMinMaxQuantities(rowIdx, value.id, function(){
 		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
                             })
