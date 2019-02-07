@@ -2511,7 +2511,8 @@
                             }
                         });
                     }
-                    setTimeout(function() {
+                    // setTimeout(function() {
+                    // }, 10);
                         //datepicker gets innitialized after datetimpepicker.
                         //if you want datetime-picker, add class datetime-picker
                         $(".date-picker")
@@ -2520,7 +2521,6 @@
                         $(".date-picker")
                             .not(".datetime-picker")
                             .not(".disabled")
-                            .not('[data-datepicker-init="true"]')
                             .datetimepicker({
                                 autoclose: true,
                                 format: "yyyy-mm-ddT12:00:00Z",
@@ -2529,10 +2529,7 @@
                                 pickTime: false,
                                 minView: 2
                             });
-                        // $("#StartDate").datepicker("setDate", startDate);
                         console.log("init datetimepicker");
-                        // console.log($(this))
-                    }, 10);
                 } else {
                     $(".date-picker").datepicker("remove");
                     $(".date-picker")
