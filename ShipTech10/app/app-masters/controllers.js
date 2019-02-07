@@ -1846,6 +1846,12 @@
                                     if (vm.app_id == "labs" && vm.screen_id == "labresult") {
                                         vm.checkVerifiedDeliveryFromLabs("loadedData");
                                     }
+                                    if (vm.app_id == "masters" && vm.screen_id == "paymentterm") {
+                                        vm.checkVerifiedDeliveryFromLabs("loadedData");
+                                        $.each($scope.formValues.conditions, function(k,v){
+	                                        v.paymentTerm = null	
+                                        })
+                                    }                                    
                                     toastr.success("Entity copied");
                                     localStorage.removeItem(vm.app_id + vm.screen_id + "_copy");
                                     $scope.$emit("formValues", $scope.formValues);

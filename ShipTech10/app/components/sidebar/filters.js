@@ -117,6 +117,8 @@ angular.module("shiptech.components").controller("FiltersController", [
                     if(v.column.columnValue === 'Open' || v.column.columnValue === 'Close') {
                         v.column.columnValue = '[' + v.column.columnValue + ']';
                     }
+
+
                     $.each($scope.colModel, function(_, v1) {
                         if(v.column.columnName.toLowerCase().replace(' ', '.') === v1.name.toLowerCase()) {
                             v.column.columnName = v1.label;
@@ -124,6 +126,27 @@ angular.module("shiptech.components").controller("FiltersController", [
                     });
                 });
             }
+
+            invalidDateFilters =  _.filter(loopList, function(obj) {
+	            if (obj.column.columnType == 'Date' || obj.column.columnType == 'DateOnly') {
+	            	hasInvalidDate = false;
+	            	$.each(obj.value, function(k,v){
+	            		if (v) {
+		            		if (parseFloat(v.split("-")[0]) < 1753 ) {
+				            	hasInvalidDate = true;
+		            		}
+	            		} else {
+			            	hasInvalidDate = true;
+	            		}
+	            	})
+	            	return hasInvalidDate;
+	            } 
+			});
+			if (invalidDateFilters.length > 0) {
+				toastr.error("Please enter correct date format")
+				return;
+			}
+
           // console.log('applied filters');
             console.log('data: ', data);
             // console.log(sortList)
