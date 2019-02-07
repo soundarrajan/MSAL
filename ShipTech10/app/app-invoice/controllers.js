@@ -189,11 +189,15 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         dueDate = $scope.formValues.dueDate;
         $scope.computeInvoiceTotalConversion($scope.CM.conversionRoe, $scope.CM.conversionTo)
         if (name == "DueDate") {
-    		if (vm.initialDueDate.split("T")[0] != $scope.formValues.dueDate) {
+        	if (vm.initialDueDate) {
+	    		if (vm.initialDueDate.split("T")[0] != $scope.formValues.dueDate) {
+		        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
+	    		} else {
+	    			$scope.formValues.manualDueDate = null;
+	    		}
+        	} else {
 	        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
-    		} else {
-    			$scope.formValues.manualDueDate = null;
-    		}
+        	}
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
                 $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
@@ -983,6 +987,10 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             return;
         }
         invoiceType = JSON.parse(invoiceType);
+        if (invoiceType.name == "Final Invoice") {
+        	$scope.createFinalInvoice();
+        	return;
+        }
 
         $rootScope.transportData = $scope.formValues;
         $rootScope.transportData.id = 0;
@@ -993,6 +1001,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         $rootScope.transportData.sellerInvoiceNo = null;
         $rootScope.transportData.receivedDate = null;
         $rootScope.transportData.dueDate = null;
+        $rootScope.transportData.manualDueDate = null;
         $rootScope.transportData.workingDueDate = null;
         $rootScope.transportData.sellerInvoiceDate = null;
         $rootScope.transportData.sellerDueDate = null;
@@ -1019,6 +1028,17 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                 
                 tempformValues = callback2;
                 $rootScope.transportData = tempformValues;
+                if ($scope.formValues.documentType.internalName == "ProvisionalInvoice") {
+	                // $rootScope.transportData.dueDate = null;
+	                // $rootScope.transportData.workingDueDate = null;
+	                !$rootScope.transportData.paymentDate ? $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate : '';
+                } else {
+	                $rootScope.transportData.dueDate = null;
+	                $rootScope.transportData.workingDueDate = null;
+	                $rootScope.transportData.paymentDate = null;
+
+                }
+                
                 $rootScope.transportData.id = 0;
                 $rootScope.transportData.invoiceDetails = null;
                 $rootScope.transportData.documentType = invoiceType;
@@ -1027,12 +1047,10 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                 $rootScope.transportData.sellerInvoiceNo = null;
                 $rootScope.transportData.invoiceRateCurrency = null;
                 $rootScope.transportData.receivedDate = null;
-                $rootScope.transportData.dueDate = null;
-                $rootScope.transportData.workingDueDate = null;
+                $rootScope.transportData.manualDueDate = null;
                 $rootScope.transportData.sellerInvoiceDate = null;
                 $rootScope.transportData.sellerDueDate = null;
                 $rootScope.transportData.approvedDate = null;
-                $rootScope.transportData.paymentDate = null;
                 $rootScope.transportData.invoiceRateCurrency = null;
                 $rootScope.transportData.backOfficeComments = null;
                 $rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal = null
@@ -1086,15 +1104,15 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                         "OrderId": $rootScope.transportData.orderDetails.order.id
                     }
                 }
-                Factory_Master.finalInvoiceDuedates(payload, function(callback3) {
-                    screenLoader.hideLoader();
-                    if(callback3) {
-                        $rootScope.transportData.dueDate = callback3.dueDate;
-                        $rootScope.transportData.paymentDate = callback3.paymentDate;
-                        $rootScope.transportData.workingDueDate = callback3.workingDueDate;
-                        $location.path('invoices/invoice/edit/');
-                    }
-                });
+                $location.path('invoices/invoice/edit/');
+                // Factory_Master.finalInvoiceDuedates(payload, function(callback3) {
+                //     screenLoader.hideLoader();
+                //     if(callback3) {
+                //         $rootScope.transportData.dueDate = callback3.dueDate;
+                //         $rootScope.transportData.paymentDate = callback3.paymentDate;
+                //         $rootScope.transportData.workingDueDate = callback3.workingDueDate;
+                //     }
+                // });
             }
         });
     }
