@@ -45,22 +45,6 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
         $scope.numberPrecision = $tenantSettings.defaultValues;
         $scope.tenantSettings = $tenantSettings;
-        $scope.zoomLevel = 1;
-        $scope.zoomLevels = [
-            {
-                'value': 0.5,
-                'name': '50%',
-            },
-            {
-                'value': 0.75,
-                'name': '75%',
-            },
-            {
-                'value': 1,
-                'name': '100%',
-            },
-        ];
-        console.log($scope.numberPrecision)
         ctrl.tableOptions.pageLength = 9999;
         ctrl.tableOptions.paginationStart = 0;
         ctrl.tableOptions.currentPage = 1;
@@ -348,16 +332,6 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             //ctrl.calendarDataRows = ctrl.tempData; //s.push(ctrl.tempData[100]);
         	console.warn("showData 2:", (new Date()).getTime() - window.scheduleDashboardCalendarModelGetEndTime );
             console.warn("showData 4:", (new Date()).getTime() - window.scheduleDashboardCalendarModelGetEndTime );
-
-            breadcrumbsScope = angular.element($('[ng-controller="BreadcrumbsController"] > *')).scope();
-            $timeout(function(){
-	            breadcrumbsScope.$apply(function(){
-		            breadcrumbsScope.statusList = breadcrumbsScope.getCalendarStatus();
-	            })
-            })
-            // $copmile(angular.element($('[ng-controller="BreadcrumbsController"] > *')))(breadcrumbsScope);
-			
-
         }
 
         function handleTableEvents() {
@@ -1271,26 +1245,6 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                     reload: true
                 });
         };
-        $scope.setZoomLevel = function (zoom) {
-            if(zoom !== $scope.zoomLevel.value) {
-                $('#schedule_calendar_table_wrapper').css('zoom', zoom);
-                if(zoom != 1) {
-                    $('.DTFC_LeftBodyLiner').css(
-                        {
-                            'overflow': 'hidden',
-                            'height': '429px',
-                        }
-                    );
-                } else {
-                    $('.DTFC_LeftBodyLiner').css(
-                        {
-                            'overflow-y': 'scroll',
-                            'height': '433px',
-                        }
-                    );
-                }
-            }
-        }
         /*******************************
          *   END ANGULAR DOM EVENT HANDLERS
          *******************************/

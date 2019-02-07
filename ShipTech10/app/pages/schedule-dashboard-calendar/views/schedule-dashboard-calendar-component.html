@@ -12,10 +12,6 @@
         				<span class="filterVal"> {{ filter.conditionName }} {{ !filter.Values[1] ? filter.Values[0] : filter.Values[0] + " - " + filter.Values[1] }} </span>
         			</div>
         		</div>
-        		<!-- <div> -->
-        		<!-- 	Zoom: -->
-        		<!-- 	<select ng&#45;model="zoomLevel" ng&#45;change="setZoomLevel(zoomLevel)" ng&#45;options="opt.value as opt.name for opt in zoomLevels"></select> -->
-        		<!-- </div> -->
         	</div>
         	<span class="hidden">
         		{{$ctrl.calculateFixedColumnsWidth()}}

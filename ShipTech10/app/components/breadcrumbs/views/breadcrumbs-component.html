@@ -40,13 +40,13 @@
             	<li class="hidden">
 	            	{{statusesCount = calculateStatusesCount() }}
             	</li>
-                <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.name.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in statusList | filter:{ display: true } track by $index" style="width: {{100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;" ng-click="breadcrumbsFilter(status.label,status.count)">
+                <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.statusDisplayName.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in statusList | filter:{ display: true } track by $index" style="width: {{100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;" ng-click="breadcrumbsFilter(status.label,status.count)">
                     <div class="tear clickable" ng-style="{{status.style}}">
                         <span>
                             {{status.count}}
                         </span>
                     </div>
-                    <div class="caption clickable center-line" ng-class="{'center-line': status.name.indexOf(' ') < 0}" style="margin-bottom: 10px;" >
+                    <div class="caption clickable center-line" ng-class="{'center-line': status.statusDisplayName.indexOf(' ') < 0}" style="margin-bottom: 10px;" >
                         <!--{{status.name}}-->
                          {{status.statusDisplayName}} 
                     </div>
