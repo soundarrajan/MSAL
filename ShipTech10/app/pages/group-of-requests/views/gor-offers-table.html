@@ -38,7 +38,7 @@
     
                 <!-- Collapsed request tab -->
                 <th ng-repeat-start="request in $ctrl.selectedRequests track by $index"
-                ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="request-tab-collapsed {{$index == 0 ? 'left-border' : ''}}  border-selected-top bg-blue" style="border-left:4px solid #d1d8dd !important">
+                ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="request-tab-collapsed {{$index == 0 ? 'left-border' : ''}}  border-selected-top bg-blue" style="border-left:4px solid #d1d8dd !important; width:100%;">
                     <span ng-if="$index == 0" class="font-white text-uppercase">
                         Negotiation Details
                     </span>
@@ -121,7 +121,7 @@
                     </form>
                 </th>
     
-                <th ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" style="position: relative;" class="expander right-border border-selected-right border-selected-top">
+                <th ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" style="position: relative; width:30px" class="expander right-border border-selected-right border-selected-top">
                     <a ng-click="$ctrl.toggleRequestTab($index);">
                         <i class="fa fa-2x fa-angle-right" style="position: absolute;top: 50%;left: 50%;transform:  translate(-50%, -50%);line-height: 50px;" ></i>
                     </a>
@@ -239,7 +239,7 @@
 
                 <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;   " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
                         <!-- {{$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] ? 'max-width:100px; width:100px;' : ''}} -->
-                        <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"  >
+                        <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">CCAI</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Computed Price</div>
