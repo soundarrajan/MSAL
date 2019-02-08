@@ -768,6 +768,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             }
                             color = $scope.getStatusColor(name, cell);
                         }
+
+                        if (options.colModel.name.indexOf("customStatus") != -1) {
+                        	return label;
+                        }
+
                         if (label && color) {
                             return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
                         } else {
