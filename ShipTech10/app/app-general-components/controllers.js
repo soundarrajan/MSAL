@@ -2325,8 +2325,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         vm.selectAllTreasuryRows = function() {
-
-
             selectAllTreasuryReportPayload = {
             Payload: {
                     Order: null,
@@ -2344,14 +2342,41 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 }
             };    
-            selectAllTreasuryReportPayload.Payload.Filters = vm.lastCallTableParams.filters
-            selectAllTreasuryReportPayload.Payload.PageFilters.Filters = vm.lastCallTableParams.PageFilters
-            selectAllTreasuryReportPayload.UIFilters = vm.lastCallTableParams.UIFilters
-            selectAllTreasuryReportPayload.Payload.SearchText = vm.lastCallTableParams.SearchText
-            selectAllTreasuryReportPayload.Payload.SortList.SortList = vm.lastCallTableParams.PageFilters.sortList        
-            selectAllTreasuryReportPayload.Payload.Pagination.Take =vm.lastCallTableParams.rows;
-            selectAllTreasuryReportPayload.Payload.Pagination.Skip =vm.lastCallTableParams.rows * (vm.lastCallTableParams.page - 1);    
 
+            selectAllTreasuryReportPayload.Payload.Filters = vm.lastCallTableParams.filters;
+            selectAllTreasuryReportPayload.Payload.PageFilters.Filters = vm.lastCallTableParams.PageFilters;
+            selectAllTreasuryReportPayload.UIFilters = vm.lastCallTableParams.UIFilters;
+            selectAllTreasuryReportPayload.Payload.SearchText = vm.lastCallTableParams.SearchText;
+            selectAllTreasuryReportPayload.Payload.SortList.SortList = vm.lastCallTableParams.PageFilters.sortList;
+            selectAllTreasuryReportPayload.Payload.Pagination.Take =vm.lastCallTableParams.rows;
+            selectAllTreasuryReportPayload.Payload.Pagination.Skip =vm.lastCallTableParams.rows * (vm.lastCallTableParams.page - 1);
+
+            if (!vm.treasury_checkbox_header) {
+                selectAllTreasuryReportPayload.UIFilters.isChecked = false;
+                Factory_Master.selectAllTreasuryReport(selectAllTreasuryReportPayload, function(callback) {
+                    if (callback) {
+                        if (callback.status) {
+                            $(".treasury_checkbox").prop("checked", false);
+                            var CLC = $("#invoices_treasuryreport");
+                            var rowData = CLC.jqGrid.Ascensys.gridObject.rows;
+
+                            treasuryTotal = 0;
+                            $.each(rowData, function(k, v) {
+                                if (typeof vm.changedfields[v.id] != "undefined") {
+                                    vm.changedfields[v.id].isChecked = false;
+                                }
+                                v.isChecked = false;
+                                vm.treasury_checkbox_header = false;
+                            });
+                            $compile($("#invoices_treasuryreport"))($rootScope);
+                            $compile($('[ng-model="treasurySubtotal"]'))($rootScope);
+                            $rootScope.treasurySubtotal = 0;                        
+                        }
+                    }
+                });
+                return;
+            }
+            selectAllTreasuryReportPayload.UIFilters.isChecked = true;
             Factory_Master.selectAllTreasuryReport(selectAllTreasuryReportPayload, function(callback) {
                 if (callback) {
                     if (callback.status) {
@@ -2436,14 +2461,20 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                //      $rootScope.treasurySubtotal += 0;
             //     }
             // }, allRows);
+            var allSelected = true;
             $.each(rowData, function(k, v) {
                 if (v.isChecked == true) {
                     $rootScope.treasurySubtotal += v.invoiceAmount;
                 } else {
+                    allSelected = false;
                     vm.treasury_checkbox_header = false;
                     $scope.$apply();
                 }
             });
+            if (allSelected) {
+                vm.treasury_checkbox_header = true;
+                $(".treasury_checkbox").prop("checked", true);
+            }
         };
         // Triggers
         vm.trigger = function(entity, params) {
