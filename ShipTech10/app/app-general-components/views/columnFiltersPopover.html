@@ -204,9 +204,9 @@
                                                 <!-- type number & type text -->
                                                 <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control" ng-model="columnFilters[column][key].value[0]"
                                                     name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
-                                                    format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}"
                                                     ng-if="columnFilters[column][key].column.columnType != 'Bool' &&
                                                     columnFilters[column][key].column.columnType != 'Date' && columnFilters[column][key].column.columnType != 'DateOnly'" />
+                                               <!--      format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}" -->
 
                                                 <!--  type bool -->
                                                 <select name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
