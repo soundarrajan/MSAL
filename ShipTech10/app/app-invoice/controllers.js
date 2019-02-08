@@ -244,6 +244,37 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         if (name == 'documentNo'){
             $scope.formValues.documentNo = parseInt($scope.formValues.documentNo);
         }
+
+        if (name == "PaymentTerm" || name == "DeliveryDate") {
+        	payload = {"Payload":{
+	        		"InvoiceId":$scope.formValues.id,
+	        		"PaymentTermId":$scope.formValues.counterpartyDetails.paymentTerm.id,
+	        		"InvoiceDeliveryDate":$scope.formValues.deliveryDate,
+	        		"ManualDueDate":$scope.formValues.manualDueDate
+        		}
+        	}
+	        Factory_Master.dueDateWithoutSave(payload, function(callback) {
+	        	if (callback.status == true) {
+					// if (!callback.data.manualDueDate) { return }
+					if (!callback.data.dueDate) { return }
+					if (!callback.data.paymentDate) { return }
+					if (!callback.data.workingDueDate) { return }
+					// $scope.formValues.manualDueDate = callback.data.manualDueDate;	
+					$scope.formValues.dueDate = callback.data.dueDate;	
+					$scope.formValues.paymentDate = callback.data.paymentDate;	
+					$scope.formValues.workingDueDate = callback.data.workingDueDate;	
+					$scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(callback.data.workingDueDate, true);
+					$scope.formatDates.formValues.dueDate = $scope.CM.formatSimpleDate(callback.data.dueDate, true);
+					$scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(callback.data.paymentDate, true);
+					$('[name="Workingduedate"]').parent().datepicker('setDate', new Date( callback.data.workingDueDate ) )	
+					$('[name="DueDate"]').parent().datepicker('setDate', new Date( callback.data.dueDate ) )	
+					$('[name="PaymentDate"]').parent().datepicker('setDate', new Date( callback.data.paymentDate ) )	
+	        	}
+		    	// api/invoice/dueDateWithoutSave
+	        });
+        	
+        }
+
     }
     // Cancel Invoice
     $scope.cancel_invoice = function() {

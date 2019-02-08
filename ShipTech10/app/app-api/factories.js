@@ -7983,6 +7983,30 @@ APP_API.factory("$Api_Service", [
                         }
                     );
                 },
+                dueDateWithoutSave: function(payload, callback) {
+                    if (_debug) console.log("$APIService invoice.dueDateWithoutSave called with the following params:", payload);
+                    var apiJSON = payload;
+                    var url = API.BASE_URL_DATA_INVOICES + "/api/invoice/dueDateWithoutSave";
+                    $http.post(url, apiJSON).then(
+                        function success(response) {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.status = true;
+                                res.data = response.data.payload;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                callback(res);
+                            }
+                        },
+                        function failed(response) {
+                            var res = new Object();
+                            res.status = false;
+                            callback(res);
+                        }
+                    );
+                },
                 submitInvoiceReview: function(param, callback) {
                     if (_debug) console.log("$APIService invoice.submitInvoiceReview called with the following params:", param);
                     var apiJSON = {

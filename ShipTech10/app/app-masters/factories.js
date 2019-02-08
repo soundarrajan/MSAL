@@ -524,6 +524,11 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 callback(result);
             });
         },
+        dueDateWithoutSave: function(payload, callback) {
+            $Api_Service.invoice.dueDateWithoutSave(payload, function(res) {
+                callback(res);
+            });
+        },
         cancel_invoice: function(fields, callback) {
             $Api_Service.invoice.cancelInvoice(fields, function(res) {
                 console.log(fields)
