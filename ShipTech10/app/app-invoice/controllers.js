@@ -266,9 +266,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 					$scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(callback.data.workingDueDate, true);
 					$scope.formatDates.formValues.dueDate = $scope.CM.formatSimpleDate(callback.data.dueDate, true);
 					$scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(callback.data.paymentDate, true);
-					$('[name="Workingduedate"]').parent().datepicker('setDate', new Date( callback.data.workingDueDate ) )	
-					$('[name="DueDate"]').parent().datepicker('setDate', new Date( callback.data.dueDate ) )	
-					$('[name="PaymentDate"]').parent().datepicker('setDate', new Date( callback.data.paymentDate ) )	
+					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
+					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
+					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
 	        	}
 		    	// api/invoice/dueDateWithoutSave
 	        });
