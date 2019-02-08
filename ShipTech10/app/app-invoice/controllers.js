@@ -1023,12 +1023,14 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             "code": null
         }
         console.log(fv);
+        
+        formValues = angular.element($('[name="CM.editInstance"]')).scope().formValues;
         Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, function(callback2) {
             if (callback2) {
                 
                 tempformValues = callback2;
                 $rootScope.transportData = tempformValues;
-                if ($scope.formValues.documentType.internalName == "ProvisionalInvoice") {
+                if (formValues.documentType.internalName == "ProvisionalInvoice") {
 	                // $rootScope.transportData.dueDate = null;
 	                // $rootScope.transportData.workingDueDate = null;
 	                !$rootScope.transportData.paymentDate ? $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate : '';
