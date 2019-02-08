@@ -991,8 +991,7 @@
                             }
                             
                         } else {
-                            screenLoader.hideLoader();
-                            toastr.error(callback.message);
+                            // toastr.error(callback.message);
                             setTimeout(function() {
                                 $scope.submitedAction = false;
                             }, 100);

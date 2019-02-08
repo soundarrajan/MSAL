@@ -48,7 +48,7 @@ angular.module("shiptech").config([
 			"uib/template/typeahead/typeahead-popup.html",
 			"mail/templates/listByTypeAndProcess",
 			"api/masters/companies/download",
-			"/api/recon/invoicecost",
+			"api/recon/invoicecost",
 			"api/invoice/updateTreasuryInfo",
 			"api/procurement/request/getQuantityAverage",
     	];
@@ -58,14 +58,14 @@ angular.module("shiptech").config([
             function($q) {
                 return {
                     request: function name(request) {
-                    	routeCall = request.url
+                    	routeCall = request.url;
                     	if (request.url.indexOf("/api/") != -1) {
-	                    	routeCall = request.url.split("/api/")[1]
+	                    	routeCall = 'api/' + request.url.split("/api/")[1];
                     	}
                     	if (routeCall.indexOf('invoice/list') != -1 ) {
                     		// debugger;
                     	}
-                    	if (routeExceptions.join("--").indexOf(routeCall) == -1) {
+                    	if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	// console.log("screenLoader OPEN:" + routeCall);
 	                    	// console.log("request:" + window.openedScreenLoaders);
 	                    	$('.screen-loader').fadeIn(200);
@@ -76,17 +76,14 @@ angular.module("shiptech").config([
 	                    	}	
 	                    	window.openedScreenLoaders += 1;
                     	}
-                    	// $('.screen-loader').hide();
-                    	// //console.log(request);
                         return request;
                     },
                     response: function name(config) {
                     	routeCall = config.config.url
                     	if (config.config.url.indexOf("/api/") != -1) {
-	                    	routeCall = config.config.url.split("/api/")[1]
+	                    	routeCall = 'api/' + config.config.url.split("/api/")[1];
                     	}
-                    	respRouteExceptions = routeExceptions;
-                    	if (respRouteExceptions.join("--").indexOf(routeCall) == -1) {
+                        if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	window.openedScreenLoaders -= 1;
 	                    	setTimeout(function(){
 		                    	if (window.openedScreenLoaders <= 0) {
@@ -103,9 +100,9 @@ angular.module("shiptech").config([
                     responseError: function name(config) {
                     	routeCall = config.config.url
                     	if (config.config.url.indexOf("/api/") != -1) {
-	                    	routeCall = config.config.url.split("/api/")[1]
+	                    	routeCall = 'api/' + config.config.url.split("/api/")[1];
                     	}
-                    	if (routeExceptions.join("--").indexOf(routeCall) == -1) {
+                    	if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	window.openedScreenLoaders -= 1;
                     		if (config.data.ErrorMessage && config.status != 200) {
                     			errorText = config.data.ErrorMessage;
