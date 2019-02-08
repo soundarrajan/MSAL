@@ -662,6 +662,9 @@ span.variance {
 .date-picker-label {
     pointer-events: none;
 }
+.date-picker-label span {
+	pointer-events: initial;
+}
 
 
 /*  clc date inputs */
