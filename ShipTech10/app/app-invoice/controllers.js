@@ -253,6 +253,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 	        		"ManualDueDate":$scope.formValues.manualDueDate
         		}
         	}
+        	if (!$scope.formValues.id) {
+        		return;
+        	}
 	        Factory_Master.dueDateWithoutSave(payload, function(callback) {
 	        	if (callback.status == true) {
 					// if (!callback.data.manualDueDate) { return }
