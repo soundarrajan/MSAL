@@ -4370,4 +4370,7 @@ table#new_order_products td {
     #negotiation-table-fixed-container {
     	zoom: 0.8 !important;
     }
+    #group_of_requests_table td {
+    	font-size: 14px !important;
+    }
 }

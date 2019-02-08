@@ -201,6 +201,10 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
                 $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
+                if (!$scope.formValues.paymentDate) {
+	                $scope.formValues.paymentDate = response.data;
+	                $scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(response.data, true);
+                }
             });
         }
         if (name == "costType") {
@@ -1034,13 +1038,13 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         $rootScope.transportData.invoiceDetails = null;
         $rootScope.transportData.sellerInvoiceNo = null;
         $rootScope.transportData.receivedDate = null;
-        $rootScope.transportData.dueDate = null;
+        // $rootScope.transportData.dueDate = null;
         $rootScope.transportData.manualDueDate = null;
-        $rootScope.transportData.workingDueDate = null;
+        // $rootScope.transportData.workingDueDate = null;
         $rootScope.transportData.sellerInvoiceDate = null;
         $rootScope.transportData.sellerDueDate = null;
         $rootScope.transportData.approvedDate = null;
-        $rootScope.transportData.paymentDate = null;
+        // $rootScope.transportData.paymentDate = null;
         $rootScope.transportData.invoiceRateCurrency = null;
         $rootScope.transportData.backOfficeComments = null;
         $rootScope.transportData.paymentDetails = null;
