@@ -2181,9 +2181,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                        'id="clc_' + entityId + '_' + name + '">' ;
                        
                 // datepicker
-                tpl += '<input class="formatted-date-input date-only" ' + 
+                tpl += '<input id="entityNameId' + name + entityId + '" class="formatted-date-input date-only" ' + 
                         'ng-model="CLC.formatDates.changedfields[\'' + entityId + '\'][\'' + name + '\']" ' +
-                        'ng-blur="CLC.setValue(' + vm.dateChange.length + ', 2, true)\" ' +
+                        'ng-blur="CLC.setValue(' + vm.dateChange.length + ', 2, true, false, \'' + name + entityId + '\')\" ' +
                         'ng-focus="CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] = true; $event.stopPropagation();" ' +
                         'ng-blur="CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] = false;" ' +
                         'ng-invalid="{{ CLC.invalidDate[\'' + entityId + '\'][\'' + name + '\'] && !CLC.inputFocus[\'' + entityId + '\'][\'' + name + '\'] }}" ' + 
@@ -3368,8 +3368,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
         }
         // setValue %%%
-        vm.setValue = function(inputIdx, direction, simpleDate, isOnInit){
+        vm.setValue = function(inputIdx, direction, simpleDate, isOnInit, entityNameId){
 
+            if (vm.screen_id == "treasuryreport" && entityNameId && !$('#entityNameId' + entityNameId).hasClass('ng-dirty')) {
+                return;
+            }
             /**
              *  @param inputIdx - input details index in CLC.dateChange
              *  check setValue function in Controller_Master for detalied parameters
