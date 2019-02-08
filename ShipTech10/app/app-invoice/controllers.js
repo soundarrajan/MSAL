@@ -1072,11 +1072,6 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 	                // $rootScope.transportData.dueDate = null;
 	                // $rootScope.transportData.workingDueDate = null;
 	                !$rootScope.transportData.paymentDate ? $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate : '';
-                } else {
-	                $rootScope.transportData.dueDate = null;
-	                $rootScope.transportData.workingDueDate = null;
-	                $rootScope.transportData.paymentDate = null;
-
                 }
                 
                 $rootScope.transportData.id = 0;
