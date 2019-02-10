@@ -352,6 +352,7 @@ angular
         "$document",
         "screenLoader",
         "$compile",
+        'tenantService',
         function($scope, adalService, $http, $document, screenLoader, $compile, tenantService) {
             toastr.options = {
                 maxOpened: 1,
