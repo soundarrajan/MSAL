@@ -352,7 +352,7 @@ angular
         "$document",
         "screenLoader",
         "$compile",
-        function($scope, adalService, $http, $document, screenLoader, $compile) {
+        function($scope, adalService, $http, $document, screenLoader, $compile, tenantService) {
             toastr.options = {
                 maxOpened: 1,
                 timeOut: 4000,
@@ -367,6 +367,12 @@ angular
 				$(document).on("blur", ".formatted-date-input", function(){
 					currentEl = this
 					setTimeout(function(){
+						if (!window.tenantFormatsDateFormat) {
+							tenantService.tenantSettings.then(function(settings) {
+								window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
+							});
+							return;
+						}
 						// $(currentEl).attr("ng-invalid", "false");
 						dateFormat = angular.copy(window.tenantFormatsDateFormat);
 						dateFormat = dateFormat.replace(/y/g, "Y");
