@@ -372,15 +372,14 @@ angular
 				// });
 
 
+				if (!window.tenantFormatsDateFormat) {
+					tenantService.tenantSettings.then(function(settings) {
+						window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
+					});
+				}
 				$(document).on("blur", ".formatted-date-input", function(){
 					currentEl = this
 					setTimeout(function(){
-						if (!window.tenantFormatsDateFormat) {
-							tenantService.tenantSettings.then(function(settings) {
-								window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
-							});
-							return;
-						}
 						// $(currentEl).attr("ng-invalid", "false");
 						dateFormat = angular.copy(window.tenantFormatsDateFormat);
 						dateFormat = dateFormat.replace(/y/g, "Y");
@@ -390,7 +389,7 @@ angular
 							if ($(currentEl).hasClass("date-only")) {
 								dateFormat = dateFormat.split(" ")[0]
 							}
-							if (moment($(currentEl).val(), dateFormat).year() < 1753) {
+							if (moment($(currentEl).val(), dateFormat).year() < 1753 || $(currentEl).val().length < dateFormat.length) {
 								invalidDate = true;
 							}
 						}
@@ -398,10 +397,14 @@ angular
 						if ($(currentEl).attr("ng-invalid") == "true" || invalidDate) {
 							if (invalidDate) {
 								$(currentEl).addClass("invalid");
-								oldInputVal =  $(currentEl).val()
-								$(currentEl).val("")
-								$(currentEl).trigger("change")
-								$(currentEl).val(oldInputVal);
+								// oldInputVal =  $(currentEl).val()
+								// $(currentEl).val(null)
+								// $(currentEl).trigger("change")
+								$(currentEl).next('.input-group-btn').find("input").val(undefined)
+								$(currentEl).next('.input-group-btn').find("input").trigger("change")
+								// $(currentEl).val(oldInputVal)
+								// $compile($(currentEl).parent())(angular.element($(currentEl).parent()).scope())
+								// $(currentEl).trigger("change")
 							}
 							// $(currentEl).attr("ng-invalid", "true");
 							if (!$(currentEl).attr("error-shown")) {
