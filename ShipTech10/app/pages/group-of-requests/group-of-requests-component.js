@@ -6534,6 +6534,7 @@ ctrl.setProductData = function(data, loc) {
                     }
                     ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
                 },2);
+                 $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
             }
             if(direction == 2){
                 // date typing input -> datepicker input 

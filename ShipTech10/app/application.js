@@ -365,6 +365,13 @@ angular
             });
 
             jQuery(document).ready(function(){
+				// $("*").datepicker({
+				// 	onSelect: function(dateText) {
+				// 		display("Selected date: " + dateText + "; input's current value: " + this.value);
+				// 	}
+				// });
+
+
 				$(document).on("blur", ".formatted-date-input", function(){
 					currentEl = this
 					setTimeout(function(){

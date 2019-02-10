@@ -2977,6 +2977,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
+                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
                     ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
                 });
             }

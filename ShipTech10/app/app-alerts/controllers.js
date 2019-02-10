@@ -885,6 +885,7 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
                     var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
                     var formattedDate = vm.formatSimpleDate(dateValue, DATE_FORMAT, app);
                     _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
                 } else{
                     var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
                     var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT);

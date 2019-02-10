@@ -156,6 +156,7 @@ angular.module('shiptech.components')
 	                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
 	                    }
 	                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
+	                     $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
 	                });
 	            }
 	            if(direction == 2){

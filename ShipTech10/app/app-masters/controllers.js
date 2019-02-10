@@ -6603,6 +6603,7 @@
                         var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
+                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
                     vm.overrideInvalidDate[inputDetails.pickerId] = false;
                 },2);
             }
