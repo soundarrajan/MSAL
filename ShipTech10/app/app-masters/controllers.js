@@ -6590,6 +6590,7 @@
             }
             vm.overrideInvalidDate[inputDetails.pickerId] = true;
 
+        	$('.date-picker#' + inputDetails.pickerId).parent().parent().parent().find(".formatted-date-input").removeClass('invalid');
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
@@ -6615,8 +6616,32 @@
                     _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
 
                     // also change datepicker value
-                    $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-                    $('.date-picker#' + inputDetails.pickerId + " input").trigger("change");
+                    hasInvalidDate = false
+                    if ((date && !formattedDate)) {
+	                    vm.overrideInvalidDate[inputDetails.pickerId] = true;
+	                    toastr.error("Invalid Date");
+	                    hasInvalidDate = true
+                    }
+                    if (formattedDate) {
+	                    if (parseFloat(formattedDate.split("-")[0]) < 1753) {
+		                    vm.overrideInvalidDate[inputDetails.pickerId] = true;
+		                    toastr.error("Invalid Date");
+		                    hasInvalidDate = true
+	                    }
+                    }
+                    if (simpleDate) {
+                    	datePickerDateSet = new Date(moment(formattedDate).utc());
+                    } else {
+                    	datePickerDateSet = new Date(formattedDate)
+                    }
+                    if (!hasInvalidDate) {
+	                    $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', datePickerDateSet);
+	                    $('.date-picker#' + inputDetails.pickerId + " input").trigger("change");
+                    	$('.date-picker#' + inputDetails.pickerId).parent().parent().parent().find(".formatted-date-input").removeClass('invalid');
+                    } else {
+                    	$('.date-picker#' + inputDetails.pickerId).parent().parent().parent().find(".formatted-date-input").addClass('invalid');
+	                    _.set(rootMap[inputDetails.root], inputDetails.path, null); 
+                    }
                 },2);
             }
         }

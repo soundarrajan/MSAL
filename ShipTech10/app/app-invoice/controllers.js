@@ -198,6 +198,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         	} else {
 	        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
         	}
+            if (parseFloat(dueDate.split("-")[0]) < 1753) {
+            	return;
+	        }
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
                 $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);

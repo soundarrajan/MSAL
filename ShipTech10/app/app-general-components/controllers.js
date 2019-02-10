@@ -2135,7 +2135,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     vm.changedfields[entityId] = {};
                 }
                 vm.changedfields[entityId][name] = cellValue;
-                tpl = "<span title=''><input class='form-control' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-blur='CLC.checkChange(" + entityId + ")' /></span>";
+                tpl = "<span title=''><input class='form-control' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></span>";
                 return tpl;
             };
             var dropdown = function(cellValue, options, rowObject) {
@@ -2304,7 +2304,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             });
         };
 
-        vm.checkChange = function(entityId) {
+        vm.checkChange = function(entityId, newValue, event) {
             if (vm.screen_id == "treasuryreport") {
                 $rootScope.treasuryChangedfields = vm.changedfields;
                 allSelected = true;
@@ -2318,6 +2318,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 });
                 vm.treasury_checkbox_header = allSelected;
+                if (event) {
+	                if ($(event.currentTarget)[0].hasAttribute("initialValue") && $($(event.currentTarget)[0]).attr("initialValue") == newValue) {
+	                	return;
+	                }
+                }
                 if (entityId) {
                     vm.saveTreasuryRowChange(entityId, vm.changedfields[entityId]);
                 }
@@ -2328,6 +2333,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
 
         };
+
+        vm.setInitialValue = function(value, event){
+        	$($(event.currentTarget)[0]).attr("initialValue", value);
+        }
+
 
         vm.selectAllTreasuryRows = function() {
             selectAllTreasuryReportPayload = {
