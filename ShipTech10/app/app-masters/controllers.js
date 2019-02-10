@@ -6623,9 +6623,9 @@
 	                    hasInvalidDate = true
                     }
                     if (formattedDate) {
-	                    if (parseFloat(formattedDate.split("-")[0]) < 1753) {
+	                    if (parseFloat(formattedDate.split("-")[0]) < 1753) { 
 		                    vm.overrideInvalidDate[inputDetails.pickerId] = true;
-		                    toastr.error("Invalid Date");
+		                    // toastr.error("Invalid Date");
 		                    hasInvalidDate = true
 	                    }
                     }

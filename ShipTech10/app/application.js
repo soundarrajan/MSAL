@@ -367,11 +367,35 @@ angular
 				$(document).on("blur", ".formatted-date-input", function(){
 					currentEl = this
 					setTimeout(function(){
-						if ($(currentEl).attr("ng-invalid") == "true") {
+						// $(currentEl).attr("ng-invalid", "false");
+						dateFormat = angular.copy(window.tenantFormatsDateFormat);
+						dateFormat = dateFormat.replace(/y/g, "Y");
+						// console.log(window.tenantFormatsDateFormat);
+						invalidDate = false;
+						if (dateFormat) {
+							if ($(currentEl).hasClass("date-only")) {
+								dateFormat = dateFormat.split(" ")[0]
+							}
+							if (moment($(currentEl).val(), dateFormat).year() < 1753) {
+								invalidDate = true;
+							}
+						}
+						$(currentEl).removeClass("invalid")
+						if ($(currentEl).attr("ng-invalid") == "true" || invalidDate) {
+							if (invalidDate) {
+								$(currentEl).addClass("invalid");
+								oldInputVal =  $(currentEl).val()
+								$(currentEl).val("")
+								$(currentEl).trigger("change")
+								$(currentEl).val(oldInputVal);
+							}
+							// $(currentEl).attr("ng-invalid", "true");
 							if (!$(currentEl).attr("error-shown")) {
 								toastr.error("Please enter correct date format");
 								$(currentEl).attr("error-shown", "true");
 							}
+						} else {
+							$(currentEl).attr("ng-invalid", "false");
 						}
 						setTimeout(function(){
 							$(currentEl).removeAttr("error-shown");
