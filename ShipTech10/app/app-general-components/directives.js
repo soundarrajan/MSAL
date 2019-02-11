@@ -1145,7 +1145,7 @@ window.increment = 0;
                                 });
                                 $('tbody').first().attr('id', 'scrollArea');
                                 $('.ui-jqgrid-bdiv').first().attr('id', 'contentArea');
-                                $.timeout(function() {
+                                $timeout(function() {
                                     var clusterize = new window.Clusterize({
                                       scrollId: 'scrollArea',
                                       contentId: 'contentArea'
