@@ -432,7 +432,7 @@ window.increment = 0;
 	                            Elements.settings[table_id].source.multiselect = true;
                             }
                         } else {
-                            Elements.settings[table_id].source.height = "100%";
+                            Elements.settings[table_id].source.height = "100vh";
                         }
                  
                         Elements.settings[table_id].source.pager = "#" + Elements.settings[table_id].pager;
@@ -1142,6 +1142,14 @@ window.increment = 0;
                                     del: false,
                                     search: false,
                                     refresh: true
+                                });
+                                $('tbody').first().attr('id', 'scrollArea');
+                                $('.ui-jqgrid-bdiv').first().attr('id', 'contentArea');
+                                $.timeout(function() {
+                                    var clusterize = new window.Clusterize({
+                                      scrollId: 'scrollArea',
+                                      contentId: 'contentArea'
+                                    });
                                 });
                             }
                         });
