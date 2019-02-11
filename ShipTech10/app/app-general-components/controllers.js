@@ -3830,6 +3830,26 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 }
 
             }
+
+            if ($scope.currentList == 'contractscontract') {
+            	if (typeof(contract_list_columns) == 'undefined') { contract_list_columns = []; }
+                for(var i = 0; i < $filtersData.filterColumns.length; i++) {
+                    if($filtersData.filterColumns[i].columnRoute == 'contracts/contract') {
+                        contract_list_columns.push($filtersData.filterColumns[i]);
+                    }
+                }
+
+                for(var i = 0; i < json.colModel.length; i++) {
+                    for(var j = 0; j < contract_list_columns.length; j++) {
+                        if(json.colModel[i].name.toLowerCase().replace('.', '_') === contract_list_columns[j].columnValue.toLowerCase()) {
+                            json.colModel[i].columnType = contract_list_columns[j].columnType;
+                            continue;
+                        }
+                    }
+                }            	
+            }
+
+
             Factory_General_Components.entity_export(json, function(response) {
                 console.log(response);
             });
