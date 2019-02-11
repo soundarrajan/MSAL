@@ -262,6 +262,7 @@ window.increment = 0;
                                             //keep configuration from users configuration (width / hidden)
                                             newCol = angular.copy(usr_val);
                                             if (typeof usr_val.width != "undefined") newCol.width = usr_val.width;
+                                            if (typeof usr_val.label != "undefined") newCol.label = def_val.label;
                                             if (typeof usr_val.hidden != "undefined") newCol.hidden = usr_val.hidden;
                                             matchedCol.push(newCol);
                                         } else {
