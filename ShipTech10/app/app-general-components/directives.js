@@ -610,6 +610,7 @@ window.increment = 0;
                                             // layout: scope.initialLayout
                                         };
                                         $rootScope.$broadcast("tableLoaded", triggePayload);
+                                        $('select[name="asc_jqgrid__entries-entries"]').val(oldTableParams.rows);
                                         $rootScope.getGlobalFilters().then(function(data) {
                                             if (data) {
                                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.columnFilters", data);
