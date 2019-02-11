@@ -4857,6 +4857,9 @@ APP_API.factory("$Api_Service", [
                             if (!param.params.filters || typeof param.params.filters == "undefined") {
                                 param.params.filters = [];
                             }
+                            if (param.params.PageFilters.sortList) {
+                                delete param.params.PageFilters.sortList;
+                            }
                             param.params.filters.push({
                                 ColumnName: "VesselVoyageDetailIds",
                                 Value: voyageFilter
