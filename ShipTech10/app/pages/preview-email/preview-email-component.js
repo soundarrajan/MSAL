@@ -642,14 +642,17 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 });
             }*/ else {
 	            emailModel.sendEmail(ctrl.email, ctrl.template).then(function() {
-	                if (ctrl.transaction != EMAIL_TRANSACTION.GROUP_OF_REQUESTS) {
-                        if(!remainOnSamePage){
-                            $window.history.back();
-                       }
-	                }
 					if(ctrl.template && ctrl.template.name === 'Questionnaire - Standard' || ctrl.template.name === 'Questionnaire - Redelivery') {
 						payload = ctrl.data.requestId
-						newRequestModel.questionnaireStatus(payload)
+						newRequestModel.questionnaireStatus(payload).then(function(){
+                            $window.history.back();
+						})
+					} else {
+		                if (ctrl.transaction != EMAIL_TRANSACTION.GROUP_OF_REQUESTS) {
+	                        if(!remainOnSamePage){
+	                            $window.history.back();
+	                       }
+		                }
 					} 	                
 	            }).finally(function(){
 	            	ctrl.buttonsDisabled = false;
