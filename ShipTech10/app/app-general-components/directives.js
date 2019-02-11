@@ -1034,7 +1034,6 @@ window.increment = 0;
                                 Elements.container.append(Elements.pager[Elements.settings[table_id].pager]);
                                 // Load JQGRID
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid(Elements.settings[table_id].source);
-
                                 // if (CLC.tableParams.tableColumnFilters) {
                                 // $.each(CLC.tableParams.tableColumnFilters, function(k, v) {
 
@@ -1143,19 +1142,18 @@ window.increment = 0;
                                     search: false,
                                     refresh: true
                                 });
-                                $('tbody').first().attr('id', 'scrollArea');
-                                $('.ui-jqgrid-bdiv').first().attr('id', 'contentArea');
-                                $timeout(function() {
-                                    var clusterize = new window.Clusterize({
-                                      scrollId: 'scrollArea',
-                                      contentId: 'contentArea'
-                                    });
-                                });
                             }
                         });
+
+                        $('tbody').first().attr('id', 'scrollArea');
+                        $('.ui-jqgrid-bdiv').first().attr('id', 'contentArea');
                         // -end- TABLE
+                        var clusterize = new window.Clusterize({
+                          scrollId: 'scrollArea',
+                          contentId: 'contentArea'
+                        });
+
                     }
-                    // -end- buildTable()
                 }
             };
         }
