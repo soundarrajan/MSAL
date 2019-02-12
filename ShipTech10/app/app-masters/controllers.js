@@ -1716,6 +1716,7 @@
 						                	if (v.deliveryProductId) {
 							                	v.product.id = v.deliveryProductId;
 						                	}
+
 						                }
 		                            });
 		                        }
@@ -1763,8 +1764,24 @@
                    
                
                     if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
-                        screenLoader.hideLoader();
-
+							$scope.triggerChangeFields("InvoiceRateCurrency");
+	                        if ($scope.formValues.costDetails) {
+		                        if ($scope.formValues.costDetails.length > 0) {
+		                            $.each($scope.formValues.costDetails, function(k, v) {
+		                                if (v.product == null || v.isAllProductsCost) {
+		                                    v.product = {
+		                                        id: -1,
+		                                        name: "All"
+		                                    };
+		                                } else {
+						                	if (v.product.id != v.deliveryProductId) {
+							                	v.product.id = angular.copy(v.deliveryProductId);
+							                	v.product.productId = angular.copy(v.product.id);
+						                	}						                	
+		                                }
+		                            });
+		                        }
+	                        }	
                     }
                 } else {
                     if (localStorage.getItem(vm.app_id + vm.screen_id + "_copy")) {

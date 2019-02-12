@@ -243,6 +243,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         minWidth: 150,
                         // Disabled: "['Approved', 'Cancelled'].indexOf(grid.appScope.fVal().status.name) != -1",
                         cellObject: {
+	                        Name: "applyFor",
                             Disabled: "grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].orderAdditionalCostId || grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].isTaxComponent || ['Approved', 'Cancelled'].indexOf(grid.appScope.fVal().formValues.status.name) != -1",
                             Required: "grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].costType.id > 1",
                             changeEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"

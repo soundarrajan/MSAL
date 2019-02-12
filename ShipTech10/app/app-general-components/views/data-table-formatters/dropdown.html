@@ -1,8 +1,14 @@
 <div class="w100" ng-controller="Controller_Master as CM">
     <span ng-init="chg = false"></span>
 	<span ng-if="CM.chg == true" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
-
+<!--  -- {{MODEL_COL_FIELD}} ** 
+{{col.colDef.cellObject.Name}}
+-- -->
     <span ng-if="col.colDef.scopeMasterSource" class="w100">
+    	 <span class="hidden">
+    	 	{{grid.appScope.fVal().dtMasterSource[col.colDef.scopeMasterSource]}}
+    	 **{{MODEL_COL_FIELD}}
+    	 </span>
         <span dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
             <select class="form-control bs-select changeIT "
             name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
@@ -12,14 +18,12 @@
             ng-options="item as item.name for item in grid.appScope.fVal().dtMasterSource[col.colDef.scopeMasterSource] track by item.id"
             ng-model="MODEL_COL_FIELD"
             ng-required="$eval(col.colDef.cellObject.Required) || $eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false"
-            ng-disabled="$eval(col.colDef.cellObject.Disabled)">
-
+			ng-disabled="$eval(col.colDef.cellObject.Disabled)"
+            >
                 <option value="" disabled></option>
             </select>
         </span>
     </span>
-
-
     <span ng-if="!col.colDef.scopeMasterSource" class="w100">
         <span dynamic-condition-repeater="{{ col.colDef.cellCondition }}" dynamic-condition-repeater-type="{{ col.colDef.cellConditionType }}">
             <select class="form-control bs-select changeIT "
