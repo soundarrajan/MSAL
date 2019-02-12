@@ -2779,6 +2779,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 if (typeof $rootScope.editableCProwsModel[keyRow] == "undefined") {
                     $rootScope.editableCProwsModel[keyRow] = {};
                 }
+                contractProductId = $("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowIdx - 1].contractProductId
+                // $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractProductId", contractProductId);
+                $rootScope.editableCProwsModel[keyRow]['contractProductId'] = contractProductId;
                 $rootScope.editableCProwsModel[keyRow][columnKey] = value;
                 if (columnKey == 'product') {
                     $('#flat_contract_planning').jqGrid("setCell", rowIdx, "product", value);
@@ -2797,7 +2800,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (vm.cpCtr) {
                             if (vm.cpCtr[rowIdx]) {
                                 $rootScope.editableCProwsModel[keyRow]['contract'] = null;
+				                $rootScope.editableCProwsModel[keyRow]['contractProductId'] = null;
                                 CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null;
+                                CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contractProductId = null;
                                 vm.cpCtr[rowIdx] = null;
                                 // vm.getContractTypeaheadListCP(rowIdx);
                                     $("#contract-planning-contract-link-"+rowIdx + ' a').remove();

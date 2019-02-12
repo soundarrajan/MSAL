@@ -387,6 +387,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
             // CLC.jqGrid('setRowData',rowIndex +1 ,rowObject);
 
+            listsCache = ctrl.lists;
+
             Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
                 var value = $rootScope.editableCProwsModel[objectKey];
                 if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
@@ -395,8 +397,11 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     } else {
                         rowObject.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
                     }
+                    rowObject.agreementType = null;
+                    if (_.filter(listsCache.AgreementType, function(o) { return o.id == value.agreementType.id; }).length > 0) {
+                    	rowObject.agreementType = 	_.filter(listsCache.AgreementType, function(o) { return o.id == value.agreementType.id; })[0];
+                    }
                     rowObject.comment = value.comment ? value.comment : null;
-                    rowObject.agreementType = value.agreementType;
                     rowObject.product = value.product;
                     rowObject.contractProductId = value.contractProductId;
                 }
