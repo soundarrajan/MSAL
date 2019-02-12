@@ -209,7 +209,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     ctrl.brokerList = server_data.payload;
                 });
                 // Get the lookup list for the Request field in the General Information section.
-                screenLoader.showLoader();
                 groupOfRequestsModel.getRequests().then(function (data) {
                     ctrl.autocompleteRequest = data.payload;
                     $timeout(function () {
@@ -228,7 +227,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     initializeDataArrays(data.payload);
                     getGroupInfo(groupId);
                     ctrl.priceInputsDisabled = false;
-                    // screenLoader.hideLoader();
                 });
 
                 function getGroupInfo(groupId) {
@@ -633,7 +631,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             if (requestId) {
             	var request = requestId;
             }
-        	screenLoader.showLoader();
             groupOfRequestsModel.addRequestsToGroup([request.id], groupId).then(function (newRequestData) {
                 if (newRequestData.payload) {
                     newRequestAddedData = $scope.remodelSellersStructure(newRequestData.payload);
@@ -646,7 +643,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     parseRequestList(ctrl.requests, false);
                 }
             }).finally(function(){
-            	screenLoader.hideLoader();
             });
         }
         /**
@@ -2389,7 +2385,6 @@ ctrl.setProductData = function(data, loc) {
             };
             // return false;
             ctrl.buttonsDisabled = true;
-            screenLoader.showLoader();
             groupOfRequestsModel.sendRFQ(rfq_data).then(
                 function (response) {
                     ctrl.buttonsDisabled = false;
@@ -2405,7 +2400,6 @@ ctrl.setProductData = function(data, loc) {
                     return false;
                 },
                 function () {
-					screenLoader.hideLoader();
                     ctrl.buttonsDisabled = false;
                 }
             );
@@ -2482,7 +2476,6 @@ ctrl.setProductData = function(data, loc) {
                 Comments: null
             };
             ctrl.buttonsDisabled = true;
-            screenLoader.showLoader();
             groupOfRequestsModel.skipRFQ(rfq_data).then(
                 function (response) {
                     ctrl.buttonsDisabled = false;
@@ -2580,7 +2573,6 @@ ctrl.setProductData = function(data, loc) {
                     // $state.reload();
                 },
                 function () {
-					screenLoader.hideLoader();
                     ctrl.buttonsDisabled = false;
                 }
             );
@@ -2728,8 +2720,8 @@ ctrl.setProductData = function(data, loc) {
             });
         };
         ctrl.revokeRFQ = function () {
-            screenLoader.showLoader();
             if (ctrl.requirements.length === 0) {
+                toastr.error("Please select the Products to Revoke RFQ");
                 return false;
             }
             var rfq_data = {
@@ -2752,15 +2744,13 @@ ctrl.setProductData = function(data, loc) {
                 }
             ).finally(
                 function(){
-                    screenLoader.hideLoader();
                 }
             );
         };
         ctrl.amendRFQ = function () {
          
-            screenLoader.showLoader();
             if (!ctrl.quoteByDate || ctrl.requirements.length === 0) {
-                screenLoader.hideLoader();
+                toastr.error("Please select the Products to Amend RFQ");
                 return false;
             }
             var rfq_data = ctrl.requirements;
@@ -2774,7 +2764,6 @@ ctrl.setProductData = function(data, loc) {
                 }
             ).finally(
                 function(){
-                    screenLoader.hideLoader();
                 }
             );
 
@@ -4861,14 +4850,12 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.cannotViewSellerCardMessage = "Please send or skip RFQ before continuing";
             } else {
                 // console.error('card data'); 
-                screenLoader.showLoader();
                 ctrl.dataLoaded = false;
                 ctrl.cannotViewSellerCard = false;
                 Factory_Master.getSellerBlade(
                     ctrl.initDataforCard,
                     function (callback) {
                         ctrl.dataLoaded = true;
-                        screenLoader.hideLoader();
                         if (callback) {
                             if (callback.status) {
                                 ctrl.blade.supplierCardData = {};
@@ -4883,7 +4870,6 @@ ctrl.setProductData = function(data, loc) {
                     },
                     function () {
                         ctrl.dataLoaded = true;
-                        screenLoader.hideLoader();
                     }
                 );
             }
@@ -6133,7 +6119,6 @@ ctrl.setProductData = function(data, loc) {
 			})
 			console.log("hide loader from gorTableRendered", rowIdx, locationsLength)
 			if (rowIdx+1 == locationsLength) {
-				screenLoader.hideLoader();
 			}
 		}
 
