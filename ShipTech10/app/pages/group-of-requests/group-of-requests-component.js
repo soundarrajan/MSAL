@@ -2749,7 +2749,7 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.amendRFQ = function () {
          
-            if (!ctrl.quoteByDate || ctrl.requirements.length === 0) {
+            if (ctrl.requirements.length === 0) {
                 toastr.error("Please select the Products to Amend RFQ");
                 return false;
             }
