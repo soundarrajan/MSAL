@@ -2752,7 +2752,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)
-                    callback();
+                    callback(true);
                 } else {
                     maxEdit = 0;
                     minEdit = 0;
@@ -2764,7 +2764,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)   
-                    callback();               
+                    callback(false);               
                 }
             })
 
@@ -2827,8 +2827,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
 							$('tr#'+rowIdx+' [aria-describedby="flat_contract_planning_contractMaxQuantity"]').text(" - ");
 
-                            $scope.updateMinMaxQuantities(rowIdx, value.id, function(){
-		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                            $scope.updateMinMaxQuantities(rowIdx, value.id, function(resp){
+                            	if (resp) {
+			                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                            	} else {
+                            		toastr.error("Please enter Min and Max quantities to save the Request product");
+                            	}
                             })
                         })
                     }
