@@ -1604,7 +1604,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_order_link_from_claims = function(cellValue, options, rowObject) {
                     var tpl = "";
                     if (cellValue) {
-                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        idFromOrderId = rowObject.orderId;
+                        idFromOrder = null;
+                        if (rowObject.order) {
+                            idFromOrder = rowObject.order.id;
+                        }
+                        id = idFromOrderId || idFromOrder;
+                        var tpl = ' <a href="#/edit-order/' + id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;
