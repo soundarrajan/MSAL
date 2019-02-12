@@ -130,9 +130,12 @@ angular.module("shiptech.components").controller("FiltersController", [
             invalidDateFilters =  _.filter(loopList, function(obj) {
 	            if (obj.column.columnType == 'Date' || obj.column.columnType == 'DateOnly') {
 	            	hasInvalidDate = false;
+	            	if (obj.value.length == 0) {
+		            	hasInvalidDate = true;
+	            	}
 	            	$.each(obj.value, function(k,v){
 	            		if (v) {
-		            		if (parseFloat(v.split("-")[0]) < 1753 ) {
+		            		if (!v || parseFloat(v.split("-")[0]) < 1753 || isNaN(parseFloat(v.split("-")[0])) ) {
 				            	hasInvalidDate = true;
 		            		}
 	            		} else {

@@ -5,10 +5,7 @@
 {{col.colDef.cellObject.Name}}
 -- -->
     <span ng-if="col.colDef.scopeMasterSource" class="w100">
-    	 <span class="hidden">
-    	 	{{grid.appScope.fVal().dtMasterSource[col.colDef.scopeMasterSource]}}
-    	 **{{MODEL_COL_FIELD}}
-    	 </span>
+
         <span dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
             <select class="form-control bs-select changeIT "
             name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
