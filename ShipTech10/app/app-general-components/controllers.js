@@ -1604,13 +1604,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_order_link_from_claims = function(cellValue, options, rowObject) {
                     var tpl = "";
                     if (cellValue) {
-                        idFromOrderId = rowObject.orderId;
-                        idFromOrder = null;
-                        if (rowObject.order) {
-                            idFromOrder = rowObject.order.id;
-                        }
-                        id = idFromOrderId || idFromOrder;
-                        var tpl = ' <a href="#/edit-order/' + id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;
@@ -3034,6 +3028,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "noOfDaysBeforeExpiry", null);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMinQuantity", null);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMaxQuantity", null);
+
+                $rootScope.editableCProwsModel['row-'+rowId]['contract'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['contractProductId'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['seller'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['formulaDescription'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['premiumDiscount'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['noOfDaysBeforeExpiry'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['contractMinQuantity'] = null;
+				$rootScope.editableCProwsModel['row-'+rowId]['contractMaxQuantity'] = null;
+
             }
             angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowId - 1);
 
@@ -3108,6 +3114,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                     $('#' + rowId + '.jqgrow').first().css({'background-color': '#ffffff'});
                                 })
                             }
+                            vm.selectContract(null, rowId);
                             $scope.$apply();
                         }
                     } else {
@@ -3137,6 +3144,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                     $('#' + rowId + '.jqgrow').first().css({'background-color': '#ffffff'});
                                 })
                             }
+                            vm.selectContract(null, rowId);
                             $scope.$apply();                        
       //                   CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
                         // vm.cpCtr[rowId] = null;
@@ -3449,7 +3457,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
                     var copy = angular.copy(date);
                     var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
-                	if (_.get(rootMap[inputDetails.root],inputDetails.path) == formattedDate) {
+                	if (_.get(rootMap[inputDetails.root], inputDetails.path) == formattedDate) {
+                		return
+                	}
+                	if ( date && !formattedDate) {
+                		// _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, null); 
+                		toastr.error("Invalid date Format");
                 		return
                 	}
                     _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
