@@ -3514,7 +3514,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
     "uiApiModel",
     "$filter",
     "$filtersData",
-    function($rootScope, $scope, $controller, $Api_Service, Factory_General_Components, Factory_Master, $state, $location, $compile, uiApiModel, $filter, $filtersData) {
+    "$timeout",
+    function($rootScope, $scope, $controller, $Api_Service, Factory_General_Components, Factory_Master, $state, $location, $compile, uiApiModel, $filter, $filtersData, $timeout) {
         var vm = this;
         // params
         $controller("Controller_Master", {
@@ -3719,13 +3720,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         }
 
 
-        $scope.$watch("selectedConfig", function(){
-        	enableDisableDeleteLayout()
+        $scope.$watch("selectedConfig", function(o, n){
+        		console.log("selectedConfig: ", $scope.selectedConfig);
+	        	$scope.enableDisableDeleteLayout()
         })
         $(document).on("change", "#configurations_list", function() {
-        	enableDisableDeleteLayout()
+        	$scope.enableDisableDeleteLayout()
         })
-        enableDisableDeleteLayout = function(){
+        $scope.enableDisableDeleteLayout = function(){
         	if ($("#configurations_list").val()) {
         		if ($("#configurations_list").val() != "0") {
         			$(".st-content-action-icons .delete_layout").css("opacity", 1)

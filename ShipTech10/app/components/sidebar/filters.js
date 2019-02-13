@@ -394,6 +394,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             setTimeout(function(){
 	            ctrl.saveFilterActionEvent = false;
             	$scope.$apply();
+
             })
             $scope.datepickers();
         };
@@ -607,6 +608,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                     if ($scope.defaultConfiguration != null) {
                         retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                         $scope.selectedConfig = $scope.defaultConfiguration;
+                        $scope.enableDisableDeleteLayout($scope.selectedConfig);
                         //selected != default
                         //but if default exists, set as selected initially
                     } else {
@@ -1000,8 +1002,25 @@ angular.module("shiptech.components").controller("FiltersController", [
                 console.log($scope.formatDates);
             });
 
-                 
         }
+
+        $scope.enableDisableDeleteLayout = function(isDisabled){
+
+        	if (isDisabled) {
+        		if (isDisabled.id != 0) {
+        			$(".st-content-action-icons .delete_layout").css("opacity", 1)
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "initial");
+        		} else {
+        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        		}
+        	} else {
+        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
+        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        	}
+        	
+        }
+                 
         // $scope.getDefaultFiltersConfiguration()
     }
 ]);
