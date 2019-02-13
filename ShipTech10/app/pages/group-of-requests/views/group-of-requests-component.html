@@ -268,7 +268,7 @@
                                         path: 'quoteByDateFrom',
                                         root: 'ctrl',
                                         pickerId: 'quoteByDateFrom'
-                                    }, 2); ($ctrl.formatDates.quoteByDateFrom && !$ctrl.invalidDate['quoteByDateFrom']) ? $ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments) : '';" 
+                                    }, 2);"
                                 ng-focus="inputFocus['quoteByDateFrom'] = true; $event.stopPropagation();" 
                                 ng-blur="inputFocus['quoteByDateFrom'] = false;" 
                                 ng-invalid="{{ $ctrl.invalidDate['quoteByDateFrom'] && !inputFocus['quoteByDateFrom'] }}" 
@@ -277,23 +277,23 @@
                               path: 'quoteByDateFrom',
                               root: 'ctrl',
                               pickerId: 'quoteByDateFrom'
-                            }, 1)" ng-if="$ctrl.quoteByDateFrom"></span>
+                            }, 1, false, true)" ng-if="$ctrl.quoteByDateFrom"></span>
                               
-                            <span class="input-group-btn date-picker date form_meridian_datetime">
-                              <input class="form-control hidden-form-input"
-                                 type="text" 
-                                 id="quoteByDateFrom"
-                                 ng-model="$ctrl.quoteByDateFrom" 
-                                 name="quoteByDateFrom"
-                                 ng-change="$ctrl.setValue({
-                                  path: 'quoteByDateFrom',
-                                  root: 'ctrl',
-                                  pickerId: 'quoteByDateFrom'
-                              }, 1); $ctrl.invalidDate['quoteByDateFrom'] = false; $ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments);"
-                              visibility="hidden"/>
-                              <button class="btn default date-set" type="button">
-                                  <i class="fa fa-calendar"></i>
-                              </button>
+                            <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields" id="quoteByDateFrom">
+
+                                <!-- datepicker input -->
+                                <input  class="form-control hidden-form-input" name="quoteByDateFrom" id="quoteByDateFrom"  ng-model="$ctrl.quoteByDateFrom" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.setValue({
+                                    path: 'quoteByDateFrom',
+                                    root: 'ctrl',
+                                    pickerId: 'quoteByDateFrom',
+                                    fieldId: 'quoteByDateFrom'
+                                }, 1);"
+                                visibility="hidden">
+                                <!-- end datepicker input -->
+
+                                <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
                             </span>
                         </div>
 
@@ -314,7 +314,7 @@
                               path: 'quoteByDate',
                               root: 'ctrl',
                               pickerId: 'quoteByDate'
-                            }, 1)" ng-if="$ctrl.quoteByDate"></span>
+                            }, 1, false, true)" ng-if="$ctrl.quoteByDate"></span>
                               
                             <span class="input-group-btn date-picker date form_meridian_datetime">
                               <input class="form-control hidden-form-input"

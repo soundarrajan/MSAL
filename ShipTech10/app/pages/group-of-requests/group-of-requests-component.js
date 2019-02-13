@@ -2769,7 +2769,11 @@ ctrl.setProductData = function(data, loc) {
 
 
         };
-        ctrl.saveComments = function (internalComments, externalComments) {
+        ctrl.saveComments = function (internalComments, externalComments, fromDate) {
+            if (fromDate && ctrl.lastSavedQuoteByDateFrom == ctrl.quoteByDateFrom) {
+                return;
+            }
+            ctrl.lastSavedQuoteByDateFrom = ctrl.quoteByDateFrom;
         	if (internalComments) {
 	        	internalComments = internalComments.replace(/(\r\n|\n)/g, "<br/>")
         	}
@@ -6461,7 +6465,7 @@ ctrl.setProductData = function(data, loc) {
             return null;
         }
 
-        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
+        ctrl.setValue = function(inputDetails, direction, simpleDate, init){
             
 
             /**  @param inputDetails - object w. the inputs details:
@@ -6500,11 +6504,6 @@ ctrl.setProductData = function(data, loc) {
                 'ctrl': ctrl
             }
 
-            if (!ctrl.overrideInvalidDate) {
-                ctrl.overrideInvalidDate = {}
-            }
-            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
-
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
@@ -6517,9 +6516,16 @@ ctrl.setProductData = function(data, loc) {
                         var formattedDate = ctrl.formatDateTime(dateValue, DATE_FORMAT);
                         _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
                     }
-                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
-                },2);
-                 $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
+                    if (ctrl.invalidDate) {
+                        ctrl.invalidDate[inputDetails.path] = false;
+                    }
+                    if (inputDetails.path == 'quoteByDateFrom' && !init) {
+                        if (formattedDate != undefined) {
+                            ctrl.saveComments(ctrl.internalComments, ctrl.externalComments, true);
+                        }
+                    }
+                }, 2);
+                $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
             }
             if(direction == 2){
                 // date typing input -> datepicker input 
@@ -6532,7 +6538,12 @@ ctrl.setProductData = function(data, loc) {
 
                     // also change datepicker value
                     $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-                },2);
+                    if (inputDetails.path == 'quoteByDateFrom' && !init) {
+                        if (formattedDate != undefined) {
+                            ctrl.saveComments(ctrl.internalComments, ctrl.externalComments, true);
+                        }
+                    }
+                }, 2);
             }
         }
         ctrl.stopPropagation = function($event){

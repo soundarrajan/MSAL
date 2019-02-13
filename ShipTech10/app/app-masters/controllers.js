@@ -6637,7 +6637,7 @@
                     hasInvalidDate = false
                     if ((date && !formattedDate)) {
 	                    vm.overrideInvalidDate[inputDetails.pickerId] = true;
-	                    toastr.error("Invalid Date");
+	                    // toastr.error("Invalid Date");
 	                    hasInvalidDate = true
                     }
                     if (formattedDate) {
