@@ -1603,8 +1603,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 /*From Claims List*/
                 var edit_order_link_from_claims = function(cellValue, options, rowObject) {
                     var tpl = "";
+                    var id = "";
+                    if (rowObject.orderId) {
+                        id = rowObject.orderId;
+                    }
+                    if (rowObject.order && rowObject.order.id) {
+                        id = rowObject.order.id;
+                    }
                     if (cellValue) {
-                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a href="#/edit-order/' + id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;
