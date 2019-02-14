@@ -428,11 +428,12 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 callback(result);
             });
         },
-        labsActions: function(app, screen, id, action, callback) {
+        labsActions: function(app, screen, id, action, status, callback) {
             var data = {
                 app: app,
                 screen: screen,
                 id: id,
+                status: status,
             };
             if (action == 1) {
                 $Api_Service.entity.verify(data, function(result) {

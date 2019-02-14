@@ -6320,6 +6320,50 @@ APP_API.factory("$Api_Service", [
                         callback(false);
                         return;
                     }
+                    if (param.app == 'labs') {
+                        var apiJSON = JSON.stringify({
+                            Payload: {
+                               "Id": param.id,
+                               "Status": {
+                                    "Id": param.status.id,
+                                    "Name": param.status.name
+                                }
+                            }
+                        });
+                        var url = api_map[param.app][param.screen]["entity"]["verify"]["endpoint"];
+                         $http.post(url, apiJSON).then(
+                            function success(response) {
+                                if (response.status == 200) {
+                                    var res = {
+                                        status: response.data.isSuccess,
+                                        message: ""
+                                    };
+                                    if (response.data.isSuccess) {
+                                        res.message = "Labs verified!";
+                                    } else {
+                                        res.message = "Labs verification failed!";
+                                    }
+                                    callback(res);
+                                } else {
+                                    callback({
+                                        status: false,
+                                        message: "Labs verification failed!"
+                                    });
+                                    return;
+                                }
+                            },
+                            function errorCallback(response) {
+                                callback({
+                                    status: false,
+                                    message: response.data.ErrorMessage
+                                });
+                                return;
+                            }
+                        ).finally(function(){
+                            // Nothing
+                        });
+                        return;
+                    }
                     if (param.app == "delivery" && param.screen == "delivery") {
                         if (param.bulk) {
                             var apiJSON = {
@@ -6412,6 +6456,51 @@ APP_API.factory("$Api_Service", [
                     if (_debug) console.log("$APIService entity.revert called with the following params:", param);
                     if (param.id.length < 1 && !isNaN(param.id)) {
                         callback(false);
+                        return;
+                    }
+
+                    if (param.app == 'labs') {
+                        var apiJSON = JSON.stringify({
+                            Payload: {
+                               "Id": param.id,
+                               "Status": {
+                                    "Id": param.status.id,
+                                    "Name": param.status.name
+                                }
+                            }
+                        });
+                        var url = api_map[param.app][param.screen]["entity"]["revert"]["endpoint"];
+                         $http.post(url, apiJSON).then(
+                            function success(response) {
+                                if (response.status == 200) {
+                                    var res = {
+                                        status: response.data.isSuccess,
+                                        message: ""
+                                    };
+                                    if (response.data.isSuccess) {
+                                        res.message = "Labs verified!";
+                                    } else {
+                                        res.message = "Labs verification failed!";
+                                    }
+                                    callback(res);
+                                } else {
+                                    callback({
+                                        status: false,
+                                        message: "Labs verification failed!"
+                                    });
+                                    return;
+                                }
+                            },
+                            function errorCallback(response) {
+                                callback({
+                                    status: false,
+                                    message: response.data.ErrorMessage
+                                });
+                                return;
+                            }
+                        ).finally(function(){
+                            // Nothing
+                        });
                         return;
                     }
 

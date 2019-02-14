@@ -434,7 +434,8 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
     }
     $scope.labsActions = function (action) {
         var id = $scope.formValues.id;
-        Factory_Master.labsActions(vm.app_id, vm.screen_id, id, action, function (callback) {
+        var status = $scope.formValues.status;
+        Factory_Master.labsActions(vm.app_id, vm.screen_id, id, action, status, function (callback) {
             if (callback.status == true) {
                 $scope.loaded = true;
                 toastr.success(callback.message);
