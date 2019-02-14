@@ -57,6 +57,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                 return;
         	}
 
+            if (!$rootScope.listOfAppliedFiltersString) {
+                $rootScope.listOfAppliedFiltersString = [];
+            }
+
         	if ($rootScope.listOfAppliedFiltersString.indexOf(packedFilter.value[0].toLowerCase()) == -1) {
                 $scope.globalFilters.push(packedFilter);
         	} else {
@@ -665,9 +669,11 @@ angular.module("shiptech.components").controller("FiltersController", [
                     toastr.success("Configuration saved!");
 
                     // $state.reload();globalFilters
-                    $scope.filtersConfigurations = null;
-                    $scope.getFiltersConfigurations();
-                    $scope.getDefaultFiltersConfiguration(true);
+                    if (route == 'schedule-dashboard-calendar' || route == 'schedule-dashboard-table') {
+                        $scope.filtersConfigurations = null;
+                        $scope.getFiltersConfigurations();
+                        $scope.getDefaultFiltersConfiguration(true);
+                    }
                 })
                 .catch(function(error) {
 		            ctrl.saveFilterActionEvent = false;
