@@ -118,7 +118,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             $.each($scope.formValues.costDetails, function(k, v) {
                 if (v.product.id != -1) {
                 	if (v.product.id != v.deliveryProductId) {
-	                	v.product.id = angular.copy(v.deliveryProductId);
+	                	// v.product.id = angular.copy(v.deliveryProductId);
 	                	v.product.productId = angular.copy(v.product.id);
                 	}
                 }
