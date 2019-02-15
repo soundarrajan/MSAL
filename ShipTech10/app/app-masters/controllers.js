@@ -1714,7 +1714,7 @@
 		                                if (v.product.id != -1) {
 						                	v.product.productId = angular.copy(v.product.id);
 						                	if (v.deliveryProductId) {
-							                	v.product.id = v.deliveryProductId;
+							                	// v.product.id = v.deliveryProductId;
 						                	}
 
 						                }
@@ -4157,7 +4157,7 @@
                 if (rowData.costName) {
                     transaction_type = "cost";
                 	rowData.product.productId = rowData.product.id
-                    rowData.product.id = rowData.deliveryProductId;
+                    // rowData.product.id = rowData.deliveryProductId;
                     transactionstobeinvoiced_dtRow = {
                         product: rowData.product,
                         costName: rowData.costName,
