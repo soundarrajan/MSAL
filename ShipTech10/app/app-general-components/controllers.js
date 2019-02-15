@@ -1063,7 +1063,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     textVal = "";
                     columnKey = "'comment'";
                     if (rowObject.comment) {
-                        textVal = rowObject.comment;
+                        textVal = rowObject.comment.replace(new RegExp("'","g"), "");
                     }
                     var tpl = '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px" >' + textVal + "</textarea>";
                     return tpl;
