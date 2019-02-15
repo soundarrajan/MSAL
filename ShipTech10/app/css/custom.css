@@ -1334,7 +1334,13 @@
             }
 
             .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item .sidebar-filters {
-                margin-top: 80px;
+                margin-top: 16vh;
+            }
+
+            @media only screen and (min-width: 1200px) {
+                .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item .sidebar-filters {
+                    margin-top: 12vh;
+                }
             }
 
             .sidebar-filters .filters_configuration {
