@@ -263,9 +263,9 @@ APP_CLAIMS.controller("Controller_Claims", [
 		                            $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
 		                            $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
 	                            }
-	                            $scope.formValues.orderDetails.deliveryDate = response.deliveryDate;
+	                            $scope.formValues.deliveryDate = response.deliveryDate;
                             })
-                            // $scope.formValues.orderDetails.deliveryDate = response.deliveryDate;
+                            // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
                         if (response.vessel) {
                             $scope.formValues.orderDetails.vessel = response.vessel.name;
@@ -316,7 +316,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     if (field) vm.getOptions(field);
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
                     $scope.options.Product = {};
-                    deliveryDateFromDelivery = _.find($scope.options['deliveryNumber'], {id:$scope.formValues.orderDetails.deliveryNo.id}).payload.orderDetails.deliveryDate; 
+                    deliveryDateFromDelivery = _.find($scope.options['deliveryNumber'], {id:$scope.formValues.orderDetails.deliveryNo.id}).payload.deliveryDate; 
 
                     if (deliveryDateFromDelivery) {
                         $timeout(function(){
@@ -325,9 +325,9 @@ APP_CLAIMS.controller("Controller_Claims", [
                             	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
                             }
                             $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
-                            $scope.formValues.orderDetails.deliveryDate = deliveryDateFromDelivery;
+                            $scope.formValues.deliveryDate = deliveryDateFromDelivery;
                         })
-                        $scope.formValues.orderDetails.deliveryDate = deliveryDateFromDelivery;
+                        $scope.formValues.deliveryDate = deliveryDateFromDelivery;
                     }
                     // $scope.formValues.deliveryDate = deliveryDateFromDelivery ? deliveryDateFromDelivery : $scope.formValues.deliveryDate;
                     
@@ -336,12 +336,12 @@ APP_CLAIMS.controller("Controller_Claims", [
                     delete field;
                 } else {
                     $timeout(function(){
-	                    $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate($scope.formValues.orderDetails.deliveryDate, null, 'eta'));
+	                    $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate($scope.formValues.deliveryDate, null, 'eta'));
 	                    if (!angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails) {
 	                    	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
 	                    }                    
 	                    $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
-	                    $scope.formValues.orderDetails.deliveryDate = $scope.formValues.orderDetails.deliveryDate;
+	                    $scope.formValues.deliveryDate = $scope.formValues.deliveryDate;
                     })
                 }
             }
