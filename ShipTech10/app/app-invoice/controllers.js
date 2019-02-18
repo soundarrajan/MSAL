@@ -124,6 +124,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                 }
             });                
         }
+        $scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
+        $scope.initialHasManualPaymentDate = angular.copy($scope.formValues.hasManualPaymentDate);
 
     }
 
@@ -135,7 +137,11 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     		if (vm.initialDueDate != $scope.formValues.manualDueDate) {
 	    		$scope.formValues.dueDate = $scope.formValues.manualDueDate;
     		}
-    	}	
+    	}
+
+		$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
+		$scope.initialHasManualPaymentDate = angular.copy($scope.formValues.hasManualPaymentDate);
+
         if (Object.keys(val).length > 0) {
             $timeout(function() {
                 $scope.dtMasterSource.applyFor = [];
@@ -204,15 +210,21 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
                 $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
-                if (!$scope.formValues.hasManualPaymentDate || !$scope.formValues.paymentDate) {
-		        	$scope.formValues.hasManualPaymentDate = false;
+                if (!$scope.initialHasManualPaymentDate) {
+		        	$scope.formValues.hasManualPaymentDate = false
 	                $scope.formValues.paymentDate = response.data;
 	                $scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(response.data, true);
+	            	$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
                 }
             });
         }
         if (name == "PaymentDate") {
-        	$scope.formValues.hasManualPaymentDate = true;
+            if (!$scope.initialHasManualPaymentDate) {
+	        	$scope.formValues.hasManualPaymentDate = false
+            	if ($scope.manualPaymentDateReference.split("T")[0] != $scope.formValues.paymentDate.split("T")[0]) {
+		        	$scope.formValues.hasManualPaymentDate = true
+            	}
+            }
         }
         if (name == "costType") {
         	if ($scope.formValues.costDetails.length > 0) {
@@ -283,6 +295,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
 					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
 					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
+					$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
 	        	}
 		    	// api/invoice/dueDateWithoutSave
 	        });

@@ -905,6 +905,12 @@
                     $scope.filterFromData = roles;
                 }
                 if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+                	// if ($scope.paymentDateWasManuallyChanged && !$scope.filterFromData.hasManualPaymentDate) {
+	                // 	if ($scope.manualPaymentDateReference.split("T")[0] == $scope.filterFromData.paymentDate.split("T")[0]) {
+		               //  	$scope.filterFromData.hasManualPaymentDate = true;	
+		               //  	$scope.filterFromData.hasManualPaymentDate = false;	
+	                // 	}
+                	// }
                 	validCostDetails = []
                     if ($scope.filterFromData.costDetails.length > 0) {
                         $.each($scope.filterFromData.costDetails, function(k, v) {
