@@ -40,6 +40,7 @@ window.increment = 0;
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
                     $rootScope.listTableSelector = "flat_" + scope.screen.replace("list", "_list");
+                    $rootScope.sortList = null;
                     // console.log(CLC);
                     if (typeof Elements.scope[scope.id] === "undefined") {
                         // console.log(scope);
@@ -56,7 +57,7 @@ window.increment = 0;
                         CLC.tableParams.PageFilters = {};
                     }
                     scope.tenantSetting = $tenantSettings;
-                    scope.$on("$stateChangeSuccess", function() {
+                    scope.$on("$stateChangeSuccess", function () {
                         CLC.tableParams.PageFilters = {};
                         console.log("stateChangeSuccess");
                     });
