@@ -287,15 +287,17 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 					if (!callback.data.workingDueDate) { return }
 					// $scope.formValues.manualDueDate = callback.data.manualDueDate;	
 					$scope.formValues.dueDate = callback.data.dueDate;	
-					$scope.formValues.paymentDate = callback.data.paymentDate;	
+					if (!$scope.initialHasManualPaymentDate) {
+						$scope.formValues.paymentDate = callback.data.paymentDate;	
+						$scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(callback.data.paymentDate, true);
+						$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
+					}
 					$scope.formValues.workingDueDate = callback.data.workingDueDate;	
 					$scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(callback.data.workingDueDate, true);
 					$scope.formatDates.formValues.dueDate = $scope.CM.formatSimpleDate(callback.data.dueDate, true);
-					$scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(callback.data.paymentDate, true);
 					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
 					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
 					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
-					$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
 	        	}
 		    	// api/invoice/dueDateWithoutSave
 	        });
