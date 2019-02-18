@@ -620,29 +620,32 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
          * @param {String} - A Request object name.
          */
         function addRequest(requestName, requestId) {
+            groupOfRequestsModel.getRequests().then(function (data) {
+                ctrl.autocompleteRequest = data.payload;
             
-            if(alreadySaved.indexOf(requestName) != -1){
-                return;
-
-            }
-            alreadySaved.push(requestName);
-
-            var request = getRequestByName(requestName);
-            if (requestId) {
-            	var request = requestId;
-            }
-            groupOfRequestsModel.addRequestsToGroup([request.id], groupId).then(function (newRequestData) {
-                if (newRequestData.payload) {
-                    newRequestAddedData = $scope.remodelSellersStructure(newRequestData.payload);
-                    // newRequestAddedData = newRequestData.payload;
-                    for (var i = 0; i < newRequestAddedData.length; i++) {
-                        ctrl.requests.push(newRequestAddedData[i]);
-                    }
-                    ctrl.requestTabs = createRequestTabs(ctrl.requests);
-                    initializeDataArrays(ctrl.requests);
-                    parseRequestList(ctrl.requests, false);
+                if(alreadySaved.indexOf(requestName) != -1){
+                    return;
                 }
-            }).finally(function(){
+
+                alreadySaved.push(requestName);
+
+                var request = getRequestByName(requestName);
+                if (requestId) {
+                	var request = requestId;
+                }
+                groupOfRequestsModel.addRequestsToGroup([request.id], groupId).then(function (newRequestData) {
+                    if (newRequestData.payload) {
+                        newRequestAddedData = $scope.remodelSellersStructure(newRequestData.payload);
+                        // newRequestAddedData = newRequestData.payload;
+                        for (var i = 0; i < newRequestAddedData.length; i++) {
+                            ctrl.requests.push(newRequestAddedData[i]);
+                        }
+                        ctrl.requestTabs = createRequestTabs(ctrl.requests);
+                        initializeDataArrays(ctrl.requests);
+                        parseRequestList(ctrl.requests, false);
+                    }
+                }).finally(function(){
+                });
             });
         }
         /**
