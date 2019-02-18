@@ -460,7 +460,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "invoiceRate",
                         displayName: "Inv. Rate",
-                        width: 200,
+                        width: 190,
                         cellTemplate: $scope.dataTableTemplates.textUOM,
                         format: vm.amount,
                         cellObject: {
@@ -481,7 +481,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         format: vm.amount,
                         cellTemplate: $scope.dataTableTemplates.simpleTextUOM,
                         cellUomName: "invoiceRateCurrency",
-                        width: 120,
+                        width: 200,
                         cellObject: {
                             Disabled: true
                         }
