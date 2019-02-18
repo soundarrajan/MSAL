@@ -753,7 +753,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 
             $.each(requests, function(rk,rv){
             	rv.locations = $filter("orderBy")(rv.locations, "-recentEta", true);
-            	rv.firstRecentEta = rv.locations[0].recentEta;
+            	rv.firstRecentEta = rv.locations.length > 0 ? rv.locations[0].recentEta : null;
             })
         	requests = $filter("orderBy")(requests, "-firstRecentEta", true);
         	// ctrl.selectedRequests = $filter("orderBy")(ctrl.requests, "-firstRecentEta", true);
