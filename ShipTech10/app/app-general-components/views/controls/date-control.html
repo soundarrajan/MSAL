@@ -16,7 +16,7 @@
     <label ng-if="field.Label && !field.isCustomField" for="{{ field.Name }}" class="{{ field.Name }}_label date-picker-label" >
 
 		<span ng-if="CM.screen_id == 'invoice' && field.Name == 'DueDate' " >
-			<i class="fa fa-warning font-red-thunderbird font-lg" tooltip data-original-title="Unless a value is manually set, Due Date and related data will be automatically computed after the Invoice is saved."></i>			
+			<i class="fa fa-warning font-yellow-lemon font-lg" tooltip data-original-title="Unless a value is manually set, Due Date and related data will be automatically computed after the Invoice is saved."></i>			
 		</span>
 
         {{ CM.app_id + '.' + field.Label | translate }}  
