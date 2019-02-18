@@ -118,8 +118,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             $.each($scope.formValues.costDetails, function(k, v) {
                 if (v.product.id != -1) {
                 	if (v.product.id != v.deliveryProductId) {
-	                	// v.product.id = angular.copy(v.deliveryProductId);
 	                	v.product.productId = angular.copy(v.product.id);
+	                	v.product.id = angular.copy(v.deliveryProductId);
                 	}
                 }
             });                
@@ -781,7 +781,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         if ($scope.CM.type == 'product') {
             product = formValues.productDetails[rowIndex];
             if (typeof(product.product) != 'undefined' && typeof(product.invoiceQuantityUom) != 'undefined' && typeof(product.invoiceRateUom) !== 'undefined') {
-                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null || typeof(product.invoiceAmount) != 'undefined') {
+                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /*|| typeof(product.invoiceAmount) == 'undefined'*/) {
                     return;
                 };
                 $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
