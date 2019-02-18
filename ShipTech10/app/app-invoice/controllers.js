@@ -204,11 +204,15 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
                 $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
-                if (!$scope.formValues.paymentDate) {
+                if (!$scope.formValues.hasManualPaymentDate || !$scope.formValues.paymentDate) {
+		        	$scope.formValues.hasManualPaymentDate = false;
 	                $scope.formValues.paymentDate = response.data;
 	                $scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(response.data, true);
                 }
             });
+        }
+        if (name == "PaymentDate") {
+        	$scope.formValues.hasManualPaymentDate = true;
         }
         if (name == "costType") {
         	if ($scope.formValues.costDetails.length > 0) {
