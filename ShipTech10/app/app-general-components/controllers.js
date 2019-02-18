@@ -2293,6 +2293,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 AccountancyDate: changedData.accountancyDate ? changedData.accountancyDate : null,
                 IsChecked: changedData.isChecked ? changedData.isChecked : null
             };
+            if (typeof(vm.paymentDateHistory) == "undefined") {
+				vm.paymentDateHistory = [];
+            }
+            if (typeof(vm.paymentDateHistory[currentRow.id]) == 'undefined') {
+            	vm.paymentDateHistory[currentRow.id] = {paymentDate:null}
+            }
+            if (vm.paymentDateHistory[currentRow.id].paymentDate == changedData.paymentDate) {
+            	return;
+            } else {
+            	payload.HasManualPaymentDate = true;
+                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
+            }
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
                     // toastr.success("Saved successfully");
