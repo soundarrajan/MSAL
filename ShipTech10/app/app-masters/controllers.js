@@ -1781,8 +1781,8 @@
 		                                    };
 		                                } else {
 						                	if (v.product.id != v.deliveryProductId) {
-							                	v.product.id = angular.copy(v.deliveryProductId);
 							                	v.product.productId = angular.copy(v.product.id);
+							                	v.product.id = angular.copy(v.deliveryProductId);
 						                	}						                	
 		                                }
 		                            });
