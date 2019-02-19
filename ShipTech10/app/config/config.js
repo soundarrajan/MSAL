@@ -5,6 +5,7 @@ var appConfig = function () {
             "tenant": "twentyfoursoftwareoutlook.onmicrosoft.com",
             "clientId": "3e7b4241-b1e6-4769-bb5c-989d64458e51",
             "authEndpoint" :"/oauth2/authorize",
+            "cacheLocation":"localStorage",
             "extraQueryParameter": "nux=1",
             "logOutUri": "",
             "endpoints": {
