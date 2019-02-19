@@ -509,7 +509,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         window.tenantFormatsDateFormat = dateFormat;
         dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
         if (date) {
-            return moment.utc(date).format(dateFormat);
+            return moment(date).format(dateFormat);
         }
         return;
     };

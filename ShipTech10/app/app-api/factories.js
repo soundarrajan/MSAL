@@ -4938,8 +4938,11 @@ APP_API.factory("$Api_Service", [
                                         if (v.ColumnType.toLowerCase() == "date") {
                                             if (v.dateType && v.dateType == "server") {
                                                 $.each(v.Values, function(kk, vv) {
-                                                    initialDateFilter[k].Values[kk] = moment(vv).utc().format("YYYY-MM-DDTHH:mm");
-                                                    // initialDateFilter[k].Values[kk] = moment(vv).format("YYYY-MM-DDTHH:mm");
+                                                    initialDateFilter[k].Values[kk] = moment(vv).format("YYYY-MM-DDTHH:mm");
+                                                });
+                                            } else {
+                                                $.each(v.Values, function(kk, vv) {
+	                                                initialDateFilter[k].Values[kk] = moment(vv).utc().format("YYYY-MM-DDTHH:mm");
                                                 });
                                             }
                                         }
