@@ -32,7 +32,7 @@
             <div class="form_input form_input_pricing_schedule_from">
                 <div class="input-group " ng-class="field.disabled ? 'disabled' : ''">
                         <span ng-init="CM.setValue({
-                            path: 'formValues.pricingScheduleOptionSpecificDate.dates[key].date',
+                            path: 'formValues.pricingScheduleOptionSpecificDate.dates['+key+'].date',
                             root: '$scope',
                             pickerId: key + '_pricing_schedule_from'
                         }, 1)" 
@@ -79,7 +79,7 @@
                         </a>
                     </span>
                     <span class="input-group-btn" ng-if="key> 0">
-                        <a   class="input_add_UserIm btn default" ng-click="CM.softDelete(formValues.pricingScheduleOptionSpecificDate.dates, key)" class="btn default">
+                        <a   class="input_add_UserIm btn default" ng-click="CM.softDelete(formValues.pricingScheduleOptionSpecificDate.dates, key); formatDates.formValues.pricingScheduleOptionSpecificDate.dates[key].date = null" class="btn default">
                             <i class="fa fa-minus"></i>
                         </a>
                     </span>
