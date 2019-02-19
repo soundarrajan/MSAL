@@ -2166,6 +2166,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
                 entityId = rowObject.id;
 
+                // if (vm.changedfields) {
+	               //  if (vm.changedfields[entityId]) {
+		              //   vm.changedfields[entityId][name] = null;
+	               //  }
+                // }
+                _.set(vm, 'changedfields['+entityId+']['+name+']', null);
+                _.set(vm, 'formatDates.changedfields['+entityId+']['+name+']', null);
 
                 if (typeof vm.changedfields[entityId] == "undefined")  vm.changedfields[entityId] = {};
                 vm.changedfields[entityId][name] = cellValue;
