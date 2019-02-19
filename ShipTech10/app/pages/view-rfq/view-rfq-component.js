@@ -98,7 +98,7 @@ angular.module('shiptech.pages')
                         "WorkflowId": rfq.workflowId,
                         "OrderFields": null,
                         "screenActions": rfq.screenActions,
-                        "productStatusId": rfq.productStatusId
+                        "productStatus": rfq.productStatus
                     };
 
                     ctrl.requirements.push(req);
@@ -159,7 +159,7 @@ angular.module('shiptech.pages')
                  //remove superfluous cached parameters
                 for (var i = 0; i < rfq_data.length; i++) {
                     delete rfq_data[i].screenActions;
-                    delete rfq_data[i].productStatusId;
+                    delete rfq_data[i].productStatus.id;
                 }
 
                 ctrl.buttonsDisabled = true;
@@ -181,7 +181,7 @@ angular.module('shiptech.pages')
                 //remove superfluous cached parameters
                 for (var i = 0; i < requirements.length; i++) {
                     delete requirements[i].screenActions;
-                    delete requirements[i].productStatusId;
+                    delete requirements[i].productStatus;
                 }
 
                 var rfq_data = {
@@ -222,7 +222,7 @@ angular.module('shiptech.pages')
                     "WorkflowId": rfq.workflowId,
                     "OrderFields": null,
                     "screenActions": rfq.screenActions,
-                    "productStatusId": rfq.productStatusId
+                    "productStatus": rfq.productStatus
                 };
                 ctrl.requirements.push(req);            	
                 var data = {
@@ -237,7 +237,7 @@ angular.module('shiptech.pages')
 
                 for (var i = 0; i < ctrl.requirements.length; i++) {
                     // ctrl.STATUS['Amended'].id
-                    if (ctrl.requirements[i].productStatusId == 17) {
+                    if (ctrl.requirements[i].productStatus.id == 17) {
                         canAmend = true;
                     } else {
                         canAmend = false;
