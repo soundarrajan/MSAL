@@ -214,6 +214,8 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
             $scope.formatHeaders(data);
+
+
             $scope.noDefault = false;
             if ($rootScope.sortList) {
                 $scope.packedFilters.sortList = $rootScope.sortList;
@@ -323,6 +325,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 var newFilter = {
                     column: null,
                     condition: null,
+                    filterOperator: val.filterOperator,
                     value: []
                 };
                 //check in current columns
@@ -729,6 +732,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 if ($rootScope.rawFilters && $state.current.url != '/schedule-dashboard-table') {
 			            $scope.packedFilters = $scope.packFilters($rootScope.rawFilters);
 			            $scope.packedFilters.raw = $rootScope.rawFilters;
+
 			            if ($rootScope.sortList) {
 			                $scope.packedFilters.sortList = $rootScope.sortList;
 			            }

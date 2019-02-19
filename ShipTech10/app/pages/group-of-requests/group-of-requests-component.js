@@ -6144,6 +6144,7 @@ ctrl.setProductData = function(data, loc) {
 				ctrl.requirementRequestProductIds = []
 				ctrl.groupedSellersByLocation = null;
 				ctrl.bladeOpened = false;
+				ctrl.confirmedBladeNavigation = true;
 				$scope.$apply();
 				setTimeout(function(){
 					ctrl.prefferedSellerCheckbox = false;

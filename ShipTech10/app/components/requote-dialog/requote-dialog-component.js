@@ -117,10 +117,10 @@ angular.module('shiptech.components')
             };
 
 
-			ctrl.initMask = function(){
-	            Factory_App_Dates_Processing.doMaskInitialization();
-	        }
-	        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
+			// ctrl.initMask = function(){
+	  //           Factory_App_Dates_Processing.doMaskInitialization();
+	  //       }
+			ctrl.setValue = function(inputDetails, direction, simpleDate, app){
 	            
 	            /** See @param inputDetails
 	            /**     @param direction
@@ -137,11 +137,6 @@ angular.module('shiptech.components')
 	                '$rootScope': $rootScope,
 	                '$ctrl': ctrl
 	            }
-
-	            if (!ctrl.overrideInvalidDate) {
-	                ctrl.overrideInvalidDate = {}
-	            }
-	            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
 	    
 	            if(direction == 1){
 	                // datepicker input -> date typing input
@@ -155,8 +150,7 @@ angular.module('shiptech.components')
 	                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
 	                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
 	                    }
-	                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
-	                     $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
+	                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
 	                });
 	            }
 	            if(direction == 2){
@@ -168,10 +162,62 @@ angular.module('shiptech.components')
 	                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
 	    
 	                    // also change datepicker value
-	                    $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+	                    // when using st-date-format for datepicker, date-only uses datepicker and date-time uses datetimepicker
+	                    if(simpleDate){
+	                        $('.formatted-date-button#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
+	                    }else{
+	                        $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
+	                    }
 	                });
 	            }
 	        }
+
+			ctrl.initMask = function(timeout){
+
+	            var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptions();
+	        
+	            // mask options
+	            var options =  {
+	                onKeyPress: function(value, e, field, options) {
+	                    // select formatter
+	                    var formatUsed = "";
+	                    if(field.hasClass('date-only')){
+	                        formatUsed  = DATE_OPTIONS.momentFormatDateOnly;
+	                    }else{
+	                        formatUsed  = DATE_OPTIONS.momentFormat;
+	                    }
+	                    // process date
+	                    var val = moment(value, formatUsed, true);
+	                    // test date validity
+	                    if(ctrl.invalidDate === undefined) ctrl.invalidDate = {};
+	                    if(val.isValid()){
+	                        ctrl.invalidDate[field[0].name] = false;
+	                    }else{
+	                        ctrl.invalidDate[field[0].name] = true;
+	                    }
+	                }
+	            }
+	            // end mask options
+	    
+	            // ACTUAL MASK INITIALIZATION
+	            function init(){
+	                var dateTime = $('.formatted-date-input.date-time');
+	                $.each(dateTime, function(key){
+	                    $(dateTime[key]).mask(DATE_OPTIONS.maskFormat, options);
+	                })
+	                var dateOnly = $('.formatted-date-input.date-only');
+	                $.each(dateOnly, function(key){
+	                    $(dateOnly[key]).mask(DATE_OPTIONS.maskFormatDateOnly, options);
+	                })
+	            }
+	            if(timeout){
+	                setTimeout(init,2000);
+	            }else{
+	                init();
+	            }
+	            // END ACTUAL MASK INITIALIZATION
+	        }
+	        
 
 
         }

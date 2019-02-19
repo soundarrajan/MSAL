@@ -682,6 +682,7 @@ window.increment = 0;
                             CLC.tableParams.sortList = data.sortList;
                             CLC.tableParams.page = 1;
                             console.log("ON Page FILTERS", CLC.tableParams.PageFilters);
+
                             if (data.sortList) {
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", { sortname: null });
                             }
