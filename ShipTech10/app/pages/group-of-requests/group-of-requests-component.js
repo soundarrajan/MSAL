@@ -5389,7 +5389,8 @@ ctrl.setProductData = function(data, loc) {
             return paymentTerm;
         };
         ctrl.countdown = function (time) {
-            ctrl.timerCount++;
+        // countdonw not needed anymore
+        /*    ctrl.timerCount++;
             // console.log(ctrl.timerCount, time);
             ctrl.validityArray[ctrl.timerCount] = {};
             if (time != "-") {
@@ -5407,6 +5408,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.startTimer = true;
             }, 2000);
             // console.log(ctrl.validityArray);
+        */    
             return ctrl.timerCount;
         };
         $interval(function () {
