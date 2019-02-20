@@ -6168,7 +6168,6 @@ ctrl.setProductData = function(data, loc) {
 
             groupOfRequestsModel.requoteRFQ(rfq_data).then(function(response) {
 				ctrl.requirements = [];
-                ctrl.onRequote();
             });
         };
 

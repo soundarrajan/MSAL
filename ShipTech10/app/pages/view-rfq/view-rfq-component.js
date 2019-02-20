@@ -18,70 +18,73 @@ angular.module('shiptech.pages')
             ctrl.STATUS = {};
             ctrl.lists = $listsCache;
 
-            tenantService.tenantSettings
-                        .then(function(settings){
-                            ctrl.numberPrecision = settings.payload.defaultValues;
-                            ctrl.currency = settings.payload.tenantFormats.currency;
-                            ctrl.quoteByCurrencyId = ctrl.currency.id;
-                            ctrl.quoteByCurrency = ctrl.currency.name;
-                        });
+            ctrl.init = function() {
+                tenantService.tenantSettings
+                            .then(function(settings){
+                                ctrl.numberPrecision = settings.payload.defaultValues;
+                                ctrl.currency = settings.payload.tenantFormats.currency;
+                                ctrl.quoteByCurrencyId = ctrl.currency.id;
+                                ctrl.quoteByCurrency = ctrl.currency.name;
+                            });
 
-            if ($rootScope.bladeRfqGroupId) {endpoint = 5} else {endpoint = ''};
-            uiApiModel.get().then(function(data) {
-                ctrl.ui = data;
-                screenLoader.showLoader();
-                // Get the generic data Lists.
+                if ($rootScope.bladeRfqGroupId) {endpoint = 5} else {endpoint = ''};
+                uiApiModel.get().then(function(data) {
+                    ctrl.ui = data;
+                    screenLoader.showLoader();
+                    // Get the generic data Lists.
 
-                if ($rootScope.bladeRfqGroupId) {ctrl.groupId = $rootScope.bladeRfqGroupId}
-                if ($rootScope.bladeFilteredRfq) {
-                    SellerId = $rootScope.bladeFilteredRfq.randUnique.split("-")[0];
-                    PhysicalSupplierId = $rootScope.bladeFilteredRfq.randUnique.split("-")[1];
-                    if (PhysicalSupplierId == '') {PhysicalSupplierId = null}
-                    // LocationId = $rootScope.bladeFilteredRfq.requestLocationId;
-                    if ($rootScope.bladeFilteredRfq.locationData.location) {
-                        LocationId = $rootScope.bladeFilteredRfq.locationData.location.id;
+                    if ($rootScope.bladeRfqGroupId) {ctrl.groupId = $rootScope.bladeRfqGroupId}
+                    if ($rootScope.bladeFilteredRfq) {
+                        SellerId = $rootScope.bladeFilteredRfq.randUnique.split("-")[0];
+                        PhysicalSupplierId = $rootScope.bladeFilteredRfq.randUnique.split("-")[1];
+                        if (PhysicalSupplierId == '') {PhysicalSupplierId = null}
+                        // LocationId = $rootScope.bladeFilteredRfq.requestLocationId;
+                        if ($rootScope.bladeFilteredRfq.locationData.location) {
+                            LocationId = $rootScope.bladeFilteredRfq.locationData.location.id;
+                        } else {
+                            LocationId = $rootScope.bladeFilteredRfq.locationData.id;
+                        }
+                        data = {
+                            "SellerId" : SellerId,
+                            "PhysicalSupplierId" : PhysicalSupplierId,
+                            "LocationId" : LocationId,
+                            "RequestGroupId" : ctrl.groupId
+                        }
                     } else {
-                        LocationId = $rootScope.bladeFilteredRfq.locationData.id;
-                    }
-                    data = {
-                        "SellerId" : SellerId,
-                        "PhysicalSupplierId" : PhysicalSupplierId,
-                        "LocationId" : LocationId,
-                        "RequestGroupId" : ctrl.groupId
-                    }
-                } else {
-                    data = {
-                        "RequestGroupId" : ctrl.groupId
-                    }
-                }
-              
-                groupOfRequestsModel.getViewRFQ(data).then(function(data){
-                    screenLoader.hideLoader();
-                    ctrl.rfqs = data.payload;
-                    if(ctrl.rfqs.length) {
-                        var id = ctrl.rfqs[0].requestId;
-
-                        //check if multiple requests are selected
-                        for (var i = 1; i < ctrl.rfqs.length; i++) {
-                            if (ctrl.rfqs[i].requestId != id) {
-                                ctrl.multipleRequests = true;
-                                break;
-                            }
+                        data = {
+                            "RequestGroupId" : ctrl.groupId
                         }
                     }
+                  
+                    groupOfRequestsModel.getViewRFQ(data).then(function(data){
+                        ctrl.rfqs = data.payload;
+                        if(ctrl.rfqs.length) {
+                            var id = ctrl.rfqs[0].requestId;
 
-                    $timeout(function(){
-                        ViewRfqDataTable.init({
-                            selector: '#view_rfq_table',
-                            dom:'lBfrtip'
+                            //check if multiple requests are selected
+                            for (var i = 1; i < ctrl.rfqs.length; i++) {
+                                if (ctrl.rfqs[i].requestId != id) {
+                                    ctrl.multipleRequests = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        $timeout(function(){
+                            ViewRfqDataTable.init({
+                                selector: '#view_rfq_table',
+                                dom:'lBfrtip'
+                            });
+
+                            initializeDateInputs();
                         });
-
-                        initializeDateInputs();
                     });
+                }).finally(function(){
+                   
                 });
-            }).finally(function(){
-               
-            });
+            };
+
+            ctrl.init();
 
             ctrl.toggleSelection = function(index, rfq) {
                 var req;
@@ -166,8 +169,10 @@ angular.module('shiptech.pages')
 
                 groupOfRequestsModel.amendRFQ(rfq_data).then(function(data){
                     ctrl.buttonsDisabled = false;
+                    ctrl.init();
                 }, function() {
                     ctrl.buttonsDisabled = false;
+                    ctrl.init();
                 });
             };
 
@@ -195,8 +200,10 @@ angular.module('shiptech.pages')
                 
                 groupOfRequestsModel.revokeRFQ(rfq_data).then(function(data){
                     ctrl.buttonsDisabled = false;
+                    ctrl.init();
                 }, function() {
                     ctrl.buttonsDisabled = false;
+                    ctrl.init();
                 });
             };
 
