@@ -389,12 +389,12 @@ angular
 							if ($(currentEl).hasClass("date-only")) {
 								dateFormat = dateFormat.split(" ")[0]
 							}
-							if (moment($(currentEl).val(), dateFormat).year() < 1753 || ( $(currentEl).val().length < dateFormat.length && $(currentEl).val().length > 0 )) {
+							if (!moment($(currentEl).val(), dateFormat).isValid() || moment($(currentEl).val(), dateFormat).year() < 1753) {
 								invalidDate = true;
 							}
 						}
 						$(currentEl).removeClass("invalid")
-						if ($(currentEl).attr("ng-invalid") == "true" || invalidDate) {
+						if (invalidDate) {
 							if (invalidDate) {
 								$(currentEl).addClass("invalid");
 								// oldInputVal =  $(currentEl).val()

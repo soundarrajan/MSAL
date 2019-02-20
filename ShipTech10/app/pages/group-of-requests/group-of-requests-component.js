@@ -6526,7 +6526,10 @@ ctrl.setProductData = function(data, loc) {
                     }
                     if (inputDetails.path == 'quoteByDateFrom' && !init) {
                         if (formattedDate != undefined) {
-                            ctrl.saveComments(ctrl.internalComments, ctrl.externalComments, true);
+                            newDate = new Date(formattedDate);
+                            if (newDate && newDate.getFullYear() > 1753) {
+                                ctrl.saveComments(ctrl.internalComments, ctrl.externalComments, true);
+                            }
                         }
                     }
                 }, 2);
@@ -6545,7 +6548,10 @@ ctrl.setProductData = function(data, loc) {
                     $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
                     if (inputDetails.path == 'quoteByDateFrom' && !init) {
                         if (formattedDate != undefined) {
-                            ctrl.saveComments(ctrl.internalComments, ctrl.externalComments, true);
+                            newDate = new Date(formattedDate);
+                            if (newDate && newDate.getFullYear() > 1753) {
+                                ctrl.saveComments(ctrl.internalComments, ctrl.externalComments, true);
+                            }
                         }
                     }
                 }, 2);
