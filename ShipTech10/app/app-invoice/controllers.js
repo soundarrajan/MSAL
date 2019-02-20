@@ -874,7 +874,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                 } else {
                     quantityUom = null
                 }
-				if ($scope.CM.costType.name == 'Percent' || $scope.CM.costType.name == 'Unit') {
+				if ($scope.CM.costType.name == 'Percent' || $scope.CM.costType.name == 'Flat') {
                     rateUom = quantityUom;
 				}
 
