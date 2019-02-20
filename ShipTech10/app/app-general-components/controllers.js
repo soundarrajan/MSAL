@@ -1533,7 +1533,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.invoice) {
                       	if (rowObject.claimNo) {
-	                        var tpl = '  <a  href="#/invoices/claim/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+	                        var tpl = '  <a  href="#/invoices/claims/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                       	} else {
 	                        var tpl = '  <a  href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                       	}

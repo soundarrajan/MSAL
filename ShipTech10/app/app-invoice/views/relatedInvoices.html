@@ -16,7 +16,7 @@
         <tbody>
         	<tr ng-repeat="(invkey, invvalue) in formValues.relatedInvoices" ng-if="invvalue.orderId == infoValue.orderId" class="ng-scope">
 				<td class="padding">
-					<a ng-if="invvalue.isClaimSybtype" href="/#/invoices/claim/edit/{{invvalue.id}}">{{invvalue.id}}</a>
+					<a ng-if="invvalue.isClaimSybtype" href="/#/invoices/claims/edit/{{invvalue.id}}">{{invvalue.id}}</a>
 					<a ng-if="!invvalue.isClaimSybtype" href="/#/invoices/invoice/edit/{{invvalue.id}}">{{invvalue.id}}</a>
 				</td>
 				<td class="padding">{{invvalue.orderId}}</td>
