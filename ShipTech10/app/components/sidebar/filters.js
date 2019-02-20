@@ -871,8 +871,8 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         $scope.clearValues = function(column, key) {
             $scope.columnFilters[column][key]["value"] = [];
-            $(".date-picker.formatted-date-button").datepicker('setDate', null)
-            $(".filterRules .formatted-date-input").val("");
+            $(".column-filter-item-"+column+"-"+key+" .date-picker.formatted-date-button").datepicker('setDate', null)
+            $(".column-filter-item-"+column+"-"+key+" .formatted-date-input").val("");
         };
 
         $scope.setDefaultConditionType = function(column, key){
@@ -972,6 +972,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 
             if(direction == 1){
                 // datepicker input -> date typing input
+                _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, null); 
                 $timeout(function() {
                     if(simpleDate){
                         var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);

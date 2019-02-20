@@ -28,7 +28,7 @@
         <div class="filterRules">
             <div class="row" ng-repeat="(key, value) in columnFilters[column]"  ng-init="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly' ? datepickers() : ''">
 
-                <div class="col-sm-12" ng-init="columnFilters[column][key].column =(currentColumns | filter:{columnValue:column}:true)[0];  "
+                <div class="col-sm-12" column-filter-item ng-init="columnFilters[column][key].column =(currentColumns | filter:{columnValue:column}:true)[0];  "
                     ng-if=" key == 0 || columnFilters[column][key].filterOperator">
                     <div class="row mb10">
                         <!-- condition -->
@@ -200,7 +200,7 @@
                                     <!-- one filter value -->
                                     <span ng-switch-when="1" >
                                         <div class="form_input no-label">
-                                            <div ng-class="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly' ? 'input-group popover-filter-date' : ''">
+                                            <div class="column-filter-item-{{column}}-{{key}}" ng-class="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly' ? 'input-group popover-filter-date' : ''">
                                                 <!-- type number & type text -->
                                                 <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control" ng-model="columnFilters[column][key].value[0]"
                                                     name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
