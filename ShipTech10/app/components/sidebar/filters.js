@@ -871,6 +871,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         $scope.clearValues = function(column, key) {
             $scope.columnFilters[column][key]["value"] = [];
+            $(".date-picker.formatted-date-button").datepicker('setDate', null)
             $(".filterRules .formatted-date-input").val("");
         };
 
