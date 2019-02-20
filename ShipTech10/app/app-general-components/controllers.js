@@ -1532,7 +1532,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_invoice_link = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.invoice) {
-                        var tpl = '  <a  href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                      	if (rowObject.claimNo) {
+	                        var tpl = '  <a  href="#/invoices/claim/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                      	} else {
+	                        var tpl = '  <a  href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                      	}
                     } else {
                         var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
