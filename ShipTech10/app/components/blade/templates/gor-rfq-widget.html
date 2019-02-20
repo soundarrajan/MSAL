@@ -86,7 +86,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <label class="label label-sm bg-font-porraceous-green">
+                                    <label class="label label-sm" style="background: {{ CM.getColorCodeFromLabels(rfq.rfqStatusName) }}">
                                         {{ rfq.rfqStatusName }}
                                     </label>
                                 </td>
@@ -112,7 +112,7 @@
                                     {{ rfq.maxQuantity | number: $cntrl.numberPrecision.quantityPrecision }}
                                 </td>
                                 <td>
-                                    <label class="label label-sm label-warning">
+                                    <label class="label label-sm" style="background: {{ CM.getColorCodeFromLabels(rfq.productStatusName) }}">
                                         {{ rfq.productStatusName }}
                                     </label>
                                 </td>

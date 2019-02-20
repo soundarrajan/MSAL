@@ -389,7 +389,7 @@ angular
 							if ($(currentEl).hasClass("date-only")) {
 								dateFormat = dateFormat.split(" ")[0]
 							}
-                            if (moment($(currentEl).val(), dateFormat).isValid() || moment($(currentEl).val(), dateFormat).year() < 1753) {
+                            if (($(currentEl).val() && !moment(moment($(currentEl).val()).format(dateFormat), dateFormat, true).isValid()) || moment($(currentEl).val(), dateFormat).year() < 1753) {
 								invalidDate = true;
 							}
 						}
