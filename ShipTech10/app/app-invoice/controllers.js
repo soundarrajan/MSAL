@@ -829,7 +829,11 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
          
             $scope.CM.old_cost = formValues.costDetails[currentRowIndex];
             if (formValues.costDetails[currentRowIndex].product) {
-	            $scope.CM.old_product = formValues.costDetails[currentRowIndex].product.id;
+            	if (formValues.costDetails[currentRowIndex].product.id == -1) {
+		            $scope.CM.old_product = formValues.costDetails[currentRowIndex].product.id;
+            	} else {
+		            $scope.CM.old_product = formValues.costDetails[currentRowIndex].product.productId;
+            	}
             }
             $scope.CM.old_costType = formValues.costDetails[currentRowIndex].costType;
             if ($scope.CM.old_product == -1) {
@@ -865,8 +869,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                 $scope.CM.product = product;
                 $scope.CM.costType = costType;
                 // calculate extra
-                if (!formValues.costDetails[currentRowIndex].invoiceExtras) {
-                    formValues.costDetails[currentRowIndex].invoiceExtras = 0
+                if (!formValues.costDetails[rowIndex].invoiceExtras) {
+                    formValues.costDetails[rowIndex].invoiceExtras = 0
                 }
                 if ($scope.CM.cost.invoiceRateUom) {
                     rateUom = $scope.CM.cost.invoiceRateUom.id
@@ -884,27 +888,27 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 
 
                 if ($scope.CM.costType.name == 'Flat') {
-                    formValues.costDetails[currentRowIndex].invoiceAmount = $scope.CM.cost.invoiceRate;
-                    formValues.costDetails[currentRowIndex].invoiceExtrasAmount = formValues.costDetails[currentRowIndex].invoiceExtras / 100 * formValues.costDetails[currentRowIndex].invoiceAmount;
-                    formValues.costDetails[currentRowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[currentRowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[currentRowIndex].invoiceAmount);
+                    formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate;
+                    formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
+                    formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
                     calculateGrand(formValues);
                     return;
                 }
                 $scope.getUomConversionFactor($scope.CM.product, 1, quantityUom, rateUom, function(response) {
                     if ($scope.CM.costType) {
                         if ($scope.CM.costType.name == 'Unit') {
-                            formValues.costDetails[currentRowIndex].invoiceAmount = response * $scope.CM.cost.invoiceRate * $scope.CM.cost.invoiceQuantity;
+                            formValues.costDetails[rowIndex].invoiceAmount = response * $scope.CM.cost.invoiceRate * $scope.CM.cost.invoiceQuantity;
                         }
                         if ($scope.CM.costType.name == 'Percent') {
                 //         	sumOfApplicableAmounts = 0
-                //         	if (formValues.costDetails[currentRowIndex].product.id != -1) {
+                //         	if (formValues.costDetails[rowIndex].product.id != -1) {
                 //         		$.each(formValues.productDetails, function(pk,pv){
-                //         			if (pv.deliveryProductId == formValues.costDetails[currentRowIndex].product.id) {
+                //         			if (pv.deliveryProductId == formValues.costDetails[rowIndex].product.id) {
 			             //            	sumOfApplicableAmounts += pv.invoiceAmount;
                 //         			}
                 //         		})
                 //         		$.each(formValues.costDetails, function(ck,cv){
-                //         			if (cv.costType.name != "Percent" && cv.product.id == formValues.costDetails[currentRowIndex].product.id) {
+                //         			if (cv.costType.name != "Percent" && cv.product.id == formValues.costDetails[rowIndex].product.id) {
 			             //            	sumOfApplicableAmounts += cv.invoiceAmount;
                 //         			}
                 //         		})
@@ -918,17 +922,17 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                 //         			}
                 //         		})                        		                        		
                 //         	}
-		            		// formValues.costDetails[currentRowIndex].invoiceAmount = $scope.CM.cost.invoiceRate * sumOfApplicableAmounts / 100 || 0;
+		            		// formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate * sumOfApplicableAmounts / 100 || 0;
                         } else {
                         	// recalculatePercentAdditionalCosts(formValues);
                         }
                 
-                        formValues.costDetails[currentRowIndex].invoiceExtrasAmount = formValues.costDetails[currentRowIndex].invoiceExtras / 100 * formValues.costDetails[currentRowIndex].invoiceAmount;
-                        formValues.costDetails[currentRowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[currentRowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[currentRowIndex].invoiceAmount);
-                        formValues.costDetails[currentRowIndex].difference = parseFloat(formValues.costDetails[currentRowIndex].invoiceTotalAmount) - parseFloat(formValues.costDetails[currentRowIndex].estimatedTotalAmount);
+                        formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
+                        formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
+                        formValues.costDetails[rowIndex].difference = parseFloat(formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(formValues.costDetails[rowIndex].estimatedTotalAmount);
 
-                        formValues.costDetails[currentRowIndex].deliveryProductId =  formValues.costDetails[currentRowIndex].product.deliveryProductId ? formValues.costDetails[currentRowIndex].product.deliveryProductId : formValues.costDetails[currentRowIndex].deliveryProductId;
-                        console.log("-----------------------", formValues.costDetails[currentRowIndex].deliveryProductId);
+                        formValues.costDetails[rowIndex].deliveryProductId =  formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
+                        console.log("-----------------------", formValues.costDetails[rowIndex].deliveryProductId);
                         // calculate grandTotal
                         if ($scope.CM.cost) {
                             calculateCostRecon()
