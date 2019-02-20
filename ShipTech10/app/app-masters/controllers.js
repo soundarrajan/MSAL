@@ -5084,7 +5084,7 @@
             }
         };
         $scope.closeBlade = function() {
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0) {
+        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !$rootScope.overrideCloseNavigation) {
 	        	$('.confirmBladeClose').removeClass('hide');
 	        	$('.confirmBladeClose').modal();
         	} else {
@@ -5101,6 +5101,7 @@
                   // window.location.reload();
                 }
                 $rootScope.$broadcast("counterpartyBladeClosed", true);
+                $rootScope.overrideCloseNavigation = false;
             }, 500);
         }
         $scope.isMeanFormula = function() {

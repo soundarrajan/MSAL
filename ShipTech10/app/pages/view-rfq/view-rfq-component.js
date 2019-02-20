@@ -77,6 +77,7 @@ angular.module('shiptech.pages')
                             });
 
                             initializeDateInputs();
+                            $rootScope.overrideCloseNavigation = true;
                         });
                     });
                 }).finally(function(){
