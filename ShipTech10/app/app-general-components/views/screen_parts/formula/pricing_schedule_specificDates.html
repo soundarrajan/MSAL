@@ -21,7 +21,7 @@
 <span ng-if="!formValues.pricingScheduleOptionSpecificDate.dates[0]" ng-init="formValues.pricingScheduleOptionSpecificDate.dates=[{}]"></span>
 
 
-<div class="row" ng-repeat="(key, value) in formValues.pricingScheduleOptionSpecificDate.dates">
+<div class="row" ng-repeat="(key, value) in formValues.pricingScheduleOptionSpecificDate.dates" ng-show="!value.isDeleted">
     <div class="col-md-3">
         <span ng-init="CM.initMask()"></span>
         <div class="form-group  row "  ng-init="CM.datepickers()">

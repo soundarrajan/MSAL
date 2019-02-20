@@ -244,8 +244,13 @@ angular.module('shiptech.pages')
 
                 for (var i = 0; i < ctrl.requirements.length; i++) {
                     // ctrl.STATUS['Amended'].id
-                    if (ctrl.requirements[i].productStatus.id == 17) {
-                        canAmend = true;
+                    if (ctrl.requirements[i].productStatus) {
+	                    if (ctrl.requirements[i].productStatus.id == 17) {
+	                        canAmend = true;
+	                    } else {
+	                        canAmend = false;
+	                        break;
+	                    }
                     } else {
                         canAmend = false;
                         break;
