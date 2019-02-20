@@ -88,8 +88,8 @@
                                         {{ rfq.requestName }}
                                     </a>
                                 </td>
-                                <td>
-                                    <label class="label label-sm bg-font-porraceous-green" ng-if="rfq.rfqStatus.name">
+                                <td ng-controller="Controller_Master as CM">
+                                    <label class="label label-sm" style="background: {{ CM.getColorCodeFromLabels(rfq.rfqStatus) }}" ng-if="rfq.rfqStatus.name">
                                         {{ rfq.rfqStatus.name }}
                                     </label>
                                 </td>
@@ -114,8 +114,8 @@
                                 <td>
                                     {{ rfq.maxQuantity | number: $cntrl.numberPrecision.quantityPrecision }}
                                 </td>
-                                <td>
-                                    <label class="label label-sm label-warning" ng-if="rfq.productStatus.name">
+                                <td ng-controller="Controller_Master as CM">
+                                    <label class="label label-sm" style="background: {{ CM.getColorCodeFromLabels(rfq.productStatus) }}"  ng-if="rfq.productStatus.name">
                                         {{ rfq.productStatus.name }}
                                     </label>
                                 </td>
