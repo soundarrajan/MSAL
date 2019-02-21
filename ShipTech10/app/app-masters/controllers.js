@@ -3322,26 +3322,29 @@
             "ui-floating": true,
             connectWith: ".formbuilder-group"
         };
-        $timeout(function() {
-            var hideableFields = $('.fe_entity:not([data-dependent=""])');
-            $.each(hideableFields, function() {
-                if ($(this).parents("#accordion1").length < 1) {
-                    $(this).hide();
-                }
-            });
-            var dataDependent = [];
-            $(hideableFields).each(function() {
-                dataDependent.push($(this).attr("data-dependent"));
-            });
-            dataDependent = $.unique(dataDependent);
-            $.each(dataDependent, function(key, value) {
-                if ($("input[type='radio'][name*=" + value + "]")) {
-                    selectedRadioVal = $("input[type='radio'][name*=" + value + "]:checked").val();
-                    fieldstoShow = $('.fe_entity[data-dependent="' + value + '"][data-show*="' + selectedRadioVal + '"]');
-                    fieldstoShow.show();
-                }
-            });
-        }, 50);
+        if ($state.current.name && $state.current.name != 'default.group-of-requests') {
+	        $timeout(function() {
+	            var hideableFields = $('.fe_entity:not([data-dependent=""])');
+	            $.each(hideableFields, function() {
+	                if ($(this).parents("#accordion1").length < 1) {
+	                    $(this).hide();
+	                }
+	            });
+	            var dataDependent = [];
+	            $(hideableFields).each(function() {
+	                dataDependent.push($(this).attr("data-dependent"));
+	            });
+	            dataDependent = $.unique(dataDependent);
+	            $.each(dataDependent, function(key, value) {
+	                if ($("input[type='radio'][name*=" + value + "]")) {
+	                    selectedRadioVal = $("input[type='radio'][name*=" + value + "]:checked").val();
+	                    fieldstoShow = $('.fe_entity[data-dependent="' + value + '"][data-show*="' + selectedRadioVal + '"]');
+	                    fieldstoShow.show();
+	                }
+	            });
+	        }, 50);
+        }
+
         $scope.checkIfTab = function() {
             $scope.$watch("formFields", function() {
                 $timeout(function() {
