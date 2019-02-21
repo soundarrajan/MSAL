@@ -22,19 +22,19 @@
 				<td class="padding">{{invvalue.orderId}}</td>
 				<td class="padding">{{invvalue.invoiceType.name}}</td>
 				<td class="padding">{{CM.formatDateTime(invvalue.invoiceDate)}}</td>
-				<td class="padding">{{invvalue.invoiceAmount}}</td>
+				<td class="padding">{{invvalue.invoiceAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding">{{invvalue.deductions}}</td>
-				<td class="padding">{{invvalue.paidAmount}}</td>
+				<td class="padding">{{invvalue.paidAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding"><span style="background: {{ CM.getColorCodeFromLabels(invvalue.invoiceStatus) }}; color:white; padding: 3px;">{{invvalue.invoiceStatus.displayName}}</span></td>
             </tr>
             <tr class="bg-grey-steel">
 				<td class="padding"><b>Net Payable</b></td>
-				<td class="padding">{{infoValue.netPayable}}</td>
+				<td class="padding">{{infoValue.netPayable | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding"></td>
 				<td class="padding"><b>Total</b></td>
-				<td class="padding">{{infoValue.invoiceAmountTotal}}</td>
+				<td class="padding">{{infoValue.invoiceAmountTotal | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding">{{infoValue.deductions}}</td>
-				<td class="padding">{{infoValue.paidAmount}}</td>
+				<td class="padding">{{infoValue.paidAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding"></td>
             </tr>
         </tbody>
