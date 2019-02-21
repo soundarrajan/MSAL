@@ -2035,7 +2035,7 @@
             }
 
             .st-group-of-requests-table th, .st-group-of-requests-table td {
-                font-size: 90% !important;
+                font-size: 100% !important;
             }
 
             .st-group-of-requests-table thead:first-child>tr:first-child>th {
@@ -4363,12 +4363,12 @@ table#new_order_products td {
 
 @media (min-width:1404px) {
     #negotiation-table-fixed-container {
-    	zoom: 0.75 !important;
+    	zoom: 0.8 !important;
     }
 }
 @media (min-width:1680px) {
     #negotiation-table-fixed-container {
-    	zoom: 0.8 !important;
+    	zoom: 0.9 !important;
     }
     #group_of_requests_table td {
     	font-size: 14px !important;
