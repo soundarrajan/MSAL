@@ -365,47 +365,36 @@ angular
             });
 
             jQuery(document).ready(function(){
-				// $("*").datepicker({
-				// 	onSelect: function(dateText) {
-				// 		display("Selected date: " + dateText + "; input's current value: " + this.value);
-				// 	}
-				// });
-
-
 				if (!window.tenantFormatsDateFormat) {
 					tenantService.tenantSettings.then(function(settings) {
 						window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
 					});
 				}
 				$(document).on("blur", ".formatted-date-input", function(){
-					currentEl = this
+					currentEl = this;
 					setTimeout(function(){
 						// $(currentEl).attr("ng-invalid", "false");
 						dateFormat = angular.copy(window.tenantFormatsDateFormat);
 						dateFormat = dateFormat.replace(/y/g, "Y");
 						// console.log(window.tenantFormatsDateFormat);
 						invalidDate = false;
-						if (dateFormat) {
-							if ($(currentEl).hasClass("date-only")) {
-								dateFormat = dateFormat.split(" ")[0]
-							}
-                            if (($(currentEl).val() && !moment(moment($(currentEl).val()).format(dateFormat), dateFormat, true).isValid()) || moment($(currentEl).val(), dateFormat).year() < 1753) {
-								invalidDate = true;
-							}
-						}
-						$(currentEl).removeClass("invalid")
-						if ($(currentEl).attr("ng-invalid") == "true" || invalidDate) {
-							if (invalidDate) {
-								$(currentEl).addClass("invalid");
-								// oldInputVal =  $(currentEl).val()
-								// $(currentEl).val(null)
-								// $(currentEl).trigger("change")
-								$(currentEl).next('.input-group-btn').find("input").val(undefined)
-								$(currentEl).next('.input-group-btn').find("input").trigger("change")
-								// $(currentEl).val(oldInputVal)
-								// $compile($(currentEl).parent())(angular.element($(currentEl).parent()).scope())
-								// $(currentEl).trigger("change")
-							}
+                        if (dateFormat) {
+                            if ($(currentEl).hasClass("date-only")) {
+                                dateFormat = dateFormat.split(" ")[0];
+                            }
+                            if (moment($(currentEl).val(), dateFormat).year() < 1753) {
+                                invalidDate = true;
+                            }
+                        }
+                        $(currentEl).removeClass("invalid")
+                        if ($(currentEl).attr("ng-invalid") == "true" || invalidDate) {
+                            if (invalidDate) {
+                                $(currentEl).addClass("invalid");
+                                oldInputVal =  $(currentEl).val();
+                                $(currentEl).val("");
+                                $(currentEl).trigger("change");
+                                $(currentEl).val(oldInputVal);
+                            }
 							// $(currentEl).attr("ng-invalid", "true");
 							if (!$(currentEl).attr("error-shown")) {
 								toastr.error("Please enter correct date format");
