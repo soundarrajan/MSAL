@@ -2309,14 +2309,25 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 				vm.paymentDateHistory = [];
             }
             if (typeof(vm.paymentDateHistory[currentRow.id]) == 'undefined') {
-            	vm.paymentDateHistory[currentRow.id] = {paymentDate:null}
+            	vm.paymentDateHistory[currentRow.id] = {}
             }
-            if (vm.paymentDateHistory[currentRow.id].paymentDate == changedData.paymentDate) {
-            	return;
-            } else {
-            	payload.HasManualPaymentDate = true;
-                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
+            if (typeof(vm.paymentDateHistory[currentRow.id].paymentDate) == 'undefined') {
+            	vm.paymentDateHistory[currentRow.id].paymentDate = null;
             }
+            if (typeof(vm.paymentDateHistory[currentRow.id].accountancyDate) == 'undefined') {
+            	vm.paymentDateHistory[currentRow.id].accountancyDate = null;
+            }      
+
+            if (vm.treasuryDateHasChanged) {
+            	vm.treasuryDateHasChanged = false;	
+	            if (vm.paymentDateHistory[currentRow.id].paymentDate == changedData.paymentDate && vm.paymentDateHistory[currentRow.id].accountancyDate == changedData.accountancyDate) {
+	            	return;
+	            } else {
+	            	payload.HasManualPaymentDate = true;
+	                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
+	                vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
+	            }
+            }      
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
                     // toastr.success("Saved successfully");
@@ -3452,6 +3463,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             if(typeof inputDetails === 'string') inputDetails = JSON.parse(inputDetails);
             var inputDetails = angular.copy(vm.dateChange[inputIdx]);
           
+            vm.treasuryDateHasChanged = true;
+
             if(direction == 1){
                 // datepicker input -> date typing input
                 $timeout(function() {
@@ -3501,7 +3514,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     	rowId = inputDetails.pickerId.split("_")[1];
                     	mapping = inputDetails.pickerId.split("_")[2];
                     	vm.changedfields[rowId][mapping] = formattedDate;
-                    	vm.checkChange(rowId);
+                    	if (parseFloat(formattedDate.split("-")[0]) > 1753) {
+	                    	vm.checkChange(rowId);
+                    	}
                     }
 
 
