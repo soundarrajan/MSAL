@@ -509,6 +509,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 	                    ctrl.sellerOrder = getSellerOrder(data.payload);
 	                }
 	                ctrl.locations = getLocationsFromRequests(requests);
+	                ctrl.groupLocationsByUniqueLocationIdentifier()
 	                ctrl.products = getAllRequestProductList(requests);
 	                setRequestProductCount(requests);
 	                //initialize notifications
@@ -5411,23 +5412,23 @@ ctrl.setProductData = function(data, loc) {
         */    
             return ctrl.timerCount;
         };
-        $interval(function () {
-            if (ctrl.startTimer) {
-                $.each(ctrl.validityArray, function (key, val) {
-                    if (typeof val != "undefined" && key != 0) {
-                        if (typeof val.numeric == "number") {
-                            numeric = ctrl.validityArray[key].numeric;
-                            numeric = numeric - 0.0166666667;
-                            ctrl.validityArray[key].numeric = numeric;
-                            hours = parseInt(numeric);
-                            mins = (numeric - hours) * 60;
-                            mins = parseInt(mins);
-                            ctrl.validityArray[key].displayString = hours + " h, " + mins + " m";
-                        }
-                    }
-                });
-            }
-        }, 60000);
+        // $interval(function () {
+        //     if (ctrl.startTimer) {
+        //         $.each(ctrl.validityArray, function (key, val) {
+        //             if (typeof val != "undefined" && key != 0) {
+        //                 if (typeof val.numeric == "number") {
+        //                     numeric = ctrl.validityArray[key].numeric;
+        //                     numeric = numeric - 0.0166666667;
+        //                     ctrl.validityArray[key].numeric = numeric;
+        //                     hours = parseInt(numeric);
+        //                     mins = (numeric - hours) * 60;
+        //                     mins = parseInt(mins);
+        //                     ctrl.validityArray[key].displayString = hours + " h, " + mins + " m";
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }, 60000);
         $scope.showHideSections = function (obj) {
             if (obj.length > 0) {
                 ctrl.visible_sections_old = ctrl.visible_sections;
@@ -6590,6 +6591,19 @@ ctrl.setProductData = function(data, loc) {
         ctrl.trustAsHtml = function(html){
         	return $sce.trustAsHtml(html);
         }
+
+        ctrl.groupLocationsByUniqueLocationIdentifier = function() {
+        	ctrl.locationsGroupedByULI = $filter('groupBy')(ctrl.locations, 'uniqueLocationIdentifier');
+        }
+
+
+		$scope.$watch('ctrl.requests', function(newValue, oldValue) {
+		});
+		$scope.$watch('ctrl.locations', function(newValue, oldValue) {
+			ctrl.groupLocationsByUniqueLocationIdentifier()
+		});		
+		$scope.$watch('ctrl.requirements', function(newValue, oldValue) {
+		});
 
 
     }

@@ -4002,12 +4002,33 @@ Uncomment to see border around all .col-*
 
             .isPreferredProduct label.mt-checkbox span {
                 box-shadow: 0px 0px 0px 3px #fff, 0px 0px 0px 5px #86cdd8;
-                margin-top: 7px;
-            }
-            .GORpriceCheckbox.hasOffer label.mt-checkbox span{
-                margin-top: 7px;
+	            margin-top: 7px;
+	            top: -5px !important;
             }
 
+            .isNotPreferredProduct label.mt-checkbox span {
+	            margin-top: 7px;
+	            top: -11px !important;
+            }
+
+            .isNotPreferredProduct.hasOffer label.mt-checkbox span {
+                top: -5px !important;
+            }
+
+            .GORpriceCheckbox.hasOffer label.mt-checkbox span{
+                margin-top: 1px !important;
+            }
+
+			#group_of_requests_table .mt-checkbox>span {
+				width:23px;
+				height:23px;
+			}
+			#group_of_requests_table .mt-checkbox>span:after, #group_of_requests_table .mt-custom-checkbox>span:after {
+			    left: 7px;
+			    top: 2px;
+			    width: 8px;
+			    height: 14px;
+			}
 
             #jqgh_flat_invoices_app_complete_view_list_checkbox {
                 display: none;
