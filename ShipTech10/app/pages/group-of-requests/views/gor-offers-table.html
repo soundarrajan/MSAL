@@ -224,7 +224,7 @@
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
                     TOTAL
                 </th>
-                <th width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 160px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
+                <th width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 150px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
                     <form class="form-inline" style="width: calc(100% - 20px);">
                         <div class="form-group-sm">
                             
@@ -553,7 +553,7 @@
                 </td>
                 <td style="position: relative;">
                 	<!-- ng-show="$ctrl.counterpartyDetailsIsExpanded" -->
-                    <div class="input-group physicalSupplier" style="min-width:250px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
+                    <div class="input-group physicalSupplier" style="min-width:220px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
                      <!-- ng-show="seller.isCloned" ng-hide="seller.randUnique.indexOf('null') > 0" -->
                         <span ng-init="seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty"></span>
                         <input ng-model="seller.offers[0].physicalSupplierCounterparty"
