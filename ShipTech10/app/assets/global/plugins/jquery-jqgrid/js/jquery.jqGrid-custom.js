@@ -489,7 +489,6 @@ var Cfg = {
         filters: function() {
             var Filters = $(this).jqGrid.Ascensys.columnFiltersData;
             var conditions = "";
-            if (!Filters) {return}
             Filters = _.sortBy(Filters, function(item) {
                 return [item.column.columnName, item.$$hashKey];
             });
