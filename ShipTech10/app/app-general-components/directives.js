@@ -619,6 +619,18 @@ window.increment = 0;
                                             }
                                         });
                                         $('select[name="asc_jqgrid__entries-entries"] option[value="999999"]').text("All");
+                                        if (Layout.table_id == 'flat_invoices_app_complete_view_list') {
+                                            $('#dp_PaymentDateFrom .date-set').click(function() {
+                                                setTimeout(function() {
+                                                    $('.datepicker').remove();
+                                                }, 0);
+                                            });
+                                            $('#dp_PaymentDateTo .date-set').click(function() {
+                                                setTimeout(function() {
+                                                    $('.datepicker').remove();
+                                                }, 0);
+                                            });
+                                        }
                                     }
                                 }
                             );
