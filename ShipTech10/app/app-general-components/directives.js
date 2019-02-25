@@ -512,6 +512,61 @@ window.increment = 0;
 		                           	CLC.tableParams.rows = $('[data-entries-select]').val();
 	                           }
                            }
+
+
+                            if (CLC.screen_id == "treasuryreport") {
+                            	paymentDateFrom = null;
+                            	paymentDateTo = null;
+								conditionValue = null;
+								values = null;
+								$.each(Object.keys(CLC.tableParams.UIFilters), function(key, val){
+									if (val == "PaymentDateFrom") {
+										paymentDateFrom = CLC.tableParams.UIFilters[val]
+									}
+									if (val == "PaymentDateTo") {
+										paymentDateTo = CLC.tableParams.UIFilters[val]
+									}
+								}) 
+								if (paymentDateFrom && !paymentDateTo) { conditionValue = ">="; values =  [paymentDateFrom] }
+								if (!paymentDateFrom && paymentDateTo) { conditionValue = "<="; values = [paymentDateTo] }
+								if (paymentDateFrom && paymentDateTo) { conditionValue = "between"; values = [paymentDateFrom, paymentDateTo] }
+								filterPayload = {
+									"columnValue": "PaymentDate",
+									"ColumnType": "DateOnly",
+									"ConditionValue":conditionValue,
+									"Values": values,
+									"FilterOperator": 0
+								}
+								paymentDateFilterExists = false;
+								if (paymentDateFrom || paymentDateTo) {
+									$.each(CLC.tableParams.PageFilters, function(k,v){
+										if (v.columnValue == "PaymentDate") {
+											CLC.tableParams.PageFilters[k] = filterPayload;
+											paymentDateFilterExists = true;
+										}
+									})
+									if (paymentDateFilterExists == false) {
+										CLC.tableParams.PageFilters.push(filterPayload);
+									} else {
+										for (var i = $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.columnFiltersData.length - 1; i >= 0; i--) {
+											if ($(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.columnFiltersData[i]) {
+												if ($(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.columnFiltersData[i].column.columnValue == "PaymentDate") {
+													$(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.columnFiltersData.splice(i,1);
+													$(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.element.filters.init");
+												}
+											}
+										}
+										for (var i = $rootScope.rawFilters.length - 1; i >= 0; i--) {
+											if ($rootScope.rawFilters[i]) {
+												if ($rootScope.rawFilters[i].column.columnValue == "PaymentDate") {
+													$rootScope.rawFilters.splice(i,1);
+												}
+											}	
+										}											
+									}
+								}
+                            }
+
                             $Api_Service.entity.list(
                                 {
                                     app: attrs.app,
@@ -682,7 +737,6 @@ window.increment = 0;
                             CLC.tableParams.sortList = data.sortList;
                             CLC.tableParams.page = 1;
                             console.log("ON Page FILTERS", CLC.tableParams.PageFilters);
-
                             if (data.sortList) {
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", { sortname: null });
                             }

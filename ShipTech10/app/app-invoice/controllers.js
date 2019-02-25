@@ -724,7 +724,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     	if (isTreasuryReport) {
 				var CLC = $('#invoices_treasuryreport');
 				var rowData = CLC.jqGrid.Ascensys.gridData[0];
-				$scope.treasuryReportTotals = JSON.parse(rowData.totals);
+				if (rowData) {
+					$scope.treasuryReportTotals = JSON.parse(rowData.totals);
+				}
 				console.log(rowData);
     	}
     });
