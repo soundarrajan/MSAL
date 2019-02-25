@@ -23,7 +23,7 @@
 				<td class="padding">{{invvalue.invoiceType.name}}</td>
 				<td class="padding">{{CM.formatDateTime(invvalue.invoiceDate)}}</td>
 				<td class="padding">{{invvalue.invoiceAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
-				<td class="padding">{{invvalue.deductions}}</td>
+				<td class="padding">{{invvalue.deductions | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding">{{invvalue.paidAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding"><span style="background: {{ CM.getColorCodeFromLabels(invvalue.invoiceStatus) }}; color:white; padding: 3px;">{{invvalue.invoiceStatus.displayName}}</span></td>
             </tr>
@@ -33,7 +33,7 @@
 				<td class="padding"></td>
 				<td class="padding"><b>Total</b></td>
 				<td class="padding">{{infoValue.invoiceAmountTotal | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
-				<td class="padding">{{infoValue.deductions}}</td>
+				<td class="padding">{{infoValue.deductions | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding">{{infoValue.paidAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</td>
 				<td class="padding"></td>
             </tr>
