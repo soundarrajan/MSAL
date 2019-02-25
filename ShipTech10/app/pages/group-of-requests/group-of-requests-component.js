@@ -142,7 +142,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                 	} else {
                 		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET
                 	}
-                    parseRequestList(data.payload, true, false, true);
+                    parseRequestList(data.payload, false, false, true);
                     // initializeDataArrays(data.payload);
                     getGroupInfo(groupId);
                     ctrl.priceInputsDisabled = false;
@@ -2401,6 +2401,9 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.requirements = [];
                     ctrl.requirementRequestProductIds = [];
                     ctrl.initScreenAfterSendOrSkipRfq();
+                    if (response.isSuccess && response.errorMessage) {
+                    	toastr.info(response.errorMessage);
+                    }
                     if (reload) {
                     	ctrl.initScreenAfterSendOrSkipRfq();
                         // $state.reload();
