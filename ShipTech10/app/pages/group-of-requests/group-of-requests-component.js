@@ -386,13 +386,13 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                             if (selV.offers) {
                                 if (selV.offers.length > 0) {
                                     $.each(selV.offers, function (offK, offV) {
-                                        prodV.sellersCopy.push(angular.copy(selV));
+                                        prodV.sellersCopy.unshift(angular.copy(selV));
                                     });
                                 } else {
-                                    prodV.sellersCopy.push(angular.copy(selV));
+                                    prodV.sellersCopy.unshift(angular.copy(selV));
                                 }
                             } else {
-                                prodV.sellersCopy.push(angular.copy(selV));
+                                prodV.sellersCopy.unshift(angular.copy(selV));
                             }
                             $.each(prodV.sellersCopy, function (sck, scv) {
                                 if (scv.id == selV.id) {
@@ -406,11 +406,11 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                                 if (selV.offers) {
                                     if (selV.offers.length > 0) {
                                         $.each(selV.offers, function (offK, offV) {
-                                            offersToBeAdded.push(angular.copy(offV));
+                                            offersToBeAdded.unshift(angular.copy(offV));
                                         });
                                     }
                                 } else {
-                                    offersToBeAdded.push(angular.copy(offV));
+                                    offersToBeAdded.unshift(angular.copy(offV));
                                 }
                             });
                         });
@@ -639,11 +639,15 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         newRequestAddedData = $scope.remodelSellersStructure(newRequestData.payload);
                         // newRequestAddedData = newRequestData.payload;
                         for (var i = 0; i < newRequestAddedData.length; i++) {
-                            ctrl.requests.push(newRequestAddedData[i]);
+                            ctrl.requests.unshift(newRequestAddedData[i]);
                         }
+                        ctrl.prefferedSellerCheckbox = true;
                         ctrl.requestTabs = createRequestTabs(ctrl.requests);
                         initializeDataArrays(ctrl.requests);
                         parseRequestList(ctrl.requests, false);
+                        $timeout(function(){
+	                        ctrl.prefferedSellerCheckbox = false;
+                        },50)
                     }
                 }).finally(function(){
                 });
