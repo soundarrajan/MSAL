@@ -5,29 +5,31 @@
 {{$ctrl.requirements}}
 </pre> -->
 <!-- <pre>{{$ctrl.requests}}</pre> -->
-<div style="position: relative; zoom:0.7;" id="negotiation-table-fixed-container">
+<div style="position: relative; zoom:0.75;" id="negotiation-table-fixed-container">
 
 
-    <table id="group_of_requests_table" class="table table-bordered table-hover table-striped table-condensed st-group-of-requests-table bg-grey-steel" ng-cloak>
+    <table id="group_of_requests_table" class="table table-bordered table-hover table-striped table-condensed st-group-of-requests-table bg-white" ng-cloak>
         <thead style="background: #fff;">
             
             <tr>
-                <th  colspan="{{$ctrl.calculateFirsRowColSpan()}}" class="vessel-header text-uppercase font-white" style="background:#557b83; padding: 0px; padding-left: 2px !important">
+                <th  colspan="{{$ctrl.calculateFirsRowColSpan()}}" class="vessel-header text-uppercase font-white" style="background:#557b83; padding: 0px; padding-left: 2px !important; border-top: 6px solid #ffffff;">
                     
-                    <div style="display: inline-block; vertical-align: middle; padding: 2px;">
-                            Counterparty Details
-                    </div>
+                    <div class="wrap-counterparty-details" style="display: flex;vertical-align: middle;align-items: end;width: 100%;justify-content: space-between;">
+	                    <div style="display: inline-block; vertical-align: middle; padding: 2px; font-weight: initial;font-size: 16px;padding: 5px 5px;">
+	                            Counterparty Details
+	                    </div>
 
-                    <div class="" style="background: white; display:inline-block; float: right; padding:2px 12px; vertical-align: center;">
+	                    <div class="" style="background: white;padding:2px 12px;display: flex;align-self: stretch;align-items: center; justify-self: end; border: 1px solid #d1d8dd;">
 
-                            <a ng-click="$ctrl.expandAll()" ng-if="!$ctrl.allExpanded">
-                                    <i class="fa fa-2x fa-angle-right" style="vertical-align: middle;"></i>
-                                </a>
-            
-                            <a ng-click="$ctrl.expandAll()" ng-if="$ctrl.allExpanded" >
-                                <i class="fa fa-2x fa-angle-left" style="vertical-align: middle;"></i>
-                            </a>
+	                            <a ng-click="$ctrl.expandAll()" ng-if="!$ctrl.allExpanded">
+	                                    <i class="fa fa-2x fa-angle-right" style="vertical-align: middle;"></i>
+	                                </a>
+	            
+	                            <a ng-click="$ctrl.expandAll()" ng-if="$ctrl.allExpanded" >
+	                                <i class="fa fa-2x fa-angle-left" style="vertical-align: middle;"></i>
+	                            </a>
 
+	                    </div>
                     </div>
                    
             
@@ -38,17 +40,17 @@
     
                 <!-- Collapsed request tab -->
                 <th ng-repeat-start="request in $ctrl.selectedRequests track by $index"
-                ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="request-tab-collapsed {{$index == 0 ? 'left-border' : ''}}  border-selected-top bg-blue" style="padding-left:7px !important; border-left:4px solid #d1d8dd !important; width:100%;">
-                    <span ng-if="$index == 0" class="font-white text-uppercase">
+                ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="request-tab-collapsed {{$index == 0 ? 'left-border' : ''}}  border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important; width:100%;">
+                    <span ng-if="$index == 0" class="font-white text-uppercase" style="font-weight: initial;font-size: 16px;padding: 5px 5px;display: block;">
                         Negotiation Details
                     </span>
                 </th>
                 <!-- End collapsed request tab -->
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + ($ctrl.counterpartyDetailsIsExpanded ? 2 : 1) }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-left:4px solid #d1d8dd !important">
+                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + ($ctrl.counterpartyDetailsIsExpanded ? 2 : 1) }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important">
                     <!-- {{request.newProductCount}} -->
-                    <span ng-if="$index == 0" class="font-white text-uppercase">
+                    <span ng-if="$index == 0" class="font-white text-uppercase" style="font-weight: initial;font-size: 16px;padding: 5px 5px;display: block;">
                         Negotiation Details
                     </span>
                 </th>
@@ -130,7 +132,7 @@
     
                 <!-- Expanded request tab -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + ($ctrl.counterpartyDetailsIsExpanded ? 2 : 1 ) }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
-                    <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;line-height: 45px;color: #000;box-shadow: 0px 0px 8px 1px #3641504f; padding: 0 5px;">
+                    <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;line-height: 45px;color: #000;box-shadow: 0px 0px 8px 1px #3641504f; padding: 0 5px; font-size:16px;">
                         <label style="height: 100%;padding: 0;margin: 0;position: relative;float: left;display: flex;justify-content: center;align-items: center;" class="control-label"><b>{{request.name}} - {{request.vesselDetails.vessel.name}}</b></label>
                     </form>
                 </th>
@@ -225,10 +227,10 @@
                     TOTAL
                 </th>
                 <th width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 150px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
-                    <form class="form-inline" style="width: calc(100% - 20px);">
+                    <form class="form-inline" style="width: calc(100% - 20px); display: flex; align-items: center; height: 35px;">
                         <div class="form-group-sm">
                             
-                            <label class="control-label font-dark" style="margin-top:6px;"><b>{{product.product.name}}</b></label>
+                            <label class="control-label font-dark" ><b>{{product.product.name}}</b></label>
                             <!-- <select style="width: 50%" ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control pull-right" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
                             </select> -->
                         </div>
@@ -313,12 +315,13 @@
                     <span class="">
     
                     </span>
-                    <form class="form-inline" style="box-shadow: 0px 0px 8px 1px #3641504f;height: 100%;line-height: 45px;float: left;padding: 0 15px;">
-                        <div class="form-group-sm">
-                            <b>
-                                <i class="fa fa-angle-double-down" ng-show="!location[0].fullLocationSellersExpanded" ng-click="location[0].fullLocationSellersExpanded = !location[0].fullLocationSellersExpanded"></i>
-                                <i class="fa fa-angle-double-up" ng-show="location[0].fullLocationSellersExpanded" ng-click="location[0].fullLocationSellersExpanded = !location[0].fullLocationSellersExpanded"></i>
+                    <form class="form-inline" style="box-shadow: 0px 0px 8px 1px #3641504f;height: 100%;line-height: 35px;float: left;padding: 0 15px;">
+                        <div class="form-group-sm" style="display: flex; align-items: center;">
+                            <b class="font-lg">
+                                <i style="font-weight: bold;" class="fa fa-angle-double-down" ng-show="!location[0].fullLocationSellersExpanded" ng-click="location[0].fullLocationSellersExpanded = !location[0].fullLocationSellersExpanded"></i>
+                                <i style="font-weight: bold;" class="fa fa-angle-double-up" ng-show="location[0].fullLocationSellersExpanded" ng-click="location[0].fullLocationSellersExpanded = !location[0].fullLocationSellersExpanded"></i>
                             </b>
+                            &nbsp;&nbsp;
                             <b tooltip tooltip-trigger="hover" data-original-title="{{location[0].portRestrictionComments}}">{{location[0].location.name}}</b>
                         </div>
                     </form>
@@ -359,15 +362,17 @@
                             {{maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location)['qty']}}
                             {{maxQuantityUom = $ctrl.getProductMaxQuantityOnLocation(product, location)['uom']}}
                         </span>
-                        <span style="margin-top:10px; float: left;">
-	                        <strong> Qty </strong>
+                        <span ng-if="maxQuantity">
+	                        <span style="margin-top:2px; float: left;">
+		                        <strong>Qty</strong>
+	                        </span>
+	                        <div class="input-group pull-right" style=" max-width: 100px; float: right;">
+	                            <input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" style="height:26px" disabled ng-model="maxQuantity">
+	                            <span class="input-group-addon bg-grey-steel" style="padding: 5px;"><b>
+	                                {{maxQuantityUom.name}}
+	                            </b></span>
+	                        </div>
                         </span>
-                        <div class="input-group pull-right" style=" max-width: 110px; float: right;">
-                            <input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" style="height:36px" disabled ng-model="maxQuantity">
-                            <span class="input-group-addon"><b>
-                                {{maxQuantityUom.name}}
-                            </b></span>
-                        </div>
                     </span>
                 </th>
     
@@ -394,7 +399,7 @@
     
             <!-- Additional location row -->
             <tr style="background: #f1f5f8;">
-                <td colspan="1" style="width:65px"><b>Check All</b></td>
+                <td colspan="1" style="width:65px">Check All</td>
                 <td colspan="1" width="20">
                     <label class="mt-checkbox mt-checkbox-outline">
                         <input type="checkbox" class="checkAllOnLocation" ng-click="$ctrl.checkAll(location[0].uniqueLocationIdentifier, $event)"/>
@@ -403,8 +408,8 @@
                 </td>
                 <td colspan="5">
                     <form class="form-inline">
-                        <div class="form-group-sm">
-                            <b>Counterparty</b>
+                        <div class="form-group-sm" style="display: flex; align-items: center;">
+                            <span>Counterparty &nbsp;&nbsp;</span>
                             <div class="input-group">
                                 <input ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | filter:$viewValue | limitTo:5" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location)" typeahead-editable="false">
                                 <!-- <span class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled' }}"  data-toggle="modal" href="#sellers" ng-click="$ctrl.setLookupInput(location); $ctrl.supplierPlace = 'gorSeller'">
@@ -464,9 +469,9 @@
     
                     ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                     <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
-                        <span style="line-height: 40px;"><b>Market Price</b></span>
+                        <span style="line-height: 40px;">Market Price</span>
 
-                        <span class="pull-right bg-grey-cascade font-white" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="marketPrice['seller.id + product.id'] = true" ng-mouseout="marketPrice['seller.id + product.id'] = false">
+                        <span class="pull-right bg-grey font-dark" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="marketPrice['seller.id + product.id'] = true" ng-mouseout="marketPrice['seller.id + product.id'] = false">
 							<span style="z-index: 999" class="groupOfRequestTableTooltip" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
                             <span class="pull-right">
                                 {{maxQuantity.quotePrice != null ? (maxQuantity.quotePrice | number : $ctrl.numberPrecision.amountPrecision) : "-"}}
@@ -507,15 +512,20 @@
                     <!-- {{seller.hasRevokedRFQs}} -->
     
                     <span ng-if="seller.packageType != 'seller' && seller.packageType != 'buyer' ">
-                        <a class="st-btn-icon" ng-click="$ctrl.duplicateSeller(seller, location, $event)" ><i class="fa fa-plus"></i></a>
                         <span>&nbsp;</span>
                         <!-- <a class="st-btn-icon" ng-if="!seller.hasRevokedRFQs" ng-click="$ctrl.removeSellerFromLocation(seller, location); $ctrl.removeSellerRevokedRFQsFromLocation(seller, location)"
                         ng-class="{'disabled' : !seller.isCloned}"><i class="fa fa-minus"></i></a> -->
                         <!-- !$ctrl.canDeleteSeller(seller, location) &&  -->
                     </span>
     
-                    <a class="st-btn-icon" ng-click="$ctrl.removeSellerRevokedRFQsFromLocation(seller, location)"
-                    ><i class="fa fa-minus"></i></a>
+    				<div style="display: flex;align-items: center;justify-content: space-around;font-size: 14px;height: 100%;margin-top: -10px;">
+	                    <a style="padding: 0; width:21px; height:21px; font-size: 20px;width: 21px;height: 21px;"  ng-if="seller.packageType != 'seller' && seller.packageType != 'buyer' " class="st-btn-icon" ng-click="$ctrl.duplicateSeller(seller, location, $event)" >
+							<b>+</b>
+						</a>
+	                    <a style="padding: 0; width:21px; height:21px; font-size: 20px;width: 21px;height: 21px;"  class="st-btn-icon" ng-click="$ctrl.removeSellerRevokedRFQsFromLocation(seller, location)">
+							<b>-</b>
+						</a>
+    				</div>
     <!--                 {{seller.packageType}} -
                     {{seller.hasRevokedRFQs}} -
                     {{$ctrl.canDeleteSeller(seller, location)}} -
@@ -553,7 +563,7 @@
                 </td>
                 <td style="position: relative;">
                 	<!-- ng-show="$ctrl.counterpartyDetailsIsExpanded" -->
-                    <div class="input-group physicalSupplier" style="min-width:220px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
+                    <div class="input-group physicalSupplier" style="min-width:200px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
                      <!-- ng-show="seller.isCloned" ng-hide="seller.randUnique.indexOf('null') > 0" -->
                         <span ng-init="seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty"></span>
                         <input ng-model="seller.offers[0].physicalSupplierCounterparty"
@@ -854,7 +864,7 @@
                                     <!-- {{!productAvailable}} * {{productStatus}} *  {{productOffer.hasNoQuote}} * {{!productStatus}} * {{productOffer}} * -->
                                     <!-- individual action -->
 									<span ng-if="!$ctrl.prefferedSellerCheckbox" ng-init="(seller.isPreferredSeller && (['Quoted', 'Stemmed'].indexOf(requestStatus) == - 1) ) ? $ctrl.createSellerRequirementsForProduct(seller, location, product) : '' "></span>
-                                    <label class="mt-checkbox mt-checkbox-outline pull-left" ng-hide="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" ng-if="seller.packageType == 'individual' ">
+                                    <label style="margin-left:5px" class="mt-checkbox mt-checkbox-outline pull-left" ng-hide="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" ng-if="seller.packageType == 'individual' ">
                                         <!-- {{!productAvailable}}..{{productStatus == 'Stemmed'}}**{{productOffer.hasNoQuote}}++{{!productStatus}} --> <input type="checkbox" ng-disabled="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" class="checkSlr"ng-checked="$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)"
                                         ng-click="$ctrl.createSellerRequirementsForProduct(seller, location, product)"/>
                                         <span style="height: 23px;width: 23px; top: -1px"></span>
@@ -868,7 +878,7 @@
                                     </label>
                                     <span ng-show="!productOffer.id || seller.isCloned" >-</span>
                                     <span ng-if="productOffer.id && !seller.isCloned" style="display: flex; justify-content: space-between; align-items: center;">
-                                      <label class="mt-checkbox mt-checkbox-outline pull-left" ng-show="productOffer.hasNoQuote" style="">
+                                      <label style="margin-left: 5px;" class="mt-checkbox mt-checkbox-outline pull-left" ng-show="productOffer.hasNoQuote" style="">
 										<input type="checkbox" ng-disabled="!productAvailable" class="checkSlr" product-offer-id="{{productOffer.id}}" has-no-quote="{{productOffer.hasNoQuote}}" ng-model="$ctrl.selectedNoQuoteItems['nq'+productOffer.id]">
 										<span style="height: 23px;width: 23px; margin-top: -4px;"></span>
                                       </label>

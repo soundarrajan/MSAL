@@ -223,7 +223,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                 	} else {
                 		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET
                 	}
-                    parseRequestList(data.payload, true);
+                    parseRequestList(data.payload, false);
                     initializeDataArrays(data.payload);
                     getGroupInfo(groupId);
                     ctrl.priceInputsDisabled = false;
