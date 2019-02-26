@@ -4380,6 +4380,12 @@
 			$scope.formValues.PaymentStatus = null;
 			$scope.formValues.PaymentDateFrom = null;
 			$scope.formValues.PaymentDateTo = null;
+			if ($scope.formatDates.formValues.PaymentDateTo) {
+				$scope.formatDates.formValues.PaymentDateTo = null
+			}
+			if ($scope.formatDates.formValues.PaymentDateFrom) {
+				$scope.formatDates.formValues.PaymentDateFrom = null
+			}
         }
         $scope.invoices_payment_due_date_filter = function() {
             $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_ui_filter({
