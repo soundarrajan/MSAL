@@ -4935,7 +4935,7 @@ APP_API.factory("$Api_Service", [
                             $.each(initialDateFilter, function(k, v) {
                                 if (v) {
                                     if (typeof v.ColumnType != "undefined") {
-                                        if (v.ColumnType.toLowerCase() == "date") {
+                                        if (v.ColumnType.toLowerCase() == "date" || v.ColumnType.toLowerCase() == "dateonly") {
                                             $.each(v.Values, function(kk, vv) {
                                                 initialDateFilter[k].Values[kk] = moment(vv).format("YYYY-MM-DDTHH:mm");
                                             });

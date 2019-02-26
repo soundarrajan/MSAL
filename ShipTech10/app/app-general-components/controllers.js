@@ -1079,7 +1079,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var formatOnlyDate = function(cellValue, options, rowObject) {
                     var tpl = '<span class="formatter">:content</span>';
                     var element = tpl;
-                    formattedDate = $filter("date")(cellValue, $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0]);
+                    formattedDate = $filter("date")(cellValue, $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0], "UTC");
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
                             formattedDate = "";
