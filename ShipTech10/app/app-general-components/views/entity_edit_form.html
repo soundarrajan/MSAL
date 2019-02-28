@@ -1,19 +1,11 @@
-﻿<!--
-    <div class="edit_form_loader" ng-if="!loaded">
-        <div class="fade-in-up">
-            <div class="fade-in-up">
-                <div ng-spinner-bar class="page-spinner-bar">
-                    <div class="bounce1"></div>
-                    <div class="bounce2"></div>
-                    <div class="bounce3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
--->
-<span ng-if="structure" ng-init="CM.load_eef_config(structure);"></span>
-<span ng-if="!structure" ng-init="CM.get_master_entity(screenchild);"></span>
-<div class=" text-center " id="main-content" ng-init="checkIfTab(); ">
+﻿
+
+<!-- <div ng-dynamic-controller="SLC.dynamicController"> -->
+	
+
+	<span ng-if="structure" ng-init="CM.load_eef_config(structure);"></span>
+	<span ng-if="!structure" ng-init="CM.get_master_entity(screenchild);"></span>
+	<div class=" text-center " id="main-content" ng-init="checkIfTab();">
     <form name="CM.editInstance" novalidate ng-class="CM.app_id == 'wizard_form' ? 'step' : ''">
         <div class=" dynamic_form_editor  app_{{ CM.app_id }}_screen_{{ CM.screen_id }}" ng-init="hideDependentFields()">
             <div  class=" text-left row form-wizard" id="formBuilderContent">
@@ -329,42 +321,48 @@
         </pre>
     </div>
 
-<div class="sweetConfirmModal fade bs-modal hide" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
-			</div>
-			<div class="modal-body">
-				{{$ctrl.confirmText}}
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default sweetConfirmModalNo" data-dismiss="modal" >No</button>
-				<button type="button" class="btn btn-default  btn-outline orange sweetConfirmModalYes" data-dismiss="modal">Yes</button>
+	<div class="sweetConfirmModal fade bs-modal hide" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
+				</div>
+				<div class="modal-body">
+					{{$ctrl.confirmText}}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default sweetConfirmModalNo" data-dismiss="modal" >No</button>
+					<button type="button" class="btn btn-default  btn-outline orange sweetConfirmModalYes" data-dismiss="modal">Yes</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div ng-if="CM.screen_id == 'labresult' ">
-	<div class="claimTypeSelectionModal fade bs-modal hide" tabindex="-1" role="dialog" aria-labelledby="claimTypeSelectionModal">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Select Claim Type</h4>
-			</div>
-			<div class="modal-body">
-				<h4 class="font-yellow-gold">
-					Please select Claim Type for the spec parameters.
-				</h4>
-				<select class="form-control" ng-controller="Controller_Master as CM" name="claimTypes" id="claimTypes" ng-model="labClaimTypeSelection" ng-options='item as item.name for item in claimTypeSelectionModalOptions track by item.id' ng-change="selectUniqueClaim(labClaimTypeSelection)"></select>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="raiseClaim()">Dispute/Raise Claim</button>
+	<div ng-if="CM.screen_id == 'labresult' ">
+		<div class="claimTypeSelectionModal fade bs-modal hide" tabindex="-1" role="dialog" aria-labelledby="claimTypeSelectionModal">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="gridSystemModalLabel">Select Claim Type</h4>
+				</div>
+				<div class="modal-body">
+					<h4 class="font-yellow-gold">
+						Please select Claim Type for the spec parameters.
+					</h4>
+					<select class="form-control" ng-controller="Controller_Master as CM" name="claimTypes" id="claimTypes" ng-model="labClaimTypeSelection" ng-options='item as item.name for item in claimTypeSelectionModalOptions track by item.id' ng-change="selectUniqueClaim(labClaimTypeSelection)"></select>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="raiseClaim()">Dispute/Raise Claim</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-</div>
+	</div>
+
+
+
+
+
+<!-- </div> -->

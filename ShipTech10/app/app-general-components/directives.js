@@ -1179,6 +1179,7 @@ window.increment = 0;
             return {
                 restrict: "E",
                 controller: "Controller_Master as CM",
+                // controller: "ScreenLayout_Controller as SLC",
                 scope: {
                     structure: "=",
                     type: "=",
@@ -1196,6 +1197,7 @@ window.increment = 0;
                 }
             };
         }
+
     ]);
     /**
      * Dynamic Layout Control (DLC)
@@ -2165,4 +2167,22 @@ window.increment = 0;
             };
         }
     ]);
+
+	APP_GENERAL_COMPONENTS.directive('ngDynamicController', ['$compile', '$parse',function($compile, $parse) {
+	  return {
+	      scope: {
+	          name: '=ngDynamicController'
+	      },
+	      restrict: 'A',
+	      terminal: true,
+	      priority: 100000,
+	      link: function(scope, elem, attrs) {
+	          elem.attr('ng-controller', scope.name);
+	          elem.removeAttr('ng-dynamic-controller');
+
+	          $compile(elem)(scope);
+	      }
+	  };
+	}]);
+
 })();
