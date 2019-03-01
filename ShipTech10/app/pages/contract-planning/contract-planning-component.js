@@ -16,7 +16,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         ctrl.groupId = $stateParams.groupId;
         ctrl.tenantUOM = null;
         tenantService.tenantSettings.then(function(settings) {
-        	ctrl.tenantSettings = settings.payload;
+            ctrl.tenantSettings = settings.payload;
             ctrl.numberPrecision = settings.payload.defaultValues;
             ctrl.tenantUOM = settings.payload.tenantFormats.uom;
             ctrl.dateFormat = settings.payload.tenantFormats.dateFormat.name;
@@ -62,7 +62,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
         //         });
         //         setTimeout(function(){
-		// 			$(tableSelector).dataTable().fnAdjustColumnSizing(false);
+        //          $(tableSelector).dataTable().fnAdjustColumnSizing(false);
         //         },1000)
         //     });
         // })
@@ -79,15 +79,15 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         //         ctrl.lists = data;
         //         uiApiModel.get().then(function(data) {
         //             ctrl.ui = data;
-		// 			$.each(data.contracts.columns, function(colK, colV){
+        //          $.each(data.contracts.columns, function(colK, colV){
         //                 if (ctrl.tenantSettings.companyDisplayName.name == "Pool") {
-	    //                     colV.caption = colV.caption.replace('COMPANY', 'POOL');
-	    //                     colV.caption = colV.caption.replace('COMPANIES', 'POOLS');
+        //                     colV.caption = colV.caption.replace('COMPANY', 'POOL');
+        //                     colV.caption = colV.caption.replace('COMPANIES', 'POOLS');
         //                 }
         //                 if (ctrl.tenantSettings.serviceDisplayName.name == "Operator") {
-	    //                     colV.caption = colV.caption.replace('SERVICE', 'OPERATOR');
+        //                     colV.caption = colV.caption.replace('SERVICE', 'OPERATOR');
         //                 }
-		// 			})
+        //          })
         //             // ctrl.ui = {"contracts":{"columns":[{"name":"","caption":"","visible":true,"type":"","sortable":false,"dtoPath":"","alwaysVisible":true},{"name":"previewEmail","caption":"","visible":true,"sortable":false,"sortableName":"previewEmail","alwaysVisible":true},{"name":"requestId","caption":"PAGES.CONTRACT_PLANNING.REQUEST_ID","visible":true,"type":"html-num","sortableName":"RequestId","dtoPath":"requestId"},{"name":"requestProductStatus","caption":"PAGES.CONTRACT_PLANNING.REQUEST_PRODUCT_STATUS","visible":true,"sortableName":"RequestProductStatus","dtoPath":"requestProductStatus"},{"name":"requestStatus","caption":"PAGES.CONTRACT_PLANNING.REQUEST_STATUS","visible":true,"sortableName":"RequestStatus","dtoPath":"requestStatus"},{"name":"vesselName","caption":"PAGES.CONTRACT_PLANNING.VESSEL","visible":true,"sortableName":"Vessel_Name","dtoPath":"vessel.name"},{"name":"serviceName","caption":"PAGES.CONTRACT_PLANNING.SERVICE","visible":true,"sortableName":"Service_Name","dtoPath":"service.name"},{"name":"bunkeringLocationName","caption":"PAGES.CONTRACT_PLANNING.PORT","visible":true,"sortableName":"BunkeringLocation_Name","dtoPath":"bunkeringLocation.name"},{"name":"eta","caption":"PAGES.CONTRACT_PLANNING.ETA","visible":true,"sortableName":"BunkeringEta","dtoPath":"BunkeringEta","type":"date"},{"name":"productName","caption":"PAGES.CONTRACT_PLANNING.PRODUCT","visible":true,"sortableName":"Product_Name","dtoPath":"product.name"},{"name":"minMaxQty","caption":"PAGES.CONTRACT_PLANNING.MIN_MAX_QTY","visible":true,"sortableName":"MinQuantity","dtoPath":"minQuantity"},{"name":"contract","caption":"PAGES.CONTRACT_PLANNING.CONTRACT","visible":true,"sortableName":"Contract_Name","dtoPath":"contract.name"},{"name":"seller","caption":"PAGES.CONTRACT_PLANNING.SELLER","visible":true,"sortableName":"Seller_Name","dtoPath":"seller.name"},{"name":"agreementType","caption":"PAGES.CONTRACT_PLANNING.AGREEMENT_TYPE","visible":true,"sortableName":"AgreementType_Name","dtoPath":"agreementType"},{"name":"comment","caption":"PAGES.CONTRACT_PLANNING.COMMENTS","visible":true,"sortableName":"Comment","dtoPath":"comment"},{"name":"buyerName","caption":"PAGES.CONTRACT_PLANNING.BUYER","visible":true,"sortableName":"Buyer_Name","dtoPath":"buyer.name"},{"name":"etd","caption":"PAGES.CONTRACT_PLANNING.ETD","visible":true,"sortableName":"Etd","dtoPath":"etd","type":"date"},{"name":"deliveryOptionName","caption":"PAGES.CONTRACT_PLANNING.DELIVERY_OPTION","visible":true,"sortableName":"DeliveryOption_Name","dtoPath":"deliveryOption.name"},{"name":"formulaDescription","caption":"PAGES.CONTRACT_PLANNING.FORMULA_DESCRIPTION","visible":true,"sortableName":"FormulaDescription","dtoPath":"formulaDescription"},{"name":"premiumDiscount","caption":"PAGES.CONTRACT_PLANNING.PREMIUM_DISCOUNT","visible":true,"sortableName":"PremiumDiscount","dtoPath":"premiumDiscount"},{"name":"deliveryPrice","caption":"PAGES.CONTRACT_PLANNING.DELIVERY_PRICE","visible":true,"sortableName":"DeliveryPrice","dtoPath":"deliveryPrice"},{"name":"requestComment","caption":"PAGES.CONTRACT_PLANNING.REQUEST_COMMENTS","visible":true,"sortableName":"RequestComment","dtoPath":"requestComment"},{"name":"noOfdaysBeforeExpiry","caption":"PAGES.CONTRACT_PLANNING.DAYS_BEFORE_EXPIRY","visible":true,"sortableName":"NoOfdaysBeforeExpiry","dtoPath":"noOfdaysBeforeExpiry"},{"name":"contractualMinMaxQty","caption":"PAGES.CONTRACT_PLANNING.CONTRACTUAL_MIN_MAX_QTY","visible":true,"sortableName":"ContractMinQuantity","dtoPath":"contractMinQuantity"},{"name":"LastPurchasedQuantity","caption":"PAGES.CONTRACT_PLANNING.LASTPURCHASEDQUANTITY","visible":true,"sortableName":"lastPurchasedQuantity","dtoPath":"lastPurchasedQuantity"}]}};
 
         //             //Normalize relevant data for use in template.
@@ -187,7 +187,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.currentRequest.contract = contract.contract;
             ctrl.currentRequest.contractProductId = contract.contractProductId;
             ctrl.currentRequest.seller = contract.seller;
-			ctrl.currentRequest.contractProductId = contract.contractProductId;            
+            ctrl.currentRequest.contractProductId = contract.contractProductId;            
             ctrl.currentRequest.formulaDescription = contract.formulaDescription;
             ctrl.currentRequest.deliveryPrice = contract.deliveryPrice;
             ctrl.currentRequest.premiumDiscount = contract.premiumDiscount;
@@ -225,7 +225,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.saveCurrentRequest(request);
         };
         ctrl.setContractFilters = function(request) {
-        	// request = JSON.parse(setContractFilters);
+            // request = JSON.parse(setContractFilters);
             var newFilters = [];
             if (request.bunkeringLocation) {
                 newFilters.push({
@@ -270,7 +270,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             }
         };
         ctrl.getLookupListsContract = function(rowId, index) {
-        	ctrl.CLC = $('#flat_contract_planning');
+            ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
             request = ctrl.tableData[rowId];
             ctrl.setContractFilters(request);
@@ -282,19 +282,19 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         };
 
         ctrl.resetContractPlaning = false;
-		$timeout(function(){ctrl.resetContractPlaning = true;},50);
+        $timeout(function(){ctrl.resetContractPlaning = true;},50);
         /**
          * Saves contract planning data.
          */
         $rootScope.$on("contractPlanningSelectedRows", function(data,res){
-        	ctrl.contractPlanningSelectedRows = res;
-        	// ctrl.saveContractPlanning();
+            ctrl.contractPlanningSelectedRows = res;
+            // ctrl.saveContractPlanning();
         })
         $rootScope.$on("gridDataDone", function(data,res){
             ctrl.contractPlanningSelectedRows = [];
         });
         $rootScope.$on("contractModalData", function(data,res){
-        	ctrl.setContractFilters(res);
+            ctrl.setContractFilters(res);
         });
 
         ctrl.saveContractPlanning = function(saveAndSend) {
@@ -358,23 +358,23 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
             ctrl.buttonsDisabled = true;
             if (saveAndSend) {
-	            newRequestModel.contractPlanningSaveAndSend(contractList).then(function(response) {
-	                ctrl.buttonsDisabled = false;
-	                $rootScope.scheduleDashboardVesselVoyages = null;
-	                $state.reload();
-	            }).catch(function(error) {
-	                ctrl.buttonsDisabled = false;
-	                // $state.reload();
-	            });
+                newRequestModel.contractPlanningSaveAndSend(contractList).then(function(response) {
+                    ctrl.buttonsDisabled = false;
+                    $rootScope.scheduleDashboardVesselVoyages = null;
+                    $state.reload();
+                }).catch(function(error) {
+                    ctrl.buttonsDisabled = false;
+                    // $state.reload();
+                });
             } else {
-	            newRequestModel.saveContractPlanning(contractList).then(function(response) {
-	                ctrl.buttonsDisabled = false;
-	                $rootScope.scheduleDashboardVesselVoyages = null;
-	                $state.reload();
-	            }).catch(function(error) {
-	                ctrl.buttonsDisabled = false;
-	                // $state.reload();
-	            });
+                newRequestModel.saveContractPlanning(contractList).then(function(response) {
+                    ctrl.buttonsDisabled = false;
+                    $rootScope.scheduleDashboardVesselVoyages = null;
+                    $state.reload();
+                }).catch(function(error) {
+                    ctrl.buttonsDisabled = false;
+                    // $state.reload();
+                });
             }
         };
 
@@ -443,8 +443,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             //debugger;
             ctrl.selectedContracts = ctrl.contractPlanningSelectedRows;
             if (_.uniqBy(ctrl.selectedContracts, 'seller.id').length > 1) {
-				toastr.error("You cannot preview email of multiple sellers at once");
-				return;            	
+                toastr.error("You cannot preview email of multiple sellers at once");
+                return;             
             }
             var contractList = ctrl.contractPlanningSelectedRows;
             if ($scope.contractPlanningHasChangesMade) {
@@ -814,10 +814,10 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.currentRowIndex = data
             ctrl.openMinMaxModalEdit(ctrl.currentRowData);
 
-        	// alert(data);
+            // alert(data);
         });
         $rootScope.$on('contractPlanningDataChanged', function(event, data){
-        	ctrl.contractPlanningDataChanged = true;
+            ctrl.contractPlanningDataChanged = true;
         });
 
         $rootScope.$on('procurementContractPlanningSummary', function(event, data){
@@ -830,47 +830,47 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows
             ctrl.currentRowData = ctrl.tableData[data-1]
             ctrl.currentRowIndex = data;
-        	// ctrl.CLC.jqGrid("clearGridData");
-        	// $.each(ctrl.tableData, function(k,v){
-	        // 	ctrl.CLC.jqGrid("addRowData", k, v);
-        	// });
-        	// $compile(ctrl.CLC)($scope)
+            // ctrl.CLC.jqGrid("clearGridData");
+            // $.each(ctrl.tableData, function(k,v){
+            //  ctrl.CLC.jqGrid("addRowData", k, v);
+            // });
+            // $compile(ctrl.CLC)($scope)
         });
 
-		ctrl.openMinMaxModalEdit = function(rowData) {
+        ctrl.openMinMaxModalEdit = function(rowData) {
             console.log(rowData);
             $timeout(function() {
 	            $scope.minMaxModalEdit = null;
             },50)
             // $scope.minMaxModalEdit = $scope.minMaxModalEdit;
             $timeout(function() {
-	            $scope.minMaxModalEdit = rowData
-	            if (!$scope.minMaxModalEdit.qtyUom) {
-	                $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
-	            }
+                $scope.minMaxModalEdit = rowData
+                if (!$scope.minMaxModalEdit.qtyUom) {
+                    $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
+                }
                 $scope.$apply(function() {
-                	$compile($("#minMaxModal"))($scope)
-		        	$("#minMaxModal").modal();
+                    $compile($("#minMaxModal"))($scope)
+                    $("#minMaxModal").modal();
                 })
             },100)
         }
         $(document).on("click",".contract_planning_min_max_qty_wrap a", function(e){
-        	e.preventDefault()
-        	rowIndex = $(this).attr("rowId");
+            e.preventDefault()
+            rowIndex = $(this).attr("rowId");
             rowData = $('#flat_contract_planning').jqGrid.Ascensys.gridObject.rows[parseFloat(rowIndex) - 1];
             // $rootScope.$broadcast('contractPlanningChange', $rootScope.contractPlanningChange);
             $timeout(function(){
-	            ctrl.currentRowData = rowData
-	            ctrl.currentRowIndex = parseFloat(rowIndex);
+                ctrl.currentRowData = rowData
+                ctrl.currentRowIndex = parseFloat(rowIndex);
 
-	            $scope.minMaxModalEdit = rowData
-	            if (!$scope.minMaxModalEdit.qtyUom) {
-	                $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
-	            }            
-	            $("#minMaxModal").modal();
+                $scope.minMaxModalEdit = rowData
+                if (!$scope.minMaxModalEdit.qtyUom) {
+                    $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
+                }            
+                $("#minMaxModal").modal();
             })
 
-        	// ctrl.openMinMaxModalEdit(rowData) 
+            // ctrl.openMinMaxModalEdit(rowData) 
 
         })
         ctrl.saveMinMaxModal = function(minEdit, maxEdit, qtyUom) {
@@ -887,7 +887,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
     //     .jqGrid('setGridParam', { data: results })
     //     .trigger('reloadGrid', [{ page: 1}]);
         
-    		ctrl.CLC = $('#flat_contract_planning');
+            ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
     		if (!ctrl.currentRowData) {
     			ctrl.currentRowData = {}
@@ -902,8 +902,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit )
         	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
 
-        	textForMinEdit = $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
-        	textForMaxEdit = $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
+            textForMinEdit = $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
+            textForMaxEdit = $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
 
         	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text(textForMinEdit +" - "+ textForMaxEdit);
 
@@ -932,10 +932,10 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 $(".dataTables_empty").show();
             }
         }
-		ctrl.trustAsHtml = function(data) {
-			data = $filter('translate')(data);
-			return $sce.trustAsHtml(data)
-		}
+        ctrl.trustAsHtml = function(data) {
+            data = $filter('translate')(data);
+            return $sce.trustAsHtml(data)
+        }
 
         ctrl.getStatuses = function() {
             var requestData = {"Payload":true};
@@ -945,13 +945,13 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         }
         ctrl.getStatuses();
         ctrl.getStatusColor = function(statusName) {
-        	statusColor = null;
-        	$.each(ctrl.statuses, function(k,v) {
-        		if (v.status.name == statusName) {
-        			statusColor = v.colorCode
-        		}
-        	})
-        	return statusColor;
+            statusColor = null;
+            $.each(ctrl.statuses, function(k,v) {
+                if (v.status.name == statusName) {
+                    statusColor = v.colorCode
+                }
+            })
+            return statusColor;
         }
 
         ctrl.formatDate = function(elem,dateFormat){
