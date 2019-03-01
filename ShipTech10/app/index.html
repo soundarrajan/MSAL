@@ -275,13 +275,12 @@
     <script src="filters/utcToLocal.js"></script>
     <script src="filters/stDateFormat.filter.js"></script>
     <script src="directives/st-number-format.js"></script>
-    
-	<script src="directives/multiselect/angular-bootstrap-multiselect.js"></script>
 
-	<!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect-templates.js"></script> -->
-	<!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect.js"></script> -->
-	<!-- <script src="directives/multiselect/angular-bootstrap-multiselect-templates.js"></script> -->
+    <script src="directives/multiselect/angular-bootstrap-multiselect.js"></script>
 
+    <!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect-templates.js"></script> -->
+    <!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect.js"></script> -->
+    <!-- <script src="directives/multiselect/angular-bootstrap-multiselect-templates.js"></script> -->
     <!-- END APP LEVEL ANGULARJS SCRIPTS -->
     <!-- Auth Adal.js -->
 
@@ -348,7 +347,7 @@
     <script src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js"></script>
     <script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-
+    <script src="https://unpkg.com/imask"></script>
 
     <script src="assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
     <script src="assets/global/plugins/typeahead/typeahead.bundle.min.js"></script>
@@ -487,7 +486,7 @@
     <script src="js/json-normalizers/general/arrays.js"></script>
     <script src="js/json-normalizers/datatables/datatables-json-normalizer.js"></script>
     <script src="js/json-normalizers/lookup/lookup-normalizer.js"></script>
-  
+
     <!-- End Misc. scripts-->
     <!-- JSON mockups. -->
     <!-- These should be all deleted upon server integration completion. -->
@@ -512,16 +511,16 @@
             <button id="startRecording" class="btn btn-default" ng-click="toggleRecording();" ng-bind="recordingStatus"></button>
         </div>
     </div>
-	
-	<span ng-controller="Controller_Master as CM" class="Controller_Master_Element"></span>
 
-<!-- <script>
-	if (location.href.indexOf('localhost') != -1) {
-		window.onbeforeunload = function() {
-		    return "No leave?";
-		}
-	}
-</script> -->
+    <span ng-controller="Controller_Master as CM" class="Controller_Master_Element"></span>
+
+    <!-- <script>
+        if (location.href.indexOf('localhost') != -1) {
+            window.onbeforeunload = function() {
+                return "No leave?";
+            }
+        }
+    </script> -->
 </body>
 <!-- END BODY -->
 

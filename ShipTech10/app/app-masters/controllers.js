@@ -41,6 +41,7 @@ APP_MASTERS.controller("Controller_Master", [
         console.log("--------", onlyInScreenLayout_Controller);
 
         var vm = this;
+        vm.scope = $scope;
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split(".")[0];
         }
@@ -2518,6 +2519,7 @@ APP_MASTERS.controller("Controller_Master", [
             });
             return $scope.claimsOptions;
         };
+
         vm.datepickers = function(id, defToday, type, unique) {
         	console.log("Init DATEPICKER");
             if (jQuery().datepicker) {
@@ -2619,6 +2621,20 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             }
         };
+
+        vm.newdatepickers = function() {
+            var currentFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            currentFormat = currentFormat.split(' ')[0];
+            /*
+            currentFormat = currentFormat.replace('yyyy', 'YYYY');
+            currentFormat = currentFormat.replace('dd', 'DD');
+            */
+            currentFormat = currentFormat.replace('mm', 'MM');
+            $(".new-date-picker").datepicker({
+                format: 'dd/mm/yyyy'
+            });
+        }
+
         vm.formatDate = function(elem, dateFormat) {
             if (elem) {
                 formattedDate = elem;
@@ -6589,6 +6605,142 @@ APP_MASTERS.controller("Controller_Master", [
         vm.stopPropagation = function($event){
             console.log($event);
             $event.stopPropagation();
+        }
+
+        vm.setNameSpaceValue = function(obj, path, value) {
+            var property, 
+                path = path.split('.');
+            while (property = path.shift()) {
+            if (typeof obj[property] === 'undefined') {
+                return undefined;
+            }
+            if (path.length == 1) {
+                obj[property][path[0]] = value;
+            } else {
+                obj = obj[property];
+            }
+          }
+        }
+
+        vm.getNameSpace = function(obj, path) {
+            var property, 
+                path = path.split('.');
+            while (property = path.shift()) {
+            if (typeof obj[property] === 'undefined') {
+                return undefined;
+            }
+            if (path.length != 0) {
+                obj = obj[property];
+            }
+          }
+          return obj;
+        }
+
+        vm.getNameSpaceValue = function(obj, path) {
+            var property, 
+                path = path.split('.');
+            while (property = path.shift()) {
+            if (typeof obj[property] === 'undefined') {
+                return undefined;
+            }
+            obj = obj[property];
+          }
+          return obj;
+        }
+
+        vm.dateStringToDate = function(value, format) {
+            // Get date without time
+            var currentDateFormat = currentFormat.splice(' ')[0];
+            return moment(value, currentDateFormat).format();
+        }
+
+        vm.initDateMask = function(elem, updateRoot, updateModel) {
+            var rootMap = {
+                '$scope': $scope,
+                '$rootScope': $rootScope,
+                'vm': vm
+            }
+
+            var currentFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            currentFormat = currentFormat.split(' ')[0];
+            currentFormat = currentFormat.replace('yyyy', 'YYYY');
+            currentFormat = currentFormat.replace('dd', 'DD');
+
+            var init = new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    var element = document.getElementById(elem);
+                    resolve(new IMask(element, {
+                        mask: Date,
+                        pattern: currentFormat,
+                        // lazy: false,
+                        min: new Date(1970, 0, 1),
+                        max: new Date(2030, 0, 1),
+
+                        format: function (date) {
+                            return moment(date).format(currentFormat);
+                        },
+                        parse: function (str) {
+                            return moment(str, currentFormat);
+                        },
+
+                        blocks: {
+                            YYYY: {
+                                mask: IMask.MaskedRange,
+                                from: 1970,
+                                to: 2030
+                            },
+                            MM: {
+                                mask: IMask.MaskedRange,
+                                from: 1,
+                                to: 12
+                            },
+                            DD: {
+                                mask: IMask.MaskedRange,
+                                from: 1,
+                                to: 31
+                            },
+                            HH: {
+                                mask: IMask.MaskedRange,
+                                from: 0,
+                                to: 23
+                            },
+                            mm: {
+                                mask: IMask.MaskedRange,
+                                from: 0,
+                                to: 59
+                            }
+                        }
+                    }));
+                }, 0);
+            });
+
+            init.then(function(mask) {
+                mask.on('accept', function() {
+                    console.log(mask.value);
+                });
+                mask.on('complete', function() {
+                    /*
+                    $timeout(function() {
+                        elem = elem.split('_date')[0];
+                        angular.element('#' + elem).val(moment(mask.value, currentFormat).format());
+                    }, 0);
+                    */
+                    vm.setNameSpaceValue(rootMap[updateRoot], updateModel, moment(mask.value, currentFormat).format());
+                });
+            });
+
+            var unwatch = rootMap[updateRoot].$watch(updateModel.split('.')[0], function() {
+                if (vm.getNameSpace(rootMap[updateRoot], updateModel)) {
+
+                    if (vm.getNameSpaceValue(rootMap[updateRoot], updateModel)) {
+                        vm.setNameSpaceValue(
+                            rootMap[updateRoot], updateModel + '_date',
+                            moment(vm.getNameSpaceValue(rootMap[updateRoot], updateModel)).format(currentFormat)
+                        );
+                    }
+                    unwatch();
+                }
+            });
         }
 
         vm.setValue = function(inputDetails, direction, simpleDate, app){

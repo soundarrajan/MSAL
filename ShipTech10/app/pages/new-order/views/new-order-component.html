@@ -300,40 +300,11 @@
                                                 {{ $ctrl.data.voyageCode }}
                                             </div>
                                             <form ng-if="$ctrl.vesselDetailsFields.OrderDate.visible" class="col-md-4 form-inline text-right"> 
-                                                <span ng-init="$ctrl.initMask(true)"></span>
-                                                <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group ">
 
-                                                    <!-- value initialization -->
-                                                    <!-- $ctrl.data.eta -->
-                                                    <span ng-init="$ctrl.setValue({
-                                                        path: 'data.orderDate',
-                                                        root: '$ctrl',
-                                                        pickerId: 'orderDate',
-                                                    }, 1, true)" ng-if="$ctrl.data.orderDate"></span>
-
-                                                    <!-- manual input -->
-                                                    <input class="formatted-date-input date-only"
-                                                    ng-model="$ctrl.formatDates.data.orderDate" 
-                                                    ng-change="$ctrl.setValue({
-                                                        path: 'data.orderDate',
-                                                        root: '$ctrl',
-                                                        pickerId: 'orderDate',
-                                                    }, 2, true);" 
-                                                    ng-focus="inputFocus['orderDate'] = true; $event.stopPropagation(); event = $event" 
-                                                    ng-blur="inputFocus['orderDate'] = false;"
-                                                    ng-invalid="{{ $ctrl.invalidDate['orderDate'] && !inputFocus['orderDate'] }}"
-                                                    name="orderDate">
-                                                    <!-- manual input -->
-                                                
-                                                    <span class="input-group-btn date form_meridian_date formatted-date-button" id="orderDate">
-                                                        <!-- datepicker input -->
-                                                        <input st-date-format class="form-control hidden-form-input" required only-date="true" readonly ng-model="$ctrl.data.orderDate" visibility="hidden" ng-change="$ctrl.setValue({
-                                                            path: 'data.orderDate',
-                                                            root: '$ctrl',
-                                                            pickerId: 'orderDate',
-                                                        }, 1, true); $ctrl.invalidDate['orderDate'] = false;"
-                                                        />
-                                                        <!-- datepicker input -->
+                                                <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">
+                                                    <input class="form-control" required st-date-format st-date-format only-date="true" readonly ng-model="$ctrl.data.orderDate"
+                                                    />
+                                                    <span class="input-group-btn">
                                                         <button class="btn date-set" type="button">
                                                             <i class="fa fa-calendar"></i>
                                                         </button>
