@@ -1178,7 +1178,7 @@ window.increment = 0;
         function($templateRequest, $compile) {
             return {
                 restrict: "E",
-                controller: "Controller_Master as CM",
+                // controller: "Controller_Master as CM",
                 // controller: "ScreenLayout_Controller as SLC",
                 scope: {
                     structure: "=",
@@ -1192,7 +1192,11 @@ window.increment = 0;
                 link: function(scope, element, attrs) {
                     // Load Template
                     $templateRequest("app-general-components/views/entity_edit_form.html").then(function(html) {
-                        element.append($compile(html)(scope));
+                    	wrappedHtml = "<div ng-controller='Controller_Master as CM'>"+html+"</div>"
+                    	if (attrs.specificController) {
+	                    	wrappedHtml = "<div ng-controller='"+attrs.specificController+"'>"+html+"</div>"
+                    	} 
+                        element.append($compile(wrappedHtml)(scope));
                     });
                 }
             };

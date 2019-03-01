@@ -1,7 +1,7 @@
 /**
  * Invoice Controller
  */
-APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', function($scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel) {
+APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', '$controller', '$filter', 'uiGridConstants', function(API, $scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel, $controller, $filter, uiGridConstants) {
     var vm = this;
     var guid = '';
     if ($state.params.path) {
@@ -12,6 +12,19 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     } else {
         vm.screen_id = $state.params.screen_id;
     }
+    $scope.vm = this;
+    $scope.newProp = "adasdsad";
+    // $controller("Controller_Master as CM", {
+    //     $scope: $scope
+    // });
+    $controller("ScreenLayout_Controller", {
+        $scope: $scope
+    });    
+
+    $controller("Controller_Datatables", {
+        $scope: $scope
+    }); //This works
+
     vm.master_id = $state.params.master_id;
     vm.entity_id = $state.params.entity_id;
     $scope.addedFields = new Object;
@@ -20,8 +33,1983 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     vm.additionalCostTypes = [];
     $scope.listsCache = $listsCache;
     vm.invoiceTree = [];
+
+
+/*******************************************************************************/
+/*******************************************************************************/
+		
+        if (!vm.entity_id) {
+            $scope.isEdit = false;
+            vm.isEdit = false;
+            $scope.isCreate = true;
+        } else {
+            $scope.isEdit = true;
+            vm.isEdit = true;
+            $scope.isCreate = false;
+        }
+
+        vm.getStatusColor = function(statusName, cell) {
+            var statusColor = statusColors.getDefaultColor();
+            if(statusName) {
+                statusColor = statusColors.getColorCode(statusName);
+            }
+            if(cell && cell.displayName) {
+                statusColor = statusColors.getColorCode(cell.displayName);
+                $.each(vm.listsCache.ScheduleDashboardLabelConfiguration, function(k, v) {
+                    if(cell.id === v.id && cell.transactionTypeId === v.transactionTypeId) {
+                        statusColor = v.code;
+                        return false;
+                    }
+                });
+            }
+            return statusColor;
+        }
+        $scope.$on("visible_sections", function(event, object) {
+            // console.log(12)
+            $scope.visible_sections = object;
+            if (vm.app_id == "contracts") {
+                if ($rootScope.formValues.productQuantityRequired) {
+                    vm.equalizeColumnsHeightGrouped(".group_ContractSummary", ".group_General_Contract, .group_contact");
+                } else {
+                    vm.equalizeColumnsHeightGrouped(".group_ContractSummary", ".group_General_Contract, .group_contact, .group_contractualQuantity, .group_ProductDetails, .group_AdditionalCosts, .group_Penalty");
+                }
+            }
+        });
+        
+        $scope.systemInstrumentCurrency = "";
+        $scope.refreshValue = 0;
+        $scope.tenantSetting = $tenantSettings;
+        vm.tenantSetting = $tenantSettings;
+        // console.log('tenantSetting', $scope.tenantSetting);
+        $scope.addedFields = new Object();
+        $scope.formFields = new Object();
+        $scope.formValues = new Object();
+        $scope.locationReload = function() {
+            if ($scope.copiedId > 0) {
+                localStorage.setItem(vm.app_id + vm.screen_id + "_copy", $scope.copiedId);
+                $state.reload();
+            } else {
+                $scope.formValues = {};
+            }
+        };
+        $scope.getDefaultUom = function() {
+            return $scope.tenantSetting.tenantFormats.uom;
+        };
+        vm.getTranslations = function() {
+            Factory_Master.getTranslations(function(callback) {
+                if (callback) {
+                    $scope.translations = callback;
+                }
+            });
+        };
+        vm.checkLabelsHeight = function() {
+            $timeout(function() {
+                $.each($(".form-group label:not(.mt-checkbox)"), function(key, val) {
+                    if (this.offsetHeight > 26) {
+                        $(this)
+                            .css("height", 30)
+                            .css("padding-top", 0);
+                    }
+                });
+            }, 1);
+        };
+        $scope.reset_form = function(ev) {
+            if ($scope.copiedId > 0) {
+                localStorage.setItem(vm.app_id + vm.screen_id + "_copy", $scope.copiedId);
+                $state.reload();
+            } else {
+                $state.reload();
+            }
+        };
+        $scope.undirtyForm = function() {
+            if (vm.editInstance) {
+                vm.editInstance.$pristine = true;
+                vm.editInstance.$dirty = false;
+                angular.forEach(vm.editInstance, function(input, key) {
+                    if (typeof input == "object" && input.$name) {
+                        if (input.$pristine) input.$pristine = true;
+                        if (input.$dirty) {
+                            input.$dirty = false;
+                        }
+                    }
+                });
+            }
+        };
+        $scope.save_modal_entity = function(app, screen) {
+            if (app == "alerts" && screen == "alerts") {
+                if ($rootScope.formValues.isRecurrent && (typeof $rootScope.formValues.statusId == "undefined" || $rootScope.formValues.statusId == null)) {
+                    toastr.error("Until status cannot be null if Remind Every is checked");
+                    return;
+                }
+                if ($rootScope.formValues.temp.dummyActivateOn && !$rootScope.formValues.activateOn) {
+                    toastr.error("Please select a date for activate on");
+                    return;
+                }
+                if ($rootScope.formValues.temp.dummyDeactivateOn && !$rootScope.formValues.deactivateOn) {
+                    toastr.error("Please select a date for deactivate on");
+                    return;
+                }
+            }
+            vm.invalid_form = false;
+            if (1 == 1) {
+            
+                $rootScope.filterFromData = {};
+                $.each($rootScope.formValues, function(key, val) {
+                    if (!angular.equals(val, [{}])) {
+                        $rootScope.filterFromData[key] = val;
+                    }
+                });
+              
+                vm.fields = angular.toJson($rootScope.filterFromData);
+                if ($rootScope.filterFromData.id > 0) {
+                    Factory_Master.save_master_changes(app, screen, vm.fields, function(callback) {
+                        if (callback.status == true) {
+                            toastr.success(callback.message);
+                            $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                            $scope.prettyCloseModal();
+                            // $scope.modalInstance.close();
+                        } else {
+                            if (callback.message) {
+                                toastr.error(callback.message);
+                            } else {
+                                toastr.error("An error has occured, please check the fields");
+                            }
+                        }
+                    });
+                } else {
+                    Factory_Master.create_master_entity(app, screen, vm.fields, function(callback) {
+                        if (callback.status == true) {
+                            toastr.success(callback.message);
+                            $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                            $scope.prettyCloseModal();
+                        } else {
+                            if (callback.message) {
+                                toastr.error(callback.message);
+                            } else {
+                                toastr.error("An error has occured, please check the fields");
+                            }
+                        }
+                    });
+                }
+            } else {
+                vm.invalid_form = true;
+                var message = "Please fill in required fields:";
+                $.each(vm.editInstance.$error.required, function(key, val) {
+                    message += "<br>" + val.$name;
+                });
+                toastr.error(message);
+            }
+        };
+
+        $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
+            screenLoader.showLoader();
+            $("form").addClass("submitted");
+            vm.invalid_form = false;
+
+            if (vm.editInstance.$valid) {
+                $scope.filterFromData = {};
+                $scope.submitedAction = true;
+                $.each($scope.formValues, function(key, val) {
+                    if (!angular.equals(val, [{}])) {
+                        $scope.filterFromData[key] = angular.copy(val);
+                    }
+                    if (val && val.id && angular.equals(val.id, -1)) {
+                        $scope.filterFromData[key] = null;
+                    }
+                    if (vm.screen_id == "formula" || vm.screen_id == "labresult") {
+                        if (angular.equals(val, {})) {
+                            $scope.filterFromData[key] = null;
+                        }
+                        if (key == "pricingScheduleOptionSpecificDate") {
+                            if (val && val.dates && angular.equals(val.dates, [{}])) {
+                                $scope.filterFromData[key] = null;
+                            }
+                        }
+                    }
+                });
+               
+                if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+
+                	validCostDetails = []
+                    if ($scope.filterFromData.costDetails.length > 0) {
+                        $.each($scope.filterFromData.costDetails, function(k, v) {
+                            if (typeof v.product != "undefined" && v.product != null) {
+                                if (v.product.id == -1) {
+                                    v.product = null;
+                                    v.deliveryProductId = null;
+                                } else  {
+                                	if (v.product.productId) {
+	                                    v.product.id = v.product.productId;
+                                	}
+                                	if (v.product.deliveryProductId) {
+                                		v.deliveryProductId = angular.copy(v.product.deliveryProductId);
+                                	}
+	                            	v.isAllProductsCost = false;
+	                            }
+                            }
+	                        if ((!!v.id && !(v.id == 0 && v.isDeleted)) || (!v.Id && !v.isDeleted)) {
+                                // v.isDeleted = false;
+	                        	validCostDetails.push(v);
+	                        }
+                        });
+                    }
+                    $scope.filterFromData.costDetails = validCostDetails;
+                    // return;
+                    costTypeError = false;
+                    for (var i = $scope.filterFromData.costDetails.length - 1; i >= 0; i--) {
+                    	if (!$scope.filterFromData.costDetails[i].costType) {
+		                    costTypeError = true;
+                    	}
+                    }
+                    if (costTypeError) {
+                        toastr.error("Please select Cost type");
+                        $scope.submitedAction = false;
+                        return false;
+                    }
+                    if ($state.params.screen_id != "claims") {
+                        if ($filter('filter')($scope.filterFromData.productDetails, {isDeleted: false}).length == 0 && $filter('filter')($scope.filterFromData.costDetails, {isDeleted: false}).length == 0) {
+                            toastr.error("Please add at least one product or one cost");
+                            $scope.submitedAction = false;
+                            return false;
+                        }
+                    }
+                }
+                vm.fields = angular.toJson($scope.filterFromData);
+                if (vm.entity_id) {
+                    vm.entity_id = vm.entity_id;
+                } else {
+                    vm.entity_id = 0;
+                }
+                if (vm.entity_id > 0) {
+                    Factory_Master.save_master_changes(vm.app_id, vm.screen_id, vm.fields, function(callback) {
+                        screenLoader.showLoader();
+                        //alert('no reload');
+                        if (callback.status == true) {
+                            
+                            $scope.loaded = true;
+                            if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+                                vm.entity_id = 0;
+                            }
+                            setTimeout(function() {
+                                $scope.submitedAction = false;
+                            }, 100);
+                            if (sendEmails) {
+                                $scope.sendEmails();
+                            }
+                            if(noReload == undefined || typeof noReload == undefined || !noReload){
+                                toastr.success(callback.message);
+                                //alert('reloading');
+                                $state.reload();
+                                screenLoader.hideLoader();
+                            } else {
+                                if(completeCallback){
+                                    toastr.success('Saved');
+                                    toastr.warning('Preparing to complete');
+                                    completeCallback();
+                                }
+                            }
+                            
+                        } else {
+                            // toastr.error(callback.message);
+                            setTimeout(function() {
+                                $scope.submitedAction = false;
+                            }, 100);
+
+                            if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+                                if ($scope.filterFromData.costDetails.length > 0) {
+                                    $.each($scope.filterFromData.costDetails, function(k, v) {
+                                        if (v.product == null)
+                                            if (v.associatedOrderProduct == "All" || v.isAllProductsCost) {
+                                                v.product = {
+                                                    id: -1
+                                                };
+                                            }
+                                    });
+                                }
+                            }
+                        }
+
+                    });
+                } else {
+                    Factory_Master.create_master_entity(vm.app_id, vm.screen_id, vm.fields, function(callback) {
+
+                        if (callback.status == true) {
+                            toastr.success(callback.message);
+                            if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+                                vm.entity_id = 0;
+                                Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, function(callback2) {
+                                    if (callback2) {
+                                        $scope.formValues = callback2;
+                                    }
+                                });
+                            } else {
+                                if ($location.path().slice(-2) == "/0") {
+                                    locationPath = $location.path().slice(0, -1);
+                                } else {
+                                    locationPath = $location.path();
+                                }
+                                if (vm.app_id == "admin"){
+                                    if(vm.screen_id == "sellerrating"){
+                                        //do nothing
+                                    }else{
+                                        if (sendEmails) {
+                                            $location.path(locationPath + callback.id).hash("mail");
+                                        } else {
+                                            $location.path(locationPath + callback.id);
+                                        }
+                                    }
+                                }else{
+                                    if (sendEmails) {
+                                        $location.path(locationPath + callback.id).hash("mail");
+                                    } else {
+                                        $location.path(locationPath + callback.id);
+                                    }
+                                }
+                            }
+                            setTimeout(function() {
+                                $scope.submitedAction = false;
+                            }, 100);
+                        } else {
+                            // toastr.error(callback.message);
+                            setTimeout(function() {
+                                $scope.submitedAction = false;
+                            }, 1000);
+                            $scope.submitedAction = false;
+                        }
+                    });
+                }
+                //$scope.refreshSelect();
+            } else {
+                $scope.submitedAction = false;
+                vm.invalid_form = true;
+                var message = "Please fill in required fields:";
+                var names = [];
+                $.each(vm.editInstance.$error.required, function(key, val) {
+                    if (names.indexOf(val.$name) == -1) {
+                        message += "<br>" + val.$name;
+                    }
+                    names += val.$name;
+                });
+                i = 0;
+                $.each(vm.editInstance.$error.pattern, function(key, val) {
+                    i++;
+                    if (i === 1) {
+                        message += "<br>Please check format:";
+                    }
+                    message += "<br>" + val.$name;
+                });
+                toastr.error(message);
+                setTimeout(function() {
+                    $scope.submitedAction = false;
+                }, 100);
+            }
+        };
+        $scope.triggerError = function(name, errors) {
+            if (errors.$viewValue != "NaN") {
+                toastr.error(name);
+            }
+        };
+        $scope.createModalParams = function(obj) {
+            $rootScope.modalParams = obj;
+        };
+        $scope.$on("modal.closing", function(event, reason, closed) {
+            if (!$scope.modalClosed) {
+                if (typeof $scope.modalInstance != "undefined") {
+                    event.preventDefault();
+                    console.log($rootScope.modalInstance);
+                    console.log($scope.modalInstance);
+                    $scope.prettyCloseModal();
+                    $scope.modalClosed = true;
+                }
+            }
+        });
+        $scope.prettyCloseModal = function() {
+            var modalStyles = {
+                transition: "0.3s",
+                opacity: "0",
+                transform: "translateY(-50px)"
+            };
+            var bckStyles = {
+                opacity: "0",
+                transition: "0.3s"
+            };
+            $("[modal-render='true']").css(modalStyles);
+            $(".modal-backdrop").css(bckStyles);
+            setTimeout(function() {
+                if ($scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
+                if ($rootScope.modalInstance) {
+                    $rootScope.modalInstance.close();
+                }
+            }, 500);
+        };
+        vm.addHeadeActions = function() {
+            $('.page-content-wrapper a[data-group="extern"]').each(function() {
+                if ($(this).attr("data-compiled") == 0) {
+                    if ($(this).attr("data-method") != "") {
+                        $(this).attr("ng-click", $(this).data("method") + ';submitedAcc("' + $(this).data("method") + '")');
+                        $(this).attr("data-method", "");
+                        $(this).attr("data-compiled", 1);
+                        $compile($(this))($scope);
+                    }
+                }
+            });
+            if (vm.app_id == "masters" && vm.screen_id == "counterparty") {
+                $(".entity_active").attr("ng-model", "formValues.isDeleted");
+            } else {
+                $(".entity_active")
+                    .attr("ng-checked", "!CM.entity_id || formValues.isDeleted == false")
+                    .attr("ng-true-value", "false")
+                    .attr("ng-false-value", "true")
+                    .attr("ng-model", "formValues.isDeleted");
+                $(".completed").attr("ng-model", "formValues.completed");
+                if (vm.screen_id == "claimtype") {
+                    $(".entity_active").attr("ng-disabled", "formValues.name ? true : false");
+                }
+            }
+            $compile($(".entity_active"))($scope);
+            $compile($(".completed"))($scope);
+            // added++;
+        };
+        vm.delayaddModalActions = function() {
+            setTimeout(function() {
+                // $(this).unbind();
+                $('.modal-content a[data-group="extern"]').each(function() {
+                    if (!$(this).attr("ng-click")) {
+                        $(this).attr("ng-click", $(this).data("method"));
+                        $(this).attr("data-method", "");
+                        $(this).attr("data-compiled", Number($(this).attr("data-compiled")) + 1);
+                        $compile($(this))($scope);
+                    }
+                });
+            }, 100);
+        };
+        vm.setPageTitle = function(title) {
+            $state.params.title = title;
+        };
+        $scope.triggerChangeFields = function(name, id) {
+            $rootScope.formDataFields = $scope.formValues;
+            fields = ["OrderID", "labResultID", "deliveryNumber", "Product"];
+            company_id = $("#companylistCompany").val();
+            market_id = $("#MarketInstrumentMarketInstrument").val();
+            if (typeof $scope.triggerChangeFieldsAppSpecific == "function") {
+                $scope.triggerChangeFieldsAppSpecific(name, id);
+            }
+        };
+
+        vm.getDataTable = function(id, data, obj, idx, app, screen) {
+            $scope.dynamicTable = [];
+            if (!app) {
+                app = vm.app_id;
+            }
+            if (!screen) {
+                screen = vm.screen_id;
+            }
+            if (id) {
+                id = id.toLowerCase();
+                Factory_Master.getDataTable(app, screen, id, data, function(callback) {
+                    if (callback) {
+                        $scope.dynamicTable[id] = callback;
+                        if (obj == "labTestResults") {
+                            $scope.formValues.labTestResults = [];
+                            $scope.formValues.labTestResults = callback;
+                        } else if (obj == "deliveryProducts") {
+                            $scope.formValues.deliveryProducts[idx].qualityParameters = [];
+                            angular.merge($scope.formValues.deliveryProducts[idx].qualityParameters, callback);
+                        } else if (obj == "sealNumber") {
+                            $scope.formValues.labSealNumberInformation = [];
+                            $scope.formValues.labSealNumberInformation = callback;
+                        }
+                        $scope.selectedReconProduct = null;
+                    }
+                });
+            }
+        };
+        vm.useDisplayName = function(fieldName){
+            var displayNameList = ['invoiceStatus','ClaimType'];
+            var found = _.indexOf(displayNameList, fieldName);
+            if(found < 0) return false;
+            return true;
+        }
+        vm.getOptions = function(field, fromListsCache) {
+            //Move this somewhere nice and warm
+            var objectByString = function(obj, string) {
+                if (string.includes(".")) {
+                    return objectByString(obj[string.split(".", 1)], string.replace(string.split(".", 1) + ".", ""));
+                } else {
+                    return obj[string];
+                }
+            };
+            if (!fromListsCache) {
+                if (field == "agreementType") field = { name: "AgreementType" };
+
+                if (field) {
+                    if (!$scope.options) {
+                        $scope.options = [];
+                    }
+
+                    // setTimeout(function() {
+                    if (field.Filter && typeof $scope.formValues != "undefined") {
+                        field.Filter.forEach(function(entry) {
+                            if (entry.ValueFrom == null) return;
+                            var temp = 0;
+                            try {
+                                temp = eval("$scope.formValues." + entry.ValueFrom);
+                            } catch (error) {}
+                            entry.Value = temp;
+                        });
+                    }
+                    retFunc = false;
+                    if (field.Name == "Product") {
+                        $.each(field.Filter, function(key, val) {
+                            if (val.ColumnName == "OrderId") if (val.Value == 0) retFunc = true;
+                        });
+                    }
+                    if (retFunc) return;
+
+                    var app_id = vm.app_id;
+                    var screen_id = vm.screen_id;
+                    if ($state.params.title == "New Request" || $state.params.title == "Edit Request") {
+                        app_id = "procurement";
+                        screen_id = "request";
+
+                        if (field.Name == "BunkerablePort") {
+                            if (typeof field.filters != "undefined" && field.filters != null) {
+                                field.Filters = [
+                                    {
+                                        ColumnName: "VesselId",
+                                        Value: field.filters.name.id
+                                    },
+                                    {
+                                        ColumnName: "VesselVoyageDetailId",
+                                        Value: null
+                                    }
+                                ];
+                                delete field.filters;
+                            }
+                        }
+                        if (field.Name == "Buyer") {
+                            if (typeof field.filters != "undefined" && field.filters != null) {
+                                field.Filters = [
+                                    {
+                                        ColumnName: "VesselId",
+                                        Value: field.filters.name.id
+                                    },
+                                    {
+                                        ColumnName: "VesselVoyageDetailId",
+                                        Value: null
+                                    }
+                                ];
+                                delete field.filters;
+                            }
+                        }
+                    }
+
+                    if (!$scope.optionsCache) {
+                        $scope.optionsCache = {};
+                    }
+
+                    if (!(JSON.stringify($scope.optionsCache[field.Name]) == JSON.stringify(field))) {
+                        $scope.optionsCache[field.Name] = JSON.stringify(field);
+                        Factory_Master.get_master_list(app_id, screen_id, field, function(callback) {
+                            if (callback) {
+                                $scope.options[field.Name] = callback;
+                                if (vm.app_id == "masters" && vm.screen_id == "vessel") vm.checkSpecGroup(field);
+                                $scope.$watchGroup([$scope.formValues, $scope.options], function() {
+                                    $timeout(function() {
+                                        if (field.Type == "textUOM") {
+                                            id = "#" + field.Name;
+                                        } else {
+                                            id = "#" + field.masterSource + field.Name;
+                                        }
+                                        if ($(id).data("val")) {
+                                            $(id).val($(id).data("val"));
+                                        }
+                                    }, 50);
+                                });
+                            }
+                        });
+                    }
+                    // }, 1000)
+                }
+            } else {
+                //get values from listsCache, put in options obj for specific dropdowns
+                //get options for request status
+                if (field.Name == "etaFreezeStatus" && field.masterSource) {
+                    $scope.options["etaFreezeStatus"] = [];
+                    $scope.options["etaFreezeStatus"] = angular.copy($scope.listsCache.RequestStatus);
+                }
+                if (field.Name == "numberOfCounterpartiesToDisplay") {
+                    console.log(vm.listsCache);
+                    $scope.options["numberOfCounterpartiesToDisplay"] = [];
+                    $.each(vm.listsCache.ItemsToDisplay, function(key, val) {
+                        $scope.options["numberOfCounterpartiesToDisplay"].push(val.name);
+                    });
+                }
+            }
+        };
+
+        vm.datepickers = function(id, defToday, type, unique) {
+        	console.log("Init DATEPICKER");
+            if (jQuery().datepicker) {
+                // console.log(id)
+                if (id) {
+                    if (id.indexOf("Date") > -1) {
+                        type = "date";
+                    }
+                }
+                if (type == "date") {
+                    pickers = $(".formatted-date");
+                    dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+                    dateFormat = dateFormat
+                        .replace(/d/g, "D")
+                        .replace(/y/g, "Y")
+                        .split(" ")[0];
+                    disabledDates = [];
+                    if (unique) {
+                        $.each(pickers, function(key, value) {
+                            var dateTime = $(value).text();
+                            if (dateTime) {
+                                date = fecha.parse(dateTime, dateFormat);
+                                if (!date) {
+                                    fecha.masks.customFormat = "DD/MM/YYYY";
+                                    date = fecha.parse(dateTime, "customFormat");
+                                }
+                                var utc = date.getTime() - date.getTimezoneOffset() * 60000; // utc time
+                                date = new Date(utc);
+                                date = vm.formatDate(date, "yyyy-MM-dd");
+                                disabledDates.push(date);
+                            }
+                        });
+                    }
+                    // setTimeout(function() {
+                    // }, 10);
+                        //datepicker gets innitialized after datetimpepicker.
+                        //if you want datetime-picker, add class datetime-picker
+                        $(".date-picker")
+                            .not(".datetime-picker")
+                            .datetimepicker("remove");
+                        $(".date-picker")
+                            .not(".datetime-picker")
+                            .not(".disabled")
+                            .datetimepicker({
+                                autoclose: true,
+                                format: "yyyy-mm-ddT12:00:00Z",
+                                datesDisabled: disabledDates,
+                                todayHighlight: true,
+                                pickTime: false,
+                                minView: 2
+                            });
+                        console.log("init datetimepicker");
+                } else {
+                    $(".date-picker").datepicker("remove");
+                    $(".date-picker")
+                        .not(".disabled")
+                        .not('[data-datepicker-init="true"]')
+                        .datetimepicker({
+                            showMeridian: "true",
+                            autoclose: true,
+                            todayHighlight: true,
+                            todayBtn: false,
+                            format: "yyyy-mm-ddThh:ii:ssZ"
+                        });
+                    console.log("init datepicker");
+                }
+                setTimeout(function() {
+                    $(".datetimepicker").addClass("ejDatepicker");
+                }, 10);
+                if (defToday) {
+                    setTimeout(function() {
+                        var d = new Date();
+                        month = d.getMonth() + 1;
+                        day = d.getDate();
+                        hours = d.getHours();
+                        minutes = d.getMinutes();
+                        seconds = d.getSeconds();
+                        if (month < 10) {
+                            month = "0" + month;
+                        }
+                        if (day < 10) {
+                            day = "0" + day;
+                        }
+                        if (hours < 10) {
+                            hours = "0" + hours;
+                        }
+                        if (minutes < 10) {
+                            minutes = "0" + minutes;
+                        }
+                        if (seconds < 10) {
+                            seconds = "0" + seconds;
+                        }
+                        date = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
+                        $("#" + id)
+                            .val(date)
+                            .datetimepicker("update")
+                            .trigger("change");
+                    }, 500);
+                }
+            }
+        };
+        vm.formatDate = function(elem, dateFormat) {
+            if (elem) {
+                formattedDate = elem;
+                var date = Date.parse(elem);
+                date = new Date(date);
+                if (date) {
+                    var utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    // var utc = date.getTime();
+                    if (dateFormat.name) {
+                        dateFormat = dateFormat.name.replace(/d/g, "D").replace(/y/g, "Y");
+                    } else {
+                        dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                    }
+                    formattedDate = fecha.format(utc, dateFormat);
+                }
+                return formattedDate;
+            }
+        };
+        $scope.toUTCDate = function(date) {
+            var _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            return _utc;
+        };
+        vm.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
+            // console.log(fieldUniqueId)
+            if (elem) {
+                dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+                dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+                if (typeof fieldUniqueId == "undefined") {
+                    fieldUniqueId = "date";
+                }
+                if (fieldUniqueId == "deliveryDate" && vm.app_id == "recon") {
+                    return vm.formatDate(elem, "dd/MM/yyyy");
+                }
+                if (fieldUniqueId == "invoiceDate" && vm.app_id == "invoices") {
+                    return vm.formatDate(elem, "dd/MM/yyyy");
+                }
+                if (fieldUniqueId == "eta" || fieldUniqueId == "orderDetails.eta" || fieldUniqueId == "etb" || fieldUniqueId == "etd" || fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || fieldUniqueId == "pricingDate") {
+                    // debugger;
+                    // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
+                    utcDate = moment.utc(elem).format();
+                    formattedDate = $filter("date")(utcDate, dateFormat, 'UTC');
+                    // return moment.utc(elem).format(dateFormat);
+                } else {
+                    formattedDate = $filter("date")(elem, dateFormat);
+                }
+                return formattedDate;
+            }
+        };
+        vm.formatSimpleDate = function(date) {
+            dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            window.tenantFormatsDateFormat = dateFormat;
+            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+            if (date) {
+                return moment.utc(date).format(dateFormat);
+            }
+            return;
+        };
+        $scope.multiTags = function(id, idx, name) {
+            console.log("$scope.multiTags");
+            var elt = $(".object_tagsinput_" + id),
+                elt_plus = $(".object_tagsinput_add_" + id);
+            elt.tagsinput({
+                itemValue: "value",
+                itemText: "text"
+            });
+            $(elt).on("itemAdded", function(event) {
+                if (id == "agents") {
+                    index = $scope.formValues[id].length - 1;
+                    selectDefaultAgent(id, index);
+                }
+            });
+            $(elt).on("itemRemoved", function(event) {
+                var idToRemove = event.item.value;
+                $.each($scope.formValues[id], function(index, value) {
+                    if (id == "applications" && vm.screen_id == "sellerrating") {
+                        if (value.module.id == idToRemove) {
+                            indexRmv = index;
+                        }
+                    } else {
+                        indexRmv = null;
+                        if (typeof value == "undefined") {
+                            return;
+                        }
+                        console.log(value.id);
+                        console.log(idToRemove);
+                        if (id == "agents") {
+                            comparator = "counterpartyId";
+                            if (value[comparator] == idToRemove) {
+                                indexRmv = index;
+                                console.log($scope.formValues[id][index]);
+                                $("*").tooltip("destroy");
+                                if ($scope.formValues[id][index].id > 0) {
+                                    $scope.formValues[id][index].isDeleted = true;
+                                } else {
+                                    $scope.formValues[id].splice(index, 1);
+                                }
+                            }
+                        } else {
+                            comparator = "id";
+                            if (value[comparator] == idToRemove) {
+                                indexRmv = index;
+                                $scope.formValues[id].splice(index, 1);
+                            }
+                        }
+                    }
+                });
+                hideTheChildren();
+            });
+            elt_plus.on("click", function() {
+                if (idx >= 0) {
+                    selector = id + idx;
+                } else {
+                    selector = id;
+                }
+                if ($("#" + selector).attr("data-value") != "") {
+                    var itemToAdd = {};
+                    if (id == "agents") {
+                        $.each($scope.options.Agents, function(index, value) {
+                            if ($("#agentsVal").val() == value.id) {
+                                itemToAdd = {
+                                    counterpartyId: value.id,
+                                    counterpartyName: value.name,
+                                    id: 0,
+                                    isDefault: false
+                                };
+                            }
+                        });
+                    } else {
+                        $.each($scope.options[name], function(index, value) {
+                            selectorElement = $("#" + selector + ':not([data-value^="{{"])');
+                            if (selectorElement.attr("data-value") == value.id) {
+                                itemToAdd = {
+                                    id: value.id,
+                                    name: value.name
+                                };
+                            }
+                        });
+                    }
+                    if ($scope.formValues[id] == "" || !$scope.formValues[id]) {
+                        $scope.formValues[id] = [];
+                        if (id == "agents" && itemToAdd) {
+                            $scope.formValues[id].push(itemToAdd);
+                            elt.tagsinput("add", {
+                                value: itemToAdd.counterpartyId,
+                                text: itemToAdd.counterpartyName
+                            });
+                        } else if (id == "applications" && vm.screen_id == "sellerrating") {
+                            $scope.formValues["applications"].push({
+                                module: {
+                                    id: itemToAdd.id,
+                                    name: itemToAdd.name
+                                }
+                            });
+                            elt.tagsinput("add", {
+                                value: itemToAdd.id,
+                                text: itemToAdd.name
+                            });
+                        } else if (id == "allowedCompanies" && vm.screen_id == "contract") {
+                            if (itemToAdd.id != $scope.formValues.company.id) {
+                                $scope.formValues[id].push(itemToAdd);
+                                // $scope.formValues[id].push('asdaskdnqw');
+                                elt.tagsinput("add", {
+                                    value: itemToAdd.id,
+                                    text: itemToAdd.name
+                                });
+                            } else {
+                                toastr.error("This is main company");
+                            }
+                        }
+                    } else {
+                        var added = [];
+                        if (id == "agents") {
+                            $.each($scope.formValues.agents, function(index, value) {
+                                added.push(value.counterpartyId);
+                            });
+                            console.log(itemToAdd);
+                            if ($.inArray(itemToAdd.counterpartyId, added) == -1 && itemToAdd.id >= 0) {
+                                $scope.formValues.agents.push(itemToAdd);
+                                elt.tagsinput("add", {
+                                    value: itemToAdd.counterpartyId,
+                                    text: itemToAdd.counterpartyName
+                                });
+                            }
+                        } else if (id == "applications" && vm.screen_id == "sellerrating") {
+                            $.each($scope.formValues.applications, function(index, value) {
+                                added.push(value.module.id);
+                            });
+                            if ($.inArray(itemToAdd.id, added) == -1) {
+                                $scope.formValues["applications"].push({
+                                    module: {
+                                        id: itemToAdd.id,
+                                        name: itemToAdd.name
+                                    }
+                                });
+                                elt.tagsinput("add", {
+                                    value: itemToAdd.id,
+                                    text: itemToAdd.name
+                                });
+                            }
+                        }
+                    }
+                }
+                hideTheChildren();
+            });
+            if (idx >= 0) {
+                var values = $scope.formValues.products[idx].allowedProducts;
+            } else {
+                var values = $scope.formValues[id];
+            }
+            if (values) {
+                if (id == "agents") {
+                    $.each(values, function(index, value) {
+                        if (!value.isDeleted || value.isDeleted == false) {
+                            if (index > 2) {
+                                $(this).hide();
+                            }
+                            console.log(value);
+                            elt.tagsinput("add", {
+                                value: value.counterpartyId,
+                                text: value.counterpartyName
+                            });
+                            selectDefaultAgent(id, index);
+                        }
+                    });
+                } else {
+                    $.each(values, function(index, value) {
+                        if (index > 2) {
+                            $(this).hide();
+                        }
+                        elt.tagsinput("add", {
+                            value: value.id,
+                            text: value.name
+                        });
+                    });
+                    $scope.initMultiTags(id);
+                }
+            }
+            hideTheChildren();
+
+            function hideTheChildren() {
+                currentTags = elt.next(".bootstrap-tagsinput").children(".label");
+                currentTags.removeAttr("big-child");
+                currentTags.show();
+                currentTags.css("clear", "none");
+                currentTags
+                    .parent(".bootstrap-tagsinput")
+                    .children(".hideTagsChild")
+                    .remove();
+                $.each(currentTags, function(index, value) {
+                    if (index > 2) {
+                        $(this)
+                            .parent(".bootstrap-tagsinput")
+                            .addClass("expanded");
+                        $(this)
+                            .parents(".multi_lookup_tags")
+                            .addClass("expanded");
+                        if (index % 3 == 0) {
+                            $(this).css("clear", "both");
+                        }
+                        $(this).attr("big-child", "true");
+                    }
+                });
+                if (currentTags.length > 3 && !elt.next(".bootstrap-tagsinput").children(".hideTagsChild").length) {
+                    currentTags.parent().prepend("<span class='hideTagsChild'><i class='fa fa-ellipsis-h' aria-hidden='true'></i><span>");
+                    $(".hideTagsChild_" + id).css("float", "right");
+                } else {
+                    currentTags.parent(".bootstrap-tagsinput").removeClass("expanded");
+                    currentTags.parents(".multi_lookup_tags").removeClass("expanded");
+                }
+            }
+
+            function selectDefaultAgent(id, index, e) {
+                $(".tagsFor" + id + " .bootstrap-tagsinput .tag")
+                    .last()
+                    .append('<input class="defaulttag "  type="checkbox"  name="defaulttag[]" ng-model="formValues.agents[' + index + '].isDefault">');
+                $compile($(".defaulttag"))($scope);
+                return;
+            }
+            var childExpanded = false;
+            $("body").on("click", ".bootstrap-tagsinput .hideTagsChild", function() {
+                if (childExpanded == true) {
+                    $(this)
+                        .parent(".bootstrap-tagsinput")
+                        .children("span.tag[big-child='true']")
+                        .hide();
+                    $(this)
+                        .parent(".bootstrap-tagsinput")
+                        .removeClass("expanded");
+                    $(this)
+                        .parents(".multi_lookup_tags")
+                        .removeClass("expanded");
+                    childExpanded = false;
+                } else {
+                    $(this)
+                        .parent(".bootstrap-tagsinput")
+                        .children("span.tag[big-child='true']")
+                        .show();
+                    $(this)
+                        .parent(".bootstrap-tagsinput")
+                        .addClass("expanded");
+                    $(this)
+                        .parents(".multi_lookup_tags")
+                        .addClass("expanded");
+                    childExpanded = true;
+                }
+            });
+        };
+        $scope.initMultiTags = function(id) {
+            var elt = $(".object_tagsinput_" + id);
+            elt.tagsinput({
+                itemValue: "value",
+                itemText: "text"
+            });
+            elt.tagsinput("removeAll");
+            if (vm.screen_id == "sellerrating") {
+                var values = $scope.formValues[id];
+                values = [];
+                $.each($scope.formValues[id], function(index, value) {
+                    values.push(value.module);
+                });
+            } else {
+                var values = $scope.formValues[id];
+            }
+            $.each(values, function(index, value) {
+                elt.tagsinput("add", {
+                    value: value.id,
+                    text: value.name
+                });
+            });
+            hideTheChildren();
+
+            function hideTheChildren() {
+                currentTags = elt.next(".bootstrap-tagsinput").children(".label");
+                currentTags.removeAttr("big-child");
+                currentTags.show();
+                currentTags.css("clear", "none");
+                currentTags
+                    .parent(".bootstrap-tagsinput")
+                    .children(".hideTagsChild")
+                    .remove();
+                $.each(currentTags, function(index, value) {
+                    if (index > 2) {
+                        $(this)
+                            .parent(".bootstrap-tagsinput")
+                            .addClass("expanded");
+                        $(this)
+                            .parents(".multi_lookup_tags")
+                            .addClass("expanded");
+                        if (index % 3 == 0) {
+                            $(this).css("clear", "both");
+                        }
+                        $(this).attr("big-child", "true");
+                    }
+                });
+                if (currentTags.length > 3 && !elt.next(".bootstrap-tagsinput").children(".hideTagsChild").length) {
+                    currentTags.parent().prepend("<span class='hideTagsChild'><i class='fa fa-ellipsis-h' aria-hidden='true'></i><span>");
+                    $(".hideTagsChild_" + id).css("float", "right");
+                } else {
+                    currentTags.parent(".bootstrap-tagsinput").removeClass("expanded");
+                    currentTags.parents(".multi_lookup_tags").removeClass("expanded");
+                }
+                setTimeout(function() {
+                    $(".bootstrap-tagsinput")
+                        .children("span.tag[big-child='true']")
+                        .hide();
+                    $(".bootstrap-tagsinput").removeClass("expanded");
+                    $(".multi_lookup_tags").removeClass("expanded");
+                }, 1);
+            }
+        };
+        $scope.addTagToMulti = function(model, data) {
+            vm.plusClickedMultilookup = true;
+            alreadyAdded = false;
+            if (!$scope.formValues[model] || typeof $scope.formValues[model] == "undefined") {
+                $scope.formValues[model] = [];
+            }
+            if (model != "" && typeof $scope.formValues[model] != "undefined") {
+                $.each($scope.formValues[model], function(k, v) {
+                    if (v.id == data.id) {
+                        alreadyAdded = true;
+                    }
+                });
+            }
+            if (alreadyAdded == true) {
+                toastr.error("Field is already added!");
+            } else {
+                $scope.formValues[model].push(data);
+            }
+        };
+                
+        vm.cloneEntity = function(group, obj) {
+            if (obj) {
+                new_obj = angular.copy(obj);
+                new_obj.id = 0;
+                new_obj.isActive = true;
+                $scope.formValues[group].push(new_obj);
+            } else {
+                var index = Object.keys($scope.formValues[group]).length;
+                $scope.formValues[group][index] = new Object();
+            }
+        };
+
+        if ($state.current.name && $state.current.name != 'default.group-of-requests') {
+	        setTimeout(function() {
+	            var hideableFields = $('.fe_entity:not([data-dependent=""])');
+	            $.each(hideableFields, function() {
+	                if ($(this).parents("#accordion1").length < 1) {
+	                    $(this).hide();
+	                }
+	            });
+	            var dataDependent = [];
+	            $(hideableFields).each(function() {
+	                dataDependent.push($(this).attr("data-dependent"));
+	            });
+	            dataDependent = $.unique(dataDependent);
+	            $.each(dataDependent, function(key, value) {
+	                if ($("input[type='radio'][name*=" + value + "]")) {
+	                    selectedRadioVal = $("input[type='radio'][name*=" + value + "]:checked").val();
+	                    fieldstoShow = $('.fe_entity[data-dependent="' + value + '"][data-show*="' + selectedRadioVal + '"]');
+	                    fieldstoShow.show();
+	                }
+	            });
+	        }, 50);
+        }
+
+        $scope.checkIfTab = function() {
+            $scope.$watch("formFields", function() {
+                $timeout(function() {
+                    tab = $(".grp_unit")
+                        .children(".tab-pane")
+                        .first()
+                        .addClass("active in");
+                    // console.log(tab);
+                    $("#tabs_navigation")
+                        .insertBefore(tab)
+                        .removeClass("hidden");
+                    $("#tabs_navigation ul li")
+                        .first()
+                        .addClass("active");
+                }, 10);
+            });
+        };
+        /**
+         * Load DLC config using object
+         */
+        vm.load_dlc_config = function(structure, elements) {
+            $scope.formFields = structure;
+            $scope.dragElements = elements;
+        };
+
+        if ($listsCache["AdditionalCost"]) {
+            $scope.additionalCostsList = $listsCache["AdditionalCost"];
+        }
+        
+        $scope.refreshSelect = function() {};
+        $scope.convertValues = function(oldObj, newObj, type, parent) {
+            oldObj = eval(oldObj);
+            param = {
+                custom: type,
+                data: {
+                    from: oldObj,
+                    to: newObj
+                }
+            };
+            Factory_Master.exchangeRate(param, function(callback) {
+                // callback = '1.5';
+                if (callback) {
+                    initial_val = $("#" + parent).val();
+                    updated_val = initial_val * callback;
+                    $("#" + parent).val(updated_val);
+                }
+            });
+        };
+        $scope.isVisible = function(id) {
+            return $("#" + id).is(":visible");
+        };
+        $scope.fVal = function(id) {
+            return $scope;
+        };
+        $scope.addData = function(obj) {
+            obj = eval("$scope." + obj);
+            obj.push({
+                id: 0
+            });
+        };
+        $scope.remData = function(obj, row, idx) {
+            obj = eval("$scope." + obj);
+            index = obj.indexOf(row);
+            length = 0;
+            $.each(Object.values(obj), function(key, val) {
+                if (!val.isDeleted) {
+                    length++;
+                }
+            });
+            if (vm.screen_id == "invoice" && vm.app_id == "invoices") {
+            	if ($scope.formValues.status) {
+	                if ($scope.formValues.status.name == "Approved") {
+	                	if (obj[idx].id) {
+		                    toastr.info("You cannot delete product if invoice status is Approved");
+		                    return;
+	                	}
+	                }
+            	}
+                if (vm.entity_id) {
+                	 $scope.sweetConfirm("Are you sure you want to delete this item?", function(response){
+                	 	if (response == true) {
+							if (row.id > 0) {
+							    row.isDeleted = true;
+								$scope.save_master_changes();
+							} else {
+							    obj.splice(index, 1);
+							    $scope.$apply();
+							}
+                	 	}
+                	 });
+                } else {
+                    if (row.id > 0 || !row.id) {
+	                    row.isDeleted = true;
+	                } else {
+	                    // row.isDeleted = true;
+	                    obj.splice(index, 1);
+	                }
+                }
+                return;
+            }
+
+
+            if (length > 1) {
+                if (row.id > 0) {
+                    row.isDeleted = true;
+                } else {
+                    obj.splice(index, 1);
+                }
+            } else {
+                if (row.id > 0) {
+                    row.isDeleted = true;
+                } else {
+                    obj.splice(index, 1);
+                }
+            }
+        };
+        $scope.showRow = function(row, grid) {
+            if (angular.equals(grid.options.data, "formValues.periods")) {
+                return true;
+            } else {
+                return !row.isDeleted;
+            }
+        };
+        $scope.setDefaultValue = function(id, val) {
+            $timeout(function() {
+                $("#" + id)
+                    .val(val)
+                    .trigger("change");
+            }, 10);
+        };
+        vm.enableMultiSelect = function(id, fromLabel, toLabel) {
+            $timeout(function() {
+                $("#" + id).multiSelect({
+                    selectableHeader: "<div class='custom-header'>" + fromLabel + "</div>",
+                    selectionHeader: "<div class='custom-header'>" + toLabel + "</div>"
+                });
+                $("#" + id)
+                    .parents(".multiSelectSwitch")
+                    .find(".ms-selectable")
+                    .append('<span class="switches"><span>&gt;&gt;</span><span>&lt;&lt;</span></span>');
+            }, 100);
+        };
+
+        $scope.mapLocation = function(name, id) {
+            val = $('[name= "' + name + '"]').val();
+            Factory_Master.get_master_entity(val, "location", "masters", function(response) {
+                if (response) {
+                    newSysInst = [];
+                    i = 0;
+                    $.each($scope.formValues.productsSystemInstruments, function(key, kval) {
+                        if ((!kval.canBeDeleted && kval.id > 0) || (typeof kval.canBeDeleted === "undefined" && kval.id == 0)) {
+                            newSysInst[key] = kval;
+                            i++;
+                        }
+                    });
+                    $.each(response.productsSystemInstruments, function(key, kval1) {
+                        if (kval1.id) {
+                            kval1.id = 0;
+                            $scope.formValues.productsSystemInstruments.push(kval1);
+                            // newSysInst[i] = kval1;
+                        }
+                    });
+                    // $scope.formValues.productsSystemInstruments = [];
+                    // $scope.formValues.productsSystemInstruments = newSysInst;
+                }
+            });
+        };
+
+        $scope.$watch("formValues", function(data) {
+            $rootScope.formValues = data;
+        });
+        
+        $scope.selectedModalValue = function(element) {
+            // if (!element)return
+            if (!element) {
+                if ($rootScope.modalParams) {
+                    element = $rootScope.modalParams;
+                } else {
+                    return;
+                }
+            }
+            // console.log($rootScope)
+            id = element.clc;
+            object = element.source;
+            formvalue = element.formvalue;
+            idx = element.idx;
+            field_name = element.field_name;
+            var CLC = $("#modal_" + id + " table.ui-jqgrid-btable");
+            var rowId = CLC.jqGrid("getGridParam", "selrow");
+            var rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
+
+            $scope.selected_value = {};
+            var transaction_type = "";
+            var transactionstobeinvoiced_dtRow = "";
+            var toastr_msg = "";
+            if (element.screen == "contactlist") {
+                $scope.selected_value = rowData;
+            } else if (element.screen == "transactionstobeinvoiced") {
+                $scope.addTransactionsInInvoice(element);
+                return false;
+            } else if (element.screen == "orders") {
+                $scope.selected_value = {
+                    id: rowData.order.id,
+                    name: rowData.order.name
+                };
+            } else if (element.screen == "formulalist" && vm.app_id == "contracts") {
+                $scope.selected_value = {
+                    id: rowData.id,
+                    name: rowData.name,
+                    isContractReference: rowData.isContractReference
+                };
+            } else if (element.screen == "bunkerableport" && vm.app_id == "default") {
+                $scope.selected_value = angular.copy(rowData);
+                //id from row data is order in table, actual locationId is in rowData.locationId
+                if (!angular.equals($scope.selected_value, {})) {
+                    $scope.selected_value.id = $scope.selected_value.locationId;
+                }
+            } else if (element.screen == "destinationport" && vm.app_id == "default") {
+                $scope.selected_value = angular.copy(rowData);
+                if (!angular.equals($scope.selected_value, {})) {
+                    $scope.selected_value.id = $scope.selected_value.destinationId;
+                }
+            } else if (element.screen == "rfqrequestslist" && vm.app_id == "default") {
+                $scope.selected_value = angular.copy(rowData);
+                if (!angular.equals($scope.selected_value, {})) {
+                    $scope.selected_value.id = $scope.selected_value.requestId;
+                }
+            } else if (element.screen == "productcontractlist" && vm.app_id == "default"){
+                $scope.selected_value = angular.copy(rowData);
+                if (!angular.equals($scope.selected_value, {})) {
+                    $scope.selected_value.id = $scope.selected_value.contractProductId;
+                }
+            } else if (element.screen == "requestcounterpartytypes" && vm.app_id == "default") {
+                $scope.selected_value = angular.copy(rowData);
+            } else if(element.screen == "contractlist" && vm.app_id == "default") {
+                $scope.selected_value = angular.copy(rowData);
+            }else {
+                $.each(rowData, function(key, val) {
+                    if (key == "id" || key == "name" || key == "code" || key == "displayName") {
+                        $scope.selected_value[key] = val;
+                    }
+                });
+            }
+            if (angular.equals($scope.selected_value, {})) {
+                toastr.error("Please select one row");
+                return;
+            }
+            if (transaction_type == "delivery") {
+                element.source = "formValues.productDetails";
+                toastr_msg = "Delivery added";
+            }
+            if (transaction_type == "cost") {
+                element.source = "formValues.costDetails";
+                toastr_msg = "Cost added";
+            }
+            // Check if modal triggered from datatable
+            if (!formvalue) {
+                if (vm.app_id == "invoices" && element.name != "Physical Supplier") {
+                    check = eval("$scope." + element.source);
+                    if (Array.isArray(check)) {
+                        $scope.target_element = element.source + "." + check.length;
+                        element.source = element.source + "." + check.length;
+                    } else {
+                        $scope.target_element = element.source;
+                    }
+                } else {
+                    $scope.target_element = element.source;
+                }
+                elements = element.source.split(".");
+            } else {
+                $scope.target_element = element.source;
+                elements = formvalue.split(".");
+                elements.push(idx);
+                if (object.indexOf("[") > -1) {
+                    object = object.replace("[", ".");
+                    object = object.replace("]", "");
+                    object = object.split(".");
+                    $.each(object, function(key, val) {
+                        elements.push(val);
+                    });
+                } else {
+                    elements.push(object);
+                }
+            }
+            if (!formvalue) {
+                $scope.assignObjValue($scope, elements, $scope.selected_value);
+                if (element.screen == "rfqrequestslist") {
+                	$scope.selected_value = [];
+                	rowsData = CLC.jqGrid('getGridParam','selarrrow')
+                	$.each(rowsData,function(k,v){
+	                	$scope.selected_value.push(CLC.jqGrid.Ascensys.gridObject.rows[v - 1]);
+                	})
+                }
+                $rootScope.$broadcast("dataListModal", { val: $scope.selected_value, elem: elements });
+            } else {
+            	if ($scope.grid) {
+	                $scope.assignObjValue($scope.grid.appScope.fVal(), elements, $scope.selected_value);
+            	} else {
+	                $scope.assignObjValue($scope, elements, $scope.selected_value);
+            	}
+            }
+            if (transaction_type == "delivery" || transaction_type == "cost") {
+                toastr.success(toastr_msg);
+            }
+            $scope.prettyCloseModal();
+            $("*").tooltip("destroy");
+            $scope.triggerChangeFields(field_name, elements[1]);
+        };
+
+        $scope.assignObjValue = function(obj, keyPath, value) {
+            lastKeyIndex = keyPath.length - 1;
+            for (var i = 0; i < lastKeyIndex; ++i) {
+                key = keyPath[i];
+                next_key = keyPath[i + 1];
+                if (typeof next_key === "number") {
+                    if (!(key in obj)) obj[key] = [];
+                } else {
+                    if (!(key in obj)) obj[key] = {};
+                }
+                if (obj[key] == null) obj[key] = {};
+                obj = obj[key];
+            }
+            obj[keyPath[lastKeyIndex]] = value;
+        };
+
+        // Check default options from layout
+        $scope.checkDefaults = function(options, name, id) {
+            $scope.formValues[id] = [];
+            $.each(options, function(key, val) {
+                $scope.formValues[id].push($scope.options[name][val]);
+            });
+        };
+
+        $scope.goToFormula = function() {
+            window.open("#/masters/formula/edit/", "_blank");
+        };
+
+        $scope.stringToObject = function(string, obj) {
+            $scope[obj] = JSON.parse(string);
+        };
+
+        $scope.closeBlade = function() {
+        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !$rootScope.overrideCloseNavigation) {
+	        	$('.confirmBladeClose').removeClass('hide');
+	        	$('.confirmBladeClose').modal();
+        	} else {
+        		$scope.confirmCloseBlade();		
+        	}
+        };
+        $scope.confirmCloseBlade = function(){
+            $(".bladeEntity").removeClass("open");
+            $("body").css("overflow-y", "auto");
+            setTimeout(function() {
+                $rootScope.bladeTemplateUrl = "";
+                if($rootScope.refreshPending) {
+                	$state.reload();
+                  // window.location.reload();
+                }
+                $rootScope.$broadcast("counterpartyBladeClosed", true);
+                $rootScope.overrideCloseNavigation = false;
+            }, 500);
+        }
+        $scope.getToday = function() {
+            return new Date();
+        };
+        
+        vm.trustAsHtml = function(data) {
+            return $sce.trustAsHtml(data);
+        };
+        vm.getAdditionalCostsComponentTypes = function(callback) {
+            if (!$scope.additionalCostsComponentTypes) {
+		    	if (!$rootScope.called_getAdditionalCosts) {
+		    		$rootScope.called_getAdditionalCosts = 1;
+	                Factory_Master.getAdditionalCosts(0, function(response) {
+			    		$rootScope.called_getAdditionalCosts = false;
+	                    console.log(response);
+                        $scope.additionalCostsComponentTypes = response.data.payload;
+	                    callback($scope.additionalCostsComponentTypes);
+	                });
+		    	}
+            } else {
+                callback($scope.additionalCostsComponentTypes);
+            }
+        };
+        $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
+            var doFiltering = function(addCostCompTypes){
+                costType = null;
+                $.each(addCostCompTypes, function(k, v) {
+                    if (v.id == cost) {
+                        costType = v.costType.id;
+                    }
+                });
+                availableCosts = [];
+                if (costType == 1 || costType == 2) {
+                    $.each(vm.listsCache.CostType, function(k, v) {
+                        if (v.id == 1 || v.id == 2) {
+                            availableCosts.push(v);
+                        }
+                    });
+                }
+                if (costType == 3) {
+                    $.each(vm.listsCache.CostType, function(k, v) {
+                        if (v.id == 3) {
+                            availableCosts.push(v);
+                        }
+                    });
+                }
+                return availableCosts;
+            }
+
+            if($scope.additionalCostsComponentTypes === undefined){
+                vm.getAdditionalCostsComponentTypes(function(additionalCostsComponentTypes) {
+                    return doFiltering(additionalCostsComponentTypes);
+                });
+            }else{
+                return doFiltering($scope.additionalCostsComponentTypes);
+            }
+           
+        };
+
+        $scope.showMultiLookupWarning = function(model) {
+            setTimeout(function() {
+                if (model) {
+                    if (model.id && !vm.plusClickedMultilookup) {
+                        toastr.warning("Please click on ‘+’ button to add");
+                    }
+                }
+                vm.plusClickedMultilookup = false;
+            }, 300);
+        };
+
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                var inputs = document.querySelectorAll(".inputfile");
+                Array.prototype.forEach.call(inputs, function(input) {
+                    var label = input.nextElementSibling,
+                        labelVal = label.innerHTML;
+                    input.addEventListener("change", function(e) {
+                        $rootScope.droppedDoc = null;
+                        $scope.$apply(function() {
+                            $scope.droppedDoc = null;
+                        });
+                        var fileName = "";
+                        if (this.files && this.files.length > 1) fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length);
+                        else fileName = e.target.value.split("\\").pop();
+                        if (fileName) label.querySelector("span").innerHTML = fileName;
+                        else label.innerHTML = labelVal;
+                    });
+                    // Firefox bug fix
+                    input.addEventListener("focus", function() {
+                        input.classList.add("has-focus");
+                    });
+                    input.addEventListener("blur", function() {
+                        input.classList.remove("has-focus");
+                    });
+                });
+            }, 1500);
+            setTimeout(function() {
+                $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
+                    $(this).attr("tooltip", "");
+                    $(this).attr("data-original-title", $(v).text());
+                    $(v)
+                        .tooltip("show")
+                        .tooltip("hide");
+                });
+            }, 10);
+        });
+ 
+        $scope.getEditInstance = function() {
+            return vm.editInstance;
+        };
+
+        $scope.sweetConfirm = function(message, callback){
+        	if (!message) { return false}
+        	// confirm = confirm(message);
+    		sweetConfirmResponse = {};
+        	$(".sweetConfirmModal").modal();
+        	$(".sweetConfirmModal").removeClass("hide fade");
+        	$(".sweetConfirmModal").css("transform", "translateY(100px)");
+        	$(".sweetConfirmModal .modal-body").text(message);
+
+        	$(".sweetConfirmModal .sweetConfirmModalYes").on("click", function() {
+        		callback(true);
+        	})
+        	$(".sweetConfirmModal .sweetConfirmModalNo").on("click", function() {
+        		callback(false);
+        	})
+        }
+
+        vm.useDisplayName = function(fieldName){
+            var displayNameList = ['invoiceStatus', 'customStatus', 'ClaimType'];
+            var found = _.indexOf(displayNameList, fieldName);
+            if(found < 0) return false;
+            return true;
+        }
+
+ 
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		  var target = $(e.target).attr("href") // activated tab
+		  setTimeout(function(){
+		  	$scope.$apply();
+		  });
+		});
+
+
+	    $rootScope.$on("setInvoiceApplicableFor", function(e, data){
+	    	$scope.dtMasterSource.applyFor = data;
+	    	vm.invoiceApplicableForProducts = data;
+        })
+        
+        vm.initMask = function(timeout){
+            vm.formatted = "";
+            if(!$scope.formatDates)  $scope.formatDates = {};
+
+            //  helper functions 
+            var datePositions = {
+                day: 0,
+                month: 0,
+                year: 0
+            }
+            var charCodes = {
+                47: "/",
+                45: "-",
+                46: "."
+            }
+            function parseHour(str){
+                str = str.split(" ")[1];
+                return {
+                    hours: str.split(":")[0],
+                    minutes: str.split(":")[1]
+                }
+            }
+            function parseDate(str, separator, positions){
+                str = str.split(" ")[0];
+                return {
+                    day: str.split(separator)[positions['day']],
+                    month: str.split(separator)[positions['month']],
+                    year: str.split(separator)[positions['year']]
+                }
+            }
+
+            function findSeparator(str){
+                var idx = 0;
+                while(charCodes[str[idx].charCodeAt(0)] === undefined) idx++;
+                return str[idx];
+            }
+
+
+            function calculateDatePositions(format){
+                format = format.toLowerCase();
+                format = format.split(" ")[0]; // remove hour
+                var separator = findSeparator(format)
+                var bits = format.split(separator);
+                $.each(bits, function(key,val){
+                     if(val.indexOf("y") >= 0) datePositions['year'] = key;
+                     if(val.indexOf("m") >= 0) datePositions['month'] = key;
+                     if(val.indexOf("d") >= 0) datePositions['day'] = key;
+                })
+
+                return datePositions;
+            }
+            function normalizeFormatter(str){
+                str.replace("MMM","MM");
+                return str;
+            }
+
+            function formMomentFormat(format, dateOnly){
+                var date = format.split(" ")[0].toUpperCase();
+                if(dateOnly) return date;
+                return date + " HH:mm"; // default 24hours and minutes
+            }
+            function formMaskFormat(format, dateOnly){
+                // debugger;
+                var idx = 0;
+                var mask = "";  
+                format = format.toLowerCase();
+                if(format.indexOf('mmm') < 0){
+                    // only numbers
+                    for(idx = 0; idx < format.length; idx++){
+                        if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                            mask = mask + "0"; // allow any number
+                       }else{
+                        mask = mask + format[idx];
+                       }
+                    }
+                }else{
+                    // for 'MMM' allow letters
+                    for(idx = 0; idx < format.length; idx++){
+                        if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
+                            if(format.charCodeAt(idx) == 109){
+                                mask = mask + "A"; // allow any letter
+                            }else{
+                                mask = mask + "0"; // allow any number
+                            }
+             
+                       }else{
+                            mask = mask + format[idx];
+                       }
+                    }
+                }
+                if(dateOnly) return mask.split(" ")[0];
+                return mask;
+            }
+
+            // end helper functions
+
+            /// initialization
+            var currentFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+
+            var DATE_POSITIONS = calculateDatePositions(currentFormat);
+            var SEPARATOR = findSeparator(currentFormat);
+      
+            var momentFormat = formMomentFormat(currentFormat);
+            var momentFormatDateOnly = formMomentFormat(currentFormat, true);
+            var maskFormat = formMaskFormat(currentFormat);
+            var maskFormatDateOnly = formMaskFormat(currentFormat, true);
+
+
+            vm.DATE_OPTIONS = {
+                datePositions: DATE_POSITIONS,
+                separator: SEPARATOR,
+                momentFormat: momentFormat,
+                momentFormatDateOnly: momentFormatDateOnly,
+                maskFormat: maskFormat,
+                maskFormatDateOnly: maskFormatDateOnly
+            }
+
+            /// end variables initialization
+        
+
+            // mask options
+            var options =  {
+                translation: {
+                    //-----  date 
+                    //1. day
+                    d: {pattern: /[0-2]/}, // fist digit of day ( 0 / 2 ),
+                    e: {pattern: /[0-9]/}, // second digit of day ( 0 / 9 ),
+                    f: {pattern: /[0-1]/}, // second digit of day ( 0 / 1 ),
+                    // 2. month
+                    m: {pattern: /[0-1]/}, // first digit of month ( 0 / 1)
+                    n: { pattern: /[0-9]/}, // second digit of month ( 0 -9 )
+                    o: { pattern: /[0-2]/ },// second digit of month ( 0 -2 )
+                    // 3. year
+                    y: {pattern: /[0-9]/},
+                    // ----- hour
+                    // 4. hour
+                    h: { pattern: /[0-2]/}, // first digit of hour ( 0 - 2)
+                    j: { pattern: /[0-9]/}, // second digit of hour ( 0 - 9 )
+                    K: { pattern: /[0-4]/}, // second digit of hour ( 0 - 4)
+                    // 5. min
+                    a: { pattern: /[0-5]/}, // first digit of minute ( 0 - 5 )
+                    b: { pattern: /[0-9]/}, // second digit of minute ( 0 - 9)
+                },
+                onKeyPress: function(value, e, field, options) {
+                    // select formatter
+                    var formatUsed = "";
+                    if(field.hasClass('date-only')){
+                        formatUsed  = vm.DATE_OPTIONS.momentFormatDateOnly;
+                    }else{
+                        formatUsed  = vm.DATE_OPTIONS.momentFormat;
+                    }
+                   
+                    // process date
+                    var val = moment(value, formatUsed, true);
+
+                    // console.log(field.hasClass('date-only'))
+                    // console.log(val, val.isValid());
+                    
+                    // test date validity
+                    if(vm.invalidDate === undefined) vm.invalidDate = {};
+                    if(val.isValid()){
+                        vm.invalidDate[field[0].name] = false;
+                    }else{
+                        vm.invalidDate[field[0].name] = true;
+                    }
+                }
+            }
+            // end mask options
+
+
+            // ACTUAL MASK INITIALIZATION
+            function init(){
+                var dateTime = $('.formatted-date-input.date-time');
+                $.each(dateTime, function(key){
+                    $(dateTime[key]).mask(maskFormat, options);
+                })
+                var dateOnly = $('.formatted-date-input.date-only');
+                $.each(dateOnly, function(key){
+                    $(dateOnly[key]).mask(maskFormatDateOnly, options);
+                })
+            }
+            if(timeout){
+                setTimeout(init,2000);
+            }else{
+                init();
+            }
+   
+
+            // END ACTUAL MASK INITIALIZATION
+            
+        }
+
+        vm.initValidityForDate = function(name){
+            if(vm.invalidDate === undefined) vm.invalidDate = {};
+            vm.invalidDate[name] = false;
+        }
+
+        vm.formatDateTimeReverse = function (value, simpleDate){
+            var val = null;
+            if(simpleDate) {
+            	if (vm.DATE_OPTIONS) {
+	            	val = moment(value, vm.DATE_OPTIONS.momentFormatDateOnly, true)
+            	}
+            }
+            else val = moment(value, vm.DATE_OPTIONS.momentFormat, true)
+        
+        	if (val) {
+	            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
+        	}
+            return null;
+        }
+
+		vm.formatDateTimeForDB = function(value, simpleDate, dateFormat, event){
+			console.log(event.target);
+			if (dateFormat) {
+				if (simpleDate) {
+			        dateFormat = dateFormat
+			            .replace(/d/g, "D")
+			            .replace(/y/g, "Y")
+			            .split(" ")[0];        			
+			    	val = moment(value, dateFormat, true)
+			    	if (val) {
+						if ($(event.target).hasClass("date-only")) {
+							$(event.target).next(".date-picker").datetimepicker('setDate', new Date( val.format('YYYY-MM-DDTHH:mm:ss') ) )
+						}
+			            if(val.isValid()) return val.format('YYYY-MM-DDTHH:mm:ss');
+			    	}
+				}
+				
+			}
+		}
+
+        jQuery(document).ready(function(){
+        	$(".date-picker").on("mouseover", function(){
+        		if (!vm.DATE_OPTIONS) {
+        			return;
+        		}
+        		dp = $(this).find("input");
+        		val = $(this).prev(".formatted-date-input").val();
+
+	            var formattedDate = vm.formatDateTimeReverse(val, true);
+
+	            // also change datepicker value
+	            $(dp).datetimepicker('setDate', new Date(formattedDate));
+
+        	})
+        })
+
+        vm.setValue = function(inputDetails, direction, simpleDate, app){
+
+            var DATE_FORMAT = $scope.tenantSetting.tenantFormats.dateFormat;
+
+            var rootMap = {
+                '$scope': $scope,
+                '$rootScope': $rootScope,
+                'vm': vm
+            }
+
+            if (!vm.overrideInvalidDate) {
+                vm.overrideInvalidDate = {}
+            }
+            vm.overrideInvalidDate[inputDetails.pickerId] = true;
+
+        	$('.date-picker#' + inputDetails.pickerId).parent().parent().parent().find(".formatted-date-input").removeClass('invalid');
+            if(direction == 1){
+                // datepicker input -> date typing input
+                $timeout(function() {
+                    if(simpleDate){
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = vm.formatSimpleDate(dateValue, DATE_FORMAT, app);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    } else{
+                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
+                        var formattedDate = vm.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
+                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                    }
+                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
+                    vm.overrideInvalidDate[inputDetails.pickerId] = false;
+                },2);
+            }
+            if(direction == 2){
+                // date typing input -> datepicker input 
+                $timeout(function() { 
+                    
+                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
+                    var copy = angular.copy(date);
+                    var formattedDate = vm.formatDateTimeReverse(copy, simpleDate);
+                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
+
+                    // also change datepicker value
+                    hasInvalidDate = false
+                    if ((date && !formattedDate)) {
+	                    vm.overrideInvalidDate[inputDetails.pickerId] = true;
+	                    // toastr.error("Invalid Date");
+	                    hasInvalidDate = true
+                    }
+                    if (formattedDate) {
+	                    if (parseFloat(formattedDate.split("-")[0]) < 1753) { 
+		                    vm.overrideInvalidDate[inputDetails.pickerId] = true;
+		                    // toastr.error("Invalid Date");
+		                    hasInvalidDate = true
+	                    }
+                    }
+                    if (simpleDate) {
+                    	datePickerDateSet = new Date(moment(formattedDate).utc());
+                    } else {
+                    	datePickerDateSet = new Date(formattedDate)
+                    }
+                    if (!hasInvalidDate) {
+	                    $('.date-picker#' + inputDetails.pickerId).datetimepicker('setDate', datePickerDateSet);
+	                    $('.date-picker#' + inputDetails.pickerId + " input").trigger("change");
+                    	$('.date-picker#' + inputDetails.pickerId).parent().parent().parent().find(".formatted-date-input").removeClass('invalid');
+                    } else {
+                    	$('.date-picker#' + inputDetails.pickerId).parent().parent().parent().find(".formatted-date-input").addClass('invalid');
+	                    _.set(rootMap[inputDetails.root], inputDetails.path, null); 
+                    }
+                },2);
+            }
+        }
+/*******************************************************************************/
+/*******************************************************************************/
+
     vm.invoiceCatalog = function() {
-        console.log('##########################################');
         vm.invoiceTree = [{
             id: 1,
             title: 'Deliveries List',
@@ -191,9 +2179,9 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     // if ($scope.formValues) {
 	   //  $scope.initInvoiceScreen();
     // }
-    $scope.triggerChangeFieldsAppSpecific = function(name, id) {
+     $scope.triggerChangeFieldsAppSpecific = function(name, id) {
         dueDate = $scope.formValues.dueDate;
-        $scope.computeInvoiceTotalConversion($scope.CM.conversionRoe, $scope.CM.conversionTo)
+        $scope.computeInvoiceTotalConversion(vm.conversionRoe, vm.conversionTo)
         if (name == "DueDate") {
         	if (vm.initialDueDate) {
 	    		if (vm.initialDueDate.split("T")[0] != $scope.formValues.dueDate) {
@@ -209,11 +2197,11 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 	        }
             Factory_Master.get_working_due_date(dueDate, function(response) {
                 $scope.formValues.workingDueDate = response.data;
-                $scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(response.data, true);
+                $scope.formatDates.formValues.workingDueDate = vm.formatSimpleDate(response.data, true);
                 if (!$scope.initialHasManualPaymentDate) {
 		        	$scope.formValues.hasManualPaymentDate = false
 	                $scope.formValues.paymentDate = response.data;
-	                $scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(response.data, true);
+	                $scope.formatDates.formValues.paymentDate = vm.formatSimpleDate(response.data, true);
 	            	$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
                 }
             });
@@ -289,12 +2277,12 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 					$scope.formValues.dueDate = callback.data.dueDate;	
 					if (!$scope.initialHasManualPaymentDate) {
 						$scope.formValues.paymentDate = callback.data.paymentDate;	
-						$scope.formatDates.formValues.paymentDate = $scope.CM.formatSimpleDate(callback.data.paymentDate, true);
+						$scope.formatDates.formValues.paymentDate = vm.formatSimpleDate(callback.data.paymentDate, true);
 						$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
 					}
 					$scope.formValues.workingDueDate = callback.data.workingDueDate;	
-					$scope.formatDates.formValues.workingDueDate = $scope.CM.formatSimpleDate(callback.data.workingDueDate, true);
-					$scope.formatDates.formValues.dueDate = $scope.CM.formatSimpleDate(callback.data.dueDate, true);
+					$scope.formatDates.formValues.workingDueDate = vm.formatSimpleDate(callback.data.workingDueDate, true);
+					$scope.formatDates.formValues.dueDate = vm.formatSimpleDate(callback.data.dueDate, true);
 					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
 					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
 					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
@@ -403,8 +2391,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         });
     }
     $scope.addCostDetail = function(data) {
-        // console.log($scope.CM.getAdditionalCostsComponentTypes());
-        $scope.CM.getAdditionalCostsComponentTypes(function(additionalCostsComponentTypes) {
+        // console.log(vm.getAdditionalCostsComponentTypes());
+        vm.getAdditionalCostsComponentTypes(function(additionalCostsComponentTypes) {
             $scope.additionalCostsComponentTypes = additionalCostsComponentTypes;
             isTaxComponent = false;
             $.each(additionalCostsComponentTypes, function(k, v) {
@@ -507,13 +2495,13 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         if (!$scope.options) {
             $scope.options = [];
         }
-        // $scope.CM.listsCache['DocumentTypeEnum'];
+        // vm.listsCache['DocumentTypeEnum'];
         $($("[name='newInvoiceType']").parent().parent()[1]).hide();
         $('#newInvoiceType').append($('<option>', {
             value: "",
             text: ""
         }));
-        $.each($scope.CM.listsCache['DocumentTypeEnum'], function(k,v) {
+        $.each(vm.listsCache['DocumentTypeEnum'], function(k,v) {
             $('#newInvoiceType').append($('<option>', {
                 // value: v.name,
                 value: v.internalName,
@@ -729,49 +2717,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     	}
     });
 
-    // $scope.getTreasuryReportTotals = function(tableParams) {
-    // 	// Elements.settings.flat_invoices_app_complete_view_list.source.tableParams;
-    //     var apiJSON = {
-    //         Payload: {
-    //             Order: null,
-    //             PageFilters: {
-    //                 Filters: []
-    //             },
-    //             SortList: {
-    //                 SortList: []
-    //             },
-    //             Filters: [],
-    //             SearchText: null,
-    //             Pagination: {
-    //                 Skip: 0,
-    //                 Take: 25
-    //             }
-    //         }
-    //     };    
-		
-	// 	if (typeof($rootScope.lastGridDataDone) == 'undefined') {
-	// 		$rootScope.lastGridDataDone = 0;
-	// 	}
 
-	// 	apiJSON.Payload.PageFilters.Filters = tableParams.PageFilters
-	// 	apiJSON.Payload.Filters = tableParams.filters
-	// 	apiJSON.UIFilters = tableParams.UIFilters
-	// 	apiJSON.Payload.SearchText = tableParams.SearchText
-	// 	apiJSON.Payload.SortList.SortList = tableParams.PageFilters.sortList        
-	// 	apiJSON.Payload.Pagination.Take =tableParams.rows;
-	// 	apiJSON.Payload.Pagination.Skip =tableParams.rows * (tableParams.page - 1);	
-	// 	if ( (new Date().getTime() - $rootScope.lastGridDataDone) > 1500) {
-	// 		$rootScope.lastGridDataDone = new Date().getTime();
-	// 	    $http.post(API.BASE_URL_DATA_INVOICES + '/api/invoice/getTreasuryReportTotals', apiJSON
-	// 	    ).then(function successCallback(response) {
-	// 	    	if (response.data.isSuccess == true) {
-	// 	    		$scope.treasuryReportTotals = response.data.payload;
-	// 	    	} else {
-	// 	    		toastr.error(response.data.errorMessage);
-	// 	    	}
-	// 	    });
-	// 	}
-    // }
 
   
     $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
@@ -783,9 +2729,6 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     			window.compiledinvoiceConvertUom = [];
     		}
     		if (!(window.compiledinvoiceConvertUom[type + "-" + currentRowIndex] < 2)) {
-				// var myEl = angular.element($(".group_productDetails"));
-				// var myScope = angular.element(myEl).scope();   		
-				// $compile($(".group_productDetails"))(myScope)
     			window.compiledinvoiceConvertUom[type + "-" + currentRowIndex] += 1;
 				// myScope.$apply();
     		} else {
@@ -798,8 +2741,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         if (typeof($rootScope.additionalCostsData) == 'undefined') {
             $rootScope.additionalCostsData = $scope.getAdditionalCostsData();
         }
-        $scope.CM.type = type;
-        if ($scope.CM.type == 'product') {
+        vm.type = type;
+        if (vm.type == 'product') {
             product = formValues.productDetails[currentRowIndex];
             if (typeof(product.product) != 'undefined' && typeof(product.invoiceQuantityUom) != 'undefined' && typeof(product.invoiceRateUom) !== 'undefined') {
                 if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /*|| typeof(product.invoiceAmount) == 'undefined'*/) {
@@ -824,32 +2767,32 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             }
             // recalculatePercentAdditionalCosts(formValues);
         }
-        if ($scope.CM.type == 'cost') {
+        if (vm.type == 'cost') {
 
          
-            $scope.CM.old_cost = formValues.costDetails[currentRowIndex];
+            vm.old_cost = formValues.costDetails[currentRowIndex];
             if (formValues.costDetails[currentRowIndex].product) {
             	if (formValues.costDetails[currentRowIndex].product.id == -1) {
-		            $scope.CM.old_product = formValues.costDetails[currentRowIndex].product.id;
+		            vm.old_product = formValues.costDetails[currentRowIndex].product.id;
             	} else {
-		            $scope.CM.old_product = formValues.costDetails[currentRowIndex].product.productId;
+		            vm.old_product = formValues.costDetails[currentRowIndex].product.productId;
             	}
             }
-            $scope.CM.old_costType = formValues.costDetails[currentRowIndex].costType;
-            if ($scope.CM.old_product == -1) {
+            vm.old_costType = formValues.costDetails[currentRowIndex].costType;
+            if (vm.old_product == -1) {
                 formValues.costDetails[currentRowIndex].isAllProductsCost = true;
                 if (typeof $scope.grid.appScope.fVal().dtMasterSource.applyFor == 'undefined') {
                     $http.post(API.BASE_URL_DATA_INVOICES + '/api/invoice/getApplicableProducts', {
                         "Payload": formValues.orderDetails.order.id
                     }).then(function successCallback(response) {
-                        calculate($scope.CM.old_cost, response.data.payload[1].id, $scope.CM.old_costType)
+                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
                     });
                 } else {
                     if (!$scope.grid.appScope.fVal().dtMasterSource.applyFor[1]) return;
-                    calculate($scope.CM.old_cost, $scope.grid.appScope.fVal().dtMasterSource.applyFor[1].id, $scope.CM.old_costType)
+                    calculate(vm.old_cost, $scope.grid.appScope.fVal().dtMasterSource.applyFor[1].id, vm.old_costType)
                 }
             } else {
-                calculate($scope.CM.old_cost, $scope.CM.old_product, $scope.CM.old_costType)
+                calculate(vm.old_cost, vm.old_product, vm.old_costType)
             }
 
             allCostApplyFor = 0;
@@ -865,68 +2808,41 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
             })
 
             function calculate(cost, product, costType) {
-                $scope.CM.cost = cost;
-                $scope.CM.product = product;
-                $scope.CM.costType = costType;
+                vm.cost = cost;
+                vm.product = product;
+                vm.costType = costType;
                 // calculate extra
                 if (!formValues.costDetails[rowIndex].invoiceExtras) {
                     formValues.costDetails[rowIndex].invoiceExtras = 0
                 }
-                if ($scope.CM.cost.invoiceRateUom) {
-                    rateUom = $scope.CM.cost.invoiceRateUom.id
+                if (vm.cost.invoiceRateUom) {
+                    rateUom = vm.cost.invoiceRateUom.id
                 } else {
                     rateUom = null
                 }
-                if ($scope.CM.cost.invoiceQuantityUom) {
-                    quantityUom = $scope.CM.cost.invoiceQuantityUom.id
+                if (vm.cost.invoiceQuantityUom) {
+                    quantityUom = vm.cost.invoiceQuantityUom.id
                 } else {
                     quantityUom = null
                 }
-				if ($scope.CM.costType.name == 'Percent' || $scope.CM.costType.name == 'Flat') {
+				if (vm.costType.name == 'Percent' || vm.costType.name == 'Flat') {
                     rateUom = quantityUom;
 				}
 
 
-                if ($scope.CM.costType.name == 'Flat') {
-                    formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate;
+                if (vm.costType.name == 'Flat') {
+                    formValues.costDetails[rowIndex].invoiceAmount = vm.cost.invoiceRate;
                     formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
                     formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
                     calculateGrand(formValues);
                     return;
                 }
-                $scope.getUomConversionFactor($scope.CM.product, 1, quantityUom, rateUom, function(response) {
-                    if ($scope.CM.costType) {
-                        if ($scope.CM.costType.name == 'Unit') {
-                            formValues.costDetails[rowIndex].invoiceAmount = response * $scope.CM.cost.invoiceRate * $scope.CM.cost.invoiceQuantity;
+                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, function(response) {
+                    if (vm.costType) {
+                        if (vm.costType.name == 'Unit') {
+                            formValues.costDetails[rowIndex].invoiceAmount = response * vm.cost.invoiceRate * vm.cost.invoiceQuantity;
                         }
-                        if ($scope.CM.costType.name == 'Percent') {
-                //         	sumOfApplicableAmounts = 0
-                //         	if (formValues.costDetails[rowIndex].product.id != -1) {
-                //         		$.each(formValues.productDetails, function(pk,pv){
-                //         			if (pv.deliveryProductId == formValues.costDetails[rowIndex].product.id) {
-			             //            	sumOfApplicableAmounts += pv.invoiceAmount;
-                //         			}
-                //         		})
-                //         		$.each(formValues.costDetails, function(ck,cv){
-                //         			if (cv.costType.name != "Percent" && cv.product.id == formValues.costDetails[rowIndex].product.id) {
-			             //            	sumOfApplicableAmounts += cv.invoiceAmount;
-                //         			}
-                //         		})
-                //         	} else {
-                //         		$.each(formValues.productDetails, function(pk,pv){
-		              //           	sumOfApplicableAmounts += pv.invoiceAmount;
-                //         		})
-                //         		$.each(formValues.costDetails, function(ck,cv){
-                //         			if (cv.costType.name != "Percent") {
-			             //            	sumOfApplicableAmounts += cv.invoiceAmount;
-                //         			}
-                //         		})                        		                        		
-                //         	}
-		            		// formValues.costDetails[rowIndex].invoiceAmount = $scope.CM.cost.invoiceRate * sumOfApplicableAmounts / 100 || 0;
-                        } else {
-                        	// recalculatePercentAdditionalCosts(formValues);
-                        }
-                
+
                         formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
                         formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
                         formValues.costDetails[rowIndex].difference = parseFloat(formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(formValues.costDetails[rowIndex].estimatedTotalAmount);
@@ -934,7 +2850,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                         formValues.costDetails[rowIndex].deliveryProductId =  formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
                         console.log("-----------------------", formValues.costDetails[rowIndex].deliveryProductId);
                         // calculate grandTotal
-                        if ($scope.CM.cost) {
+                        if (vm.cost) {
                             calculateCostRecon()
                         }
                         calculateGrand(formValues);
@@ -953,12 +2869,12 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
         }
 
         function calculateCostRecon() {
-            if (!$scope.CM.cost.estimatedRate || !$scope.CM.cost.invoiceAmount ) {
+            if (!vm.cost.estimatedRate || !vm.cost.invoiceAmount ) {
                 return
             }
             // debugger
             $http.post(API.BASE_URL_DATA_RECON + '/api/recon/invoicecost', {
-                payload: $scope.CM.cost
+                payload: vm.cost
             }).then(function successCallback(response) {
                 console.log(response);
                 if (response.data == 1) {
@@ -1170,14 +3086,6 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                     }
                 }
                 $location.path('invoices/invoice/edit/');
-                // Factory_Master.finalInvoiceDuedates(payload, function(callback3) {
-                //     screenLoader.hideLoader();
-                //     if(callback3) {
-                //         $rootScope.transportData.dueDate = callback3.dueDate;
-                //         $rootScope.transportData.paymentDate = callback3.paymentDate;
-                //         $rootScope.transportData.workingDueDate = callback3.workingDueDate;
-                //     }
-                // });
             }
         });
     }
@@ -1301,8 +3209,8 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
     	if (!conversionRoe || !conversionTo /*|| !$scope.formValues.invoiceSummary*/) {
     		return false;
     	}
-    	if (typeof($scope.CM.changedFromCurrency) == 'undefined') {
-    		$scope.CM.changedFromCurrency = false;
+    	if (typeof(vm.changedFromCurrency) == 'undefined') {
+    		vm.changedFromCurrency = false;
     	}
     	payloadData = {
 		     "Amount" : $scope.formValues.invoiceSummary.invoiceAmountGrandTotal,
@@ -1310,24 +3218,24 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 		     "ROE": conversionRoe,
 		     "ToCurrencyId": conversionTo.id,
 		     "CompanyId": $scope.formValues.orderDetails.carrierCompany.id,
-		     "GetROE":  $scope.CM.changedFromCurrency
+		     "GetROE":  vm.changedFromCurrency
 		}
 	    Factory_Master.invoiceTotalConversion(payloadData, function(callback) {
 	        if (callback.status == true) {
 	        	if (callback.data.getROE) {
-		        	$scope.CM.convertedAmount = callback.data.convertedAmount;
-		        	$scope.CM.conversionRoe = callback.data.roe
+		        	vm.convertedAmount = callback.data.convertedAmount;
+		        	vm.conversionRoe = callback.data.roe
 	        	} else {
-	        		if ($scope.CM.changedFromCurrency) {
+	        		if (vm.changedFromCurrency) {
 		        		toastr.warning("There is no conversion rate available for current selection")
 	        		} else {
-			        	$scope.CM.convertedAmount = callback.data.convertedAmount;
-			        	$scope.CM.conversionRoe = callback.data.roe
+			        	vm.convertedAmount = callback.data.convertedAmount;
+			        	vm.conversionRoe = callback.data.roe
 	        		}
 	        	}
 	        }
 	    });
-    	$scope.CM.changedFromCurrency = false
+    	vm.changedFromCurrency = false
     }
 
     $scope.getProductTypeById = function(id){
@@ -1415,71 +3323,13 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
 
 
     $scope.recalcultateAdditionalCost = function(){
-  
-        // console.log("   ***   $scope.formValues   *** ", $scope.formValues );
-        // console.log("   ***   $scope.formValues.costDetails   *** ", $scope.formValues.costDetails );
 
-
-        // // loop costs and for each cost calculate conversionRate for the product
-        // // or all conversion rates if cost is for all products
-        // if($scope.formValues.costDetails){
-
-        //     $.each($scope.formValues.costDetails, function(_, cost_val){
-    
-        //         cost_val.prodConv = []; // new array
-        //         if(cost_val.isAllProductsCost){
-        //             // single product, make call for that and put at its index (same place as in orderDetails.products )in prodCond
-    
-        //             $.each($scope.formValues.orderDetails.products, function(prod_key, prod_val){
-        //                 if(prod_val.product.id == cost_val.product.id){
-    
-        //                     // make call
-        //                     var converted = setConvertedAddCost(prod_val, cost_val);
-        //                     cost_val.prodConv[prod_key] = converted;
-        //                 }
-        //             });
-    
-    
-        //         }else{
-                
-        //             // if all products, make whole array with conversion factors, all at their respective indexes
-        //             $.each($scope.formValues.orderDetails.products, function(prod_key, prod_val){
-    
-        //                 // make call
-        //                 var converted =  setConvertedAddCost(prod_val, cost_val);
-        //                 cost_val.prodConv[prod_key] = converted;
-                   
-        //             });
-        //         }
-        //     });
-        // }else{
-        //     console.log("No cost details");
-        // }
-
-
-
-        // // after all conversion factors are calculated(retrieved from be) call calculateAdditionalCostAmounts
-        // $.each($scope.formValues.costDetails, function(_, cost_val){
-
-        //     // cost_val.estimatedAmount  = "5555";
-        //     prod  = calculateAdditionalCostAmounts(cost_val, cost_val.product);
-        //     cost_val.estimatedAmount = prod.estimatedAmount;
-        //     // console.log("calculated", cost_val.estimatedAmount);
-        //     // calculateAdditionalCostAmounts(cost_val, cost_val.product);
-        // })
 
     }
        
          
     function setConvertedAddCost(product, additionalCost, i) {
 
-        // product.id, 1, uom.id, priceUom.id
-      
-        // cost.product.id
-        // cost.invoiceQuantityUom.id
-        // cost.invoiceRateCurrency.id
-
-        // data.productId, 1, prod.quantityUom.id, additionalCost.priceUom.id
    
 
         lookupModel.getConvertedUOM(product.product.id, 1, additionalCost.estimatedRateUom.id, additionalCost.deliveryQuantityUom.id).then(function (server_data) {
@@ -1592,17 +3442,6 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', 'Factory_I
                     }
                     break;
             }
-            // if (!product) {
-            //     product = ctrl.data.products[0]
-            // }
-            // additionalCost.quantityUom = parseFloat(additionalCost.confirmedQuantity) ? parseFloat(product.quantityUom) : parseFloat(product.minMaxQuantityUom);
-            // additionalCost.confirmedQuantity = parseFloat(additionalCost.confirmedQuantity) ? parseFloat(additionalCost.confirmedQuantity) : parseFloat(product.maxQuantity);
-            // additionalCost.extrasAmount = parseFloat(additionalCost.extras) / 100 * parseFloat(additionalCost.amount) || 0;
-            // additionalCost.totalAmount = parseFloat(additionalCost.amount) + parseFloat(additionalCost.extrasAmount);
-            // additionalCost.rate = parseFloat(additionalCost.totalAmount) / parseFloat(additionalCost.confirmedQuantity);
-
-
-            // return all additional cost in the end
             return additionalCost;
 
 
