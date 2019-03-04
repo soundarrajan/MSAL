@@ -3,6 +3,14 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
         require: '^ngModel',
         restrict: 'A',
         link: function(scope, elm, attrs, ngModel) {
+
+            function reset(element) {
+                scope.$apply(function() {
+                    ngModel.$setViewValue('');
+                    ngModel.$commitViewValue();
+                });
+            }
+
             var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
 
             currentFormat = currentFormat.split(' ')[0];
@@ -15,47 +23,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
 
             var maskTyping = false;
 
+            var element = null
+
             var init = new Promise(function(resolve, reject) {
                 setTimeout(function() {
                     $('#' + attrs['id']).after(dateInput).after(dateIcon);
 
-                    var element = document.getElementById(dateInputId);
-
-                    $(element).blur(function() {
-                        if (maskTyping) {
-                            if ($(element).val()) {
-                                toastr.error("Please enter the correct format");
-                                $(element).val('');
-                            }
-                        }
-                    });
-
-                    /*
-                    $(element).datepicker({
-                        format: 'dd/mm/yyyy'
-                    });
-                    */
-                    $(element).datepicker({
-                        format: 'dd/mm/yyyy',
-                    }).on('hide', function(e) {
-                        if (maskTyping) {
-                            if ($(element).val()) {
-                                toastr.error("Please enter the correct format");
-                                $(element).addClass('invalid');
-                                $(element).val(null);
-                                scope.$apply(function() {
-                                    ngModel.$setViewValue(null);
-                                    ngModel.$commitViewValue();
-                                });
-                            }
-                        } else {
-                            scope.$apply(function() {
-                                ngModel.$setViewValue(e.date);
-                                ngModel.$commitViewValue();
-                                $(element).removeClass('invalid');
-                            });
-                        }
-                    });
+                    element = document.getElementById(dateInputId);
 
                     resolve(new IMask(element, {
                         mask: Date,
@@ -103,6 +77,20 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
             });
 
             init.then(function(mask) {
+                $(element).datepicker({
+                    format: 'dd/mm/yyyy',
+                    autoclose: true,
+                    forceParse: false
+                }).on('hide', function(e) {
+                    if (maskTyping) {
+                        scope.$apply(function() {
+                            toastr.error("Please enter the correct format");
+                            $(element).addClass('invalid');
+                            reset(element);
+                        });
+                    }
+                });
+
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (v) {
                         $('#' + dateInputId).val(moment(v).format(currentFormat));
@@ -120,6 +108,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                 });
 
                 mask.on('accept', function() {
+                    mask.value;
                     maskTyping = true;
                 });
 
@@ -132,21 +121,6 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                     });
                 });
             });
-
-            /*
-            var unwatch = rootMap[updateRoot].$watch(updateModel.split('.')[0], function() {
-                if (vm.getNameSpace(rootMap[updateRoot], updateModel)) {
-
-                    if (vm.getNameSpaceValue(rootMap[updateRoot], updateModel)) {
-                        vm.setNameSpaceValue(
-                            rootMap[updateRoot], updateModel + '_date',
-                            moment(vm.getNameSpaceValue(rootMap[updateRoot], updateModel)).format(currentFormat)
-                        );
-                    }
-                    unwatch();
-                }
-            });
-            */
         }
     };
 }]);

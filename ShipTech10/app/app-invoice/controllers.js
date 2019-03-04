@@ -716,7 +716,6 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         });
                     console.log("init datepicker");
                 }
-                /*
                 setTimeout(function() {
                     $(".datetimepicker").addClass("ejDatepicker");
                 }, 10);
@@ -750,7 +749,6 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                             .trigger("change");
                     }, 500);
                 }
-                */
             }
         };
         vm.formatDate = function(elem, dateFormat) {
@@ -2131,54 +2129,54 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 
 		$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
 		$scope.initialHasManualPaymentDate = angular.copy($scope.formValues.hasManualPaymentDate);
+    });
 
-        if (Object.keys(val).length > 0) {
-        /*    
-            $timeout(function() {
-                $scope.dtMasterSource.applyFor = [];
-                if (typeof $scope.formValues.orderDetails != 'undefined') {
-                    var order_id = $scope.formValues.orderDetails.order.id;
-                    // if (typeof($rootScope.called_get_apply_for_list) == 'undefined') {
-						// $rootScope.called_get_apply_for_list = 1;
-	                    Factory_Master.get_apply_for_list(order_id, function(callback) {
-	                        if (callback.status == true) {
-	                            callback.data.forEach(function(val, key) {
-	                            	if (val.name != "All") {
-		                                itemName = key + " - " + val.name
-	                            	} else {
-		                                itemName = val.name
-	                            	}
+    $scope.$watch('formValues.orderDetails.order.id', function(val) {
+        if (!val || val == vm.last_order_id_get_apply_for_list) {return false;}
+        vm.last_order_id_get_apply_for_list = val;
+        $timeout(function() {
+            $scope.dtMasterSource.applyFor = [];
+            if (typeof $scope.formValues.orderDetails != 'undefined') {
+                var order_id = $scope.formValues.orderDetails.order.id;
+                // if (typeof($rootScope.called_get_apply_for_list) == 'undefined') {
+					// $rootScope.called_get_apply_for_list = 1;
+                    Factory_Master.get_apply_for_list(order_id, function(callback) {
+                        if (callback.status == true) {
+                            callback.data.forEach(function(val, key) {
+                            	if (val.name != "All") {
+	                                itemName = key + " - " + val.name
+                            	} else {
+	                                itemName = val.name
+                            	}
 
-	                                var element = {
-	                                    code: val.code,
-	                                    id: val.id,
-	                                    name: itemName,
-	                                    productId: val.productId,
-	                                    deliveryProductId: val.deliveryProductId,
-	                                    finalQuantityAmountUomId: val.finalQuantityAmountUomId,
-	                                    finalQuantityAmount: val.finalQuantityAmount 
-	                                };
-	                                $scope.dtMasterSource.applyFor.push(element);
-	                            });
-                                // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
-	                        } else {
-	                            // toastr.error(callback.message);
-	                        }
-					        $.each($scope.dtMasterSource.applyFor, function(key,val){
-						        $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, function (response) {
-									val.convertedFinalQuantityAmount = response
-								});
-					        })
-	                    });
-                    // }
-                    if ($scope.dtMasterSource.applyFor) {
-				        // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
-                    }
+                                var element = {
+                                    code: val.code,
+                                    id: val.id,
+                                    name: itemName,
+                                    productId: val.productId,
+                                    deliveryProductId: val.deliveryProductId,
+                                    finalQuantityAmountUomId: val.finalQuantityAmountUomId,
+                                    finalQuantityAmount: val.finalQuantityAmount 
+                                };
+                                $scope.dtMasterSource.applyFor.push(element);
+                            });
+                            // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
+                        } else {
+                            // toastr.error(callback.message);
+                        }
+				        $.each($scope.dtMasterSource.applyFor, function(key,val){
+					        $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, function (response) {
+								val.convertedFinalQuantityAmount = response
+							});
+				        })
+                    });
+                // }
+                if ($scope.dtMasterSource.applyFor) {
+			        // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
                 }
+            }
 
-            });
-        */    
-        }
+        });
     })
     // if ($scope.formValues) {
 	   //  $scope.initInvoiceScreen();

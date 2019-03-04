@@ -65,11 +65,13 @@ APP_MASTERS.controller("Controller_Master", [
                 $scope: $scope
             });
         }
+        /*
         if (vm.app_id == "invoices") {
             $controller("Controller_Invoice", {
                 $scope: $scope
             });
         }
+        */
         if (vm.app_id == "delivery") {
             $controller("Controller_Delivery", {
                 $scope: $scope
