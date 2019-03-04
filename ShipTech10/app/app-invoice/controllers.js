@@ -716,6 +716,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         });
                     console.log("init datepicker");
                 }
+                /*
                 setTimeout(function() {
                     $(".datetimepicker").addClass("ejDatepicker");
                 }, 10);
@@ -749,6 +750,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                             .trigger("change");
                     }, 500);
                 }
+                */
             }
         };
         vm.formatDate = function(elem, dateFormat) {
@@ -2131,6 +2133,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 		$scope.initialHasManualPaymentDate = angular.copy($scope.formValues.hasManualPaymentDate);
 
         if (Object.keys(val).length > 0) {
+        /*    
             $timeout(function() {
                 $scope.dtMasterSource.applyFor = [];
                 if (typeof $scope.formValues.orderDetails != 'undefined') {
@@ -2174,6 +2177,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 }
 
             });
+        */    
         }
     })
     // if ($scope.formValues) {
