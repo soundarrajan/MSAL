@@ -5201,25 +5201,56 @@ APP_MASTERS.controller("Controller_Master", [
             // $scope.general_action(type, url, method, absolute, new_tab);
         };
         vm.getAdditionalCostsComponentTypes = function(callback) {
-            if (!$scope.additionalCostsComponentTypes) {
+            if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCosts) {
 		    		$rootScope.called_getAdditionalCosts = 1;
 	                Factory_Master.getAdditionalCosts(0, function(response) {
-			    		$rootScope.called_getAdditionalCosts = false;
+			    		// $rootScope.called_getAdditionalCosts = false;
 	                    console.log(response);
-                        $scope.additionalCostsComponentTypes = response.data.payload;
-	                    callback($scope.additionalCostsComponentTypes);
+                        vm.additionalCostsComponentTypes = response.data.payload;
+	    				$scope.filterCostTypesByAdditionalCost(null);
+	                    callback(vm.additionalCostsComponentTypes);
+                        return vm.additionalCostsComponentTypes;
 	                });
 		    	}
             } else {
-                callback($scope.additionalCostsComponentTypes);
+                callback(vm.additionalCostsComponentTypes);
             }
         };
+
+
+		$scope.filterCostTypesByAdditionalCostInvoice = function(cost, rowRenderIndex) {
+            if (typeof(vm.filteredCostTypesByAdditionalCost) == 'undefined') {
+	            vm.filteredCostTypesByAdditionalCost = []
+            }
+            currentCost = cost;
+			availableCosts = [];
+            $.each(vm.listsCache.CostType, function(ack, acv){
+                
+				if (acv) {
+					if (currentCost == 1 || currentCost == 2) {
+		                if (acv.id == 1 || acv.id == 2) {
+	                        availableCosts.push(acv);
+		                }
+					}
+					if (currentCost == 3) {
+		                if (acv.id == 3) {
+	                        availableCosts.push(acv);
+		                }                    	
+					}
+				}
+            })
+            return availableCosts
+        };
+
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
-            var doFiltering = function(addCostCompTypes){
+            currentCost = cost;
+
+
+            var doFiltering = function(addCostCompTypes, cost){
                 costType = null;
                 $.each(addCostCompTypes, function(k, v) {
-                    if (v.id == cost) {
+                    if (v.id == currentCost) {
                         costType = v.costType.id;
                     }
                 });
@@ -5241,17 +5272,18 @@ APP_MASTERS.controller("Controller_Master", [
                 return availableCosts;
             }
 
-            if($scope.additionalCostsComponentTypes === undefined){
+                // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
+            if(vm.additionalCostsComponentTypes === undefined){
                 vm.getAdditionalCostsComponentTypes(function(additionalCostsComponentTypes) {
                     return doFiltering(additionalCostsComponentTypes);
                 });
             }else{
-                return doFiltering($scope.additionalCostsComponentTypes);
+                return doFiltering(vm.additionalCostsComponentTypes);
             }
            
         };
         $scope.setDefaultCostType = function(additionalCost) {
-            $.each($scope.additionalCostsComponentTypes, function(k, v) {
+            $.each(vm.additionalCostsComponentTypes, function(k, v) {
                 if (v.id == additionalCost.id) {
                     defaultCostType = v.costType;
                 }
