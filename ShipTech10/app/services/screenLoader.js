@@ -85,13 +85,11 @@ angular.module("shiptech").config([
                     	}
                         if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	window.openedScreenLoaders -= 1;
-	                    	setTimeout(function(){
-		                    	if (window.openedScreenLoaders <= 0) {
-			                    	// console.log("screenLoader CLOSE:" + routeCall);
-			                    	$('.screen-loader').fadeOut(200);
-			                    	$('clc-table-list tbody').css("opacity", 1);
-		                    	}
-	                    	},500)
+	                    	if (window.openedScreenLoaders <= 0) {
+		                    	// console.log("screenLoader CLOSE:" + routeCall);
+		                    	$('.screen-loader').hide();
+		                    	$('clc-table-list tbody').css("opacity", 1);
+	                    	}
 	                    	// console.log("response:" + window.openedScreenLoaders);
                     	}
                     	// //console.log(config);
@@ -134,12 +132,10 @@ angular.module("shiptech").config([
                     		} else {
                     			toastr.error("An error has occured");
                     		}
-	                    	setTimeout(function(){
-		                    	if (window.openedScreenLoaders <= 0) {
-			                    	$('.screen-loader').fadeOut(200);
-			                    	$('clc-table-list tbody').css("opacity", 1);
-		                    	}
-	                    	},500)
+	                    	if (window.openedScreenLoaders <= 0) {
+		                    	$('.screen-loader').hide();
+		                    	$('clc-table-list tbody').css("opacity", 1);
+	                    	}
                     	}
                     	//console.log("response:" + window.openedScreenLoaders);
                     	// //console.log(config);

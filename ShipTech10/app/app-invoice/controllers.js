@@ -2134,7 +2134,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     $scope.$watch('formValues.orderDetails.order.id', function(val) {
         if (!val || val == vm.last_order_id_get_apply_for_list) {return false;}
         vm.last_order_id_get_apply_for_list = val;
-        $timeout(function() {
+        // $timeout(function() {
             $scope.dtMasterSource.applyFor = [];
             if (typeof $scope.formValues.orderDetails != 'undefined') {
                 var order_id = $scope.formValues.orderDetails.order.id;
@@ -2176,7 +2176,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 }
             }
 
-        });
+        // });
     })
     // if ($scope.formValues) {
 	   //  $scope.initInvoiceScreen();

@@ -6648,7 +6648,7 @@ APP_API.factory("$Api_Service", [
             },
             dropdown: {
                 get: function(param, callback) {
-                    if (_debug) console.log("$APIService dropdown.get called with:", param);
+                    // if (_debug) console.log("$APIService dropdown.get called with:", param);
                     //Custom implementations
                     if (param.app == "admin" && param.screen == "configuration" && param.field.masterSource == "Screen") {
                         var apiJSON = {
@@ -7182,7 +7182,7 @@ APP_API.factory("$Api_Service", [
                     return;
                 },
                 lookup: function(param, callback) {
-                    if (_debug) console.log("$APIService dropdown.lookup called for masterSource " + param.field.masterSource + " with params:", param);
+                    // if (_debug) console.log("$APIService dropdown.lookup called for masterSource " + param.field.masterSource + " with params:", param);
                     if (typeof param.field.Filter != "undefined") {
                         if (param.app == "masters" && (param.screen == "vessel" || param.screen == "product") && param.field.masterSource == "SpecGroup") {
                             var apiJSON = {

@@ -3353,26 +3353,26 @@ APP_MASTERS.controller("Controller_Master", [
             connectWith: ".formbuilder-group"
         };
         if ($state.current.name && $state.current.name != 'default.group-of-requests') {
-	        setTimeout(function() {
-	            var hideableFields = $('.fe_entity:not([data-dependent=""])');
-	            $.each(hideableFields, function() {
-	                if ($(this).parents("#accordion1").length < 1) {
-	                    $(this).hide();
-	                }
-	            });
-	            var dataDependent = [];
-	            $(hideableFields).each(function() {
-	                dataDependent.push($(this).attr("data-dependent"));
-	            });
-	            dataDependent = $.unique(dataDependent);
-	            $.each(dataDependent, function(key, value) {
-	                if ($("input[type='radio'][name*=" + value + "]")) {
-	                    selectedRadioVal = $("input[type='radio'][name*=" + value + "]:checked").val();
-	                    fieldstoShow = $('.fe_entity[data-dependent="' + value + '"][data-show*="' + selectedRadioVal + '"]');
-	                    fieldstoShow.show();
-	                }
-	            });
-	        }, 50);
+	        // setTimeout(function() {
+	        //     var hideableFields = $('.fe_entity:not([data-dependent=""])');
+	        //     $.each(hideableFields, function() {
+	        //         if ($(this).parents("#accordion1").length < 1) {
+	        //             $(this).hide();
+	        //         }
+	        //     });
+	        //     var dataDependent = [];
+	        //     $(hideableFields).each(function() {
+	        //         dataDependent.push($(this).attr("data-dependent"));
+	        //     });
+	        //     dataDependent = $.unique(dataDependent);
+	        //     $.each(dataDependent, function(key, value) {
+	        //         if ($("input[type='radio'][name*=" + value + "]")) {
+	        //             selectedRadioVal = $("input[type='radio'][name*=" + value + "]:checked").val();
+	        //             fieldstoShow = $('.fe_entity[data-dependent="' + value + '"][data-show*="' + selectedRadioVal + '"]');
+	        //             fieldstoShow.show();
+	        //         }
+	        //     });
+	        // }, 50);
         }
 
 		vm.testFunction = function(el){
@@ -5204,6 +5204,7 @@ APP_MASTERS.controller("Controller_Master", [
             if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCosts) {
 		    		$rootScope.called_getAdditionalCosts = 1;
+		        	console.log("--- *** --- getAdditionalCostsComponentTypes")
 	                Factory_Master.getAdditionalCosts(0, function(response) {
 			    		// $rootScope.called_getAdditionalCosts = false;
 	                    console.log(response);
