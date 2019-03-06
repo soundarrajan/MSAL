@@ -67,7 +67,7 @@ angular.module("shiptech").config([
                     	}
                     	if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	// console.log("screenLoader OPEN:" + routeCall);
-	                    	// console.log("request:" + window.openedScreenLoaders);
+	                    	// console.log("***** request:" + window.openedScreenLoaders + "  url : " + routeCall);
 	                    	$('.screen-loader').fadeIn(200);
 	                    	$('clc-table-list tbody').css("transition", "0.3s");
 	                    	$('clc-table-list tbody').css("opacity", 0);
@@ -85,14 +85,19 @@ angular.module("shiptech").config([
                     	}
                         if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	window.openedScreenLoaders -= 1;
-	                    	setTimeout(function(){
 		                    	if (window.openedScreenLoaders <= 0) {
-			                    	// console.log("screenLoader CLOSE:" + routeCall);
-			                    	$('.screen-loader').fadeOut(200);
-			                    	$('clc-table-list tbody').css("opacity", 1);
+		                    		console.log("**** set timeout for loader");
+			                    	setTimeout(function(){
+			                    		// console.log("***** enter timeout for loader");
+				                    	if (window.openedScreenLoaders <= 0) {
+					                    	// console.log("screenLoader CLOSE:" + routeCall);
+					                    	$('.screen-loader').fadeOut(200);
+					                    	$('clc-table-list tbody').css("opacity", 1);
+				                    	}
+			                    	},50)
 		                    	}
-	                    	},50)
-	                    	// console.log("response:" + window.openedScreenLoaders);
+		                    	// console.log("response timeout:" + window.openedScreenLoaders);
+	                    	// console.log("***** response:" + window.openedScreenLoaders);
                     	}
                     	// //console.log(config);
                         return config;
@@ -134,14 +139,17 @@ angular.module("shiptech").config([
                     		} else {
                     			toastr.error("An error has occured");
                     		}
-	                    	setTimeout(function(){
 		                    	if (window.openedScreenLoaders <= 0) {
-			                    	$('.screen-loader').fadeOut(200);
-			                    	$('clc-table-list tbody').css("opacity", 1);
+									setTimeout(function(){
+				                    	if (window.openedScreenLoaders <= 0) {
+											$('.screen-loader').fadeOut(200);
+											$('clc-table-list tbody').css("opacity", 1);
+				                    	}
+									},50)
 		                    	}
-	                    	},50)
+		                    // 	console.log("response timeout:" + window.openedScreenLoaders);
                     	}
-                    	//console.log("response:" + window.openedScreenLoaders);
+                    	// console.log("***** response:" + window.openedScreenLoaders);
                     	// //console.log(config);
                         return false;
                     },                    
