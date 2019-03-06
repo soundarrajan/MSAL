@@ -2880,7 +2880,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 } else {
                     if (!isOnInit && columnKey != "contract") {
-                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                    	if (columnKey == "comment") {
+                    		if ($('[ng-model="cpcomment['+rowIdx+']"]').val() != CLC.jqGrid.Ascensys.gridData[rowIdx - 1].comment) {
+		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                    		}
+                    	} else {
+	                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                    	}
                     }	
                 }
             }
@@ -3129,6 +3135,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.clearContractLinkCP = function(rowId){
             setTimeout(function(){
                 if ($('[ng-model="CLC.cpCtr['+rowId+']"]').hasClass("ng-dirty")) {
+                	contractValueHasChanged = CLC.jqGrid.Ascensys.gridData[rowId - 1].contract ? CLC.jqGrid.Ascensys.gridData[rowId - 1].contract.name != vm.cpCtr[rowId] : false;
                     if (vm.cpCtr[rowId]) {
                         if (!vm.cpCtr[rowId].name) {
                             vm.cpCtr[rowId] = null;
@@ -3156,7 +3163,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                     $('#' + rowId + '.jqgrow').first().css({'background-color': '#ffffff'});
                                 })
                             }
-                            vm.selectContract(null, rowId);
+                            if (contractValueHasChanged) {
+		                        vm.selectContract(null, rowId);
+                            }
                             $scope.$apply();
                         }
                     } else {
@@ -3186,7 +3195,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                     $('#' + rowId + '.jqgrow').first().css({'background-color': '#ffffff'});
                                 })
                             }
-                            vm.selectContract(null, rowId);
+                            if (contractValueHasChanged) {
+		                        vm.selectContract(null, rowId);
+                            }
                             $scope.$apply();                        
       //                   CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
                         // vm.cpCtr[rowId] = null;
