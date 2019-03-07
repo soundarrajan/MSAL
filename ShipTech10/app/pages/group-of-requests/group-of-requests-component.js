@@ -620,21 +620,24 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
          * Adds a Request to the ctrl.selectedRequests array.
          * @param {String} - A Request object name.
          */
-        function addRequest(requestName, requestId) {
+        function addRequest(requestsList) {
             groupOfRequestsModel.getRequests().then(function (data) {
-                ctrl.autocompleteRequest = data.payload;
+                // ctrl.autocompleteRequest = data.payload;
             
-                if(alreadySaved.indexOf(requestName) != -1){
-                    return;
-                }
+                // if(alreadySaved.indexOf(requestName) != -1){
+                //     return;
+                // }
 
-                alreadySaved.push(requestName);
+                // alreadySaved.push(requestName);
 
-                var request = getRequestByName(requestName);
-                if (requestId) {
-                	var request = requestId;
-                }
-                groupOfRequestsModel.addRequestsToGroup([request.id], groupId).then(function (newRequestData) {
+                // var request = getRequestByName(requestName);
+                // if (requestId) {
+                // 	var request = requestId;
+                // }
+                
+                payloadRequestList = _.uniq(_.map(requestsList, 'requestId'))
+
+                groupOfRequestsModel.addRequestsToGroup(payloadRequestList, groupId).then(function (newRequestData) {
                     if (newRequestData.payload) {
                         newRequestAddedData = $scope.remodelSellersStructure(newRequestData.payload);
                         // newRequestAddedData = newRequestData.payload;
@@ -1469,8 +1472,8 @@ ctrl.setProductData = function(data, loc) {
          *
          * @param {object} request - request object to be added
          */
-        ctrl.selectRequest = function (request) {
-            addRequest(request.requestName, request.id);
+        ctrl.selectRequest = function (requestList) {
+            addRequest(requestList);
         };
         ctrl.getSellerProductTotalOnLocation = function (products, locations, sellerId) {
             var total = 0;
@@ -6053,9 +6056,11 @@ ctrl.setProductData = function(data, loc) {
             if (typeof a.elem != "undefined") {
                 if (typeof a.val != "undefined") {
                     if (a.elem[a.elem.length - 1] == "request") {
+                    	selectedReqeustsLists = []
                     	$.each(a.val, function(key, data){
-	                        ctrl.selectRequest(data);
+	                    	selectedReqeustsLists.push(data);
                     	})
+                        ctrl.selectRequest(selectedReqeustsLists);
                     }
                     if (a.elem[a.elem.length - 1] == "seller") {
                         ctrl.addSellerToAllLocations(a.val.id, ctrl.locations);
