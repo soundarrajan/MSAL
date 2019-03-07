@@ -4169,6 +4169,32 @@ APP_MASTERS.controller("Controller_Master", [
             obj[keyPath[lastKeyIndex]] = value;
         };
 
+		$scope.initInvoiceTypeOptions = function() {
+	        vm.getOptions({
+	            "Name": "DocumentTypeEnum",
+	            "Type": "dropdown",
+	            "masterSource": "DocumentTypeEnum"
+	        });
+	        $('#newInvoiceType').find("option").remove();
+	        if (!$scope.options) {
+	            $scope.options = [];
+	        }
+	        // vm.listsCache['DocumentTypeEnum'];
+	        $($("[name='newInvoiceType']").parent().parent()[1]).hide();
+	        $('#newInvoiceType').append($('<option>', {
+	            value: "",
+	            text: ""
+	        }));
+	        $.each(vm.listsCache['DocumentTypeEnum'], function(k,v) {
+	            $('#newInvoiceType').append($('<option>', {
+	                // value: v.name,
+	                value: v.internalName,
+	                internalName: v.internalName + "",
+	                text: v.name + ""
+	            }));
+	        });
+	    }
+
         $scope.addTransactionsInInvoice = function(element) {
             id = element.clc;
             object = element.source;
