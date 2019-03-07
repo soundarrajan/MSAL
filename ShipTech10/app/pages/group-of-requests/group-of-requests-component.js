@@ -622,20 +622,25 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
          */
         function addRequest(requestsList) {
             groupOfRequestsModel.getRequests().then(function (data) {
-                // ctrl.autocompleteRequest = data.payload;
-            
-                // if(alreadySaved.indexOf(requestName) != -1){
-                //     return;
-                // }
-
-                // alreadySaved.push(requestName);
-
-                // var request = getRequestByName(requestName);
-                // if (requestId) {
-                // 	var request = requestId;
-                // }
-                
                 payloadRequestList = _.uniq(_.map(requestsList, 'requestId'))
+                
+                if (typeof(requestsList) == "string") {
+                	requestName = requestsList;
+	                ctrl.autocompleteRequest = data.payload;
+	            
+	                if(alreadySaved.indexOf(requestName) != -1){
+	                    return;
+	                }
+
+	                alreadySaved.push(requestName);
+
+	                var request = getRequestByName(requestName);
+	                if (request.id) {
+	                	var request = request.id;
+	                }
+                	payloadRequestList = [request];
+                }
+                
 
                 groupOfRequestsModel.addRequestsToGroup(payloadRequestList, groupId).then(function (newRequestData) {
                     if (newRequestData.payload) {
