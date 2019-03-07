@@ -26,7 +26,7 @@ angular.module('shiptech').controller('HeaderController', ['$scope', '$rootScope
          sessionStorage.clear();
     }
 
+    $timeout(function () {
     	Layout.init();
-    // $timeout(function () {
-    // });
+    });
 }]);
