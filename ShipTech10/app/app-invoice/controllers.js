@@ -12,6 +12,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     } else {
         vm.screen_id = $state.params.screen_id;
     }
+    vm.listsCache = $listsCache;
     $scope.vm = this;
     $scope.newProp = "adasdsad";
     // $controller("Controller_Master as CM", {
@@ -103,7 +104,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             });
         };
         vm.checkLabelsHeight = function() {
-            $timeout(function() {
+            setTimeout(function() {
                 $.each($(".form-group label:not(.mt-checkbox)"), function(key, val) {
                     if (this.offsetHeight > 26) {
                         $(this)
@@ -1608,40 +1609,13 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         };
 
         jQuery(document).ready(function() {
-            setTimeout(function() {
-                var inputs = document.querySelectorAll(".inputfile");
-                Array.prototype.forEach.call(inputs, function(input) {
-                    var label = input.nextElementSibling,
-                        labelVal = label.innerHTML;
-                    input.addEventListener("change", function(e) {
-                        $rootScope.droppedDoc = null;
-                        $scope.$apply(function() {
-                            $scope.droppedDoc = null;
-                        });
-                        var fileName = "";
-                        if (this.files && this.files.length > 1) fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length);
-                        else fileName = e.target.value.split("\\").pop();
-                        if (fileName) label.querySelector("span").innerHTML = fileName;
-                        else label.innerHTML = labelVal;
-                    });
-                    // Firefox bug fix
-                    input.addEventListener("focus", function() {
-                        input.classList.add("has-focus");
-                    });
-                    input.addEventListener("blur", function() {
-                        input.classList.remove("has-focus");
-                    });
-                });
-            }, 1500);
-            setTimeout(function() {
-                $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
-                    $(this).attr("tooltip", "");
-                    $(this).attr("data-original-title", $(v).text());
-                    $(v)
-                        .tooltip("show")
-                        .tooltip("hide");
-                });
-            }, 10);
+            $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
+                $(this).attr("tooltip", "");
+                $(this).attr("data-original-title", $(v).text());
+                $(v)
+                    .tooltip("show")
+                    .tooltip("hide");
+            });
         });
  
         $scope.getEditInstance = function() {
@@ -2723,7 +2697,6 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 
   
     $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
-
     	currentRowIndex = rowIndex;
 
     	if ($('form[name="CM.editInstance"]').hasClass("ng-pristine") ) {

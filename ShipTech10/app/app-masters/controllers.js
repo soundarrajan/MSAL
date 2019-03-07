@@ -488,7 +488,7 @@ APP_MASTERS.controller("Controller_Master", [
             return false;
         };
         vm.checkLabelsHeight = function() {
-            $timeout(function() {
+            setTimeout(function() {
                 $.each($(".form-group label:not(.mt-checkbox)"), function(key, val) {
                     if (this.offsetHeight > 26) {
                         $(this)
@@ -5399,42 +5399,45 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
 
-        // jQuery(document).ready(function() {
-        //     setTimeout(function() {
-        //         var inputs = document.querySelectorAll(".inputfile");
-        //         Array.prototype.forEach.call(inputs, function(input) {
-        //             var label = input.nextElementSibling,
-        //                 labelVal = label.innerHTML;
-        //             input.addEventListener("change", function(e) {
-        //                 $rootScope.droppedDoc = null;
-        //                 $scope.$apply(function() {
-        //                     $scope.droppedDoc = null;
-        //                 });
-        //                 var fileName = "";
-        //                 if (this.files && this.files.length > 1) fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length);
-        //                 else fileName = e.target.value.split("\\").pop();
-        //                 if (fileName) label.querySelector("span").innerHTML = fileName;
-        //                 else label.innerHTML = labelVal;
-        //             });
-        //             // Firefox bug fix
-        //             input.addEventListener("focus", function() {
-        //                 input.classList.add("has-focus");
-        //             });
-        //             input.addEventListener("blur", function() {
-        //                 input.classList.remove("has-focus");
-        //             });
-        //         });
-        //     }, 1500);
-        //     setTimeout(function() {
-        //         $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
-        //             $(this).attr("tooltip", "");
-        //             $(this).attr("data-original-title", $(v).text());
-        //             $(v)
-        //                 .tooltip("show")
-        //                 .tooltip("hide");
-        //         });
-        //     }, 10);
-        // });
+        jQuery(document).ready(function() {
+        	if ($state.current.name.indexOf('.documents') != -1 && typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
+        		$rootScope.setDocumentTimeout = true;
+	            setTimeout(function() {
+	                var inputs = document.querySelectorAll(".inputfile");
+	                Array.prototype.forEach.call(inputs, function(input) {
+	                    var label = input.nextElementSibling,
+	                        labelVal = label.innerHTML;
+	                    input.addEventListener("change", function(e) {
+	                        $rootScope.droppedDoc = null;
+	                        $scope.$apply(function() {
+	                            $scope.droppedDoc = null;
+	                        });
+	                        var fileName = "";
+	                        if (this.files && this.files.length > 1) fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length);
+	                        else fileName = e.target.value.split("\\").pop();
+	                        if (fileName) label.querySelector("span").innerHTML = fileName;
+	                        else label.innerHTML = labelVal;
+	                    });
+	                    // Firefox bug fix
+	                    input.addEventListener("focus", function() {
+	                        input.classList.add("has-focus");
+	                    });
+	                    input.addEventListener("blur", function() {
+	                        input.classList.remove("has-focus");
+	                    });
+	                });
+	            }, 1500);
+        	}
+            // setTimeout(function() {
+                $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
+                    $(this).attr("tooltip", "");
+                    $(this).attr("data-original-title", $(v).text());
+                    $(v)
+                        .tooltip("show")
+                        .tooltip("hide");
+                });
+            // }, 10);
+        });
         //  $("select.visibleSectionsFilter").on("change", function() {
         //      select = this
         //      setTimeout(function(){

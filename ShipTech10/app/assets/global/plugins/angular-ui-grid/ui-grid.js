@@ -5993,7 +5993,7 @@ angular.module('ui.grid')
      */
     if (containerHeadersToRecalc.length > 0) {
       // Putting in a timeout as it's not calculating after the grid element is rendered and filled out
-      $timeout(function() {
+      // $timeout(function() {
         // var oldHeaderHeight = self.grid.headerHeight;
         // self.grid.headerHeight = gridUtil.outerElementHeight(self.header);
 
@@ -6084,7 +6084,7 @@ angular.module('ui.grid')
         }
 
         p.resolve();
-      });
+      // });
     }
     else {
       // Timeout still needs to be here to trigger digest after styles have been rebuilt
