@@ -5355,11 +5355,11 @@ APP_MASTERS.controller("Controller_Master", [
         };
         vm.getAdditionalCostsComponentTypes = function(callback) {
             if (!vm.additionalCostsComponentTypes) {
-		    	if (!$rootScope.called_getAdditionalCosts) {
-		    		$rootScope.called_getAdditionalCosts = 1;
+		    	if (!$rootScope.called_getAdditionalCostsCM) {
+		    		$rootScope.called_getAdditionalCostsCM = 1;
 		        	console.log("--- *** --- getAdditionalCostsComponentTypes")
 	                Factory_Master.getAdditionalCosts(0, function(response) {
-			    		// $rootScope.called_getAdditionalCosts = false;
+			    		// $rootScope.called_getAdditionalCostsCM = false;
 	                    console.log(response);
                         vm.additionalCostsComponentTypes = response.data.payload;
 	    				$scope.filterCostTypesByAdditionalCost(null);
