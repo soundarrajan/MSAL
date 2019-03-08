@@ -1,8 +1,8 @@
 angular.module('shiptech.pages')
     .controller('ViewRfqController', ['$scope','$rootScope', '$element', '$attrs', '$timeout', '$state', '$stateParams', 'uiApiModel', 'groupOfRequestsModel', 'tenantService',
-        'screenActionsModel', 'STATE', 'EMAIL_TRANSACTION', 'SCREEN_ACTIONS', 'screenLoader', '$listsCache',
+        'screenActionsModel', 'STATE', 'EMAIL_TRANSACTION', 'SCREEN_ACTIONS', 'screenLoader', '$listsCache', 'statusColors',
         function($scope, $rootScope, $element, $attrs, $timeout, $state, $stateParams, uiApiModel, groupOfRequestsModel, tenantService,
-            screenActionsModel, STATE, EMAIL_TRANSACTION, SCREEN_ACTIONS, screenLoader, $listsCache) {
+            screenActionsModel, STATE, EMAIL_TRANSACTION, SCREEN_ACTIONS, screenLoader, $listsCache, statusColors) {
 
             var ctrl = this;
 
@@ -141,6 +141,10 @@ angular.module('shiptech.pages')
                     });
                 });
             }
+
+			ctrl.getColorCodeFromLabels = function(statusObj) {
+				return statusColors.getColorCodeFromLabels(statusObj,  ctrl.lists.ScheduleDashboardLabelConfiguration);
+			}
 
             ctrl.setQuoteByCurrency = function (currencyId, currencyName) {
                 ctrl.quoteByCurrencyId = currencyId;
