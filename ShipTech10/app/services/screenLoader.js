@@ -137,7 +137,11 @@ angular.module("shiptech").config([
                     			}                      			
                     			toastr.error(errorText);
                     		} else {
-                    			toastr.error("An error has occured");
+                    			if (config.status == "401") {
+                    				toastr.error('You do not have authorization to perform this action.');
+                    			} else {
+	                    			toastr.error("An error has occured");
+                    			}
                     		}
 		                    	if (window.openedScreenLoaders <= 0) {
 									setTimeout(function(){
