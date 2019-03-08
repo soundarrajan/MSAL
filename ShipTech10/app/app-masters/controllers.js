@@ -162,9 +162,9 @@ APP_MASTERS.controller("Controller_Master", [
             $scope.isCreate = false;
         }
 
-      // vm.getColorCodeFromLabels = function(statusObj) {
-      //   return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
-      // }
+      vm.getColorCodeFromLabels = function(statusObj) {
+        return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
+      }
 
         vm.getStatusColor = function(statusName, cell) {
             var statusColor = statusColors.getDefaultColor();
