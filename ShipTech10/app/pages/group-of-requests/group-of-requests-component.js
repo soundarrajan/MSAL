@@ -656,6 +656,16 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         $timeout(function(){
 	                        ctrl.prefferedSellerCheckbox = false;
                         },50)
+
+	                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
+	                    	if (data.payload.internalComments) {
+	                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
+	                    	}
+	                    	if (data.payload.externalComments) {
+	                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
+	                    	}
+	                    });
+
                     }
                 }).finally(function(){
                 });
