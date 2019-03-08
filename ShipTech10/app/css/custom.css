@@ -3959,10 +3959,14 @@ Uncomment to see border around all .col-*
 
             .input-group-addon.disabled {
                 pointer-events: none;
+                color: #BEC7D6;
+                background-color: #E6EAEC;
             }
 
             .input-group-btn[disabled="disabled"] {
                 pointer-events: none;
+                color: #BEC7D6;
+                background-color: #E6EAEC;
             }
 
             table.dataTable tbody th, table.dataTable tbody td {
@@ -4224,11 +4228,12 @@ a[disabled]{
 
 /*.input-group-addon[disabled~="disabled"] i.fa{*/
 .input-group-addon:not(.disabled):not([disabled]) i{
-	color: #395b92;
+	/*color: #395b92;*/
+	color: #325187;
 }
 
 .input-group-btn:not(.disabled):not([disabled]) i{
-	color: #395b92;
+	color: #325187;
 }
 
 .input-group-btn:not(.disabled):not([disabled]):hover, .input-group-btn:not(.disabled):not([disabled]):hover .btn, .input-group-addon:not(.disabled):not([disabled]):hover {

@@ -2337,7 +2337,7 @@ output {
     background-color: transparent; }
   .form-control[disabled], .form-control[readonly],
   fieldset[disabled] .form-control {
-    background-color: #eef1f5;
+    background-color: #e6eaec;
     opacity: 1; }
   .form-control[disabled],
   fieldset[disabled] .form-control {
