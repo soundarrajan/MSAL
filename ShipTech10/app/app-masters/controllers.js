@@ -7149,6 +7149,302 @@ APP_MASTERS.controller("Controller_Master", [
 		    }        
         // INVOICE ACTIONS IN HEADER
 
+		$scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
+	    	currentRowIndex = rowIndex;
+
+	    	if ($('form[name="CM.editInstance"]').hasClass("ng-pristine") ) {
+	    		if (!window.compiledinvoiceConvertUom) {
+	    			window.compiledinvoiceConvertUom = [];
+	    		}
+	    		if (!(window.compiledinvoiceConvertUom[type + "-" + currentRowIndex] < 2)) {
+	    			window.compiledinvoiceConvertUom[type + "-" + currentRowIndex] += 1;
+					// myScope.$apply();
+	    		} else {
+	    			return;
+	    		}
+	    		// $scope.$apply();	
+	    		// return;
+	    	}
+
+	        if (typeof($rootScope.additionalCostsData) == 'undefined') {
+	            $rootScope.additionalCostsData = $scope.getAdditionalCostsData();
+	        }
+	        vm.type = type;
+	        if (vm.type == 'product') {
+	            product = formValues.productDetails[currentRowIndex];
+	            if (typeof(product.product) != 'undefined' && typeof(product.invoiceQuantityUom) != 'undefined' && typeof(product.invoiceRateUom) !== 'undefined') {
+	                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /*|| typeof(product.invoiceAmount) == 'undefined'*/) {
+	                    return;
+	                };
+	                console.log("called getUomConversionFactor with params:" , product.product.id,product.invoiceRateUom.id,product.invoiceQuantityUom.id)
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
+	                	conversionFactor = response 
+	                	if (formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
+		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
+	                	} else {
+		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].invoiceQuantity * (formValues.productDetails[currentRowIndex].invoiceRate / conversionFactor);
+	                	}
+	                    // formValues.productDetails[currentRowIndex].invoiceComputedAmount = formValues.productDetails[currentRowIndex].invoiceAmount;
+	                    formValues.productDetails[currentRowIndex].difference = parseFloat(formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(formValues.productDetails[currentRowIndex].estimatedAmount);
+	             
+	                    calculateGrand(formValues);
+	                    if (formValues.productDetails[currentRowIndex]) {
+	                        calculateProductRecon(formValues.productDetails[currentRowIndex])
+	                    }
+	                });
+	            }
+	            // recalculatePercentAdditionalCosts(formValues);
+	        }
+	        if (vm.type == 'cost') {
+
+	         
+	            vm.old_cost = formValues.costDetails[currentRowIndex];
+	            if (formValues.costDetails[currentRowIndex].product) {
+	            	if (formValues.costDetails[currentRowIndex].product.id == -1) {
+			            vm.old_product = formValues.costDetails[currentRowIndex].product.id;
+	            	} else {
+			            vm.old_product = formValues.costDetails[currentRowIndex].product.productId;
+	            	}
+	            }
+	            vm.old_costType = formValues.costDetails[currentRowIndex].costType;
+	            if (vm.old_product == -1) {
+	                formValues.costDetails[currentRowIndex].isAllProductsCost = true;
+	                if (typeof $scope.grid.appScope.fVal().dtMasterSource.applyFor == 'undefined') {
+	                    $http.post(API.BASE_URL_DATA_INVOICES + '/api/invoice/getApplicableProducts', {
+	                        "Payload": formValues.orderDetails.order.id
+	                    }).then(function successCallback(response) {
+	                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
+	                    });
+	                } else {
+	                    if (!$scope.grid.appScope.fVal().dtMasterSource.applyFor[1]) return;
+	                    calculate(vm.old_cost, $scope.grid.appScope.fVal().dtMasterSource.applyFor[1].id, vm.old_costType)
+	                }
+	            } else {
+	                calculate(vm.old_cost, vm.old_product, vm.old_costType)
+	            }
+
+	            allCostApplyFor = 0;
+	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, function(k,v){
+	            	if (v.name != "All") {
+			            allCostApplyFor += v.convertedFinalQuantityAmount;
+	            	}
+	            })
+	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, function(k,v){
+	            	if (v.name == "All") {
+	            		v.convertedFinalQuantityAmount = allCostApplyFor;
+	            	}
+	            })
+
+	            function calculate(cost, product, costType) {
+	                vm.cost = cost;
+	                vm.product = product;
+	                vm.costType = costType;
+	                // calculate extra
+	                if (!formValues.costDetails[rowIndex].invoiceExtras) {
+	                    formValues.costDetails[rowIndex].invoiceExtras = 0
+	                }
+	                if (vm.cost.invoiceRateUom) {
+	                    rateUom = vm.cost.invoiceRateUom.id
+	                } else {
+	                    rateUom = null
+	                }
+	                if (vm.cost.invoiceQuantityUom) {
+	                    quantityUom = vm.cost.invoiceQuantityUom.id
+	                } else {
+	                    quantityUom = null
+	                }
+					if (vm.costType.name == 'Percent' || vm.costType.name == 'Flat') {
+	                    rateUom = quantityUom;
+					}
+
+
+	                if (vm.costType.name == 'Flat') {
+	                    formValues.costDetails[rowIndex].invoiceAmount = vm.cost.invoiceRate;
+	                    formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
+	                    formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
+	                    calculateGrand(formValues);
+	                    return;
+	                }
+	                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, function(response) {
+	                    if (vm.costType) {
+	                        if (vm.costType.name == 'Unit') {
+	                            formValues.costDetails[rowIndex].invoiceAmount = response * vm.cost.invoiceRate * vm.cost.invoiceQuantity;
+	                        }
+
+	                        formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
+	                        formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
+	                        formValues.costDetails[rowIndex].difference = parseFloat(formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(formValues.costDetails[rowIndex].estimatedTotalAmount);
+
+	                        formValues.costDetails[rowIndex].deliveryProductId =  formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
+	                        console.log("-----------------------", formValues.costDetails[rowIndex].deliveryProductId);
+	                        // calculate grandTotal
+	                        if (vm.cost) {
+	                            calculateCostRecon()
+	                        }
+	                        calculateGrand(formValues);
+	                    }
+	                });
+	            }
+				
+	        }
+
+	        function recalculatePercentAdditionalCosts(formValues){
+	    		$.each(formValues.costDetails, function(ck,cv){
+	    			if (cv.costType.name == "Percent") {
+		    			$scope.invoiceConvertUom("cost", ck, formValues, true);	
+	    			}
+	    		})
+	        }
+
+	        function calculateCostRecon() {
+	            if (!vm.cost.estimatedRate || !vm.cost.invoiceAmount ) {
+	                return
+	            }
+	            // debugger
+	            $http.post(API.BASE_URL_DATA_RECON + '/api/recon/invoicecost', {
+	                payload: vm.cost
+	            }).then(function successCallback(response) {
+	                console.log(response);
+	                if (response.data == 1) {
+	                    obj = {
+	                        id: 1,
+	                        name: "Matched"
+	                    }
+	                } else {
+	                    obj = {
+	                        id: 2,
+	                        name: "Unmatched"
+	                    }
+	                }
+	                formValues.costDetails[rowIndex].reconStatus = obj;
+	            });
+	        }
+
+	        function calculateProductRecon() {
+	        	if (!product.invoiceRateCurrency.id || !product.estimatedRateCurrency.id) {
+	        		return false;
+	        	}
+	            $http.post(API.BASE_URL_DATA_RECON + '/api/recon/invoiceproduct', {
+	                payload: product
+	            }).then(function successCallback(response) {
+	                console.log(response);
+	                if (response.data == 1) {
+	                    obj = {
+	                        id: 1,
+	                        name: "Matched"
+	                    }
+	                } else {
+	                    obj = {
+	                        id: 2,
+	                        name: "Unmatched"
+	                    }
+	                }
+	                product.reconStatus = obj;
+	            });
+	        }
+
+	        function calculateGrand(formValues) {
+	            if (!formValues.invoiceSummary) {
+	                formValues.invoiceSummary = {}
+	            }
+	            formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
+	            formValues.invoiceSummary.invoiceAmountGrandTotal = $scope.calculateInvoiceGrandTotal(formValues);
+	            formValues.invoiceSummary.estimatedAmountGrandTotal = $scope.calculateInvoiceEstimatedGrandTotal(formValues);
+	            formValues.invoiceSummary.totalDifference = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.estimatedAmountGrandTotal;
+	            formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions - formValues.invoiceSummary.provisionalInvoiceAmount;
+	            $scope.changedFVal = formValues;
+	        }
+	    }
+
+		$scope.getAdditionalCostsData = function() {
+		        data = 0;
+		        Factory_Master.getAdditionalCosts(data, function(response) {
+		            if (response) {
+		                if (response.status == true) {
+		                    // debugger;
+		                    $rootScope.additionalCostsData = response.data.payload;
+		                  
+		                    return response.data.payload;
+		                } else {
+		                    toastr.error("An error has occured!")
+		                }
+		            }
+		        })
+		    }
+		$scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
+	    	productId = ProductId;
+	    	quantity = Quantity;
+	    	fromUomId = FromUomId;
+	    	toUomId = ToUomId;
+	        data = {
+	            "Payload": {
+	                "ProductId": productId,
+	                "Quantity": quantity,
+	                "FromUomId": fromUomId,
+	                "ToUomId": toUomId
+	            }
+	        }
+	        if (!productId || !toUomId || !fromUomId  ) {
+	        	return;
+	        }
+	        if ( toUomId == fromUomId ) {
+	            callback(1);
+	            return;
+	        }
+	        Factory_Master.getUomConversionFactor(data, function(response) {
+	            if (response) {
+	                if (response.status == true) {
+	                    callback(response.data.payload);
+	                } else {
+	                    toastr.error("An error has occured!")
+	                }
+	            }
+	        })
+	    }
+
+	    $scope.calculateprovisionalInvoiceAmount = function(formValues) {
+	        grandTotal = 0;
+	        $.each(formValues.relatedInvoices, function(k, v) {
+	            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined' && v.invoiceType.name == 'ProvisionalInvoice') {
+	                grandTotal += v.invoiceAmount;
+	            }
+	        })
+	        return grandTotal;
+	    }
+
+
+		$scope.calculateInvoiceGrandTotal = function(formValues) {
+		        grandTotal = 0;
+		        $.each(formValues.productDetails, function(k, v) {
+		            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined') {
+		                grandTotal += v.invoiceAmount;
+		            }
+		        })
+		        $.each(formValues.costDetails, function(k, v) {
+		            if (!v.isDeleted) {
+		                if (typeof(v.invoiceTotalAmount) != 'undefined') {
+		                    grandTotal += v.invoiceTotalAmount;
+		                }
+		            }
+		        })
+		        return grandTotal;
+		    }
+		$scope.calculateInvoiceEstimatedGrandTotal = function(formValues) {
+	        grandTotal = 0;
+	        $.each(formValues.productDetails, function(k, v) {
+	            if (!v.isDeleted && typeof(v.estimatedAmount) != 'undefined') {
+	                grandTotal += v.estimatedAmount;
+	            }
+	        })
+	        $.each(formValues.costDetails, function(k, v) {
+	            if (!v.isDeleted) {
+	                if (typeof(v.estimatedAmount) != 'undefined') {
+	                    grandTotal += v.estimatedAmount;
+	                }
+	            }
+	        })
+	        return grandTotal;
+	    }
 
 
     }
