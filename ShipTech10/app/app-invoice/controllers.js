@@ -2032,6 +2032,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 
 
 
+	vm.getColorCodeFromLabels = function(statusObj) {
+		return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
+	}
+
     $scope.initInvoiceScreen = function() {
 
         if(!$scope.formValues.paymentDate) {

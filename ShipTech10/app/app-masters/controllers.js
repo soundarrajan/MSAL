@@ -7041,6 +7041,106 @@ APP_MASTERS.controller("Controller_Master", [
 
 
 
+        // INVOICE ACTIONS IN HEADER
+		    $scope.cancel_invoice = function() {
+		        Factory_Master.cancel_invoice(vm.entity_id, function(callback) {
+		            if (callback.status == true) {
+		                $scope.loaded = true;
+		                toastr.success(callback.message);
+		                $state.reload();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }
+		    // Submit Invoice for Review
+		    $scope.submit_invoice_review = function() {
+		 
+		        screenLoader.showLoader();
+		        Factory_Master.submit_invoice_review(vm.entity_id, function(callback) {
+		            if (callback.status == true) {
+		                $scope.loaded = true;
+		                toastr.success(callback.message);
+		                screenLoader.hideLoader();
+		                $state.reload();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }
+		    // Accept Invoice
+		    $scope.accept_invoice = function() {
+		        vm.fields = angular.toJson($scope.formValues);
+		        Factory_Master.accept_invoice(vm.entity_id, function(callback) {
+		            $scope.loaded = true;
+		            if (callback.status == true) {
+		                toastr.success(callback.message);
+		                $state.reload();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }
+		    // Submit Invoice for Approve
+		    $scope.submit_invoice_approve = function() {
+		        vm.fields = angular.toJson($scope.formValues);
+		        screenLoader.showLoader();
+		        Factory_Master.submit_invoice_approve(vm.entity_id, function(callback) {
+		            screenLoader.showLoader();
+		            if (callback.status == true) {
+		                $scope.loaded = true;
+		                toastr.success(callback.message);
+		                $state.reload();
+		                screenLoader.hideLoader();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }
+		    // Approve Invoice
+		    $scope.approve_invoice = function() {
+		        vm.fields = angular.toJson($scope.formValues);
+		        screenLoader.showLoader();
+		        Factory_Master.approve_invoice(vm.entity_id, function(callback) {
+		            if (callback.status == true) {
+		                $scope.loaded = true;
+		                toastr.success(callback.message);
+		                $state.reload();
+		                screenLoader.hideLoader();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }
+		    // Revert Invoice
+		    $scope.revert_invoice = function() {
+		        vm.fields = angular.toJson($scope.formValues);
+		        Factory_Master.revert_invoice(vm.entity_id, function(callback) {
+		            if (callback.status == true) {
+		                $scope.loaded = true;
+		                toastr.success(callback.message);
+		                $state.reload();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }      
+		    // Reject Invoice
+		    $scope.reject_invoice = function() {
+		        vm.fields = angular.toJson($scope.formValues);
+		        Factory_Master.reject_invoice(vm.entity_id, function(callback) {
+		            if (callback.status == true) {
+		                $scope.loaded = true;
+		                toastr.success(callback.message);
+		                $state.reload();
+		            } else {
+		                toastr.error(callback.message);
+		            }
+		        });
+		    }        
+        // INVOICE ACTIONS IN HEADER
+
+
 
     }
 ]);
