@@ -268,7 +268,18 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         return false;
                     }
                     if ($state.params.screen_id != "claims") {
-                        if ($filter('filter')($scope.filterFromData.productDetails, {isDeleted: false}).length == 0 && $filter('filter')($scope.filterFromData.costDetails, {isDeleted: false}).length == 0) {
+                    	availableCostOrProductCount = 0;
+                    	$.each($scope.filterFromData.productDetails, function(k,v){
+                    		if (!v.isDeleted) {
+		                    	availableCostOrProductCount++;
+                    		}
+                    	})
+                    	$.each($scope.filterFromData.costDetails, function(k,v){
+                    		if (!v.isDeleted) {
+		                    	availableCostOrProductCount++;
+                    		}
+                    	})                    	
+                        if (availableCostOrProductCount == 0) {
                             toastr.error("Please add at least one product or one cost");
                             $scope.submitedAction = false;
                             return false;
@@ -1552,6 +1563,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 		    		$rootScope.called_getAdditionalCosts = 1;
 	                Factory_Master.getAdditionalCosts(0, function(response) {
 			    		$rootScope.called_getAdditionalCosts = false;
+	                    $rootScope.additionalCostsComponentTypes = response.data.payload;
 	                    console.log(response);
                         $scope.additionalCostsComponentTypes = response.data.payload;
 	                    callback($scope.additionalCostsComponentTypes);
@@ -1561,6 +1573,39 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 callback($scope.additionalCostsComponentTypes);
             }
         };
+
+		$scope.filterCostTypesByAdditionalCostInvoice = function(cost, rowRenderIndex) {
+            if (typeof(vm.filteredCostTypesByAdditionalCost) == 'undefined') {
+	            vm.filteredCostTypesByAdditionalCost = []
+            }
+
+            currentCost = cost;
+            if (!$rootScope.additionalCostsComponentTypes) {return}
+            $.each($rootScope.additionalCostsComponentTypes, function(k, v) {
+                if (v.id == currentCost) {
+                    costType = v.costType.id;
+                }
+            });
+            
+			availableCosts = [];
+            $.each(vm.listsCache.CostType, function(ack, acv){
+                
+				if (acv) {
+					if (costType == 1 || costType == 2) {
+		                if (acv.id == 1 || acv.id == 2) {
+	                        availableCosts.push(acv);
+		                }
+					}
+					if (costType == 3) {
+		                if (acv.id == 3) {
+	                        availableCosts.push(acv);
+		                }                    	
+					}
+				}
+            })
+            return availableCosts
+        };
+
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
             var doFiltering = function(addCostCompTypes){
                 costType = null;
@@ -2037,7 +2082,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 	}
 
     $scope.initInvoiceScreen = function() {
-
+		vm.getAdditionalCostsComponentTypes();
         if(!$scope.formValues.paymentDate) {
             $scope.formvalues.paymentDate = $scope.formValues.workingDueDate;
         }
@@ -2908,6 +2953,8 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     }
 
 
+
+
     $scope.getComponentTypeOfCost = function(costId) {
         $.each($rootScope.additionalCostsData, function(k, v) {
             if (costId == v.id) {
@@ -3124,6 +3171,141 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         })
         return grandTotal;
     }
+
+	$scope.addTransactionsInInvoice = function(element) {
+        id = element.clc;
+        object = element.source;
+        formvalue = element.formvalue;
+        idx = element.idx;
+        field_name = element.field_name;
+        var CLC = $("#modal_" + id + " table.ui-jqgrid-btable");
+        var rowId = CLC.jqGrid("getGridParam", "selrow");
+        var rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
+        selectedRows = [];
+        $.each(CLC.jqGrid.Ascensys.selectedProductIds, function(k1, v1) {
+            $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k2, v2) {
+                if (v1 == v2.deliveryProductId) {
+                    selectedRows.push(v2);
+                }
+            });
+        });
+        orderAdditionalCostId = [];
+        $.each(CLC.jqGrid.Ascensys.selectedOrderAdditionalCostId, function(k1, v1) {
+            $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k2, v2) {
+                if (v1 == v2.orderAdditionalCostId) {
+                    orderAdditionalCostId.push(v2);
+                }
+            });
+        });
+
+        mixedRows = selectedRows.concat(orderAdditionalCostId);
+
+        $.each(mixedRows, function(k, rowData) {
+            if (rowData.costName) {
+                transaction_type = "cost";
+            	rowData.product.productId = rowData.product.id
+                // rowData.product.id = rowData.deliveryProductId;
+                transactionstobeinvoiced_dtRow = {
+                    product: rowData.product,
+                    costName: rowData.costName,
+                    costType: rowData.costType,
+                    orderAdditionalCostId: rowData.orderAdditionalCostId,
+                    deliveryProductId: rowData.deliveryProductId,
+                    deliveryQuantity: rowData.deliveryQuantity,
+                    deliveryQuantityUom: rowData.deliveryQuantityUom,
+                    estimatedAmount: rowData.estimatedAmount,
+                    estimatedAmountCurrency: rowData.estimatedAmountCurrency,
+                    estimatedRate: rowData.estimatedRate,
+                    estimatedRateCurrency: rowData.estimatedRateCurrency,
+                    invoiceRateCurrency: $scope.formValues.invoiceRateCurrency,
+                    estimatedRateUom: rowData.estimatedRateUom,
+                    sulphurContent: rowData.sulphurContent,
+                    pricingDate: rowData.pricingDate,
+                    isDeleted: rowData.isDeleted,
+                    invoiceAmount: rowData.invoiceAmount,
+                    invoiceTotalAmount: rowData.invoiceTotalAmount,
+                    estimatedTotalAmount: rowData.estimatedTotalAmount,
+                    //new on 30.08.2018
+                    invoiceQuantityUom: rowData.invoiceQuantityUom,
+                    invoiceRateUom: rowData.invoiceRateUom,
+                    estimatedExtras: rowData.estimatedExtra,
+                    // invoiceExtras: rowData.estimatedExtra,
+                    estimatedExtrasAmount: rowData.estimatedExtraAmount
+                };
+            }
+            if (rowData.delivery) {
+            	rowData.product.productId = angular.copy(rowData.product.id)
+                transactionstobeinvoiced_dtRow = {
+                    amountInInvoice: "",
+                    deliveryNo: rowData.delivery.name,
+                    agreementType: rowData.agreementType,
+                    deliveryProductId: rowData.deliveryProductId,
+                    invoicedProduct: rowData.invoicedProduct,
+                    orderedProduct: rowData.orderedProduct,
+                    confirmedQuantity: rowData.confirmedQuantity,
+                    confirmedQuantityUom: rowData.confirmedQuantityUom,
+                    deliveryQuantity: rowData.deliveryQuantity,
+                    deliveryQuantityUom: rowData.confirmedQuantityUom,
+                    deliveryMFM: rowData.deliveryMFM,
+                    sulphurContent: rowData.sulphurContent,
+                    difference: "",
+                    estimatedAmount: rowData.estimatedAmount,
+                    estimatedAmountCurrency: rowData.estimatedRateCurrency,
+                    estimatedRate: rowData.estimatedRate,
+                    estimatedRateCurrency: rowData.estimatedRateCurrency,
+                    invoiceAmount: "",
+                    invoiceAmountCurrency: {},
+                    invoiceQuantity: "",
+                    invoiceQuantityUom: {},
+                    invoiceRate: "",
+                    invoiceRateUom: rowData.invoiceRateUom,
+                    invoiceRateCurrency: $scope.formValues.invoiceRateCurrency,
+                    isDeleted: rowData.isDeleted,
+                    pricingDate: rowData.pricingDate,
+                    product: rowData.product,
+                    physicalSupplierCounterparty: rowData.physicalSupplierCounterparty,
+                    estimatedRateUom: rowData.estimatedRateUom,
+                    pricingScheduleName: rowData.pricingScheduleName,
+                    reconStatus: {
+                        id: 1,
+                        name: "Matched",
+                        code: "",
+                        collectionName: null
+                    }
+                };
+            }
+            if (rowData.costName) {
+                alreadyExists = false;
+                $.each($scope.formValues.costDetails, function(idx, val) {
+                    if (rowData.orderAdditionalCostId == val.orderAdditionalCostId) {
+                        alreadyExists = true;
+                    }
+                });
+                if (!alreadyExists) {
+                    $scope.formValues.costDetails.push(transactionstobeinvoiced_dtRow);
+                } else {
+                    toastr.error("Selected cost already exists");
+                }
+            }
+            if (rowData.delivery) {
+                alreadyExists = false;
+                $.each($scope.formValues.productDetails, function(idx, val) {
+                    if (rowData.deliveryProductId == val.deliveryProductId && !val.isDeleted) {
+                        alreadyExists = true;
+                    }
+                });
+                if (!alreadyExists) {
+                	transactionstobeinvoiced_dtRow.invoiceQuantity = transactionstobeinvoiced_dtRow.deliveryQuantity;
+                	transactionstobeinvoiced_dtRow.invoiceQuantityUom = transactionstobeinvoiced_dtRow.deliveryQuantityUom;
+                    $scope.formValues.productDetails.push(transactionstobeinvoiced_dtRow);
+                } else {
+                    toastr.error("Selected product already exists");
+                }
+            }
+        });
+        $scope.modalInstance.close();
+    };
+
     $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
     	productId = ProductId;
     	quantity = Quantity;

@@ -1,5 +1,5 @@
-<div class="w100" ng-controller="Controller_Master as CM">
-	<span ng-if="!additionalCostsComponentTypes" ng-init="CM.getAdditionalCostsComponentTypes()"></span>
+<div class="w100" ng-controller="Controller_Invoice as CM">
+	<span ng-if="!additionalCostsComponentTypes"></span>
     <span ng-init="chg = false"></span>
 	<span ng-if="CM.chg == true" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
 
