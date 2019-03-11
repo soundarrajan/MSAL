@@ -5362,6 +5362,7 @@ APP_MASTERS.controller("Controller_Master", [
 			    		// $rootScope.called_getAdditionalCostsCM = false;
 	                    console.log(response);
                         vm.additionalCostsComponentTypes = response.data.payload;
+                        $rootScope.additionalCostsComponentTypes = response.data.payload;
 	    				$scope.filterCostTypesByAdditionalCost(null);
 	                    callback(vm.additionalCostsComponentTypes);
                         return vm.additionalCostsComponentTypes;
@@ -5377,17 +5378,25 @@ APP_MASTERS.controller("Controller_Master", [
             if (typeof(vm.filteredCostTypesByAdditionalCost) == 'undefined') {
 	            vm.filteredCostTypesByAdditionalCost = []
             }
+
             currentCost = cost;
+            if (!$rootScope.additionalCostsComponentTypes) {return}
+            $.each($rootScope.additionalCostsComponentTypes, function(k, v) {
+                if (v.id == currentCost) {
+                    costType = v.costType.id;
+                }
+            });
+            
 			availableCosts = [];
             $.each(vm.listsCache.CostType, function(ack, acv){
                 
 				if (acv) {
-					if (currentCost == 1 || currentCost == 2) {
+					if (costType == 1 || costType == 2) {
 		                if (acv.id == 1 || acv.id == 2) {
 	                        availableCosts.push(acv);
 		                }
 					}
-					if (currentCost == 3) {
+					if (costType == 3) {
 		                if (acv.id == 3) {
 	                        availableCosts.push(acv);
 		                }                    	
