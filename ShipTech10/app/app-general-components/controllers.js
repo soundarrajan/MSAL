@@ -2466,6 +2466,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             // });          
 
         };
+
+
         vm.calculateSubtotal = function(data) {
             // console.log(data);
             // console.log(vm.changedfields);
