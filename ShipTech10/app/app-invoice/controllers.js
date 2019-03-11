@@ -3373,6 +3373,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     	if (typeof(vm.changedFromCurrency) == 'undefined') {
     		vm.changedFromCurrency = false;
     	}
+
+		if (!$scope.formValues.invoiceSummary) {
+			return;
+		}
+
     	payloadData = {
 		     "Amount" : $scope.formValues.invoiceSummary.invoiceAmountGrandTotal,
 		     "CurrencyId": $scope.formValues.invoiceRateCurrency.id,

@@ -7422,6 +7422,10 @@ APP_MASTERS.controller("Controller_Master", [
 	        }
 
 	        function calculateProductRecon() {
+				if (!product.invoiceRateCurrency || product.estimatedRateCurrency) {
+	        		return false;
+				}
+
 	        	if (!product.invoiceRateCurrency.id || !product.estimatedRateCurrency.id) {
 	        		return false;
 	        	}
