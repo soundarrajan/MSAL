@@ -2204,6 +2204,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     // if ($scope.formValues) {
 	   //  $scope.initInvoiceScreen();
     // }
+     $scope.triggerChangeFields = function(name, id) {
+	    $scope.triggerChangeFieldsAppSpecific(name, id);
+     }
      $scope.triggerChangeFieldsAppSpecific = function(name, id) {
         dueDate = $scope.formValues.dueDate;
         $scope.computeInvoiceTotalConversion(vm.conversionRoe, vm.conversionTo)
