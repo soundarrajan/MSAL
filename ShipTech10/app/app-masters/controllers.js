@@ -734,6 +734,8 @@ APP_MASTERS.controller("Controller_Master", [
             screenLoader.showLoader();
             $("form").addClass("submitted");
             vm.invalid_form = false;
+			$rootScope.called_getAdditionalCostsCM = false
+
             // console.log(vm.editInstance);
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
                 if($scope.formValues && $scope.formValues.counterpartyTypes) {

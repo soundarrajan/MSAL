@@ -3527,8 +3527,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     	rowId = inputDetails.pickerId.split("_")[1];
                     	mapping = inputDetails.pickerId.split("_")[2];
                     	vm.changedfields[rowId][mapping] = formattedDate;
-                    	if (parseFloat(formattedDate.split("-")[0]) > 1753) {
-	                    	vm.checkChange(rowId);
+                    	if (formattedDate) {
+	                    	if (parseFloat(formattedDate.split("-")[0]) > 1753) {
+		                    	vm.checkChange(rowId);
+	                    	}
                     	}
                     }
 

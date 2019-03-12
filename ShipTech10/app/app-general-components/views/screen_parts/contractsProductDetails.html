@@ -360,7 +360,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row" ng-show="formValues.products[index_0].fixedPrice == true">
+                                        <div class="form-group row" style="display: block;" ng-show="formValues.products[index_0].fixedPrice == true">
                                             <span ng-if="!formValues.products[$index].currency.id" ng-init="formValues.products[$index].currency = tenantCurrency"></span>
                                             <label for="price_{{ $index }}" class="price_label">
                                                 {{ CM.app_id + '.Price' | translate }}
@@ -379,7 +379,7 @@
                                             </div>
                                             <div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError( field.Label, CM.editInstance[field.Name])"></div>
                                         </div>
-                                        <div class="form-group row" ng-show="formValues.products[index_0].isFormula == true" ng-init='CM.getOptions({"Name": "Formula", "Type": "simpleLookup", "masterSource": "Formula"})'>
+                                        <div class="form-group row" style="display: block;" ng-show="formValues.products[index_0].isFormula == true" ng-init='CM.getOptions({"Name": "Formula", "Type": "simpleLookup", "masterSource": "Formula"})'>
                                             <span ng-if="isEdit && formValues.products[$index].formula != null" ng-init="formValues.products[$index].formula.isContractReference = formValues.products[$index].isPriceFormulaContractReference"></span>
                                             <span ng-if="formValues.products[index_0].fixedPrice" ng-init="formValues.products[$index].formula = null"></span>
                                             <label for="priceFormula{{ $index }}" class="priceFormula" class="simpleLookupLabel">
@@ -426,7 +426,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row" ng-show="formValues.products[index_0].mtmFixed == true">
+                                        <div class="form-group row" style="display: block;" ng-show="formValues.products[index_0].mtmFixed == true">
                                             <label for="price_{{ $index }}" class="price_label">
                                                 {{ CM.app_id + '.MTM_PRICE' | translate }}
                                             </label>
@@ -444,7 +444,7 @@
                                             </div>
                                             <div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError( field.Label, CM.editInstance[field.Name])"></div>
                                         </div>
-                                        <div class="form-group row" ng-show="formValues.products[index_0].isMtmFormula == true">
+                                        <div class="form-group row" style="display: block;" ng-show="formValues.products[index_0].isMtmFormula == true">
                                             <span ng-if="isEdit && formValues.products[$index].mtmFormula.isContractReference != null" ng-init="formValues.products[$index].mtmFormula.isContractReference = formValues.products[$index].isPriceFormulaContractReference"></span>
                                             <span ng-if="formValues.products[index_0].mtmFixed" ng-init="formValues.products[$index].mtmFormula = null"></span>
                                             <label for="MTMpriceFormula{{ $index }}" class="MTMpriceFormula" class="simpleLookupLabel">
@@ -455,7 +455,7 @@
                                                     {{ CM.app_id + '.MTM_PRICE_FORMULA' | translate }}
                                                 </a>
                                             </label>
-                                            <div class="input-group form_input">
+                                            <div class="input-group form_input" >
                                                 <input uib-typeahead="item as item.name for item in contractFormulaList | filter:{name:$viewValue}" class="form-control"
                                                     typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                     typeahead-wait-ms="100" id="MTMpriceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_MTM_Price_Formula"
