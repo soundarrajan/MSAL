@@ -734,8 +734,6 @@ APP_MASTERS.controller("Controller_Master", [
             screenLoader.showLoader();
             $("form").addClass("submitted");
             vm.invalid_form = false;
-			$rootScope.called_getAdditionalCostsCM = false
-
             // console.log(vm.editInstance);
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
                 if($scope.formValues && $scope.formValues.counterpartyTypes) {
@@ -5358,6 +5356,10 @@ APP_MASTERS.controller("Controller_Master", [
 
 
 
+		$rootScope.$on('$stateChangeStart', 
+		function(event, toState, toParams, fromState, fromParams){ 
+		    $rootScope.called_getAdditionalCostsCM  = false
+		})
         vm.getAdditionalCostsComponentTypes = function(callback) {
             if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCostsCM) {
