@@ -131,9 +131,20 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
             }
 
+            $.each(loopList, function(k, v) {
+                if (v.condition.conditionNrOfValues && !v.value) {
+                    toastr.error("Please enter a value");
+                    return;
+                }
+            });
+
+            /*
             invalidDateFilters =  _.filter(loopList, function(obj) {
 	            if (obj.column.columnType == 'Date' || obj.column.columnType == 'DateOnly') {
 	            	hasInvalidDate = false;
+                    if (!obj.value) {
+                        return hasInvalidDate;
+                    }
 	            	if (obj.value.length < obj.condition.conditionNrOfValues) {
 		            	hasInvalidDate = true;
 	            	}
@@ -153,6 +164,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 				toastr.error("Please enter correct date format")
 				return;
 			}
+            */
 
           // console.log('applied filters');
             console.log('data: ', data);
