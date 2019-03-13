@@ -305,6 +305,14 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 								                }
 				                            });
 				                        }
+				                    }				                   
+				                     if (vm.app_id == "masters" && vm.screen_id == "additionalcost") {
+					                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
+					                        $scope.formValues.componentType = null;
+					                        $('.edit_form_fields_ComponentType_masters').hide();
+					                    } else {
+					                        $('.edit_form_fields_ComponentType_masters').show();
+					                    }
 				                    }
 
                                     $rootScope.$broadcast("formValues", $scope.formValues);
@@ -526,6 +534,18 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                             delete $scope.formFields["ClaimDetails"];
                         }
                     }
+                    if (vm.app_id == "masters" && vm.screen_id == "additionalcost") {
+	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
+	                        $scope.formValues.componentType = null;
+	                        setTimeout(function(){
+		                        $('.edit_form_fields_ComponentType_masters').hide();
+	                        })
+	                    } else {
+	                    	setTimeout(function(){
+		                        $('.edit_form_fields_ComponentType_masters').show();
+	                    	})
+	                    }
+                    }                    
                     if ($scope.isCreate && vm.screen_id == "counterparty" && vm.app_id == "masters") {
                         $scope.formValues.status = { id: 1 };
                     }
