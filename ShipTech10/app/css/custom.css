@@ -4423,7 +4423,13 @@ table#new_order_products td {
     display: none !important;
 }
 
+.bootstrap-datetimepicker-widget {
+	background: none;
+	box-shadow: none;
+    padding: 0 !important;	
+}
 .bootstrap-datetimepicker-widget > * {
 	background: #fff;
+    box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
     /*box-shadow: 5px 5px rgba(102, 102, 102, 0.1);	*/
 }
