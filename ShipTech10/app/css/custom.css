@@ -4385,7 +4385,10 @@ table#new_order_products td {
 	padding: 0px !important;
 }
 
-
+.ui-grid-viewport .form-control {
+	width: 100%;
+	max-width: 100%;
+}
 
 @media (min-width:1404px) {
     #negotiation-table-fixed-container {
