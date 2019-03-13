@@ -136,7 +136,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                                 ctrl.defaultMaxQtyFromConfirmed('init');
 
                             });
-                            initializeDateInputs();
                         });
                     });
                     lookupModel.getSellerAutocompleteList([IDS.BARGE_COUNTERPARTY_ID]).then(function (data) {
@@ -877,55 +876,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             return result;
         };
 
-        function initializeDateInputs(type) {
-
-            var date = $(".form_meridian_date");
-            //date format
-
-            dateFormat = ctrl.tenantSettings.tenantFormats.dateFormat.name;
-            // dateFormat = dateFormat
-            //                 .replace('MMM','MM')
-            //                 .replace(/D/g,"d")
-            //                 .replace(/Y/g,"y")
-            //                 .split(" ")[0];
-            dateFormat = dateFormat
-                .toLowerCase()
-                .replace('mmm', 'M')
-                .split(" ")[0]
-            date.datepicker({
-                format: dateFormat,
-                todayBtn: false,
-                autoclose: true,
-                todayHighlight: true
-            });
-
-            var dateTime = $(".form_meridian_datetime");
-            dateTime
-                .datetimepicker({
-                    format: tenantService.getDateFormatForPicker(),
-                    isRTL: App.isRTL(),
-                    showMeridian: true,
-                    autoclose: true,
-                    todayHighlight: true,
-                    pickerPosition: App.isRTL() ? "bottom-right" : "bottom-left",
-                    todayBtn: false
-                })
-                .on("changeDate", function (ev) {
-                    $timeout(function () {
-                        $(ev.target)
-                            .find("input")
-                            .val(tenantService.formatDate(ev.date));
-                    });
-                })
-                .on("hide", function (ev) {
-                    $timeout(function () {
-                        $(ev.target)
-                            .find("input")
-                            .val(tenantService.formatDate(ev.date));
-                    });
-                });
-            // }
-        }
         /**
          * Performs certain actions when the users changes the payment company:
          *   - changes the default currency for the entire view, IF ctrl.fixedCurrency is false
@@ -1006,7 +956,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.selectVessel = function (vesselId) {
             var data;
             lookupModel.get(LOOKUP_TYPE.VESSEL, vesselId).then(function (server_data) {
-            	ctrl.initPickers('date');
                 data = server_data.payload;
                 ctrl.setDefaultValues("vessel", "lab", data.defaultLab);
                 if (ctrl.data.vessel === null) {
@@ -2210,11 +2159,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRM, ctrl.data);
             }
         };
-        ctrl.initPickers = function (date) {
-            setTimeout(function () {
-                initializeDateInputs(date)
-            }, 500);
-        };
+
         ctrl.showSpecGroupModal = false;
         ctrl.confirmOrder = function (checkSpecGroup) {
           
@@ -2851,129 +2796,27 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.sumThose = function(idx,number) {
         	return parseFloat(idx) + parseFloat(number);
         }
-        jQuery(document).ready(function($){
-        	setTimeout(function(){
-	        	ctrl.initPickers('date');
-	        	$scope.$apply();
-        	})
+        jQuery(document).ready(function ($) {
+            setTimeout(function () {
+                $scope.$apply();
+            })
         })
-
-
-        ctrl.initMask = function(timeout){
-
-            var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptions();
         
-            // mask options
-            var options =  {
-                onKeyPress: function(value, e, field, options) {
-                    // select formatter
-                    var formatUsed = "";
-                    if(field.hasClass('date-only')){
-                        formatUsed  = DATE_OPTIONS.momentFormatDateOnly;
-                    }else{
-                        formatUsed  = DATE_OPTIONS.momentFormat;
-                    }
-                    // process date
-                    var val = moment(value, formatUsed, true);
-                    // test date validity
-                    if(ctrl.invalidDate === undefined) ctrl.invalidDate = {};
-                    if(val.isValid()){
-                        ctrl.invalidDate[field[0].name] = false;
-                    }else{
-                        ctrl.invalidDate[field[0].name] = true;
-                    }
-                }
-            }
-            // end mask options
-    
-            // ACTUAL MASK INITIALIZATION
-            function init(){
-                var dateTime = $('.formatted-date-input.date-time');
-                $.each(dateTime, function(key){
-                    $(dateTime[key]).mask(DATE_OPTIONS.maskFormat, options);
-                })
-                var dateOnly = $('.formatted-date-input.date-only');
-                $.each(dateOnly, function(key){
-                    $(dateOnly[key]).mask(DATE_OPTIONS.maskFormatDateOnly, options);
-                })
-            }
-            if(timeout){
-                setTimeout(init,2000);
-            }else{
-                init();
-            }
-            // END ACTUAL MASK INITIALIZATION
-        }
-        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
-            
-            /** See @param inputDetails
-            /**     @param direction
-            /**     @param simpleDate
-            /**     @param app
-             *   explained in controller_master
-             */
+        
+            ctrl.inputChangeProcessing = function(inputName){
 
-
-            var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
-    
-            var rootMap = {
-                '$scope': $scope,
-                '$rootScope': $rootScope,
-                '$ctrl': ctrl
-            }
-    
-            if(direction == 1){
-                // datepicker input -> date typing input
-                $timeout(function() {
-                    if(simpleDate){
-                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
-                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-                    } else{
-                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
-                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
+                $timeout(function(){
+                    switch(inputName){
+                        case 'eta':
+                            ctrl.data.deliveryDate = ctrl.data.eta; 
+                            ctrl.isRecentETA ? ctrl.data.recentEta = ctrl.data.eta : '';
+                            break;
+                        case 'recentEta': 
+                            ctrl.data.deliveryDate = ctrl.data.recentEta;
+                            break;
                     }
-                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
-                });
+                },1);   
             }
-            if(direction == 2){
-                // date typing input -> datepicker input 
-                $timeout(function() { 
-                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
-                    var copy = angular.copy(date);
-                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
-                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
-    
-                    // also change datepicker value
-                    // when using st-date-format for datepicker, date-only uses datepicker and date-time uses datetimepicker
-                    if(simpleDate){
-                        $('.formatted-date-button#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
-                    }else{
-                        $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-                    }
-                });
-            }
-        }
-
-        ctrl.inputChangeProcessing = function(inputName){
-
-            $timeout(function(){
-                switch(inputName){
-                    case 'eta':
-                        ctrl.data.deliveryDate = ctrl.data.eta; 
-                        ctrl.formatDates.data.deliveryDate = ctrl.formatDates.data.eta;
-                        ctrl.isRecentETA ? ctrl.data.recentEta = ctrl.data.eta : '';
-                        ctrl.isRecentETA ? ctrl.formatDates.data.recentEta = ctrl.formatDates.data.eta : ''
-                        break;
-                    case 'recentEta': 
-                        ctrl.data.deliveryDate = ctrl.data.recentEta;
-                        ctrl.formatDates.data.deliveryDate = ctrl.formatDates.data.recentEta;
-                        break;
-                    
-                }
-            },1);
-        }
 
     }
 ]);

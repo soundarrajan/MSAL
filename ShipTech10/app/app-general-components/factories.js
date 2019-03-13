@@ -435,26 +435,6 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
 
     /// END FACTORY INITIALIZATION
 
-
-    doMaskInitialization = function(timeout){
-        function init(){
-            var dateTime = $('.formatted-date-input.date-time');
-            $.each(dateTime, function(key){
-                $(dateTime[key]).mask(maskFormat, options);
-            })
-            var dateOnly = $('.formatted-date-input.date-only');
-            $.each(dateOnly, function(key){
-                $(dateOnly[key]).mask(maskFormatDateOnly, options);
-            })
-        }
-        if(timeout){
-            setTimeout(init,2000);
-        }else{
-            init();
-        }
-    }
-
-
     formatDateTime = function(elem, dateFormat, fieldUniqueId) {
         // console.log(fieldUniqueId)
         if (elem) {
@@ -488,22 +468,6 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         }
     };
 
-    formatDateTimeReverse = function (value, simpleDate, noTimezone){
-        var val = null;
-        if(simpleDate) val = moment(value, DATE_OPTIONS.momentFormatDateOnly, true)
-        else val = moment(value, DATE_OPTIONS.momentFormat, true)
-    
-        if(val.isValid()) {
-            if(noTimezone){
-                return moment.utc(val).local().format('YYYY-MM-DDTHH:mm:ss')
-            }else{
-                return val.format('YYYY-MM-DDTHH:mm:ss');
-            }
-        }
-            
-        return null;
-    }
-
     formatSimpleDate = function(date) {
         dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
         window.tenantFormatsDateFormat = dateFormat;
@@ -513,11 +477,6 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         }
         return;
     };
-
-    getDateOptions = function() {
-        return DATE_OPTIONS;
-    }
-
 
     doFilterDatesInitialization = function(){
         filterFormat = window.tenantFormatsDateFormat;
@@ -540,22 +499,8 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         }
     }
 
-    getDateOptionsForFilters = function(){
-        if(!filterDatesInitialized){
-            doFilterDatesInitialization();
-            if(filterFormat) filterDatesInitialized = true;
-        }
-        if(filterFormat)  return FILTER_DATE_OPTIONS;
-        return DATE_OPTIONS;
-    }
-
-
     return {
         formatDateTime: formatDateTime,
         formatSimpleDate: formatSimpleDate,
-        formatDateTimeReverse: formatDateTimeReverse,
-        doMaskInitialization: doMaskInitialization,
-        getDateOptions: getDateOptions,
-        getDateOptionsForFilters: getDateOptionsForFilters
     }
 }]);

@@ -256,82 +256,30 @@
                         </div> -->
             <div class="pull-right">
                 <form class="form-inline">
-                    <div class="form-group" ng-init="$ctrl.initMask(); $ctrl.datepickers();">
+                    <div class="form-group">
                         <b>
                             Quote By
                         </b>
                         <div class="input-group">
-                            <!-- manual input -->
-                            <input class="formatted-date-input date-time" style="width: 200px; position: relative; height: 33px;"
-                                ng-model="$ctrl.formatDates.quoteByDateFrom"
-                                ng-change="$ctrl.setValue({
-                                        path: 'quoteByDateFrom',
-                                        root: 'ctrl',
-                                        pickerId: 'quoteByDateFrom'
-                                    }, 2);"
-                                ng-focus="inputFocus['quoteByDateFrom'] = true; $event.stopPropagation();" 
-                                ng-blur="inputFocus['quoteByDateFrom'] = false;" 
-                                ng-invalid="{{ $ctrl.invalidDate['quoteByDateFrom'] && !inputFocus['quoteByDateFrom'] }}" 
-                                name="quoteByDateFrom">
-                            <span ng-init="$ctrl.setValue({
-                              path: 'quoteByDateFrom',
-                              root: 'ctrl',
-                              pickerId: 'quoteByDateFrom'
-                            }, 1, false, true)" ng-if="$ctrl.quoteByDateFrom"></span>
-                              
-                            <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields" id="quoteByDateFrom">
-
-                                <!-- datepicker input -->
-                                <input  class="form-control hidden-form-input" name="quoteByDateFrom" id="quoteByDateFrom"  ng-model="$ctrl.quoteByDateFrom" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.setValue({
-                                    path: 'quoteByDateFrom',
-                                    root: 'ctrl',
-                                    pickerId: 'quoteByDateFrom',
-                                    fieldId: 'quoteByDateFrom'
-                                }, 1);"
-                                visibility="hidden">
-                                <!-- end datepicker input -->
-
-                                <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
-                            </span>
+                            <input
+                                ng-model="$ctrl.quoteByDateFrom"
+                                new-date-picker
+                                picker-type="datetime"
+                                id="quoteByDateFrom"
+                                name="quoteByDateFrom"
+                                class="form-control date-mask new-date-picker"
+                                ng-change="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)">
                         </div>
 
                         <div class="input-group" ng-if="$ctrl.isQuoteByEndDateValidated">
-                            <!-- manual input -->
-                            <input class="formatted-date-input date-time" style="width: 200px; position: relative; height: 33px;"
-                                ng-model="$ctrl.formatDates.quoteByDate"
-                                ng-change="$ctrl.setValue({
-                                        path: 'quoteByDate',
-                                        root: 'ctrl',
-                                        pickerId: 'quoteByDate'
-                                    }, 2);" 
-                                ng-focus="inputFocus['quoteByDate'] = true; $event.stopPropagation();" 
-                                ng-blur="inputFocus['quoteByDate'] = false;" 
-                                ng-invalid="{{ $ctrl.invalidDate['quoteByDate'] && !inputFocus['quoteByDate'] }}" 
-                                name="quoteByDate">
-                            <span ng-init="$ctrl.setValue({
-                              path: 'quoteByDate',
-                              root: 'ctrl',
-                              pickerId: 'quoteByDate'
-                            }, 1, false, true)" ng-if="$ctrl.quoteByDate"></span>
-                              
-                            <span class="input-group-btn date-picker date form_meridian_datetime">
-                              <input class="form-control hidden-form-input"
-                                 type="text" 
-                                 id="quoteByDate"
-                                 ng-model="$ctrl.quoteByDate" 
-                                 name="quoteByDate"
-                                 ng-change="$ctrl.setValue({
-                                  path: 'quoteByDate',
-                                  root: 'ctrl',
-                                  pickerId: 'quoteByDate'
-                              }, 1); $ctrl.invalidDate['quoteByDate'] = false;"
-                              visibility="hidden"/>
-                              <button class="btn default date-set" type="button">
-                                  <i class="fa fa-calendar"></i>
-                              </button>
-                            </span>
+                            <input
+                                ng-model="$ctrl.quoteByDate"
+                                new-date-picker
+                                picker-type="datetime"
+                                id="quoteByDate"
+                                name="quoteByDate"
+                                class="form-control date-mask new-date-picker"
+                                ng-change="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)">
                         </div>
                         <div class="input-group">
                             &nbsp;Timezone:

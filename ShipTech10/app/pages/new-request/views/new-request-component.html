@@ -602,56 +602,15 @@
                                                     <!-- enabled ETA -->
 	                                                <div class="form-group-sm00" ng-if="$ctrl.etaEnabled[locationIdx]">
 	                                                    <div class="input-group col-md-8">
-
-                                                            <!-- value initialization -->
-                                                            <!-- $ctrl.request.locations[locationIdx].eta -->
-                                                            <span ng-init="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].eta',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_eta',
-                                                                fieldId: 'eta'
-                                                            }, 1, false)" ng-if="location.eta"></span>
-
-                                                            <!-- manual input -->
-                                                            <input class="formatted-date-input date-time"
-                                                            ng-model="$ctrl.formatDates.request.locations[locationIdx].eta" 
-                                                            ng-change="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].eta',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_eta',
-                                                                fieldId: 'eta'
-                                                            }, 2, false); $ctrl.etaChanged(location, locationIdx)" 
-                                                            ng-focus="inputFocus[locationIdx + '_eta'] = true; $event.stopPropagation(); event = $event" 
-                                                            ng-blur="inputFocus[locationIdx + '_eta'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_eta'] && !inputFocus[locationIdx + '_eta'] && $ctrl.overrideInvalidDate[locationIdx + '_eta'] }}"
-                                                            ng-disabled="$ctrl.disableAllFields"
-                                                            name="{{ locationIdx }}_eta">
-                                                            <!-- manual input -->
-                                                      
-                                                            
-                                                            <!-- button editable -->
-	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields" id="{{ locationIdx }}_eta">
-
-                                                                <!-- datepicker input -->
-                                                                <input  class="form-control hidden-form-input" name="{{ $ctrl.productInfoFields.Eta.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Eta.name }}"  ng-model="location.eta" date-before="{{ location.etb }}" st-date-format required ng-change="$ctrl.setValue({
-                                                                    path: 'request.locations[' + locationIdx + '].eta',
-                                                                    root: '$ctrl',
-                                                                    pickerId: locationIdx + '_eta',
-                                                                    fieldId: 'eta'
-                                                                }, 1, false); $ctrl.etaChanged(location, locationIdx)" ng-disabled="$ctrl.disableAllFields" visibility="hidden">
-                                                                <!-- end datepicker input -->
-
-	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-	                                                                <i class="fa fa-calendar"></i>
-	                                                            </button>
-                                                            </span>
-                                                            <!-- button editable -->
-                                                            
-                                                            <!-- button readonly -->
-	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
-	                                                            <i class="glyphicon glyphicon-calendar"></i>
-                                                            </span>
-                                                            <!-- button readonly -->
+                                                            <input
+                                                                ng-model="$ctrl.request.locations[locationIdx].eta" 
+                                                                ng-disabled="$ctrl.disableAllFields"
+                                                                ng-change="$ctrl.etaChanged(location, locationIdx)"
+                                                                name="{{ locationIdx }}_eta"
+                                                                id="{{ locationIdx }}_eta"
+                                                                new-date-picker
+                                                                picker-type="datetime"
+                                                                class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
 	                                            </div>
@@ -663,54 +622,15 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8">
-                                                             <!-- value initialization --><!-- $ctrl.request.locations[locationIdx].etb -->
-                                                            <span ng-init="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].etb',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_etb',
-                                                                fieldId: 'etb'
-                                                            }, 1, false)" ng-if="location.etb"></span>
-
-                                                            <!-- manual input -->
-                                                            <input class="formatted-date-input date-time"
-                                                            ng-model="$ctrl.formatDates.request.locations[locationIdx].etb" 
-                                                            ng-change="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].etb',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_etb',
-                                                                fieldId: 'etb'
-                                                            }, 2, false)" 
-                                                            ng-focus="inputFocus[locationIdx + '_etb'] = true; $event.stopPropagation(); event = $event" 
-                                                            ng-blur="inputFocus[locationIdx + '_etb'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_etb'] && !inputFocus[locationIdx + '_etb'] && $ctrl.overrideInvalidDate[locationIdx + '_etb'] }}"
-                                                            ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
-                                                            ng-disabled="$ctrl.disableAllFields"
-                                                            name="{{ locationIdx }}_etb">
-                                                            <!-- manual input -->
-
-                                                            <!-- button editable -->
-	                                                        <span class="input-group-btn input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" id="{{ locationIdx }}_etb">
-
-                                                                <!-- datepicker input -->
-                                                                <input class="form-control hidden-form-input" name="{{ $ctrl.productInfoFields.Etb.name }}" disabled id="id_{{ $ctrl.productInfoFields.Etb.name }}"  date-before="{{ location.etd }}" ng-model="location.etb" st-date-format required ng-disabled="$ctrl.disableAllFields" visibility="hidden"; ng-change="$ctrl.setValue({
-                                                                    path: 'request.locations[' + locationIdx + '].etb',
-                                                                    root: '$ctrl',
-                                                                    pickerId: locationIdx + '_etb',
-                                                                    fieldId: 'etb'
-                                                                }, 1, false);" >
-                                                                <!-- datepicker input -->
-
-	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-	                                                                <i class="fa fa-calendar"></i>
-	                                                            </button>
-                                                            </span>
-                                                            <!-- button editable -->
-                                                            
-                                                            <!-- button readonly -->
-	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
-	                                                            <i class="glyphicon glyphicon-calendar"></i>
-                                                            </span>
-                                                            <!-- button readonly -->
+                                                            <input
+                                                                ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
+                                                                ng-model="$ctrl.request.locations[locationIdx].etb" 
+                                                                ng-disabled="$ctrl.disableAllFields"
+                                                                name="{{ locationIdx }}_etb"
+                                                                id="{{ locationIdx }}_etb"
+                                                                new-date-picker
+                                                                picker-type="datetime"
+                                                                class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
 	                                            </div>
@@ -722,52 +642,15 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group  col-md-8">
-                                                            <!-- value initialization --><!-- $ctrl.request.locations[locationIdx].etd -->
-                                                               <span ng-init="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].etd',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_etd',
-                                                                fieldId: 'etd'
-                                                            }, 1, false)" ng-if="location.etd"></span>
-
-                                                            <!-- manual input -->
-                                                            <input class="formatted-date-input date-time"
-                                                            ng-model="$ctrl.formatDates.request.locations[locationIdx].etd" 
-                                                            ng-change="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].etd',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_etd',
-                                                                fieldId: 'etd'
-                                                            }, 2, false)" 
-                                                            ng-focus="inputFocus[locationIdx + '_etd'] = true; $event.stopPropagation(); event = $event" 
-                                                            ng-blur="inputFocus[locationIdx + '_etd'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_etd'] && !inputFocus[locationIdx + '_etd'] && $ctrl.overrideInvalidDate[locationIdx + '_etd'] }}"
-                                                            ng-class="{'invalid': location.etb > location.etd}"
-                                                            ng-disabled="$ctrl.disableAllFields"
-                                                            name="{{ locationIdx }}_etd">
-                                                            <!-- manual input -->
-                                                            
-                                                            <!-- button editable -->
-	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button"  ng-show="!$ctrl.isReadonlyForm" id="{{ locationIdx }}_etd">
-                                                                <!-- datepicker input -->
-                                                                <input class="form-control hidden-form-input" name="{{ $ctrl.productInfoFields.Etd.name }}" readonly="" disabled id="id_{{ $ctrl.productInfoFields.Etd.name }}"  ng-model="location.etd" st-date-format required  ng-class="{'etb_invalid': location.etb > location.etd}" ng-disabled="$ctrl.disableAllFields" visibility="hidden" ng-change="$ctrl.setValue({
-                                                                    path: 'request.locations[' + locationIdx + '].etd',
-                                                                    root: '$ctrl',
-                                                                    pickerId: locationIdx + '_etd',
-                                                                    fieldId: 'etd'
-                                                                }, 1, false);">
-                                                                <!-- datepicker input -->
-	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-	                                                                <i class="fa fa-calendar"></i>
-	                                                            </button>
-                                                            </span>
-                                                            <!-- button editable -->
-
-                                                            <!-- button readonly -->
-	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
-	                                                            <i class="glyphicon glyphicon-calendar"></i>
-                                                            </span>
-                                                            <!-- button readonly -->
+                                                            <input
+                                                                ng-class="{'invalid': location.etb > location.etd}"
+                                                                ng-model="$ctrl.request.locations[locationIdx].etd" 
+                                                                ng-disabled="$ctrl.disableAllFields"
+                                                                name="{{ locationIdx }}_etd"
+                                                                id="{{ locationIdx }}_etd"
+                                                                new-date-picker
+                                                                picker-type="datetime"
+                                                                class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
 	                                            </div>
@@ -783,55 +666,15 @@
 
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8">
-
-                                                            <!-- value initialization -->
-                                                            <!-- $ctrl.request.locations[locationIdx].eta -->
-                                                            <span ng-init="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].recentEta',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_recentEta',
-                                                                fieldId: 'recentEta'
-                                                            }, 1, false)" ng-if="location.recentEta"></span>
-
-                                                            <!-- manual input -->
-                                                            <input class="formatted-date-input date-time"
-                                                            ng-model="$ctrl.formatDates.request.locations[locationIdx].recentEta" 
-                                                            ng-change="$ctrl.setValue({
-                                                                path: 'request.locations[' + locationIdx + '].recentEta',
-                                                                root: '$ctrl',
-                                                                pickerId: locationIdx + '_recentEta',
-                                                                fieldId: 'recentEta'
-                                                            }, 2, false);" 
-                                                            ng-focus="inputFocus[locationIdx + '_recentEta'] = true; $event.stopPropagation(); event = $event" 
-                                                            ng-blur="inputFocus[locationIdx + '_recentEta'] = false;"
-                                                            ng-invalid="{{ CM.invalidDate[locationIdx + '_recentEta'] && !inputFocus[locationIdx + '_recentEta'] && $ctrl.overrideInvalidDate[locationIdx + '_recentEta'] }}"
-                                                                                                     name="{{ locationIdx }}_recentEta">
-                                                            <!-- manual input -->
-                                                      
-                                                            
-                                                            <!-- button editable -->
-	                                                        <span class="input-group-btn date form_meridian_datetime formatted-date-button" ng-show="!$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields" id="{{ locationIdx }}_recentEta">
-
-                                                                <!-- datepicker input -->
-                                                                <input  class="form-control hidden-form-input" name="Recent ETA" readonly="" disabled id="Recent ETA"  ng-model="location.recentEta" date-before="{{ location.etb }}" st-date-format ng-change="$ctrl.setValue({
-                                                                    path: 'request.locations[' + locationIdx + '].recentEta',
-                                                                    root: '$ctrl',
-                                                                    pickerId: locationIdx + '_recentEta',
-                                                                    fieldId: 'recentEta'
-                                                                }, 1, false);">
-                                                                <!-- end datepicker input -->
-
-	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-	                                                                <i class="fa fa-calendar"></i>
-	                                                            </button>
-                                                            </span>
-                                                            <!-- button editable -->
-                                                            
-                                                            <!-- button readonly -->
-	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
-	                                                            <i class="glyphicon glyphicon-calendar"></i>
-                                                            </span>
-                                                            <!-- button readonly -->
+                                                            <input
+                                                                ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
+                                                                ng-model="$ctrl.request.locations[locationIdx].recentEta" 
+                                                                ng-disabled="$ctrl.disableAllFields"
+                                                                name="{{ locationIdx }}_recentEta"
+                                                                id="{{ locationIdx }}_recentEta"
+                                                                new-date-picker
+                                                                picker-type="datetime"
+                                                                class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
 	                                            </div>

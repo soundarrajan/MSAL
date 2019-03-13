@@ -851,7 +851,7 @@ span.variance {
     border-color: transparent!important;
 }
 
-.w100 *:not(.date-picker-icon) {
+.w100 {
     width: 100%!important;
 }
 

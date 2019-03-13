@@ -20,7 +20,7 @@
 </div>
 <div class="row">
     <div class="col-md-3">
-        <div class="form-group  row "  ng-init="CM.datepickers()">
+        <div class="form-group row">
             <label  for="pricing_schedule_from" class="pricing_schedule_from_label">
                 {{ CM.app_id + '.FROM' | translate }}
             </label>
@@ -48,12 +48,20 @@
 </div>
 <div class="row">
     <div class="col-md-3">
-        <div class="form-group  row "  ng-init="CM.datepickers()">
+        <div class="form-group row">
             <label  for="pricing_schedule_to" class="pricing_schedule_to_label">
                 {{ CM.app_id + '.TO' | translate }}
             </label>
             <div class="form_input form_input_pricing_schedule_to">
-                <input class="form-control" type="text" id="pricing_schedule_days_before" ng-model="formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter"/>
+                <input
+                    ng-model="formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter"
+                    name="pricing_schedule_days_before"
+                    id="pricing_schedule_days_before"
+                    class="form-control"
+                    type="text"
+                    new-date-picker
+                    picker-type="date"
+                    class="form-control date-mask new-date-picker">
             </div>
         </div>
     </div>

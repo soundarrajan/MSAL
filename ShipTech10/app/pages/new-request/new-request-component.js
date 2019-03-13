@@ -236,7 +236,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.calculateScreenActions();
                             ctrl.isNewRequest = true;
                             $timeout(function() {
-                                ctrl.initializeDateInputs();
                                 ctrl.isEnabledEta();
                             });
                         });
@@ -301,7 +300,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.isNewRequest = true;
                             if (ctrl.request.vesselDetails.vessel.id) ctrl.selectVessel(ctrl.request.vesselDetails.vessel.id);
                             $timeout(function() {
-                                ctrl.initializeDateInputs();
                                 ctrl.isEnabledEta();
                             });
                             if (ctrl.request.id == 0) {
@@ -368,9 +366,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.isNewRequest = false;
                             if (ctrl.request.requestStatus.id == ctrl.STATUS.STEMMED.id) ctrl.isReadonlyForm = true;
                             if (ctrl.request.requestStatus.id == ctrl.STATUS.PARTIALLY_STEMMED.id) ctrl.canComplete = true;
-                            $timeout(function() {
-                                ctrl.initializeDateInputs();
-                            });
                             ctrl.getCurrentProductsCurrentIds();
                            
                         });
@@ -382,7 +377,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.calculateScreenActions();
                             ctrl.isNewRequest = true;
                             $timeout(function() {
-                                ctrl.initializeDateInputs();
                                 setPageTitle();
                             });
                         });
@@ -391,7 +385,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 .then(function(data) {
                     initDataTables();
                     $timeout(function() {
-                        ctrl.initializeDateInputs();
                     });
                 }).finally(
                     function(){
@@ -1039,69 +1032,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             });
             date.focus();
         };
-        ctrl.onInit_initializeDateInputs = function() {
-            console.log("onInit_initializeDateInputs");
-            $timeout(function() {
-                initializeDateInputs();
-            });
-        };
 
-        ctrl.initializeDateInputs = function() {
-            if (!ctrl.selectedVessel && ctrl.request.vesselDetails) {
-                if (ctrl.request.vesselDetails.vessel) {
-                    if (ctrl.request.vesselDetails.vessel.id != null) {
-                        lookupModel.get(LOOKUP_TYPE.VESSEL, ctrl.request.vesselDetails.vessel.id).then(function(server_data) {
-                            vessel = server_data.payload;
-                            //keep vesselDTO for later use
-                            ctrl.selectedVessel = vessel;
-                        });
-                    }
-                }
-            }
-            var date = $(".form_meridian_date");
-            //date format
-
-            dateFormat = ctrl.tenantSettings.tenantFormats.dateFormat.name;
-            // dateFormat = dateFormat
-            //                 .replace('MMM','MM')
-            //                 .replace(/D/g,"d")
-            //                 .replace(/Y/g,"y")
-            //                 .split(" ")[0];
-            dateFormat = dateFormat
-                .toLowerCase()
-                .replace("mmm", "M")
-                .split(" ")[0];
-            date.datepicker({
-                format: dateFormat,
-                todayBtn: false,
-                autoclose: true,
-                todayHighlight: true
-            });
-
-            var date = $(".form_meridian_datetime");
-            date.datetimepicker({
-                format: tenantService.getDateFormatForPicker(),
-                isRTL: App.isRTL(),
-                showMeridian: true,
-                autoclose: true,
-                pickerPosition: App.isRTL() ? "bottom-left" : "bottom-left",
-                todayBtn: false
-            })
-                .on("changeDate", function(ev) {
-                    $timeout(function() {
-                        $(ev.target)
-                            .find("input")
-                            .val(tenantService.formatDate(ev.date));
-                    });
-                })
-                .on("hide", function(ev) {
-                    $timeout(function() {
-                        $(ev.target)
-                            .find("input")
-                            .val(tenantService.formatDate(ev.date));
-                    });
-                });
-        };
         /**
          * Bind Twitter Typeahead functionality to a given input.
          * @param {*} selector - A valid jQuery selector.
@@ -1260,13 +1191,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     location.eta = eta;
                     location.etb = etb;
                     location.etd = etd;
-                       
-                    // also set manual type locations dates
-                    var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
-                    // use formatSimpleDate bc eta, etb come int iso format, for manual date input you need formatted string
-                    _.set(ctrl, 'formatDates.request.locations[' + i + '].eta', Factory_App_Dates_Processing.formatSimpleDate(eta, DATE_FORMAT));
-                    _.set(ctrl, 'formatDates.request.locations[' + i + '].etb', Factory_App_Dates_Processing.formatSimpleDate(etb, DATE_FORMAT));
-                    _.set(ctrl, 'formatDates.request.locations[' + i + '].etd', Factory_App_Dates_Processing.formatSimpleDate(etd, DATE_FORMAT));
                 }
             }
         }
@@ -1281,9 +1205,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             );
             if (selectedItems.length > 0) {
                 addLocation(selectedItems[0].id, null, null).then(function() {
-                    $timeout(function() {
-                        ctrl.initializeDateInputs();
-                    });
+                    // $timeout(function() {
+                        // ctrl.initializeDateInputs();
+                    // });
                 });
             }
             // Clear the input.
@@ -1296,7 +1220,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 	                setDefaultLocationFields(extra.id, (extra.vesselVoyageId || extra.voyageId), extra);
                 }
                 $timeout(function() {
-                    ctrl.initializeDateInputs();
                     ctrl.new_location = null;
                     // console.log('Dumm');
                     $scope.dumm = null; 
@@ -1578,9 +1501,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if ($scope.portsModal) {
                 addLocation(locationId, null, null, extraInfo).then(function() {
                     setLocationDates(extraInfo.locationId, extraInfo.voyageId, extraInfo.eta, extraInfo.etb, extraInfo.etd);
-                    $timeout(function() {
-                        ctrl.initializeDateInputs();
-                    });
                 });
                 $scope.portsModal = false;
             } else {
@@ -2039,9 +1959,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(function() {
                     setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd);
                     setDefaultLocationFields(location.locationId, (location.vesselVoyageId || location.voyageId), location);
-                    $timeout(function() {
-                        ctrl.initializeDateInputs();
-                    });
                 });
             });
         };
@@ -2418,15 +2335,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 location.etb = location.etb || location.eta;
                 location.etd = location.etd || location.eta;
                 location.recentEta = location.eta;
-    
-                // also set manual type locations dates 
-                if(location.eta){
-                    if(locationIdx !== undefined){
-                        ctrl.formatDates.request.locations[locationIdx].etb = ctrl.formatDates.request.locations[locationIdx].etb || ctrl.formatDates.request.locations[locationIdx].eta;
-                        ctrl.formatDates.request.locations[locationIdx].etd = ctrl.formatDates.request.locations[locationIdx].etd || ctrl.formatDates.request.locations[locationIdx].eta;
-                        ctrl.formatDates.request.locations[locationIdx].recentEta = ctrl.formatDates.request.locations[locationIdx].eta;
-                    }
-                }
+
             },5);
         };
 
@@ -2938,62 +2847,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             });
             return found;
         };
-
-        ctrl.initMask = function(){
-            Factory_App_Dates_Processing.doMaskInitialization();
-        }
-        ctrl.setValue = function(inputDetails, direction, simpleDate, app){
-            
-            /** See @param inputDetails
-            /**     @param direction
-            /**     @param simpleDate
-            /**     @param app
-             *   explained in controller_master
-             */
-
-
-            var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
-    
-            var rootMap = {
-                '$scope': $scope,
-                '$rootScope': $rootScope,
-                '$ctrl': ctrl
-            }
-
-            if (!ctrl.overrideInvalidDate) {
-                ctrl.overrideInvalidDate = {}
-            }
-            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
-    
-            if(direction == 1){
-                // datepicker input -> date typing input
-                $timeout(function() {
-                    if(simpleDate){
-                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
-                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-                    } else{
-                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
-                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-                    }
-                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
-                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
-                });
-            }
-            if(direction == 2){
-                // date typing input -> datepicker input 
-                $timeout(function() { 
-                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
-                    var copy = angular.copy(date);
-                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
-                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
-    
-                    // also change datepicker value
-                    $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-                });
-            }
-        }
     }
 
 

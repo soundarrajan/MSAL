@@ -4414,7 +4414,11 @@ table#new_order_products td {
     width: 35px;
     right: 0;
     top: 0;
-    color: gray;
+    color: #325187;
     height: 33px;
     border-left: 1px solid #c2cad8; 
+}
+
+.new-date-picker {
+    display: none !important;
 }

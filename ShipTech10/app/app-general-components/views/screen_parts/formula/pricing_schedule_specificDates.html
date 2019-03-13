@@ -23,44 +23,20 @@
 
 <div class="row" ng-repeat="(key, value) in formValues.pricingScheduleOptionSpecificDate.dates" ng-show="!value.isDeleted">
     <div class="col-md-3">
-        <span ng-init="CM.initMask()"></span>
-        <div class="form-group  row "  ng-init="CM.datepickers()">
+        <div class="form-group row">
             <label  for="Schedule_{{ key }}_pricing_schedule_from" class="pricing_schedule_from_label">
                 {{ CM.app_id + '.DATE' | translate }}
             </label>
 
             <div class="form_input form_input_pricing_schedule_from">
                 <div class="input-group " ng-class="field.disabled ? 'disabled' : ''">
-                        <span ng-init="CM.setValue({
-                            path: 'formValues.pricingScheduleOptionSpecificDate.dates['+key+'].date',
-                            root: '$scope',
-                            pickerId: key + '_pricing_schedule_from'
-                        }, 1)" 
-                              ng-if="formValues['pricingScheduleOptionSpecificDate']['dates'][key]['date']"></span>
-               
-                        <!-- manual input -->
-                        <input class="formatted-date-input date-time" 
-                              ng-model="formatDates.formValues.pricingScheduleOptionSpecificDate.dates[key].date" 
-                              ng-change="CM.setValue({
-                                path: 'formValues.pricingScheduleOptionSpecificDate.dates[' + key + '].date',
-                                root: '$scope',
-                                pickerId: key + '_pricing_schedule_from'
-                              }, 2)" 
-                              ng-focus="inputFocus[key + '_pricing_schedule_from'] = true; $event.stopPropagation(); event = $event" 
-                              ng-blur="inputFocus[key + '_pricing_schedule_from'] = false;" 
-                              ng-invalid="{{ CM.invalidDate[key + '_pricing_schedule_from'] && !inputFocus[key + '_pricing_schedule_from'] && CM.overrideInvalidDate[key + '_pricing_schedule_from'] }}" name="key + '_pricing_schedule_from'">
-
-                    <span class="input-group-btn date-picker date form_meridian_datetime" id="key + '_pricing_schedule_from'" >
-                        <!-- datepicker input -->
-                        <input class="form-control hidden-form-input" type="text" id="Schedule_{{ key }}_pricing_schedule_from" ng-model="formValues.pricingScheduleOptionSpecificDate.dates[key].date" ng-required="false" name="Schedule_{{ key }}_pricing_schedule_from" ng-change="CM.setValue({
-                            path: 'formValues.pricingScheduleOptionSpecificDate.dates[' + key + '].date',
-                            root: '$scope',
-                            pickerId: key + '_pricing_schedule_from'
-                        }, 1)" />
-                        <button class="btn default date-set" type="button" visibility="hidden">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                  <input
+                     ng-model="formValues.pricingScheduleOptionSpecificDate.dates[key].date"
+                     name="{{ key + '_pricing_schedule_from' }}"
+                     id="{{ key + '_pricing_schedule_from' }}"
+                     new-date-picker
+                     picker-type="datetime"
+                     class="form-control date-mask new-date-picker">
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -79,7 +55,7 @@
                         </a>
                     </span>
                     <span class="input-group-btn" ng-if="key> 0">
-                        <a   class="input_add_UserIm btn default" ng-click="CM.softDelete(formValues.pricingScheduleOptionSpecificDate.dates, key); formatDates.formValues.pricingScheduleOptionSpecificDate.dates[key].date = null" class="btn default">
+                        <a   class="input_add_UserIm btn default" ng-click="CM.softDelete(formValues.pricingScheduleOptionSpecificDate.dates, key); formValues.pricingScheduleOptionSpecificDate.dates[key].date = null" class="btn default">
                             <i class="fa fa-minus"></i>
                         </a>
                     </span>

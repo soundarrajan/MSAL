@@ -256,11 +256,6 @@ APP_CLAIMS.controller("Controller_Claims", [
                         if (response.deliveryDate) {
                             $timeout(function(){
 	                            if (!$scope.formValues.deliveryDate || !$scope.formValues.orderDetails.deliveryNo) {
-		                            $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate(response.deliveryDate, null, 'eta'));
-		                            if (!angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails) {
-		                            	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
-		                            }
-		                            $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
 		                            $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
 	                            }
 	                            $scope.formValues.deliveryDate = response.deliveryDate;
@@ -320,11 +315,6 @@ APP_CLAIMS.controller("Controller_Claims", [
 
                     if (deliveryDateFromDelivery) {
                         $timeout(function(){
-                            $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate(deliveryDateFromDelivery, null, 'eta'));
-                            if (!angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails) {
-                            	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
-                            }
-                            $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
                             $scope.formValues.deliveryDate = deliveryDateFromDelivery;
                         })
                         $scope.formValues.deliveryDate = deliveryDateFromDelivery;
@@ -336,11 +326,6 @@ APP_CLAIMS.controller("Controller_Claims", [
                     delete field;
                 } else {
                     $timeout(function(){
-	                    $('[ng-model="formatDates.formValues.deliveryDate"]').val($scope.CM.formatSimpleDate($scope.formValues.deliveryDate, null, 'eta'));
-	                    if (!angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails) {
-	                    	angular.element($('[ng-model="formatDates.formValues.deliveryDate"]')).scope().formatDates.formValues.orderDetails = {};
-	                    }                    
-	                    $('[ng-model="formatDates.formValues.deliveryDate"]').trigger("change");
 	                    $scope.formValues.deliveryDate = $scope.formValues.deliveryDate;
                     })
                 }

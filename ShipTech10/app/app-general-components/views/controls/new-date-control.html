@@ -1,4 +1,4 @@
-<div class="form-group row" ng-init="CM.newdatepickers()">
+<div class="form-group row">
     <label ng-if="field.Label && !field.isCustomField" for="{{ field.Name }}" class="{{ field.Name }}_label date-picker-label" >
         {{ CM.app_id + '.' + field.Label | translate }}
         <span ng-if="$eval(field.Required) > 0 || field.Required == true ? true : false " class="orange-txt">
@@ -25,23 +25,7 @@
                 ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"
                 ng-class="field.Disabled == true ? 'bg-grey' : '' "
                 new-date-picker
-                style="display: none">
-            <!--
-            <span ng-if="field.PickerType != 'date' || !field.Name.indexOf('Date') > -1" class="formatted-date" ng-class="field.Disabled == true ? 'bg-grey' : '' "  ng-bind="CM.formatDateTime(formValues.{{field.Unique_ID}}, '{{tenantSetting.tenantFormats.dateFormat.name}}', '{{field.Unique_ID}}')" >
-            </span>
-            <span ng-if="field.PickerType == 'date' || field.Name.indexOf('Date') > -1" class="formatted-date" ng-class="field.disabled == true ? 'bg-grey' : '' "  ng-bind="CM.formatDate(formValues.{{field.Unique_ID}}, '{{tenantSetting.tenantFormats.dateFormat.name.split(' ')[0]}}')" >
-            </span>
-            <span class="input-group-btn" ng-hide="$eval(field.Disabled) == true || field.Disabled == true ? true : false">
-                <button
-                    class="btn default date-set"
-                    type="button"
-                    ng-hide="$eval(field.Disabled) == true || field.Disabled == true ? true : false || $eval(field.disabled) == true || field.disabled == true ? true : false"
-                    dynamic-condition="{{field.Conditional}}"
-                    dynamic-condition-type="{{field.ConditionalType}}">
-                    <i class="fa fa-calendar"></i>
-                </button>
-            </span>
-            -->
+                picker-type="date">
         </div>
 
         <span class="help-block">

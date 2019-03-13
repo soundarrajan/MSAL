@@ -218,58 +218,23 @@
                     </div>
                 </div>
                 <div class="row">
-                   <span ng-init="CM.initMask(); disabledPricingDate[productIndex] = !CM.isEditable || !formValues.deliveryProducts[productIndex].manualPricingDateOverride || adminConfiguration.procurement.price.pricingDateStopOption.name == 'Order' "></span>
-                   <div ng-hide="formValues.temp.hiddenFields.pricingDate" class="col-md-4" ng-init="CM.datepickers(null,null,'date')" ng-show="!formValues.temp.hiddenFields.pricingDate">
-                        <!-- <span ng-init="product.pricingDate = formValues.deliveryDate" ng-if="!product.pricingDate && formValues.deliveryDate && !formValues.id"></span> -->
+                    <div class="col-sm-4">
+                       <span ng-init="disabledPricingDate[productIndex] = !CM.isEditable || !formValues.deliveryProducts[productIndex].manualPricingDateOverride || adminConfiguration.procurement.price.pricingDateStopOption.name == 'Order' "></span>
                         <div class="form-group row">
                             <label for="Product_{{ productIndex }}_pricingDate" class="pricing_date_label">
                                 {{ CM.app_id + '.PRICING_DATE' | translate }}
                             </label>
                             <div class="form_input form_input_pricing_date">
-                                <div class="input-group" ng-class="field.disabled ? 'disabled' : ''" id="pricing_date">
-
-                                    <span ng-init="CM.setValue({
-                                    path: 'formValues.deliveryProducts[' + productIndex + '].pricingDate',
-                                    root: '$scope',
-                                    pickerId: productIndex + '_pricingDate'
-                                }, 1, true)" 
-                                      ng-if="formValues['deliveryProducts'][productIndex]['pricingDate']"></span>
-
-
-                                <!-- manual input -->
-                                <input class="date-only form-control"
-                                      ng-class="{'formatted-date-input': !disabledPricingDate[productIndex], 'formatted-date-input-disabled': disabledPricingDate[productIndex]}"
-                                      ng-model="formatDates.formValues.deliveryProducts[productIndex].pricingDate"
-                                      ng-disabled="disabledPricingDate[productIndex]"
-                                      ng-change="CM.setValue({
-                                        path: 'formValues.deliveryProducts[' + productIndex + '].pricingDate',
-                                        root: '$scope',
-                                        pickerId: productIndex + '_pricingDate'
-                                      }, 2, true)" 
-                                      ng-focus="inputFocus[productIndex + '_ pricingDate'] = true; $event.stopPropagation(); event = $event" 
-                                      ng-blur="inputFocus[productIndex + '_ pricingDate'] = false;" 
-                                      ng-invalid="{{ CM.invalidDate[productIndex + '_ pricingDate'] && !inputFocus[productIndex + '_ pricingDate'] && CM.overrideInvalidDate[productIndex + '_ pricingDate'] }}"
-                                      name="productIndex + '_pricingDate'">
-
-
-                                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="disabledPricingDate[productIndex]">   
-                                        <input class="form-control hidden-form-input"
-                                            type="text" id="Product_{{ productIndex }}_pricingDate"
-                                            ng-model="formValues.deliveryProducts[productIndex].pricingDate"
-                                            ng-required="false" name="Product_{{ productIndex }}_pricingDate"
-                                            ng-model-options="{ updateOn: 'default'}"
-                                            ng-disabled="disabledPricingDate[productIndex]" 
-                                            ng-change="CM.setValue({
-                                                path: 'formValues.deliveryProducts[' + productIndex + '].pricingDate',
-                                                root: '$scope',
-                                                pickerId: productIndex + '_pricingDate'
-                                            }, 1, true)"
-                                            visibility="hidden" />
-
-                                            <button class="btn default date-set" type="button" ng-disabled="disabledPricingDate[productIndex]">
-                                                <i class="fa fa-calendar"></i>
-                                            </button>
-                                    </span>
+                                <div class="input-group w100">
+                                    <input
+                                        ng-model="formValues.deliveryProducts[productIndex].pricingDate"
+                                        ng-disabled="disabledPricingDate[productIndex]"
+                                        ng-class="{'formatted-date-input': !disabledPricingDate[productIndex], 'formatted-date-input-disabled': disabledPricingDate[productIndex]}"
+                                        id="{{ productIndex + '_pricingDate' }}"
+                                        name="{{ productIndex + '_pricingDate'}}"
+                                        class="form-control date-mask new-date-picker"
+                                        new-date-picker
+                                        picker-type="date">
                                 </div>
                                 <span class="help-block">
                                     {{ field.Description }}

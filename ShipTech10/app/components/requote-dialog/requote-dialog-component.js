@@ -18,28 +18,6 @@ angular.module('shiptech.components')
 				ctrl.isQuoteDateAutoPopulated = settings.payload.offer.isQuoteDateAutoPopulated;
 			})
 
-            function initializeDateInputs() {
-                var date = $(".form_meridian_datetime");
-                date.datetimepicker({
-                    format: tenantService.getDateFormatForPicker(),
-                    isRTL: App.isRTL(),
-                    showMeridian: true,
-                    autoclose: true,
-                    pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left"),
-                    todayBtn: false
-                }).on('changeDate', function(ev) {
-                    $timeout(function() {
-                        $(ev.target).find('input').val(tenantService.formatDate(ev.date));
-                    });
-                }).on('hide', function(ev) {
-                    $timeout(function() {
-                        $(ev.target).find('input').val(tenantService.formatDate(ev.date));
-                    });
-                });
-            }
-
-            initializeDateInputs();
-
             ctrl.$onChanges = function(changes) {
                 if (typeof changes.requirements !== "undefined" && !changes.requirements.isFirstChange()) {
                     ctrl.requirements = changes.requirements.currentValue;
@@ -66,6 +44,7 @@ angular.module('shiptech.components')
                 }
                 return enabled;
             }
+
             ctrl.sendRequote = function() {
                 console.log()
                 if (!ctrl.actionButtonsEnabled()) {
@@ -115,111 +94,6 @@ angular.module('shiptech.components')
                     $state.go(STATE.PREVIEW_EMAIL, { data: rfq_data, transaction: EMAIL_TRANSACTION.REQUOTE });
                 }
             };
-
-
-			// ctrl.initMask = function(){
-	  //           Factory_App_Dates_Processing.doMaskInitialization();
-	  //       }
-			ctrl.setValue = function(inputDetails, direction, simpleDate, app){
-	            
-	            /** See @param inputDetails
-	            /**     @param direction
-	            /**     @param simpleDate
-	            /**     @param app
-	             *   explained in controller_master
-	             */
-
-
-	            var DATE_FORMAT = ctrl.tenantSettings.tenantFormats.dateFormat;
-	    
-	            var rootMap = {
-	                '$scope': $scope,
-	                '$rootScope': $rootScope,
-	                '$ctrl': ctrl
-	            }
-	    
-	            if(direction == 1){
-	                // datepicker input -> date typing input
-	                $timeout(function() {
-	                    if(simpleDate){
-	                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-	                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
-	                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-	                    } else{
-	                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-	                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
-	                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-	                    }
-	                    $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
-	                });
-	            }
-	            if(direction == 2){
-	                // date typing input -> datepicker input 
-	                $timeout(function() { 
-	                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
-	                    var copy = angular.copy(date);
-	                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
-	                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
-	    
-	                    // also change datepicker value
-	                    // when using st-date-format for datepicker, date-only uses datepicker and date-time uses datetimepicker
-	                    if(simpleDate){
-	                        $('.formatted-date-button#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
-	                    }else{
-	                        $('.formatted-date-button#' + inputDetails.pickerId).datetimepicker('setDate', new Date(formattedDate));
-	                    }
-	                });
-	            }
-	        }
-
-			ctrl.initMask = function(timeout){
-
-	            var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptions();
-	        
-	            // mask options
-	            var options =  {
-	                onKeyPress: function(value, e, field, options) {
-	                    // select formatter
-	                    var formatUsed = "";
-	                    if(field.hasClass('date-only')){
-	                        formatUsed  = DATE_OPTIONS.momentFormatDateOnly;
-	                    }else{
-	                        formatUsed  = DATE_OPTIONS.momentFormat;
-	                    }
-	                    // process date
-	                    var val = moment(value, formatUsed, true);
-	                    // test date validity
-	                    if(ctrl.invalidDate === undefined) ctrl.invalidDate = {};
-	                    if(val.isValid()){
-	                        ctrl.invalidDate[field[0].name] = false;
-	                    }else{
-	                        ctrl.invalidDate[field[0].name] = true;
-	                    }
-	                }
-	            }
-	            // end mask options
-	    
-	            // ACTUAL MASK INITIALIZATION
-	            function init(){
-	                var dateTime = $('.formatted-date-input.date-time');
-	                $.each(dateTime, function(key){
-	                    $(dateTime[key]).mask(DATE_OPTIONS.maskFormat, options);
-	                })
-	                var dateOnly = $('.formatted-date-input.date-only');
-	                $.each(dateOnly, function(key){
-	                    $(dateOnly[key]).mask(DATE_OPTIONS.maskFormatDateOnly, options);
-	                })
-	            }
-	            if(timeout){
-	                setTimeout(init,2000);
-	            }else{
-	                init();
-	            }
-	            // END ACTUAL MASK INITIALIZATION
-	        }
-	        
-
-
         }
     ]);
 

@@ -1,9 +1,4 @@
-<span ng-init="isDeliveryEditable(); $scope.setLimitForPickers()" ng-if="formValues.deliveryStatus"></span>
-<span ng-init="setLimitForPickers()" ng-if="formValues.bdnDate"></span>
-
-<span ng-init="CM.initMask()"></span>
-
-<div class="row" ng-init="isDeliveryEditable(); setLimitForPickers()">
+<div class="row" ng-init="isDeliveryEditable();">
     <!-- barge -->
     <div class="col-md-4">
         <div class="form-group row">
@@ -20,41 +15,21 @@
     </div>
 
     <!-- berthing time -->
-    <div class="col-md-4" ng-init="CM.datepickers(); setLimitForPickers();  CM.initValidityForDate('berthingTime')">
+    <div class="col-md-4">
         <div class="form-group row">
             <label for="berthingTime" class="berthing_time_label">
                 {{ CM.app_id + '.BERTHING_TIME' | translate }}
             </label>
             <div class="form_input form_input_berthing_time">
-                <div class="input-group " ng-class="field.disabled ? 'disabled' : ''" id="berthingTimeDP">
-
-                    <!-- manual input -->
-                    <input class="formatted-date-input date-time" ng-model="formatDates.formValues.berthingTime" 
-                    ng-change="CM.setValue({
-                                          path: 'formValues.berthingTime',
-                                          root: '$scope',
-                                          pickerId: 'berthingTime'
-                                      }, 2)" 
-                    ng-focus="inputFocus['berthingTime'] = true; $event.stopPropagation();" 
-                    ng-blur="inputFocus['berthingTime'] = false;" ng-invalid="{{ CM.invalidDate['berthingTime'] && !inputFocus['berthingTime'] && CM.overrideInvalidDate['berthingTime'] }}" name="berthingTime">
-
-                    <span ng-init="setLimitForPickers('berthing',formValues.berthingTime); CM.setValue({
-                                        path: 'formValues.berthingTime',
-                                        root: '$scope',
-                                        pickerId: 'berthingTime'
-                                      }, 1)" ng-if="formValues.berthingTime"></span>
-
-                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="berthingTime">
-                        <!-- datepicker input -->
-                        <input class="form-control hidden-form-input" type="text" id="berthingTime" ng-model="formValues.berthingTime" name="berthingTime" ng-change="CM.setValue({
-                            path: 'formValues.berthingTime',
-                            root: '$scope',
-                            pickerId: 'berthingTime'
-                        }, 1); triggerChangeFields('berthingTime','berthingTime'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside);"  visibility="hidden"/>
-                        <button class="btn default date-set" type="button">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                <div class="input-group w100">
+                    <input
+                        ng-model="formValues.berthingTime" 
+                        ng-disabled="field.disabled"
+                        name="berthingTime"
+                        id="berthingTime"
+                        new-date-picker
+                        picker-type="datetime"
+                        class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -64,41 +39,21 @@
     </div>
 
     <!-- barge alonside -->
-    <div class="col-md-4" ng-init="CM.datepickers(); CM.initValidityForDate('bargeAlongside')">
+    <div class="col-md-4">
         <div class="form-group row">
             <label for="bargeAlongside" class="barge_alongside_label">
                 {{ CM.app_id + '.BARGE_ALONGSIDE' | translate }}
             </label>
             <div class="form_input form_input_barge_alongside">
-                <div class="input-group" ng-class="field.disabled ? 'disabled' : ''" id="bargeAlongsideDP" >
-
-                    <span ng-init="setLimitForPickers('barge',formValues.bargeAlongside); CM.setValue({
-                        path: 'formValues.bargeAlongside',
-                        root: '$scope',
-                        pickerId: 'bargeAlongside'
-                    }, 1)"" ng-if="formValues.bargeAlongside"></span>
-
-                    <!-- manual input -->
-                    <input class="formatted-date-input date-time" 
-                    ng-model="formatDates.formValues.bargeAlongside" 
-                    ng-change="CM.setValue({
-                        path: 'formValues.bargeAlongside',
-                        root: '$scope',
-                        pickerId: 'bargeAlongside'
-                    }, 2)" 
-                    ng-focus="inputFocus['bargeAlongside'] = true; $event.stopPropagation();" ng-blur="inputFocus['bargeAlongside'] = false;" ng-invalid="{{ CM.invalidDate['bargeAlongside'] && !inputFocus['bargeAlongside'] && CM.overrideInvalidDate['bargeAlongside'] }}" name="bargeAlongside">
-
-                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="bargeAlongside">
-                        <!-- datepicker input -->
-                        <input class="form-control hidden-form-input" type="text" id="bargeAlongside" ng-model="formValues.bargeAlongside" name="bargeAlongside" ng-change="CM.setValue({
-                            path: 'formValues.bargeAlongside',
-                            root: '$scope',
-                            pickerId: 'bargeAlongside'
-                        }, 1); triggerChangeFields('bargeAlongside','bargeAlongside'); formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside); " visibility="hidden"/>
-                        <button class="btn default date-set" type="button">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                <div class="input-group w100">
+                    <input
+                        ng-model="formValues.bargeAlongside" 
+                        ng-disabled="field.disabled"
+                        name="bargeAlongside"
+                        id="bargeAlongside"
+                        new-date-picker
+                        picker-type="datetime"
+                        class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -124,41 +79,22 @@
     </div>
 
     <!-- pumping start -->
-    <div class="col-md-4" ng-init="CM.datepickers(); CM.initValidityForDate('bargePumpingRateStartTime')">
+    <div class="col-md-4">
         <div class="form-group row">
             <label for="pumpingStart" class="pumping_start_label">
                 {{ CM.app_id + '.PUMPING_START' | translate }}
             </label>
     
             <div class="form_input form_input_pumping_start">
-                <div class="input-group" ng-class="field.disabled ? 'disabled' : ''" >
-                    <span ng-init="CM.setValue({
-                        path: 'formValues.bargePumpingRateStartTime',
-                        root: '$scope',
-                        pickerId: 'bargePumpingRateStartTime'
-                    }, 1)"" ng-if="formValues.bargePumpingRateStartTime"></span>
-                    <!-- manual input -->
-                    <input class="formatted-date-input date-time" 
-                    ng-model="formatDates.formValues.bargePumpingRateStartTime" 
-                    ng-change="CM.setValue({
-                        path: 'formValues.bargePumpingRateStartTime',
-                        root: '$scope',
-                        pickerId: 'bargePumpingRateStartTime'
-                    }, 2)" 
-                    ng-focus="inputFocus['bargePumpingRateStartTime'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['bargePumpingRateStartTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateStartTime'] && !inputFocus['bargePumpingRateStartTime'] && CM.overrideInvalidDate['bargePumpingRateStartTime'] }}" name="bargePumpingRateStartTime">
-            
-                    <span class="input-group-btn  date-picker datetime-picker date form_meridian_datetime" id="bargePumpingRateStartTime">
-                          <!-- datepicker input -->
-                          <input class="form-control hidden-form-input" type="text" id="pumpingStart" ng-model="formValues.bargePumpingRateStartTime" ng-change=" CM.setValue({
-                            path: 'formValues.bargePumpingRateStartTime',
-                            root: '$scope',
-                            pickerId: 'bargePumpingRateStartTime'
-                        }, 1); triggerChangeFields('pumpingStart','pumpingStart'); formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime); calculatePumpingRate(formValues.pumpingDuration,0);" visibility="hidden"/>
-
-                        <button class="btn default date-set" type="button">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                <div class="input-group w100">
+                    <input
+                        ng-model="formValues.bargePumpingRateStartTime" 
+                        ng-disabled="field.disabled"
+                        name="bargePumpingRateStartTime"
+                        id="bargePumpingRateStartTime"
+                        new-date-picker
+                        picker-type="datetime"
+                        class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -171,41 +107,22 @@
     	{{formValues.bargePumpingRateEndTime < formValues.bargePumpingRateStartTime ? formValues.bargePumpingRateEndTime = formValues.bargePumpingRateStartTime : ''}}
 	</span>
     <!-- pumping end -->
-    <div class="col-md-4" ng-init="CM.datepickers(); CM.initValidityForDate('bargePumpingRateEndTime')">
+    <div class="col-md-4">
         <div class="form-group row">
             <label for="pumpingEnd" class="pumping_end_label">
                 {{ CM.app_id + '.PUMPING_END' | translate }}
             </label>
              <!-- <span ng-init="setLimitForPickers('pumpingEnd',formValues.bargePumpingRateEndTime)" ng-if="formValues.bargePumpingRateEndTime"></span> -->
             <div class="form_input form_input_pumping_end">
-                <div class="input-group " ng-class="field.disabled ? 'disabled' : ''" id="pumpingEndDP">
-                    <span ng-init="CM.setValue({
-                        path: 'formValues.bargePumpingRateEndTime',
-                        root: '$scope',
-                        pickerId: 'bargePumpingRateEndTime'
-                    }, 1)" ng-if="formValues.bargePumpingRateEndTime"></span>
-
-                    <!-- manual input -->
-                    <input class="formatted-date-input date-time" 
-                    ng-model="formatDates.formValues.bargePumpingRateEndTime" 
-                    ng-change="CM.setValue({
-                        path: 'formValues.bargePumpingRateEndTime',
-                        root: '$scope',
-                        pickerId: 'bargePumpingRateEndTime'
-                    }, 2)" 
-                    ng-focus="inputFocus['bargePumpingRateEndTime'] = true; $event.stopPropagation(); event = $event" ng-blur="inputFocus['bargePumpingRateEndTime'] = false;" ng-invalid="{{ CM.invalidDate['bargePumpingRateEndTime'] && !inputFocus['bargePumpingRateEndTime'] && CM.overrideInvalidDate['bargePumpingRateEndTime'] }}" name="bargePumpingRateEndTime">
-                   
-                    <span class="input-group-btn date-picker datetime-picker date form_meridian_datetime" id="bargePumpingRateEndTime">
-                        <!-- datepicker input -->
-                        <input class="form-control hidden-form-input" type="text" id="pumpingEnd" ng-model="formValues.bargePumpingRateEndTime" ng-min="formValues.bargePumpingRateStartTime" ng-change=" CM.setValue({
-                            path: 'formValues.bargePumpingRateEndTime',
-                            root: '$scope',
-                            pickerId: 'bargePumpingRateEndTime'
-                        }, 1); triggerChangeFields('pumpingEnd','pumpingEnd'); formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime); calculatePumpingRate(formValues.pumpingDuration,0);" visibility="hidden"/>
-                        <button class="btn default date-set" type="button">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                <div class="input-group w100">
+                    <input
+                        ng-model="formValues.bargePumpingRateEndTime" 
+                        ng-disabled="field.disabled"
+                        name="bargePumpingRateEndTime"
+                        id="bargePumpingRateEndTime"
+                        new-date-picker
+                        picker-type="datetime"
+                        class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -250,45 +167,21 @@
     </div>
 
     <!-- delivery date -->
-    <div class="col-md-4" ng-init="CM.datepickers(null, null, 'date'); CM.initValidityForDate('deliveryDate')">
+    <div class="col-md-4">
         <div class="form-group row">
             <label for="deliveryDate" class="delivery_date_label">
                 {{ CM.app_id + '.DELIVERY_DATE' | translate }}
             </label>
             <div class="form_input form_input_delivery_date">
-                <div class="input-group " ng-class="field.disabled ? 'disabled' : ''" id="analysed_on">
-                    <span ng-init="CM.setValue({
-                        path: 'formValues.deliveryDate',
-                        root: '$scope',
-                        pickerId: 'deliveryDate'
-                    }, 1, true, 'delivery')" ng-if="formValues.deliveryDate"></span>
-
-                    <!-- manual input -->
-                     <input class="date-only formatted-date-input"
-                        ng-style="!CM.isEditable && {'background-color': '#eef1f5 !important'}"
-                        ng-model="formatDates.formValues.deliveryDate" 
-                        ng-change="CM.setValue({
-                            path: 'formValues.deliveryDate',
-                            root: '$scope',
-                            pickerId: 'deliveryDate'
-                        }, 2, true)" 
-                        ng-focus="inputFocus['deliveryDate'] = true; $event.stopPropagation(); event = $event"
-                        ng-blur="inputFocus['deliveryDate'] = false;"
-                        ng-invalid="{{ CM.invalidDate['deliveryDate'] && !inputFocus['deliveryDate'] && CM.overrideInvalidDate['deliveryDate'] }}"
+                <div class="input-group w100">
+                    <input
+                        ng-model="formValues.deliveryDate" 
                         ng-disabled="!CM.isEditable"
-                        name="deliveryDate">
-
-                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" id="deliveryDate">
-                        <!-- datepicker input -->
-                        <input class="form-control hidden-form-input" type="text" id="deliveryDate" ng-model="formValues.deliveryDate" name="deliveryDate" ng-disabled="!CM.isEditable" ng-change="CM.setValue({
-                            path: 'formValues.deliveryDate',
-                            root: '$scope',
-                            pickerId: 'deliveryDate'
-                        }, 1, true, 'delivery')"/>
-                        <button class="btn default date-set" type="button" ng-disabled="!CM.isEditable">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                        name="deliveryDate"
+                        id="deliveryDate"
+                        new-date-picker
+                        picker-type="datetime"
+                        class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -302,7 +195,7 @@
 
 <div class="row">
     <!-- bdn date -->
-    <div class="col-md-4" ng-init="CM.datepickers(null, null, 'date'); CM.initValidityForDate('bdnDate')"">
+    <div class="col-md-4">
         <div class="form-group row">
             <label for="bdnDate" class="bdn_date_label">
                 {{ CM.app_id + '.BDN_DATE' | translate }}
@@ -311,40 +204,15 @@
 		        </span>
             </label>
             <div class="form_input form_input_bdn_date">
-                <div class="input-group " ng-class="field.disabled ? 'disabled' : ''" id="bdnDate" name="bdnDate">
-                    <span ng-init="CM.setValue({
-                        path: 'formValues.bdnDate',
-                        root: '$scope',
-                        pickerId: 'bdnDate'
-                    }, 1, true, 'delivery')" ng-if="formValues.bdnDate"></span>
-
-                     <!-- manual input -->
-                     <input class="date-only formatted-date-input"
-                        ng-style="!CM.isEditable && {'background-color': '#eef1f5 !important'}"
-                        ng-model="formatDates.formValues.bdnDate" 
-                        ng-blur="CM.setValue({
-                            path: 'formValues.bdnDate',
-                            root: '$scope',
-                            pickerId: 'bdnDate'
-                        }, 2, true)" 
-                        ng-focus="inputFocus['bdnDate'] = true; $event.stopPropagation(); event = $event" 
-                        ng-blur="inputFocus['bdnDate'] = false;"
-                        ng-invalid="{{ CM.invalidDate['bdnDate'] && !inputFocus['bdnDate'] && CM.overrideInvalidDate['bdnDate'] }}"
+                <div class="input-group w100">
+                    <input
+                        ng-model="formValues.bdnDate" 
                         ng-disabled="!CM.isEditable"
-                        name="bdnDate">
-                   
-                    <!-- <span class="formatted-date" ng-bind="CM.formatSimpleDate(formValues.bdnDate, tenantSetting.tenantFormats.dateFormat)" ng-disabled="!CM.isEditable"></span> -->
-                    <span class="input-group-btn date-picker date form_meridian_datetime" ng-disabled="!CM.isEditable" ng-disabled="!CM.isEditable" id="bdnDate">
-                        <!-- datepicker input -->
-                        <input class="form-control hidden-form-input" type="text" id="bdnDate" ng-model="formValues.bdnDate" ng-required="true" ng-disabled="!CM.isEditable" ng-change="CM.setValue({
-                            path: 'formValues.bdnDate',
-                            root: '$scope',
-                            pickerId: 'bdnDate'
-                        }, 1, true, 'delivery'); triggerChangeFields('bdnDate','bdnDate');" ng-disabled="!CM.isEditable" name="bdnDate" visibility="hidden"/>
-                        <button class="btn default date-set" type="button" ng-disabled="!CM.isEditable">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
+                        name="bdnDate"
+                        id="bdnDate"
+                        new-date-picker
+                        picker-type="datetime"
+                        class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
                     {{ field.Description }}

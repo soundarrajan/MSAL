@@ -233,15 +233,6 @@ angular.module("shiptech.components").controller("FiltersController", [
             if (noSlide != true) ctrl.hideSidebar();
         };
 
-        $scope.formatSimpleDate = function(date) {
-            dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
-            if (date) {
-                return moment.utc(date).format(dateFormat);
-            }
-            return;
-        };
-
         $scope.formatHeaders = function(data) {
             $(".colMenu")
                 .parent()
@@ -403,7 +394,6 @@ angular.module("shiptech.components").controller("FiltersController", [
             	$scope.$apply();
 
             })
-            $scope.datepickers();
         };
         $scope.packFilters = function(data) {
             if (!data) data = [];
@@ -564,25 +554,6 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.packedFilters = [];
         });
   
-        $scope.datepickers = function() {
-            setTimeout(function() {
-                $(".date-time-picker").datetimepicker({
-                    showMeridian: "true",
-                    autoclose: true,
-                    format: "yyyy-mm-ddThh:ii:ssZ",
-                    pickerPosition: "bottom-left"
-                });
-                $(".date-picker").datepicker({
-                    autoclose: true,
-                    format: "yyyy-mm-dd",
-                    pickerPosition: "bottom-left"
-                });
-            }, 100);
-        };
-        ctrl.datepickers = function() {
-        	$scope.datepickers();
-        }
-
         $scope.formatDate = function(elem, dateFormat) {
             // console.log(1)
             if (elem) {
@@ -869,12 +840,6 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.applyFilters($rootScope.rawFilters);
         };
 
-        $scope.clearValues = function(column, key) {
-            $scope.columnFilters[column][key]["value"] = [];
-            $(".column-filter-item-"+column+"-"+key+" .date-picker.formatted-date-button").datepicker('setDate', null)
-            $(".column-filter-item-"+column+"-"+key+" .formatted-date-input").val("");
-        };
-
         $scope.setDefaultConditionType = function(column, key){
             // console.log($scope.columnFilters[column][key]);
             // debugger;
@@ -894,126 +859,6 @@ angular.module("shiptech.components").controller("FiltersController", [
 		            }
 		        }
             }
-        }
-
-        // date inputs
-        $scope.initMask = function(timeout){
-
-            // var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptions();
-            // filters use custom format set on //window.tenantFormatsDateFormat;
-            // get processed formats based on that one from Factory_App_Dates_Processing
-            var DATE_OPTIONS = Factory_App_Dates_Processing.getDateOptionsForFilters();
-        
-            // mask options
-            var options =  {
-                onKeyPress: function(value, e, field, options) {
-                    // select formatter
-                    var formatUsed = "";
-                    if(field.hasClass('date-only')){
-                        formatUsed  = DATE_OPTIONS.momentFormatDateOnly;
-                    }else{
-                        formatUsed  = DATE_OPTIONS.momentFormat;
-                    }
-                    // process date
-                    var val = moment(value, formatUsed, true);
-                    // test date validity
-                    if($scope.invalidDate === undefined) $scope.invalidDate = {};
-                    if(val.isValid()){
-                        $scope.invalidDate[field[0].name] = false;
-                    }else{
-                        $scope.invalidDate[field[0].name] = true;
-                    }
-                }
-            }
-            // end mask options
-    
-            // ACTUAL MASK INITIALIZATION
-            function init(){
-                var dateTime = $('.formatted-date-input.date-time');
-                $.each(dateTime, function(key){
-                    $(dateTime[key]).mask(DATE_OPTIONS.maskFormat, options);
-                })
-                var dateOnly = $('.formatted-date-input.date-only');
-                $.each(dateOnly, function(key){
-                    $(dateOnly[key]).mask(DATE_OPTIONS.maskFormatDateOnly, options);
-                })
-
-                if($scope.formatDates === undefined) $scope.formatDates = {};
-            }
-            if(timeout){
-                setTimeout(init,2000);
-            }else{
-                init();
-            }
-            // END ACTUAL MASK INITIALIZATION
-        }
-        $scope.setValue = function(inputDetails, direction, simpleDate, app){
-            
-            /** See @param inputDetails
-            /**     @param direction
-            /**     @param simpleDate
-            /**     @param app
-             *   explained in controller_master
-             */
-
-
-            var DATE_FORMAT = $scope.tenantSettings.tenantFormats.dateFormat;
-    
-            var rootMap = {
-                '$scope': $scope,
-                '$rootScope': $rootScope,
-                '$ctrl': ctrl
-            }
-            
-            if (!ctrl.overrideInvalidDate) {
-                ctrl.overrideInvalidDate = {}
-            }
-            ctrl.overrideInvalidDate[inputDetails.pickerId] = true;
-
-            if(direction == 1){
-                // datepicker input -> date typing input
-                _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, null); 
-                $timeout(function() {
-                    if(simpleDate){
-                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = Factory_App_Dates_Processing.formatSimpleDate(dateValue, DATE_FORMAT, app);
-                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-                    } else{
-                        var dateValue = _.get(rootMap[inputDetails.root],inputDetails.path);
-                        var formattedDate = Factory_App_Dates_Processing.formatDateTime(dateValue, DATE_FORMAT, inputDetails.fieldId);
-                        _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, formattedDate); 
-                    }
-                     $('[ng-model*="formatDates.'+inputDetails.path+'"]').removeClass("invalid")
-                });
-            }
-            if(direction == 2){
-                // date typing input -> datepicker input 
-                $timeout(function() { 
-                    var date = _.get(rootMap[inputDetails.root], "formatDates." +  inputDetails.path);
-                    var copy = angular.copy(date);
-                    var formattedDate = Factory_App_Dates_Processing.formatDateTimeReverse(copy, simpleDate);
-                    _.set(rootMap[inputDetails.root], inputDetails.path, formattedDate); 
-    
-                    // also change datepicker value
-                    console.log('.date-picker#' + inputDetails.pickerId);
-                    $('.date-picker#' + inputDetails.pickerId).datepicker('setDate', new Date(formattedDate));
-                    ctrl.overrideInvalidDate[inputDetails.pickerId] = false;
-                });
-            }
-        }
-
-        $scope.initModelValue = function(inputDetails){
-            var rootMap = {
-                '$scope': $scope,
-                '$rootScope': $rootScope,
-                '$ctrl': ctrl
-            }
-     
-            $timeout(function() {
-                _.set(rootMap[inputDetails.root], "formatDates." + inputDetails.path, ""); 
-                console.log($scope.formatDates);
-            });
-
         }
 
         $scope.enableDisableDeleteLayout = function(isDisabled){

@@ -1,18 +1,20 @@
 ﻿<span ng-if="!formValues.leaves" ng-init="formValues.leaves=[{}]"></span>
 <div class="row" ng-repeat="(key, value) in formValues.leaves">
     <div class="col-md-4">
-        <label for="user_leave_from" class = "user_leave_from_label"   >
+        <label for="user_leave_from" class="user_leave_from_label">
             Leave From
         </label>
-        <div class="form_input form_input_leaves" ng-init="CM.datepickers()">
+        <div class="form_input form_input_leaves">
             <div class="input-group date-picker date form_meridian_datetime">
-                <input class="form-control" type="text" ng-model="formValues.leaves[key].from"   ng-required='field.Required' id="user_leave_from"/>
-                <span class="formatted-date"  ng-bind="CM.formatDate(formValues.leaves[{{ key }}].from, '{{ field.Parse }}')"></span>
-                <span class="input-group-btn">
-                    <a class="btn default date-set" type="button">
-                        <i class="fa fa-calendar"></i>
-                    </a>
-                </span>
+                <input
+                    ng-model="formValues.leaves[key].from"
+                    name="user_leave_from"
+                    id="user_leave_from"
+                    type="text"
+                    ng-required='field.Required'
+                    new-date-picker
+                    picker-type="date"
+                    class="form-control date-mask new-date-picker">
             </div>
         </div>
     </div>
@@ -20,15 +22,17 @@
         <label for="user_leave_to" class="user_leave_to_label">
             Leave To
         </label>
-        <div class="form_input form_input_leaves" ng-init="CM.datepickers()">
+        <div class="form_input form_input_leaves">
             <div class="input-group date-picker date form_meridian_datetime">
-                <input class="form-control" type="text" ng-model="formValues.leaves[key].to"   ng-required='field.Required' id="user_leave_to"/>
-                <span class="formatted-date"  ng-bind="CM.formatDate(formValues.leaves[{{ key }}].to, '{{ field.Parse }}')"></span>
-                <span class="input-group-btn">
-                    <a class="btn default date-set" type="button">
-                        <i class="fa fa-calendar"></i>
-                    </a>
-                </span>
+                <input
+                    ng-model="formValues.leaves[key].to"
+                    name="user_leave_to"
+                    id="user_leave_to"
+                    type="text"
+                    ng-required='field.Required'
+                    new-date-picker
+                    picker-type="date"
+                    class="form-control date-mask new-date-picker">
             </div>
         </div>
     </div>
