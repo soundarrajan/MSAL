@@ -2179,6 +2179,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             'type="text" ' +
                             'new-date-picker ' +
                             'picker-type="date" ' + 
+                            'ng-change="CLC.checkChange(' + entityId + ');" ' +
                             'ng-model="CLC.changedfields[\'' + entityId + '\'][\'' + name + '\']" ' +
                             'name="clc_' + entityId + '_' + name + '" ' + 
                             'id="clc_' + entityId + '_' + name + '"> ';
@@ -2254,16 +2255,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             	vm.paymentDateHistory[currentRow.id].accountancyDate = null;
             }      
 
-            if (vm.treasuryDateHasChanged) {
-            	vm.treasuryDateHasChanged = false;	
-	            if (vm.paymentDateHistory[currentRow.id].paymentDate == changedData.paymentDate && vm.paymentDateHistory[currentRow.id].accountancyDate == changedData.accountancyDate) {
-	            	return;
-	            } else {
-	            	payload.HasManualPaymentDate = true;
-	                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
-	                vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
-	            }
-            }      
+            if (vm.paymentDateHistory[currentRow.id].paymentDate == changedData.paymentDate && vm.paymentDateHistory[currentRow.id].accountancyDate == changedData.accountancyDate) {
+            	return;
+            } else {
+            	payload.HasManualPaymentDate = true;
+                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
+                vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
+            }
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
                     // toastr.success("Saved successfully");
