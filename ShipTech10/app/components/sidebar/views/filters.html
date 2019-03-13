@@ -96,9 +96,8 @@
 
 
                                             <div class="form_group no-label" ng-if="globalFilters[key].column.columnType == 'Date'">
-                                                <div class="between" class="date-picker input-group pull=left" style="margin-right:1%; padding: 15px;">
+                                                <div class="between" class="date-picker input-group pull=left" style="padding: 15px; padding-left: 0;">
                                                     <input
-                                                        style="width: 97%"
                                                         ng-model="globalFilters[key].value[0]" 
                                                         name="{{ 'globalFilters' + key }}_0"
                                                         id="{{ 'globalFilters' + key }}_0"
@@ -109,9 +108,8 @@
                                                 </div>
 
 
-                                                <div class="between" class="date-picker input-group pull=left" style="margin-right:1%; padding: 15px;">
+                                                <div class="between" class="date-picker input-group pull=left" style="padding: 15px;">
                                                     <input
-                                                        style="width: 97%;"
                                                         ng-model="globalFilters[key].value[1]" 
                                                         name="{{ 'globalFilters' + key }}_1"
                                                         id="{{ 'globalFilters' + key }}_1"
@@ -125,14 +123,13 @@
                                         <span ng-switch-when="1">
                                             <div class="form_input no-label">
                                                 <!-- ng-disabled="value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Request Product Status'" -->
-                                                <div ng-if="globalFilters[key].column.columnType != 'Date'" >
+                                                <div ng-if="globalFilters[key].column.columnType != 'Date'">
 
                                                     <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
                                                 </div>
 
-                                                <div ng-if="globalFilters[key].column.columnType == 'Date'" class="input-group" style="padding-left: 14px;">
+                                                <div ng-if="globalFilters[key].column.columnType == 'Date'" class="input-group" style="padding: 15px; padding-left: 0;">
                                                     <input
-                                                        style="width: 97%"
                                                         ng-model="globalFilters[key].value[0]" 
                                                         name="{{ 'globalFilters' + key }}_0"
                                                         id="{{ 'globalFilters' + key }}_0"
