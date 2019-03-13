@@ -4791,7 +4791,9 @@ ctrl.setProductData = function(data, loc) {
                         }
                     }
                 } else {
-                    foundNoValidTco = true;
+                	if (correctProduct) {
+	                    foundNoValidTco = true;
+                	}
                 }
             });
             if (ctrl.includeAverageSurveyorCharge) {
