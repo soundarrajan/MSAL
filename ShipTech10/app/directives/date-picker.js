@@ -188,6 +188,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                     }
                 });
 
+
+                if (ngModel.$viewValue && $('#' + dateInputId).data("DateTimePicker")) {
+                    $('#' + dateInputId).data("DateTimePicker").date(moment.utc(ngModel.$viewValue));
+                    prevValue = moment.utc(ngModel.$viewValue).format(currentFormat);
+                    mask.value = moment.utc(ngModel.$viewValue).format(currentFormat);
+                }
+
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (v && $('#' + dateInputId).data("DateTimePicker")) {
                         $('#' + dateInputId).data("DateTimePicker").date(moment.utc(v));

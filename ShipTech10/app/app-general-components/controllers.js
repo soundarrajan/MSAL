@@ -2177,6 +2177,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 // datepicker
                 tpl += '<input class="form-control date-mask new-date-picker" ' +
                             'type="text" ' +
+                            'ng-required="true" ' +
                             'new-date-picker ' +
                             'picker-type="date" ' + 
                             'ng-change="CLC.checkChange(' + entityId + ');" ' +
