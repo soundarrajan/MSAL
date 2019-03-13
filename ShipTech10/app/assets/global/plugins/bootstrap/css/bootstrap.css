@@ -2714,7 +2714,7 @@ select[multiple].input-lg,
     vertical-align: middle; }
   .form-inline .form-control {
     display: inline-block;
-    width: auto;
+    /*width: auto;*/
     vertical-align: middle; }
   .form-inline .form-control-static {
     display: inline-block; }

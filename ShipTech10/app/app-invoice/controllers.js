@@ -1408,11 +1408,15 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 	                    $rootScope.additionalCostsComponentTypes = response.data.payload;
 	                    console.log(response);
                         $scope.additionalCostsComponentTypes = response.data.payload;
-	                    callback($scope.additionalCostsComponentTypes);
+                        if (callback) {
+		                    callback($scope.additionalCostsComponentTypes);
+                        }
 	                });
 		    	}
             } else {
-                callback($scope.additionalCostsComponentTypes);
+				if (callback) {
+					callback($scope.additionalCostsComponentTypes);
+				}
             }
         };
 
@@ -1605,6 +1609,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 		return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
 	}
 
+	vm.getAdditionalCostsComponentTypes();
     $scope.initInvoiceScreen = function() {
 		vm.getAdditionalCostsComponentTypes();
         if(!$scope.formValues.paymentDate) {
