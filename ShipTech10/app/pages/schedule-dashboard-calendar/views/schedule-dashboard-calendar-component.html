@@ -9,7 +9,7 @@
         			<div class="filterCondition" ng-repeat="filter in appFilters" style="padding: 5px;">
         				<span style="margin-right: 5px;" ng-if="$index !== 0"> or </span>
         				{{ filter.displayName }}
-        				<span class="filterVal"> {{ filter.conditionName }} {{ !filter.Values[1] ? filter.Values[0] : filter.Values[0] + " - " + filter.Values[1] }} </span>
+        				<span class="filterVal"> {{ filter.conditionName }} {{ !filter.Values[1] ? $ctrl.convertDate(filter.Values[0]).split(" ")[0] : $ctrl.convertDate(filter.Values[0]).split(" ")[0] + " - " + $ctrl.convertDate(filter.Values[1]).split(" ")[0] }} </span>
         			</div>
         		</div>
         	</div>

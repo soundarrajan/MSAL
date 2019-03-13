@@ -2439,6 +2439,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         }
 
         function calculateProductRecon() {
+        	if (!product.invoiceRateCurrency || !product.estimatedRateCurrency) {
+        		return false;
+        	}
         	if (!product.invoiceRateCurrency.id || !product.estimatedRateCurrency.id) {
         		return false;
         	}

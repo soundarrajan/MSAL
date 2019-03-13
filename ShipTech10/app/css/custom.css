@@ -4422,3 +4422,8 @@ table#new_order_products td {
 .new-date-picker {
     display: none !important;
 }
+
+.bootstrap-datetimepicker-widget .datepicker {
+	background: #fff;
+    /*box-shadow: 5px 5px rgba(102, 102, 102, 0.1);	*/
+}

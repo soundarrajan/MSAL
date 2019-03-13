@@ -59,7 +59,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
 
             var prevValue = null;
 
-            currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
+            var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
             // currentFormat = 'dd/MMM/yyyy HH:mm';
 
             if (attrs['pickerType'] == 'date') {

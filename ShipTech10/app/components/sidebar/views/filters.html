@@ -81,7 +81,7 @@
                             </div>
                             <!-- {{$ctrl.filter_conditions }} -->
                             <!-- value -->
-                            <div ng-class="globalFilters[key].column.columnType == 'Date' ? 'col-sm-12' ? 'col-sm-4'">
+                            <div ng-class="globalFilters[key].column.columnType == 'Date' ? 'col-sm-12' : 'col-sm-4'">
                                 <div class="form_input">
                                     <span ng-switch="globalFilters[key].condition.conditionNrOfValues">
                                         <span ng-switch-when="2">

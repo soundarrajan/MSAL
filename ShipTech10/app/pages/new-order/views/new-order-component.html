@@ -302,13 +302,10 @@
                                             <form ng-if="$ctrl.vesselDetailsFields.OrderDate.visible" class="col-md-4 form-inline text-right"> 
 
                                                 <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">
-                                                    <input class="form-control" required st-date-format st-date-format only-date="true" readonly ng-model="$ctrl.data.orderDate"
-                                                    />
-                                                    <span class="input-group-btn">
-                                                        <button class="btn date-set" type="button">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </button>
-                                                    </span>
+                                                    <!-- <input class="form-control" picker-type="date" id="orderDate" name="orderDate" new-date-picker disabled ng-model="$ctrl.data.orderDate"
+                                                    /> -->
+													<input ng-model="$ctrl.data.orderDate" name="orderDate" id="orderDate" new-date-picker picker-type="date" class="form-control date-mask new-date-picker"> 
+
                                                 </div>
                                             </form>
                                         </div>

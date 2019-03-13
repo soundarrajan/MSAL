@@ -2808,11 +2808,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 $timeout(function(){
                     switch(inputName){
                         case 'eta':
-                            ctrl.data.deliveryDate = ctrl.data.eta; 
-                            ctrl.isRecentETA ? ctrl.data.recentEta = ctrl.data.eta : '';
+                            ctrl.data.deliveryDate = angular.copy(ctrl.data.eta); 
+                            ctrl.isRecentETA ? ctrl.data.recentEta = angular.copy(ctrl.data.eta) : '';
                             break;
                         case 'recentEta': 
-                            ctrl.data.deliveryDate = ctrl.data.recentEta;
+                            ctrl.data.deliveryDate = angular.copy(ctrl.data.recentEta);
                             break;
                     }
                 },1);   
