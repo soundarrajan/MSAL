@@ -500,7 +500,11 @@ var Cfg = {
                         if (v.condition.conditionNrOfValues == 2) {
                             value = v.value[0] + " - " + v.value[1];
                         } else {
-                            value = v.value;
+                            if (typeof(v.value) == 'object') {
+                                value = v.value[0];
+                            } else {
+                                value = v.value;
+                            }
                         }
                         condition = v.condition.conditionName;
                     } else {
