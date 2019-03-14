@@ -475,8 +475,9 @@
 											<span ng-if="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id">
 												<input class="form-control" disabled ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].product.name"/>
 											</span>
+
                                             <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id)" 
-                                            ng-options="product as product.product.name for product in location.products | filter: {productStatus:{name: '!Stemmed'}}" 
+                                            ng-options="product as product.product.name for product in location.products | filter: {productStatus:{name: '!Stemmed'}} | filterNoQuoteProducts" 
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]" 
                                             ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);" 
                                             class="form-control" 

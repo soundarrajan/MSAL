@@ -2255,3 +2255,16 @@ angular.module('shiptech.pages').component('supplierPortal', {
         bladeinfo: '<',
     }
 });
+
+
+angular.module('shiptech.pages').filter('filterNoQuoteProducts', function () {
+    return function (items) {
+        var filtered = [];
+        angular.forEach(items, function (item) {
+        	if (!item.sellers[0].offers[0].hasNoQuote) {
+	            filtered.push(item);
+        	}
+        });
+        return filtered;        
+    }
+});
