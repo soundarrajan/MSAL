@@ -7,7 +7,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                 YYYY: {
                     mask: IMask.MaskedRange,
                     from: 1970,
-                    to: 2030
+                    to: 3000
                 },
                 MM: {
                     mask: IMask.MaskedRange,
@@ -95,7 +95,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                         pattern: currentFormat,
                         // lazy: false,
                         min: new Date(1970, 0, 1),
-                        max: new Date(2030, 0, 1),
+                        max: new Date(3000, 0, 1),
                         blocks: BLOCKS,
                         format: function (date) {
                             return moment.utc(date).format(currentFormat);
@@ -195,7 +195,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                 if (ngModel.$viewValue && $('#' + dateInputId).data("DateTimePicker")) {
                     $('#' + dateInputId).data("DateTimePicker").date(moment.utc(ngModel.$viewValue));
                     prevValue = moment.utc(ngModel.$viewValue).format(currentFormat);
-                  
+                  	
                 }
 
                 scope.$watch(attrs['ngModel'], function(v) {
