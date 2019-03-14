@@ -308,6 +308,14 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
         	// console.log(data);
         });        
 
+        $scope.isContractInFormulaScreen = function(){
+        	if ($(".formulaMaster").length > 0) {
+	        	if (angular.element($(".formulaMaster")).scope().formValues.contractId) {
+	        		return angular.element($(".formulaMaster")).scope().formValues.contractId
+	        	}
+        	}
+        	return false;
+        }
 
     }
 ]);

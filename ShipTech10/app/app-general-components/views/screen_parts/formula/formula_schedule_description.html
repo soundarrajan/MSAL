@@ -8,7 +8,7 @@
                 </span>
             </label>
             <div class="form_input form_input_formula_description">
-                <input type="text" class="form-control " name="formula_description" id="formula_description" ng-model="formValues.name"  ng-trim="false"/>
+                <input type="text" class="form-control {{formValues.contractId ? ' bg-green-sharp font-white ' : ' '}}" name="formula_description" id="formula_description" ng-model="formValues.name"  ng-trim="false"/>
             </div>
         </div>
     </div>
