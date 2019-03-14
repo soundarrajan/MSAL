@@ -579,7 +579,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 var forms_validation = validateForms();
                 if (forms_validation !== null) {
                     toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                    ctrl.initMask(); // reinit mask for date inputs
+                    // ctrl.initMask(); // reinit mask for date inputs
                     return false;
                 }
                 ctrl.buttonsDisabled = true;

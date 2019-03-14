@@ -4423,7 +4423,13 @@ table#new_order_products td {
 }
 
 .new-date-picker {
-    display: none !important;
+    /*display: none !important;*/
+    display: block !important;
+    z-index: 1 !important;
+    position: absolute !important;
+    background: none;
+    pointer-events: none;    
+	color: transparent;
 }
 
 .bootstrap-datetimepicker-widget {
