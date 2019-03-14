@@ -6,7 +6,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
             var BLOCKS = {
                 YYYY: {
                     mask: IMask.MaskedRange,
-                    from: 1970,
+                    from: 1753,
                     to: 3000
                 },
                 MM: {
@@ -94,7 +94,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                         mask: Date,
                         pattern: currentFormat,
                         // lazy: false,
-                        min: new Date(1970, 0, 1),
+                        min: new Date(1753, 0, 1),
                         max: new Date(3000, 0, 1),
                         blocks: BLOCKS,
                         format: function (date) {

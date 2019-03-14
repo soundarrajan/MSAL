@@ -215,6 +215,9 @@ angular.module("shiptech.components").controller("FiltersController", [
                             if (["eta", "etb"].indexOf(v.column.columnValue.toLowerCase()) < 0) {
                                 v.column.dateType = "server";
                             }
+                            if (v.column.columnValue.toLowerCase().indexOf("created") != -1 || v.column.columnValue.toLowerCase().indexOf("modified") != -1) {
+                                v.column.dateType = "subtractTimezone";
+                            }
                         }
                     });
                 }
