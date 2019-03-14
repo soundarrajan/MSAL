@@ -188,11 +188,14 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                     }
                 });
 
+                // if (ngModel.$viewValue) {
+                // }
+                // mask.value = moment(ngModel.$viewValue, "YYYY-MM-DDTHH:mm:ss").add(moment().utcOffset(), 'minutes').format(currentFormat);
 
                 if (ngModel.$viewValue && $('#' + dateInputId).data("DateTimePicker")) {
                     $('#' + dateInputId).data("DateTimePicker").date(moment.utc(ngModel.$viewValue));
                     prevValue = moment.utc(ngModel.$viewValue).format(currentFormat);
-                    mask.value = moment.utc(ngModel.$viewValue).format(currentFormat);
+                  
                 }
 
                 scope.$watch(attrs['ngModel'], function(v) {
