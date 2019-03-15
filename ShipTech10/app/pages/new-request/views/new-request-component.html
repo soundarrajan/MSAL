@@ -691,17 +691,16 @@
 	                                                    {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
 	                                                </label>
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="Delivery From" readonly="" disabled id="id_delivery_from" class="form-control" ng-model="location.deliveryFrom" st-date-format ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" ng-required="true" ng-disabled="$ctrl.disableAllFields">
-	                                                         <!-- date-before="{{ location.deliveryTo }}" -->
-	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm">
-	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-	                                                                <i class="fa fa-calendar"></i>
-	                                                            </button>
-	                                                        </span>
-	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
-	                                                            <i class="glyphicon glyphicon-calendar"></i>
-	                                                        </span>
+	                                                    <div class="input-group col-md-8">
+	                                                        <input 
+	                                                        name="Delivery From" 
+	                                                        id="id_delivery_from" 
+	                                                        class="form-control date-mask new-date-picker" 
+	                                                        ng-model="location.deliveryFrom"
+	                                                        ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" 
+                                                            new-date-picker
+	                                                        ng-required="true" 
+	                                                        ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
 	                                                </div>
 	                                            </div>
@@ -713,15 +712,16 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group date form_meridian_datetime col-md-8">
-	                                                        <input name="Delivery To" readonly="" disabled id="id_delivery_to" class="form-control" ng-model="location.deliveryTo" st-date-format ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" ng-required="true" ng-disabled="$ctrl.disableAllFields">
-	                                                        <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm" >
-	                                                            <button class="btn btn-sm date-set" type="button" ng-disabled="$ctrl.disableAllFields">
-	                                                                <i class="fa fa-calendar"></i>
-	                                                            </button>
-	                                                        </span>
-	                                                        <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm" ng-disabled="$ctrl.disableAllFields">
-	                                                            <i class="glyphicon glyphicon-calendar"></i>
-	                                                        </span>
+	                                                        <input 
+	                                                        name="Delivery To" 
+	                                                        readonly="" 
+	                                                        disabled id="id_delivery_to" 
+	                                                        class="form-control date-mask new-date-picker" 
+	                                                        ng-model="location.deliveryTo" 
+	                                                        ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" 
+                                                            new-date-picker
+	                                                        ng-required="true" 
+	                                                        ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
 	                                                </div>
 	                                            </div>
