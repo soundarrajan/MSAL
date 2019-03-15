@@ -13,35 +13,37 @@
         <div class="col-xs-10">
             <div class="row">
                 <span ng-init="CM.selectedProduct = 0;"></span>
-                <div class="col-xs-6 col-md-3" ng-repeat="product in formValues.deliveryProducts track by $index" ng-show="$index >= start1 && $index < end1+start1" >
-	                <span ng-if="formValues.temp.deliverysummary.products" ng-init="initGetConversionInfo(product.product.id, $index); orderProductsByProductType('deliveryProducts')"></span>
-	                <div class="product_tab" ng-click="CM.selectedProduct = $index; formValues.temp.savedProdForCheck = product.product" ng-class="CM.selectedProduct == $index ? 'selected' : ''">
-	                    <div class="row">
-	                        <div class="col-xs-12">
-		                    	<span ng-repeat="(key, delProd) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'">
-		                    		<span ng-if="delProd.id == product.orderProductId">
-		                    			{{key+1}} - 
-		                    		</span>
-		                    	</span>
-                                <span><b>{{product.product.name}}</b></span>
-                                 <button class="remove-button-style" ng-click="deleteDeliveryProduct(product.id, $index); $event.stopPropagation()">
-                                    <span class="close"><i class="fa fa-times" aria-hidden="true"></i></span>
-                                </button>
-                            </div>
-                            <div class="col-xs-12">
-                                <span>{{ CM.app_id + '.PRODUCT_TYPE' | translate }}:</span>
-	                            <span ng-bind="getProductTypeById(product.productTypeId)"></span>
-	                        </div>
-	                        <div class="col-xs-12">
-	                            <span>{{ CM.app_id + '.ORDER_NUMBER' | translate }}:</span>
-	                            <span>{{formValues.order.name}}</span>
-	                        </div>
-	                        <div class="col-xs-12">
-	                            <span>{{ CM.app_id + '.ORDER_QUANTITY' | translate }}:</span>
-	                            <span>{{product.orderedQtyFromOrder = getDeliveryProductQuantityAmountFromSummary('qty',product.orderProductId)}}</span>
-                                <span>{{product.orderedQtyFromOrderUom = getDeliveryProductQuantityAmountFromSummary('uom',product.orderProductId)}}</span>
-	                        </div>
-	                    </div>
+                <div class="deliveryProductsList">
+	                <div class="col-xs-6 col-md-3" ng-repeat="product in formValues.deliveryProducts track by $index" ng-show="$index >= start1 && $index < end1+start1" >
+		                <span ng-if="formValues.temp.deliverysummary.products" ng-init="initGetConversionInfo(product.product.id, $index); orderProductsByProductType('deliveryProducts')"></span>
+		                <div class="product_tab" ng-click="CM.selectedProduct = $index; formValues.temp.savedProdForCheck = product.product" ng-class="CM.selectedProduct == $index ? 'selected' : ''">
+		                    <div class="row">
+		                        <div class="col-xs-12">
+			                    	<span ng-repeat="(key, delProd) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'">
+			                    		<span ng-if="delProd.id == product.orderProductId">
+			                    			{{key+1}} - 
+			                    		</span>
+			                    	</span>
+	                                <span><b>{{product.product.name}}</b></span>
+	                                 <button class="remove-button-style" ng-click="deleteDeliveryProduct(product.id, $index); $event.stopPropagation()">
+	                                    <span class="close"><i class="fa fa-times" aria-hidden="true"></i></span>
+	                                </button>
+	                            </div>
+	                            <div class="col-xs-12">
+	                                <span>{{ CM.app_id + '.PRODUCT_TYPE' | translate }}:</span>
+		                            <span ng-bind="getProductTypeById(product.productTypeId)"></span>
+		                        </div>
+		                        <div class="col-xs-12">
+		                            <span>{{ CM.app_id + '.ORDER_NUMBER' | translate }}:</span>
+		                            <span>{{formValues.order.name}}</span>
+		                        </div>
+		                        <div class="col-xs-12">
+		                            <span>{{ CM.app_id + '.ORDER_QUANTITY' | translate }}:</span>
+		                            <span>{{product.orderedQtyFromOrder = getDeliveryProductQuantityAmountFromSummary('qty',product.orderProductId)}}</span>
+	                                <span>{{product.orderedQtyFromOrderUom = getDeliveryProductQuantityAmountFromSummary('uom',product.orderProductId)}}</span>
+		                        </div>
+		                    </div>
+		                </div>
 	                </div>
                 </div>
             </div>
