@@ -77,7 +77,7 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
             }
 
 
-            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn") {
+            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate") {
                 if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1) {
                 } else {
                     colmodel[key].formatter = CLC.get_formatter("formatDate");
@@ -93,11 +93,13 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
 	            }
 
             }
-            if (obj.name == "claimDate" || obj.name == "orderDate" || obj.name == "requestDate" || obj.name == "date" || obj.name == "quoteDate" || obj.name == "validTo" || obj.name == "validFrom" || (obj.name.indexOf("Date") > -1) || (obj.name.indexOf("date") > -1)) {
+            if (obj.name == "claimDate" || obj.name == "orderDate" || /*obj.name == "requestDate" ||*/ obj.name == "date" || obj.name == "quoteDate" || obj.name == "validTo" || obj.name == "validFrom" || (obj.name.indexOf("Date") > -1) || (obj.name.indexOf("date") > -1)) {
                 if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1) {
                 } else {
                     if (obj.label == "Date (UTC)" || obj.label == "Due Date" || obj.label == "Working Due Date" || obj.label == "Seller Due Date" || obj.label == "Order Date") {
                         colmodel[key].formatter = CLC.get_formatter("formatDateUtc");
+                    } else if(obj.name == 'requestDate') {
+	                    colmodel[key].formatter = CLC.get_formatter("formatDate");
                     } else {
                         colmodel[key].formatter = CLC.get_formatter("formatOnlyDate");
                     }

@@ -1,4 +1,4 @@
-angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$injector', '$tenantSettings', function($window, $injector, $tenantSettings) {
+angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$window', '$injector', '$tenantSettings', '$stateParams', function(tenantModel, $window, $injector, $tenantSettings, $stateParams) {
     return {
         require: '^ngModel',
         restrict: 'A',
@@ -58,8 +58,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
             }
 
             var prevValue = null;
+            if (attrs.screenType === 'supplierPortal') {
+            	tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
+	            var currentFormat = tenantService.tenantFormats.dateFormat.name;
+            } else {
+	            var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
+            }
 
-            var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
             // currentFormat = 'dd/MMM/yyyy HH:mm';
 
             if (attrs['pickerType'] == 'date') {

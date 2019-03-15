@@ -851,8 +851,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-                    dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
-                    formattedDate = $filter("date")(cellValue, dateFormat);
+                    dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                    formattedDate = moment.utc(cellValue).add(moment().utcOffset(), 'minutes').format(dateFormat);
                     if (options.label == "ETA" || options.label == "ETB" || options.label == "ETD") {
                         formattedDate = $filter("date")(cellValue, dateFormat, 'UTC');
                     }

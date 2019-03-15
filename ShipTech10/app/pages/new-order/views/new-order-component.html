@@ -753,17 +753,14 @@
                                                             {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
                                                         </label>
                                                         <div class="input-group form_input form_input_deliveryDate">
-                                                            <div class="input-group date form_meridian_datetime">
-                                                                <input name="{{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}" ng-model="$ctrl.data.deliveryFrom" readonly="" class="form-control"
-                                                                    st-date-format ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}">
-                                                                <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm">
-                                                                    <button class="btn btn-sm date-set" type="button">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </button>
-                                                                </span>
-                                                                <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm">
-                                                                    <i class="glyphicon glyphicon-calendar"></i>
-                                                                </span>
+                                                            <div class="input-group w100">
+			                                               <input
+			                                                    ng-model="$ctrl.data.deliveryFrom" 
+			                                                    name="deliveryFrom"
+			                                                    id="deliveryFrom"
+			                                                    new-date-picker
+			                                                    ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}"
+			                                                    class="form-control date-mask new-date-picker"> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -774,17 +771,14 @@
                                                             {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
                                                         </label>
                                                         <div class="input-group form_input form_input_deliveryDate">
-                                                            <div class="input-group date form_meridian_datetime">
-                                                                <input name="{{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}" ng-model="$ctrl.data.deliveryTo" readonly="" class="form-control"
-                                                                    st-date-format ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}">
-                                                                <span class="input-group-btn" ng-show="!$ctrl.isReadonlyForm">
-                                                                    <button class="btn btn-sm date-set" type="button">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </button>
-                                                                </span>
-                                                                <span class="input-group-addon" ng-show="$ctrl.isReadonlyForm">
-                                                                    <i class="glyphicon glyphicon-calendar"></i>
-                                                                </span>
+                                                            <div class="input-group w100">
+			                                               <input
+			                                                    ng-model="$ctrl.data.deliveryTo" 
+			                                                    name="deliveryTo"
+			                                                    id="deliveryTo"
+			                                                    new-date-picker
+			                                                    ng-class="{'etb_invalid': $ctrl.data.deliveryTo > $ctrl.data.deliveryTo}"
+			                                                    class="form-control date-mask new-date-picker"> 
                                                             </div>
                                                         </div>
                                                     </div>
