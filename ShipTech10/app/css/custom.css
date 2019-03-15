@@ -4427,7 +4427,7 @@ table#new_order_products td {
     display: block !important;
     z-index: 1 !important;
     position: absolute !important;
-    background: none;
+    background: none !important;
     pointer-events: none;    
 	color: transparent;
 }

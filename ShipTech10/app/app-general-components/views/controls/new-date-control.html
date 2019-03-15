@@ -24,12 +24,14 @@
                 ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)'
                 ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"
                 ng-class="field.Disabled == true ? 'bg-grey' : '' "
+                default-today="{{field.DefaultToday}}"
                 new-date-picker
                 picker-type="date">
         </div>
-
+	
         <span class="help-block">
             {{ field.Description }}
         </span>
     </div>
 </div>
+

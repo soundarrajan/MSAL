@@ -127,6 +127,16 @@ angular.module('shiptech.pages').directive('newDatePicker', ['$window', '$inject
                         maskTyping = false;
                     }
                 });
+                if (attrs["defaultToday"] == "true") {
+                	value = moment();
+                	scope.$apply(function() {
+                        ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
+                        ngModel.$commitViewValue();
+                        maskTyping = false;
+                        mask.value = moment.utc(value).format(currentFormat);
+                        $(element).removeClass('invalid');
+                    });
+                }
 
                 $(element).on('focus', function(e) {
                     $(element).removeClass('focusedOut');

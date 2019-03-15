@@ -3453,6 +3453,9 @@ APP_MASTERS.controller("Controller_Master", [
         $scope.isVisible = function(id) {
             return $("#" + id).is(":visible");
         };
+        $scope.isParentVisible = function(id) {
+            return $("#" + id).parent().is(":visible");
+        };
         $scope.fVal = function(id) {
             return $scope;
         };
