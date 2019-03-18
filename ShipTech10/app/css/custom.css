@@ -4427,6 +4427,22 @@ table#new_order_products td {
     border-left: 1px solid #c2cad8; 
 }
 
+.time-picker-icon {
+    position: absolute;
+    /* pointer-events: none */;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    width: 35px;
+    right: 0;
+    top: 0;
+    color: #325187;
+    height: 33px;
+    border-left: 1px solid #c2cad8; 
+    cursor: pointer;
+}
+
 .new-date-picker {
     /*display: none !important;*/
     display: block !important;
@@ -4445,5 +4461,45 @@ table#new_order_products td {
 .bootstrap-datetimepicker-widget > * {
 	background: #fff;
     box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
-    /*box-shadow: 5px 5px rgba(102, 102, 102, 0.1);	*/
+}
+
+.custom-time-picker-row {
+    display: flex;
+    justify-content: space-between;
+    width: 310px;
+}
+
+.custom-time-picker-cell {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.custom-time-picker-cell:hover {
+    background: #e6eaec;
+}
+
+.time-picker-container {
+    position: absolute;
+    width: 335px;
+    padding: 15px;
+    box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
+    border: 1px solid rgba(102, 102, 102, 0.1);
+    background: white;
+    z-index: 999999;
+    text-align: center;
+}
+
+.custom-time-picker-header {
+    font-size: 1.3em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(102, 102, 102, 0.1);
+}
+
+.picker-switch.accordion-toggle {
+    display: none;
 }

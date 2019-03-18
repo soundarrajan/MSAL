@@ -65,8 +65,6 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 	            var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
             }
 
-            // currentFormat = 'dd/MMM/yyyy HH:mm';
-
             if (attrs['pickerType'] == 'date') {
                 currentFormat = currentFormat.split(' ')[0];
             }
@@ -76,7 +74,41 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
             var dateInputId = attrs['id'] + '_dateinput';
             var dateInput = '<input type="text" class="form-control" id="' + dateInputId + '">';
-            var dateIcon = '<i class="fa fa-calendar date-picker-icon"></i>';
+            var dateIcon = '<i class="fa fa-calendar date-picker-icon"';
+
+            if (attrs['pickerType'] == 'datetime') {
+                dateIcon += ' style="right: 35px;"></i>';
+            } else {
+                dateIcon += '></i>';
+            }
+
+            if (attrs['pickerType'] == 'datetime') {
+                var timeIcon = '<i class="fa fa-clock-o time-picker-icon" id="' + dateInputId + '_timeicon"></i>';
+
+                var timeTpl = '<div class="time-picker-container" id="' + dateInputId + '_time">';
+
+                timeTpl += '<div class="custom-time-picker-header"> Hour </div><div class="custom-time-picker-row">';
+
+                for (var i = 0; i < 24; i++) {
+                    timeTpl += '<span class="' + dateInputId + '_hour custom-time-picker-cell">' + String(i) + ' </span>';
+                    if ((i + 1) % 12 == 0) {
+                        timeTpl += '</div><div class="custom-time-picker-row">';
+                    }
+                }
+
+                timeTpl += '</div>';
+
+                timeTpl += '<div class="custom-time-picker-header"> Minute </div><div class="custom-time-picker-row">';
+
+                for (var i = 0; i < 60; i++) {
+                    timeTpl += '<span class="' + dateInputId + '_minute custom-time-picker-cell">' + String(i) + ' </span>';
+                    if ((i + 1) % 12 == 0) {
+                        timeTpl += '</div><div class="custom-time-picker-row">';
+                    }
+                }
+
+                timeTpl += '</div>';
+            }
 
             var maskTyping = false;
             var element = null;
@@ -90,7 +122,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     if (attrs['noIcon']) {
                         $('#' + attrs['id']).after(dateInput);
                     } else {
-                        $('#' + attrs['id']).after(dateInput).after(dateIcon);
+                        if (attrs['pickerType'] == 'datetime') {
+                            $('#' + attrs['id']).after(dateInput).after(dateIcon).after(timeIcon);
+                        } else {
+                            $('#' + attrs['id']).after(dateInput).after(dateIcon);
+                        }
                     }
 
                     element = document.getElementById(dateInputId);
@@ -126,12 +162,49 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     widgetParent: $('.page-container')
                 });
 
+                if (attrs['pickerType'] == 'datetime') {
+                    $('#' + dateInputId + '_timeicon').click(function() {
+                        if (!mask.value) {
+                            return;
+                        }
+                        $('.page-container').append(timeTpl);
+                        $('#' + dateInputId + '_time').css($('#' + dateInputId).offset());
+
+                        $('.' + dateInputId + '_minute').click(function() {
+                            if (mask.value) {
+                                newVal = moment.utc(mask.value, currentFormat, true).minute(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') + '+00:00';
+                                ngModel.$setViewValue(newVal);
+                                ngModel.$commitViewValue();
+                                mask.value = moment.utc(newVal).format(currentFormat);
+                                $('#' + dateInputId + '_time').remove();
+                            }
+                        });
+                        $('.' + dateInputId + '_hour').click(function() {
+                            if (mask.value) {
+                                newVal = moment.utc(mask.value, currentFormat, true).hour(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') + '+00:00';
+                                ngModel.$setViewValue(newVal);
+                                ngModel.$commitViewValue();
+                                mask.value = moment.utc(newVal).format(currentFormat);
+                                $('#' + dateInputId + '_time').remove();
+                            }
+                        });
+                    });
+                }
+
+                $('body').click(function(e) {
+                    if ($(e.target).closest('#' + dateInputId + '_time').length === 0 &&
+                        $(e.target).closest('#' + dateInputId + '_timeicon').length === 0 ) {
+                            $('#' + dateInputId + '_time').remove();
+                    }
+                });
+
                 $('#' + dateInputId).on('dp.change', function(e) {
                     if (moment(e.oldDate).format(currentFormat) != moment(e.date).format(currentFormat)) {
                         mask.value = moment(e.date).format(currentFormat);
                         maskTyping = false;
                     }
                 });
+
                 if (attrs["defaultToday"] == "true") {
                 	value = moment();
                 	scope.$apply(function() {
