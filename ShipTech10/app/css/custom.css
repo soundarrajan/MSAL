@@ -4411,6 +4411,9 @@ table#new_order_products td {
 	background: #fff;
 	border: 1px solid #c2cad8;
 }
+.treasury-datepicker-input input{
+    cursor: default;
+}
 
 .date-picker-icon {
     position: absolute;
