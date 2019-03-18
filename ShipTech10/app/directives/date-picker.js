@@ -222,12 +222,16 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 });
                 scope.$watch(attrs['ngDisabled'], function(v) {
                     if (v) {
-                        $('#' + dateInputId).attr('disabled', attrs['ngDisabled']);
+                        $('#' + dateInputId).attr('disabled', "disabled");
+                    } else {
+                        $('#' + dateInputId).removeAttr('disabled');
                     }
                 });
                 scope.$watch(attrs['ngRequired'], function(v) {
                     if (v) {
-                        $('#' + dateInputId).attr('required', attrs['ngRequired']);
+                        $('#' + dateInputId).attr('required', 'required');
+                    } else {
+                        $('#' + dateInputId).removeAttr('required');
                     }
                 });
                 /*

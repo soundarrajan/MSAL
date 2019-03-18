@@ -4407,6 +4407,11 @@ table#new_order_products td {
     }*/
 }
 
+.treasury-datepicker-input i.fa-calendar{
+	background: #fff;
+	border: 1px solid #c2cad8;
+}
+
 .date-picker-icon {
     position: absolute;
     pointer-events: none;

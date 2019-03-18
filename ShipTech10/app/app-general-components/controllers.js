@@ -2172,7 +2172,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 vm.changedfields[entityId][name] = cellValue;
         
                 // wrapper
-                tpl = '<div class="input-group clc-date-input date" style="max-width:90%" ' + 'id="clc_' + entityId + '_' + name + '">';
+                tpl = '<div style="position:relative" class="treasury-datepicker-input">';
+                tpl += '<div class="input-group clc-date-input date" style="max-width:90%" ' + 'id="clc_' + entityId + '_' + name + '">';
                        
                 // datepicker
                 tpl += '<input class="form-control date-mask new-date-picker" ' +
@@ -2186,6 +2187,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             'id="clc_' + entityId + '_' + name + '"> ';
 
                 // end wrapper
+                tpl += "</div>";
                 tpl += "</div>";
 
                 return tpl;
