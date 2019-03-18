@@ -694,7 +694,7 @@
 	                                                    <div class="input-group col-md-8">
 	                                                        <input 
 	                                                        name="Delivery From" 
-	                                                        id="id_delivery_from" 
+	                                                        id="id_delivery_from-{{$index}}" 
 	                                                        class="form-control date-mask new-date-picker" 
 	                                                        ng-model="location.deliveryFrom"
 	                                                        ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" 
@@ -715,7 +715,7 @@
 	                                                        <input 
 	                                                        name="Delivery To" 
 	                                                        readonly="" 
-	                                                        disabled id="id_delivery_to" 
+	                                                        disabled id="id_delivery_to-{{$index}}" 
 	                                                        class="form-control date-mask new-date-picker" 
 	                                                        ng-model="location.deliveryTo" 
 	                                                        ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" 
