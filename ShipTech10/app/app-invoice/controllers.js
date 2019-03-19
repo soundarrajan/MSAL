@@ -2744,7 +2744,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             if (rowData.costName) {
                 transaction_type = "cost";
             	rowData.product.productId = rowData.product.id
-                // rowData.product.id = rowData.deliveryProductId;
+                rowData.product.id = rowData.deliveryProductId;
                 transactionstobeinvoiced_dtRow = {
                     product: rowData.product,
                     costName: rowData.costName,
