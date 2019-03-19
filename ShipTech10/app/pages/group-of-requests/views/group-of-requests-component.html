@@ -260,7 +260,7 @@
                         <b>
                             Quote By
                         </b>
-                        <div class="input-group">
+                        <div class="input-group" style="width: 205px;">
                             <input
                                 ng-model="$ctrl.quoteByDateFrom"
                                 new-date-picker
@@ -271,7 +271,7 @@
                                 ng-change="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)">
                         </div>
 
-                        <div class="input-group" ng-if="$ctrl.isQuoteByEndDateValidated">
+                        <div class="input-group" style="width: 205px;" ng-if="$ctrl.isQuoteByEndDateValidated">
                             <input
                                 ng-model="$ctrl.quoteByDate"
                                 new-date-picker

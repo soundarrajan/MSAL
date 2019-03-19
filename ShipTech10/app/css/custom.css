@@ -4428,6 +4428,9 @@ table#new_order_products td {
     color: #325187;
     height: 33px;
     border-left: 1px solid #c2cad8; 
+    background: #fff;
+    border: 1px solid #c2cad8;
+    border-bottom: none;
 }
 
 .time-picker-icon {
@@ -4444,6 +4447,9 @@ table#new_order_products td {
     height: 33px;
     border-left: 1px solid #c2cad8; 
     cursor: pointer;
+    background: #fff;
+    border: 1px solid #c2cad8;
+    border-bottom: none;
 }
 
 .new-date-picker {

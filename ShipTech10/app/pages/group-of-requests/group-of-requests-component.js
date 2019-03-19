@@ -4784,8 +4784,8 @@ ctrl.setProductData = function(data, loc) {
                             foundNoValidTco = true;
                         }
                     } else {
-                        if (productOffer.totalAmount) {
-                            totalAmount += productOffer.totalAmount;
+                        if (productOffer.totalAmount || productOffer.hasNoQuote) {
+                            totalAmount += productOffer.totalAmount || 0;
                         } else {
                             foundNoValidTco = true;
                         }
