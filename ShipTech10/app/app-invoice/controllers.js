@@ -1835,9 +1835,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 						$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
 					}
 					$scope.formValues.workingDueDate = callback.data.workingDueDate;	
+                    /*
 					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
 					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
 					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
+                    */
 	        	}
 		    	// api/invoice/dueDateWithoutSave
 	        });
