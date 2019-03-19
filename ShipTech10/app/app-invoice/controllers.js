@@ -1712,6 +1712,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                                 };
                                 $scope.dtMasterSource.applyFor.push(element);
                             });
+                            for (var i = $scope.formValues.costDetails.length - 1; i >= 0; i--) {
+                            	// $scope.formValues[$scope.formValues.costDetails.i];
+                            	$scope.invoiceConvertUom('cost', i, $scope.formValues)
+                            }
                             // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
                         } else {
                             // toastr.error(callback.message);
@@ -2338,27 +2342,27 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             vm.old_costType = formValues.costDetails[currentRowIndex].costType;
             if (vm.old_product == -1) {
                 formValues.costDetails[currentRowIndex].isAllProductsCost = true;
-                if (typeof $scope.grid.appScope.fVal().dtMasterSource.applyFor == 'undefined') {
+                if (typeof $scope.dtMasterSource.applyFor == 'undefined') {
                     $http.post(API.BASE_URL_DATA_INVOICES + '/api/invoice/getApplicableProducts', {
                         "Payload": formValues.orderDetails.order.id
                     }).then(function successCallback(response) {
                         calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
                     });
                 } else {
-                    if (!$scope.grid.appScope.fVal().dtMasterSource.applyFor[1]) return;
-                    calculate(vm.old_cost, $scope.grid.appScope.fVal().dtMasterSource.applyFor[1].id, vm.old_costType)
+                    if (!$scope.dtMasterSource.applyFor[1]) return;
+                    calculate(vm.old_cost, $scope.dtMasterSource.applyFor[1].id, vm.old_costType)
                 }
             } else {
                 calculate(vm.old_cost, vm.old_product, vm.old_costType)
             }
 
             allCostApplyFor = 0;
-            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, function(k,v){
+            $.each($scope.dtMasterSource.applyFor, function(k,v){
             	if (v.name != "All") {
 		            allCostApplyFor += v.convertedFinalQuantityAmount;
             	}
             })
-            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, function(k,v){
+            $.each($scope.dtMasterSource.applyFor, function(k,v){
             	if (v.name == "All") {
             		v.convertedFinalQuantityAmount = allCostApplyFor;
             	}
