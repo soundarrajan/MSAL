@@ -53,15 +53,7 @@
                 {{ CM.app_id + '.TO' | translate }}
             </label>
             <div class="form_input form_input_pricing_schedule_to">
-                <input
-                    ng-model="formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter"
-                    name="pricing_schedule_days_before"
-                    id="pricing_schedule_days_before"
-                    class="form-control"
-                    type="text"
-                    new-date-picker
-                    picker-type="date"
-                    class="form-control date-mask new-date-picker">
+                <input class="form-control" type="text" id="pricing_schedule_days_before" ng-model="formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter"/>
             </div>
         </div>
     </div>
