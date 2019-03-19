@@ -185,7 +185,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                                 ngModel.$setViewValue(newVal);
                                 ngModel.$commitViewValue();
                                 mask.value = moment.utc(newVal).format(currentFormat);
-                                $('#' + dateInputId + '_time').remove();
+                                // $('#' + dateInputId + '_time').remove();
                             }
                         });
                     });
