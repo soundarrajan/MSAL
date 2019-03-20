@@ -322,6 +322,10 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 mask.on('complete', function() {
                     maskTyping = false;
                 });
+
+                if (parseInt($(element).css('width').split('px')[0]) < 190) {
+                    $('#' + dateInputId).css('font-size', '0.9em');
+                }
             });
         }
     };

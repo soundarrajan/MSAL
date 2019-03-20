@@ -4516,7 +4516,7 @@ table#new_order_products td {
 .form-control {
     padding: 0;
     padding-left: 5px;
-    font-size: 0.9em;
+    /* font-size: 0.9em; */
 }
 
 input[id^="_dateinput"] {

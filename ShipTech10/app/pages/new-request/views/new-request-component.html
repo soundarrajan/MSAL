@@ -280,7 +280,7 @@
 							    Charterer Name
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="chartererName" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
 							    </div>
 							</div>
@@ -292,7 +292,7 @@
 							    Delivery Date
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="delivery" readonly="" disabled class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.delivery">
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
@@ -307,7 +307,7 @@
 							    Expiry Date
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="expiry" readonly="" disabled class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.expiry" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
@@ -367,7 +367,7 @@
 							    Latest Redelivery Port
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="redeliveryLocation" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
                                     <span class="input-group-addon bg-grey-steel disabled"  ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_location', 'Select Latest Redelivery Port', '', '', '', 'ports', $ctrl.vesselCharteredDetails.redeliveryLocation.name)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                         <!-- procurement_bunkerableport -->
@@ -392,7 +392,7 @@
 							    ROB Date
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDate" st-date-format >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
@@ -409,7 +409,7 @@
 							    ROB HSFO on Delivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robHsfoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robHsfoDeliveryUom.name}}
@@ -424,7 +424,7 @@
 							    ROB LSFO on Delivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robLsfoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robLsfoDeliveryUom.name}}
@@ -439,7 +439,7 @@
 							   ROB DO/GO on Delivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDoGoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robDoGoDeliveryUom.name}}
@@ -454,7 +454,7 @@
 							   ROB HSFO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robHsfoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robHsfoRedeliveryUom.name}}
@@ -469,7 +469,7 @@
 							    ROB LSFO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robLsfoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robLsfoRedeliveryUom.name}}
@@ -484,7 +484,7 @@
 							    ROB DO/GO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-7">
+							    <div class="input-group col-sm-10">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDoGoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robDoGoRedeliveryUom.name}}
