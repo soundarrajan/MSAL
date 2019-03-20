@@ -262,7 +262,7 @@
         <div class="col-md-12 no-padding-left" ng-hide="visible_sections.indexOf('order_details') < 0">
             <div class="portlet light stretch-vertical">
                 <div class="row">
-                    <div class="col-sm-9">
+                    <div class="col-sm-12 col-md-9">
                         <div class="row">
                             <div class="portlet light">
                                 <div class="portlet-title">
@@ -803,7 +803,7 @@
 
 
 											<div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-4 col-sm-12">
                                                     <div class="form-group row" ng-if="$ctrl.vesselDetailsFields.ExchangeRate.visible">
 
                                                         <!-- exchange rate -->
@@ -818,7 +818,7 @@
                                                         </div>
                                                     </div>
                                                 </div> 												
-												<div ng-if="$ctrl.portFields.comments.visible" class="col-md-4" style="float:right">
+												<div ng-if="$ctrl.portFields.comments.visible" class="col-md-4 col-sm-12" style="float:right">
                                                     <div class="form-group row">
                                                         <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label">
                                                         	 <!-- Comment -->
@@ -832,7 +832,7 @@
                                                 </div>
 											</div>
 											<div class="row">
-										        <div ng-if="$ctrl.portFields.comments.visible" class="col-md-4" style="float:right">
+										        <div ng-if="$ctrl.portFields.comments.visible" class="col-md-4 col-sm-12" style="float:right">
 										            <div class="form-group row">
 										                <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label">
 										                	 <!-- Comment -->
@@ -855,7 +855,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3 no-padding-right no-padding-left pull-right" id="order-order-summary" ng-hide="visible_sections.indexOf('order_details') < 0"
+                    <div class="col-md-3 col-sm-11 no-padding-right no-padding-left pull-right" id="order-order-summary" ng-hide="visible_sections.indexOf('order_details') < 0"
                         style="height: calc(100% - 30px); right: 20px;">
                         <div class="portlet light stretch-vertical" style="background: #eeeeee;">
                             <div class="portlet-title">

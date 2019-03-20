@@ -593,7 +593,7 @@
                                               
                                                     <!-- disabled ETA -->
 	                                                <div class="form-group-sm00" ng-if="!$ctrl.etaEnabled[locationIdx]">
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
 		                                                	<input class="form-control" disabled readonly="" disabled type="text" ng-model="location.eta" name="{{ $ctrl.productInfoFields.Eta.name }}" st-date-format>
 		                                                </div>
 	                                                </div>
@@ -601,7 +601,7 @@
                                                     
                                                     <!-- enabled ETA -->
 	                                                <div class="form-group-sm00" ng-if="$ctrl.etaEnabled[locationIdx]">
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
                                                             <input
                                                                 ng-model="$ctrl.request.locations[locationIdx].eta" 
                                                                 ng-disabled="$ctrl.disableAllFields"
@@ -622,7 +622,7 @@
 	                                                    {{ $ctrl.productInfoFields.Etb.caption | translate }}
 	                                                </label>
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
                                                             <input
                                                                 ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                                 ng-model="$ctrl.request.locations[locationIdx].etb" 
@@ -643,7 +643,7 @@
 	                                                    {{ $ctrl.productInfoFields.Etd.caption | translate }}
 	                                                </label>
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group  col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
                                                             <input
                                                                 ng-class="{'invalid': location.etb > location.etd}"
                                                                 ng-model="$ctrl.request.locations[locationIdx].etd" 
@@ -668,7 +668,7 @@
 	                                                </label>
 
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
                                                             <input
                                                                 ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                                 ng-model="$ctrl.request.locations[locationIdx].recentEta" 
@@ -691,7 +691,7 @@
 	                                                    {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
 	                                                </label>
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
 	                                                        <input 
 	                                                        name="Delivery From" 
 	                                                        id="id_delivery_from-{{$index}}" 
@@ -711,7 +711,7 @@
 	                                                    {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
 	                                                </label>
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group date form_meridian_datetime col-md-8">
+	                                                    <div class="input-group date form_meridian_datetime col-md-8 col-sm-12">
 	                                                        <input 
 	                                                        name="Delivery To" 
 	                                                        readonly="" 
@@ -735,7 +735,7 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 	                                                    <!-- <span ng-if="location.destination" ng-init="location.destination = location.destination"></span> -->
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
 	                                                    	 <!-- {{location.destination}} -->
 	                                                        <input name="{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" id="id_{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" class="typeahead form-control" ng-model="location.destination" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue)" typeahead-on-select="$ctrl.selectDestinationPort($item, locationIdx)" typeahead-editable="false" ng-model-options="{ allowInvalid: false, debounce: 100 }" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" data-origina-title="{{ location.destination.name }}" ng-disabled="$ctrl.disableAllFields">
 	                                                        
@@ -754,7 +754,7 @@
 	                                                </label>
 	                                                <!-- <pre>{{location.buyer}}</pre> -->
 	                                                <div class="form-group-sm00">
-	                                                    <div class="input-group col-md-8">
+	                                                    <div class="input-group col-md-8 col-sm-12">
 	                                                        <input name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in options.Buyer | filter:$viewValue | limitTo:5" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)"   ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
 
 	                                                      <!--   <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.setDialogType($ctrl.productInfoFields.Buyer.name, location)" href="#lookup_dialog" ng-class="{'disabled' : $ctrl.isReadonlyForm}"> -->
@@ -773,14 +773,14 @@
 	                                                </label>
 	                                                <div class="form-group-sm00">
 
-	                                                    <div class="input-group col-md-8" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Lookup'">
+	                                                    <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Lookup'">
 	                                                        <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | filter:{name:$viewValue} | limitTo:5" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields">
 	                                                      <!--   <span class="input-group-addon" data-toggle="modal" href="#agents" ng-click="$ctrl.agentLocationIdx = $index;" ng-class="{'disabled' : $ctrl.isReadonlyForm}"> -->
 	                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_agentlist', 'Select Agent', '$ctrl.location[' + $index + '].agent' ,'','', $$ctrl.productInfoFields.Agent.name)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-search"></i>
 	                                                        </span>
 	                                                    </div>
-	                                                    <div class="input-group col-md-8" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Free text'">
+	                                                    <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Free text'">
 	                                                        <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" ng-model="location.agentCounterpartyFreeText" ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
 	                                                </div>
@@ -795,7 +795,7 @@
 						                            	{{ $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate }} 
 						                            </label>
 						                            <div class="form-group-sm00">
-						                                <div class="input-group col-md-8">
+						                                <div class="input-group col-md-8 col-sm-12">
 						                                    <input ng-disabled="$ctrl.disableAllFields" name="Location {{$index+1}} {{$ctrl.tenantSettings.serviceDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | filter:$viewValue | limitTo:5" typeahead-on-select="$ctrl.selectServiceInLocation($item.id, $index)" typeahead-editable="false" class="typeahead form-control" ng-model="location.service.name" required>
 						                          <!--           <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.setDialogType($ctrl.vesselDetailsFields.ServiceCode.name); $ctrl.serviceInLocationIndex = $index" href="#lookup_dialog" ng-class="{'disabled' : $ctrl.isReadonlyForm}"> -->
 
@@ -814,7 +814,7 @@
 						                                {{ $ctrl.tenantSettings.companyDisplayName.name | translate }}
 						                            </label>
 						                            <div class="form-group-sm00">
-						                                <div class="input-group col-md-8">
+						                                <div class="input-group col-md-8 col-sm-12">
 						                                    <input name="Location {{$index+1}} {{$ctrl.tenantSettings.companyDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in options.Company | filter:$viewValue | limitTo:5" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="location.company.name" ng-disabled="$ctrl.disableAllFields">
 						                                  <!--   <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.setDialogType($ctrl.vesselDetailsFields.Company.name); $ctrl.companyInLocationIndex = $index" href="#lookup_dialog" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
 						                                        <i class="fa fa-search"></i>

@@ -77,7 +77,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             var dateIcon = '<i class="fa fa-calendar date-picker-icon"';
 
             if (attrs['pickerType'] == 'datetime') {
-                dateIcon += ' style="right: 24px;"></i>';
+                dateIcon += ' style="right: 34px;"></i>';
             } else {
                 dateIcon += '></i>';
             }

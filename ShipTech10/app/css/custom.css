@@ -4422,7 +4422,7 @@ table#new_order_products td {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    width: 25px;
+    width: 35px;
     right: 0;
     top: 0;
     color: #325187;
@@ -4440,7 +4440,7 @@ table#new_order_products td {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    width: 25px;
+    width: 35px;
     right: 0;
     top: 0;
     color: #325187;
@@ -4523,7 +4523,7 @@ input[id^="_dateinput"] {
     text-spacing: -0.6px;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 999px) {
     .form-group {
         display: flex;
         flex-direction: column;
@@ -4540,4 +4540,22 @@ input[id^="_dateinput"] {
     .form_input_comment {
         padding-left: 0 !important;
     }
+
+    .multi_lookup_tags {
+        position: relative !important;
+        left: 0 !important;
+    }
+
+    .portlet.light {
+        height: auto !important;
+    }
+
+    .form_input_productQuantityRequired {
+        margin-top: -25px !important;
+    }
+
+    .form-group input[class^="_label"] {
+        width: 100% !important;
+    }
+
 }
