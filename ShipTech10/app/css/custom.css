@@ -4522,3 +4522,22 @@ table#new_order_products td {
 input[id^="_dateinput"] {
     text-spacing: -0.6px;
 }
+
+@media (max-width: 1279px) {
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .control-label {
+        padding-left: 0;
+    }
+
+    .form_input {
+        width: 100% !important;
+    }
+
+    .form_input_comment {
+        padding-left: 0 !important;
+    }
+}
