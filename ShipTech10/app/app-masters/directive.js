@@ -103,18 +103,27 @@
                     $scope.list = angular.copy($scope.dataset);
                     $scope.options = {};
                     $scope.selectedItems = {};
-                    if ($scope.datavalues.accessVessels && $scope.datavalues.accessBuyers && $scope.datavalues.accessCompanies) {
-                        dataSrcs = {
-                            'vessel_access': 'accessVessels',
-                            'buyer_access': 'accessBuyers',
-                            'company_access': 'accessCompanies'
-                        };
+                    dataSrcs = {
+                        'vessel_access': 'accessVessels',
+                        'buyer_access': 'accessBuyers',
+                        'company_access': 'accessCompanies'
+                    };
+                    if ($scope.datavalues[dataSrcs[$scope.datasrc]]) {
                         if ($scope.datavalues[dataSrcs[$scope.datasrc]].length > 0) {
                             $.each($scope.datavalues[dataSrcs[$scope.datasrc]], function(k, v) {
                                 findInObject(v);
                             })
+
+                            
                         }
                     }
+                        	// $scope.$apply(function(){
+	                        // 	$.each(dataSrcs, function(dataKey, dataVal){
+		                       //      $.each($scope.datavalues[dataVal], function(k, v) {
+		                       //          findInObject(v, $scope.datavalues[dataVal]);
+		                       //      })
+	                        // 	})
+                        	// })	
 
                     function findInObject(v, list) {
                         if (!list) {
