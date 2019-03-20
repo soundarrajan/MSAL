@@ -4422,7 +4422,7 @@ table#new_order_products td {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    width: 35px;
+    width: 25px;
     right: 0;
     top: 0;
     color: #325187;
@@ -4440,7 +4440,7 @@ table#new_order_products td {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    width: 35px;
+    width: 25px;
     right: 0;
     top: 0;
     color: #325187;
@@ -4511,4 +4511,14 @@ table#new_order_products td {
 
 .picker-switch.accordion-toggle {
     display: none;
+}
+
+.form-control {
+    padding: 0;
+    padding-left: 5px;
+    font-size: 0.9em;
+}
+
+input[id^="_dateinput"] {
+    text-spacing: -0.6px;
 }
