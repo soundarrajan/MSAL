@@ -164,7 +164,8 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                     }
                 } else {
                     if (localStorage.getItem(vm.app_id + vm.screen_id + "_copy")) {
-                        id = localStorage.getItem(vm.app_id + vm.screen_id + "_copy");
+                        id = angular.copy(localStorage.getItem(vm.app_id + vm.screen_id + "_copy"));
+                        localStorage.removeItem(vm.app_id + vm.screen_id + "_copy");
                         if (id > 0) {
                             $scope.copiedId = id;
                             
@@ -248,7 +249,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         })
                                     }                                    
                                     toastr.success("Entity copied");
-                                    localStorage.removeItem(vm.app_id + vm.screen_id + "_copy");
                                     $scope.$emit("formValues", $scope.formValues);
                                 }
                             });
