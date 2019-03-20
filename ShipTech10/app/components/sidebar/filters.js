@@ -430,6 +430,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                         var filter = {
                             columnValue: val.column.columnValue,
                             ColumnType: val.column.columnType,
+                            isComputedColumn: val.column.isComputedColumn,
                             ConditionValue: val.condition.conditionValue,
                             Values: _.toArray(val.value)
                         };
