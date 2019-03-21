@@ -31,7 +31,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             $rootScope.clc_loaded = false;
             // console.log(1)
             // $timeout(function () {
-            $state.reload();
+            setTimeout(function(){
+	            $state.reload();
+            })
             // }, 1000);
         });
 
