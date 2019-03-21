@@ -8,15 +8,15 @@
     <p></p>
     <ul>
         <li>
-            <a ng-click="columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue)">
+            <a ng-click="columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])">
                 <i class="fa fa-sort-alpha-asc"></i> Sort Ascending</a>
         </li>
         <li>
-            <a ng-click="columnSort(table, sortcol, 2,  columnFilters[column][0].column.sortColumnValue)">
+            <a ng-click="columnSort(table, sortcol, 2,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])">
                 <i class="fa fa-sort-alpha-desc"></i> Sort Descending</a>
         </li>
         <li>
-            <a ng-click="columnSort(table, sortcol, 0,  columnFilters[column][0].column.sortColumnValue)">
+            <a ng-click="columnSort(table, sortcol, 0,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])">
                 <i class="fa fa-random" aria-hidden="true"></i> Remove Sorting</a>
         </li>
     </ul>

@@ -785,7 +785,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                                 placement: "auto"
                             });
         };
-        $scope.columnSort = function(table, column, order, sortColumn) {
+        $scope.columnSort = function(table, column, order, sortColumn, columnObj) {
 
             if ($rootScope.sortList && $rootScope.sortList.length > 0) {
                 $.each($rootScope.sortList, function(k, v) {
@@ -807,9 +807,20 @@ angular.module("shiptech.components").controller("FiltersController", [
 
             if (order > 0) {
                 if (sortColumn) {
-                    $rootScope.sortList.push({ columnValue: sortColumn.replace(/\./g, "_").toLowerCase(), sortIndex: idx, sortParameter: order, col: column.replace(/\./g, "_").toLowerCase() });
+                    $rootScope.sortList.push({ 
+                    	columnValue: sortColumn.replace(/\./g, "_").toLowerCase(), 
+                    	sortIndex: idx, 
+                    	isComputedColumn: columnObj.column.isComputedColumn, 
+                    	sortParameter: order, 
+                    	col: column.replace(/\./g, "_").toLowerCase() 
+                    });
                 } else {
-                    $rootScope.sortList.push({ columnValue: column.replace(/\./g, "_").toLowerCase(), sortIndex: idx, sortParameter: order });
+                    $rootScope.sortList.push({ 
+                    	columnValue: column.replace(/\./g, "_").toLowerCase(), 
+                    	sortIndex: idx, 
+                    	isComputedColumn: columnObj.column.isComputedColumn, 
+                    	sortParameter: order 
+                    });
                 }
             }
 
