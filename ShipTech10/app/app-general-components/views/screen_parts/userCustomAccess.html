@@ -9,9 +9,9 @@
     </ul>
     <div class="tab-content" >
         <div class="tab-pane fade" ng-repeat="(key, value) in entities" id="tab_{{  value.id  }}" ng-class="$index == 0 ? 'active in ' : ''">
-			<!-- {{tabData[value.id]}} -->
-			<!-- {{formValues.id}} -->
-            <hierarchy-search dataset="tabData[value.id]" datasrc="value.id"  datavalues="formValues" screenid="CA.entity_id" ng-if="tabData[value.id] && formValues.id"></hierarchy-search>
+			<!-- {{tabData[value.id]}}
+			{{formValues.id}} -->
+            <hierarchy-search dataset="tabData[value.id]" datasrc="value.id"  datavalues="formValues" screenid="CA.entity_id" ng-if="(tabData[value.id] && formValues.id) || ( tabData[value.id] && CA.entity_id == '') "></hierarchy-search>
 <!-- {{formValues}} -->
         </div>
     </div>
