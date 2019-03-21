@@ -2055,7 +2055,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 additionalCost.disabledApplicableFor = false; 
             }
 
-            additionalCost = calculateAdditionalCostAmounts(additionalCost, getProductById(additionalCost.parentProductId));
+            // additionalCost = calculateAdditionalCostAmounts(additionalCost, getProductById(additionalCost.parentProductId));
             // console.log(additionalCost);
 
             // trigger change function
