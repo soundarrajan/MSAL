@@ -4514,13 +4514,18 @@ table#new_order_products td {
 }
 
 .form-control {
-    padding: 0;
+    /*padding: 0;*/
     padding-left: 5px;
     /* font-size: 0.9em; */
 }
 
 input[id^="_dateinput"] {
     text-spacing: -0.6px;
+}
+
+.input-group.disabled i.fa-calendar, .input-group.disabled i.fa-time {
+	background: #e6eaec;
+	color: #8093b5;
 }
 
 @media (max-width: 999px) {

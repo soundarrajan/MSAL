@@ -296,8 +296,10 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 scope.$watch(attrs['ngDisabled'], function(v) {
                     if (v) {
                         $('#' + dateInputId).attr('disabled', "disabled");
+                        $('#' + dateInputId).parent(".input-group").addClass('disabled');
                     } else {
                         $('#' + dateInputId).removeAttr('disabled');
+                        $('#' + dateInputId).parent(".input-group").removeClass('disabled');
                     }
                 });
                 scope.$watch(attrs['ngRequired'], function(v) {

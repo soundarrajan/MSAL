@@ -14,6 +14,7 @@
 
     <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
         <div class="input-group form_meridian_datetime w100" ng-class="field.disabled == true || $eval(field.Disabled) == true ? 'disabled' : ''">
+             <!-- {{field}} -->
             <input
                 class="form-control date-mask new-date-picker"
                 type="text"
@@ -22,7 +23,7 @@
                 dynamic-condition-type="{{ field.ConditionalType }}"
                 dynamic-model="'formValues.' + field.Unique_ID"
                 ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)'
-                ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"
+                ng-disabled="$eval(field.Disabled) == true || $eval(field.disabled) == true || field.Disabled == true || field.disabled == true ? true : false"
                 ng-class="field.Disabled == true ? 'bg-grey' : '' "
                 ng-change="triggerChangeFields(field.Name, field.Unique_ID)"
                 default-today="{{field.DefaultToday}}"
