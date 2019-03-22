@@ -10,3 +10,22 @@ npm install --save fs-extra
 https://github.com/checkly/puppeteer-examples
 https://github.com/GoogleChrome/puppeteer/tree/master/examples
 https://github.com/GoogleChromeLabs/puppeteer-examples
+
+
+Visual Studio Code
+launch.json example
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${file}",
+            "args": ["TestCases/Scenario_1.json"]
+        }
+    ]
+}
