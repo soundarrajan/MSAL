@@ -61,7 +61,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
         }
 
         function getPriceTimeline(requestId, productId, uomId) {
-            payload = {
+            var payload = {
                 "RequestId": requestId,
                 // "ProductId": productId,
                 "RequestProductId": productId,
@@ -205,14 +205,6 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
         }
 
         function confirmOfferView(productsIds, offerIds) {
-	        var payload = {
-	            "Order": null,
-	            "Filters": [],
-	            "Pagination": {
-	                "Skip": 0,
-	                "Take": 25
-	            }
-	        };
             var confirmPayload = angular.copy(payload);
             var request_data = payloadDataModel.create(confirmPayload);
             request_data.Payload.Filters.push({

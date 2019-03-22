@@ -91,7 +91,6 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
 
         ctrl.generateTimeline = function(request, product, uom, addlCost) {
         	// groupOfRequestsModel.getRequests();
-        	screenLoader.showLoader()
             groupOfRequestsModel.getPriceTimeline(request, product, uom).then(function(data) {
                 ctrl.timelineresults = data.payload.items.length;
                 if (ctrl.timelineresults > 0) {
@@ -143,8 +142,6 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
                 } else {
                     toastr.error('Price Timeline isn`t available for current selection')
                 }
-            },function(){
-            	screenLoader.hideLoader()
             });
         }
     }
