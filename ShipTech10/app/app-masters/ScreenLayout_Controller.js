@@ -111,6 +111,26 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 
          	}
 
+         	if (localStorage.getItem("reconQuantityDispute")) {
+
+	            var data = angular.copy(JSON.parse(localStorage.getItem("reconQuantityDispute")));
+                localStorage.removeItem('reconQuantityDispute');
+	            Factory_Master.raise_claim(data, function(response) {
+	                if (response) {
+	                    if (response.status == true) {
+	                        $scope.formValues = response.data;
+	                        localStorage.removeItem('reconQuantityDispute');
+	                        data = angular.fromJson(response);
+	                    } else {
+	                        $scope.loaded = true;
+	                        toastr.error(response.message);
+	                    }
+	                }
+	            })
+
+         	}
+
+
             vm.get_master_structure(screenChild);
             // console.log(screenChild);
             setTimeout(function() {

@@ -42,19 +42,20 @@ APP_RECON.controller('Controller_Recon', ['$scope', '$rootScope', '$Api_Service'
                 "DeliveryProductId": DeliveryProductId,
                 "ClaimTypeId": ClaimTypeId
             }
-            Factory_Master.raise_claim(data, function(response) {
-                if (response) {
-                    if (response.status == true) {
-                        $scope.loaded = true;
-                        toastr.success(response.message);
-                        localStorage.setItem('claimsclaims_newEntity', angular.toJson(response.data));
-                        window.open($location.$$absUrl.replace($location.$$path, '/claims/claim/edit/'), '_blank');
-                    } else {
-                        $scope.loaded = true;
-                        toastr.error(response.message);
-                    }
-                }
-            })
+            localStorage.setItem("reconQuantityDispute", JSON.stringify(data) );
+            window.open($location.$$absUrl.replace($location.$$path, '/claims/claim/edit/'), '_blank');
+            // Factory_Master.raise_claim(data, function(response) {
+            //     if (response) {
+            //         if (response.status == true) {
+            //             $scope.loaded = true;
+            //             toastr.success(response.message);
+            //             localStorage.setItem('claimsclaims_newEntity', angular.toJson(response.data));
+            //         } else {
+            //             $scope.loaded = true;
+            //             toastr.error(response.message);
+            //         }
+            //     }
+            // })
         } else {
             toastr.error("Please select one row in quantity table")
         }
