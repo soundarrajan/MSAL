@@ -1,0 +1,12 @@
+Getting started
+
+install nodejs
+npm i puppeteer
+npm install mssql
+npm install html2plaintext
+npm i --save csvtojson
+npm install --save fs-extra
+
+https://github.com/checkly/puppeteer-examples
+https://github.com/GoogleChrome/puppeteer/tree/master/examples
+https://github.com/GoogleChromeLabs/puppeteer-examples
