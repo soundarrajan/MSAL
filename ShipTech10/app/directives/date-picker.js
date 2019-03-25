@@ -164,7 +164,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 if (attrs['pickerType'] == 'datetime') {
                     $('#' + dateInputId + '_timeicon').click(function() {
-                        if (!mask.value) {
+                        if (!mask.value || attrs['ngDisabled']) {
                             return;
                         }
                         $('.page-container').append(timeTpl);
@@ -254,31 +254,8 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                                 reset();
                             }
                         }
-                        /*
-                        value = '';
-                        if (mask.value) {
-                            value = moment.utc(mask.value, currentFormat, true); 
-                        } else if ($('#' + dateInputId).data("DateTimePicker").date()) {
-                            value = $('#' + dateInputId).data("DateTimePicker").date();
-                        }
-                        if ((value && !prevValue) || (value && value.format(currentFormat) != prevValue)) {
-                        // if (value) {
-                            prevValue = value.format(currentFormat);
-                            scope.$apply(function() {
-                                ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
-                                ngModel.$commitViewValue();
-                                maskTyping = false;
-                                mask.value = moment.utc(value).format(currentFormat);
-                                $(element).removeClass('invalid');
-                            });
-                        }
-                        */
                     }
                 });
-
-                // if (ngModel.$viewValue) {
-                // }
-                // mask.value = moment(ngModel.$viewValue, "YYYY-MM-DDTHH:mm:ss").add(moment().utcOffset(), 'minutes').format(currentFormat);
 
                 if (ngModel.$viewValue && $('#' + dateInputId).data("DateTimePicker")) {
                     $('#' + dateInputId).data("DateTimePicker").date(moment.utc(ngModel.$viewValue));
@@ -297,9 +274,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     if (v) {
                         $('#' + dateInputId).attr('disabled', "disabled");
                         $('#' + dateInputId).parent(".input-group").addClass('disabled');
+                        $('#' + dateInputId + '_timeicon').addClass('disabled');
                     } else {
                         $('#' + dateInputId).removeAttr('disabled');
                         $('#' + dateInputId).parent(".input-group").removeClass('disabled');
+                        $('#' + dateInputId + '_timeicon').removeClass('disabled');
                     }
                 });
                 scope.$watch(attrs['ngRequired'], function(v) {

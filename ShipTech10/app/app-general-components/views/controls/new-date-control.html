@@ -28,7 +28,7 @@
                 ng-change="triggerChangeFields(field.Name, field.Unique_ID)"
                 default-today="{{field.DefaultToday}}"
                 new-date-picker
-                picker-type="date">
+                picker-type="{{ field.PickerType ? field.PickerType : 'date' }}">
         </div>
 	
         <span class="help-block">

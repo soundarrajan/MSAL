@@ -4452,6 +4452,10 @@ table#new_order_products td {
     border-bottom: none;
 }
 
+.time-picker-icon.disabled {
+    background-color: #e6eaec;
+}
+
 .new-date-picker {
     /*display: none !important;*/
     display: block !important;
