@@ -619,6 +619,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
         };
 
+        $scope.clearValues = function(column, key) {
+            $scope.columnFilters[column][key]["value"] = [];
+        };
+
         $scope.createAndUpdateFilterConfig = function(id, name, data, isDefault, menuZone, table) {
             //configuration must have at least one filter
             console.log($rootScope);
