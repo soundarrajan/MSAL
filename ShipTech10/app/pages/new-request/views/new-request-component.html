@@ -269,17 +269,17 @@
                 </span>
             </div>
 	    </div>
-        <div class="portlet-body">
+        <div class="portlet-body" style="padding: 15px;">
 
 			<!-- <span ng-if="$ctrl.request.vesselDetails.vessel.id" ng-init="$ctrl.selectVessel($ctrl.request.vesselDetails.vessel.id)"></span> -->
         	<form id="charteringDetails"  class="form-inline st-new-request-form collapse in" novalidate autocomplete="off">
         		<div class="row">
         			<div class="col-sm-4">
         				<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    Charterer Name
 							</label>
-							<div class="form-group-sm00" >
+							<div class="form-group-sm00">
 							    <div class="input-group col-sm-10">
 							        <input  name="chartererName" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
 							    </div>
@@ -288,7 +288,7 @@
         			</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    Delivery Date
 							</label>
 							<div class="form-group-sm00" >
@@ -303,7 +303,7 @@
 		        	</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    Expiry Date
 							</label>
 							<div class="form-group-sm00" >
@@ -316,13 +316,13 @@
 							</div>
 		        		</div>
                     </div>
-                    <div ng-if="$ctrl.vesselDetailsFields.EarliestRedeliveryDate.visible && ($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" class="col-md-4">
+                    <div ng-if="$ctrl.vesselDetailsFields.EarliestRedeliveryDate.visible && ($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" class="col-sm-4">
                         <div class="row">
-                            <label class="control-label col-md-5">
+                            <label class="control-label col-md-5" style="padding-left: 0;">
                                 {{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.caption | translate }}
                             </label>
                             <div class="form-group-sm00">
-                                <div class="input-group col-md-7">
+                                <div class="input-group col-sm-10">
                                     <input name="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.earliestRedeliveryDate" st-date-format disabled readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -331,13 +331,13 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="$ctrl.vesselDetailsFields.EstimatedRedeliveryDate.visible && ($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" class="col-md-4">
+                    <div ng-if="$ctrl.vesselDetailsFields.EstimatedRedeliveryDate.visible && ($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" class="col-sm-4">
                         <div class="row">
-                            <label class="control-label col-md-5">
+                            <label class="control-label col-md-5" style="padding-left: 0;">
                                 {{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.caption | translate }}
                             </label>
                             <div class="form-group-sm00">
-                                <div class="input-group col-md-7">
+                                <div class="input-group col-sm-10">
                                     <input name="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.estimatedRedeliveryDate" st-date-format readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -346,13 +346,13 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="$ctrl.vesselDetailsFields.LatestRedeliveryDate.visible && ($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" class="col-md-4">
+                    <div ng-if="$ctrl.vesselDetailsFields.LatestRedeliveryDate.visible && ($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" class="col-sm-4">
                         <div class="row">
-                            <label class="control-label col-md-5">
+                            <label class="control-label col-md-5" style="padding-left: 0;">
                                 {{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.caption | translate }}
                             </label>
                             <div class="form-group-sm00">
-                                <div class="input-group col-md-7">
+                                <div class="input-group col-sm-10">
                                     <input name="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.latestRedeliveryDate" st-date-format readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -363,10 +363,10 @@
                     </div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    Latest Redelivery Port
 							</label>
-							<div class="form-group-sm00" >
+							<div class="form-group-sm00">
 							    <div class="input-group col-sm-10">
 							        <input  name="redeliveryLocation" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
                                     <span class="input-group-addon bg-grey-steel disabled"  ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_location', 'Select Latest Redelivery Port', '', '', '', 'ports', $ctrl.vesselCharteredDetails.redeliveryLocation.name)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
@@ -388,7 +388,7 @@
        	        <div class="row">
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB Date
 							</label>
 							<div class="form-group-sm00" >
@@ -405,7 +405,7 @@
        	        <div class="row">
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB HSFO on Delivery
 							</label>
 							<div class="form-group-sm00" >
@@ -420,7 +420,7 @@
 		        	</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB LSFO on Delivery
 							</label>
 							<div class="form-group-sm00" >
@@ -435,7 +435,7 @@
 		        	</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							   ROB DO/GO on Delivery
 							</label>
 							<div class="form-group-sm00" >
@@ -450,7 +450,7 @@
 		        	</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							   ROB HSFO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
@@ -465,7 +465,7 @@
 		        	</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB LSFO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
@@ -480,7 +480,7 @@
 		        	</div>
 		        	<div class="col-sm-4">
 		        		<div class="row">
-							<label class="control-label col-md-5">
+							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB DO/GO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
