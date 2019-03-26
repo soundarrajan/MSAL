@@ -912,6 +912,24 @@ angular.module("shiptech.components").controller("FiltersController", [
         }
                  
         // $scope.getDefaultFiltersConfiguration()
+
+		$rootScope.applyFiltersOnEnter = function(){
+			$(document).keypress(function(event){
+				var keycode = (event.keyCode ? event.keyCode : event.which);
+				if(keycode == '13'){
+					if ($('custom-popover').is(":visible")) {
+						if (typeof $rootScope.applyFiltersOnEnter == 'function') {
+							$rootScope.applyFiltersOnEnter = null;	
+							$("custom-popover .applyFilters").trigger("click");
+							$scope.hidePopover();
+						}
+					}
+				}
+			});
+		}
+		if (typeof $rootScope.applyFiltersOnEnter == 'function') {
+			$rootScope.applyFiltersOnEnter();
+		}
     }
 ]);
 angular.module("shiptech.components").component("filters", {

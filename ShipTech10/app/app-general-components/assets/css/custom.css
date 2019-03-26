@@ -4231,7 +4231,9 @@ custom-popover {
     z-index: 99999;
     border: 1px solid #e7ecf1;
     max-width: 350px;
+	box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
 }
+
 
 .customPopover {
     position: relative;
