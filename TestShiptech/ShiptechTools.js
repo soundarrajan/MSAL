@@ -7,7 +7,7 @@
 const puppeteer = require('puppeteer');
 const TestTools24 = require('./TestTools24.js');
 const Db = require('./MsSqlConnector.js');
-
+var urljoin = require('url-join');
 
 
 class ShiptechTools {
@@ -17,16 +17,19 @@ class ShiptechTools {
 
     this.tools = tools;
     if(this.tools == null)
-      throw "Tools parameters is invalid";    
+      throw  new Error("Tools parameters is invalid");    
     this.dbIntegrationConfig = null;
     this.dbConfig = null;    
   }
 
 
 
-  async login(url, username, password){
+  async login(relativeurl, username, password, headless = false){
 
-    var page = await this.tools.launchBrowser(url); 
+    if(!this.tools.baseUrl || this.tools.baseUrl.length <= 0)
+      throw new Error("Missing base url.");
+    var url = urljoin(this.tools.baseUrl, relativeurl);
+    var page = await this.tools.launchBrowser(url, headless); 
     this.tools.addPage(page);
 
     this.tools.log("Login with " + username);
@@ -77,6 +80,9 @@ class ShiptechTools {
 async getFutureDate(days, withTime)
 {//01/31/2019 16:14
 
+  if(typeof days != 'number')
+    days = parseInt(days);
+
   var dateFormat = await this.getDateFormat();
   return this.tools.getFutureDate(days, withTime, dateFormat);
 }
@@ -120,7 +126,7 @@ async selectFromSelect(selector, valueToSelect, checkSelection = true){
 
 
   if(!success && checkSelection)
-    throw "Cannot select " + valueToSelect + " to " +  selector;
+    throw  new Error("Cannot select " + valueToSelect + " to " +  selector);
 
 }
 
@@ -128,6 +134,9 @@ async selectFromSelect(selector, valueToSelect, checkSelection = true){
 //"Data Source=10.1.1.9;Initial Catalog=Shiptech1060_PMG_20190211;User ID=sa;Password=!QAZ2wsx;MultipleActiveResultSets=true;Connection Timeout=400"
 async ConnectDb(dbconfig, url, isMaster)
 {
+    if(!url)
+      throw new Error("Invlid url parameter:" + url);
+
     const urlToSearch = new URL(url);    
 
     this.dbIntegrationConfig = dbconfig;
@@ -147,9 +156,9 @@ async ConnectDb(dbconfig, url, isMaster)
         var tennantconfig = await db.read(sql);
 
         if(!tennantconfig || tennantconfig.length <= 0)
-          throw "Cannot find current tenant database " + urlToSearch.host + ". Call this function with false for tenant database";
+          throw  new Error("Cannot find current tenant database " + urlToSearch.host + ". Call this function with false for tenant database");
         if(!tennantconfig[0].TenantDbConnectionString)
-          throw "Cannot find current database, field TenantDbConnectionString not found";
+          throw new Error("Cannot find current database, field TenantDbConnectionString not found");
 
         var connectionString = tennantconfig[0].TenantDbConnectionString;
 
@@ -188,14 +197,14 @@ async ConnectDb(dbconfig, url, isMaster)
 async getRandomVessel()
 {
   if(!this.dbConfig)
-    throw "Not connected to database";
+    throw  new Error("Not connected to database");
   var db = new Db(this.dbConfig);
 
   var sql = "SELECT TOP (20)  [Name] FROM [" + this.dbConfig.database + "].[master].[Vessels]  WHERE [IsDeleted]=0";
   var records = await db.read(sql);
 
   if(!records || records.length <= 0)
-    throw "Cannot find any vessel";
+    throw  new Error("Cannot find any vessel");
   
   //choose a random record
   var idx = Math.floor(Math.random() * records.length);
@@ -211,13 +220,13 @@ async getRandomVessel()
 async getRandomCompany()
 {
   if(!this.dbConfig)
-    throw "Not connected to database";
+    throw  new Error("Not connected to database");
   var db = new Db(this.dbConfig);
 
   var sql = "SELECT TOP (20) [Name] FROM [" + this.dbConfig.database + "].[master].[Companies] WHERE [IsDeleted]=0";  
   var records = await db.read(sql);
   if(records.length <= 0)
-    throw "Cannot find any company";
+    throw  new Error("Cannot find any company");
   
   //choose a random record
   var idx = Math.floor(Math.random() * records.length);
@@ -234,7 +243,7 @@ async getRandomCompany()
 async getRandomSeller()
 {
   if(!this.dbConfig)
-    throw "Not connected to database";
+    throw  new Error("Not connected to database");
   var db = new Db(this.dbConfig);
   var dbname = this.dbConfig.database;
 
@@ -248,7 +257,7 @@ async getRandomSeller()
 
   var records = await db.read(sql);
   if(records.length <= 0)
-    throw "Cannot find any seller";
+    throw  new Error("Cannot find any seller");
   
   //choose a random record
   var idx = Math.floor(Math.random() * records.length);
@@ -266,12 +275,12 @@ async getRandomSeller()
 async getRandomPort()
 {
   if(!this.dbConfig)
-    throw "Not connected to database";
+    throw  new Error("Not connected to database");
   var db = new Db(this.dbConfig);
   var sql = "SELECT TOP (20) [Name] FROM [" + this.dbConfig.database + "].[master].[Locations]";  
   var records = await db.read(sql);
   if(records.length <= 0)
-    throw "Cannot find any company";
+    throw  new Error("Cannot find any company");
   
   //choose a random record
   var idx = Math.floor(Math.random() * records.length);
@@ -296,6 +305,8 @@ async validateDate(dateToValidate)
     return false;
 
   var dateFormat = await this.getDateFormat();
+  if(!dateToValidate.match)
+    return false;
   //find what is the separator for date
   var firstActualSeparatorList = dateToValidate.match(/[^0-9]/);
   var firstFormatSeparatorList = dateFormat.match(/[^0-9dDmMyYhH]/);
@@ -396,7 +407,7 @@ async getDateFormat()
 
   var records = await db.read(sql);
   if(records.length <= 0)
-    throw "Cannot find the current date format";
+    throw  new Error("Cannot find the current date format");
     
   return records[0].Name;
 }

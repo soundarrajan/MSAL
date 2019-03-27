@@ -25,29 +25,38 @@ class ShiptechDeliveryNew {
   async DeliveryNew(testCase)
   { 
       
+    testCase.result = true;
     if(testCase.products.length <= 0)
-      throw "DeliveryNew invalid arguments";
+      throw new Error("DeliveryNew invalid arguments");
     
-    this.tools.log("Loading Delivery Edit for order " + testCase.orderId);
-    await this.tools.waitForLoader();
-
-    const pageTitle = await this.tools.page.title();
-    if(pageTitle != "New Delivery")
+    this.tools.log("Order: " + testCase.orderId);
+    if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {
-      await this.tools.click('div.menu-toggler.sidebar-toggler');
-      this.tools.log("Open side menu");  
-      await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
-          
-      var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Delivery');    
-      result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/delivery/delivery/edit/')\"] > span", 'New delivery');
-      var page = await this.tools.getPage("New Delivery", true);
-      this.shiptech.page = page;
+      testCase.result = false;
+      return testCase;
     }
 
+      /*//navigate using the menu
+       await this.tools.click('div.menu-toggler.sidebar-toggler');
+       this.tools.log("Open side menu");  
+       await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
+          
+       var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Delivery');    
+       result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/delivery/delivery/edit/')\"] > span", 'New delivery');
+       var page = await this.tools.getPage("New Delivery", true);
+       this.shiptech.page = page;
+      //*/
+
+   
+
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
-    this.tools.log("Current screen is " + labelTitle.trim());
-    if(!labelTitle.includes("Delivery Entity Edit"))    
-      throw "Cannot find delivery screen";
+    this.tools.log("Current screen is: " + labelTitle.trim());
+    if(!labelTitle.includes("Delivery Entity Edit"))  
+    {  
+      this.tools.error("Cannot find delivery screen");
+      testCase.result = false;
+      return testCase;
+    }
 
     await this.tools.setText("input[id='productProduct']", testCase.orderId);
     await this.tools.page.keyboard.press("Tab", {delay: 500});

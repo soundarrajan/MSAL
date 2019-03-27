@@ -25,42 +25,49 @@ class ShiptechRequest {
 
   async CreateRequest(testCase)
   {
-        
-        var autoTestCase = 
-        {
-          vesselName: await this.shiptech.getRandomVessel(),
-          bunkerablePort: await this.shiptech.getRandomPort(),
-          destinationPort: await this.shiptech.getRandomPort(),
-          company: await this.shiptech.getRandomCompany(),
-        }
+        testCase.vesselName = await this.shiptech.getRandomVessel();
+        testCase.bunkerablePort = await this.shiptech.getRandomPort();
+        testCase.destinationPort = await this.shiptech.getRandomPort();
+        testCase.company = await this.shiptech.getRandomCompany();      
                    
         if(await this.shiptech.validateDate(testCase.eta) != true)
         {
           var dateFormat = await this.shiptech.getDateFormat();
-          throw "Invalid date format " + testCase.eta + " valid format: " + dateFormat; 
+          throw  new Error("Invalid date format " + testCase.eta + " valid format: " + dateFormat); 
         }
-       
-        
-        await this.tools.waitForLoader();
-        await this.tools.click('div.menu-toggler.sidebar-toggler');
-        this.tools.log("Open side menu");  
-        await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
-        
-        this.tools.log("Procurement");
-        var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link.nav-toggle > span", 'Procurement');
-        this.tools.log("Request");
-        result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link.nav-toggle > span", 'Request');
-        this.tools.log("New Request");
-        result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'New Request');
-        var page = await this.tools.getPage("New Request", true);
-        this.shiptech.page = page;
-              
-        await this.shiptech.selectFromSelect("input[name='Vessel']", autoTestCase.vesselName);
-        await this.shiptech.selectFromSelect("input[name='ports']", autoTestCase.bunkerablePort, false);
-        await this.shiptech.selectFromSelect("input[name='DestinationPort0']", autoTestCase.destinationPort, false);
+
+        const pageTitle = await this.tools.page.title();
+        if(pageTitle != "New Request")
+        {      
+          var page = await this.tools.getPage("New Request", true);
+          if(!page)
+            page = this.tools.openPageRelative(testCase.url);
+
+          /*//navigate using the menu
+            await this.tools.waitForLoader();
+            await this.tools.click('div.menu-toggler.sidebar-toggler');
+            this.tools.log("Open side menu");  
+            await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
+            this.tools.log("Procurement");
+            var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link.nav-toggle > span", 'Procurement');
+            this.tools.log("Request");
+            result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link.nav-toggle > span", 'Request');
+            this.tools.log("New Request");
+            result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'New Request');
+            var page = await this.tools.getPage("New Request", true);
+            this.shiptech.page = page;
+          //*/
+
+          this.shiptech.page = page;
+        }
+             
+                      
+        await this.shiptech.selectFromSelect("input[name='Vessel']", testCase.vesselName);
+        await this.shiptech.selectFromSelect("input[name='ports']", testCase.bunkerablePort, false);
+        await this.shiptech.selectFromSelect("input[name='DestinationPort0']", testCase.destinationPort, false);
 
         if(await this.tools.page.waitFor("input[name='Location 1 Company']"))
-          await this.shiptech.selectFromSelect("input[name='Location 1 Company']", autoTestCase.company);
+          await this.shiptech.selectFromSelect("input[name='Location 1 Company']", testCase.company);
         
         await this.tools.setText('input[id="0_eta_dateinput"]', testCase.eta);
         await this.tools.setText('input[name="MinQuantity_0"]', testCase.MinQuantity_0);            

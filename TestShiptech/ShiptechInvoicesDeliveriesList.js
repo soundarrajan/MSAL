@@ -25,21 +25,26 @@ class ShiptechInvoicesDeliveriesList {
 
   async InvoiceDeliveriesList(testCase)
   {    
-    this.tools.log("Loading Deliveries List");
-    await this.tools.waitForLoader();
-
-    const pageTitle = await this.tools.page.title();
-    if(pageTitle != "Transactions to be Invoiced List")
+    testCase.result = true;
+    if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {
-      await this.tools.click('div.menu-toggler.sidebar-toggler');
-      this.tools.log("Open side menu");  
-      await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
-          
-      var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Invoices');    
-      result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/invoices/deliveries')\"] > span", 'Deliveries list');
-      var page = await this.tools.getPage("Transactions to be Invoiced List", true);
-      this.shiptech.page = page;
+      testCase.result = false;
+      return testCase;
     }
+
+      /*//navigate using the menu
+        await this.tools.click('div.menu-toggler.sidebar-toggler');
+        this.tools.log("Open side menu");  
+        await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
+          
+        var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Invoices');    
+        result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/invoices/deliveries')\"] > span", 'Deliveries list');
+        var page = await this.tools.getPage("Transactions to be Invoiced List", true);
+        this.shiptech.page = page;
+      //*/
+
+
+
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
     if(!labelTitle)
@@ -47,7 +52,12 @@ class ShiptechInvoicesDeliveriesList {
     labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(!labelTitle.includes("Transactions to be invoiced List"))      
-      this.tools.log("FAIL!");
+    {
+      
+      this.tools.error("FAIL!");
+      testCase.result = false;
+      return testCase;
+    }
 
     await this.tools.waitForLoader();    
     await this.tools.page.waitFor(2000);
@@ -69,6 +79,7 @@ class ShiptechInvoicesDeliveriesList {
     await this.CreateInvoice(testCase);        
 
     await this.tools.closeCurrentPage();
+    
     return testCase;
   
   }
@@ -80,9 +91,16 @@ class ShiptechInvoicesDeliveriesList {
 
   async CreateInvoice(testCase)
   {   
+    if(await this.shiptech.validateDate(testCase.paymentDate) != true)
+    {
+      var dateFormat = await this.shiptech.getDateFormat();
+      throw  new Error("Invalid date format " + testCase.paymentDate + " valid format: " + dateFormat);
+    }
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
     await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
+    await this.tools.setText("#PaymentDate_dateinput", testCase.paymentDate);
+    
 
     for (let i = 0; i < testCase.provisionalData.products.length; i++) 
     { 
@@ -128,7 +146,7 @@ class ShiptechInvoicesDeliveriesList {
         this.tools.log("Order status is " + labelStatus);                
         labelStatus = labelStatus.replace(/[^0-9a-z]/gi, '').trim();
         if(labelStatus != testCase.invoiceStatus)
-          throw "FAIL! The Order status is not " + invoiceStatus + " but is " + labelStatus;
+          throw  new Error("FAIL! The Order status is not " + invoiceStatus + " but is " + labelStatus);
         //go back to the invoice screen
         await this.tools.clickOnItemByText("a[ng-href^='#/invoices/invoice/edit/']", 'Invoices');
         await this.checkInvoiceStatus(testCase.invoiceStatusAfterApprove);
@@ -173,7 +191,7 @@ class ShiptechInvoicesDeliveriesList {
   async checkInvoiceStatus(status)
   {
     if(!status)
-      throw "checkInvoiceStatus() " + status + " is not specified in the testcase."
+      throw  new Error("checkInvoiceStatus() " + status + " is not specified in the testcase.");
       
     await this.tools.waitForLoader();
     var labelTitle = await this.tools.getText("span[ng-if='state.params.status.name']");
@@ -181,7 +199,7 @@ class ShiptechInvoicesDeliveriesList {
     labelTitle = labelTitle.trim();
     this.tools.log("Current invoice status " + labelTitle);
     if(!labelTitle.includes(status))
-      throw "The invoice status is not as expected: (expected: " + status + ", current: " + labelTitle + ")";
+      throw  new Error("The invoice status is not as expected: (expected: " + status + ", current: " + labelTitle + ")");
 
   }
 
@@ -191,7 +209,7 @@ class ShiptechInvoicesDeliveriesList {
   {
 
     if(!testCase.finalData)
-      throw "Missing data for final invoice";
+      throw  new Error("Missing data for final invoice");
 
     //create final invoice
     await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
@@ -213,6 +231,10 @@ class ShiptechInvoicesDeliveriesList {
 
     await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');
     await this.tools.waitForLoader();      
+    await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
+    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'ApproveInvoice');
+    await this.tools.waitForLoader();
+
   }
 }
 

@@ -4,13 +4,10 @@
  */
 
 
-const puppeteer = require('puppeteer');
-const Db = require('./MsSqlConnector.js');
 const TestTools24 = require('./TestTools24.js');
 const ShiptechTools = require('./ShiptechTools.js');
-const h2p = require('html2plaintext');
-const fs = require('fs');
 const csv=require('csvtojson/v2');
+const isNumber = require('is-number');
 
 
 class ShiptechInvoicesTreasuryReport {
@@ -37,7 +34,7 @@ class ShiptechInvoicesTreasuryReport {
         checkbox = await this.tools.page.$(selector);
         ischecked = await (await checkbox.getProperty('checked')).jsonValue();
         if(ischecked)
-          throw "Cannot uncheck " + selector;
+          throw  new Error("Cannot uncheck " + selector);
         
         await this.tools.waitForLoader();
         //const links = await this.tools.page.evaluate(() => { location.reload() });
@@ -51,26 +48,31 @@ class ShiptechInvoicesTreasuryReport {
 
   async TreasuryReport(testCase)
   {
-    this.tools.log("Loading Treasury Report...");
-    await this.tools.waitForLoader();
+    testCase.result = true;
+    if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
+    {      
+      testCase.result = false;
+      return testCase;
+    }
 
-    const pageTitle = await this.tools.page.title();
-    if(pageTitle != "Treasury Report")
-    {
+      /*//navigate using the menu
       await this.tools.click('div.menu-toggler.sidebar-toggler');
       this.tools.log("Open side menu");  
       await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
           
       var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Invoices');    
       result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/invoices/treasuryreport')\"] > span", 'Treasury report');
-      var page = await this.tools.getPage("Treasury Report", true);
-      this.shiptech.page = page;
-    }
+      await this.tools.waitFor(3000);
+      await this.tools.waitForLoader();
+      //*/
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
-    this.tools.log("Current screen is " + labelTitle);
     if(!labelTitle.includes("Treasury Report"))
-      throw "Tresury Report - invalid page";
+    {
+      this.tools.error("Tresury Report - invalid page label");
+      testCase.result = false;
+      return testCase;
+    }
 
     await this.clearFilters();
 
@@ -82,7 +84,7 @@ class ShiptechInvoicesTreasuryReport {
     await this.tools.waitForLoader();        
 
     await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
-    await this.tools.clickOnItemByText("a[ng-click='columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue)']", 'Sort Ascending');
+    await this.tools.clickOnItemByText("a[ng-click='columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])", 'Sort Ascending');
     await this.tools.waitFor(2000);
     await this.tools.waitForLoader();
        
@@ -92,8 +94,8 @@ class ShiptechInvoicesTreasuryReport {
     await this.tools.waitForLoader();   
     await this.tools.waitFor(2000);
 
-    
-    var exportFile = exportFolder + "\\downloaded\\TreasuryReport.csv";
+    //wait for the file to be saved
+    var exportFile = exportFolder + "\\TreasuryReport.csv";
     await this.tools.waitForFile(exportFile);    
     
     const jsonArray = await csv({
@@ -106,8 +108,16 @@ class ShiptechInvoicesTreasuryReport {
 
 
     if(this.checkTreasuryReport(jsonArray, testCase))
-      this.tools.log("Treasury report test passed!");
-   
+    {
+      this.tools.log("Treasury report test PASSED!");
+      testCase.result = true;
+    }
+    else
+    {
+      this.tools.log("Treasury report test FAILED!");
+      testCase.result = false;
+    }
+
     //this.tools.log(JSON.stringify(jsonArray));
     //await this.tools.closeCurrentPage();
     return testCase;
@@ -119,10 +129,13 @@ class ShiptechInvoicesTreasuryReport {
   checkTreasuryReport(reportCase, testCase)
   {
 
-    if(reportCase.length != testCase.rows.length)
-      throw "Treasury report contains " + reportCase.length + " rows but the test case has" + testCase.rows.length;
+    var result = true;
 
-    var differences = [];
+    if(reportCase.length != testCase.rows.length)
+    {
+        this.tools.log("Treasury report contains " + reportCase.length + " rows but the test case has" + testCase.rows.length);
+        return false;
+    }    
 
     for(var i=0; i<testCase.rows.length; i++)
     {
@@ -132,39 +145,47 @@ class ShiptechInvoicesTreasuryReport {
       for(var key in rowTest)
       {
         if(!rowReport[key])
-          throw "The field " + key + " was not found in raport.";
+        {
+          this.tools.log("The field " + key + " was not found in raport.");
+          result = false;
+          continue;
+        }
 
-        if(rowTest[key] != rowReport[key])
-          differences += "Difference in report: " + key + " Report:" + rowReport[key] + "; TestCase:" + rowTest[key];
+        var valTest = rowTest[key];
+        valTest = valTest.replace(/,/g, '');
+        var valReport = rowReport[key];
+        valReport = valReport.replace(/,/g, '');        
+
+        if(isNumber(valTest))
+        {
+          var floatTest = parseFloat(valTest);
+          var floatReport = parseFloat(valReport);
+
+          if(isNaN(floatTest))
+          {
+            this.tools.log("Invlid number in testCase: " + floatTest);
+            result = false;
+          }
+          else if(isNaN(floatReport))
+          {
+            this.tools.log("Invlid number in testCase: " + floatReport);
+            result = false;
+          }
+          else if(Math.trunc(floatTest) != Math.trunc(floatReport))
+          {
+            this.tools.log("Numbers don't match for " + key + "; row: " + (i+1) + " : test: " + floatTest + " report: " + floatReport);
+            result = false;
+          }
+        }
+        else if(valTest != valReport)
+        {
+           this.tools.log("Difference in report: " + key + "; row: "+ (i+1)  +" Report:" + rowReport[key] + "; TestCase:" + rowTest[key]);
+           result = false;
+        }
       }
-
-      if(differences.length > 0)
-        break;
     }
 
-
-    var error = "";
-    if(differences.length > 0)
-    {
-      for(var i=0; i<differences.length; i++)
-        error += differences[i] + "\n";
-
-      throw error;
-    }
-
-
-
-    /*
-    Calculated Amount
-    Invoice Amount
-    Due Date
-    Working Due Date
-    PaymentDate
-    Invoice No
-    Invoice Type = {"Final Invoice", "Provisional"}
-    */
-
-    return true;
+    return result;
   }
 
   
@@ -174,4 +195,5 @@ class ShiptechInvoicesTreasuryReport {
 
 
 module.exports = ShiptechInvoicesTreasuryReport;
+
 

@@ -9,6 +9,7 @@ var util = require('util');
 const path = require('path');
 const fsExtra = require('fs-extra')
 var endOfLine = require('os').EOL;
+var urljoin = require('url-join');
 
 
 
@@ -19,6 +20,7 @@ class TestTools24 {
 
 
   constructor() {
+    this.baseUrl = "";
     this.page = null;
     this.browser = null;    
     this.timeout = 60000;//30 sec
@@ -31,16 +33,61 @@ class TestTools24 {
     this.streamResults = null;
     this.logmap = new Map();
     this.pagesHistory = [];
-    this.logFile = fs.createWriteStream('log.txt', { flags: 'w' });
-    //'a' for append
-    // Or 'w' to truncate the file every time the process starts.    
+    const maxLogSize = 3000000;
+    var alllogs = "";
+    var logfileName = 'log.txt';        
+    if (fs.existsSync(logfileName)) 
+    {
+      var stats = fs.statSync(logfileName);
+      //if the file is too large, delete it
+      if(stats.size > maxLogSize * 10)
+        fs.unlinkSync(logfileName);
+      else
+      {//truncate the logfile
+        alllogs = fs.readFileSync(logfileName, 'utf8');
+        if(alllogs.length > maxLogSize)
+        {
+          alllogs = alllogs.substring(alllogs.length - maxLogSize, alllogs.length-1);
+          fs.unlinkSync(logfileName);
+        }
+        else
+          alllogs = "";
+      }
+    }
+    
+    this.logFile = fs.createWriteStream(logfileName, { flags: 'a' });
+    fs.writeFileSync(logfileName, alllogs + endOfLine + endOfLine, 'utf8');    
+    alllogs = "";
   }
 
 
 
+
+  async navigate(pageUrl, pageTitle)
+  {
+    await this.waitForLoader();
+    this.log("Loading " + pageTitle + "...");
+    var currentTitlte = await this.page.title();
+    if(currentTitlte != pageTitle)
+    {
+      var page = await this.getPage(pageTitle, false, false);
+      if(!page)
+        page = await this.openPageRelative(pageUrl);
+
+      currentTitlte = await this.page.title();
+      if(currentTitlte != pageTitle)
+      {
+        this.error("Cannot navigate to " + pageTitle + " at " + pageUrl);
+        return false;
+      }      
+    }
+    return true;
+  }
+
+
   log(message)
   {
-    console.log(message);
+    console.log(message);    
     this.logFile.write(util.format(message) + endOfLine);
   }
 
@@ -165,16 +212,17 @@ class TestTools24 {
         });
         await this.page.setViewport({width: 1900, height: 1000 });
         this.addPage(this.page);        
+        return this.page;
       }
 
 
 
 
 
-      async launchBrowser(url){
+      async launchBrowser(url, headless = false){
         this.browser = await puppeteer.launch(
         {
-          headless: false,
+          headless: headless,
           args: ['--start-maximized']
         }
       );
@@ -187,6 +235,16 @@ class TestTools24 {
   
 
 
+    async openPageRelative(relativeUrl, performance = false)
+    {
+      var fullUrl = urljoin(this.baseUrl, relativeUrl);
+      this.log("Navigate to " + relativeUrl);
+      var page = await this.goto(fullUrl);
+
+      await this.waitForLoader(performance ? relativeUrl : "");
+      return page;
+    }
+
         
     async setText(selector, text, index = 0, test = false)
     {
@@ -195,9 +253,9 @@ class TestTools24 {
         
       text = text.toString();
       if(!text)
-        throw "setText: missing parameter: text";
+        throw new Error("setText: missing parameter: text");
       if(!selector)
-        throw "setText: missing parameter: selector";
+        throw new Error("setText: missing parameter: selector");
       var elementsSelector = [];
       var elementSelector = "";
 
@@ -211,27 +269,31 @@ class TestTools24 {
         elementsSelector = await this.getSelectors(selector);
 
         if(elementsSelector.length <= index)
-          throw "setText(): Not found " + (index + 1) + " elements";
+          throw new Error("setText(): Not found " + (index + 1) + " elements");
 
         elementSelector = elementsSelector[index];
       }
 
       if(elementSelector.length <= 0)
-        throw "setText(): Not found elements with selector " + elementSelector;
+        throw new Error("setText(): Not found elements with selector " + elementSelector);
 
       await this.page.evaluate(elementSelector => {document.querySelector(elementSelector).value = ''}, elementSelector);
-
+      await this.page.type(elementSelector, "");
+      await this.page.waitFor(300);
       await this.page.type(elementSelector, text);
+      var implementedText = await this.page.evaluate(elementSelector => {return document.querySelector(elementSelector).value;}, elementSelector);
+      if(elementSelector != text)
+        await this.page.evaluate((elementSelector, text) => {document.querySelector(elementSelector).value = text}, elementSelector, text);
       await this.page.waitFor(900);
      // await this.page.keyboard.press("Tab", {delay: 1000});
      // await this.page.waitFor(900);
 
-      //the page is refreshing after tab, the custom attribute is deleted
+      //the page may refresh after tab, the custom attribute is deleted
       if(index > 0)
       {
         elementsSelector = await this.getSelectors(selector);
         if(elementsSelector.length <= index)
-          throw "setText(): Not found " + (index + 1) + " elements";
+          throw new Error("setText(): Not found " + (index + 1) + " elements");
         elementSelector = elementsSelector[index];
       }
 
@@ -249,7 +311,7 @@ class TestTools24 {
         text = text.replace(/,/g, "");
         
         if(text != implementedText)
-          throw "setText() - cannot set " + text +  " into " + selector;
+          throw new Error("setText() - cannot set " + text +  " into " + selector);
       }
 
      // await this.page.keyboard.press("Tab", {delay: 1000});
@@ -265,7 +327,7 @@ class TestTools24 {
     async makeSelector(selector, attributeName, textToSelectInAttr, index)
     {      
       if(!selector)
-        throw "makeSelector(): invalid parameter: selector";
+        throw new Error("makeSelector(): invalid parameter: selector");
 
       var elementsSelector = [];
       var selectedElements = [];
@@ -274,7 +336,7 @@ class TestTools24 {
       elementsSelector = await this.getSelectors(selector);
 
       if(elementsSelector.length <= index)
-        throw "makeSelector(): Not found " + (index + 1) + " elements";
+        throw ("makeSelector(): Not found " + (index + 1) + " elements");
 
       //find the element containing an attribute with textToSelectInAttr inside
       for(var i=0; i<elementsSelector.length; i++)
@@ -285,12 +347,14 @@ class TestTools24 {
         if(attr != null && attr.includes(textToSelectInAttr))
           selectedElements.push(elementsSelector[i]);
       }
+
       if(selectedElements.length <= index)
-        throw "makeSelector() Not found " + index + " elements with that selector";
+        throw new Error("makeSelector() Not found " + attributeName + " " + textToSelectInAttr + " index: " + index + " elements with specified attr. Selector " + selector + " len=" + elementsSelector.length);
+        
       elementSelector = selectedElements[index];
 
       if(elementSelector.length <= 0)
-        throw "makeSelector() Not found elements with selector " + elementSelector;
+        throw new Error("makeSelector() is empty having " + elementSelector + " " + attributeName + " " + textToSelectInAttr);
 
       return elementSelector;
     }
@@ -310,7 +374,7 @@ class TestTools24 {
       var allOptions = await this.getAllOptionsBySelector(elementSelector, 0);
 
       if(allOptions.length <= 0)
-        throw "no options available in " + textToSelectInAttr;
+        throw new Error("no options available in " + textToSelectInAttr);
 
       var optionToSelect = "";
       for(var i=0; i<allOptions.length; i++)
@@ -321,7 +385,7 @@ class TestTools24 {
         }
 
        if(optionToSelect.length <= 0)
-        throw "no options available in " + elementSelector;
+        throw new Error("no options available in " + elementSelector);
 
       await this.page.select(elementSelector, optionToSelect);
 
@@ -330,7 +394,7 @@ class TestTools24 {
       implementedText = await this.getSelectedOption(elementSelector);    
 
       if(implementedText.length <= 0)
-        throw "Cannot select first option on " + elementSelector; 
+        throw new Error("Cannot select first option on " + elementSelector); 
 
       await this.page.keyboard.press("Tab", {delay: 1000});
     }
@@ -340,9 +404,10 @@ class TestTools24 {
 
     
         
-    async selectFirstOption(attributeName, textToSelectInAttr, index)
+    async selectFirstOption(selector, attributeName, textToSelectInAttr, index)
     {
-      var elementSelector = await this.makeSelector('select', attributeName, textToSelectInAttr, index);
+      await this.waitFor(selector);
+      var elementSelector = await this.makeSelector(selector, attributeName, textToSelectInAttr, index);
       await this.selectFirstOptionBySelector(elementSelector);      
     }
 
@@ -370,7 +435,7 @@ class TestTools24 {
         }
 
       if(valueToSelect.length <= 0)
-        throw "cannot find " + textToSelect + " into " + elementSelector;
+        throw new Error("cannot find " + textToSelect + " into " + elementSelector);
 
       await this.page.select(elementSelector, valueToSelect);
 
@@ -389,7 +454,7 @@ class TestTools24 {
         valueToSelect = valueToSelect.replace(/,/g, "");
         
         if(textToSelect != implementedText && textToSelect.indexOf(implementedText) < 0 && implementedText.indexOf(textToSelect) < 0)
-          throw "select - cannot set " + valueToSelect +  " into " + elementSelector;
+          throw new Error("select - cannot set " + valueToSelect +  " into " + elementSelector);
       }
 
       await this.page.keyboard.press("Tab", {delay: 1000});
@@ -419,7 +484,7 @@ class TestTools24 {
       textToSelect = textToSelect.replace(/,/g, "");
       
 //      if(textToSelect != implementedText)
-  //      throw "select - cannot set " + textToSelect +  " into " + selector + " " + textToSelectInAttr;
+  //      throw new Error("select - cannot set " + textToSelect +  " into " + selector + " " + textToSelectInAttr);
 
       await this.page.keyboard.press("Tab", {delay: 1000});
     }
@@ -441,7 +506,7 @@ class TestTools24 {
       await this.waitFor(selector);
       var element = await this.page.$(selector);
       if(!element)
-        throw "getText(): " + selector + " not found.";
+        throw new Error("getText(): " + selector + " not found.");
       var text = await this.page.evaluate(element => element.textContent, element);      
       await this.page.waitFor(300);
       return text;
@@ -454,7 +519,7 @@ class TestTools24 {
       await this.waitFor(selector);
       var element = await this.page.$(selector);
       if(!element)
-        throw "getText(): " + selector + " not found.";
+        throw new Error("getText(): " + selector + " not found.");
       var text = await this.page.evaluate(element => element.value, element);
       await this.page.waitFor(300);
       return text;
@@ -478,6 +543,18 @@ class TestTools24 {
       await this.page.waitFor(1000);
     }
 
+
+
+    async isElementVisible(selector, waitTime = 100)
+    {
+      var isVisible = await this.page.waitForSelector(selector, {
+        visible: true,
+        timeout: waitTime
+      })
+
+      return isVisible != null;
+    }
+    
 
 
     async waitFor(selector, actionTitle = "")
@@ -529,7 +606,7 @@ class TestTools24 {
         var end = new Date().getTime();
         duration = end - start;
         if(duration > 1000)
-          this.log("Total wait: " + selector + " " + (duration / 1000).toFixed(1) + " s");      
+          this.log("Total wait for selector: " + selector + " " + (duration / 1000).toFixed(1) + " s");      
 
         if(actionTitle.length > 0)
           this.record(end-start, actionTitle);
@@ -556,15 +633,22 @@ class TestTools24 {
     }
 
 
-    async getPage(title, logPerformance = false){
+    async getPage(title, logPerformance = false, dowait = true){
 
       var waitTime = 3000;
       var start = new Date().getTime();
       var startMessage = new Date().getTime();
       var endMessage = new Date().getTime();
       var duration = 0;
+      var currentTimeout = this.timeout;
+      var time = 0;
+      if(!dowait)
+      {
+        waitTime = 500;
+        currentTimeout = 1000;
+      }
 
-      for(; waitTime < this.timeout; this.timeout += waitTime)
+      for(time=0; time < currentTimeout; time += waitTime)
       {
         var pagenew = null;
         let pages = await this.browser.pages();
@@ -592,13 +676,15 @@ class TestTools24 {
         await this.page.waitFor(waitTime);
       }
 
+      if(pagenew == null && !dowait)
+        return null;
     
       this.page = pagenew;
 
       await this.waitForLoader(logPerformance);
 
       if(pagenew == null)
-        throw "getPage(): " + title + " not found";
+        throw new Error("getPage(): " + title + " not found");
       else
       {        
 
@@ -684,7 +770,7 @@ class TestTools24 {
             return day + "-" + month + "-" + year;
         }
         else
-          throw "getFutureDate - invalid format";
+          throw new Error("getFutureDate - invalid format");
 
     }
     
@@ -827,6 +913,7 @@ async waitForLoader(actionTitle = "")
   var endMessage = new Date().getTime();
   var duration = 0;
   var reapearTime = 900;
+  var displayBlock = "display: block;";
     
   do
   {
@@ -835,7 +922,15 @@ async waitForLoader(actionTitle = "")
         await this.page.waitFor(this.standardWait);
         maxWait += this.standardWait;
 
-        attribute = await this.getElementAttribute("div.screen-loader", "style");
+        var maxRepeat = 30;
+        do
+        {
+          attribute = await this.getElementAttribute("div.screen-loader", "style");
+          await this.page.waitFor(400);
+          var confirmAtrribute = await this.getElementAttribute("div.screen-loader", "style");
+          maxRepeat--;
+        }
+        while(maxRepeat > 0 && attribute != confirmAtrribute);
         
         endMessage = new Date().getTime();
         if(endMessage - startMessage >= 1000)
@@ -843,13 +938,11 @@ async waitForLoader(actionTitle = "")
           this.log("wait..." + ((endMessage - start) / 1000).toFixed(0) + " s");
           startMessage = new Date().getTime();
         }
-
-        
     }
-    while(maxWait <= this.timeout && (attribute == null || attribute.indexOf("display: block;") > -1));
+    while(attribute != null && maxWait <= this.timeout && (attribute.indexOf(displayBlock) > -1));
     await this.page.waitFor(reapearTime);
   }
-  while(maxWait <= this.timeout && (attribute == null || attribute.indexOf("display: block;") > -1));
+  while(attribute != null && maxWait <= this.timeout && (attribute.indexOf(displayBlock) > -1));
 
 
   var end = new Date().getTime();
@@ -1291,7 +1384,7 @@ async waitForFile(file)
   while(maxWait <= this.timeout && !fs.existsSync(file));
 
   if(!fs.existsSync(file))  
-    throw "File not found " + file;  
+    throw new Error("File not found " + file);  
 
   return true;
 }
@@ -1299,20 +1392,21 @@ async waitForFile(file)
 
 async prepareDownloadFolder()
 {
-  const client = await this.page.target().createCDPSession();
+  const client = await this.page.target().createCDPSession();  
+  var exportFolder = path.resolve(__dirname, "export");
 
-  var exportFolder = __dirname + "\\export";
-    if (!fs.existsSync(exportFolder)) {
-      fs.mkdirSync(exportFolder);
-    }    
+  if (!fs.existsSync(exportFolder)) {
+    fs.mkdirSync(exportFolder);
+  }    
 
-    await client.send('Page.setDownloadBehavior', {
-      behavior: 'allow', downloadPath: path.resolve(exportFolder,'downloaded')}
-      );
+  await client.send('Page.setDownloadBehavior', {
+    behavior: 'allow', downloadPath: exportFolder}
+    );
 
   await this.waitFor(1000);
-  fsExtra.emptyDirSync(exportFolder);
+  fsExtra.emptyDirSync(exportFolder);  
   await this.waitFor(1000);
+
   return exportFolder;
 }
 
@@ -1412,11 +1506,11 @@ ReadTestCase()
 {  
   var args = process.argv.slice(2);
   if(args.length <= 0)
-    throw "No test case cmd line argument.";  
+    throw new Error("No test case cmd line argument.");  
 
   var filename = args[0];
   if(!fs.existsSync(filename))
-    throw "Test case " + filename + " not found.";
+    throw new Error("Test case " + filename + " not found.");
 
   var testCase = {};
   try
@@ -1430,6 +1524,14 @@ catch(e)
 
  if(!testCase.testTitle || testCase.testTitle.length <= 0)
    throw filename + " has contains no testTitle" + endOfLine + e.message;
+
+
+ if(!testCase.testCases || testCase.testCases.length <= 0)
+  throw filename + " has no testCases array";
+
+
+ if(!testCase.baseurl || testCase.baseurl.length <=0)
+  throw filename + " missing baseurl field";
 
  return testCase;
 }

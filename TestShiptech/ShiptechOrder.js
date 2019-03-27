@@ -24,7 +24,8 @@ class ShiptechOrder {
 
   async CreateOrder(testCase)
   {
-        
+        testCase.result = true;
+
         if(!testCase.vesselName)
           testCase.vesselName = await this.shiptech.getRandomVessel();
         if(!testCase.carrier)
@@ -39,13 +40,17 @@ class ShiptechOrder {
         if(await this.shiptech.validateDate(testCase.eta) != true)
         {
           var dateFormat = await this.shiptech.getDateFormat();
-          throw "Invalid date format " + testCase.eta + " valid format: " + dateFormat; 
+          this.tools.error("Invalid date format " + testCase.eta + " valid format: " + dateFormat); 
+          testCase.result = false;
         }
-       
-        await this.tools.waitForLoader();
-        const pageTitle = await this.tools.page.title();
-        if(pageTitle != "New Order")
-        {
+
+        if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
+        {         
+          testCase.result = false;
+          return testCase;
+        }
+  
+          /*//navigate using the menu
           await this.tools.waitFor("li.nav-item > a.nav-link.nav-toggle > span");
           await this.tools.click('div.menu-toggler.sidebar-toggler');
           this.tools.log("Open side menu");  
@@ -58,10 +63,11 @@ class ShiptechOrder {
           this.tools.log("New Order");
           result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'New Order');
           var page = await this.tools.getPage("New Order", true);
-          this.shiptech.page = page;      
-        }
-         
+          this.shiptech.page = page;
+          //*/
+
         
+                
         await this.shiptech.selectFromSelect("input[name='Vessel']", testCase.vesselName);
         await this.shiptech.selectFromSelect("input[id='id_carrierCompany']", testCase.carrier);
         await this.tools.setText('input[id="eta_dateinput"]', testCase.eta);
@@ -94,29 +100,38 @@ class ShiptechOrder {
           await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
         }
         
-        result = await this.tools.clickOnItemByText('a.btn', 'Save');      
+        await this.tools.clickOnItemByText('a.btn', 'Save');
         await this.tools.waitForLoader("Save Order");
-        var labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
-        this.tools.log("Order status is " + labelStatus);
+        var labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");        
+        this.tools.log("Order status is " + labelStatus.trim());
         if(!labelStatus.includes("Stemmed"))
         {
-          this.tools.error("FAIL! The Order status is not Stemmed");
-          return;
+          this.tools.error("FAIL! The Order status is not Stemmed");          
+          testCase.result = false;
+          return testCase;
         }        
 
-        
+        if(this.tools.isElementVisible('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"]'))
+        {
+          await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"]', 'Confirm to Seller');
+          await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.saveAndSend()"', 'Save and Send');
+          await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_ALL, $ctrl.data.id)"]', 'Confirm to Vessel');
+          await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.saveAndSend()"', 'Save and Send');
+        }
+
+        //select Spec group
         for(var i=0; i<testCase.products.length; i++)
         {                              
-          await this.tools.selectFirstOption('ng-model', 'product.specGroup', i);
+          await this.tools.selectFirstOption("select[ng-model='product.specGroup']", 'ng-model', 'product.specGroup', i);
         }
 
         
-        result = await this.tools.clickOnItemByAttr('a', 'ctrl.confirmOrder(true)', 'ng-click');
+        await this.tools.clickOnItemByAttr('a', 'ctrl.confirmOrder(true)', 'ng-click');
         await this.tools.waitForLoader("Confirm order");
                 
 
         labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
-        this.tools.log("Order status is " + labelStatus);
+        this.tools.log("Order status is " + labelStatus.trim());
 
         testCase.orderId = await this.readOrderId();
         if(testCase.delivery)
@@ -125,11 +140,18 @@ class ShiptechOrder {
           testCase.invoice.orderId = testCase.orderId;
         if(testCase.treasury)
           testCase.treasury.orderId = testCase.orderId;
+
+        this.tools.log("OrderId=" + testCase.orderId);
          
         if(!labelStatus.includes("Confirmed"))          
-          throw "Cannot confirm the order " + testCase.orderId;
+        {
+          this.tools.log("Cannot confirm the order " + testCase.orderId);
+          testCase.result = false;
+        }
 
         await this.tools.closeCurrentPage();
+
+        testCase.result = true;
         return testCase;  
   }
 
