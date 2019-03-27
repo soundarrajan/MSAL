@@ -2404,7 +2404,9 @@ ctrl.setProductData = function(data, loc) {
                 function () {
                     ctrl.buttonsDisabled = false;
                 }
-            );
+            ).finally(function(){
+            	ctrl.initScreenAfterSendOrSkipRfq();
+            });
         };
         ctrl.skipRFQ = function () {
             /*validate unicity for location-seller-physical-supplier*/
@@ -2577,7 +2579,9 @@ ctrl.setProductData = function(data, loc) {
                 function () {
                     ctrl.buttonsDisabled = false;
                 }
-            );
+            ).finally(function(){
+            	ctrl.initScreenAfterSendOrSkipRfq();
+            });;
         };
         ctrl.countUniqueVessels = function (sellerRandUniquePkg) {
             vesselIds = [];
