@@ -280,7 +280,7 @@
 							    Charterer Name
 							</label>
 							<div class="form-group-sm00">
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="chartererName" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
 							    </div>
 							</div>
@@ -291,8 +291,8 @@
 							<label class="control-label col-md-5" style="padding-left: 0;">
 							    Delivery Date
 							</label>
-							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							<div class="form-group-sm00">
+							    <div class="input-group">
 							        <input  name="delivery" readonly="" disabled class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.delivery">
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
@@ -307,7 +307,7 @@
 							    Expiry Date
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="expiry" readonly="" disabled class="form-control" st-date-format ng-model="$ctrl.vesselCharteredDetails.expiry" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
@@ -322,7 +322,7 @@
                                 {{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.caption | translate }}
                             </label>
                             <div class="form-group-sm00">
-                                <div class="input-group col-sm-10">
+                                <div class="input-group">
                                     <input name="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EarliestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.earliestRedeliveryDate" st-date-format disabled readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -337,7 +337,7 @@
                                 {{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.caption | translate }}
                             </label>
                             <div class="form-group-sm00">
-                                <div class="input-group col-sm-10">
+                                <div class="input-group">
                                     <input name="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.EstimatedRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.estimatedRedeliveryDate" st-date-format readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -352,7 +352,7 @@
                                 {{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.caption | translate }}
                             </label>
                             <div class="form-group-sm00">
-                                <div class="input-group col-sm-10">
+                                <div class="input-group">
                                     <input name="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" only-date="true" id="id_{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.name }}" placeholder="{{ $ctrl.vesselDetailsFields.LatestRedeliveryDate.placeholder }}" class="form-control date form_meridian_datetime" ng-model="$ctrl.request.vesselDetails.latestRedeliveryDate" st-date-format readonly="" disabled >
                                     <span class="input-group-addon bg-grey-steel disabled">
                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -367,7 +367,7 @@
 							    Latest Redelivery Port
 							</label>
 							<div class="form-group-sm00">
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="redeliveryLocation" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
                                     <span class="input-group-addon bg-grey-steel disabled"  ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_location', 'Select Latest Redelivery Port', '', '', '', 'ports', $ctrl.vesselCharteredDetails.redeliveryLocation.name)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                         <!-- procurement_bunkerableport -->
@@ -391,8 +391,8 @@
 							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB Date
 							</label>
-							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							<div class="form-group-sm00">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDate" st-date-format >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            <i class="glyphicon glyphicon-calendar"></i>
@@ -408,8 +408,8 @@
 							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB HSFO on Delivery
 							</label>
-							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							<div class="form-group-sm00">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robHsfoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robHsfoDeliveryUom.name}}
@@ -423,8 +423,8 @@
 							<label class="control-label col-md-5" style="padding-left: 0;">
 							    ROB LSFO on Delivery
 							</label>
-							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							<div class="form-group-sm00">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robLsfoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robLsfoDeliveryUom.name}}
@@ -439,7 +439,7 @@
 							   ROB DO/GO on Delivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDoGoDeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robDoGoDeliveryUom.name}}
@@ -454,7 +454,7 @@
 							   ROB HSFO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robHsfoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robHsfoRedeliveryUom.name}}
@@ -469,7 +469,7 @@
 							    ROB LSFO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robLsfoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robLsfoRedeliveryUom.name}}
@@ -484,7 +484,7 @@
 							    ROB DO/GO on Redelivery
 							</label>
 							<div class="form-group-sm00" >
-							    <div class="input-group col-sm-10">
+							    <div class="input-group">
 							        <input  name="robDate" readonly="" disabled class="form-control" ng-model="$ctrl.robDetails.robDoGoRedeliveryQuantity" >
 							        <span class="input-group-addon bg-grey-steel disabled">
 							            {{$ctrl.robDetails.robDoGoRedeliveryUom.name}}
@@ -882,7 +882,7 @@
 
 	                                            <td ng-if="$ctrl.productInfoColumns.Product.visible" width="11%" ng-init="CM.getOptions({'Name': 'Product', 'masterSource': 'Product'})">
 	                                                <div class="input-group" tooltip tooltiptrigger="hover" data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) }}">
-	                                                    <input name="{{ $ctrl.productInfoColumns.Product.name }}" id="id_{{ $ctrl.productInfoColumns.Product.name }}" placeholder="{{ $ctrl.productInfoColumns.Product.placeholder }}" class="typeahead form-control" uib-typeahead="prod as prod.name for prod in options.Product | filter:$viewValue | limitTo:5" typeahead-on-select="$ctrl.selectProduct($item.id)" typeahead-editable="false" ng-model="product.product" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-click="$ctrl.setLookupInput(product); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx}" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
+	                                                    <input name="{{ $ctrl.productInfoColumns.Product.name }}" id="product_product_{{ $index }}" placeholder="{{ $ctrl.productInfoColumns.Product.placeholder }}" class="typeahead form-control" uib-typeahead="prod as prod.name for prod in options.Product | filter:$viewValue | limitTo:5" typeahead-on-select="$ctrl.selectProduct($item.id)" typeahead-editable="false" ng-model="product.product" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-click="$ctrl.setLookupInput(product); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx}" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
 
 	                                                    <!-- span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.setDialogType($ctrl.productInfoColumns.Product.name, product); $ctrl.requestProductDataOnChange = {'product':$index, 'location': locationIdx}" href="#lookup_dialog" ng-class="{'disabled' : $ctrl.isReadonlyForm}"> -->
 	                                                    <span class="input-group-addon {{(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ? 'disabled' : ''}}"  ng-click="triggerModal('general', 'masters_productlist', '' , '$ctrl.location[' + locationIdx + '].products[' +  productIdx + ']','','', $ctrl.productInfoColumns.Product.name ); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
@@ -893,12 +893,12 @@
 	                                            </td>
 
 	                                            <td ng-if="$ctrl.productInfoColumns.ProductType.visible" width="8%">
-	                                                <input type="text"  name="ProductType" id="ProductType" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true" >
+	                                                <input type="text"  name="ProductType" id="product_ProductType_{{ $index }}" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true" >
 
 	                                            </td>
 	                                            
 	                                            <td ng-if="$ctrl.productInfoColumns.SpecGroup.visible" width="11%">
-	                                                <select name="Spec Group" ng-options="specGroup as specGroup.name for specGroup in product.specGroups track by specGroup.id" ng-model="product.specGroup" class="form-control pull-left" ng-required="product.product !== null"  data-original-title="{{ product.specGroup.name }}" style="width: calc(100% - 20px);" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"></select>
+	                                                <select name="Spec Group" ng-options="specGroup as specGroup.name for specGroup in product.specGroups track by specGroup.id" ng-model="product.specGroup" class="form-control pull-left" ng-required="product.product !== null"  data-original-title="{{ product.specGroup.name }}" style="width: calc(100% - 20px);" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_specGroup_{{ $index }}"></select>
 	                                                <!-- {{NAV.requestId}} -->
 	                                                <!-- filteredSpecs['product_'+product.product.id] -->
 	                                                <a ng-controller="Controller_Master" ng-click="modalSpecGroupEdit(product, NAV.requestId,  'request')" class="pull-left" style="line-height: 34px;margin-left: 5px;" ng-hide="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed'" tooltip data-original-title="Open Spec group" ng-disabled="$ctrl.disableAllFields">
@@ -907,30 +907,31 @@
 	                                                <!-- ng-click="$ctrl.editSpecGroup()" -->
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.RobOnArrival.visible" width="8%">
-	                                                <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="RobOnArrival" class="form-control input-sm" ng-model="product.robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
+	                                                <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="product_RobOnArrival_{{ $index }}" class="form-control input-sm" ng-model="product.robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.DeliveryOption.visible" width="11%">
-	                                                <select ng-options="deliveryOption as deliveryOption.name for deliveryOption in $ctrl.lists.DeliveryOption track by deliveryOption.id" ng-model="product.deliveryOption" class="form-control"  data-original-title="{{ product.deliveryOption.name }}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields"></select>
+	                                                <select ng-options="deliveryOption as deliveryOption.name for deliveryOption in $ctrl.lists.DeliveryOption track by deliveryOption.id" ng-model="product.deliveryOption" id="product_deliveryOption_{{ $index }}" class="form-control"  data-original-title="{{ product.deliveryOption.name }}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields"></select>
 	                                            </td>
 	                                            <!-- ng-init="forms.productForm[$index].MinQuantity_0.$setValidity('required', false)" -->
 	                                            <td ng-if="$ctrl.productInfoColumns.MinQty.visible" width="8%" >
-	                                                <input type="text"  format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MinQuantity_{{$index}}" id="MinQuantity_{{$index}}" class="form-control input-sm" ng-model="product.minQuantity" max="{{ product.maxQuantity }}" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-blur="$ctrl.minQtyBlur(product)"  data-original-title="{{ product.minQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
+	                                                <input type="text"  format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MinQuantity_{{$index}}" id="product_MinQuantity_{{$index}}" class="form-control input-sm" ng-model="product.minQuantity" max="{{ product.maxQuantity }}" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-blur="$ctrl.minQtyBlur(product)"  data-original-title="{{ product.minQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.MaxQty.visible" width="8%">
-	                                                <input type="text"  format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}"  data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
+	                                                <input type="text"  format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="product_MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}"  data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.Uom.visible" width="8%">
-	                                                <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.uom" class="form-control" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.uom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"></select>
+	                                                <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.uom" class="form-control" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.uom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                                    id="product_uom_{{ $index }}"></select>
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.AgreementType.visible" width="12%">
 
-	                                                <select ng-options="agreementType as agreementType.name for agreementType in $ctrl.lists.AgreementType track by agreementType.id" ng-model="product.agreementType" class="form-control" ng-required="product.product !== null"  data-original-title="{{ product.agreementType.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"></select>
+	                                                <select ng-options="agreementType as agreementType.name for agreementType in $ctrl.lists.AgreementType track by agreementType.id" ng-model="product.agreementType" class="form-control" ng-required="product.product !== null"  data-original-title="{{ product.agreementType.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
 	                                            </td>
 	                                            <td>
 	                                            	<a href="/#/contracts/contract/edit/{{product.contract.contract.id}}">{{product.contract.contract.name}}</a>
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.Comment.visible" width="15%">
-	                                                <input type="text" class="form-control input-sm" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-model="product.comments" >
+	                                                <input type="text" class="form-control input-sm" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-model="product.comments" id="product_comment_{{ $index }}" id="product_productStatus_{{ $index }}">
 	                                                <!-- {{ product.buyerComments }} -->
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" width="10%">

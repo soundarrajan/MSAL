@@ -40,11 +40,11 @@
 					<div class="formatter-uom-label pull-right" style="margin: 0;">{{value.deliveryQuantityUom.name}}</div>
 				</td>
 				<td  style="min-width: 120px;" class="">
-					<input type="text" ng-model="value.sulphurContent" class="form-control">
+					<input type="text" id="sulphurContent_{{ $index }}" ng-model="value.sulphurContent" class="form-control">
 				</td>
 				<td style="min-width: 120px;" >
                             <div class="input-group form_input form_input_physicalSupplier">
-                                <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="Product" name="Product_{{productIndex}}_physical_supplier" ng-model="value.physicalSupplierCounterparty" autocomplete="off" />
+                                <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="Product_{{ $index }}" name="Product_{{ $index }}_physical_supplier" ng-model="value.physicalSupplierCounterparty" autocomplete="off" />
                                 <!-- ng-model="product.product" -->
                                 <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_suppliers', 'Physical Supplier' , 'formValues.productDetails.'+$index+'.physicalSupplierCounterparty','','','Counterparty', '');">
                                     <a   class=" btn default">
@@ -59,7 +59,7 @@
                             </div>
 				</td>
 				<td style="min-width: 120px;" >
-					<select name="" id="" class="form-control" ng-model="value.deliveryMFM" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id"></select>
+					<select name="" id="deliveryMFM_{{ $index }}" class="form-control" ng-model="value.deliveryMFM" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id"></select>
 				</td>
 				<td  style="min-width: 120px;" class="padding"><a href="#/delivery/delivery/edit/{{value.deliveryId}}" target="_blank">{{value.deliveryNo}}</a></td>
             </tr>
