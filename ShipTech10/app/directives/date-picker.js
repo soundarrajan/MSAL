@@ -164,7 +164,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 if (attrs['pickerType'] == 'datetime') {
                     $('#' + dateInputId + '_timeicon').click(function() {
-                        if (!mask.value || attrs['ngDisabled']) {
+                        if (!mask.value || attrs['disabled']) {
                             return;
                         }
                         $('.page-container').append(timeTpl);
