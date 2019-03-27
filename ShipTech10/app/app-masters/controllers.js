@@ -6947,6 +6947,11 @@ APP_MASTERS.controller("Controller_Master", [
 	        return grandTotal;
 	    }
 
+        $scope.camelCaseToSpaces = function(str) {
+            return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str) {
+                return str.toUpperCase();
+            });
+        }
 
     }
 ]);

@@ -108,7 +108,7 @@
                                     <li  ng-repeat="(key, value) in screenButtons" ng-if="key> 0">
                                         <span ng-controller="Controller_Master as CM">
                                             <a ng-hide="value.hide" ng-disabled="value.disabled" class="btn btn-default btn-outline"  data-group="extern" style="display:block; border:none" ng-click="$eval(value.action)">
-                                                {{ value.label }}
+                                                {{ camelCaseToSpaces(value.label) }}
                                             </a>
                                         </span>
                                     </li>
