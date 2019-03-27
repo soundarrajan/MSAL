@@ -4193,7 +4193,6 @@ Uncomment to see border around all .col-*
 .confirm_offer_dialog_confirmed_quantity span.input-group-addon{
     width: 20%;
     float: right;
-    height: 100%;
     line-height: 20px;
 }
 
