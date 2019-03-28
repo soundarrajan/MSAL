@@ -967,7 +967,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                     ctrl.locations[i].products[j].sellers.push(seller);
                 }
                 offers = removeNullAdditionalCosts(offers);
-                ctrl.locations[i].offer = removeNullAdditionalCosts([offerForLocation]) 
+                ctrl.locations[i].offer = removeNullAdditionalCosts([offerForLocation])[0] 
                 // payload.push({
                 //     requestLocationId: ctrl.individuals[i].id,
                 //     requestOffers: offers,
