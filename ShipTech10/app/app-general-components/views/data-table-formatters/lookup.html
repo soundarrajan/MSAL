@@ -10,7 +10,7 @@ data-original-title="{{MODEL_COL_FIELD.name}}">
     typeahead-min-length="1" 
     typeahead-append-to-body="true" 
     typeahead-wait-ms="100" 
-    id="{{ col.colDef.name }}_{{ rowRenderIndex }}" 
+    id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" 
     ng-required="$eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false" 
     name="{{ col.colDef.name }}"    
     autocomplete="off"  

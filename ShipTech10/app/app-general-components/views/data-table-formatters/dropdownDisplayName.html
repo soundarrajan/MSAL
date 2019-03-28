@@ -6,7 +6,7 @@
         <span dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}">
             <select class="form-control bs-select changeIT "
             name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
-            id="{{ col.colDef.name }}_{{rowRenderIndex}}"
+            id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{rowRenderIndex}}"
             data-container="body"
             ng-class="'colt' + col.uid"
             ng-change="grid.appScope.fVal().triggerChangeFields(col.colDef.name, rowRenderIndex); $eval(col.colDef.cellObject.changeEvent)"
@@ -25,7 +25,7 @@
         <span dynamic-condition-repeater="{{ col.colDef.cellCondition }}" dynamic-condition-repeater-type="{{ col.colDef.cellConditionType }}">
             <select class="form-control bs-select changeIT "
             name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
-            id="{{ col.colDef.name }}_{{rowRenderIndex}}"
+            id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{rowRenderIndex}}"
             data-container="body"
             ng-class="'colt' + col.uid"
             ng-change="grid.appScope.fVal().triggerChangeFields(col.colDef.name, rowRenderIndex); $eval(col.colDef.cellObject.changeEvent)"

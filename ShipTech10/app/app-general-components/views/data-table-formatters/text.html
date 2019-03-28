@@ -2,10 +2,19 @@
 	<span ng-if="!col.colDef.isLabResultTooltip">
 		<span ng-init="chg = false"></span>
 		<span ng-if="CM.chg == true && changedFVal" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
-		<input ng-if="col.colDef.readOnly != true" type="text" class="form-control w100" name="{{ col.colDef.displayName }}" id="{{ col.colDef.displayName }}_{{ rowRenderIndex }}" ng-disabled="col.colDef.cellDisabled"
-		    ng-model="MODEL_COL_FIELD" ng-trim="false" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}"
-		    ng-change="$eval(col.colDef.ChangeAction); CM.chg = true" ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
-		    format="{{ col.colDef.format }}"/>
+		<input ng-if="col.colDef.readOnly != true"
+			type="text"
+			class="form-control w100"
+			name="{{ col.colDef.displayName }}"
+			id="{{ grid.element[0].id }}_{{ col.colDef.displayName }}_{{ rowRenderIndex }}"
+			ng-disabled="col.colDef.cellDisabled"
+			ng-model="MODEL_COL_FIELD"
+			ng-trim="false"
+			dynamic-condition="{{ col.colDef.cellCondition }}"
+			dynamic-condition-type="{{ col.colDef.cellConditionType }}"
+			ng-change="$eval(col.colDef.ChangeAction); CM.chg = true"
+			ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
+			format="{{ col.colDef.format }}" />
 
 		<span ng-if="col.colDef.readOnly == true">
 			<input type="text" format="number:3" class="form-control w100" disabled ng-model="MODEL_COL_FIELD" />
@@ -15,7 +24,7 @@
 	<span ng-if="col.colDef.isLabResultTooltip">
 		<span ng-init="chg = false"></span>
 		<span ng-if="CM.chg == true && changedFVal" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
-		<input ng-if="col.colDef.readOnly != true" type="text" class="form-control w100" name="{{ col.colDef.displayName }}" id="{{ col.colDef.displayName }}_{{ rowRenderIndex }}"
+		<input ng-if="col.colDef.readOnly != true" type="text" class="form-control w100" name="{{ col.colDef.displayName }}" id="{{ grid.element[0].id }}_{{ col.colDef.displayName }}_{{ rowRenderIndex }}"
 		disabled="col.colDef.cellDisabled"ng-model="MODEL_COL_FIELD" ng-trim="false" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}"
 		    ng-change="$eval(col.colDef.ChangeAction); CM.chg = true" ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
 		    format="{{ col.colDef.format }}" tooltip data-original-title="{{grid.appScope.fVal().formValues.labTestResults[ rowRenderIndex ].displayShortageTooltip ? 'Short By ' + grid.appScope.fVal().formValues.labTestResults[ rowRenderIndex ].quantityShortage + ' - ' + grid.appScope.fVal().formValues.labTestResults[ rowRenderIndex ].quantityShortageUomName : '' }}"

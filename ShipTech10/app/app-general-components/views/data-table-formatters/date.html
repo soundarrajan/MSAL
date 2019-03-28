@@ -5,7 +5,7 @@
       type="text"
       ng-model="MODEL_COL_FIELD"
       name="{{ col.colDef.name }}"
-      id="{{ col.colDef.name }}__{{rowRenderIndex}}"
+      id="{{ grid.element[0].id }}_{{ col.colDef.name }}__{{rowRenderIndex}}"
       dynamic-condition="{{ col.colDef.cellCondition }}"
       dynamic-condition-type="{{ col.colDef.cellConditionType }}"
       ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
