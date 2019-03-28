@@ -655,7 +655,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                     result = [];
                     if (offers[i].additionalCosts) {
                         for (var j = 0; j < offers[i].additionalCosts.length; j++) {
-                            if (offers[i].additionalCosts[j].additionalCost !== null) {
+                            if (offers[i].additionalCosts[j].additionalCost !== null && offers[i].additionalCosts[j].costType !== null) {
                                 result.push(offers[i].additionalCosts[j]);
                             }
                         }
@@ -967,7 +967,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                     ctrl.locations[i].products[j].sellers.push(seller);
                 }
                 offers = removeNullAdditionalCosts(offers);
-                ctrl.locations[i].offer = offerForLocation
+                ctrl.locations[i].offer = removeNullAdditionalCosts([offerForLocation]) 
                 // payload.push({
                 //     requestLocationId: ctrl.individuals[i].id,
                 //     requestOffers: offers,
