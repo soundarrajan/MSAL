@@ -164,10 +164,17 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 if (attrs['pickerType'] == 'datetime') {
                     $('#' + dateInputId + '_timeicon').click(function() {
+                        if ($('#' + dateInputId + '_time').length > 0) {
+                            $('#' + dateInputId + '_time').remove();
+                            return;
+                        }
+
                         if (!mask.value || attrs['disabled']) {
                             return;
                         }
+
                         $('.page-container').append(timeTpl);
+
                         $('#' + dateInputId + '_time').css($('#' + dateInputId).offset());
 
                         $('.' + dateInputId + '_minute').click(function() {
