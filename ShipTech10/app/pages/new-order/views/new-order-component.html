@@ -930,7 +930,7 @@
                             <thead>
                                 <tr>
                                 	<th  style="vertical-align: middle;" ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id">
-                                        <span class="clickable" ng-click="$ctrl.addNewProduct()">
+                                        <span id="product_addRow_header" class="clickable" ng-click="$ctrl.addNewProduct()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                 	</th>
@@ -944,12 +944,12 @@
                                 <tr ng-repeat="(key, product) in $ctrl.data.products | orderBy : 'productType.id'" ng-init="$ctrl.disabledProduct[product.id] = $ctrl.isDisabledProduct(product)">
                                     <td style="vertical-align: middle;" ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id">
                                     	<!-- {{product.uniqueIdUI}} -->
-                                        <span class="clickable" ng-click="$ctrl.addNewProduct()">
+                                        <span id="product_addRow_{{ $index }}" class="clickable" ng-click="$ctrl.addNewProduct()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                     </td>
                                     <td style="vertical-align: middle;" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id">
-                                        <span class="clickable" ng-click="$ctrl.deleteProduct(product)" ng-if="product.status.id != $ctrl.STATUS['Cancelled'].id">
+                                        <span id="product_remRow_{{ $index }}" class="clickable" ng-click="$ctrl.deleteProduct(product)" ng-if="product.status.id != $ctrl.STATUS['Cancelled'].id">
                                             <i class="fa fa-minus st-btn-icon"></i>
                                         </span>
                                     </td>
@@ -1269,7 +1269,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <span ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1" class="clickable" ng-click="$ctrl.addAdditionalCost()">
+                                        <span id="addCost_addRow_header" ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1" class="clickable" ng-click="$ctrl.addAdditionalCost()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                     </th>
@@ -1283,12 +1283,12 @@
                                 <tr ng-repeat="additionalCost in $ctrl.getAdditionalCosts() | orderBy: '-fakeId' track by $index" ng-if="!additionalCost.isDeleted">
                                     <td>
                                     	<!-- {{$ctrl.data.status.name}} -->                                    	
-                                        <span ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1" class="clickable" ng-click="$ctrl.addAdditionalCost()">
+                                        <span id="addCost_addRow_{{ $index }}" ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1" class="clickable" ng-click="$ctrl.addAdditionalCost()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                     </td>
                                     <td>
-                                        <span ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1" class="clickable" ng-click="$ctrl.deleteAdditionalCost(additionalCost)">
+                                        <span id="addCost_remRow_{{ $index }}" ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1" class="clickable" ng-click="$ctrl.deleteAdditionalCost(additionalCost)">
                                             <i class="fa fa-minus st-btn-icon"></i>
                                         </span>
                                     </td>

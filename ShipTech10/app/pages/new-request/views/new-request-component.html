@@ -838,7 +838,7 @@
 	                                        <tr>
 	                                            <th>  &nbsp;
 	                                                <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
-	                                                    <a   ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
+	                                                    <a id="product_addRow_header" ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
 	                                                        <i class="fa fa-plus clickable" ></i>
 	                                                    </a>
 	                                                </span>
@@ -857,7 +857,7 @@
 
 	                                            <td>
 	                                                <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
-	                                                    <a   ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
+	                                                    <a id="product_addRow_{{ $index }}" ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
 	                                                        <i class="fa fa-plus clickable" ></i>
 	                                                    </a>
 	                                                </span>
@@ -867,7 +867,7 @@
 	                                                <span class="st-btn-icon" ng-show="product.productStatus.id != $ctrl.STATUS['Cancelled'].id && !$ctrl.isReadonlyForm && $ctrl.canCancelProduct(product)">
 	                                                    <!-- <i class="fa fa-minus clickable" ng-click="$ctrl.deleteProductFromLocation(product, location, productIdx, locationIdx, false)"></i> -->
 	                                                    <!-- {{product.uniqueIdUI}} -->
-	                                                    <a   ng-click="$ctrl.deleteProductFromLocation(product, location, productIdx, locationIdx, false)">
+	                                                    <a id="product_remRow_{{ $index }}" ng-click="$ctrl.deleteProductFromLocation(product, location, productIdx, locationIdx, false)">
 	                                                        <i class="fa fa-minus clickable" ></i>
 	                                                    </a>
 	                                                </span>
