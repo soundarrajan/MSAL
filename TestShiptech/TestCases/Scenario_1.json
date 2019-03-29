@@ -143,16 +143,16 @@
           "rows": [ 
             {
               "PaymentDate": 2,
-              "Calculated Amount": "-9518",
-              "Invoice Amount": "-9518",                        
-              "Invoice Type": "Final Invoice"
-            },
-            {
-              "PaymentDate": 2,
               "Calculated Amount": "569620",
               "Invoice Amount": "569620",
               "Invoice Type": "Provisional Invoice"
-            }            
+            },
+            {
+              "PaymentDate": 2,
+              "Calculated Amount": "-9518",
+              "Invoice Amount": "-9518",                        
+              "Invoice Type": "Final Invoice"
+            }      
           ]
         }
 
