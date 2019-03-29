@@ -112,17 +112,16 @@ class ShiptechInvoicesDeliveriesList {
       await this.tools.setText("input[name='invoiceRate']", testCase.provisionalData.products[i].rate, i);
     }
 
-    for (let i = 0; i < testCase.provisionalData.costs.length; i++) 
-    { 
-      
-      await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", testCase.provisionalData.costs[i].name);
-      await this.tools.click("a.btn[ng-click='addCostDetail(INV_SELECTED_COST)']");
-      await this.tools.selectBySelector("#grid_invoiceCostDetails_costType_" + i, testCase.provisionalData.costs[i].type);
-      await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + i, testCase.provisionalData.costs[i].applicableFor);
-      await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + i, testCase.provisionalData.costs[i].quantity);
-      await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + i, testCase.provisionalData.costs[i].unitPrice);
-      
-    }
+    if(testCase.provisionalData.costs)
+      for (let i = 0; i < testCase.provisionalData.costs.length; i++) 
+      {       
+        await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", testCase.provisionalData.costs[i].name);
+        await this.tools.click("a.btn[ng-click='addCostDetail(INV_SELECTED_COST)']");
+        await this.tools.selectBySelector("#grid_invoiceCostDetails_costType_" + i, testCase.provisionalData.costs[i].type);
+        await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + i, testCase.provisionalData.costs[i].applicableFor);
+        await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + i, testCase.provisionalData.costs[i].quantity);
+        await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + i, testCase.provisionalData.costs[i].unitPrice);    
+      }
 
     await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');    
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave);
