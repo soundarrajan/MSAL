@@ -2239,6 +2239,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 InvoiceId: currentRow.invoice ? currentRow.invoice.id : null,
                 DeliveryId: currentRow.delivery_Id,
                 OrderId: currentRow.order.id,
+                DueDate: currentRow.dueDate,
                 PaymentDate: changedData.paymentDate ? changedData.paymentDate : null,
                 BackOfficeComments: changedData.backOfficeComments,
                 PaymentStatus: changedData.paymentStatus ? changedData.paymentStatus : null,
