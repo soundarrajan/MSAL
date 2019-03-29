@@ -78,10 +78,10 @@ class ShiptechOrder {
         var countbuttons = 0;
         var limit = 10;
         do{
-          var countbuttons = await this.tools.countElements('span', 'ctrl.deleteProduct(product)', "attr", 'ng-click');
+          countbuttons = await this.tools.countElements('span', 'ctrl.deleteProduct(product)', "attr", 'ng-click');
           //delete the product
           if(countbuttons > testCase.products.length)
-            await this.tools.click("#product_remRow_" + countbuttons - 1);
+            await this.tools.click("#product_remRow_0");
           else if(countbuttons < testCase.products.length)
             await this.tools.click("#product_addRow_header");
 
@@ -104,7 +104,7 @@ class ShiptechOrder {
         countbuttons = 0;
         limit = 10;
         do{
-          var countbuttons = await this.tools.countElements('span', '$ctrl.deleteAdditionalCost(additionalCost)', "attr", 'ng-click');
+          countbuttons = await this.tools.countElements('span', '$ctrl.deleteAdditionalCost(additionalCost)', "attr", 'ng-click');
           //delete the cost
           if(countbuttons > testCase.costs.length)
           {

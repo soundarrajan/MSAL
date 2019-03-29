@@ -538,6 +538,9 @@ class TestTools24 {
 
     async click(selector)
     {
+      if(!selector)
+        throw new Error("Missing selector for click() action!");
+
       await this.waitFor(selector);
       await this.page.click(selector);
       await this.page.waitFor(1000);

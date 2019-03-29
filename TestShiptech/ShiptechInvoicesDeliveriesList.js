@@ -102,7 +102,8 @@ class ShiptechInvoicesDeliveriesList {
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
     await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
-    await this.tools.setText("#PaymentDate_dateinput", testCase.paymentDate);
+    if(testCase.paymentDate)
+      await this.tools.setText("#PaymentDate_dateinput", testCase.paymentDate);
     
 
     for (let i = 0; i < testCase.provisionalData.products.length; i++) 
