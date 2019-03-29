@@ -6144,6 +6144,10 @@ APP_API.factory("$Api_Service", [
                         payload.PageFilters = {};
                         payload.PageFilters.Filters = [];
                         payload.PageFilters.Filters = param.pageFilters;
+                        if (param.pageFilters.sortList) {
+	                        payload.SortList = {};
+	                        payload.SortList.SortList = param.pageFilters.sortList;
+                        }
                     }
                     if (param.filters) {
                         payload.Filters = param.filters;
