@@ -91,10 +91,13 @@ class ShiptechInvoicesDeliveriesList {
 
   async CreateInvoice(testCase)
   {   
-    if(await this.shiptech.validateDate(testCase.paymentDate) != true)
+    if(testCase.paymentDate)
     {
-      var dateFormat = await this.shiptech.getDateFormat();
-      throw  new Error("Invalid date format " + testCase.paymentDate + " valid format: " + dateFormat);
+      if(await this.shiptech.validateDate(testCase.paymentDate) != true)
+      {
+        var dateFormat = await this.shiptech.getDateFormat();
+        throw  new Error("Invalid date format " + testCase.paymentDate + " valid format: " + dateFormat);
+      }
     }
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
@@ -108,18 +111,32 @@ class ShiptechInvoicesDeliveriesList {
       await this.tools.setText("input[name='invoiceRate']", testCase.provisionalData.products[i].rate, i);
     }
 
+    for (let i = 0; i < testCase.provisionalData.costs.length; i++) 
+    { 
+      
+      await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", testCase.provisionalData.costs[i].name);
+      await this.tools.click("a.btn[ng-click='addCostDetail(INV_SELECTED_COST)']");
+      await this.tools.selectBySelector("#grid_invoiceCostDetails_costType_" + i, testCase.provisionalData.costs[i].type);
+      await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + i, testCase.provisionalData.costs[i].applicableFor);
+      await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + i, testCase.provisionalData.costs[i].quantity);
+      await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + i, testCase.provisionalData.costs[i].unitPrice);
+      
+    }
+
     await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');    
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave);
     
     if(testCase.invoiceStatusAfterSubmit)
     {
-      await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-      await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'SubmitForApprovalInvoice');
+      if(!await this.tools.isElementVisible("a[ng-click='$eval(value.action)']", 200, "Submit For Approval Invoice"))
+        await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
+      await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Submit For Approval Invoice');
       await this.checkInvoiceStatus(testCase.invoiceStatusAfterSubmit);
     }
     
-    await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'ApproveInvoice');
+    if(!await this.tools.isElementVisible("a[ng-click='$eval(value.action)']", 200, "Approve Invoice"))
+        await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
+    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Approve Invoice');
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterApprove);
 
     if(testCase.testRevert)
@@ -130,12 +147,12 @@ class ShiptechInvoicesDeliveriesList {
         if(testCase.invoiceStatusAfterSubmit)
         {
           await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-          await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'SubmitForApprovalInvoice');        
+          await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Submit For Approval Invoice');        
           await this.checkInvoiceStatus(testCase.invoiceStatusAfterSubmit);
         }
         
         await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-        await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'ApproveInvoice');
+        await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Approve Invoice');
         await this.checkInvoiceStatus(testCase.invoiceStatusAfterApprove);
     }
 
@@ -213,7 +230,7 @@ class ShiptechInvoicesDeliveriesList {
 
     //create final invoice
     await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'CreateFinalInvoice');
+    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Create Final Invoice');
     await this.tools.waitForLoader();
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
@@ -232,7 +249,7 @@ class ShiptechInvoicesDeliveriesList {
     await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');
     await this.tools.waitForLoader();      
     await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'ApproveInvoice');
+    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Approve Invoice');
     await this.tools.waitForLoader();
 
   }

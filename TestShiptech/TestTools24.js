@@ -419,22 +419,32 @@ class TestTools24 {
     {      
 
       var options = await this.getAllOptionsBySelector(elementSelector);
-      var valueToSelect = "";
-      //find the value knowing the text
+      var valueToSelect = null;
+      var found = false;
+      //find the value knowing the text      
       for(var i=0; i<options.length; i++)
         if(options[i].text == textToSelect){
           valueToSelect = options[i].value;
+          found = true;
           break;
         }
 
-      if(valueToSelect.length <= 0)
+      if(!found)
         for(var i=0; i<options.length; i++)
-        if(options[i].text.indexOf(textToSelect) >= 0){
-          valueToSelect = options[i].value;
-          break;
+        {
+          if((!options[i].text || options[i].text.length <= 0) && textToSelect.length <= 0)
+          {
+            valueToSelect = options[i].value;
+            break;
+          }
+
+          if(options[i].text && options[i].text.indexOf(textToSelect) >= 0){
+            valueToSelect = options[i].value;
+            break;
+          }
         }
 
-      if(valueToSelect.length <= 0)
+      if(valueToSelect == null)
         throw new Error("cannot find " + textToSelect + " into " + elementSelector);
 
       await this.page.select(elementSelector, valueToSelect);
@@ -535,24 +545,35 @@ class TestTools24 {
 
 
 
-    
-    async click2(selector)
+
+
+    async isElementVisible(selector, waitTime = 100, text = null)
     {
-      await this.waitFor(selector);
-      await this.page.click(selector);
-      await this.page.waitFor(1000);
-    }
+      var isVisible = false;
+      try
+      {
+        isVisible = await this.page.waitForSelector(selector, {
+                visible: true,
+                timeout: waitTime
+              })
+      }
+      catch(e)
+      {
 
+      }
 
+      if(!isVisible)
+        return false;
 
-    async isElementVisible(selector, waitTime = 100)
-    {
-      var isVisible = await this.page.waitForSelector(selector, {
-        visible: true,
-        timeout: waitTime
-      })
+      if(text == null)
+        return true;
 
-      return isVisible != null;
+      //the element is visible but it has the required text?
+      var elementText = await this.getElementText(selector);
+      if(elementText && elementText.length > 0 && elementText.indexOf(text) >= 0)
+        return true;
+      
+      return false;
     }
     
 
@@ -803,13 +824,33 @@ async getElementAttribute(selector, attrName, index = 0)
 
 
 
+async getElementText(selector, index = 0)
+{
+  
+  var result = await this.page.evaluate(({selector, index}) => {
+    var elements = document.querySelectorAll(selector);
+    var valueFound = "getElementText(): not found " + selector + " in " + elements.length + " elements";
+    if(index > elements.length - 1)
+      valueFound = "Only " + elements.length + " element like " + selector + " was found.";
+    else
+      valueFound = elements[index].textContent;
+
+    return valueFound;
+  }, {selector, index});
+
+  return result;
+
+}
+
+
+
 
 
 
 
 
 //index - click only on the n-th element found
-async countElements(selector, textToClick, itemPartType, attrName)
+async countElements(selector, textToClick = "", itemPartType = "", attrName = "")
 {
    
   
@@ -1233,7 +1274,7 @@ async clickOnItem(selector, textToClick = "", itemPartType = "", attrName = "", 
   
   var result = await this.page.evaluate(({selector, textToClick, itemPartType, attrName, index}) => {
     var elements = document.querySelectorAll(selector);
-    var valueFound = "clickOnItem(): not found " + attrName + " in " + elements.length + " elements";
+    var valueFound = "clickOnItem(): " + selector + ", " + textToClick + " not found " + attrName + " in " + elements.length + " elements";
     var countFoundElements = 0;
 
     for(var i=0; i<elements.length; i++)

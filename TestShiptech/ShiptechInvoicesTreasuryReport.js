@@ -144,17 +144,19 @@ class ShiptechInvoicesTreasuryReport {
 
       for(var key in rowTest)
       {
-        if(!rowReport[key])
+        
+        var valTest = rowTest[key];
+        valTest = valTest.replace(/,/g, '');
+        var valReport = rowReport[key];
+        valReport = valReport.replace(/,/g, '');        
+
+        if(!rowReport[key] && valTest.length > 0 && valTest!="0")
         {
           this.tools.log("The field " + key + " was not found in raport.");
           result = false;
           continue;
         }
 
-        var valTest = rowTest[key];
-        valTest = valTest.replace(/,/g, '');
-        var valReport = rowReport[key];
-        valReport = valReport.replace(/,/g, '');        
 
         if(isNumber(valTest))
         {

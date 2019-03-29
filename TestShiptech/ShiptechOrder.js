@@ -25,7 +25,6 @@ class ShiptechOrder {
   async CreateOrder(testCase)
   {
         testCase.result = true;
-
         if(!testCase.vesselName)
           testCase.vesselName = await this.shiptech.getRandomVessel();
         if(!testCase.carrier)
@@ -68,12 +67,12 @@ class ShiptechOrder {
 
         
                 
-        await this.shiptech.selectFromSelect("input[name='Vessel']", testCase.vesselName);
-        await this.shiptech.selectFromSelect("input[id='id_carrierCompany']", testCase.carrier);
+        await this.shiptech.selectWithText("input[name='Vessel']", testCase.vesselName);
+        await this.shiptech.selectWithText("input[id='id_carrierCompany']", testCase.carrier);
         await this.tools.setText('input[id="eta_dateinput"]', testCase.eta);
-        await this.shiptech.selectFromSelect("input[name='locationName']", testCase.port, false);
-        await this.shiptech.selectFromSelect("input[name='Seller']", testCase.seller);
-        await this.shiptech.selectFromSelect("input[name='paymentCompany']", testCase.paymentCompany);
+        await this.shiptech.selectWithText("input[name='locationName']", testCase.port, false);
+        await this.shiptech.selectWithText("input[name='Seller']", testCase.seller);
+        await this.shiptech.selectWithText("input[name='paymentCompany']", testCase.paymentCompany);
  
         //ensure the number of products
         var countbuttons = 0;
@@ -82,23 +81,52 @@ class ShiptechOrder {
           var countbuttons = await this.tools.countElements('span', 'ctrl.deleteProduct(product)', "attr", 'ng-click');
           //delete the product
           if(countbuttons > testCase.products.length)
-            await this.tools.clickOnItemByAttr('span.clickable', 'ctrl.deleteProduct(product)', 'ng-click', 1);
-          else 
-            await this.tools.clickOnItemByAttr('span.clickable', '$ctrl.addNewProduct()', 'ng-click', 1);
+            await this.tools.click("#product_remRow_" + countbuttons - 1);
+          else if(countbuttons < testCase.products.length)
+            await this.tools.click("#product_addRow_header");
 
           countbuttons = await this.tools.countElements('span', 'ctrl.deleteProduct(product)', "attr", 'ng-click');
           limit--;
 
         }while(countbuttons != testCase.products.length && limit > 0);
 
-
         for(var i=0; i<testCase.products.length; i++)
         {          
-          await this.shiptech.selectFromSelect('input[name="Product '+ i +'"]', testCase.products[i].name);
+          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
           await this.tools.setText('input[name="minQuantity"]', testCase.products[i].quantity, i);
           await this.tools.setText('input[name="maxQuantity"]', testCase.products[i].quantity, i);
           await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
         }
+
+        //ensure the number of costs
+        if(!testCase.costs)
+          testCase.costs = [];
+        countbuttons = 0;
+        limit = 10;
+        do{
+          var countbuttons = await this.tools.countElements('span', '$ctrl.deleteAdditionalCost(additionalCost)', "attr", 'ng-click');
+          //delete the cost
+          if(countbuttons > testCase.costs.length)
+          {
+            await this.tools.selectBySelector("#additional_cost_additional_cost_0", "TAX");
+            await this.tools.click("#addCost_remRow_0");
+          }
+          else if(countbuttons < testCase.costs.length)
+            await this.tools.click("#addCost_addRow_header");
+
+          countbuttons = await this.tools.countElements('span', '$ctrl.deleteAdditionalCost(additionalCost)', "attr", 'ng-click');
+          limit--;
+
+        }while(countbuttons != testCase.costs.length && limit > 0);
+        
+        for(var i=0; i<testCase.costs.length; i++)
+        {          
+          await this.tools.selectBySelector("#additional_cost_additional_cost_" + i, testCase.costs[i].name);
+          await this.tools.selectBySelector("#additional_cost_type_" + i, testCase.costs[i].type);
+          await this.tools.setText("#additional_cost_price_" + i, testCase.costs[i].unitPrice);
+          await this.tools.selectBySelector("#ApplicableFor_" + i, testCase.costs[i].applicableFor);
+        }
+
         
         await this.tools.clickOnItemByText('a.btn', 'Save');
         await this.tools.waitForLoader("Save Order");

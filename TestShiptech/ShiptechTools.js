@@ -62,18 +62,6 @@ class ShiptechTools {
   }
 
 
-/*
-  async selectFromSelect(selector, valueToSelect){
-
-    this.tools.log("Select  " + selector + " / " + valueToSelect);
-    //await this.tools.setText(filter, valueToSelect); 
-    await this.page.waitFor(selector);
-    await this.page.type(selector, valueToSelect);
-    await this.page.waitFor(2000);
-    await this.page.click("a[title='" + valueToSelect +  "']");    
-    await this.page.waitFor(3000);
-}
-*/
 
 
 //get date conform with the tenant settings
@@ -88,7 +76,7 @@ async getFutureDate(days, withTime)
 }
 
 
-async selectFromSelect(selector, valueToSelect, checkSelection = true){
+async selectWithText(selector, valueToSelect, checkSelection = true){
 
   this.tools.log("Select  " + selector + " / " + valueToSelect);
   var success = false;
@@ -104,8 +92,11 @@ async selectFromSelect(selector, valueToSelect, checkSelection = true){
       await this.tools.setText(selector, valueToSelect);
     //  await this.page.click(selector);    
       await this.tools.page.waitFor(200);
-      await this.tools.page.click("a[title='" + valueToSelect + "']");
-      await this.tools.page.waitFor(500);
+      if(await this.tools.isElementVisible("a[title='" + valueToSelect + "']"))
+      {
+        await this.tools.page.click("a[title='" + valueToSelect + "']");
+        await this.tools.page.waitFor(500);
+      }
       
       await this.tools.page.keyboard.press("Tab", {delay: 1000});
       await this.tools.page.waitFor(1500);

@@ -1,6 +1,6 @@
 
 {
-    "testTitle": "Invoice Test Scenarios - Scenario 1",
+    "testTitle": "Invoice Test Scenarios - Scenario 4",
     "baseurl": "http://mail.24software.ro:8161/#/",
     "starturl": "new-order",
     "databaseIntegration": {
@@ -13,6 +13,46 @@
     "password": "MyDocuments72%",
     "headless": false,
     "testCases": [
+      {
+        "order": {
+          "url": "new-order",
+          "pageTitle": "New Order",
+          "eta": 2,
+          "orderId": "",
+          "products": [
+            {
+              "name": "RMG 500 3.5%",
+              "quantity": 1500,
+              "unitPrice": 379
+            }
+          ]
+        },
+        "delivery": {
+          "url": "delivery/delivery/edit/",
+          "pageTitle": "New Delivery",
+          "orderId": "",
+          "bdnDate": 1,
+          "products": [
+            {
+              "name": "RMG 500 3.5%",
+              "quantity": 1500
+            }
+          ]
+        },     
+        "treasury": {
+          "url": "invoices/treasuryreport",
+          "pageTitle": "Treasury Report",
+          "orderId": "",
+          "rows": [ 
+            {
+              "PaymentDate": 2,
+              "Calculated Amount": "568500",
+              "Invoice Amount": "580745",
+              "Invoice Type": "Provisional Invoice"
+            }        
+          ]
+        }
+      },
       {
       "order": {
         "url": "new-order",
@@ -60,8 +100,17 @@
                   "quantity": 1499,
                   "rate": 380
                 }
+              ],
+              "costs": [
+                {
+                  "name": "BARGING",
+                  "type": "Flat",            
+                  "applicableFor": "All",
+                  "quantity": 1499,
+                  "unitPrice": 11125                  
+                }
               ]
-            }
+            }        
       },
       "treasury": {
         "url": "invoices/treasuryreport",
@@ -70,8 +119,8 @@
         "rows": [ 
           {
             "PaymentDate": 2,
-            "Calculated Amount": "569620",
-            "Invoice Amount": "569620",
+            "Calculated Amount": "580745",
+            "Invoice Amount": "580745",
             "Invoice Type": "Provisional Invoice"
           }        
         ]
@@ -103,60 +152,69 @@
           }
         ]
       },
-      "invoice": {
-          "url": "invoices/deliveries",
-          "pageTitle": "Transactions to be Invoiced List",
-          "invoiceType": "Provisional Invoice",
-          "invoiceStatusAfterSave": "New",
-          "invoiceStatusAfterSubmit": "New",
-          "invoiceStatusAfterApprove": "Approved",
-          "orderId": "",
-          "currency": "US Dollar",
-          "testRevert": false,
-          "createFinal": true,
-          "testOrderStatus": false,
-          "paymentDate": 2,
-          "provisionalData" :{ 
+      "invoice":       
+      {
+        "url": "invoices/deliveries",
+        "pageTitle": "Transactions to be Invoiced List",
+        "invoiceType": "Provisional Invoice",
+        "invoiceStatusAfterSave": "New",
+        "invoiceStatusAfterSubmit": "New",
+        "invoiceStatusAfterApprove": "Approved",
+        "orderId": "",
+        "currency": "US Dollar",
+        "testRevert": false,
+		    "createFinal": true,
+        "testOrderStatus": false,
+        "paymentDate": 2,
+        "provisionalData" :{
               "products": [
                 {
                   "name": "RMG 500 3.5%",
                   "quantity": 1499,
                   "rate": 380
                 }
+              ],
+              "costs": [
+                {
+                  "name": "BARGING",
+                  "type": "Flat",            
+                  "applicableFor": "All",
+                  "quantity": 1499,
+                  "unitPrice": 11125                  
+                }
               ]
             },
-
+            
           "finalData": {
             "products": [
               {
                 "name": "RMG 500 3.5%",
                 "quantity": 1499,
-                "rate": 373.65
+                "rate": 373.6484
               }
             ]
           }
-        },
-        "treasury": {
-          "url": "invoices/treasuryreport",
-          "pageTitle": "Treasury Report",
-          "orderId": "",
-          "rows": [ 
-            {
-              "PaymentDate": 2,
-              "Calculated Amount": "-9518",
-              "Invoice Amount": "-9518",                        
-              "Invoice Type": "Final Invoice"
-            },
-            {
-              "PaymentDate": 2,
-              "Calculated Amount": "569620",
-              "Invoice Amount": "569620",
-              "Invoice Type": "Provisional Invoice"
-            }            
-          ]
-        }
-
+      },
+      "treasury": {
+        "url": "invoices/treasuryreport",
+        "pageTitle": "Treasury Report",
+        "orderId": "",
+        "rows": [ 
+          {
+            "PaymentDate": 2,
+            "Calculated Amount": "-9521",
+            "Invoice Amount": "-9521",                        
+            "Invoice Type": "Final Invoice"
+          },
+          {
+            "PaymentDate": 2,
+            "Calculated Amount": "580745",
+            "Invoice Amount": "580745",
+            "Invoice Type": "Provisional Invoice"
+          }            
+        ]
       }
+    }
   ]
 }
 

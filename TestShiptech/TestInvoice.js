@@ -59,6 +59,9 @@ var shiptech = new ShiptechTools(tools);
             if(!currentTestCase[testScreen].orderId || currentTestCase[testScreen].orderId.length <= 0)
             currentTestCase[testScreen].orderId = orderId;
 
+            if(testScreen.indexOf("//") >= 0)
+              continue;
+
             if(testScreen == "order")
               testResult = await shiptechOrder.CreateOrder(currentTestCase[testScreen]);
             if(testScreen == "delivery")
@@ -118,7 +121,7 @@ var shiptech = new ShiptechTools(tools);
         if(testCase.testCases[i].delivery)
         {
           if(testCase.testCases[i].delivery.bdnDate)
-            testCase.testCases[i].delivery.bdnDate = await shiptech.getFutureDate(testCase.testCases[i].delivery.bdnDate, true);
+            testCase.testCases[i].delivery.bdnDate = await shiptech.getFutureDate(testCase.testCases[i].delivery.bdnDate, false);
         }
 
         

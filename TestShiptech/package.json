@@ -1,0 +1,20 @@
+{
+  "name": "testshiptech",
+  "version": "1.0.0",
+  "description": "Automated tests with Puppeteer",
+  "main": "TestInvoice.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rares Tohanean",
+  "license": "ISC",
+  "dependencies": {
+    "csvtojson": "^2.0.8",
+    "fs-extra": "^7.0.1",
+    "html2plaintext": "^2.1.2",
+    "is-number": "^7.0.0",
+    "mssql": "^5.0.4",
+    "puppeteer": "^1.13.0",
+    "url-join": "^4.0.0"
+  }
+}

@@ -62,18 +62,18 @@ class ShiptechRequest {
         }
              
                       
-        await this.shiptech.selectFromSelect("input[name='Vessel']", testCase.vesselName);
-        await this.shiptech.selectFromSelect("input[name='ports']", testCase.bunkerablePort, false);
-        await this.shiptech.selectFromSelect("input[name='DestinationPort0']", testCase.destinationPort, false);
+        await this.shiptech.selectWithText("input[name='Vessel']", testCase.vesselName);
+        await this.shiptech.selectWithText("input[name='ports']", testCase.bunkerablePort, false);
+        await this.shiptech.selectWithText("input[name='DestinationPort0']", testCase.destinationPort, false);
 
         if(await this.tools.page.waitFor("input[name='Location 1 Company']"))
-          await this.shiptech.selectFromSelect("input[name='Location 1 Company']", testCase.company);
+          await this.shiptech.selectWithText("input[name='Location 1 Company']", testCase.company);
         
         await this.tools.setText('input[id="0_eta_dateinput"]', testCase.eta);
         await this.tools.setText('input[name="MinQuantity_0"]', testCase.MinQuantity_0);            
         await this.tools.waitForLoader();
         await this.tools.page.waitFor(800);
-        await this.shiptech.selectFromSelect("input[name='Product']", testCase.product, false);
+        await this.shiptech.selectWithText("input[name='Product']", testCase.product, false);
   
         var countbuttons = 0;
   
