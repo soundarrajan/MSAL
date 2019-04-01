@@ -889,8 +889,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         rowObject.contractMaxQuantity = theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].contractMaxQuantity;
                     }
                     if (options.colModel.dataFrom == "base") {
-                        if (rowObject.minQuantity != null) minQty = $filter("number")(rowObject.minQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
-                        if (rowObject.maxQuantity != null) maxQty = $filter("number")(rowObject.maxQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
+                        if (theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].minQuantity != null) minQty = $filter("number")(theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].minQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
+                        if (theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].maxQuantity != null) maxQty = $filter("number")(theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].maxQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
                     }
 
                     if (options.colModel.dataFrom == "contractual") {
