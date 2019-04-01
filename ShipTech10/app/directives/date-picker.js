@@ -275,6 +275,10 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         $('#' + dateInputId).data("DateTimePicker").date(moment.utc(v));
                         prevValue = moment.utc(v).format(currentFormat);
                         mask.value = moment.utc(v).format(currentFormat);
+                    } else {
+						ngModel.$setViewValue(null);
+						ngModel.$commitViewValue();
+                        mask.value = "";
                     }
                 });
                 scope.$watch(attrs['ngDisabled'], function(v) {
