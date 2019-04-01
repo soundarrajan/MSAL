@@ -487,20 +487,23 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 "ClaimTypeId": $scope.labResults_claimId
             }
         }
-        Factory_Master.raise_claim(data, function (response) {
-            if (response) {
-                if (response.status == true) {
-                    $scope.loaded = true;
-                    // toastr.success(response.message);
-                    $rootScope.transportData = response.data;
-                    console.log('-----', response.data);
-                    $location.path('claims/claim/edit/');
-                } else {
-                    $scope.loaded = true;
-                    toastr.error(response.message);
-                }
-            }
-        })
+        localStorage.setItem("raiseClaimFromLabsPayload", JSON.stringify(data));
+        window.open('#/claims/claim/edit/', "_blank");
+        // Factory_Master.raise_claim(data, function (response) {
+        //     if (response) {
+        //         if (response.status == true) {
+        //             $scope.loaded = true;
+        //             // toastr.success(response.message);
+        //             $rootScope.transportData = response.data;
+        //             console.log('-----', response.data);
+        //             window.open('#/claims/claim/edit/', "_blank");
+        //             // $location.path();
+        //         } else {
+        //             $scope.loaded = true;
+        //             toastr.error(response.message);
+        //         }
+        //     }
+        // })
     }
 
     $scope.invalidLab = function (data) {

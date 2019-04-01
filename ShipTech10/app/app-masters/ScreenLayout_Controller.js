@@ -130,6 +130,25 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 
          	}
 
+         	if (localStorage.getItem("raiseClaimFromLabsPayload")) {
+
+	            var data = angular.copy(JSON.parse(localStorage.getItem("raiseClaimFromLabsPayload")));
+                localStorage.removeItem('raiseClaimFromLabsPayload');
+		        Factory_Master.raise_claim(data, function (response) {
+		            if (response) {
+		                if (response.status == true) {
+							$scope.formValues = response.data;
+	                        localStorage.removeItem('raiseClaimFromLabsPayload');
+		                } else {
+		                    $scope.loaded = true;
+		                    toastr.error(response.message);
+		                }
+		            }
+		        })
+		        vm.entity_id = "0"
+		        // return false;
+         	}
+
 
             vm.get_master_structure(screenChild);
             // console.log(screenChild);
