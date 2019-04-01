@@ -35,28 +35,30 @@ class TestTools24 {
     this.pagesHistory = [];
     const maxLogSize = 3000000;
     var alllogs = "";
-    var logfileName = 'log.txt';        
-    if (fs.existsSync(logfileName)) 
+    this.logfileName = 'log.txt';        
+    if (fs.existsSync(this.logfileName)) 
     {
-      var stats = fs.statSync(logfileName);
+      var stats = fs.statSync(this.logfileName);
       //if the file is too large, delete it
       if(stats.size > maxLogSize * 10)
-        fs.unlinkSync(logfileName);
+        fs.unlinkSync(this.logfileName);
       else
       {//truncate the logfile
-        alllogs = fs.readFileSync(logfileName, 'utf8');
+        alllogs = fs.readFileSync(this.logfileName, 'utf8');
         if(alllogs.length > maxLogSize)
         {
           alllogs = alllogs.substring(alllogs.length - maxLogSize, alllogs.length-1);
-          fs.unlinkSync(logfileName);
+          fs.unlinkSync(this.logfileName);
         }
         else
           alllogs = "";
       }
     }
     
-    this.logFile = fs.createWriteStream(logfileName, { flags: 'a' });
-    fs.writeFileSync(logfileName, alllogs + endOfLine + endOfLine, 'utf8');    
+    //this.logFile = fs.createWriteStream(this.logfileName, { flags: 'a' });
+    //fs.writeFileSync(this.logfileName, alllogs + endOfLine + endOfLine, 'utf8');    
+
+    fs.appendFileSync(this.logfileName, alllogs + endOfLine + endOfLine, 'utf8');    
     alllogs = "";
   }
 
@@ -81,6 +83,7 @@ class TestTools24 {
         return false;
       }      
     }
+   
     return true;
   }
 
@@ -88,7 +91,7 @@ class TestTools24 {
   log(message)
   {
     console.log(message);    
-    this.logFile.write(util.format(message) + endOfLine);
+    fs.appendFileSync(this.logfileName, util.format(message) + endOfLine);
   }
 
 
@@ -96,7 +99,7 @@ class TestTools24 {
   error(message)
   {
     console.error(message);
-    this.logFile.write(util.format(message) + endOfLine);
+    fs.appendFileSync(this.logfileName, util.format(message) + endOfLine);
   }
 
 
@@ -227,12 +230,42 @@ class TestTools24 {
         }
       );
 
-      this.page = await this.getFirstPage(this.browser);
+      this.page = await this.getFirstPage(this.browser);      
       await this.goto(url);
       this.addPage(this.page);
       return this.page;
     }
   
+
+
+
+
+    async createPageErrorHook(page)
+    {
+      page.on('error', (err, tools) => {
+        console.log("page.on('error', (err, tools) =>" + err);
+        tools.error('error happen in the page: ' + err);
+      }, this);
+    
+      page.on('pageerror', (pageerr, tools)=> {
+        console.log("page.on('error', (err, tools) =>" + pageerr);
+        tools.error('pageerror occurred: ' + pageerr);
+      }, this)
+      //const three= await page.evaluate(()=> 1+2);
+      //console.log('three value is: ', three);
+  
+      /*
+      try {
+        await page.evaluate(()=> {
+          throw new Error('js throw some error');
+        });
+      } catch (e) {
+        console.log('an expection on page.evaluate ', e);
+      }*/
+  
+    }
+
+
 
 
     async openPageRelative(relativeUrl, performance = false)
@@ -721,7 +754,8 @@ class TestTools24 {
           this.record(end-start, title);
       }
 
-      this.addPage(pagenew);      
+      this.addPage(pagenew);
+      await this.createPageErrorHook(pagenew);
       return pagenew;
     }
 
@@ -736,10 +770,12 @@ class TestTools24 {
       if(pages.length == 1)
       {
         this.page = pages[0];
+        await this.createPageErrorHook(this.page);
         return this.page;
       }
       
       this.page = await browser.newPage();
+      await this.createPageErrorHook(this.page);
       return this.page;
     }
 

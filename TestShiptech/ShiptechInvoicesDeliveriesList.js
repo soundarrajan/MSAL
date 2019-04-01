@@ -104,13 +104,13 @@ class ShiptechInvoicesDeliveriesList {
     await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
     if(testCase.paymentDate)
       await this.tools.setText("#PaymentDate_dateinput", testCase.paymentDate);
-    
 
-    for (let i = 0; i < testCase.provisionalData.products.length; i++) 
-    { 
-      await this.tools.setText("input[name='invoiceQuantity']", testCase.provisionalData.products[i].quantity, i);
-      await this.tools.setText("input[name='invoiceRate']", testCase.provisionalData.products[i].rate, i);
-    }
+    if(testCase.provisionalData.products)
+      for (let i = 0; i < testCase.provisionalData.products.length; i++) 
+      { 
+        await this.tools.setText("input[name='invoiceQuantity']", testCase.provisionalData.products[i].quantity, i);
+        await this.tools.setText("input[name='invoiceRate']", testCase.provisionalData.products[i].rate, i);
+      }
 
     if(testCase.provisionalData.costs)
       for (let i = 0; i < testCase.provisionalData.costs.length; i++) 
