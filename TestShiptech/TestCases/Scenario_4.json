@@ -45,7 +45,6 @@
           "orderId": "",
           "rows": [ 
             {
-              "PaymentDate": 2,
               "Calculated Amount": "568500",
               "Invoice Amount": "580745",
               "Invoice Type": "Provisional Invoice"
@@ -118,7 +117,6 @@
         "orderId": "",
         "rows": [ 
           {
-            "PaymentDate": 2,
             "Calculated Amount": "580745",
             "Invoice Amount": "580745",
             "Invoice Type": "Provisional Invoice"
@@ -201,17 +199,15 @@
         "orderId": "",
         "rows": [ 
           {
-            "PaymentDate": 2,
             "Calculated Amount": "-9521",
             "Invoice Amount": "-9521",                        
             "Invoice Type": "Final Invoice"
           },
           {
-            "PaymentDate": 2,
             "Calculated Amount": "580745",
             "Invoice Amount": "580745",
             "Invoice Type": "Provisional Invoice"
-          }            
+          }
         ]
       }
     }

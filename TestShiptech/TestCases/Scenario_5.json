@@ -201,15 +201,16 @@
         "orderId": "",
         "rows": [ 
           {
-            "Calculated Amount": "819270",
-            "Invoice Amount": "819270",
-            "Invoice Type": "Provisional Invoice"            
-          },
-          {
             "Calculated Amount": "9521",
             "Invoice Amount": "9521",
             "Invoice Type": "Final Invoice"
-          }            
+          },
+          {
+            "Calculated Amount": "819270",
+            "Invoice Amount": "819270",
+            "Invoice Type": "Provisional Invoice"            
+          }
+        
         ]
       }
     }
