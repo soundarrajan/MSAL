@@ -143,14 +143,18 @@ angular.module("shiptech").config([
 	                    			toastr.error("An error has occured");
                     			}
                     		}
-		                    	if (window.openedScreenLoaders <= 0) {
-									setTimeout(function(){
-				                    	if (window.openedScreenLoaders <= 0) {
-											$('.screen-loader').fadeOut(200);
-											$('clc-table-list tbody').css("opacity", 1);
-				                    	}
-									},50)
-		                    	}
+	                    	if (window.openedScreenLoaders <= 0) {
+								setTimeout(function(){
+			                    	if (window.openedScreenLoaders <= 0) {
+										$('.screen-loader').fadeOut(200);
+										$('clc-table-list tbody').css("opacity", 1);
+			                    	}
+								},50)
+	                    	}
+
+	                    	var guidReference = config.data.Reference || config.data.reference;
+	                    	$("#autoTestingGUIDerror").text(guidReference);
+
 		                    // 	console.log("response timeout:" + window.openedScreenLoaders);
                     	}
                     	// console.log("***** response:" + window.openedScreenLoaders);
