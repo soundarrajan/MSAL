@@ -699,6 +699,7 @@
 	                                                        ng-model="location.deliveryFrom"
 	                                                        ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" 
                                                             new-date-picker
+                                                            picker-type="datetime"
 	                                                        ng-required="true" 
 	                                                        ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
@@ -720,6 +721,7 @@
 	                                                        ng-model="location.deliveryTo" 
 	                                                        ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" 
                                                             new-date-picker
+                                                            picker-type="datetime"
 	                                                        ng-required="true" 
 	                                                        ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
