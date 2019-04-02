@@ -293,7 +293,9 @@ class TestTools24 {
         }
         catch(err)
         {
-          this.log("#autoTestingGUIDerror " + err);
+          var errtext = JSON.stringify(err);
+          if(errtext.indexOf("Execution context was destroyed, most likely because of a navigation.") < 0)
+            this.log("#autoTestingGUIDerror " + errtext);
           retries++;
         }
 
@@ -310,7 +312,10 @@ class TestTools24 {
 
       page.on("request", request => {
         const url = request.url();
-        fs.appendFileSync(this.browserLogfileName, "request url:" + url + endOfLine);
+        if(url && url.length > 0 && !url.endsWith(".css") &&  !url.endsWith(".woff") &&
+          !url.endsWith(".png") && !url.endsWith(".jpg") && !url.endsWith(".gif") && !url.endsWith(".svg") && !url.endsWith(".js"))
+              fs.appendFileSync(this.browserLogfileName, "request url:" + url + endOfLine);
+
         request.continue();
       });
 
@@ -324,20 +329,16 @@ class TestTools24 {
         const url = request.url();
         const status = response.status();
         if(status != 200)
-          fs.appendFileSync(this.browserLogfileName, "response url:" + url + "http status:" + endOfLine);
+          fs.appendFileSync(this.browserLogfileName, "response url:" + url + " http status:" + endOfLine);
       });
 
       page.on('console', msg => {
-        if(!msg)
+        if(!msg || !msg._text)
           return;
-          fs.appendFileSync(this.browserLogfileName, util.format(msg) + endOfLine);
+
+        fs.appendFileSync(this.browserLogfileName, util.format(msg._text) + endOfLine);
       });
 
-      page.on('console', msg => {
-        fs.appendFileSync(this.browserLogfileName, util.format(msg) + endOfLine);
-      }, this);
-
-      
       page.on('error', err => {
         fs.appendFileSync(this.browserLogfileName, util.format(err) + endOfLine);
       });
