@@ -335,7 +335,7 @@ th#master_list_table_cb .cbox, th#master_list_table_cb .s-ico {
 
 .ui-widget-content .ui-jqgrid-bdiv table {
     font-size: 14px;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 
 .ui-jqgrid tr.jqgrow td {
