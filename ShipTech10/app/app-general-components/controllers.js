@@ -2258,9 +2258,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             if (typeof(vm.paymentDateHistory[currentRow.id].accountancyDate) == 'undefined') {
             	vm.paymentDateHistory[currentRow.id].accountancyDate = null;
             }      
-
-            if (vm.paymentDateHistory[currentRow.id].paymentDate == changedData.paymentDate && vm.paymentDateHistory[currentRow.id].accountancyDate == changedData.accountancyDate) {
-            	return;
+			// console.log(vm.initialTreasuryData);
+            if (vm.initialTreasuryData[currentRow.id-1].paymentDate == changedData.paymentDate) {
+            	// return;
             } else {
             	payload.HasManualPaymentDate = true;
                 vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
@@ -2440,6 +2440,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         $rootScope.$on("tableLoaded", function(ev,data){
             setTimeout(function(){
                 vm.lastCallTableData = data;
+                if (vm.screen_id == "treasuryreport") {
+                	vm.initialTreasuryData = data.tableData.rows;
+                }
                 jQuery(document).ready(function(){
                     $('select.contract_planning_product').select2();
                 })        
