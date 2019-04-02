@@ -35,6 +35,10 @@ class TestTools24 {
     this.pagesHistory = [];
     this.logfileName = 'log.txt';
     this.browserLogfileName = 'blog.txt';
+    this.currentTextCase = 0;
+    this.currentTextTitle = "";
+    this.currentBusinessReferenceName = "";
+    this.currentBusinessReferenceId = "";
 
     this.truncateLogfile(this.logfileName);
     this.truncateLogfile(this.browserLogfileName);
@@ -257,17 +261,23 @@ class TestTools24 {
 
       //get the error GUID from #autoTestingGUIDerror
 
-      setInterval(async () => {
+     var repeatReadError = setInterval(async () => {
 
         var element = null;
+        var maxretry = 10;
+        var retries = 0;
         try
         {
+            if(!this.page)
+              return;
+
            element = await this.page.$("#autoTestingGUIDerror");
             
            if(!element)
             {
               var title = await page.title();
-              console.log("Element autoTestingGUIDerror not found in browser page: \"" + title + "\"");
+              if(title != "Sign in to your account")
+                console.log("Element autoTestingGUIDerror not found in browser page: \"" + title + "\"");
               return;
             }
 
@@ -276,12 +286,21 @@ class TestTools24 {
             if(errGuid && errGuid.length > 0)
             {
               this.error("Backend error " + errGuid);
+              this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", tools.currentBusinessReferenceId);
               process.exit(1);
             }
+            retries = 0;
         }
         catch(err)
         {
           this.log("#autoTestingGUIDerror " + err);
+          retries++;
+        }
+
+        if(retries >= maxretry)
+        {
+          clearInterval(repeatReadError);
+          this.log("I give up reading backend errors from the browser.");
         }
                       
       }, 2000);

@@ -49,6 +49,8 @@ var shiptech = new ShiptechTools(tools);
       {
           var currentTestCase = testCase.testCases[i];
           tools.log("Starting test #" + (i+1) + " " + testCase.testTitle);
+          tools.currentTextCase = i;
+          tools.currentTextTitle = testCase.testTitle;
           var hasPassed = true;
 
           for (var testScreen in currentTestCase)
@@ -72,7 +74,11 @@ var shiptech = new ShiptechTools(tools);
               testResult = await shiptechTreasuryReport.TreasuryReport(currentTestCase[testScreen]);
   
             if(currentTestCase[testScreen].orderId && currentTestCase[testScreen].orderId.length > 0)
+            {
               orderId = currentTestCase[testScreen].orderId;                        
+              tools.currentBusinessReferenceName = "Order Id";
+              tools.currentBusinessReferenceId = orderId;
+            }
 
             if(!testResult.result)
               hasPassed = false;
