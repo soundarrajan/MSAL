@@ -92,10 +92,14 @@ class ShiptechOrder {
 
         for(var i=0; i<testCase.products.length; i++)
         {          
-          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
-          await this.tools.setText('input[name="minQuantity"]', testCase.products[i].quantity, i);
-          await this.tools.setText('input[name="maxQuantity"]', testCase.products[i].quantity, i);
-          await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
+          if(testCase.products[i].name)
+            await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
+          if(testCase.products[i].quantity)
+            await this.tools.setText('input[name="minQuantity"]', testCase.products[i].quantity, i);
+          if(testCase.products[i].quantity)
+            await this.tools.setText('input[name="maxQuantity"]', testCase.products[i].quantity, i);
+          if(testCase.products[i].unitPrice)
+            await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
         }
 
         //ensure the number of costs

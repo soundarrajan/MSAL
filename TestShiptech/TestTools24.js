@@ -33,22 +33,35 @@ class TestTools24 {
     this.streamResults = null;
     this.logmap = new Map();
     this.pagesHistory = [];
+    this.logfileName = 'log.txt';
+    this.browserLogfileName = 'blog.txt';
+
+    this.truncateLogfile(this.logfileName);
+    this.truncateLogfile(this.browserLogfileName);
+  }
+
+
+
+
+  truncateLogfile(filename)
+  {    
     const maxLogSize = 3000000;
     var alllogs = "";
-    this.logfileName = 'log.txt';        
-    if (fs.existsSync(this.logfileName)) 
+
+
+    if (fs.existsSync(filename)) 
     {
-      var stats = fs.statSync(this.logfileName);
+      var stats = fs.statSync(filename);
       //if the file is too large, delete it
       if(stats.size > maxLogSize * 10)
-        fs.unlinkSync(this.logfileName);
+        fs.unlinkSync(filename);
       else
       {//truncate the logfile
-        alllogs = fs.readFileSync(this.logfileName, 'utf8');
+        alllogs = fs.readFileSync(filename, 'utf8');
         if(alllogs.length > maxLogSize)
         {
           alllogs = alllogs.substring(alllogs.length - maxLogSize, alllogs.length-1);
-          fs.unlinkSync(this.logfileName);
+          fs.unlinkSync(filename);
         }
         else
           alllogs = "";
@@ -61,8 +74,6 @@ class TestTools24 {
     fs.appendFileSync(this.logfileName, alllogs + endOfLine + endOfLine, 'utf8');    
     alllogs = "";
   }
-
-
 
 
   async navigate(pageUrl, pageTitle)
@@ -239,29 +250,82 @@ class TestTools24 {
 
 
 
-
     async createPageErrorHook(page)
     {
-      page.on('error', (err, tools) => {
-        console.log("page.on('error', (err, tools) =>" + err);
-        tools.error('error happen in the page: ' + err);
+
+      await page.exposeFunction('publishError', this.error);
+
+      //get the error GUID from #autoTestingGUIDerror
+
+      setInterval(async () => {
+
+        var element = null;
+        try
+        {
+           element = await this.page.$("#autoTestingGUIDerror");
+            
+           if(!element)
+            {
+              var title = await page.title();
+              console.log("Element autoTestingGUIDerror not found in browser page: \"" + title + "\"");
+              return;
+            }
+
+            //read the error guid
+            var errGuid = await this.page.evaluate(element => element.textContent, element);        
+            if(errGuid && errGuid.length > 0)
+            {
+              this.error("Backend error " + errGuid);
+              process.exit(1);
+            }
+        }
+        catch(err)
+        {
+          this.log("#autoTestingGUIDerror " + err);
+        }
+                      
+      }, 2000);
+
+      
+      await page.setRequestInterception(true);
+
+      page.on("request", request => {
+        const url = request.url();
+        fs.appendFileSync(this.browserLogfileName, "request url:" + url + endOfLine);
+        request.continue();
+      });
+
+      page.on("requestfailed", request => {
+        const url = request.url();
+        fs.appendFileSync(this.browserLogfileName, "request failed url:" + url + endOfLine);
+      });
+
+      page.on("response", response => {
+        const request = response.request();
+        const url = request.url();
+        const status = response.status();
+        if(status != 200)
+          fs.appendFileSync(this.browserLogfileName, "response url:" + url + "http status:" + endOfLine);
+      });
+
+      page.on('console', msg => {
+        if(!msg)
+          return;
+          fs.appendFileSync(this.browserLogfileName, util.format(msg) + endOfLine);
+      });
+
+      page.on('console', msg => {
+        fs.appendFileSync(this.browserLogfileName, util.format(msg) + endOfLine);
       }, this);
+
+      
+      page.on('error', err => {
+        fs.appendFileSync(this.browserLogfileName, util.format(err) + endOfLine);
+      });
     
-      page.on('pageerror', (pageerr, tools)=> {
-        console.log("page.on('error', (err, tools) =>" + pageerr);
-        tools.error('pageerror occurred: ' + pageerr);
-      }, this)
-      //const three= await page.evaluate(()=> 1+2);
-      //console.log('three value is: ', three);
-  
-      /*
-      try {
-        await page.evaluate(()=> {
-          throw new Error('js throw some error');
-        });
-      } catch (e) {
-        console.log('an expection on page.evaluate ', e);
-      }*/
+      page.on('pageerror', pageerr => {
+        fs.appendFileSync(this.browserLogfileName, util.format(pageerr) + endOfLine);
+      })
   
     }
 
