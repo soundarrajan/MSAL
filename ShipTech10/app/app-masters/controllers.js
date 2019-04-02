@@ -6642,7 +6642,27 @@ APP_MASTERS.controller("Controller_Master", [
         // INVOICE ACTIONS IN HEADER
 
 
-
+        function convertDecimalSeparatorStringToNumber(number) {
+        	numberToReturn = number;
+        	if (typeof(number) == "string") {
+	        	if (number.indexOf(",") != -1 && number.indexOf(".") != -1) {
+	        		if (number.indexOf(",") > number.indexOf(".")) {
+	        			decimalSeparator = ",";
+	        			thousandsSeparator = ".";
+	        		} else {
+	        			thousandsSeparator = ",";
+	        			decimalSeparator = ".";
+	        		}
+		        	numberToReturn = number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '') + parseFloat("0."+number.split(decimalSeparator)[1]);
+	        	} else {
+	        		numberToReturn = parseFloat(number);
+	        	}
+        	}
+        	if (isNaN(numberToReturn)) {
+        		numberToReturn = 0;
+        	}
+        	return parseFloat(numberToReturn);
+        }
 
 
 		$scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
@@ -6678,7 +6698,8 @@ APP_MASTERS.controller("Controller_Master", [
 	                	if (formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
 	                	} else {
-		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].invoiceQuantity * (formValues.productDetails[currentRowIndex].invoiceRate / conversionFactor);
+	                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity,2))
+		                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (formValues.productDetails[currentRowIndex].invoiceRate / conversionFactor);
 	                	}
 	                    // formValues.productDetails[currentRowIndex].invoiceComputedAmount = formValues.productDetails[currentRowIndex].invoiceAmount;
 	                    formValues.productDetails[currentRowIndex].difference = parseFloat(formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(formValues.productDetails[currentRowIndex].estimatedAmount);
@@ -6756,9 +6777,9 @@ APP_MASTERS.controller("Controller_Master", [
 
 
 	                if (vm.costType.name == 'Flat') {
-	                    formValues.costDetails[rowIndex].invoiceAmount = vm.cost.invoiceRate;
-	                    formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
-	                    formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
+	                    formValues.costDetails[rowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate);
+	                    formValues.costDetails[rowIndex].invoiceExtrasAmount = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceExtras) / 100 * convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceAmount);
+	                    formValues.costDetails[rowIndex].invoiceTotalAmount = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceExtrasAmount) + convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceAmount);
 	                    calculateGrand(formValues);
 	                    return;
 	                }
@@ -6769,8 +6790,8 @@ APP_MASTERS.controller("Controller_Master", [
 	                        }
 
 	                        formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
-	                        formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(formValues.costDetails[rowIndex].invoiceAmount);
-	                        formValues.costDetails[rowIndex].difference = parseFloat(formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(formValues.costDetails[rowIndex].estimatedTotalAmount);
+	                        formValues.costDetails[rowIndex].invoiceTotalAmount = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceExtrasAmount) + convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceAmount);
+	                        formValues.costDetails[rowIndex].difference = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceTotalAmount) - convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].estimatedTotalAmount);
 
 	                        formValues.costDetails[rowIndex].deliveryProductId =  formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
 	                        console.log("-----------------------", formValues.costDetails[rowIndex].deliveryProductId);
@@ -6851,8 +6872,8 @@ APP_MASTERS.controller("Controller_Master", [
 	            formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
 	            formValues.invoiceSummary.invoiceAmountGrandTotal = $scope.calculateInvoiceGrandTotal(formValues);
 	            formValues.invoiceSummary.estimatedAmountGrandTotal = $scope.calculateInvoiceEstimatedGrandTotal(formValues);
-	            formValues.invoiceSummary.totalDifference = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.estimatedAmountGrandTotal;
-	            formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions - formValues.invoiceSummary.provisionalInvoiceAmount;
+	            formValues.invoiceSummary.totalDifference = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
+	            formValues.invoiceSummary.netPayable = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.provisionalInvoiceAmount);
 	            $scope.changedFVal = formValues;
 	        }
 	    }
