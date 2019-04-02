@@ -104,6 +104,7 @@ var shiptech = new ShiptechTools(tools);
     }
     await tools.Close();
     tools.log(testCase.testTitle + " FINISHED");
+    process.exit(1);
   }  
   )();
 
