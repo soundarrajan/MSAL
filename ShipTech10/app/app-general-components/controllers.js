@@ -3865,6 +3865,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             return translatedString;
         }
 
+        jQuery(document).ready(function($){
+        	$(document).on('mouseenter', 'td[data-original-title]', function(){
+        		$(this).tooltip({container:'body'}).tooltip("show");
+        	})  
+
+        })
 
         /*GET SCREEN ACTIONS*/
         //     $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
