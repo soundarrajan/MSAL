@@ -6699,7 +6699,7 @@ APP_MASTERS.controller("Controller_Master", [
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
 	                	} else {
 	                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity,2))
-		                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (formValues.productDetails[currentRowIndex].invoiceRate / conversionFactor);
+		                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceRate) / conversionFactor);
 	                	}
 	                    // formValues.productDetails[currentRowIndex].invoiceComputedAmount = formValues.productDetails[currentRowIndex].invoiceAmount;
 	                    formValues.productDetails[currentRowIndex].difference = parseFloat(formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(formValues.productDetails[currentRowIndex].estimatedAmount);
@@ -6939,13 +6939,13 @@ APP_MASTERS.controller("Controller_Master", [
 		        grandTotal = 0;
 		        $.each(formValues.productDetails, function(k, v) {
 		            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined') {
-		                grandTotal += v.invoiceAmount;
+		                grandTotal += convertDecimalSeparatorStringToNumber(v.invoiceAmount);
 		            }
 		        })
 		        $.each(formValues.costDetails, function(k, v) {
 		            if (!v.isDeleted) {
 		                if (typeof(v.invoiceTotalAmount) != 'undefined') {
-		                    grandTotal += v.invoiceTotalAmount;
+		                    grandTotal += convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
 		                }
 		            }
 		        })
