@@ -620,7 +620,11 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
 
         $scope.clearValues = function(column, key) {
-            $scope.columnFilters[column][key]["value"] = [];
+        	setTimeout(function(){
+	        	$scope.$apply(function(){
+		        	delete $scope.columnFilters[column][key]["value"];
+	        	})
+        	})
         };
 
         $scope.createAndUpdateFilterConfig = function(id, name, data, isDefault, menuZone, table) {
