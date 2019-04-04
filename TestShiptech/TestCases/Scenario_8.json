@@ -1,0 +1,171 @@
+
+{
+    "testTitle": "Invoice Test Scenarios - Scenario 8",
+    "baseurl": "http://mail.24software.ro:8161/#/",
+    "starturl": "new-order",
+    "databaseIntegration": {
+                                "server": "10.1.1.9", 
+                                "database": "IntegrationShiptech10PrimeDbCRP2",
+                                "user": "sa",
+                                "password": "!QAZ2wsx"
+                              },
+    "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
+    "password": "MyDocuments72%",
+    "headless": false,
+    "testCases": [
+      {
+        "keyname": "order",
+        "url": "new-order",
+        "pageTitle": "New Order",
+        "eta": 2,
+        "orderId": "",
+        "products": [
+          {
+            "name": "RMG 500 3.5%",
+            "quantity": 500,
+            "unitPrice": 600
+          },
+          {
+            "name": "DMA 0.1%",
+            "quantity": 200,
+            "rate": 400
+          }
+        ],
+       "costs": [
+          {
+            "name": "BARGING",
+            "type": "Flat",            
+            "applicableFor": "All",
+            "quantity": 700,
+            "unitPrice": 200                  
+          },
+          {
+            "name": "BARGING",
+            "type": "Unit",
+            "applicableFor": "RMG 500 3.5%",
+            "quantity": 500,
+            "unitPrice": 0.2                  
+          },
+          {
+            "name": "BARGING",
+            "type": "Percent",            
+            "applicableFor": "DMA 0.1%",
+            "quantity": 200,
+            "unitPrice": 0.3
+          }
+        ]
+      },
+      {
+        "keyname": "treasury",
+        "url": "invoices/treasuryreport",
+        "pageTitle": "Treasury Report",
+        "orderId": "",
+        "rows": [ 
+          {
+            "Invoice Amount": "",
+            "Calculated Amount": "380540",
+            "Invoice Type": ""
+          }
+        ]
+      },
+      {
+        "keyname": "delivery",
+        "url": "delivery/delivery/edit/",
+        "pageTitle": "New Delivery",
+        "orderId": "",
+        "bdnDate": 1,
+        "products": [
+          {
+            "name": "RMG 500 3.5%",
+            "quantity": 495
+          },
+          {
+            "name": "DMA 0.1%",
+            "quantity": 195
+          }
+        ]
+      },
+      {
+        "keyname": "treasury",
+        "url": "invoices/treasuryreport",
+        "pageTitle": "Treasury Report",
+        "orderId": "",
+        "rows": [ 
+          {
+            "Invoice Amount": "",
+            "Calculated Amount": "375533",
+            "Invoice Type": ""
+          }
+        ]
+      },      
+      {
+        "keyname": "invoice",
+        "action": "new",
+        "url": "invoices/deliveries",
+        "pageTitle": "Transactions to be Invoiced List",
+        "invoiceType": "Final Invoice",
+        "invoiceStatusAfterSave": "New",
+        "invoiceStatusAfterSubmit": "New",
+        "invoiceStatusAfterApprove": "Approved",
+        "orderId": "",
+        "currency": "US Dollar",
+        "testRevert": false,
+		    "createFinalFromProvisional": false,
+        "testOrderStatus": false,
+        "finalData" :{
+              "products": [
+                {
+                  "name": "RMG 500 3.5%",
+                  "quantity": 495,
+                  "rate": 600
+                },
+                {
+                  "name": "DMA 0.1%",
+                  "quantity": 195,
+                  "rate": 400
+                }
+              ]
+            },
+          "costs": [
+            {
+              "name": "BARGING",
+              "type": "Flat",            
+              "applicableFor": "All",
+              "quantity": 690,
+              "unitPrice": 200                  
+            },
+            {
+              "name": "BARGING",
+              "type": "Unit",
+              "applicableFor": "RMG 500 3.5%",
+              "quantity": 495,
+              "unitPrice": 0.2                  
+            },
+            {
+              "name": "BARGING",
+              "type": "Percent",            
+              "applicableFor": "DMA 0.1%",
+              "quantity": 195,
+              "unitPrice": 0.3
+            }
+          ]
+      },
+      {
+        "keyname": "treasury",
+        "url": "invoices/treasuryreport",
+        "pageTitle": "Treasury Report",
+        "orderId": "",
+        "rows": [ 
+          {
+            "Invoice Amount": "375533",
+            "Calculated Amount": "375533",
+            "Invoice Type": "Provisional Invoice"
+          }
+        ]
+    }
+  ]
+}
+
+
+
+  

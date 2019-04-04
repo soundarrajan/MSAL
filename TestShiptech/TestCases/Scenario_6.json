@@ -1,0 +1,174 @@
+
+{
+    "testTitle": "Invoice Test Scenarios - Scenario 6",
+    "baseurl": "http://mail.24software.ro:8161/#/",
+    "starturl": "new-order",
+    "databaseIntegration": {
+                                "server": "10.1.1.9", 
+                                "database": "IntegrationShiptech10PrimeDbCRP2",
+                                "user": "sa",
+                                "password": "!QAZ2wsx"
+                              },
+    "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
+    "password": "MyDocuments72%",
+    "headless": false,
+    "testCases": [
+      {
+        "keyname": "order",
+        "url": "new-order",
+        "pageTitle": "New Order",
+        "eta": 2,
+        "orderId": "",
+        "products": [
+          {
+            "name": "RMG 500 3.5%",
+            "quantity": 1500,
+            "unitPrice": 379
+          },
+          {
+            "name": "DMA 0.1%",
+            "quantity": 600,
+            "unitPrice": 415
+          }
+        ]
+      },
+      {
+        "keyname": "delivery",
+        "url": "delivery/delivery/edit/",
+        "pageTitle": "New Delivery",
+        "orderId": "",
+        "bdnDate": 1,
+        "products": [
+          {
+            "name": "RMG 500 3.5%",
+            "quantity": 1500
+          },
+          {
+            "name": "DMA 0.1%",
+            "quantity": 600
+          }
+        ]
+      },      
+      {
+        "keyname": "invoice",
+        "action": "new",
+        "url": "invoices/deliveries",
+        "pageTitle": "Transactions to be Invoiced List",
+        "invoiceType": "Provisional Invoice",
+        "invoiceStatusAfterSave": "New",
+        "invoiceStatusAfterSubmit": "New",
+        "invoiceStatusAfterApprove": "Approved",
+        "orderId": "",
+        "currency": "US Dollar",
+        "testRevert": false,
+		    "createFinalFromProvisional": false,
+        "testOrderStatus": false,
+        "provisionalData" :{
+              "products": [
+                {
+                  "name": "RMG 500 3.5%",
+                  "quantity": 1499,
+                  "rate": 380
+                }
+              ]
+            }        
+      },
+      {
+        "keyname": "invoice",
+        "action": "new",
+        "url": "invoices/deliveries",
+        "pageTitle": "Transactions to be Invoiced List",
+        "invoiceType": "Final Invoice",
+        "invoiceStatusAfterSave": "New",
+        "invoiceStatusAfterSubmit": "New",
+        "invoiceStatusAfterApprove": "Approved",
+        "orderId": "",
+        "currency": "US Dollar",
+        "testRevert": false,
+		    "createFinalFromProvisional": false,
+        "testOrderStatus": false,
+        "finalData" :{
+              "products": [
+                {
+                  "name": "DMA 0.1%",
+                  "quantity": 600,
+                  "rate": 415
+                }
+              ]
+            }        
+      },
+      {
+        "keyname": "treasury",
+        "url": "invoices/treasuryreport",
+        "pageTitle": "Treasury Report",
+        "orderId": "",
+        "rows": [ 
+          {
+            "Invoice Amount": "569620",
+            "Calculated Amount": "569620",            
+            "Invoice Type": "Provisional Invoice"
+          },
+          {
+            "Invoice Amount": "249650",
+            "Calculated Amount": "249650",
+            "Invoice Type": "Final Invoice"
+          }        
+        ]
+    },       
+      {
+        "keyname": "invoice",
+        "action": "new",
+        "url": "invoices/deliveries",
+        "pageTitle": "Transactions to be Invoiced List",
+        "invoiceType": "Final Invoice",
+        "invoiceStatusAfterSave": "New",
+        "invoiceStatusAfterSubmit": "New",
+        "invoiceStatusAfterApprove": "Approved",
+        "orderId": "",
+        "currency": "US Dollar",
+        "testRevert": false,
+		    "createFinalFromProvisional": false,
+        "testOrderStatus": false,
+        "finalData": {
+          "products": [
+            {
+              "name": "RMG 500 3.5%",
+              "quantity": 1499,
+              "rate": 373.6484
+            }
+          ],
+          "costs": [
+            {
+              "name": "BARGING",
+              "type": "Flat",            
+              "applicableFor": "All",
+              "quantity": 600,
+              "unitPrice": 650
+            }
+          ]
+        }
+      },
+      {
+        "keyname": "treasury",
+        "url": "invoices/treasuryreport",
+        "pageTitle": "Treasury Report",
+        "orderId": "",
+        "rows": [ 
+          {
+            "Calculated Amount": "569620",
+            "Invoice Amount": "569620",
+            "Invoice Type": "Provisional Invoice"            
+          },
+          {
+            "Calculated Amount": "-9521",
+            "Invoice Amount": "-9521",
+            "Invoice Type": "Final Invoice"
+          }        
+        ]
+      }
+  ]
+}
+
+
+
+  
