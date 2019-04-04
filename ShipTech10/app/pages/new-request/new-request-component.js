@@ -2323,6 +2323,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             $state.reload();
         };
         ctrl.etaChanged = function(location, locationIdx) {
+            if (!ctrl.etaDefaultedCount) {
+                ctrl.etaDefaultedCount = 0;
+            }
             $timeout(function(){
                 //
                 // 1. picker change 
@@ -2332,12 +2335,25 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 //      - change other pickers
                 //      - change other dates
 
-                if (location.etb && location.etb.split('T')[1].substr(0, 5) == '00:00') {
+                if (location.etb && 
+                    location.etb.split('T')[1].substr(0, 5) == '00:00' &&
+                    ctrl.etaDefaultedCount == 1 &&
+                    location.eta.split('T')[1].substr(0, 5) != '00:00') {
+                        ctrl.etaDefaultedCount++;
+                        location.etb = location.eta;
+                        location.etd = location.eta;
+                } else if (location.etb && ctrl.etaDefaultedCount == 2 && location.etb.split('T')[1].substr(3, 2) == '00') {
+                    ctrl.etaDefaultedCount++;
                     location.etb = location.eta;
                     location.etd = location.eta;
                 } else {
-                    location.etb = location.etb || location.eta;
-                    location.etd = location.etd || location.eta;
+                    if (ctrl.etaDefaultedCount < 1) {
+                        ctrl.etaDefaultedCount++;
+                    }
+                    if (ctrl.etaDefaultedCount < 2) {
+                        location.etb = location.eta;
+                        location.etd = location.eta;
+                    }
                 }
 
                 location.recentEta = location.eta;
