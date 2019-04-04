@@ -10,22 +10,22 @@
 	            <div ng-controller="Controller_General_Header as GH" class="form-group">
 	                <div class="form-group st-content-action-icons" ng-init="params.app = 'procurement';params.screen = 'contractplanning';">
 	                    <div class="st-content-action-icons">
-	                        <a ng-click="GH.export({action:'save_layout'}, params)" class="btn">
+	                        <a ng-click="GH.export({action:'save_layout'}, params)" class="btn" id="btn_save_layout">
 	                            <span class="icon fa fa-save"></span>
 	                        </a>
-	                        <a ng-click="GH.export({action:'delete_layout'}, params)" class="btn delete_layout">
+	                        <a ng-click="GH.export({action:'delete_layout'}, params)" class="btn delete_layout" id="btn_delete_layout">
 	                            <span class="icon fa fa-trash"></span>
 	                        </a>                        
-	                        <a ng-click="GH.export({action:'export_xls'}, params)" class="btn">
+	                        <a ng-click="GH.export({action:'export_xls'}, params)" class="btn" id="btn_export_xls">
 	                            <span class="icon export-xls"></span>
 	                        </a>
-	                        <a ng-click="GH.export({action:'export_csv'}, params)" class="btn">
+	                        <a ng-click="GH.export({action:'export_csv'}, params)" class="btn" id="btn_export_csv">
 	                            <span class="icon export-csv"></span>
 	                        </a>
-	                        <a ng-click="GH.export({action:'export_pdf'}, params)" class="btn">
+	                        <a ng-click="GH.export({action:'export_pdf'}, params)" class="btn" id="btn_export_pdf">
 	                            <span class="icon export-pdf"></span>
 	                        </a>
-	                        <a ng-click="GH.export({action:'print'}, params)" class="btn">
+	                        <a ng-click="GH.export({action:'print'}, params)" class="btn" id="btn_print">
 	                            <span class="icon print"></span>
 	                        </a>
 	                    </div>
