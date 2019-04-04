@@ -2324,7 +2324,18 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
         ctrl.etaChanged = function(location, locationIdx) {
             if (!ctrl.etaDefaultedCount) {
-                ctrl.etaDefaultedCount = 0;
+                ctrl.etaDefaultedCount = {};
+            }
+            if (!ctrl.etaDefaultedCount[locationIdx]) {
+                if(!ctrl.request.id) {
+                    ctrl.etaDefaultedCount[locationIdx] = 0;
+                } else {
+                    if (location.etb) {
+                        ctrl.etaDefaultedCount[locationIdx] = 3;
+                    } else {
+                        ctrl.etaDefaultedCount[locationIdx] = 0;
+                    }
+                }
             }
             $timeout(function(){
                 //
@@ -2337,20 +2348,23 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
                 if (location.etb && 
                     location.etb.split('T')[1].substr(0, 5) == '00:00' &&
-                    ctrl.etaDefaultedCount == 1 &&
+                    ctrl.etaDefaultedCount[locationIdx] == 1 &&
                     location.eta.split('T')[1].substr(0, 5) != '00:00') {
-                        ctrl.etaDefaultedCount++;
+                        ctrl.etaDefaultedCount[locationIdx]++;
                         location.etb = location.eta;
                         location.etd = location.eta;
-                } else if (location.etb && ctrl.etaDefaultedCount == 2 && location.etb.split('T')[1].substr(3, 2) == '00') {
-                    ctrl.etaDefaultedCount++;
+                } else if (location.etb && ctrl.etaDefaultedCount[locationIdx] == 2 && location.etb.split('T')[1].substr(3, 2) == '00') {
+                    ctrl.etaDefaultedCount[locationIdx]++;
                     location.etb = location.eta;
                     location.etd = location.eta;
                 } else {
-                    if (ctrl.etaDefaultedCount < 1) {
-                        ctrl.etaDefaultedCount++;
+                    if (ctrl.etaDefaultedCount[locationIdx] < 1) {
+                        ctrl.etaDefaultedCount[locationIdx]++;
                     }
-                    if (ctrl.etaDefaultedCount < 2) {
+                    if (ctrl.etaDefaultedCount[locationIdx] < 2) {
+                        if (location.eta.split('T')[1].substr(0, 5) != '00:00') {
+                            ctrl.etaDefaultedCount[locationIdx] = 3;
+                        }
                         location.etb = location.eta;
                         location.etd = location.eta;
                     }

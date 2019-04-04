@@ -132,6 +132,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             }
 
             var maskTyping = false;
+            var hasTyped = false;
             var element = null;
 
             var init = new Promise(function(resolve, reject) {
@@ -246,7 +247,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 $('#' + dateInputId).on('dp.change', function(e) {
                     if (moment(e.oldDate).format(currentFormat) != moment(e.date).format(currentFormat)) {
                         var newVal = moment(e.date).format(currentFormat);
-                        if (!e.oldDate) {
+                        if (!e.oldDate && !hasTyped) {
                             newVal = newVal.split(' ')[0] + ' 00:00';
                         }
                         if (newVal == 'Invalid date') {
@@ -394,6 +395,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 mask.on('accept', function() {
                     maskTyping = true;
+                    hasTyped = true;
                 });
 
                 mask.on('complete', function() {
