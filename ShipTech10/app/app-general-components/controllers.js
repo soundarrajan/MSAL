@@ -1103,6 +1103,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
                         formattedDate = $filter("date")(cellValue, dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0], "UTC");
                     }
+                    if (formattedDate.split(" ")[1] == "00:00") {
+                    	formattedDate = formattedDate.split(" ")[0];
+                    }
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
                             formattedDate = "";
