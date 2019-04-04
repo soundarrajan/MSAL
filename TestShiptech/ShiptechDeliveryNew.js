@@ -63,7 +63,7 @@ class ShiptechDeliveryNew {
     await this.tools.setText("input[id='bdnDate_dateinput']", testCase.bdnDate, 0, false);
     
     for (let i = 0; i < testCase.products.length; i++) {
-      await this.tools.selectBySelector("select[ng-model='selectedProductToAddInDelivery']", testCase.products[i].name, true);
+      await this.tools.selectBySelector("#addProductToDeliverySelect", testCase.products[i].name, false);
       await this.tools.clickOnItemByText('button', 'Add product');    
       await this.tools.clickOnItemByText('span > b.ng-binding', testCase.products[i].name);
       await this.tools.setText("input[name='Product "+ (i+1) +" BDN quantity']", testCase.products[i].quantity, 0, true);

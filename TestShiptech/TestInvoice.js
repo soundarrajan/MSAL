@@ -9,6 +9,7 @@ const ShiptechOrder = require('./ShiptechOrder.js');
 const ShiptechDeliveryNew = require('./ShiptechDeliveryNew.js');
 const ShiptechInvoicesDeliveriesList = require('./ShiptechInvoicesDeliveriesList.js');
 const ShiptechInvoicesTreasuryReport = require('./ShiptechInvoicesTreasuryReport.js');
+const ShiptechInvoicesList = require('./ShiptechInvoicesList.js');
 
 var tools = new TestTools24();
 var shiptech = new ShiptechTools(tools);
@@ -29,6 +30,7 @@ var shiptech = new ShiptechTools(tools);
     var shiptechDeliveryNew = new ShiptechDeliveryNew(tools, shiptech);
     var shiptechDeliveriesList = new ShiptechInvoicesDeliveriesList(tools, shiptech);  
     var shiptechTreasuryReport = new ShiptechInvoicesTreasuryReport(tools, shiptech);
+    var shiptechInvoicesList =  new ShiptechInvoicesList(tools, shiptech);
   }
   catch(error)
   {
@@ -43,46 +45,51 @@ var shiptech = new ShiptechTools(tools);
     process.exit(1);
   }
 
+  if (!testCase.testTitle)
+            throw new Error("testTitle missing from the testcase.");
+
     for(var i=0; i<testCase.testCases.length; i++)
     {
       try
       {
           var currentTestCase = testCase.testCases[i];
-          tools.log("Starting test #" + (i+1) + " " + testCase.testTitle);
+          if (!currentTestCase.hasOwnProperty("keyname"))
+            throw new Error("keyname missing from the testcase.");
+
+          tools.log("Starting test #" + (i+1) + " " + currentTestCase["keyname"] + " " + testCase.testTitle);
+          tools.log("____________________________");
+          tools.log("");
           tools.currentTextCase = i;
           tools.currentTextTitle = testCase.testTitle;
-          var hasPassed = true;
+          var hasPassed = true;          
 
-          for (var testScreen in currentTestCase)
+          if(!currentTestCase.orderId || currentTestCase.orderId.length <= 0)
+            currentTestCase.orderId = orderId;
+
+          if(currentTestCase.keyname == "order")
+            testResult = await shiptechOrder.CreateOrder(currentTestCase);
+          if(currentTestCase.keyname == "delivery")
+            testResult = await shiptechDeliveryNew.DeliveryNew(currentTestCase);
+          if(currentTestCase.keyname == "invoice")
           {
-            if (!currentTestCase.hasOwnProperty(testScreen))
-              continue;
-
-            if(!currentTestCase[testScreen].orderId || currentTestCase[testScreen].orderId.length <= 0)
-            currentTestCase[testScreen].orderId = orderId;
-
-            if(testScreen.indexOf("//") >= 0)
-              continue;
-
-            if(testScreen == "order")
-              testResult = await shiptechOrder.CreateOrder(currentTestCase[testScreen]);
-            if(testScreen == "delivery")
-              testResult = await shiptechDeliveryNew.DeliveryNew(currentTestCase[testScreen]);
-            if(testScreen == "invoice")
-              testResult = await shiptechDeliveriesList.InvoiceDeliveriesList(currentTestCase[testScreen]);
-            if(testScreen == "treasury")
-              testResult = await shiptechTreasuryReport.TreasuryReport(currentTestCase[testScreen]);
-  
-            if(currentTestCase[testScreen].orderId && currentTestCase[testScreen].orderId.length > 0)
-            {
-              orderId = currentTestCase[testScreen].orderId;                        
-              tools.currentBusinessReferenceName = "Order Id";
-              tools.currentBusinessReferenceId = orderId;
-            }
-
-            if(!testResult.result)
-              hasPassed = false;
+            if(currentTestCase.action == "new")
+              testResult = await shiptechDeliveriesList.InvoiceDeliveriesList(currentTestCase);
+            else if(currentTestCase.action == "cancel")
+              testResult = await shiptechInvoicesList.InvoicesList(currentTestCase);
           }
+          if(currentTestCase.keyname == "treasury")
+            testResult = await shiptechTreasuryReport.TreasuryReport(currentTestCase);
+
+          if(currentTestCase.orderId && currentTestCase.orderId.length > 0)
+          {
+            orderId = currentTestCase.orderId;                        
+            tools.currentBusinessReferenceName = "Order Id";
+            tools.currentBusinessReferenceId = orderId;
+          }
+
+          if(!testResult.result)
+            hasPassed = false;
+          
 
           if(hasPassed)
             tools.createResultsReport(testCase.testTitle, i+1, "PASS", orderId);
@@ -119,31 +126,31 @@ var shiptech = new ShiptechTools(tools);
 
     for(var i=0; i<testCase.testCases.length; i++)
     {
-        if(testCase.testCases[i].order)
+        if(testCase.testCases[i].keyname == "order")
         {
-          if(testCase.testCases[i].order.eta)
-            testCase.testCases[i].order.eta = await shiptech.getFutureDate(testCase.testCases[i].order.eta, true);          
+          if(testCase.testCases[i].eta)
+            testCase.testCases[i].eta = await shiptech.getFutureDate(testCase.testCases[i].eta, true);          
         }
 
-        if(testCase.testCases[i].delivery)
+        if(testCase.testCases[i].keyname == "delivery")
         {
-          if(testCase.testCases[i].delivery.bdnDate)
-            testCase.testCases[i].delivery.bdnDate = await shiptech.getFutureDate(testCase.testCases[i].delivery.bdnDate, false);
+          if(testCase.testCases[i].bdnDate)
+            testCase.testCases[i].bdnDate = await shiptech.getFutureDate(testCase.testCases[i].bdnDate, false);
         }
 
         
-        if(testCase.testCases[i].invoice)
+        if(testCase.testCases[i].keyname == "invoice")
         {
-          if(testCase.testCases[i].invoice.paymentDate)             
-            testCase.testCases[i].invoice.paymentDate = await shiptech.getFutureDate(testCase.testCases[i].invoice.paymentDate, false);
+          if(testCase.testCases[i].paymentDate)             
+            testCase.testCases[i].paymentDate = await shiptech.getFutureDate(testCase.testCases[i].paymentDate, false);
         }
 
 
-        if(testCase.testCases[i].treasury)
+        if(testCase.testCases[i].keyname == "treasury")
         {
-          for(var j=0; j<testCase.testCases[i].treasury.rows.length; j++)
+          for(var j=0; j<testCase.testCases[i].rows.length; j++)
           {
-              var row = testCase.testCases[i].treasury.rows[j];
+              var row = testCase.testCases[i].rows[j];
 
               if(row.PaymentDate)                 
                 row.PaymentDate = await shiptech.getFutureDate(row.PaymentDate, false);

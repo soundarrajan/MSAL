@@ -23,19 +23,22 @@ class ShiptechInvoicesTreasuryReport {
 
   async clearFilters()
   {
+      await this.tools.waitForLoader();
       var selector = "input[name='isDefault']";
       this.tools.waitFor(selector);
       var checkbox = await this.tools.page.$(selector);
       var ischecked = await (await checkbox.getProperty('checked')).jsonValue();
       if(ischecked)
       {        
-        await this.tools.clickBySelector("span.fa-save");
+        await this.tools.clickBySelector(selector);
         await this.tools.waitForLoader();
         checkbox = await this.tools.page.$(selector);
         ischecked = await (await checkbox.getProperty('checked')).jsonValue();
         if(ischecked)
           throw  new Error("Cannot uncheck " + selector);
         
+        //save this configuration
+        await this.tools.clickBySelector("#save_layout");
         await this.tools.waitForLoader();
         //const links = await this.tools.page.evaluate(() => { location.reload() });
         //await this.tools.waitForLoader();
@@ -55,6 +58,10 @@ class ShiptechInvoicesTreasuryReport {
       return testCase;
     }
 
+    if(!testCase.orderId)
+      throw new Error("missing OrderId");
+
+    this.tools.log("OrderId=" + testCase.orderId);
       /*//navigate using the menu
       await this.tools.click('div.menu-toggler.sidebar-toggler');
       this.tools.log("Open side menu");  

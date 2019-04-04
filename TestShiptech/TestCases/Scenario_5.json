@@ -14,8 +14,7 @@
     "headless": false,
     "testCases": [
       {
-      "//Order with provisional invoice ": "",
-      "order": {
+        "keyname": "order",
         "url": "new-order",
         "pageTitle": "New Order",
         "eta": 2,
@@ -33,7 +32,8 @@
           }
         ]
       },
-      "delivery": {
+      {
+        "keyname": "delivery",
         "url": "delivery/delivery/edit/",
         "pageTitle": "New Delivery",
         "orderId": "",
@@ -48,9 +48,10 @@
             "quantity": 600
           }
         ]
-      },
-      "invoice":       
+      },      
       {
+        "keyname": "invoice",
+        "action": "new",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Provisional Invoice",
@@ -60,7 +61,7 @@
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinal": false,
+		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "provisionalData" :{
               "products": [
@@ -86,7 +87,8 @@
               ]
             }        
       },
-      "treasury": {
+      {
+        "keyname": "treasury",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
@@ -97,80 +99,21 @@
             "Invoice Type": "Provisional Invoice"
           }        
         ]
-      }
-    },
-    {
-      "//Order with provisional and then final invoice ": "",
-      "order": {
-        "url": "new-order",
-        "pageTitle": "New Order",
-        "eta": 2,
-        "orderId": "",
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500,
-            "unitPrice": 379
-          },
-          {
-            "name": "DMA 0.1%",
-            "quantity": 600,
-            "unitPrice": 415
-          }
-        ]
-      },
-      "delivery": {
-        "url": "delivery/delivery/edit/",
-        "pageTitle": "New Delivery",
-        "orderId": "",
-        "bdnDate": 1,
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500
-          },
-          {
-            "name": "DMA 0.1%",
-            "quantity": 600
-          }
-        ]
-      },
-      "invoice":       
+    },       
       {
+        "keyname": "invoice",
+        "action": "new",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
-        "invoiceType": "Provisional Invoice",
+        "invoiceType": "Final Invoice",
         "invoiceStatusAfterSave": "New",
         "invoiceStatusAfterSubmit": "New",
         "invoiceStatusAfterApprove": "Approved",
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinal": true,
+		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
-        "provisionalData" :{
-          "products": [
-            {
-              "name": "RMG 500 3.5%",
-              "quantity": 1499,
-              "rate": 380
-            },
-            {
-              "name": "DMA 0.1%",
-              "quantity": 600,
-              "rate": 415
-            }
-          ],
-          "costs": [
-            {
-              "name": "BARGING",
-              "type": "Flat",            
-              "applicableFor": "All",
-              "quantity": 2099,
-              "unitPrice": 650                  
-            }
-          ]
-        },
         "finalData": {
           "products": [
             {
@@ -195,7 +138,8 @@
           ]
         }
       },
-      "treasury": {
+      {
+        "keyname": "treasury",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
@@ -212,7 +156,6 @@
           }        
         ]
       }
-    }
   ]
 }
 

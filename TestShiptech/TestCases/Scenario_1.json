@@ -14,7 +14,7 @@
     "headless": false,    
     "testCases": [
       {
-      "order": {
+        "keyname": "order",
         "url": "new-order",
         "pageTitle": "New Order",
         "eta": 2,
@@ -27,7 +27,8 @@
           }
         ]
       },
-      "delivery": {
+      {
+        "keyname": "delivery",
         "url": "delivery/delivery/edit/",
         "pageTitle": "New Delivery",
         "orderId": "",
@@ -39,81 +40,30 @@
           }
         ]
       },
-      "invoice":       
       {
-        "url": "invoices/deliveries",
-        "pageTitle": "Transactions to be Invoiced List",
-        "invoiceType": "Provisional Invoice",
-        "invoiceStatusAfterSave": "New",
-        "invoiceStatusAfterSubmit": "New",
-        "invoiceStatusAfterApprove": "Approved",
-        "orderId": "",
-        "currency": "US Dollar",
-        "testRevert": false,
-		    "createFinal": false,
-        "testOrderStatus": false,
-        "paymentDate": 2,
-        "provisionalData" :{
-              "products": [
-                {
-                  "name": "RMG 500 3.5%",
-                  "quantity": 1499,
-                  "rate": 380
-                }
-              ]
-            }
-      },
-      "treasury": {
+        "keyname": "treasury",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
         "rows": [ 
           {
-            "PaymentDate": 2,
-            "Calculated Amount": "569620",
-            "Invoice Amount": "569620",
-            "Invoice Type": "Provisional Invoice"
-          }        
-        ]
-      }
-    },
-    {
-      "order": {
-        "url": "new-order",
-        "pageTitle": "New Order",
-        "eta": 2,
-        "orderId": "",
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500,
-            "unitPrice": 379
+            "Calculated Amount": "568500"
           }
         ]
       },
-      "delivery": {
-        "url": "delivery/delivery/edit/",
-        "pageTitle": "New Delivery",
-        "orderId": "",
-        "bdnDate": 1,
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500
-          }
-        ]
-      },
-      "invoice": {
+      {
+        "keyname":"invoice",
+          "action": "new",
           "url": "invoices/deliveries",
           "pageTitle": "Transactions to be Invoiced List",
           "invoiceType": "Provisional Invoice",
-          "invoiceStatusAfterSave": "New",
-          "invoiceStatusAfterSubmit": "New",
+          "invoiceStatusAfterSave": "Discrepancy",
+          "invoiceStatusAfterSubmit": "Discrepancy",
           "invoiceStatusAfterApprove": "Approved",
           "orderId": "",
           "currency": "US Dollar",
           "testRevert": false,
-          "createFinal": true,
+          "createFinalFromProvisional": false,
           "testOrderStatus": false,
           "paymentDate": 2,
           "provisionalData" :{ 
@@ -124,19 +74,10 @@
                   "rate": 380
                 }
               ]
-            },
-
-          "finalData": {
-            "products": [
-              {
-                "name": "RMG 500 3.5%",
-                "quantity": 1499,
-                "rate": 373.65
-              }
-            ]
-          }
+            }
         },
-        "treasury": {
+        {
+          "keyname": "treasury",
           "url": "invoices/treasuryreport",
           "pageTitle": "Treasury Report",
           "orderId": "",
@@ -146,17 +87,53 @@
               "Calculated Amount": "569620",
               "Invoice Amount": "569620",
               "Invoice Type": "Provisional Invoice"
+            }
+          ]
+        },
+        {
+          "keyname":"invoice",
+            "action": "new",
+            "url": "invoices/deliveries",
+            "pageTitle": "Transactions to be Invoiced List",
+            "invoiceType": "Final Invoice",
+            "invoiceStatusAfterSave": "New",
+            "invoiceStatusAfterSubmit": "New",
+            "invoiceStatusAfterApprove": "Approved",
+            "orderId": "",
+            "currency": "US Dollar",
+            "testRevert": false,
+            "createFinalFromProvisional": false,
+            "testOrderStatus": false,
+            "paymentDate": 2,         
+            "finalData": {
+              "products": [
+                {
+                  "name": "RMG 500 3.5%",
+                  "quantity": 1499,
+                  "rate": 373.65
+                }
+              ]
+            }
+          },
+          {
+          "keyname": "treasury",
+          "url": "invoices/treasuryreport",
+          "pageTitle": "Treasury Report",
+          "orderId": "",
+          "rows": [ 
+            {
+              "Calculated Amount": "569620",
+              "Invoice Amount": "569620",
+              "Invoice Type": "Provisional Invoice"
             },
             {
               "PaymentDate": 2,
               "Calculated Amount": "-9518",
               "Invoice Amount": "-9518",                        
               "Invoice Type": "Final Invoice"
-            }      
+            }
           ]
-        }
-
-      }
+        } 
   ]
 }
 

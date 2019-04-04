@@ -142,14 +142,18 @@ class ShiptechOrder {
           testCase.result = false;
           return testCase;
         }        
+        
 
-        if(this.tools.isElementVisible('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"]'))
+        var isVisible = await this.tools.isElementVisible('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"]');
+        if(isVisible)
         {
           await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"]', 'Confirm to Seller');
           await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.saveAndSend()"', 'Save and Send');
           await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_ALL, $ctrl.data.id)"]', 'Confirm to Vessel');
           await this.tools.clickOnItemByText('a.btn[ng-click="$ctrl.saveAndSend()"', 'Save and Send');
         }
+
+        await this.tools.waitForLoader();
 
         //select Spec group
         for(var i=0; i<testCase.products.length; i++)

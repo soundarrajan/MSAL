@@ -8,6 +8,7 @@ const puppeteer = require('puppeteer');
 const Db = require('./MsSqlConnector.js');
 const TestTools24 = require('./TestTools24.js');
 const ShiptechTools = require('./ShiptechTools.js');
+const ShiptechInvoice = require('./ShiptechInvoice.js');
 
 
 
@@ -18,6 +19,7 @@ class ShiptechInvoicesList {
     this.tools = tools;    
     this.shiptech = shiptech;
     this.db = db;
+    this.shiptechInvoice = new ShiptechInvoice(tools, shiptech, db);
   }
 
 
@@ -47,7 +49,24 @@ class ShiptechInvoicesList {
     else
       this.tools.log("FAIL!");
 
+    await this.tools.waitForLoader();    
+    await this.tools.page.waitFor(2000);
+
+    await this.tools.clickOnItemWait("a[data-sortcol='order_name']", "", "", "", 0);
+    await this.tools.setText("#filter0_Text", testCase.orderId);
+    await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');    
+    
+
+    var page = await this.tools.getPage("Invoices");
+    this.shiptech.page = page;
+
+    if(testCase.action == "cancel")
+      await this.shiptechInvoice.CancelInvoice(testCase);
+    else
+      this.tools.log("Invalid action for InvoicesList " + testCase.action);
+
     await this.tools.closeCurrentPage();
+
     return answer;
   
   }

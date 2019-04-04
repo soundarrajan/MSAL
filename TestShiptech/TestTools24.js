@@ -23,7 +23,7 @@ class TestTools24 {
     this.baseUrl = "";
     this.page = null;
     this.browser = null;    
-    this.timeout = 60000;//30 sec
+    this.timeout = 60000;//60 sec
     this.standardWait = 500;        
     var now = this.getFormattedDateNow();
     now = this.replaceAll(now, "/", "-");
@@ -256,8 +256,17 @@ class TestTools24 {
 
     async createPageErrorHook(page)
     {
-
-      await page.exposeFunction('publishError', this.error);
+      try
+      {
+        await page.exposeFunction('publishError', this.error);
+      }
+      catch(err)
+      {
+        //ignore the error:
+        //Failed to add page binding with name publishError: window['publishError'] already exists!
+        if(err.message.indexOf("already exists") < 0)
+          throw err;
+      }
 
       //get the error GUID from #autoTestingGUIDerror
 
@@ -286,7 +295,7 @@ class TestTools24 {
             if(errGuid && errGuid.length > 0)
             {
               this.error("Backend error " + errGuid);
-              this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", tools.currentBusinessReferenceId);
+              this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", this.currentBusinessReferenceId);
               process.exit(1);
             }
             retries = 0;
@@ -297,6 +306,9 @@ class TestTools24 {
           if(errtext.indexOf("Execution context was destroyed, most likely because of a navigation.") < 0)
             this.log("#autoTestingGUIDerror " + errtext);
           retries++;
+
+          if(errGuid && errGuid.length > 0)
+            process.exit(1);
         }
 
         if(retries >= maxretry)
@@ -679,7 +691,7 @@ class TestTools24 {
       }
       catch(e)
       {
-
+          return false;
       }
 
       if(!isVisible)
@@ -703,7 +715,7 @@ class TestTools24 {
 
       if(Number.isInteger(selector))
       {
-        this.page.waitFor(selector);
+        this.page.waitFor(selector, {timeout: this.timeout});
         return;
       }
 
@@ -1078,6 +1090,9 @@ async waitForLoader(actionTitle = "")
   var duration = 0;
   var reapearTime = 900;
   var displayBlock = "display: block;";
+
+  if(!this.page)
+    return;
     
   do
   {
@@ -1133,7 +1148,7 @@ async waitForLoader(actionTitle = "")
     
 async clickOnItemByText(selector, textToClick)
 {
-  await this.page.waitFor(selector);
+  await this.page.waitFor(selector, {timeout: this.timeout});
   await this.waitForLoader();
   
   var result = await this.clickOnItemWait(selector, textToClick, "text", "", 0);
@@ -1190,6 +1205,9 @@ async clickBySelector(selector, index = 0)
   var result = "";
   var waitTime = 3000;
   var totalWaitTime = 0;
+
+  await this.waitForLoader();
+  await this.page.waitFor(selector, {timeout: this.timeout});  
 
   while(result.length <= 0)
   {

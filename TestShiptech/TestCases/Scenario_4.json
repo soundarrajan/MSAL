@@ -13,8 +13,8 @@
     "password": "MyDocuments72%",
     "headless": false,
     "testCases": [
-      {
-        "order": {
+        {
+          "keyname": "order",
           "url": "new-order",
           "pageTitle": "New Order",
           "eta": 2,
@@ -27,7 +27,8 @@
             }
           ]
         },
-        "delivery": {
+        {
+          "keyname": "delivery",
           "url": "delivery/delivery/edit/",
           "pageTitle": "New Delivery",
           "orderId": "",
@@ -39,7 +40,8 @@
             }
           ]
         },     
-        "treasury": {
+        {
+          "keyname": "treasury",
           "url": "invoices/treasuryreport",
           "pageTitle": "Treasury Report",
           "orderId": "",
@@ -50,36 +52,10 @@
               "Invoice Type": "Provisional Invoice"
             }        
           ]
-        }
-      },
+        },
       {
-      "order": {
-        "url": "new-order",
-        "pageTitle": "New Order",
-        "eta": 2,
-        "orderId": "",
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500,
-            "unitPrice": 379
-          }
-        ]
-      },
-      "delivery": {
-        "url": "delivery/delivery/edit/",
-        "pageTitle": "New Delivery",
-        "orderId": "",
-        "bdnDate": 1,
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500
-          }
-        ]
-      },
-      "invoice":       
-      {
+        "keyname": "invoice", 
+        "action": "new",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Provisional Invoice",
@@ -89,7 +65,7 @@
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinal": false,
+		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "paymentDate": 2,
         "provisionalData" :{
@@ -111,7 +87,8 @@
               ]
             }        
       },
-      "treasury": {
+      {
+        "keyname": "treasury",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
@@ -122,67 +99,22 @@
             "Invoice Type": "Provisional Invoice"
           }        
         ]
-      }
-    },
-    {
-      "order": {
-        "url": "new-order",
-        "pageTitle": "New Order",
-        "eta": 2,
-        "orderId": "",
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500,
-            "unitPrice": 379
-          }
-        ]
-      },
-      "delivery": {
-        "url": "delivery/delivery/edit/",
-        "pageTitle": "New Delivery",
-        "orderId": "",
-        "bdnDate": 1,
-        "products": [
-          {
-            "name": "RMG 500 3.5%",
-            "quantity": 1500
-          }
-        ]
-      },
-      "invoice":       
+    }, 
       {
+        "keyname": "invoice",
+        "action": "new",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
-        "invoiceType": "Provisional Invoice",
+        "invoiceType": "Final Invoice",
         "invoiceStatusAfterSave": "New",
         "invoiceStatusAfterSubmit": "New",
         "invoiceStatusAfterApprove": "Approved",
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinal": true,
+		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "paymentDate": 2,
-        "provisionalData" :{
-              "products": [
-                {
-                  "name": "RMG 500 3.5%",
-                  "quantity": 1499,
-                  "rate": 380
-                }
-              ],
-              "costs": [
-                {
-                  "name": "BARGING",
-                  "type": "Flat",            
-                  "applicableFor": "All",
-                  "quantity": 1499,
-                  "unitPrice": 11125                  
-                }
-              ]
-            },
-            
           "finalData": {
             "products": [
               {
@@ -193,7 +125,8 @@
             ]
           }
       },
-      "treasury": {
+      {
+        "keyname": "treasury",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
@@ -210,7 +143,6 @@
           }          
         ]
       }
-    }
   ]
 }
 

@@ -13,8 +13,8 @@
     "password": "MyDocuments72%",
     "headless": false,
     "testCases": [
-    {
-      "order": {
+      {
+        "keyname": "order",
         "url": "new-order",
         "pageTitle": "New Order",
         "eta": 2,
@@ -27,7 +27,8 @@
           }
         ]
       },
-      "delivery": {
+      {
+        "keyname": "delivery",
         "url": "delivery/delivery/edit/",
         "pageTitle": "New Delivery",
         "orderId": "",
@@ -39,7 +40,9 @@
           }
         ]
       },
-      "invoice": {
+      {
+          "keyname": "invoice",
+          "action": "new",
           "url": "invoices/deliveries",
           "pageTitle": "Transactions to be Invoiced List",
           "invoiceType": "Provisional Invoice",
@@ -49,7 +52,7 @@
           "orderId": "",
           "currency": "US Dollar",
           "testRevert": false,
-          "createFinal": true,
+          "createFinalFromProvisional": true,
           "testOrderStatus": false,
           "paymentDate": 2,
           "provisionalData" :{ 
@@ -72,7 +75,8 @@
             ]
           }
         },
-        "treasury": {
+        {
+          "keyname": "treasury",
           "url": "invoices/treasuryreport",
           "pageTitle": "Treasury Report",
           "orderId": "",
@@ -91,8 +95,6 @@
             }
           ]
         }
-
-      }
   ]
 }
 
