@@ -2332,8 +2332,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 //      - change other pickers
                 //      - change other dates
 
-                location.etb = location.etb || location.eta;
-                location.etd = location.etd || location.eta;
+                if (location.etb && location.etb.split('T')[1].substr(0, 5) == '00:00') {
+                    location.etb = location.eta;
+                    location.etd = location.eta;
+                } else {
+                    location.etb = location.etb || location.eta;
+                    location.etd = location.etd || location.eta;
+                }
+
                 location.recentEta = location.eta;
 
             },5);
