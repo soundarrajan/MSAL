@@ -54,7 +54,28 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 });
             }
 
-            function picker(element, params) {
+            function isDynamicFormat(val) {
+                var newVal = moment(val).format(currentFormat);
+                if (newVal == 'Invalid date') {
+                    newVal = moment(val).format(currentFormat.split(' ')[0]);
+                    if (newVal != 'Invalid date') {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+
+            function getDynamicFormat(val) {
+                if (isDynamicFormat(val)) {
+                    var newVal = moment(val).format(currentFormat);
+                    if (newVal == 'Invalid date') {
+                        newVal = moment(val).format(currentFormat.split(' ')[0]);
+                        if (newVal != 'Invalid date') {
+                            return newVal;
+                        }
+                    }
+                }
             }
 
             var prevValue = null;
@@ -76,13 +97,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             var dateInput = '<input type="text" class="form-control" id="' + dateInputId + '">';
             var dateIcon = '<i class="fa fa-calendar date-picker-icon"';
 
-            if (attrs['pickerType'] == 'datetime') {
+            if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                 dateIcon += ' style="right: 34px;"></i>';
             } else {
                 dateIcon += '></i>';
             }
 
-            if (attrs['pickerType'] == 'datetime') {
+            if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                 var timeIcon = '<i class="fa fa-clock-o time-picker-icon" id="' + dateInputId + '_timeicon"></i>';
 
                 var timeTpl = '<div class="time-picker-container" id="' + dateInputId + '_time">';
@@ -122,7 +143,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     if (attrs['noIcon']) {
                         $('#' + attrs['id']).after(dateInput);
                     } else {
-                        if (attrs['pickerType'] == 'datetime') {
+                        if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                             $('#' + attrs['id']).after(dateInput).after(dateIcon).after(timeIcon);
                         } else {
                             $('#' + attrs['id']).after(dateInput).after(dateIcon);
@@ -131,9 +152,15 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                     element = document.getElementById(dateInputId);
 
+                    inputPattern = currentFormat;
+
+                    if (attrs['pickerType'] == 'dynamic') {
+                        inputPattern = currentFormat.split(' ')[0] + '[\\ ][HH:mm]';
+                    }
+
                     resolve(new IMask(element, {
                         mask: Date,
-                        pattern: currentFormat,
+                        pattern: inputPattern,
                         // lazy: false,
                         min: new Date(1753, 0, 1),
                         max: new Date(3000, 0, 1),
@@ -143,13 +170,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         },
                         parse: function (str) {
                             return moment.utc(str, currentFormat, true);
-                        }
+                        } 
                     }));
                 }, 0);
             });
 
             init.then(function(mask) {
-                $(element).datetimepicker({
+                var datePickerOptions = {
                     format: currentFormat,
                     // showMeridian: true,
                     keepOpen: false,
@@ -160,9 +187,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     // debug: true,
                     // inline: true,
                     widgetParent: $('.page-container')
-                });
+                };
 
-                if (attrs['pickerType'] == 'datetime') {
+                $(element).datetimepicker(datePickerOptions);
+
+                if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                     $('#' + dateInputId + '_timeicon').click(function() {
                         if ($('#' + dateInputId + '_time').length > 0) {
                             $('#' + dateInputId + '_time').remove();
@@ -179,19 +208,28 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                         $('.' + dateInputId + '_minute').click(function() {
                             if (mask.value) {
-                                newVal = moment.utc(mask.value, currentFormat, true).minute(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') + '+00:00';
+                                newVal = moment.utc(mask.value, currentFormat).minute(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') + '+00:00';
                                 ngModel.$setViewValue(newVal);
                                 ngModel.$commitViewValue();
-                                mask.value = moment.utc(newVal).format(currentFormat);
+
+                                newFormattedValue = moment.utc(newVal).format(currentFormat);
+                                if (newFormattedValue.split(' ')[1] == '00:00') {
+                                    mask.value = newFormattedValue.split(' ')[0];
+                                }
+
                                 $('#' + dateInputId + '_time').remove();
                             }
                         });
                         $('.' + dateInputId + '_hour').click(function() {
                             if (mask.value) {
-                                newVal = moment.utc(mask.value, currentFormat, true).hour(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') + '+00:00';
+                                newVal = moment.utc(mask.value, currentFormat).hour(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') + '+00:00';
                                 ngModel.$setViewValue(newVal);
                                 ngModel.$commitViewValue();
-                                mask.value = moment.utc(newVal).format(currentFormat);
+
+                                newFormattedValue = moment.utc(newVal).format(currentFormat);
+                                if (newFormattedValue.split(' ')[1] == '00:00') {
+                                    mask.value = newFormattedValue.split(' ')[0];
+                                }
                                 // $('#' + dateInputId + '_time').remove();
                             }
                         });
@@ -207,10 +245,26 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 $('#' + dateInputId).on('dp.change', function(e) {
                     if (moment(e.oldDate).format(currentFormat) != moment(e.date).format(currentFormat)) {
-                        mask.value = moment(e.date).format(currentFormat);
-                        maskTyping = false;
+                        var newVal = moment(e.date).format(currentFormat);
+                        if (!e.oldDate) {
+                            newVal = newVal.split(' ')[0] + ' 00:00';
+                        }
+                        if (newVal == 'Invalid date') {
+                            newVal = moment(e.date).format(currentFormat.split(' ')[0]);
+                            if (newVal != 'Invalid date') {
+                                mask.value = newVal;
+                            }
+                        } else {
+                            if (newVal.split(' ')[1] == '00:00') {
+                                mask.value = newVal.split(' ')[0];
+                            } else {
+                                mask.value = newVal;
+                            }
+                        }
+                        console.log('Mask value on db.change: ', mask.value);
+                        // maskTyping = false;
                     }
-                });
+               });
 
                 if (attrs["defaultToday"] == "true") {
                 	value = moment();
@@ -234,7 +288,20 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     }
                     $(element).addClass('focusedOut');
 
-                    if (maskTyping) {
+                    var isValidDynamic = attrs['pickerType'] == 'dynamic' && moment.utc(
+                        mask.value.trim(),
+                        currentFormat.split(' ')[0], true).isValid();
+
+                    var showError = false;
+
+                    if (isValidDynamic) {
+                    } else {
+                        if (maskTyping) {
+                            showError = true;
+                        }
+                    }
+
+                    if (showError) {
                         if (!attrs['required'] && !mask.value) {
                             $(element).removeClass('invalid');
                             reset();
@@ -245,13 +312,23 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     } else {
                         if (mask.value) {
                             value = moment.utc(mask.value, currentFormat, true); 
-                            if ((value && !prevValue) || (value && value.format(currentFormat) != prevValue)) {
-                                prevValue = value.format(currentFormat);
+                            formattedValue = value.format(currentFormat);
+                            if (formattedValue == 'Invalid date') {
+                                value = moment.utc(mask.value.trim(), currentFormat.split(' ')[0], true); 
+                                formattedValue = moment(e.date).format(currentFormat.split(' ')[0]);
+                            }
+                            if ((value && !prevValue) || (value && formattedValue != prevValue)) {
+                                prevValue = formattedValue;
                                 scope.$apply(function() {
                                     ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
                                     ngModel.$commitViewValue();
                                     maskTyping = false;
-                                    mask.value = moment.utc(value).format(currentFormat);
+                                    var newMaskVal = moment.utc(value).format(currentFormat);
+                                    if (newMaskVal.split(' ')[1] == '00:00') {
+                                        mask.value = newMaskVal.split(' ')[0];
+                                    } else {
+                                        mask.value = newMaskVal;
+                                    }
                                     $(element).removeClass('invalid');
                                 });
                             }
@@ -273,8 +350,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (v && $('#' + dateInputId).data("DateTimePicker")) {
                         $('#' + dateInputId).data("DateTimePicker").date(moment.utc(v));
-                        prevValue = moment.utc(v).format(currentFormat);
-                        mask.value = moment.utc(v).format(currentFormat);
+                        var newVal = moment.utc(v).format(currentFormat);
+                        if (newVal.split(' ')[1] == '00:00') {
+                            prevValue = newVal.split(' ')[0];
+                        } else {
+                            prevValue = newVal;
+                        }
+                        mask.value = prevValue;
                     } else {
                     	if (typeof(v) == 'undefined') {
                     		$('#' + dateInputId).data("DateTimePicker").clear();

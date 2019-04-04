@@ -52,7 +52,7 @@
                     <!-- Available icons: edit | export-xls | export-csv | export-pdf | export-doc | print | email -->
                     <span ng-if="actions.icons">
                         <div class="st-content-action-icons">
-                            <a ng-repeat="(key, icon) in actions.icons" class="btn {{icon.action}}" ng-click="GH.export(icon)" id="{{ icon }}">
+                            <a ng-repeat="(key, icon) in actions.icons" class="btn {{icon.action}}" ng-click="GH.export(icon)" id="{{ icon.action }}">
                                 <span class="icon {{ icon.class }}"></span>
                             </a>
                         </div>
@@ -107,7 +107,7 @@
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li  ng-repeat="(key, value) in screenButtons" ng-if="key> 0">
                                         <span ng-controller="Controller_Master as CM">
-                                            <a ng-hide="value.hide" ng-disabled="value.disabled" class="btn btn-default btn-outline"  data-group="extern" style="display:block; border:none" ng-click="$eval(value.action)">
+                                            <a ng-hide="value.hide" ng-disabled="value.disabled" class="btn btn-default btn-outline"  data-group="extern" style="display:block; border:none" ng-click="$eval(value.action)" id="btn_{{ value.label }}">
                                                 {{ camelCaseToSpaces(value.label) }}
                                             </a>
                                         </span>

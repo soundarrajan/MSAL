@@ -610,7 +610,7 @@
                                                                 id="{{ locationIdx }}_eta"
                                                                 new-date-picker
                                                                 ng-required="true"
-                                                                picker-type="datetime"
+                                                                picker-type="dynamic"
                                                                 class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
@@ -631,7 +631,7 @@
                                                                 id="{{ locationIdx }}_etb"
                                                                 new-date-picker
                                                                 ng-required="true"
-                                                                picker-type="datetime"
+                                                                picker-type="dynamic"
                                                                 class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
@@ -652,7 +652,7 @@
                                                                 id="{{ locationIdx }}_etd"
                                                                 new-date-picker
                                                                 ng-required="true"
-                                                                picker-type="datetime"
+                                                                picker-type="dynamic"
                                                                 class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
@@ -676,7 +676,7 @@
                                                                 name="{{ locationIdx }}_recentEta"
                                                                 id="{{ locationIdx }}_recentEta"
                                                                 new-date-picker
-                                                                picker-type="datetime"
+                                                                picker-type="dynamic"
                                                                 class="form-control date-mask new-date-picker"> 
 	                                                    </div>
 	                                                </div>
@@ -699,7 +699,7 @@
 	                                                        ng-model="location.deliveryFrom"
 	                                                        ng-class="{'etb_invalid': $ctrl.datesValid(locationIdx)}" 
                                                             new-date-picker
-                                                            picker-type="datetime"
+                                                            picker-type="dynamic"
 	                                                        ng-required="true" 
 	                                                        ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
@@ -721,7 +721,7 @@
 	                                                        ng-model="location.deliveryTo" 
 	                                                        ng-class="{'etb_invalid':  $ctrl.datesValid(locationIdx)}" 
                                                             new-date-picker
-                                                            picker-type="datetime"
+                                                            picker-type="dynamic"
 	                                                        ng-required="true" 
 	                                                        ng-disabled="$ctrl.disableAllFields">
 	                                                    </div>
