@@ -3872,8 +3872,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         }
 
         jQuery(document).ready(function($){
-        	$(document).on('mouseenter', 'td[data-original-title]', function(){
-        		$(this).tooltip({container:'body'}).tooltip("show");
+        	$(document).on('mouseenter', 'td[data-original-title] , .treasury-datepicker-input', function(){
+        		if ($(this).attr("data-original-title") != "" && $(this).attr("data-original-title") != " ") {
+	        		$(this).tooltip({container:'body'}).tooltip("show");
+        		} else {
+	        		$(this).tooltip("hide");
+        			$(this).removeAttr("data-original-title");
+	        		// $(this).tooltip("dispose");
+        		}
+        		if ($(this).hasClass("treasury-datepicker-input") || $(this).parents("treasury-datepicker-input").length > 0) {
+        			$(this).attr('data-original-title', $(this).children("input").val())
+			          .tooltip('fixTitle')
+			          .tooltip('show');
+        		}
         	})  
 
         })
