@@ -318,21 +318,21 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                                 value = moment.utc(mask.value.trim(), currentFormat.split(' ')[0], true); 
                                 formattedValue = moment(e.date).format(currentFormat.split(' ')[0]);
                             }
-                            if ((value && !prevValue) || (value && formattedValue != prevValue)) {
-                                prevValue = formattedValue;
-                                scope.$apply(function() {
-                                    ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
-                                    ngModel.$commitViewValue();
-                                    maskTyping = false;
-                                    var newMaskVal = moment.utc(value).format(currentFormat);
-                                    if (newMaskVal.split(' ')[1] == '00:00') {
-                                        mask.value = newMaskVal.split(' ')[0];
-                                    } else {
-                                        mask.value = newMaskVal;
-                                    }
-                                    $(element).removeClass('invalid');
-                                });
-                            }
+	                            if ((value && !prevValue) || (value && formattedValue != prevValue)) {
+	                                prevValue = formattedValue;
+	                                scope.$apply(function() {
+	                                    ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
+	                                    ngModel.$commitViewValue();
+	                                    maskTyping = false;
+	                                    var newMaskVal = moment.utc(value).format(currentFormat);
+	                                    if (newMaskVal.split(' ')[1] == '00:00') {
+	                                        mask.value = newMaskVal.split(' ')[0];
+	                                    } else {
+	                                        mask.value = newMaskVal;
+	                                    }
+	                                    $(element).removeClass('invalid');
+	                                });
+	                            }
                         } else {
                             if (!attrs['required'] && !mask.value) {
                                 $(element).removeClass('invalid');
@@ -360,10 +360,12 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         mask.value = prevValue;
                     } else {
                     	if (typeof(v) == 'undefined') {
-                    		$('#' + dateInputId).data("DateTimePicker").clear();
-							ngModel.$setViewValue(null);
-							ngModel.$commitViewValue();
-	                        mask.value = "";
+                    		setTimeout(function(){
+	                    		$('#' + dateInputId).data("DateTimePicker").date(new Date());
+	                    		$('#' + dateInputId).data("DateTimePicker").clear();
+	                    		$(element).blur()
+		                        mask.value = "";
+                    		})
                     	}
                     }
                 });
