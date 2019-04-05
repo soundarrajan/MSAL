@@ -6933,7 +6933,7 @@ APP_MASTERS.controller("Controller_Master", [
 	    $scope.calculateprovisionalInvoiceAmount = function(formValues) {
 	        grandTotal = 0;
 	        $.each(formValues.relatedInvoices, function(k, v) {
-	            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined' && v.invoiceType.name == 'ProvisionalInvoice') {
+	            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined' && v.invoiceType.internalName == 'ProvisionalInvoice') {
 	                grandTotal += v.invoiceAmount;
 	            }
 	        })

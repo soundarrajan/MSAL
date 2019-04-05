@@ -184,6 +184,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     keepInvalid: true,
                     useStrict: true,
                     useCurrent: false,
+                    keyBinds: false,
                     // sideBySide: true,
                     // debug: true,
                     // inline: true,
@@ -269,7 +270,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         // console.log('*****model: ', ngModel.$viewValue);
                         // console.log('*****dp value : ', e.date);
                         // console.log('*****--------');
-                        
+
                         // maskTyping = false;
                     }
                });
