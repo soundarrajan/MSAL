@@ -1850,12 +1850,21 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         startDate = new Date(start);
         endDate = new Date(end);
         timeBetween = endDate - startDate;
+        if (endDate < startDate) {
+	        timeBetween = startDate - endDate;
+        }
         minutes = (0.001 * timeBetween) / 60;
         mins = minutes % 60;
         hours = (minutes - mins) / 60;
         hours = hours < 10 ? '0' + hours : hours;
         mins = mins < 10 ? '0' + mins : mins;
         result = hours + ":" + mins;
+        if (result.indexOf("NaN") != -1) {
+        	result = null
+        }	
+        if (endDate < startDate) {
+	        return "-" + result;
+        }        
         return result;
     }
     $scope.setLimitForPickers = function() {

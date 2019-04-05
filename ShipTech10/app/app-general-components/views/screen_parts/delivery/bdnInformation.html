@@ -28,7 +28,7 @@
                         name="berthingTime"
                         id="berthingTime"
                         new-date-picker
-                        picker-type="datetime"
+                        picker-type="dynamic"
                         class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
@@ -52,7 +52,7 @@
                         name="bargeAlongside"
                         id="bargeAlongside"
                         new-date-picker
-                        picker-type="datetime"
+                        picker-type="dynamic"
                         class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
@@ -70,6 +70,9 @@
             <label for="bargeDelay" class="barge_delay_label">
                 {{ CM.app_id + '.BARGE_DELAY' | translate }}
             </label>
+            <div class="hidden">
+            	{{formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside)}}
+            </div>
             <!-- barge delay calculation -->
             <span ng-if="formValues.berthingTime && formValues.bargeAlongside" ng-init="formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside)"></span>
             <div class="input-group form_input form_input_bdn_number">
@@ -93,7 +96,7 @@
                         name="bargePumpingRateStartTime"
                         id="bargePumpingRateStartTime"
                         new-date-picker
-                        picker-type="datetime"
+                        picker-type="dynamic"
                         class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
@@ -121,7 +124,7 @@
                         name="bargePumpingRateEndTime"
                         id="bargePumpingRateEndTime"
                         new-date-picker
-                        picker-type="datetime"
+                        picker-type="dynamic"
                         class="form-control date-mask new-date-picker"> 
                 </div>
                 <span class="help-block">
@@ -141,7 +144,9 @@
 
                 <!-- {{ formValues.pumpingDuration }} -->
             </label>
-            <!-- {{CM.calculatePumpingRate(formValues.pumpingDuration,0)}} -->
+            <div class="hidden">
+	            {{formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime)}}
+            </div>
             <span ng-init="formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime)" ng-if="formValues.bargePumpingRateStartTime && formValues.bargePumpingRateEndTime"></span>
             <div class="input-group form_input form_input_pumping_duration">
                 <input type="text" name="pumpingDuration" class="form-control pumpingDuration" ng-model="formValues.pumpingDuration" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true" ng-change="calculatePumpingRate(formValues.pumpingDuration,0)"/>
