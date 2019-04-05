@@ -6653,7 +6653,7 @@ APP_MASTERS.controller("Controller_Master", [
 	        			thousandsSeparator = ",";
 	        			decimalSeparator = ".";
 	        		}
-		        	numberToReturn = number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '') + parseFloat("0."+number.split(decimalSeparator)[1]);
+		        	numberToReturn = parseFloat( parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '')) + parseFloat("0."+number.split(decimalSeparator)[1]) );
 	        	} else {
 	        		numberToReturn = parseFloat(number);
 	        	}
