@@ -948,6 +948,12 @@ APP_MASTERS.controller("Controller_Master", [
                         }
                     }
                 });
+	            if (vm.app_id == "claims" && vm.screen_id == "claims") {
+	                var type = $scope.filterFromData.claimType.claimType.name;
+	                if (type != "Debunker") {
+	                	$scope.filterFromData.claimDebunkerDetails = null;
+	                }
+	            }
                 if (vm.app_id == "contracts" && vm.screen_id == "contract") {
                     if ($scope.filterFromData.productQuantityRequired == false || typeof $scope.filterFromData.productQuantityRequired == "undefined") {
                         $.each($scope.filterFromData.products, function(key, val) {
