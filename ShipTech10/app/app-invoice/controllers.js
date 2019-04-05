@@ -2298,7 +2298,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     		// $scope.$apply();	
     		// return;
     	}
-
+		calculateGrand(formValues);
         if (typeof($rootScope.additionalCostsData) == 'undefined') {
             $rootScope.additionalCostsData = $scope.getAdditionalCostsData();
         }
@@ -2483,11 +2483,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             if (!formValues.invoiceSummary) {
                 formValues.invoiceSummary = {}
             }
-            formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
-            formValues.invoiceSummary.invoiceAmountGrandTotal = $scope.calculateInvoiceGrandTotal(formValues);
+            // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
+            formValues.invoiceSummary.invoiceAmountGrandTotal = $scope.calculateInvoiceGrandTotal(formValues) - formValues.invoiceSummary.provisionalInvoiceAmount;
             formValues.invoiceSummary.estimatedAmountGrandTotal = $scope.calculateInvoiceEstimatedGrandTotal(formValues);
             formValues.invoiceSummary.totalDifference = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.estimatedAmountGrandTotal;
-            formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions - formValues.invoiceSummary.provisionalInvoiceAmount;
+            formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;
             $scope.changedFVal = formValues;
         }
     }
@@ -2624,7 +2624,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 } else {
                     deductions = 0
                 }
-                $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - provisionalInvoiceAmount - deductions;
+                $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
                 $.each($rootScope.transportData.productDetails, function(k, v) {
                     v.id = 0;
                     v.invoiceQuantity = null;

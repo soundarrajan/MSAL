@@ -6613,7 +6613,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                } else {
 	                    deductions = 0
 	                }
-	                $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - provisionalInvoiceAmount - deductions;
+	                $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
 	                $.each($rootScope.transportData.productDetails, function(k, v) {
 	                    v.id = 0;
 	                    v.invoiceQuantity = null;
@@ -6691,6 +6691,7 @@ APP_MASTERS.controller("Controller_Master", [
 	        if (typeof($rootScope.additionalCostsData) == 'undefined') {
 	            $rootScope.additionalCostsData = $scope.getAdditionalCostsData();
 	        }
+	        calculateGrand(formValues);
 	        vm.type = type;
 	        if (vm.type == 'product') {
 	            product = formValues.productDetails[currentRowIndex];
@@ -6875,11 +6876,12 @@ APP_MASTERS.controller("Controller_Master", [
 	            if (!formValues.invoiceSummary) {
 	                formValues.invoiceSummary = {}
 	            }
-	            formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
+	            // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
 	            formValues.invoiceSummary.invoiceAmountGrandTotal = $scope.calculateInvoiceGrandTotal(formValues);
+	            formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
 	            formValues.invoiceSummary.estimatedAmountGrandTotal = $scope.calculateInvoiceEstimatedGrandTotal(formValues);
 	            formValues.invoiceSummary.totalDifference = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
-	            formValues.invoiceSummary.netPayable = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.provisionalInvoiceAmount);
+	            formValues.invoiceSummary.netPayable = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions) /*- convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.provisionalInvoiceAmount)*/;
 	            $scope.changedFVal = formValues;
 	        }
 	    }
