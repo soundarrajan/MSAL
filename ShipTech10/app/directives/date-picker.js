@@ -135,6 +135,8 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             var hasTyped = false;
             var element = null;
 
+            $(elm).attr("tabindex", "-1");
+
             var init = new Promise(function(resolve, reject) {
                 setTimeout(function() {
                     if ($('#' + attrs['id'] + '_dateinput').length) {
