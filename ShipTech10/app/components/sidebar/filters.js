@@ -622,7 +622,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.clearValues = function(column, key) {
         	setTimeout(function(){
 	        	$scope.$apply(function(){
-		        	delete $scope.columnFilters[column][key]["value"];
+		        	$scope.columnFilters[column][key]["value"] = null;
 	        	})
         	})
         };
