@@ -16,14 +16,14 @@
         <p class="navbar-text">
 
             {{stateParams.title ? stateParams.title : state.params.title}}
-            {{state.current.params.title && !state.params.title ? state.current.params.title : ''}}
+            <span id="entity-title"> {{state.current.params.title && !state.params.title ? state.current.params.title : ''}} </span>
 
-    		<span class="entity-status" ng-if="state.params.status.name" style="background:{{state.params.status.bg}};
+    		<span id="entity-status-1" class="entity-status" ng-if="state.params.status.name" style="background:{{state.params.status.bg}};
                                                                 	        	color:{{state.params.status.color}}
                                                                 	        	">
     	        {{ state.params.status.displayName ? state.params.status.displayName : state.params.status.name }}
             </span>
-            <span class="entity-status" ng-if="state.params.status_labs" style="background:{{state.params.status_labs.bg}};
+            <span id="entity-status-2" class="entity-status" ng-if="state.params.status_labs" style="background:{{state.params.status_labs.bg}};
                                                                                 color:{{state.params.status_labs.color}}">
                 {{ state.params.status_labs.displayName ? state.params.status_labs.displayName : state.params.status_labs.name }}
             </span>
