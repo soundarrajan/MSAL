@@ -6793,10 +6793,10 @@ APP_MASTERS.controller("Controller_Master", [
 	                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, function(response) {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
-	                            formValues.costDetails[rowIndex].invoiceAmount = response * vm.cost.invoiceRate * vm.cost.invoiceQuantity;
+	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
 	                        }
 
-	                        formValues.costDetails[rowIndex].invoiceExtrasAmount = formValues.costDetails[rowIndex].invoiceExtras / 100 * formValues.costDetails[rowIndex].invoiceAmount;
+	                        formValues.costDetails[rowIndex].invoiceExtrasAmount = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceExtras) / 100 * convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceAmount);
 	                        formValues.costDetails[rowIndex].invoiceTotalAmount = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceExtrasAmount) + convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceAmount);
 	                        formValues.costDetails[rowIndex].difference = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceTotalAmount) - convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].estimatedTotalAmount);
 
