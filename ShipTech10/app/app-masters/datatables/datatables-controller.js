@@ -259,9 +259,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                             Name: "invoiceQuantityUom",
                             masterSource: "Uom",
                             UniqueId: "invoiceQuantityUom",
-                            // Disabled: "['Approved', 'Cancelled'].indexOf(grid.appScope.fVal().formValues.status.name) != -1",
-                            // UomDisabled: "['Approved', 'Cancelled'].indexOf(grid.appScope.fVal().formValues.status.name) != -1",
-                            changeEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            // changeEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            blurEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
                         }
                     },
                     {
@@ -278,7 +277,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             FirstUomDisabled: "grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].costType.name != 'Unit'",
                             hasUom: true,
                             additionalUomModel: "invoiceRateUom",
-                            changeEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            blurEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
                         }
                     },
                     {
@@ -294,7 +293,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             UniqueId: "invoiceRateCurrency",
                             UomDisabled: true,
                             Disabled: "grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].costType.name != 'Percent'",
-                            changeEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            blurEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
                         }
                     },
                     {
@@ -454,7 +453,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             masterSource: "Uom",
                             UomRequired: true,
                             UniqueId: "invoiceQuantityUom",
-                            changeEvent: "invoiceConvertUom('product', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            blurEvent: "invoiceConvertUom('product', rowRenderIndex, grid.appScope.fVal().formValues)"
                         }
                     },
                     {
@@ -472,7 +471,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                             additionalUomModel: "invoiceRateUom",
                             UniqueId: "invoiceRateCurrency",
                             parentGroup: "productDetails",
-                            changeEvent: "invoiceConvertUom('product', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            // changeEvent: "invoiceConvertUom('product', rowRenderIndex, grid.appScope.fVal().formValues)"
+                            blurEvent: "invoiceConvertUom('product', rowRenderIndex, grid.appScope.fVal().formValues)"
                         }
                     },
                     {
