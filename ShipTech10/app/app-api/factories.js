@@ -5348,6 +5348,34 @@ APP_API.factory("$Api_Service", [
                     	};
                     }
 
+                    if (param.clc_id == "orders_orders" && ( ["delivery"/*,"claim","lab"*/].indexOf($state.params.screen_id) != -1 )) {
+                    	defaultFiltering = [
+	                    	{
+	                    		"columnValue": "OrderStatus_DisplayName",
+	                    		"ColumnType": "Text",
+	                    		"isComputedColumn": false,
+	                    		"ConditionValue": "=",
+	                    		"Values": [
+	                    		"Confirmed"
+	                    		],
+	                    		"FilterOperator": 0
+	                    	},
+	                    	{
+	                    		"columnValue": "OrderStatus_DisplayName",
+	                    		"ColumnType": "Text",
+	                    		"isComputedColumn": false,
+	                    		"ConditionValue": "=",
+	                    		"Values": [
+	                    		"PartiallyDelivered"
+	                    		],
+	                    		"FilterOperator": 2
+	                    	}
+                    	]
+                    	$.each(defaultFiltering, function(k,v){
+	                    	apiJSON.Payload.PageFilters.Filters.push(v);
+                    	})
+                    }
+
                     $http.post(url, angular.toJson(apiJSON)).then(
                         function successCallback(response) {
 
