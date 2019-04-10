@@ -433,7 +433,7 @@ window.increment = 0;
 	                            Elements.settings[table_id].source.multiselect = true;
                             }
                         } else {
-                            Elements.settings[table_id].source.height = "100vh";
+                            Elements.settings[table_id].source.height = "50vh";
                         }
                  
                         Elements.settings[table_id].source.pager = "#" + Elements.settings[table_id].pager;
