@@ -98,6 +98,8 @@ window.increment = 0;
                     scope.initialLayout = {};
                     checkCanBuildTable(scope.id, checkProcurement);
 
+
+
                     function checkCanBuildTable(table_id, checkProcurement) {
                         isDev = 0;
                         if (typeof Elements.scope[table_id].controls !== "undefined" && typeof Elements.scope[table_id].screen !== "undefined" && typeof Elements.scope[table_id].id !== "undefined" && typeof Elements.scope[table_id].app !== "undefined") {
@@ -540,6 +542,19 @@ window.increment = 0;
                                         $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData = callback.rows;
                                         console.log("GRID DATA", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData);
                                         $rootScope.$broadcast("gridDataDone", CLC.tableParams);
+                                        
+                                        // VERTICALS SCROLLBAR
+                                        // $(".ui-jqgrid-bdiv")css("width", "100%");
+                                        $(".ui-jqgrid-view").on("scroll", function(){
+                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
+                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
+                                        	console.log(offsetChild);
+                                        })
+                                        // END VERTICALS SCROLLBAR
+                                       
+
+
+                                        console.log("gridDataDonegridDataDonegridDataDonegridDataDone");
                                         // apply hstyle
                                         $.each(Elements.settings[table_id].source.colModel, function(key, obj) {
                                             if (obj.hstyle) {
@@ -611,6 +626,9 @@ window.increment = 0;
                                             // layout: scope.initialLayout
                                         };
                                         $rootScope.$broadcast("tableLoaded", triggePayload);
+
+                                        console.load("ui-jqgrid-view##################################")
+
                                         $('select[name="asc_jqgrid__entries-entries"]').val(oldTableParams.rows);
                                         $rootScope.getGlobalFilters().then(function(data) {
                                             if (data) {

@@ -4567,3 +4567,11 @@ input[id^="_dateinput"] {
     }
 
 }
+
+
+
+/* FOR FIXED VERTICALL SCROLLBAR IN CLC */
+.ui-jqgrid-bdiv {
+	width: 100% !important;
+}
+/* FOR FIXED VERTICALL SCROLLBAR IN CLC */
