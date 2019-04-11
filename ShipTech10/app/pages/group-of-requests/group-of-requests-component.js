@@ -4486,6 +4486,10 @@ ctrl.setProductData = function(data, loc) {
 	                }
 	                callback(response.data.payload)
 	            });
+            } else {
+                if (callback) {
+                    callback(ctrl.sellerContactList["s" + seller.sellerCounterparty.id]);
+                }
             }
         };
         ctrl.diffProducts = function () {
