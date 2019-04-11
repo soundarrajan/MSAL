@@ -545,16 +545,27 @@ window.increment = 0;
                                         
                                         // VERTICALS SCROLLBAR
                                         // $(".ui-jqgrid-bdiv")css("width", "100%");
-                                        $(".ui-jqgrid-view").on("scroll", function(){
-                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
-                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
-                                        	console.log(offsetChild);
-                                        })
+	                                        $(".ui-jqgrid-view").on("scroll", function(){
+	                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
+	                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
+	                                        })
                                         // END VERTICALS SCROLLBAR
-                                       
+                                        // 
+                                        // REMOVE MASTER LINKS FROM LOOKUPS
+	                                        setTimeout(function(){
+												var styles = {
+													pointerEvents : "none",
+													color: "#333",
+													cursor: "default",
+													textDecoration: "none"
+												}
+	 	                                        $(".modal-content td .formatter.edit_link").parent("a").removeAttr("href");
+		                                        $(".modal-content td .formatter.edit_link").parent("a").css(styles);
+		                                        $(".modal-content td a .formatter.edit_link").css(styles);
+	                                        })
+                                        // REMOVE MASTER LINKS FROM LOOKUPS
 
 
-                                        console.log("gridDataDonegridDataDonegridDataDonegridDataDone");
                                         // apply hstyle
                                         $.each(Elements.settings[table_id].source.colModel, function(key, obj) {
                                             if (obj.hstyle) {

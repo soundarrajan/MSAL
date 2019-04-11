@@ -4575,3 +4575,9 @@ input[id^="_dateinput"] {
 	width: 100% !important;
 }
 /* FOR FIXED VERTICALL SCROLLBAR IN CLC */
+
+.modal-content td>.formatter.edit_link {
+	pointer-events: none !important;
+	color: #333 !important;
+	text-decoration: none !important;
+}

@@ -1461,7 +1461,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (options.gid == "flat_counterparties") {
-                        var tpl = '<a ng-href="#/masters/counterparty/edit/' + cellValue + '"  target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = '<a href="#/masters/counterparty/edit/' + cellValue + '"  target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + cellValue + "</span></a>";
                         if (cellValue != null) {
                             return tpl;
                         } else {
