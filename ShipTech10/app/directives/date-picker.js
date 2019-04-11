@@ -327,7 +327,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                             formattedValue = value.format(currentFormat);
                             if (formattedValue == 'Invalid date') {
                                 value = moment.utc(mask.value.trim(), currentFormat.split(' ')[0], true); 
-                                formattedValue = moment(e.date).format(currentFormat.split(' ')[0]);
+                                formattedValue = moment(value).format(currentFormat.split(' ')[0]);
                             }
 	                            if ((value && !prevValue) || (value && formattedValue != prevValue)) {
 	                                prevValue = formattedValue;
