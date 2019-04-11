@@ -3742,6 +3742,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             }
         };
         /*GET SCREEN ACTIONS*/
+
+		function array_move(arr, old_index, new_index) {
+		    if (new_index >= arr.length) {
+		        var k = new_index - arr.length + 1;
+		        while (k--) {
+		            arr.push(undefined);
+		        }
+		    }
+		    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+		    return arr; // for testing
+		};        
         vm.getScreenActions = function() {
             var data = {
                 app: vm.app_id,
@@ -3781,9 +3792,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                                             screenButtons.push(obj);
                                         }
                                     }
+                                    if (value.mappedScreenActionName == "ApproveInvoice") {
+                                    	approveInvoiceIndex = key;
+                                    }
                                 });
                             } else {
                                 toastr.error("An error has occured!");
+                            }
+
+                            if (approveInvoiceIndex) {
+	                            screenButtons = array_move(screenButtons, approveInvoiceIndex, 0);
                             }
                             $scope.screenButtons = screenButtons;
                             $rootScope.screenButtons = screenButtons;

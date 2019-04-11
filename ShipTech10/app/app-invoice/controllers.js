@@ -1768,9 +1768,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         if (name == "PaymentDate") {
             if (!$scope.initialHasManualPaymentDate) {
 	        	$scope.formValues.hasManualPaymentDate = false
-            	if ($scope.manualPaymentDateReference.split("T")[0] != $scope.formValues.paymentDate.split("T")[0]) {
-		        	$scope.formValues.hasManualPaymentDate = true
-            	}
+	        	if ($scope.manualPaymentDateReference) {
+	            	if ($scope.manualPaymentDateReference.split("T")[0] != $scope.formValues.paymentDate.split("T")[0]) {
+			        	$scope.formValues.hasManualPaymentDate = true
+	            	}
+	        	}
             }
         }
         if (name == "costType") {
@@ -1816,15 +1818,15 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         }
 
         if (name == "PaymentTerm" || name == "DeliveryDate") {
+        	if (!$scope.formValues.id) {
+        		return;
+        	}
         	payload = {"Payload":{
 	        		"InvoiceId":$scope.formValues.id,
 	        		"PaymentTermId":$scope.formValues.counterpartyDetails.paymentTerm.id,
 	        		"InvoiceDeliveryDate":$scope.formValues.deliveryDate,
 	        		"ManualDueDate":$scope.formValues.manualDueDate
         		}
-        	}
-        	if (!$scope.formValues.id) {
-        		return;
         	}
 	        Factory_Master.dueDateWithoutSave(payload, function(callback) {
 	        	if (callback.status == true) {
