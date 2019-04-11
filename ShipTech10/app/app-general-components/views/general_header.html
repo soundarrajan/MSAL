@@ -87,8 +87,8 @@
                             <span ng-repeat="(key, value) in screenButtons" ng-if="key < 1">
                                 {{ formValuesLoaded }}
                                 <span ng-controller="Controller_Master as CM">
-                                    <a ng-disabled="value.disabled" class="btn btn-default btn-outline" data-group="extern" ng-click="$eval(value.action)">
-                                        {{ value.label }}
+                                    <a ng-disabled="value.disabled" class="btn btn-default btn-outline" data-group="extern" id="btn_{{value.label}}" ng-click="$eval(value.action)">
+                                        {{ camelCaseToSpaces(value.label) }}
                                     </a>
                                 </span>
                             </span>
