@@ -12,7 +12,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 MM: {
                     mask: IMask.MaskedRange,
                     from: 1,
-                    to: 12
+                    to: 99
                 },
                 MMM: {
                   mask: IMask.MaskedEnum,
@@ -33,17 +33,17 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 DD: {
                     mask: IMask.MaskedRange,
                     from: 1,
-                    to: 31
+                    to: 99
                 },
                 HH: {
                     mask: IMask.MaskedRange,
                     from: 0,
-                    to: 23
+                    to: 99
                 },
                 mm: {
                     mask: IMask.MaskedRange,
                     from: 0,
-                    to: 59,
+                    to: 99,
                 },
             };
 
@@ -158,7 +158,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     element = document.getElementById(dateInputId);
 
                     inputPattern = currentFormat;
-
+                    // inputPattern = "`DD/`MM/`YYYY";
                     if (attrs['pickerType'] == 'dynamic') {
                         inputPattern = currentFormat.split(' ')[0] + '[\\ ][HH:mm]';
                     }

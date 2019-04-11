@@ -11,8 +11,7 @@ angular.module("shiptech.components").controller("FiltersController", [
     "$listsCache",
     "$tenantSettings",
     'CUSTOM_EVENTS',
-    'Factory_App_Dates_Processing',
-    function($q, $rootScope, $scope, $state, $stateParams, $filtersData, $timeout, filterConfigurationModel, $compile, $listsCache, $tenantSettings, CUSTOM_EVENTS, Factory_App_Dates_Processing) {
+    function($q, $rootScope, $scope, $state, $stateParams, $filtersData, $timeout, filterConfigurationModel, $compile, $listsCache, $tenantSettings, CUSTOM_EVENTS) {
         $scope.filtersData = $filtersData;
         $scope.listsCache = $listsCache;
         $scope.tenantSettings = $tenantSettings;

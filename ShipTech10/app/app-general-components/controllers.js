@@ -26,8 +26,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     "selectContractModel",
     "$http",
     "statusColors",
-    "Factory_App_Dates_Processing",
-    function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors, Factory_App_Dates_Processing) {
+    function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors) {
         var vm = this;
         vm.listsCache = $listsCache;
         vm.SCREEN_ACTIONS = SCREEN_ACTIONS;
