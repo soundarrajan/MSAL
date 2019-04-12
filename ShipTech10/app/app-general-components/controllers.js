@@ -850,6 +850,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+	            	var hasDayOfWeek = false;
+		            if (dateFormat.startsWith("DDD ")) {
+		            	hasDayOfWeek = true;
+		            	dateFormat = dateFormat.split("DDD ")[1];
+		            }
                     dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
                     formattedDate = moment.utc(cellValue).add(moment().utcOffset(), 'minutes').format(dateFormat);
                     if (options.label == "ETA" || options.label == "ETB" || options.label == "ETD") {
@@ -861,6 +866,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (cellValue != null) {
+                    	if (hasDayOfWeek) { 
+                    		formattedDate = moment(cellValue).format("ddd") + " " + formattedDate;
+                    	} 
                         return "<div>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -1097,6 +1105,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+	            	var hasDayOfWeek = false;
+		            if (dateFormat.startsWith("DDD ")) {
+		            	hasDayOfWeek = true;
+		            	dateFormat = dateFormat.split("DDD ")[1];
+		            }                    
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat, "UTC");
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
@@ -1114,6 +1127,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (cellValue != null) {
+
+                    	if (hasDayOfWeek) { 
+                    		formattedDate = moment(cellValue).format("ddd") + " " + formattedDate;
+                    	} 
                         return "<div>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);

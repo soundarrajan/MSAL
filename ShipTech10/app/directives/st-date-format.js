@@ -18,6 +18,11 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
                 if (!dateFormat)
                     if (attrs.onlyDate) {
                         dateFormat = tenantService.getDateFormat();
+                    	var hasDayOfWeek = false;
+                        if (dateFormat.startsWith("DDD ")) {
+                        	hasDayOfWeek = true
+	                        dateFormat = dateFormat.split("DDD ")[1];
+                        }
                         if (dateFormat) {
 	                        dateFormat = dateFormat.split(" ")[0];
                         }
@@ -46,6 +51,9 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
                 } else {
                     // Make moment.js use UTC (as the server date provided).
                     retVal = moment.utc(modelValue).format(dateFormat);
+                }
+                if (hasDayOfWeek) {
+                    retVal = moment(modelValue).format("ddd") + " " + retVal;
                 }
                 return retVal;
             });

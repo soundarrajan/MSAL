@@ -4581,3 +4581,17 @@ input[id^="_dateinput"] {
 	color: #333 !important;
 	text-decoration: none !important;
 }
+
+.datePickerDayOfWeek {
+    position: absolute;
+    height: 100%;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    pointer-events: none;
+}
+
+.dateInputHasDayOfWeek {
+    padding-left: 40px;
+}

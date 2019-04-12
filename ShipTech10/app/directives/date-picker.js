@@ -6,8 +6,8 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             var BLOCKS = {
                 YYYY: {
                     mask: IMask.MaskedRange,
-                    from: 1753,
-                    to: 3000
+                    from: 1,
+                    to: 9999
                 },
                 MM: {
                     mask: IMask.MaskedRange,
@@ -80,11 +80,20 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             }
 
             var prevValue = null;
+        	var hasDayOfWeek = false;
             if (attrs.screenType === 'supplierPortal') {
             	tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
 	            var currentFormat = tenantService.tenantFormats.dateFormat.name;
+	            if (currentFormat.startsWith("DDD ")) {
+	            	hasDayOfWeek = true
+	            	currentFormat = currentFormat.split("DDD ")[1];
+	            }
             } else {
 	            var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
+	            if (currentFormat.startsWith("DDD ")) {
+	            	hasDayOfWeek = true
+	            	currentFormat = currentFormat.split("DDD ")[1];
+	            }
             }
 
             if (attrs['pickerType'] == 'date') {
@@ -93,9 +102,12 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
             currentFormat = currentFormat.replace(/d/g, "D");
             currentFormat = currentFormat.replace(/y/g, "Y");
+            
+            var	dayOfWeekClass = '';
+            if(hasDayOfWeek) { dayOfWeekClass = "dateInputHasDayOfWeek" }
 
             var dateInputId = attrs['id'] + '_dateinput';
-            var dateInput = '<input type="text" class="form-control" id="' + dateInputId + '">';
+            var dateInput = '<input type="text" class="form-control '+dayOfWeekClass+' " id="' + dateInputId + '">';
             var dateIcon = '<i class="fa fa-calendar date-picker-icon"';
 
             if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
@@ -104,6 +116,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 dateIcon += '></i>';
             }
 
+            if (hasDayOfWeek) {
+                var dayOfWeek = '<span class="datePickerDayOfWeek">DDD</span>';
+            } else {
+                var dayOfWeek = '';
+            }
             if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                 var timeIcon = '<i class="fa fa-clock-o time-picker-icon" id="' + dateInputId + '_timeicon"></i>';
 
@@ -149,9 +166,9 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         $('#' + attrs['id']).after(dateInput);
                     } else {
                         if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
-                            $('#' + attrs['id']).after(dateInput).after(dateIcon).after(timeIcon);
+                            $('#' + attrs['id']).after(dateInput).after(dateIcon).after(timeIcon).after(dayOfWeek);
                         } else {
-                            $('#' + attrs['id']).after(dateInput).after(dateIcon);
+                            $('#' + attrs['id']).after(dateInput).after(dateIcon).after(dayOfWeek);
                         }
                     }
 
@@ -159,16 +176,27 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                     inputPattern = currentFormat;
                     // inputPattern = "`DD/`MM/`YYYY";
+
                     if (attrs['pickerType'] == 'dynamic') {
-                        inputPattern = currentFormat.split(' ')[0] + '[\\ ][HH:mm]';
+                        inputPattern = currentFormat.split(' ')[0] + '`[\\ ]`[`HH:`mm]';
                     }
+
+                    /*PREVENT DELETION OF CHARS FROM RIGHT */
+                    if (currentFormat.split(' ')[0].indexOf("/") != -1) {separator = "/"}	
+                    if (currentFormat.split(' ')[0].indexOf(".") != -1) {separator = "."}	
+                    if (currentFormat.split(' ')[0].indexOf("-") != -1) {separator = "-"}
+                    if (separator) {
+	                    inputPattern = inputPattern.split(separator).join("`"+separator);
+                    }
+                    /*PREVENT DELETION OF CHARS FROM RIGHT */
+
 
                     resolve(new IMask(element, {
                         mask: Date,
                         pattern: inputPattern,
                         // lazy: false,
-                        min: new Date(1753, 0, 1),
-                        max: new Date(3000, 0, 1),
+                        min: new Date(1, 0, 1),
+                        max: new Date(9999, 0, 1),
                         blocks: BLOCKS,
                         format: function (date) {
                             return moment.utc(date).format(currentFormat);
@@ -211,6 +239,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         $('.page-container').append(timeTpl);
 
                         $('#' + dateInputId + '_time').css($('#' + dateInputId).offset());
+
 
                         $('.' + dateInputId + '_minute').click(function() {
                             if (mask.value) {
@@ -360,6 +389,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 }
 
                 scope.$watch(attrs['ngModel'], function(v) {
+                    if (hasDayOfWeek) {
+                    	dayOfWeekText = ""
+                    	if (moment(v).isValid()) {
+                    		dayOfWeekText = moment.utc(v).format("ddd")
+                    	}
+                    	$('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
+                    }
                     if (v && $('#' + dateInputId).data("DateTimePicker")) {
                         $('#' + dateInputId).data("DateTimePicker").date(moment.utc(v));
                         var newVal = moment.utc(v).format(currentFormat);
