@@ -537,6 +537,9 @@ var Cfg = {
     	            if (v.condition.conditionNrOfValues > 0 && (v.column.columnType == "Date" || v.column.columnType == "DateOnly")) {
     	            	if (window.tenantFormatsDateFormat) {
 				            dateFormat = window.tenantFormatsDateFormat;
+				            if (dateFormat.startsWith("DDD ")) {
+				            	dateFormat = dateFormat.split("DDD ")[1];
+				            }				            
 				            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
     	            	} else {
     	            		dateFormat = "DD/MM/YYYY";

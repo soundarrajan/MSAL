@@ -96,25 +96,23 @@
 
 
                                             <div class="form_group no-label" ng-if="globalFilters[key].column.columnType == 'Date'">
-                                                <div class="between" class="date-picker input-group pull=left" style="padding: 15px; padding-left: 0;">
+                                                <div class="between" class="date-picker input-group pull=left" style="margin: 15px; position: relative; margin-left: 0;  padding-left: 0;">
                                                     <input
                                                         ng-model="globalFilters[key].value[0]" 
                                                         name="{{ 'globalFilters' + key }}_0"
                                                         id="{{ 'globalFilters' + key }}_0"
-                                                        new-date-picker
-                                                        no-icon="true"
+                                                        new-date-picker                                                       
                                                         picker-type="date"
                                                         class="form-control date-mask new-date-picker">
                                                 </div>
 
 
-                                                <div class="between" class="date-picker input-group pull=left" style="padding: 15px;">
+                                                <div class="between" class="date-picker input-group pull=left" style="margin: 15px; position: relative; margin-left: 0; ">
                                                     <input
                                                         ng-model="globalFilters[key].value[1]" 
                                                         name="{{ 'globalFilters' + key }}_1"
                                                         id="{{ 'globalFilters' + key }}_1"
-                                                        new-date-picker
-                                                        no-icon="true"
+                                                        new-date-picker                                                       
                                                         picker-type="date"
                                                         class="form-control date-mask new-date-picker">
                                                 </div>
@@ -128,14 +126,13 @@
                                                     <input type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
                                                 </div>
 
-                                                <div ng-if="globalFilters[key].column.columnType == 'Date'" class="input-group" style="padding: 15px; padding-left: 0;">
+                                                <div ng-if="globalFilters[key].column.columnType == 'Date'" class="input-group" style="margin: 15px; margin-left: 0;  padding-left: 0;">
                                                     <input
                                                         ng-model="globalFilters[key].value[0]" 
                                                         name="{{ 'globalFilters' + key }}_0"
                                                         id="{{ 'globalFilters' + key }}_0"
                                                         new-date-picker
-                                                        picker-type="date"
-                                                        no-icon="true"
+                                                        picker-type="date"                                                       
                                                         class="form-control date-mask new-date-picker">
                                                 </div>
                                             </div>
