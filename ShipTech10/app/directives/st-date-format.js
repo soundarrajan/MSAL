@@ -15,7 +15,7 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
             // dateFormat = tenantService.getDateFormat();
             ctrl.$formatters.unshift(function(modelValue) {
                 // debugger;
-                if (!dateFormat)
+                if (!dateFormat){
                     if (attrs.onlyDate) {
                         dateFormat = tenantService.getDateFormat();
                     	var hasDayOfWeek = false;
@@ -29,7 +29,17 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
                         // dateFormat = 'DD/MM/YYYY';
                     } else {
                         dateFormat = tenantService.getDateFormat();
+                        if (dateFormat.startsWith("DDD ")) {
+                        	hasDayOfWeek = true
+	                        dateFormat = dateFormat.split("DDD ")[1];
+                        }                    
                     }
+                } else {
+                    if (dateFormat.startsWith("DDD ")) {
+	                	hasDayOfWeek = true
+	                    dateFormat = dateFormat.split("DDD ")[1];
+	                }
+                }
                 if (!dateFormat || !modelValue) return "";
                 var retVal;
                 // We're getting UTC dates from server.
@@ -40,10 +50,18 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
                 if (!dateFormat)
                     if (attrs.onlyDate) {
                         dateFormat = tenantService.getDateFormat();
+                        if (dateFormat.startsWith("DDD ")) {
+                        	hasDayOfWeek = true
+	                        dateFormat = dateFormat.split("DDD ")[1];
+                        }                        
                         dateFormat = dateFormat.split(" ")[0];
                         // dateFormat = 'DD/MM/YYYY';
                     } else {
                         dateFormat = tenantService.getDateFormat();
+                        if (dateFormat.startsWith("DDD ")) {
+                        	hasDayOfWeek = true
+	                        dateFormat = dateFormat.split("DDD ")[1];
+                        }                        
                     }
                 if (attrs.stDateToLocal !== undefined) {
                     // moment.js default behavior: return date in LOCAL TIME.
