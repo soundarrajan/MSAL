@@ -4595,3 +4595,8 @@ input[id^="_dateinput"] {
 .dateInputHasDayOfWeek {
     padding-left: 40px;
 }
+
+
+div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, div[uib-modal-window] .btn.export_pdf {
+	display: none;
+}

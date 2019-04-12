@@ -549,6 +549,7 @@ window.increment = 0;
 	                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
 	                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
 	                                        })
+	                                        $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 35 + 5 + "px")
                                         // END VERTICALS SCROLLBAR
                                         // 
                                         // REMOVE MASTER LINKS FROM LOOKUPS
@@ -564,7 +565,7 @@ window.increment = 0;
 		                                        $(".modal-content td a .formatter.edit_link").css(styles);
 	                                        })
                                         // REMOVE MASTER LINKS FROM LOOKUPS
-
+										Elements.settings[table_id].source.height = "10vh";
 
                                         // apply hstyle
                                         $.each(Elements.settings[table_id].source.colModel, function(key, obj) {
