@@ -883,14 +883,15 @@ angular.module("shiptech.components").controller("FiltersController", [
             if ($scope.columnFilters[column][key].column) {
 		        if($scope.columnFilters[column][key].column.columnType == 'Text'){
 		            // if the filter doesn't come from a configuration / filter isn't already set -> default only empty filters
-		            if(!$scope.columnFilters[column][key].value){
+		            if(!$scope.columnFilters[column][key].value && !$scope.columnFilters[column][key].condition) {
 
 		                //find 'Contains' for type Tex and set that condition as default
 		                $.each($scope.conditions, function(key_cond,val_cond){
-		                    if(val_cond.conditionApplicable == "Text")
-		                        if(val_cond.conditionName == "Contains")
+		                    if(val_cond.conditionApplicable == "Text" && val_cond.conditionNrOfValues > 0) {
+		                        if(val_cond.conditionName == "Contains") {
 		                            $scope.columnFilters[column][key].condition = angular.copy(val_cond);
-
+                                }
+                            }
 		                });
 		            }
 		        }
