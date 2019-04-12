@@ -1683,6 +1683,65 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 		$scope.initialHasManualPaymentDate = angular.copy($scope.formValues.hasManualPaymentDate);
     });
 
+    vm.formatDate = function(elem, dateFormat) {
+        if (elem) {
+            formattedDate = elem;
+            dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            if (dateFormat.startsWith("DDD ")) {
+            	hasDayOfWeek = true
+            	dateFormat = dateFormat.split("DDD ")[1].split(" ")[0];
+            } else {
+            	dateFormat = dateFormat.split(" ")[0];
+            }
+            var date = Date.parse(elem);
+            date = new Date(date);
+            if (date) {
+                var utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                // var utc = date.getTime();
+                if (dateFormat.name) {
+                    dateFormat = dateFormat.name.replace(/d/g, "D").replace(/y/g, "Y");
+                } else {
+                    dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                }
+                formattedDate = fecha.format(utc, dateFormat);
+            }
+            return formattedDate;
+        }
+    };
+    vm.formatDateTime = function (elem, dateFormat, fieldUniqueId) {
+        // console.log(fieldUniqueId)
+        if (elem) {
+            dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            if (dateFormat.startsWith("DDD ")) {
+            	hasDayOfWeek = true
+            	dateFormat = dateFormat.split("DDD ")[1];
+            }
+            dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+            if (typeof fieldUniqueId == "undefined") {
+                fieldUniqueId = "date";
+            }
+            if (fieldUniqueId == "deliveryDate" && vm.app_id == "recon") {
+                return vm.formatDate(elem, "dd/MM/yyyy");
+            }
+            if (fieldUniqueId == "invoiceDate" && vm.app_id == "invoices") {
+                return vm.formatDate(elem, "dd/MM/yyyy");
+            }
+            if (fieldUniqueId == "eta" || fieldUniqueId == "orderDetails.eta" || fieldUniqueId == "etb" || fieldUniqueId == "etd" || fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || fieldUniqueId == "pricingDate") {
+                // debugger;
+                // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
+                utcDate = moment.utc(elem).format();
+                formattedDate = $filter("date")(utcDate, dateFormat, 'UTC');
+                // return moment.utc(elem).format(dateFormat);
+            } else {
+                formattedDate = $filter("date")(elem, dateFormat);
+            }
+            if (hasDayOfWeek) {
+            	formattedDate = moment.utc(elem).format("ddd") + " " + formattedDate
+            }
+            return formattedDate;
+        }
+    };
+
     $scope.$watch('formValues.orderDetails.order.id', function(val) {
         if (!val || val == vm.last_order_id_get_apply_for_list) {return false;}
         vm.last_order_id_get_apply_for_list = val;

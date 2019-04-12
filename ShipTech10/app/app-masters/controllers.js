@@ -2656,9 +2656,14 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
 
-            vm.formatDate = function(elem, dateFormat) {
+        vm.formatDate = function(elem, dateFormat) {
             if (elem) {
                 formattedDate = elem;
+                dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+	            if (dateFormat.startsWith("DDD ")) {
+	            	hasDayOfWeek = true
+	            	dateFormat = dateFormat.split("DDD ")[1];
+	            }                
                 var date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
@@ -2682,6 +2687,10 @@ APP_MASTERS.controller("Controller_Master", [
             // console.log(fieldUniqueId)
             if (elem) {
                 dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+	            if (dateFormat.startsWith("DDD ")) {
+	            	hasDayOfWeek = true
+	            	dateFormat = dateFormat.split("DDD ")[1];
+	            }
                 dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                 if (typeof fieldUniqueId == "undefined") {
                     fieldUniqueId = "date";
