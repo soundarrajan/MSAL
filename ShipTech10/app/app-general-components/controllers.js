@@ -1086,13 +1086,22 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var formatOnlyDate = function(cellValue, options, rowObject) {
                     var tpl = '<span class="formatter">:content</span>';
                     var element = tpl;
-                    formattedDate = $filter("date")(cellValue, $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0], "UTC");
+                    var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+	            	var hasDayOfWeek = false;
+		            if (dateFormat.startsWith("DDD ")) {
+		            	hasDayOfWeek = true;
+		            	dateFormat = dateFormat.split("DDD ")[1];
+		            }                     
+                    formattedDate = $filter("date")(cellValue, dateFormat.split(" ")[0], "UTC");
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
                             formattedDate = "";
                         }
                     }
                     if (cellValue != null) {
+                    	if (hasDayOfWeek) { 
+                    		formattedDate = moment(cellValue).format("ddd") + " " + formattedDate;
+                    	} 
                         return "<div>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -1104,7 +1113,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var tpl = '<span class="formatter">:content</span>';
                     var element = tpl;
                     // console.log($scope.tenantSettings);
-                    dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+                    var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
 	            	var hasDayOfWeek = false;
 		            if (dateFormat.startsWith("DDD ")) {
 		            	hasDayOfWeek = true;
@@ -1113,7 +1122,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat, "UTC");
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
-                        formattedDate = $filter("date")(cellValue, dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name.split(" ")[0], "UTC");
+                        formattedDate = $filter("date")(cellValue, dateFormat.split(" ")[0], "UTC");
                     } else {
 	                    if (formattedDate) {
 		                    if (formattedDate.split(" ")[1] == "00:00") {
@@ -2456,6 +2465,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             setTimeout(function(){
                 $scope.resetTreasuryCheckboxes();
                 vm.lastCallTableParams = res;
+                $compile($(".treasury-datepicker-input"))(angular.element($(".treasury-datepicker-input")).scope())
                 // vm.cpCtr = [];
             },500)
         });

@@ -117,7 +117,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             }
 
             if (hasDayOfWeek) {
-                var dayOfWeek = '<span class="datePickerDayOfWeek">DDD</span>';
+                var dayOfWeek = '<span class="datePickerDayOfWeek"></span>';
             } else {
                 var dayOfWeek = '';
             }
@@ -390,9 +390,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (hasDayOfWeek) {
-                    	dayOfWeekText = ""
-                    	if (moment(v).isValid()) {
-                    		dayOfWeekText = moment.utc(v).format("ddd")
+                    	var dayOfWeekText = ""
+                    	if (v) {
+	                    	if (moment(v).isValid()) {
+	                    		dayOfWeekText = moment.utc(v).format("ddd")
+	                    	}
                     	}
                     	$('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
                     }
