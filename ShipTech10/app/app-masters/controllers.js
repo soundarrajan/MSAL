@@ -2660,6 +2660,7 @@ APP_MASTERS.controller("Controller_Master", [
             if (elem) {
                 formattedDate = elem;
                 dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            	hasDayOfWeek = false;
 	            if (dateFormat.startsWith("DDD ")) {
 	            	hasDayOfWeek = true
 	            	dateFormat = dateFormat.split("DDD ")[1];

@@ -2465,7 +2465,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             setTimeout(function(){
                 $scope.resetTreasuryCheckboxes();
                 vm.lastCallTableParams = res;
-                $compile($(".treasury-datepicker-input"))(angular.element($(".treasury-datepicker-input")).scope())
+                if ($(".treasury-datepicker-input").length > 0) {
+	                $compile($(".treasury-datepicker-input"))(angular.element($(".treasury-datepicker-input")).scope())
+                }
                 // vm.cpCtr = [];
             },500)
         });

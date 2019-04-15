@@ -1687,8 +1687,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         if (elem) {
             formattedDate = elem;
             dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+	    	hasDayOfWeek = false;
             if (dateFormat.startsWith("DDD ")) {
-            	hasDayOfWeek = true
+            	hasDayOfWeek = true;
             	dateFormat = dateFormat.split("DDD ")[1].split(" ")[0];
             } else {
             	dateFormat = dateFormat.split(" ")[0];
@@ -2627,6 +2628,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.status = null;
         $rootScope.transportData.invoiceSummary = null;
         $rootScope.transportData.invoiceClaimDetails = null;
+        // window.open("#/invoices/invoice/edit/", "_blank");
         $location.path('invoices/invoice/edit/');
     }
     $scope.createFinalInvoiceFromEditPage = function(fv) {
