@@ -1590,6 +1590,23 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     return element;
                 };
+                var edit_order_product_link = function(cellValue, options, rowObject) {
+                    if (rowObject.order) {
+                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" style="width: 100%" target="_blank"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.orderProductId + "</span></a>";
+                    } else {
+                        var tpl = '<span class="formatter no_order" style="white-space:none"> - </span>';
+                        setTimeout(function() {
+                            if ($(".no_order").length > 0) {
+                                $(".no_order")
+                                    .parents("tr")
+                                    .find('td[aria-describedby="flat_recon_actions-0"]')
+                                    .html("");
+                            }
+                        }, 10);
+                    }
+                    var element = tpl;
+                    return element;
+                };
                 var edit_request_link = function(cellValue, options, rowObject) {
                     var tpl = null;
                     if (rowObject.requestGroupId) {
