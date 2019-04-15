@@ -859,6 +859,11 @@ angular.module("shiptech.components").controller("FiltersController", [
             if ($scope.columnFilters[column].length == 0) {
                 $scope.columnFilters[column].push({});
             }
+           //  setTimeout(function(){
+	          //   if ($(".popover-filter-date").length > 0) {
+			        // $compile($(".popover-filter-date"))(angular.element($(".popover-filter-date")).scope());
+	          //   }
+           //  })
             console.log($scope.columnFilters[column]);
         };
         $scope.removeFilterRow = function(index, column) {

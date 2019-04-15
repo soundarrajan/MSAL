@@ -14,6 +14,11 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
               // if (attrs.onlyDate) alert(1)
             // dateFormat = tenantService.getDateFormat();
             ctrl.$formatters.unshift(function(modelValue) {
+	            dateFormat = tenantService.getDateFormat();
+	            if (dateFormat.startsWith("DDD ")) {
+	            	hasDayOfWeek = true
+	                dateFormat = dateFormat.split("DDD ")[1];
+	            }            
                 // debugger;
                 if (!dateFormat){
                     if (attrs.onlyDate) {

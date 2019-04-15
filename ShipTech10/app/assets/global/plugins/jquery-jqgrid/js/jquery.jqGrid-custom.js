@@ -535,9 +535,11 @@ var Cfg = {
                         }
                     }
     	            if (v.condition.conditionNrOfValues > 0 && (v.column.columnType == "Date" || v.column.columnType == "DateOnly")) {
+		            	hasDayOfWeek = false;
     	            	if (window.tenantFormatsDateFormat) {
 				            dateFormat = window.tenantFormatsDateFormat;
 				            if (dateFormat.startsWith("DDD ")) {
+				            	hasDayOfWeek = true;
 				            	dateFormat = dateFormat.split("DDD ")[1];
 				            }				            
 				            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
@@ -545,11 +547,21 @@ var Cfg = {
     	            		dateFormat = "DD/MM/YYYY";
     	            	}
 			            if (condition != 'Is between') {
-			            	value = moment.utc(value).format(dateFormat);
+	                        if (hasDayOfWeek) {
+	                        	dayOfWeekString = moment.utc(value).format("ddd");
+				            	value = dayOfWeekString + " " + moment.utc(value).format(dateFormat);
+	                        } else {
+				            	value = moment.utc(value).format(dateFormat);
+	                        }			            	
 			            } else {
                             dates = value.split(' - ');
                             for (var i = 0; i < dates.length; i++) {
-                                dates[i] = moment.utc(dates[i].trim()).format(dateFormat);
+		                        if (hasDayOfWeek) {
+		                        	dayOfWeekString = moment.utc(dates[i]).format("ddd");
+		                        	dates[i] = dayOfWeekString + " " + moment.utc(dates[i]).format(dateFormat);
+		                        } else {
+	                                dates[i] = moment.utc(dates[i].trim()).format(dateFormat);
+		                        }
                             }
                             value = dates.join(' - ');
                         }

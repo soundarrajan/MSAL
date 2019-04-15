@@ -1,4 +1,4 @@
-angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$window', '$injector', '$tenantSettings', '$stateParams', function(tenantModel, $window, $injector, $tenantSettings, $stateParams) {
+angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$window', '$injector', '$tenantSettings', '$stateParams', '$compile', function(tenantModel, $window, $injector, $tenantSettings, $stateParams, $compile) {
     return {
         require: '^ngModel',
         restrict: 'A',
@@ -149,6 +149,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 timeTpl += '</div>';
             }
 
+
             var maskTyping = false;
             var hasTyped = false;
             var wasReset = false;
@@ -207,6 +208,9 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     }));
                 }, 0);
             });
+            // if ($(".new-date-picker").length > 0) {
+	           //  $compile($(".new-date-picker").parent())(scope);
+            // }
 
             init.then(function(mask) {
                 var datePickerOptions = {
@@ -224,6 +228,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 };
 
                 $(element).datetimepicker(datePickerOptions);
+
 
                 if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                     $('#' + dateInputId + '_timeicon').click(function() {
@@ -388,6 +393,15 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                   	
                 }
 
+                if (hasDayOfWeek) {
+                	var dayOfWeekText = ""
+                	if (ngModel.$viewValue) {
+                    	if (moment(ngModel.$viewValue).isValid()) {
+                    		dayOfWeekText = moment.utc(ngModel.$viewValue).format("ddd")
+                    	}
+                	}
+                	$('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
+                }
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (hasDayOfWeek) {
                     	var dayOfWeekText = ""
