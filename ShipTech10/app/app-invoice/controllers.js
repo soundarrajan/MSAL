@@ -2167,10 +2167,13 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             var actualSettlementAmount = selectedRowData.actualSettlementAmount;
             var claimType = selectedRowData.claimType.name;
             var claimId = selectedRowData.id;
-            var data = {
-                "ClaimId": claimId
-            }
             if (selectedRowData.claimsPossibleActions.canCreateCreditNote) {
+                var data = {
+                    "ClaimId": claimId
+                };
+                localStorage.setItem("createCreditNoteFromInvoiceClaims", JSON.stringify(data));
+                window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+                /*
                 Factory_Master.create_credit_note(data, function(response) {
                     if (response) {
                         if (response.status == true) {
@@ -2184,6 +2187,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         }
                     }
                 })
+                */
             } else {
                 toastr.error("You can't create credit note for this claim");
             }
@@ -2192,7 +2196,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             toastr.error("Please select one claim");
         }
     }
-    $scope.claims_create_credit_note = function(id) {
+    $scope.claims_create_credit_note = function (id) {
         var data = {
             "claimId": vm.entity_id,
             "InvoiceTypeName": "CreditNote"
@@ -2203,7 +2207,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         if (id == 2) {
             data.IsDebunker = 1;
         }
-        Factory_Master.claims_create_credit_note(data, function(response) {
+        Factory_Master.claims_create_credit_note(data, function (response) {
             if (response) {
                 if (response.status == true) {
                     $scope.loaded = true;
@@ -2229,6 +2233,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                     "ClaimId": claimId,
                     "IsDebunker": 1
                 }
+                localStorage.setItem("createDebunkerCreditNoteFromInvoiceClaims", JSON.stringify(data));
+                window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+                /*
                 Factory_Master.create_credit_note(data, function(response) {
                     if (response) {
                         if (response.status == true) {
@@ -2242,6 +2249,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         }
                     }
                 })
+                */
             } else {
                 toastr.error("You can't create debunker credit note for this claim");
             }
@@ -2262,6 +2270,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                     "ClaimId": claimId,
                     "IsResale": 1
                 }
+                localStorage.setItem("createResaleCreditNoteFromInvoiceClaims", JSON.stringify(data));
+                window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+
+                /*
                 Factory_Master.create_credit_note(data, function(response) {
                     if (response) {
                         if (response.status == true) {
@@ -2275,6 +2287,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         }
                     }
                 })
+                */
             } else {
                 toastr.error("You can't create resale credit note for this claim");
             }
@@ -2282,6 +2295,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             toastr.error("Please select one claim");
         }
     }
+
     /*INVOICES - CLAIMS*/
     $scope.saveTreasury = function() {
         checkedRows = $rootScope.treasuryChangedfields;

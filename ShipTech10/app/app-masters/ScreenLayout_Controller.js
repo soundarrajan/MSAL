@@ -68,6 +68,60 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		// ctrl = $controller('Controller_Invoice');
 
         vm.get_master_entity = function(screenChild) {
+            if (localStorage.getItem('createResaleCreditNoteFromInvoiceClaims')) {
+                Factory_Master.create_credit_note(JSON.parse(localStorage.getItem('createResaleCreditNoteFromInvoiceClaims')), function(response) {
+                    if (response) {
+                        if (response.status == true) {
+                            $scope.loaded = true;
+                            toastr.success(response.message);
+                            $scope.formValues = response.data;
+                            // $location.path(vm.app_id + '/claims/edit/');
+                        } else {
+                            $scope.loaded = true;
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+                $rootScope.transportData = null;
+                localStorage.removeItem("createResaleCreditNoteFromInvoiceClaims");
+            }
+
+            if (localStorage.getItem('createDebunkerCreditNoteFromInvoiceClaims')) {
+                Factory_Master.create_credit_note(JSON.parse(localStorage.getItem('createDebunkerCreditNoteFromInvoiceClaims')), function(response) {
+                    if (response) {
+                        if (response.status == true) {
+                            $scope.loaded = true;
+                            toastr.success(response.message);
+                            $scope.formValues = response.data;
+                            // $location.path(vm.app_id + '/claims/edit/');
+                        } else {
+                            $scope.loaded = true;
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+                $rootScope.transportData = null;
+                localStorage.removeItem("createDebunkerCreditNoteFromInvoiceClaims");
+            }
+
+            if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
+                Factory_Master.create_credit_note(JSON.parse(localStorage.getItem('createCreditNoteFromInvoiceClaims')), function(response) {
+                    if (response) {
+                        if (response.status == true) {
+                            $scope.loaded = true;
+                            toastr.success(response.message);
+                            $scope.formValues = response.data;
+                            // $location.path(vm.app_id + '/claims/edit/');
+                        } else {
+                            $scope.loaded = true;
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+                $rootScope.transportData = null;
+                localStorage.removeItem("createCreditNoteFromInvoiceClaims");
+            }
+
          	if (localStorage.getItem("invoiceFromDelivery")) {
          		// $rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
 

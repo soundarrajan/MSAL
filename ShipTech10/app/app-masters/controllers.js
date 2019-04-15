@@ -495,10 +495,13 @@ APP_MASTERS.controller("Controller_Master", [
 	            var actualSettlementAmount = selectedRowData.actualSettlementAmount;
 	            var claimType = selectedRowData.claimType.name;
 	            var claimId = selectedRowData.id;
-	            var data = {
-	                "ClaimId": claimId
-	            }
 	            if (selectedRowData.claimsPossibleActions.canCreateCreditNote) {
+                    var data = {
+                        "ClaimId": claimId
+                    };
+                    localStorage.setItem("createCreditNoteFromInvoiceClaims", JSON.stringify(data));
+                    window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+                    /*
 	                Factory_Master.create_credit_note(data, function(response) {
 	                    if (response) {
 	                        if (response.status == true) {
@@ -512,6 +515,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                        }
 	                    }
 	                })
+                    */
 	            } else {
 	                toastr.error("You can't create credit note for this claim");
 	            }
@@ -533,6 +537,9 @@ APP_MASTERS.controller("Controller_Master", [
 		                "ClaimId": claimId,
 		                "IsDebunker": 1
 		            }
+                    localStorage.setItem("createDebunkerCreditNoteFromInvoiceClaims", JSON.stringify(data));
+                    window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+                    /*
 		            Factory_Master.create_credit_note(data, function(response) {
 		                if (response) {
 		                    if (response.status == true) {
@@ -546,6 +553,7 @@ APP_MASTERS.controller("Controller_Master", [
 		                    }
 		                }
 		            })
+                    */
 		        } else {
 		            toastr.error("You can't create debunker credit note for this claim");
 		        }
@@ -553,39 +561,44 @@ APP_MASTERS.controller("Controller_Master", [
 		        toastr.error("Please select one claim");
 		    }
 		}
-		$scope.createResaleCreditNote = function() {
-		    var selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
-		    if (selectedRowData) {
-		        var claimSettlementType = selectedRowData.settlementType.name;
-		        var actualSettlementAmount = selectedRowData.actualSettlementAmount;
-		        var resaleAmount = selectedRowData.resaleAmount;
-		        var claimType = selectedRowData.claimType.name;
-		        var claimId = selectedRowData.id;
-		        if (selectedRowData.claimsPossibleActions.canCreateResaleCreditNote) {
-		            var data = {
-		                "ClaimId": claimId,
-		                "IsResale": 1
-		            }
-		            Factory_Master.create_credit_note(data, function(response) {
-		                if (response) {
-		                    if (response.status == true) {
-		                        $scope.loaded = true;
-		                        toastr.success(response.message);
-		                        $rootScope.transportData = response.data;
-		                        $location.path(vm.app_id + '/claims/edit/');
-		                    } else {
-		                        $scope.loaded = true;
-		                        toastr.error(response.message);
-		                    }
-		                }
-		            })
-		        } else {
-		            toastr.error("You can't create resale credit note for this claim");
-		        }
-		    } else {
-		        toastr.error("Please select one claim");
-		    }
-		}
+        $scope.createResaleCreditNote = function() {
+            var selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
+            if (selectedRowData) {
+                var claimSettlementType = selectedRowData.settlementType.name;
+                var actualSettlementAmount = selectedRowData.actualSettlementAmount;
+                var resaleAmount = selectedRowData.resaleAmount;
+                var claimType = selectedRowData.claimType.name;
+                var claimId = selectedRowData.id;
+                if (selectedRowData.claimsPossibleActions.canCreateResaleCreditNote) {
+                    var data = {
+                        "ClaimId": claimId,
+                        "IsResale": 1
+                    }
+                    localStorage.setItem("createResaleCreditNoteFromInvoiceClaims", JSON.stringify(data));
+                    window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+
+                    /*
+                    Factory_Master.create_credit_note(data, function(response) {
+                        if (response) {
+                            if (response.status == true) {
+                                $scope.loaded = true;
+                                toastr.success(response.message);
+                                $rootScope.transportData = response.data;
+                                $location.path(vm.app_id + '/claims/edit/');
+                            } else {
+                                $scope.loaded = true;
+                                toastr.error(response.message);
+                            }
+                        }
+                    })
+                    */
+                } else {
+                    toastr.error("You can't create resale credit note for this claim");
+                }
+            } else {
+                toastr.error("Please select one claim");
+            }
+        }
 
 		$scope.createInvoiceFromDelivery = function() {
 	        var productIds = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds;
