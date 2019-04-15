@@ -1705,6 +1705,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 }
                 formattedDate = fecha.format(utc, dateFormat);
             }
+            if (hasDayOfWeek) {
+            	formattedDate = moment(elem).format("ddd") + " " + formattedDate;	
+            }            
             return formattedDate;
         }
     };
@@ -2599,7 +2602,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         }
         invoiceType = JSON.parse(invoiceType);
         if (invoiceType.name == "Final Invoice") {
-        	$scope.createFinalInvoice();
+        	$scope.createFinalInvoiceFromEditPage();
         	return;
         }
 
@@ -2626,7 +2629,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.invoiceClaimDetails = null;
         $location.path('invoices/invoice/edit/');
     }
-    $scope.createFinalInvoice = function(fv) {
+    $scope.createFinalInvoiceFromEditPage = function(fv) {
         screenLoader.showLoader();
         invoiceType = {
             "id": 2,
@@ -2665,7 +2668,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 $rootScope.transportData.invoiceSummary.estimatedAmountGrandTotal = null
                 $rootScope.transportData.invoiceSummary.totalDifference = null
                 $rootScope.transportData.status = null
-                $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = vm.entity_id;
+                $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = null;
                 
                 $rootScope.transportData.paymentDetails = {};     
                 $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
@@ -2686,32 +2689,34 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                     deductions = 0
                 }
                 $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
-                $.each($rootScope.transportData.productDetails, function(k, v) {
-                    v.id = 0;
-                    v.invoiceQuantity = null;
-                    // v.invoiceQuantityUom = null;
-                    v.invoiceRate = null;
-                    // v.invoiceRateUom = null;
-                    v.invoiceRateCurrency = null;
-                    v.invoiceAmount = null;
-                    v.reconStatus = null;
-                    v.amountInInvoice = null;
-                })
-                $.each($rootScope.transportData.costDetails, function(k, v) {
-                    v.id = 0;
-                })
+                $rootScope.transportData.costDetails = [];
+                $rootScope.transportData.productDetails = [];
+                // $.each($rootScope.transportData.productDetails, function(k, v) {
+                //     v.id = 0;
+                //     v.invoiceQuantity = null;
+                //     // v.invoiceQuantityUom = null;
+                //     v.invoiceRate = null;
+                //     // v.invoiceRateUom = null;
+                //     v.invoiceRateCurrency = null;
+                //     v.invoiceAmount = null;
+                //     v.reconStatus = null;
+                //     v.amountInInvoice = null;
+                // })
+                // $.each($rootScope.transportData.costDetails, function(k, v) {
+                //     v.id = 0;
+                // })
 
-                var deliveryProductIds = [];
-                $.each($rootScope.transportData.productDetails, function(k, v) {
-                    deliveryProductIds.push(v.deliveryProductId);
-                });
+                // var deliveryProductIds = [];
+                // $.each($rootScope.transportData.productDetails, function(k, v) {
+                //     deliveryProductIds.push(v.deliveryProductId);
+                // });
 
-                var payload = {
-                    "Payload": {
-                        "DeliveryProductIds": deliveryProductIds,
-                        "OrderId": $rootScope.transportData.orderDetails.order.id
-                    }
-                }
+                // var payload = {
+                //     "Payload": {
+                //         "DeliveryProductIds": deliveryProductIds,
+                //         "OrderId": $rootScope.transportData.orderDetails.order.id
+                //     }
+                // }
                 $location.path('invoices/invoice/edit/');
             }
         });

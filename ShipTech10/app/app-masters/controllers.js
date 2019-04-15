@@ -2676,6 +2676,9 @@ APP_MASTERS.controller("Controller_Master", [
                     }
                     formattedDate = fecha.format(utc, dateFormat);
                 }
+                if (hasDayOfWeek) {
+                	formattedDate = moment(elem).format("ddd") + " " + formattedDate;	
+                }
                 return formattedDate;
             }
         };
