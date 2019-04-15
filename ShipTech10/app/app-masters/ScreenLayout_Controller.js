@@ -150,6 +150,145 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
          	}
 
 
+         	if (localStorage.getItem("invoice_createFinalInvoice")) {
+	            var invoiceType = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoice"))).invoiceType;
+	            var entity_id = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoice"))).entityId;
+                localStorage.removeItem('invoice_createFinalInvoice');
+		        Factory_Master.get_master_entity(entity_id, vm.screen_id, vm.app_id, function(callback2) {
+		            if (callback2) {
+		                
+		                tempformValues = callback2;
+		                $scope.formValues = tempformValues;
+		                if (formValues.documentType.internalName == "ProvisionalInvoice") {
+			                !$scope.formValues.paymentDate ? $scope.formValues.paymentDate = $scope.formValues.workingDueDate : '';
+		                }
+		                
+		                $scope.formValues.id = 0;
+		                $scope.formValues.invoiceDetails = null;
+		                $scope.formValues.documentType = invoiceType;
+		                $scope.formValues.paymentDetails = null;
+		                $scope.formValues.invoiceDetails = null;
+		                $scope.formValues.sellerInvoiceNo = null;
+		                $scope.formValues.invoiceRateCurrency = null;
+		                $scope.formValues.receivedDate = null;
+		                $scope.formValues.manualDueDate = null;
+		                $scope.formValues.sellerInvoiceDate = null;
+		                $scope.formValues.sellerDueDate = null;
+		                $scope.formValues.approvedDate = null;
+		                $scope.formValues.invoiceRateCurrency = null;
+		                $scope.formValues.backOfficeComments = null;
+		                $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null
+		                $scope.formValues.invoiceSummary.estimatedAmountGrandTotal = null
+		                $scope.formValues.invoiceSummary.totalDifference = null
+		                $scope.formValues.status = null
+		                $scope.formValues.invoiceSummary.provisionalInvoiceNo = entity_id;
+		                
+		                $scope.formValues.paymentDetails = {};     
+		                $scope.formValues.paymentDetails.paidAmount = $scope.formValues.invoiceSummary.provisionalInvoiceAmount;
+		           
+		                if (tempformValues.invoiceSummary.invoiceAmountGrandTotal == null) {
+		                    invoiceAmountGrandTotal = 0
+		                } else {
+		                    invoiceAmountGrandTotal = 0
+		                }
+		                if (tempformValues.invoiceSummary.provisionalInvoiceAmount == null) {
+		                    provisionalInvoiceAmount = 0
+		                } else {
+		                    provisionalInvoiceAmount = 0
+		                }
+		                if (tempformValues.invoiceSummary.deductions == null) {
+		                    deductions = 0
+		                } else {
+		                    deductions = 0
+		                }
+		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
+		                $.each($scope.formValues.productDetails, function(k, v) {
+		                    v.id = 0;
+		                    v.invoiceQuantity = null;
+		                    v.invoiceRate = null;
+		                    v.invoiceRateCurrency = null;
+		                    v.invoiceAmount = null;
+		                    v.reconStatus = null;
+		                    v.amountInInvoice = null;
+		                })
+		                $.each($scope.formValues.costDetails, function(k, v) {
+		                    v.id = 0;
+		                })
+
+		                var deliveryProductIds = [];
+		                $.each($scope.formValues.productDetails, function(k, v) {
+		                    deliveryProductIds.push(v.deliveryProductId);
+		                });
+		            }
+		        });
+         	}
+         	if (localStorage.getItem("invoice_createFinalInvoiceFromEditPage")) {
+	            var invoiceType = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoiceFromEditPage"))).invoiceType;
+	            var entity_id = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoiceFromEditPage"))).entityId;
+                localStorage.removeItem('invoice_createFinalInvoiceFromEditPage');
+                Factory_Master.get_master_entity(entity_id, vm.screen_id, vm.app_id, function(callback2) {
+		            if (callback2) {
+		                
+		                tempformValues = callback2;
+		                $scope.formValues = tempformValues;
+		                if (formValues.documentType.internalName == "ProvisionalInvoice") {
+			                !$scope.formValues.paymentDate ? $scope.formValues.paymentDate = $scope.formValues.workingDueDate : '';
+		                }
+		                
+		                $scope.formValues.id = 0;
+		                $scope.formValues.invoiceDetails = null;
+		                $scope.formValues.documentType = invoiceType;
+		                $scope.formValues.paymentDetails = null;
+		                $scope.formValues.invoiceDetails = null;
+		                $scope.formValues.sellerInvoiceNo = null;
+		                $scope.formValues.invoiceRateCurrency = null;
+		                $scope.formValues.receivedDate = null;
+		                $scope.formValues.manualDueDate = null;
+		                $scope.formValues.sellerInvoiceDate = null;
+		                $scope.formValues.sellerDueDate = null;
+		                $scope.formValues.approvedDate = null;
+		                $scope.formValues.invoiceRateCurrency = null;
+		                $scope.formValues.backOfficeComments = null;
+		                $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null
+		                $scope.formValues.invoiceSummary.estimatedAmountGrandTotal = null
+		                $scope.formValues.invoiceSummary.totalDifference = null
+		                $scope.formValues.status = null
+		                $scope.formValues.invoiceSummary.provisionalInvoiceNo = null;
+		                
+		                $scope.formValues.paymentDetails = {};     
+		                $scope.formValues.paymentDetails.paidAmount = $scope.formValues.invoiceSummary.provisionalInvoiceAmount;
+		           
+		                if (tempformValues.invoiceSummary.invoiceAmountGrandTotal == null) {
+		                    invoiceAmountGrandTotal = 0
+		                } else {
+		                    invoiceAmountGrandTotal = 0
+		                }
+		                if (tempformValues.invoiceSummary.provisionalInvoiceAmount == null) {
+		                    provisionalInvoiceAmount = 0
+		                } else {
+		                    provisionalInvoiceAmount = 0
+		                }
+		                if (tempformValues.invoiceSummary.deductions == null) {
+		                    deductions = 0
+		                } else {
+		                    deductions = 0
+		                }
+		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
+		                $scope.formValues.costDetails = [];
+		                $scope.formValues.productDetails = [];
+		                $location.path('invoices/invoice/edit/');
+		            }
+		        });
+         	}
+
+         	if (localStorage.getItem("invoice_createInvoiceFromEdit")) {
+
+	            var data = angular.copy(JSON.parse(localStorage.getItem("invoice_createInvoiceFromEdit")));
+				$scope.formValues = data;
+                localStorage.removeItem('invoice_createInvoiceFromEdit');
+         	}
+
+
             vm.get_master_structure(screenChild);
             // console.log(screenChild);
             setTimeout(function() {

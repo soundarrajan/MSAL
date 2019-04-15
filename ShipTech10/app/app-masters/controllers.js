@@ -6568,94 +6568,20 @@ APP_MASTERS.controller("Controller_Master", [
       
 
 	    $scope.createFinalInvoice = function(fv) {
-	        screenLoader.showLoader();
 	        invoiceType = {
 	            "id": 2,
 	            "name": "FinalInvoice",
 	            "code": null
 	        }
-	        console.log(fv);
-	        
+	        data = {
+		        "invoiceType" : invoiceType,
+		        "entityId" : vm.entity_id
+	        }
+
 	        formValues = angular.element($('[name="CM.editInstance"]')).scope().formValues;
-	        Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, function(callback2) {
-	            if (callback2) {
-	                
-	                tempformValues = callback2;
-	                $rootScope.transportData = tempformValues;
-	                if (formValues.documentType.internalName == "ProvisionalInvoice") {
-		                // $rootScope.transportData.dueDate = null;
-		                // $rootScope.transportData.workingDueDate = null;
-		                !$rootScope.transportData.paymentDate ? $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate : '';
-	                }
-	                
-	                $rootScope.transportData.id = 0;
-	                $rootScope.transportData.invoiceDetails = null;
-	                $rootScope.transportData.documentType = invoiceType;
-	                $rootScope.transportData.paymentDetails = null;
-	                $rootScope.transportData.invoiceDetails = null;
-	                $rootScope.transportData.sellerInvoiceNo = null;
-	                $rootScope.transportData.invoiceRateCurrency = null;
-	                $rootScope.transportData.receivedDate = null;
-	                $rootScope.transportData.manualDueDate = null;
-	                $rootScope.transportData.sellerInvoiceDate = null;
-	                $rootScope.transportData.sellerDueDate = null;
-	                $rootScope.transportData.approvedDate = null;
-	                $rootScope.transportData.invoiceRateCurrency = null;
-	                $rootScope.transportData.backOfficeComments = null;
-	                $rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal = null
-	                $rootScope.transportData.invoiceSummary.estimatedAmountGrandTotal = null
-	                $rootScope.transportData.invoiceSummary.totalDifference = null
-	                $rootScope.transportData.status = null
-	                $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = vm.entity_id;
-	                
-	                $rootScope.transportData.paymentDetails = {};     
-	                $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
-	           
-	                if (tempformValues.invoiceSummary.invoiceAmountGrandTotal == null) {
-	                    invoiceAmountGrandTotal = 0
-	                } else {
-	                    invoiceAmountGrandTotal = 0
-	                }
-	                if (tempformValues.invoiceSummary.provisionalInvoiceAmount == null) {
-	                    provisionalInvoiceAmount = 0
-	                } else {
-	                    provisionalInvoiceAmount = 0
-	                }
-	                if (tempformValues.invoiceSummary.deductions == null) {
-	                    deductions = 0
-	                } else {
-	                    deductions = 0
-	                }
-	                $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
-	                $.each($rootScope.transportData.productDetails, function(k, v) {
-	                    v.id = 0;
-	                    v.invoiceQuantity = null;
-	                    // v.invoiceQuantityUom = null;
-	                    v.invoiceRate = null;
-	                    // v.invoiceRateUom = null;
-	                    v.invoiceRateCurrency = null;
-	                    v.invoiceAmount = null;
-	                    v.reconStatus = null;
-	                    v.amountInInvoice = null;
-	                })
-	                $.each($rootScope.transportData.costDetails, function(k, v) {
-	                    v.id = 0;
-	                })
+            localStorage.setItem("invoice_createFinalInvoice", angular.toJson(data));
+            window.open("/#/invoices/invoice/edit/", "_blank");
 
-	                var deliveryProductIds = [];
-	                $.each($rootScope.transportData.productDetails, function(k, v) {
-	                    deliveryProductIds.push(v.deliveryProductId);
-	                });
-
-	                var payload = {
-	                    "Payload": {
-	                        "DeliveryProductIds": deliveryProductIds,
-	                        "OrderId": $rootScope.transportData.orderDetails.order.id
-	                    }
-	                }
-	                $location.path('invoices/invoice/edit/');
-	            }
-	        });
 	    }
 
         // INVOICE ACTIONS IN HEADER
