@@ -1525,9 +1525,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_delivery_link = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.delivery) {
-                        var tpl = '  <a  href="#/delivery/delivery/edit/' + rowObject.delivery.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="blank" href="#/delivery/delivery/edit/' + rowObject.delivery.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                     } else {
-                        var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
                     return tpl;
                 }; // edit_order_link  - add edit lionk to column
@@ -1564,12 +1564,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.invoice) {
                       	if (rowObject.claimNo) {
-	                        var tpl = '  <a  href="#/invoices/claims/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+	                        var tpl = '  <a target="_blank" href="#/invoices/claims/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                       	} else {
-	                        var tpl = '  <a  href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+	                        var tpl = '  <a target="_blank" href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                       	}
                     } else {
-                        var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = '  <a target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
                     return tpl;
                 };
@@ -1647,7 +1647,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         id = rowObject.order.id;
                     }
                     if (cellValue) {
-                        var tpl = ' <a href="#/edit-order/' + id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="_blank" href="#/edit-order/' + id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;
@@ -1655,7 +1655,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_claim_link_from_claims = function(cellValue, options, rowObject) {
                     var tpl = "";
                     if (cellValue) {
-                        var tpl = ' <a href="#/claims/claim/edit/' + rowObject.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="_blank" href="#/claims/claim/edit/' + rowObject.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;
@@ -1663,9 +1663,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_delivery_link_from_claims = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (cellValue) {
-                        var tpl = '  <a  href="#/delivery/delivery/edit/' + cellValue + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = '  <a target="_blank" href="#/delivery/delivery/edit/' + cellValue + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                     } else {
-                        var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = '  <a target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
                     return tpl;
                 };
