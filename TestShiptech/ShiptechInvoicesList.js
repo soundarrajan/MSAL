@@ -25,49 +25,58 @@ class ShiptechInvoicesList {
 
 
 
-  async InvoicesList(testCase)
-  {    
-    var answer = {    
-      testSatus: 0,
-      testName: "InvoicesList"
-    }
+  async InvoicesList(testCase, commonTestData)
+  {
     this.tools.log("Loading Invoices List");
-    await this.tools.waitForLoader();
-    await this.tools.click('div.menu-toggler.sidebar-toggler');
-    this.tools.log("Open side menu");  
-    await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
-        
-    var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Invoices');    
-    result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/invoices/invoice')\"] > span", 'Invoices list');
-    var page = await this.tools.getPage("Invoices List", true);
-    this.shiptech.page = page;
+    testCase.result = true;
+    if(!await this.tools.navigate("invoices/invoice", "Invoices List"))
+    {      
+      testCase.result = false;
+      return testCase;
+    }
 
-    var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
-    this.tools.log("Current screen is " + labelTitle);
-    if(labelTitle.includes("Invoices List"))
-      this.tools.log("SUCCES!");
-    else
-      this.tools.log("FAIL!");
+    if(commonTestData.invoiceId)
+    {
+      await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
+      await this.tools.selectBySelector("#rule_0_condition", "Is equal");
+      await this.tools.setText("#filter0_Number", commonTestData.invoiceId);
+      await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
+      await this.tools.waitFor(2000);
+      await this.tools.waitForLoader();        
+      // await this.tools.click("#flat_invoices_app_invoice_list_invoice.id>a");
+      // await this.tools.setText("#filter0_Text", testCase.invoiceId);
+    }else if(commonTestData.orderId)
+    {
+      await this.tools.clickOnItemWait("a[data-sortcol='orderproductid']");
+      await this.tools.setText("#rule_0_condition", commonTestData.orderId);
+      await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
+      await this.tools.waitFor(2000);
+      await this.tools.waitForLoader();        
 
-    await this.tools.waitForLoader();    
-    await this.tools.page.waitFor(2000);
-
-    await this.tools.clickOnItemWait("a[data-sortcol='order_name']", "", "", "", 0);
-    await this.tools.setText("#filter0_Text", testCase.orderId);
-    await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');    
+      // await this.tools.click("#flat_invoices_app_invoice_list_order.name");
+      // await this.tools.setText("#filter0_Text", commonTestData.orderId);
+    }
+    else 
+      await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
     
 
-    var page = await this.tools.getPage("Invoices");
-    this.shiptech.page = page;
-
     if(testCase.action == "cancel")
-      await this.shiptechInvoice.CancelInvoice(testCase);
+    {
+      await this.shiptechInvoice.CancelInvoice(testCase, commonTestData);
+    }
+    else if(testCase.action == "finalAfterProvisional")
+    {
+      await this.tools.clickOnItemByText("span.formatter.edit_link", commonTestData.invoiceId);
+      await this.tools.waitForLoader();
+      var page = await this.tools.getPage("Invoice - " + commonTestData.orderId + " - " + commonTestData.vesselName, false, false);
+      await this.shiptechInvoice.CreateFinalInvoiceSearchProvisional(testCase);
+    }
     else
       this.tools.log("Invalid action for InvoicesList " + testCase.action);
 
     await this.tools.closeCurrentPage();
 
-    return answer;
+    return testCase;
   
   }
 

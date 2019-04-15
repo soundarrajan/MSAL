@@ -22,14 +22,14 @@ class ShiptechDeliveryNew {
 
 
 
-  async DeliveryNew(testCase)
+  async DeliveryNew(testCase, commonTestData)
   { 
       
     testCase.result = true;
     if(testCase.products.length <= 0)
       throw new Error("DeliveryNew invalid arguments");
     
-    this.tools.log("Order: " + testCase.orderId);
+    this.tools.log("Order: " + commonTestData.orderId);
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {
       testCase.result = false;
@@ -58,7 +58,7 @@ class ShiptechDeliveryNew {
       return testCase;
     }
 
-    await this.tools.setText("input[id='productProduct']", testCase.orderId);
+    await this.tools.setText("input[id='productProduct']", commonTestData.orderId);
     await this.tools.page.keyboard.press("Tab", {delay: 500});
     await this.tools.setText("input[id='bdnDate_dateinput']", testCase.bdnDate, 0, false);
     

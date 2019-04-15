@@ -99,6 +99,9 @@ class TestTools24 {
       }      
     }
    
+    await this.waitForLoader();
+    await this.page.waitFor(2000);
+
     return true;
   }
 
@@ -302,9 +305,12 @@ class TestTools24 {
         }
         catch(err)
         {
-          var errtext = JSON.stringify(err);
-          if(errtext.indexOf("Execution context was destroyed, most likely because of a navigation.") < 0)
-            this.log("#autoTestingGUIDerror " + errtext);
+          if(retries > 1)
+          {
+            var errtext = JSON.stringify(err);
+            if(errtext.indexOf("Execution context was destroyed, most likely because of a navigation.") < 0)
+              this.log("#autoTestingGUIDerror " + errtext);
+          }
           retries++;
 
           if(errGuid && errGuid.length > 0)
@@ -319,17 +325,28 @@ class TestTools24 {
                       
       }, 2000);
 
-      
-      await page.setRequestInterception(true);
 
+     //Error: Request is already handled!
+      //await page.setRequestInterception(true);
+
+      
+/*
       page.on("request", request => {
         const url = request.url();
         if(url && url.length > 0 && !url.endsWith(".css") &&  !url.endsWith(".woff") &&
           !url.endsWith(".png") && !url.endsWith(".jpg") && !url.endsWith(".gif") && !url.endsWith(".svg") && !url.endsWith(".js"))
               fs.appendFileSync(this.browserLogfileName, "request url:" + url + endOfLine);
 
-        request.continue();
+        try
+        {
+          request.continue();
+        }
+        catch(e)
+        {
+          //this.log(e.message); 
+        }
       });
+
 
       page.on("requestfailed", request => {
         const url = request.url();
@@ -343,6 +360,7 @@ class TestTools24 {
         if(status != 200)
           fs.appendFileSync(this.browserLogfileName, "response url:" + url + " http status:" + endOfLine);
       });
+      */
 
       page.on('console', msg => {
         if(!msg || !msg._text)
@@ -481,6 +499,9 @@ class TestTools24 {
         throw new Error("makeSelector() Not found " + attributeName + " " + textToSelectInAttr + " index: " + index + " elements with specified attr. Selector " + selector + " len=" + elementsSelector.length);
         
       elementSelector = selectedElements[index];
+
+      if(!elementSelector)
+        throw new Error("makeSelector() selected element is null " + elementSelector + " " + attributeName + " " + textToSelectInAttr + " idx=" + index);
 
       if(elementSelector.length <= 0)
         throw new Error("makeSelector() is empty having " + elementSelector + " " + attributeName + " " + textToSelectInAttr);
@@ -741,10 +762,7 @@ class TestTools24 {
 
           totalWaitTime += this.standardWait;
           if(totalWaitTime > this.timeout)
-          {
-              this.error("cannot find " + selector + " after " + totalWaitTime / 1000 + "sec. I give up!");
-              return;
-          }
+              throw new Error("cannot find " + selector + " after " + totalWaitTime / 1000 + "sec. I give up!");
 
           endMessage = new Date().getTime();
           if(endMessage - startMessage >= 1000)
@@ -992,6 +1010,8 @@ async countElements(selector, textToClick = "", itemPartType = "", attrName = ""
   var result = await this.page.evaluate(({selector, textToClick, itemPartType, attrName}) => {
     var elements = document.querySelectorAll(selector);
     var valueFound = 0;
+    if(!elements || elements.length <= 0)
+      return 0;
 
     for(var i=0; i<elements.length; i++)
     {

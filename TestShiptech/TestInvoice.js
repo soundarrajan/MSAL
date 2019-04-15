@@ -19,9 +19,8 @@ var shiptech = new ShiptechTools(tools);
   try
   {    
     var testCase = tools.ReadTestCase();
+    var commonTestData = {};
     tools.baseUrl = testCase.baseurl;
-    var testResult = null;
-    var orderId = "";
     await shiptech.ConnectDb(testCase.databaseIntegration, testCase.baseurl, true);    
     await validateTestCase(testCase);    
     await shiptech.login(testCase.starturl, testCase.username, testCase.password, testCase.headless);
@@ -31,6 +30,16 @@ var shiptech = new ShiptechTools(tools);
     var shiptechDeliveriesList = new ShiptechInvoicesDeliveriesList(tools, shiptech);  
     var shiptechTreasuryReport = new ShiptechInvoicesTreasuryReport(tools, shiptech);
     var shiptechInvoicesList =  new ShiptechInvoicesList(tools, shiptech);
+
+    process.on('unhandledRejection', (reason, p) => {
+      console.error(reason, 'Unhandled Rejection at Promise', p);
+    });
+    process.on('uncaughtException', err => {
+      console.error(err, 'Uncaught Exception thrown');
+      process.exit(1);
+    });
+
+
   }
   catch(error)
   {
@@ -63,38 +72,37 @@ var shiptech = new ShiptechTools(tools);
           tools.currentTextTitle = testCase.testTitle;
           var hasPassed = true;          
 
-          if(!currentTestCase.orderId || currentTestCase.orderId.length <= 0)
-            currentTestCase.orderId = orderId;
 
           if(currentTestCase.keyname == "order")
-            testResult = await shiptechOrder.CreateOrder(currentTestCase);
+              await shiptechOrder.CreateOrder(currentTestCase, commonTestData);
           if(currentTestCase.keyname == "delivery")
-            testResult = await shiptechDeliveryNew.DeliveryNew(currentTestCase);
+              await shiptechDeliveryNew.DeliveryNew(currentTestCase, commonTestData);
           if(currentTestCase.keyname == "invoice")
           {
-            if(currentTestCase.action == "new")
-              testResult = await shiptechDeliveriesList.InvoiceDeliveriesList(currentTestCase);
+            if(currentTestCase.action == "provisional" || currentTestCase.action == "final" || currentTestCase.action == "provisionalThenFinal" )
+              await shiptechDeliveriesList.InvoiceDeliveriesList(currentTestCase, commonTestData);
             else if(currentTestCase.action == "cancel")
-              testResult = await shiptechInvoicesList.InvoicesList(currentTestCase);
+              await shiptechInvoicesList.InvoicesList(currentTestCase, commonTestData);
+            else if(currentTestCase.action == "finalAfterProvisional")
+              await shiptechInvoicesList.InvoicesList(currentTestCase, commonTestData);
           }
           if(currentTestCase.keyname == "treasury")
-            testResult = await shiptechTreasuryReport.TreasuryReport(currentTestCase);
+              currentTestCase = await shiptechTreasuryReport.TreasuryReport(currentTestCase, commonTestData);
 
-          if(currentTestCase.orderId && currentTestCase.orderId.length > 0)
-          {
-            orderId = currentTestCase.orderId;                        
+          if(commonTestData.orderId && commonTestData.orderId.length > 0)
+          {                 
             tools.currentBusinessReferenceName = "Order Id";
-            tools.currentBusinessReferenceId = orderId;
+            tools.currentBusinessReferenceId = commonTestData.orderId;
           }
-
-          if(!testResult.result)
+          
+          if(!currentTestCase.result)
             hasPassed = false;
           
 
           if(hasPassed)
-            tools.createResultsReport(testCase.testTitle, i+1, "PASS", orderId);
+            tools.createResultsReport(testCase.testTitle, i+1, "PASS", commonTestData.orderId);
           else
-            tools.createResultsReport(testCase.testTitle, i+1, "FAIL", orderId);          
+            tools.createResultsReport(testCase.testTitle, i+1, "FAIL", commonTestData.orderId);
       }
       catch(error)
       {
@@ -106,7 +114,7 @@ var shiptech = new ShiptechTools(tools);
         if(error.stack)
           tools.error(error.stack);          
 
-        tools.createResultsReport(testCase.testTitle, i+1, "FAIL", orderId);
+        tools.createResultsReport(testCase.testTitle, i+1, "FAIL", commonTestData.orderId);
       }
     }
     await tools.Close();
@@ -178,3 +186,5 @@ var shiptech = new ShiptechTools(tools);
 
 
 
+
+  

@@ -49,7 +49,7 @@ class ShiptechInvoicesTreasuryReport {
 
 
 
-  async TreasuryReport(testCase)
+  async TreasuryReport(testCase, commonTestData)
   {
     testCase.result = true;
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
@@ -58,10 +58,13 @@ class ShiptechInvoicesTreasuryReport {
       return testCase;
     }
 
-    if(!testCase.orderId)
+    if(!commonTestData)
+      throw new Error("missing parameter");
+
+    if(!commonTestData.orderId)
       throw new Error("missing OrderId");
 
-    this.tools.log("OrderId=" + testCase.orderId);
+    this.tools.log("OrderId=" + commonTestData.orderId);
       /*//navigate using the menu
       await this.tools.click('div.menu-toggler.sidebar-toggler');
       this.tools.log("Open side menu");  
@@ -82,14 +85,8 @@ class ShiptechInvoicesTreasuryReport {
     }
 
     await this.clearFilters();
-
-    await this.tools.clickOnItemWait("a[data-sortcol='order_name']");
-    //await this.tools.clickBySelector("title="Order_Name");
-    await this.tools.setText("#filter0_Text", testCase.orderId);
-    await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
-    await this.tools.waitFor(2000);
-    await this.tools.waitForLoader();        
-
+    await this.shiptech.filterByOrderId(commonTestData.orderId);
+    
     await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
     await this.tools.clickOnItemByText("a[ng-click='columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])", 'Sort Ascending');
     await this.tools.waitFor(2000);
@@ -140,7 +137,7 @@ class ShiptechInvoicesTreasuryReport {
 
     if(reportCase.length != testCase.rows.length)
     {
-        this.tools.log("Treasury report contains " + reportCase.length + " rows but the test case has" + testCase.rows.length);
+        this.tools.log("Treasury report contains " + reportCase.length + " rows but the test case has " + testCase.rows.length);
         return false;
     }    
 

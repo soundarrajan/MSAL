@@ -25,10 +25,19 @@ class ShiptechInvoicesDeliveriesList {
 
 
 
-  async InvoiceDeliveriesList(testCase)
+  async InvoiceDeliveriesList(testCase, commonTestData)
   {    
     testCase.result = true;
-    this.tools.log("Invoice, " + testCase.invoiceType + " OrderId=" + testCase.orderId);
+
+    if(!commonTestData)
+      throw new Error("Missing parameter");
+
+    if(testCase.action == "provisional" || testCase.action == "provisionalThenFinal")
+      testCase.invoiceType = "Provisional Invoice";
+    else if(testCase.action == "final")
+      testCase.invoiceType = "Final Invoice";    
+
+    this.tools.log("Invoice, " + testCase.invoiceType + " OrderId=" + commonTestData.orderId);
 
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {
@@ -65,25 +74,53 @@ class ShiptechInvoicesDeliveriesList {
 
     await this.tools.waitForLoader();    
     await this.tools.page.waitFor(2000);
+   
+    await this.shiptech.filterByOrderId(commonTestData.orderId);
 
-    await this.tools.clickOnItemWait("a[data-sortcol='order_name']", "", "", "", 0);
-    await this.tools.setText("#filter0_Text", testCase.orderId);
-    await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');    
     //checkbox
-    await this.tools.clickBySelector("#jqg_flat_invoices_app_deliveries_list_1");    
-    await this.tools.waitFor('#newInvoiceType');
-    this.tools.log("Create " + testCase.invoiceType);
+    //check the row matching the products
+    var productData = null;
+    if(testCase.provisionalData)
+      productData = testCase.provisionalData;
+    else 
+      productData = testCase.finalData;
+
+    //select the rows having the specified products
+    var rowsInFocus = [];
+    for (var i=0; i<productData.products.length; i++)
+    {
+      var rowIdx = await this.shiptech.findRowIdxContainingText("#flat_invoices_app_deliveries_list", productData.products[i].name);
+      if(rowIdx < 0)
+        throw new Error("Cannot find product " + productData.products[i].name + " in deliveries list.");
+        
+      rowsInFocus.push(rowIdx);
+      await this.tools.click("#jqg_flat_invoices_app_deliveries_list_" + rowIdx);
+      break;//all the checkboxes will automaticaly check
+      //now all the rows should be selected
+    }
+
+    //unselect all other rows
+    var rowCount = await this.shiptech.findTableRowsCount("#flat_invoices_app_deliveries_list");
+    for(var i=1; i<rowCount; i++)
+    {
+      if(rowsInFocus.indexOf(i) < 0)
+        await this.tools.click("#jqg_flat_invoices_app_deliveries_list_" + i);
+    }
+    
+    if(testCase.action == "provisional")
+      testCase.invoiceType = "Provisional Invoice";
+    else if(testCase.action == "final")
+      testCase.invoiceType = "Final Invoice";
+
+    this.tools.log("Create " + testCase.invoiceType);    
     await this.tools.selectBySelector("#newInvoiceType", testCase.invoiceType);    
     
     await this.tools.clickOnItemByText("a[ng-click='createInvoiceFromDelivery()']", 'Create Invoice');
 
     var page = await this.tools.getPage("Invoices");
     this.shiptech.page = page;
-
-    if(testCase.action == "new")
-      await this.shiptechInvoice.CreateInvoice(testCase);
-    else
-      this.tools.log("Invalid action for InvoicesList " + testCase.action);
+    
+    await this.shiptechInvoice.CreateInvoice(testCase, commonTestData);
 
     await this.tools.closeCurrentPage();
     

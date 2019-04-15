@@ -195,7 +195,7 @@ async getRandomVessel()
   var records = await db.read(sql);
 
   if(!records || records.length <= 0)
-    throw  new Error("Cannot find any vessel");
+    throw  new Error("Cannot find any vessel " + sql);
   
   //choose a random record
   var idx = Math.floor(Math.random() * records.length);
@@ -406,7 +406,86 @@ async getDateFormat()
 
 
 
+async filterByOrderId(orderId)
+{
+  await this.tools.clickOnItemWait("a[data-sortcol='order_name']");
+  await this.tools.setText("#filter0_Text", orderId);
+  await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
+  await this.tools.waitFor(2000);
+  await this.tools.waitForLoader();
+}
 
+
+
+async filterByProductName(product)
+{
+  await this.tools.clickOnItemWait("a[data-sortcol='product_name']");
+  await this.tools.setText("#filter0_Text", product);
+  await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
+  await this.tools.waitFor(2000);
+  await this.tools.waitForLoader();
+}
+
+
+
+
+async findRowIdxContainingText(selector, text)
+{
+
+  var result = await this.tools.page.evaluate(({selector, text}) => {
+    var elements = document.querySelectorAll(selector);    
+    if(elements.length != 1)
+      return -1;
+    
+    var element = elements[0];
+    if(element == null)
+      return -2;
+    
+    var rows = element.getElementsByTagName("tr");
+    if(rows <= 0)
+      rows = element.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    if(!rows || rows.length <= 0)
+      return -3;
+
+    for(var i=0; i<rows.length; i++)
+    {
+      if(rows[i].innerHTML.indexOf(text) >= 0)
+        return i;
+    }
+
+    return -4;
+
+  }, {selector, text});
+
+  return result;
+}
+
+
+async findTableRowsCount(selector)
+{
+  
+  if(!this.tools.isElementVisible(selector))
+    throw new Error(selector + " not visible.");
+
+  var result = await this.tools.page.evaluate(({selector}) => {
+    var elements = document.querySelectorAll(selector);    
+    if(elements.length != 1)
+      return -1;
+    
+    var element = elements[0];
+    if(element == null)
+      return -1;
+
+    var rows = element.getElementsByTagName("tr").length;
+    if(rows <= 0)
+      rows = element.getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+
+    return rows;
+  }, {selector});
+
+  return result;
+}
 
 
 }

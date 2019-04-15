@@ -51,7 +51,7 @@
       },      
       {
         "keyname": "invoice",
-        "action": "new",
+        "action": "provisional",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Provisional Invoice",
@@ -61,7 +61,6 @@
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "provisionalData" :{
               "products": [
@@ -102,17 +101,16 @@
     },       
       {
         "keyname": "invoice",
-        "action": "new",
+        "action": "finalAfterProvisional",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Final Invoice",
-        "invoiceStatusAfterSave": "New",
-        "invoiceStatusAfterSubmit": "New",
-        "invoiceStatusAfterApprove": "Approved",
+        "invoiceStatusAfterSave": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+        "invoiceStatusAfterApprove": ["Approved"],
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "finalData": {
           "products": [

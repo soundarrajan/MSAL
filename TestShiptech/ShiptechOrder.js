@@ -22,19 +22,35 @@ class ShiptechOrder {
   
 
 
-  async CreateOrder(testCase)
+  async CreateOrder(testCase, commonTestData)
   {
         testCase.result = true;
         if(!testCase.vesselName)
+        {
           testCase.vesselName = await this.shiptech.getRandomVessel();
+          commonTestData.vesselName = testCase.vesselName;
+        }
         if(!testCase.carrier)
+        {
           testCase.carrier = await this.shiptech.getRandomCompany();
+          commonTestData.carrier = testCase.carrier;
+        }
         if(!testCase.port)
+        {
           testCase.port =  await  this.shiptech.getRandomPort();
+          commonTestData.port = testCase.port;
+        }
+          
         if(!testCase.seller)
+        {
           testCase.seller = await this.shiptech.getRandomSeller();
+          commonTestData.seller = testCase.seller;
+        }
         if(!testCase.paymentCompany)
+        {
           testCase.paymentCompany = await this.shiptech.getRandomCompany();
+          commonTestData.paymentCompany = testCase.paymentCompany;
+        }
                         
         if(await this.shiptech.validateDate(testCase.eta) != true)
         {
@@ -95,9 +111,11 @@ class ShiptechOrder {
           if(testCase.products[i].name)
             await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
           if(testCase.products[i].quantity)
+          {
             await this.tools.setText('input[name="minQuantity"]', testCase.products[i].quantity, i);
-          if(testCase.products[i].quantity)
             await this.tools.setText('input[name="maxQuantity"]', testCase.products[i].quantity, i);
+            await this.tools.setText('input[name="confirmedQuantity"]', testCase.products[i].quantity, i);
+          }
           if(testCase.products[i].unitPrice)
             await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
         }
@@ -112,7 +130,7 @@ class ShiptechOrder {
           //delete the cost
           if(countbuttons > testCase.costs.length)
           {
-            await this.tools.selectBySelector("#additional_cost_additional_cost_0", "TAX");
+            await this.tools.selectFirstOptionBySelector("#additional_cost_additional_cost_0");
             await this.tools.click("#addCost_remRow_0");
           }
           else if(countbuttons < testCase.costs.length)
@@ -121,7 +139,7 @@ class ShiptechOrder {
           countbuttons = await this.tools.countElements('span', '$ctrl.deleteAdditionalCost(additionalCost)', "attr", 'ng-click');
           limit--;
 
-        }while(countbuttons != testCase.costs.length && limit > 0);
+        }while((countbuttons != testCase.costs.length && limit > 0  && countbuttons > 1));
         
         for(var i=0; i<testCase.costs.length; i++)
         {          
@@ -134,7 +152,7 @@ class ShiptechOrder {
         
         await this.tools.clickOnItemByText('a.btn', 'Save');
         await this.tools.waitForLoader("Save Order");
-        var labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");        
+        var labelStatus = await this.tools.getText("#entity-status-1");        
         this.tools.log("Order status is " + labelStatus.trim());
         if(!labelStatus.includes("Stemmed"))
         {
@@ -166,22 +184,16 @@ class ShiptechOrder {
         await this.tools.waitForLoader("Confirm order");
                 
 
-        labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
+        labelStatus = await this.tools.getText("#entity-status-1");
         this.tools.log("Order status is " + labelStatus.trim());
 
-        testCase.orderId = await this.readOrderId();
-        if(testCase.delivery)
-          testCase.delivery.orderId = testCase.orderId;
-        if(testCase.invoice)
-          testCase.invoice.orderId = testCase.orderId;
-        if(testCase.treasury)
-          testCase.treasury.orderId = testCase.orderId;
-
-        this.tools.log("OrderId=" + testCase.orderId);
+        commonTestData.orderId = await this.readOrderId();
+        
+        this.tools.log("OrderId=" + commonTestData.orderId);
          
         if(!labelStatus.includes("Confirmed"))          
         {
-          this.tools.log("Cannot confirm the order " + testCase.orderId);
+          this.tools.log("Cannot confirm the order " + commonTestData.orderId);
           testCase.result = false;
         }
 

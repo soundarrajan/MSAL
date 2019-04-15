@@ -16,6 +16,7 @@
       {
         "keyname": "order",
         "url": "new-order",
+        "output": "orderId",
         "pageTitle": "New Order",
         "eta": 2,
         "orderId": "",
@@ -34,6 +35,7 @@
       },
       {
         "keyname": "delivery",
+        "input": "orderId",
         "url": "delivery/delivery/edit/",
         "pageTitle": "New Delivery",
         "orderId": "",
@@ -51,17 +53,18 @@
       },      
       {
         "keyname": "invoice",
-        "action": "new",
+        "input": "orderId",
+        "action": "provisional",
         "url": "invoices/deliveries",
+        "output": "provisionalInvoiceProd1",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Provisional Invoice",
-        "invoiceStatusAfterSave": "New",
-        "invoiceStatusAfterSubmit": "New",
-        "invoiceStatusAfterApprove": "Approved",
+        "invoiceStatusAfterSave": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+        "invoiceStatusAfterApprove": ["Approved"],
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "provisionalData" :{
               "products": [
@@ -75,19 +78,19 @@
       },
       {
         "keyname": "invoice",
-        "action": "new",
+        "input": "orderId",
+        "action": "provisionalThenFinal",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
-        "invoiceType": "Final Invoice",
-        "invoiceStatusAfterSave": "New",
-        "invoiceStatusAfterSubmit": "New",
-        "invoiceStatusAfterApprove": "Approved",
+        "invoiceType": "Provisional Invoice",
+        "invoiceStatusAfterSave": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+        "invoiceStatusAfterApprove": ["Approved"],
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
-        "finalData" :{
+        "provisionalData" :{
               "products": [
                 {
                   "name": "DMA 0.1%",
@@ -95,10 +98,29 @@
                   "rate": 415
                 }
               ]
-            }        
+            },
+        "finalData" :{
+          "products": [
+            {
+              "name": "DMA 0.1%",
+              "quantity": 600,
+              "rate": 415
+            }
+          ],
+          "costs": [
+            {
+              "name": "BARGING",
+              "type": "Flat",            
+              "applicableFor": "All",
+              "quantity": 600,
+              "unitPrice": 650
+            }
+          ]
+        } 
       },
       {
         "keyname": "treasury",
+        "input": "orderId",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
@@ -117,17 +139,17 @@
     },       
       {
         "keyname": "invoice",
-        "action": "new",
+        "input": "provisionalInvoiceProd1",
+        "action": "finalAfterProvisional",
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Final Invoice",
-        "invoiceStatusAfterSave": "New",
-        "invoiceStatusAfterSubmit": "New",
-        "invoiceStatusAfterApprove": "Approved",
+        "invoiceStatusAfterSave": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+        "invoiceStatusAfterApprove": ["Approved"],
         "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
-		    "createFinalFromProvisional": false,
         "testOrderStatus": false,
         "finalData": {
           "products": [
@@ -136,20 +158,12 @@
               "quantity": 1499,
               "rate": 373.6484
             }
-          ],
-          "costs": [
-            {
-              "name": "BARGING",
-              "type": "Flat",            
-              "applicableFor": "All",
-              "quantity": 600,
-              "unitPrice": 650
-            }
           ]
         }
       },
       {
         "keyname": "treasury",
+        "input": "orderId",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
         "orderId": "",
@@ -158,6 +172,11 @@
             "Calculated Amount": "569620",
             "Invoice Amount": "569620",
             "Invoice Type": "Provisional Invoice"            
+          },
+          {
+            "Invoice Amount": "249650",
+            "Calculated Amount": "249650",
+            "Invoice Type": "Final Invoice"
           },
           {
             "Calculated Amount": "-9521",
