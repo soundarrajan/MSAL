@@ -213,7 +213,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                
 		                tempformValues = callback2;
 		                $scope.formValues = tempformValues;
-		                if (formValues.documentType.internalName == "ProvisionalInvoice") {
+		                if ($scope.formValues.documentType.internalName == "ProvisionalInvoice") {
 			                !$scope.formValues.paymentDate ? $scope.formValues.paymentDate = $scope.formValues.workingDueDate : '';
 		                }
 		                
@@ -285,7 +285,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                
 		                tempformValues = callback2;
 		                $scope.formValues = tempformValues;
-		                if (formValues.documentType.internalName == "ProvisionalInvoice") {
+		                if ($scope.formValues.documentType.internalName == "ProvisionalInvoice") {
 			                !$scope.formValues.paymentDate ? $scope.formValues.paymentDate = $scope.formValues.workingDueDate : '';
 		                }
 		                
