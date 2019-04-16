@@ -774,7 +774,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
             });
         };
-        $(document).click(function(e) {
+        $(document).on("mousedown", function(e) {
             // check that your clicked
             // element has no id=info
             // and is not child of info
