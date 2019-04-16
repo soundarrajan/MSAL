@@ -20,11 +20,13 @@ var shiptech = new ShiptechTools(tools);
   {    
     var testCase = tools.ReadTestCase();
     var commonTestData = {};
+    var orderId = "";
     tools.baseUrl = testCase.baseurl;
     await shiptech.ConnectDb(testCase.databaseIntegration, testCase.baseurl, true);    
     await validateTestCase(testCase);    
     await shiptech.login(testCase.starturl, testCase.username, testCase.password, testCase.headless);
 
+  
     var shiptechOrder = new ShiptechOrder(tools, shiptech);
     var shiptechDeliveryNew = new ShiptechDeliveryNew(tools, shiptech);
     var shiptechDeliveriesList = new ShiptechInvoicesDeliveriesList(tools, shiptech);  
@@ -74,7 +76,10 @@ var shiptech = new ShiptechTools(tools);
 
 
           if(currentTestCase.keyname == "order")
+          {
               await shiptechOrder.CreateOrder(currentTestCase, commonTestData);
+              orderId = commonTestData[currentTestCase.output.orderId];
+          }
           if(currentTestCase.keyname == "delivery")
               await shiptechDeliveryNew.DeliveryNew(currentTestCase, commonTestData);
           if(currentTestCase.keyname == "invoice")
@@ -88,21 +93,14 @@ var shiptech = new ShiptechTools(tools);
           }
           if(currentTestCase.keyname == "treasury")
               currentTestCase = await shiptechTreasuryReport.TreasuryReport(currentTestCase, commonTestData);
-
-          if(commonTestData.orderId && commonTestData.orderId.length > 0)
-          {                 
-            tools.currentBusinessReferenceName = "Order Id";
-            tools.currentBusinessReferenceId = commonTestData.orderId;
-          }
-          
+         
           if(!currentTestCase.result)
             hasPassed = false;
           
-
           if(hasPassed)
-            tools.createResultsReport(testCase.testTitle, i+1, "PASS", commonTestData.orderId);
+            tools.createResultsReport(testCase.testTitle, i+1, "PASS", orderId);
           else
-            tools.createResultsReport(testCase.testTitle, i+1, "FAIL", commonTestData.orderId);
+            tools.createResultsReport(testCase.testTitle, i+1, "FAIL", orderId);
       }
       catch(error)
       {
@@ -114,7 +112,7 @@ var shiptech = new ShiptechTools(tools);
         if(error.stack)
           tools.error(error.stack);          
 
-        tools.createResultsReport(testCase.testTitle, i+1, "FAIL", commonTestData.orderId);
+        tools.createResultsReport(testCase.testTitle, i+1, "FAIL", orderId);
       }
     }
     await tools.Close();

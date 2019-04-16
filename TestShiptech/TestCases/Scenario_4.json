@@ -15,10 +15,8 @@
     "testCases": [
         {
           "keyname": "order",
-          "url": "new-order",
-          "pageTitle": "New Order",
+          "output": {"orderId": "order1Id"},
           "eta": 2,
-          "orderId": "",
           "products": [
             {
               "name": "RMG 500 3.5%",
@@ -29,9 +27,7 @@
         },
         {
           "keyname": "delivery",
-          "url": "delivery/delivery/edit/",
-          "pageTitle": "New Delivery",
-          "orderId": "",
+          "input": {"orderId":"order1Id"},
           "bdnDate": 1,
           "products": [
             {
@@ -42,9 +38,6 @@
         },     
         {
           "keyname": "treasury",
-          "url": "invoices/treasuryreport",
-          "pageTitle": "Treasury Report",
-          "orderId": "",
           "rows": [ 
             {
               "Calculated Amount": "568500",
@@ -56,13 +49,14 @@
       {
         "keyname": "invoice", 
         "action": "provisional",
+        "input": {"orderId":"order1Id"},
+        "output": {"invoiceId": "invoice1Id"},
         "url": "invoices/deliveries",
         "pageTitle": "Transactions to be Invoiced List",
         "invoiceType": "Provisional Invoice",
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy"],
         "invoiceStatusAfterApprove": ["Approved"],
-        "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
@@ -88,9 +82,7 @@
       },
       {
         "keyname": "treasury",
-        "url": "invoices/treasuryreport",
-        "pageTitle": "Treasury Report",
-        "orderId": "",
+        "input": {"orderId":"order1Id"},
         "rows": [ 
           {
             "Calculated Amount": "580745",
@@ -102,12 +94,10 @@
       {
         "keyname": "invoice",
         "action": "finalAfterProvisional",
-        "url": "invoices/deliveries",
-        "pageTitle": "Transactions to be Invoiced List",        
+        "input": {"orderId": "order1Id", "invoiceId":"invoice1Id"},
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy"],
         "invoiceStatusAfterApprove": ["Approved"],
-        "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
@@ -124,9 +114,7 @@
       },
       {
         "keyname": "treasury",
-        "url": "invoices/treasuryreport",
-        "pageTitle": "Treasury Report",
-        "orderId": "",
+        "input": {"orderId":"order1Id"},
         "rows": [ 
           {
             "Calculated Amount": "580745",

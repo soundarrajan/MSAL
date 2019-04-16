@@ -29,26 +29,55 @@ class ShiptechInvoicesList {
   {
     this.tools.log("Loading Invoices List");
     testCase.result = true;
-    if(!await this.tools.navigate("invoices/invoice", "Invoices List"))
+    testCase.url = "invoices/deliveries";
+    testCase.pageTitle = "Transactions to be Invoiced List";
+
+    if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {      
       testCase.result = false;
       return testCase;
     }
 
-    if(commonTestData.invoiceId)
-    {
+    testCase.invoiceId = null;
+    
+    if(!testCase.input.orderId)
+        throw new Error("orderId not defined in input parameters");
+
+    testCase.orderId = commonTestData[testCase.input.orderId];
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      throw new Error("No orderId found in parameters to Invoice List for action " + testCase.action);
+
+
+    if(testCase.action == "finalAfterProvisional")
+    {//search the invoice id
+      
+      if(!testCase.input.invoiceId)
+        throw new Error("invoiceId not defined in input parameters");
+
+      testCase.invoiceId = commonTestData[testCase.input.invoiceId];
+      if(!testCase.invoiceId || testCase.invoiceId.length <= 0)
+        throw new Error("No invoiceId found in parameters to Invoice List for action " + testCase.action);
+
       await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
       await this.tools.selectBySelector("#rule_0_condition", "Is equal");
-      await this.tools.setText("#filter0_Number", commonTestData.invoiceId);
+      await this.tools.setText("#filter0_Number", testCase.invoiceId);
       await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
       await this.tools.waitFor(2000);
-      await this.tools.waitForLoader();        
+      await this.tools.waitForLoader();
       // await this.tools.click("#flat_invoices_app_invoice_list_invoice.id>a");
       // await this.tools.setText("#filter0_Text", testCase.invoiceId);
-    }else if(commonTestData.orderId)
-    {
+
+      await this.tools.clickOnItemByText("span.formatter.edit_link", testCase.invoiceId);
+      await this.tools.waitForLoader();
+      await this.tools.getPage("Invoice - " + testCase.orderId + " - " + commonTestData.vesselName, false, false);
+      await this.shiptechInvoice.CreateFinalInvoiceSearchProvisional(testCase);
+
+    }
+    else if(testCase.action == "provisional" || testCase.action == "final" || testCase.action == "provisionalThenFinal")
+    {//search the order
+      
       await this.tools.clickOnItemWait("a[data-sortcol='orderproductid']");
-      await this.tools.setText("#rule_0_condition", commonTestData.orderId);
+      await this.tools.setText("#rule_0_condition", testCase.orderId);
       await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
       await this.tools.waitFor(2000);
       await this.tools.waitForLoader();        
@@ -56,23 +85,14 @@ class ShiptechInvoicesList {
       // await this.tools.click("#flat_invoices_app_invoice_list_order.name");
       // await this.tools.setText("#filter0_Text", commonTestData.orderId);
     }
-    else 
-      await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
-    
-
-    if(testCase.action == "cancel")
+    else if(testCase.action == "cancel")
     {
       await this.shiptechInvoice.CancelInvoice(testCase, commonTestData);
     }
-    else if(testCase.action == "finalAfterProvisional")
-    {
-      await this.tools.clickOnItemByText("span.formatter.edit_link", commonTestData.invoiceId);
-      await this.tools.waitForLoader();
-      var page = await this.tools.getPage("Invoice - " + commonTestData.orderId + " - " + commonTestData.vesselName, false, false);
-      await this.shiptechInvoice.CreateFinalInvoiceSearchProvisional(testCase);
-    }
     else
       this.tools.log("Invalid action for InvoicesList " + testCase.action);
+
+    //await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
 
     await this.tools.closeCurrentPage();
 

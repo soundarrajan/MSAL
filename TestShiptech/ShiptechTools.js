@@ -33,6 +33,8 @@ class ShiptechTools {
     this.tools.addPage(page);
 
     this.tools.log("Login with " + username);
+    
+    await this.tools.click('#otherTileText');  
     //username
     await this.tools.setText("#i0116", username);
     //Next
@@ -43,7 +45,8 @@ class ShiptechTools {
     await this.tools.waitFor('#idSIButton9');  
     await this.tools.click('input[type="submit"]'); 
     //No, don't remember the password
-    await this.tools.click('#idBtn_Back');
+    if(await this.tools.isElementVisible('#idBtn_Back'))
+      await this.tools.click('#idBtn_Back');
     return page;
   }
 

@@ -15,10 +15,8 @@
     "testCases": [
       {
         "keyname": "order",
-        "url": "new-order",
-        "pageTitle": "New Order",
+        "output": {"orderId": "order1Id"},
         "eta": 2,
-        "orderId": "",
         "products": [
           {
             "name": "RMG 500 3.5%",
@@ -59,7 +57,6 @@
         "keyname": "treasury",
         "url": "invoices/treasuryreport",
         "pageTitle": "Treasury Report",
-        "orderId": "",
         "rows": [ 
           {
             "Invoice Amount": "",
@@ -70,9 +67,7 @@
       },
       {
         "keyname": "delivery",
-        "url": "delivery/delivery/edit/",
-        "pageTitle": "New Delivery",
-        "orderId": "",
+        "input": {"orderId":"order1Id"},
         "bdnDate": 1,
         "products": [
           {
@@ -87,9 +82,7 @@
       },
       {
         "keyname": "treasury",
-        "url": "invoices/treasuryreport",
-        "pageTitle": "Treasury Report",
-        "orderId": "",
+        "input": {"orderId":"order1Id"},
         "rows": [ 
           {
             "Invoice Amount": "",
@@ -100,14 +93,12 @@
       },      
       {
         "keyname": "invoice",
-        "action": "finalAfterProvisional",
-        "url": "invoices/deliveries",
-        "pageTitle": "Transactions to be Invoiced List",
+        "action": "provisionalThenFinal",
+        "input": {"orderId":"order1Id"},        
         "invoiceType": "Final Invoice",
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy"],
         "invoiceStatusAfterApprove": ["Approved"],
-        "orderId": "",
         "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
@@ -151,9 +142,7 @@
       },
       {
         "keyname": "treasury",
-        "url": "invoices/treasuryreport",
-        "pageTitle": "Treasury Report",
-        "orderId": "",
+        "input": {"orderId":"order1Id"},
         "rows": [ 
           {
             "Invoice Amount": "375533",

@@ -28,6 +28,8 @@ class ShiptechInvoicesDeliveriesList {
   async InvoiceDeliveriesList(testCase, commonTestData)
   {    
     testCase.result = true;
+    testCase.url = "invoices/deliveries";
+    testCase.pageTitle = "Transactions to be Invoiced List";
 
     if(!commonTestData)
       throw new Error("Missing parameter");
@@ -37,7 +39,17 @@ class ShiptechInvoicesDeliveriesList {
     else if(testCase.action == "final")
       testCase.invoiceType = "Final Invoice";    
 
-    this.tools.log("Invoice, " + testCase.invoiceType + " OrderId=" + commonTestData.orderId);
+    if(!testCase.input.orderId)
+        throw new Error("orderId not defined in input parameters");
+
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      testCase.orderId = commonTestData[testCase.input.orderId];
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+        throw new Error("Missing orderId from parameters in InvoiceDeliveriesList()");
+
+    this.tools.log("Invoice, " + testCase.invoiceType + " OrderId=" + testCase.orderId);
 
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {
@@ -75,7 +87,7 @@ class ShiptechInvoicesDeliveriesList {
     await this.tools.waitForLoader();    
     await this.tools.page.waitFor(2000);
    
-    await this.shiptech.filterByOrderId(commonTestData.orderId);
+    await this.shiptech.filterByOrderId(testCase.orderId);
 
     //checkbox
     //check the row matching the products

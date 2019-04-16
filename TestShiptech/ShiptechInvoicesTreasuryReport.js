@@ -51,6 +51,10 @@ class ShiptechInvoicesTreasuryReport {
 
   async TreasuryReport(testCase, commonTestData)
   {
+    testCase.url = "invoices/treasuryreport";
+    if(!testCase.pageTitle)
+      testCase.pageTitle = "Treasury Report";
+
     testCase.result = true;
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {      
@@ -59,12 +63,21 @@ class ShiptechInvoicesTreasuryReport {
     }
 
     if(!commonTestData)
-      throw new Error("missing parameter");
+      throw new Error("missing parameter commonTestData");
 
-    if(!commonTestData.orderId)
-      throw new Error("missing OrderId");
+    if(!testCase.input)
+    throw new Error("Treasury Report no input parameters.");
+    
+    if(!testCase.input.orderId)
+      throw new Error("orderId not defined in input parameters");
 
-    this.tools.log("OrderId=" + commonTestData.orderId);
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      testCase.orderId = commonTestData[testCase.input.orderId];
+
+    if(!testCase.orderId)
+      throw new Error("missing OrderId parameter from TreasuryReport");
+
+    this.tools.log("OrderId=" + testCase.orderId);
       /*//navigate using the menu
       await this.tools.click('div.menu-toggler.sidebar-toggler');
       this.tools.log("Open side menu");  
@@ -85,7 +98,7 @@ class ShiptechInvoicesTreasuryReport {
     }
 
     await this.clearFilters();
-    await this.shiptech.filterByOrderId(commonTestData.orderId);
+    await this.shiptech.filterByOrderId(testCase.orderId);
     
     await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
     await this.tools.clickOnItemByText("a[ng-click='columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])", 'Sort Ascending');
@@ -121,9 +134,8 @@ class ShiptechInvoicesTreasuryReport {
       this.tools.log("Treasury report test FAILED!");
       testCase.result = false;
     }
-
-    //this.tools.log(JSON.stringify(jsonArray));
-    //await this.tools.closeCurrentPage();
+    
+    await this.tools.closeCurrentPage();    
     return testCase;
   
   }

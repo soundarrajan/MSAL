@@ -25,6 +25,10 @@ class ShiptechOrder {
   async CreateOrder(testCase, commonTestData)
   {
         testCase.result = true;
+        testCase.url = "new-order";
+        if(!testCase.pageTitle)
+          testCase.pageTitle = "New Order";
+          
         if(!testCase.vesselName)
         {
           testCase.vesselName = await this.shiptech.getRandomVessel();
@@ -80,8 +84,6 @@ class ShiptechOrder {
           var page = await this.tools.getPage("New Order", true);
           this.shiptech.page = page;
           //*/
-
-        
                 
         await this.shiptech.selectWithText("input[name='Vessel']", testCase.vesselName);
         await this.shiptech.selectWithText("input[id='id_carrierCompany']", testCase.carrier);
@@ -187,7 +189,8 @@ class ShiptechOrder {
         labelStatus = await this.tools.getText("#entity-status-1");
         this.tools.log("Order status is " + labelStatus.trim());
 
-        commonTestData.orderId = await this.readOrderId();
+        if(testCase.output && testCase.output.orderId)
+          commonTestData[testCase.output.orderId] = await this.readOrderId();
         
         this.tools.log("OrderId=" + commonTestData.orderId);
          

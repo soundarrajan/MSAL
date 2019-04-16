@@ -128,6 +128,15 @@ class ShiptechInvoice {
       }
     }    
 
+    if(!testCase.input.orderId)
+      throw new Error("orderId not defined in input parameters");
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      testCase.orderId = commonTestData[testCase.input.orderId];
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+        throw new Error("Missing orderId from parameters in InvoiceDeliveriesList()");
+
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
     await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
     if(testCase.paymentDate)
@@ -145,7 +154,7 @@ class ShiptechInvoice {
     if(testCase.action != "final" && testCase.finalData && testCase.finalData.costs)
        await this.insertCosts(testCase.finalData.costs);
       
-    await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');    
+    await this.tools.clickOnItemByText('#header_action_save', 'Save');    
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave, "invoiceStatusAfterSave");
     
     if(testCase.invoiceStatusAfterSubmit)
@@ -180,7 +189,7 @@ class ShiptechInvoice {
 
     if(testCase.testOrderStatus)
     {
-        await this.tools.clickOnItemByText("a[ng-href='#/edit-order/" + commonTestData[testCase.input] + "']", 'Order');
+        await this.tools.clickOnItemByText("a[ng-href='#/edit-order/" + testCase.orderId + "']", 'Order');
         var labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
         this.tools.log("Order status is " + labelStatus);                
         labelStatus = labelStatus.replace(/[^0-9a-z]/gi, '').trim();
@@ -195,8 +204,10 @@ class ShiptechInvoice {
       await this.CreateFinalInvoiceFromProvizional(testCase);      
     }
 
-    commonTestData["provisionalInvoiceProd1"] = await this.readInvoiceNumber();
+    if(testCase.output && testCase.output.invoiceId)
+      commonTestData[testCase.output.invoiceId] = await this.readInvoiceNumber();
     
+    await this.tools.closeCurrentPage();
     return testCase;
   }
 
@@ -297,11 +308,11 @@ async readInvoiceNumber()
 
     await this.insertProducts(testCase.finalData.products);
     
-    await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');
+    await this.tools.clickOnItemByText('#header_action_save', 'Save');
     await this.tools.waitForLoader();      
     await this.tools.click("#btn_ApproveInvoice");
     await this.tools.waitForLoader();
-    await this.tools.waitForLoader();
+    await this.tools.waitForLoader();    
 
   }
 
@@ -313,9 +324,11 @@ async readInvoiceNumber()
   {
 
     if(!testCase.finalData)
-      throw  new Error("Missing data for final invoice");
+      throw  new Error("Missing data for final invoice");    
 
-    this.tools.log("CreateFinalInvoiceSearchProvisional");
+    this.tools.log("Create final invoice after searching provisional");
+
+    await this.tools.waitForLoader();
 
     const pageTitle = await this.tools.page.title();
     if(pageTitle.indexOf("Invoice") < 0)
@@ -325,12 +338,11 @@ async readInvoiceNumber()
 
     if(testCase.action != "finalAfterProvisional")
       return testCase;
-    
-    await this.tools.waitForLoader();
+        
     //create final invoice
     await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Create Final Invoice');
-    await this.tools.waitForLoader();
+    await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Create Final Invoice');    
+    await this.tools.getPage("Invoices", false, false);    
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
     if(!labelTitle.includes("Invoices :: Edit"))
@@ -341,15 +353,16 @@ async readInvoiceNumber()
 
     for (let i = 0; i < testCase.finalData.products.length; i++) 
     { 
-      await this.tools.setText("input[name='invoiceQuantity']", testCase.finalData.products[i].quantity, i);
-      await this.tools.setText("input[name='invoiceRate']", testCase.finalData.products[i].rate, i);
+      await this.tools.setText("#grid_invoiceProductDetails_invoiceQuantity_" + i, testCase.finalData.products[i].quantity);
+      await this.tools.setText("#grid_invoiceProductDetails_invoiceRate_" + i, testCase.finalData.products[i].rate);
     }
 
-    await this.tools.clickOnItemByText('a[ng-click*="save_master_changes()"]', 'Save');
+    await this.tools.clickOnItemByText('#header_action_save', 'Save');
     await this.tools.waitForLoader();      
     await this.tools.click("#btn_ApproveInvoice");
     await this.tools.waitForLoader();
     await this.tools.waitForLoader();
+    await this.tools.closeCurrentPage();
 
   }
 

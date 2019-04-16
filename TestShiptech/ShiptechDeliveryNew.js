@@ -26,10 +26,25 @@ class ShiptechDeliveryNew {
   { 
       
     testCase.result = true;
+
+    testCase.url = "delivery/delivery/edit/";
+    if(!testCase.pageTitle)
+      testCase.pageTitle = "New Delivery";
+
     if(testCase.products.length <= 0)
       throw new Error("DeliveryNew invalid arguments");
+
+    if(!testCase.input.orderId)
+      throw new Error("orderId not defined in input parameters");
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      testCase.orderId = commonTestData[testCase.input.orderId];
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      throw new Error("OrderId missing from parameters in DeliveryNew().");
+
     
-    this.tools.log("Order: " + commonTestData.orderId);
+    this.tools.log("Order: " + testCase.orderId);
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {
       testCase.result = false;
@@ -48,7 +63,7 @@ class ShiptechDeliveryNew {
       //*/
 
    
-
+    
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
     this.tools.log("Current screen is: " + labelTitle.trim());
     if(!labelTitle.includes("Delivery Entity Edit"))  
@@ -58,7 +73,7 @@ class ShiptechDeliveryNew {
       return testCase;
     }
 
-    await this.tools.setText("input[id='productProduct']", commonTestData.orderId);
+    await this.tools.setText("input[id='productProduct']", testCase.orderId);
     await this.tools.page.keyboard.press("Tab", {delay: 500});
     await this.tools.setText("input[id='bdnDate_dateinput']", testCase.bdnDate, 0, false);
     

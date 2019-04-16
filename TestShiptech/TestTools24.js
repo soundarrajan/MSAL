@@ -37,8 +37,6 @@ class TestTools24 {
     this.browserLogfileName = 'blog.txt';
     this.currentTextCase = 0;
     this.currentTextTitle = "";
-    this.currentBusinessReferenceName = "";
-    this.currentBusinessReferenceId = "";
 
     this.truncateLogfile(this.logfileName);
     this.truncateLogfile(this.browserLogfileName);
@@ -257,7 +255,7 @@ class TestTools24 {
 
 
 
-    async createPageErrorHook(page)
+    async createPageErrorHook(page, logicalTarget = "")
     {
       try
       {
@@ -288,7 +286,7 @@ class TestTools24 {
            if(!element)
             {
               var title = await page.title();
-              if(title != "Sign in to your account")
+              if(title != "Sign in to your account" && title != "Sign out")
                 console.log("Element autoTestingGUIDerror not found in browser page: \"" + title + "\"");
               return;
             }
@@ -298,7 +296,7 @@ class TestTools24 {
             if(errGuid && errGuid.length > 0)
             {
               this.error("Backend error " + errGuid);
-              this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", this.currentBusinessReferenceId);
+              this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", logicalTarget);
               process.exit(1);
             }
             retries = 0;
@@ -790,6 +788,12 @@ class TestTools24 {
       if(this.pagesHistory.length <= 1)
         return;
 
+      var pages = await this.browser.pages();
+      if(!pages)
+        return;
+      if(pages.length <= 1)
+        return;
+
       if(this.page)
       {
         this.page.close();
@@ -819,10 +823,12 @@ class TestTools24 {
         currentTimeout = 1000;
       }
 
+      await this.waitForLoader();
       for(time=0; time < currentTimeout; time += waitTime)
       {
         var pagenew = null;
         let pages = await this.browser.pages();
+        await this.page.waitFor(1000);
         for(var i=0; i<pages.length; i++){   
           var pagetitle = await pages[i].title();
           if(pagetitle == title)
@@ -1104,16 +1110,20 @@ async waitForLoader(actionTitle = "")
 {
   var maxWait = 0;
   var attribute = "";
+  var confirmAtrribute = "";
   var start = new Date().getTime();
   var startMessage = new Date().getTime();
   var endMessage = new Date().getTime();
   var duration = 0;
   var reapearTime = 900;
   var displayBlock = "display: block;";
+  var selector = "div.screen-loader";
 
   if(!this.page)
     return;
     
+  try
+  {
   do
   {
     do
@@ -1124,9 +1134,13 @@ async waitForLoader(actionTitle = "")
         var maxRepeat = 30;
         do
         {
-          attribute = await this.getElementAttribute("div.screen-loader", "style");
+          attribute = "";
+          confirmAtrribute = "";
+          if(this.isElementVisible(selector))
+            attribute = await this.getElementAttribute(selector, "style");
           await this.page.waitFor(400);
-          var confirmAtrribute = await this.getElementAttribute("div.screen-loader", "style");
+          if(this.isElementVisible(selector))
+            confirmAtrribute = await this.getElementAttribute(selector, "style");
           maxRepeat--;
         }
         while(maxRepeat > 0 && attribute != confirmAtrribute);
@@ -1142,7 +1156,11 @@ async waitForLoader(actionTitle = "")
     await this.page.waitFor(reapearTime);
   }
   while(attribute != null && maxWait <= this.timeout && (attribute.indexOf(displayBlock) > -1));
-
+  }
+  catch(error)
+  {
+    //mask the error
+  }
 
   var end = new Date().getTime();
   duration = end - start;
