@@ -121,7 +121,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
                 // Get general-purpose data to be used in lookups etc.
                     // ctrl.lists = data;
-                    ctrl.lists.Seller = angular.merge(ctrl.lists.Seller, ctrl.lists.ServiceProvider);
+                    ctrl.lists.Seller = _.concat(ctrl.lists.Seller, ctrl.lists.ServiceProvider);
                     setAdditionalCostAllowNegative();
 
                     lookupModel.getAdditionalCostTypes().then(function (data) {
