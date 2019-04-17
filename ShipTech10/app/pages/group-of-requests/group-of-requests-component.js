@@ -3679,7 +3679,7 @@ ctrl.setProductData = function(data, loc) {
 	            		oldData[rk] = angular.copy(response.payload);
 	            	}
 	            })
-	            skipSellerSorting = true;
+	            skipSellerSorting = false;
 	            // ctrl.sortSellers();
 	            parseRequestList(oldData, false, skipSellerSorting);
                 ctrl.locations = getLocationsFromRequests(ctrl.requests);
