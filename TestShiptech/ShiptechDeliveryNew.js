@@ -43,6 +43,7 @@ class ShiptechDeliveryNew {
     if(!testCase.orderId || testCase.orderId.length <= 0)
       throw new Error("OrderId missing from parameters in DeliveryNew().");
 
+    this.shiptech.findProducts(testCase.products, commonTestData);
     
     this.tools.log("Order: " + testCase.orderId);
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
@@ -77,7 +78,7 @@ class ShiptechDeliveryNew {
     await this.tools.page.keyboard.press("Tab", {delay: 500});
     await this.tools.setText("input[id='bdnDate_dateinput']", testCase.bdnDate, 0, false);
     
-    for (let i = 0; i < testCase.products.length; i++) {
+    for (let i = 0; i < testCase.products.length; i++) {        
       await this.tools.selectBySelector("#addProductToDeliverySelect", testCase.products[i].name, false);
       await this.tools.clickOnItemByText('button', 'Add product');    
       await this.tools.clickOnItemByText('span > b.ng-binding', testCase.products[i].name);

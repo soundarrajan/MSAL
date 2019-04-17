@@ -22,7 +22,7 @@ var shiptech = new ShiptechTools(tools);
     var commonTestData = {};
     var orderId = "";
     tools.baseUrl = testCase.baseurl;
-    await shiptech.ConnectDb(testCase.databaseIntegration, testCase.baseurl, true);    
+    await shiptech.ConnectDb(testCase.databaseIntegration, testCase.baseurl, testCase.isMasterDb);
     await validateTestCase(testCase);    
     await shiptech.login(testCase.starturl, testCase.username, testCase.password, testCase.headless);
 

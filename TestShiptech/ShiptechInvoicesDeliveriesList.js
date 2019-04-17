@@ -42,6 +42,10 @@ class ShiptechInvoicesDeliveriesList {
     if(!testCase.input.orderId)
         throw new Error("orderId not defined in input parameters");
 
+    if(testCase.provisionalData)
+      this.shiptech.findProducts(testCase.provisionalData.products, commonTestData);
+    if(testCase.finalData)
+      this.shiptech.findProducts(testCase.finalData.products, commonTestData);
 
     if(!testCase.orderId || testCase.orderId.length <= 0)
       testCase.orderId = commonTestData[testCase.input.orderId];

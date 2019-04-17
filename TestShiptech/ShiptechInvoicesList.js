@@ -29,9 +29,10 @@ class ShiptechInvoicesList {
   {
     this.tools.log("Loading Invoices List");
     testCase.result = true;
-    testCase.url = "invoices/deliveries";
-    testCase.pageTitle = "Transactions to be Invoiced List";
 
+    testCase.url = "invoices/invoice";
+    testCase.pageTitle = "Invoices List";     
+    
     if(!await this.tools.navigate(testCase.url, testCase.pageTitle))
     {      
       testCase.result = false;
@@ -50,7 +51,8 @@ class ShiptechInvoicesList {
 
     if(testCase.action == "finalAfterProvisional")
     {//search the invoice id
-      
+
+
       if(!testCase.input.invoiceId)
         throw new Error("invoiceId not defined in input parameters");
 
@@ -76,6 +78,9 @@ class ShiptechInvoicesList {
     else if(testCase.action == "provisional" || testCase.action == "final" || testCase.action == "provisionalThenFinal")
     {//search the order
       
+     // testCase.url = "invoices/deliveries";
+     // testCase.pageTitle = "Transactions to be Invoiced List";      
+
       await this.tools.clickOnItemWait("a[data-sortcol='orderproductid']");
       await this.tools.setText("#rule_0_condition", testCase.orderId);
       await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');

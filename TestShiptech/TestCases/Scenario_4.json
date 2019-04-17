@@ -3,7 +3,8 @@
     "testTitle": "Invoice Test Scenarios - Scenario 4",
     "baseurl": "http://mail.24software.ro:8161/#/",
     "starturl": "new-order",
-    "databaseIntegration": {
+    "isMasterDb": false,
+    "databaseIntegration": {                        
                                 "server": "10.1.1.9", 
                                 "database": "IntegrationShiptech10PrimeDbCRP2",
                                 "user": "sa",

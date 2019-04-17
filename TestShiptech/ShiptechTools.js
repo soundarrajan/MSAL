@@ -34,7 +34,8 @@ class ShiptechTools {
 
     this.tools.log("Login with " + username);
     
-    await this.tools.click('#otherTileText');  
+    if(await this.tools.isElementVisible('#otherTileText'))
+      await this.tools.click('#otherTileText');  
     //username
     await this.tools.setText("#i0116", username);
     //Next
@@ -173,7 +174,7 @@ async ConnectDb(dbconfig, url, isMaster)
         end =  connectionString.indexOf(";", start);
         password = connectionString.slice(start+9, end);
 
-        this.dbConfig = {server: address, database: databaseName, user: userId, password: password};
+        this.dbConfig = {server: address, database: databaseName, user: userId, password: password, options: {encrypt: true}};
         //var vessel = this.getRandomVessel();
     }
     else
@@ -184,6 +185,40 @@ async ConnectDb(dbconfig, url, isMaster)
 
 }
 
+
+//inserts product name based on id
+findProducts(products, commonTestData)
+{
+  for(var i=0; i<products.length; i++)
+    {     
+      if(!products[i].name && products[i].id)      
+        products[i].name = commonTestData.products.find(p => p.id == products[i].id).name;
+
+      if(!products[i].name)
+        throw new Error("Cannot find product name");     
+    }
+}
+
+
+
+async getRandomProduct()
+{
+  if(!this.dbConfig)
+    throw  new Error("Not connected to database");
+  var db = new Db(this.dbConfig);
+
+  var sql = "SELECT TOP (20)  [Name] FROM [" + this.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
+  var records = await db.read(sql);
+
+  if(!records || records.length <= 0)
+    throw  new Error("Cannot find any product " + sql);
+  
+  //choose a random record
+  var idx = Math.floor(Math.random() * records.length);
+
+  return records[idx].Name;
+
+}
 
 
 
@@ -299,6 +334,10 @@ async validateDate(dateToValidate)
     return false;
 
   var dateFormat = await this.getDateFormat();
+  //ignore DDD
+  if(dateFormat.indexOf("DDD ") == 0)
+    dateFormat = dateFormat.slice(4);
+
   if(!dateToValidate.match)
     return false;
   //find what is the separator for date

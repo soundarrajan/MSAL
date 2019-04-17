@@ -1,25 +1,28 @@
 
 {
     "testTitle": "Invoice Test Scenarios - Scenario 1",
-    "baseurl": "http://mail.24software.ro:8161/#/",
+    "baseurl": "https://qc.shiptech.com/#/",
     "starturl": "new-order",
-    "databaseIntegration": {
-                                "server": "10.1.1.9", 
-                                "database": "IntegrationShiptech10PrimeDbCRP2",
-                                "user": "sa",
-                                "password": "!QAZ2wsx"
+    "isMasterDb": false,
+    "databaseIntegration": {                                
+                                "server": "euw-sh-int-db-01.database.windows.net", 
+                                "database": "Shiptech-TNT-QC",
+                                "user": "supportuser",
+                                "password": "Inatech@123",
+                                "options": {"encrypt": true}
                               },
-    "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
-    "password": "MyDocuments72%",
+    "username": "24software.ext@inatech.com",
+    "password": "24ext@123",
     "headless": false,    
     "testCases": [
       {
-        "keyname": "order",        
+        "keyname": "order",
+        "input": {"products":["product1Name"]},
         "output": {"orderId": "order1Id"},        
         "eta": 2,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 1500,
             "unitPrice": 379
           }
@@ -27,11 +30,11 @@
       },
       {
         "keyname": "delivery",        
-        "input": {"orderId":"order1Id"},        
+        "input": {"orderId":"order1Id"},
         "bdnDate": 1,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 1500
           }
         ]
@@ -60,7 +63,7 @@
           "provisionalData" :{ 
               "products": [
                 {
-                  "name": "RMG 500 3.5%",
+                  "id": "product1Name",
                   "quantity": 1499,
                   "rate": 380
                 }
@@ -93,7 +96,7 @@
             "finalData": {
               "products": [
                 {
-                  "name": "RMG 500 3.5%",
+                  "id": "product1Name",
                   "quantity": 1499,
                   "rate": 373.65
                 }

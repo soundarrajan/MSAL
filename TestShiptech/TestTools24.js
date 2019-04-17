@@ -80,6 +80,9 @@ class TestTools24 {
 
   async navigate(pageUrl, pageTitle)
   {
+    if(!pageUrl || pageUrl.length <= 0)
+      throw new Error("Missing url from navigate()");
+
     await this.waitForLoader();
     this.log("Loading " + pageTitle + "...");
     var currentTitlte = await this.page.title();
@@ -565,6 +568,9 @@ class TestTools24 {
             
     async selectBySelector(elementSelector, textToSelect, test=false)
     {      
+
+      if(!textToSelect)
+        throw new Error("selectBySelector invalid text parameter for " + elementSelector);
 
       var options = await this.getAllOptionsBySelector(elementSelector);
       var valueToSelect = null;

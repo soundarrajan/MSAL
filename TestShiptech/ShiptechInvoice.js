@@ -47,8 +47,7 @@ class ShiptechInvoice {
       if(await this.tools.isElementVisible("#grid_invoiceProductDetails_remRow_" + i))
         countButtons++;
       else
-        break;
-        
+        break;    
   
     //delete if there are more
     for(i=0; i<countButtons; i++)
@@ -126,7 +125,12 @@ class ShiptechInvoice {
         var dateFormat = await this.shiptech.getDateFormat();
         throw  new Error("Invalid date format " + testCase.paymentDate + " valid format: " + dateFormat);
       }
-    }    
+    }
+
+    if(testCase.provisionalData)
+      this.shiptech.findProducts(testCase.provisionalData.products, commonTestData);
+    if(testCase.finalData)
+      this.shiptech.findProducts(testCase.finalData.products, commonTestData);    
 
     if(!testCase.input.orderId)
       throw new Error("orderId not defined in input parameters");
@@ -331,10 +335,10 @@ async readInvoiceNumber()
     await this.tools.waitForLoader();
 
     const pageTitle = await this.tools.page.title();
-    if(pageTitle.indexOf("Invoice") < 0)
-      {
-        throw new Error("Page title is incorrect.");
-      }
+    if(pageTitle.indexOf("Invoice") < 0 || pageTitle.indexOf("Invoices List") > 0)
+    {
+      throw new Error("Page title is incorrect: " + pageTitle);
+    }
 
     if(testCase.action != "finalAfterProvisional")
       return testCase;

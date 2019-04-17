@@ -44,6 +44,21 @@ class ShiptechOrder {
           testCase.port =  await  this.shiptech.getRandomPort();
           commonTestData.port = testCase.port;
         }
+
+        
+        if(testCase.input && testCase.input.products)
+        {
+          commonTestData.products = [];
+          for(var i=0; i<testCase.input.products.length; i++)
+          {
+            var productName = await this.shiptech.getRandomProduct();
+            commonTestData.products.push({id: testCase.input.products[i], name: productName });
+          }
+
+          this.shiptech.findProducts(testCase.products, commonTestData);
+
+        }
+        
           
         if(!testCase.seller)
         {
@@ -109,9 +124,9 @@ class ShiptechOrder {
         }while(countbuttons != testCase.products.length && limit > 0);
 
         for(var i=0; i<testCase.products.length; i++)
-        {          
-          if(testCase.products[i].name)
-            await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
+        {                    
+          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
+
           if(testCase.products[i].quantity)
           {
             await this.tools.setText('input[name="minQuantity"]', testCase.products[i].quantity, i);

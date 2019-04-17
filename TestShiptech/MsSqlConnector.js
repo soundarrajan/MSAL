@@ -40,7 +40,7 @@ class MsSqlConnector {
 
       } catch (err) {
           SQLLib.close();
-          console.error(err);
+          throw err;
       }
 
 
