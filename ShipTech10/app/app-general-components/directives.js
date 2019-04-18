@@ -549,7 +549,7 @@ window.increment = 0;
 	                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
 	                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
 	                                        })
-	                                        $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 35 + 5 + "px")
+	                                        $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 35 + 15 + "px")
                                         // END VERTICALS SCROLLBAR
                                         // 
                                         // REMOVE MASTER LINKS FROM LOOKUPS

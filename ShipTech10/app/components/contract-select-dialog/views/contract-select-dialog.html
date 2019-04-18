@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6 caption-subject">Select Contract</div>
     </div>
-    <div class="portlet-body st-contract-select-dialog">
+    <div class="portlet-body st-contract-select-dialog" style="overflow: auto;">
         <table class="table table-striped table-hover table-bordered"
                 id="contract_select">
             <thead>
@@ -39,16 +39,16 @@
                         <td><a href="#/contracts/contract/edit/{{row.id1}}" target="_blank" class="link-underline-light"><!-- Contract  -->{{row.id1}}</a></td>
                         <td>{{row.contractName}}</td>
                         <td><span ng-controller="Controller_Master as CM"> {{CM.formatDateTime(row.validTo , null, 'default')}}</span></td>
-                        <td>{{row.fixedPrice}}</td>
+                        <td>{{row.fixedPrice | number:$ctrl.tenantSettings.defaultValues.pricePrecision}}</td>
                         <td>{{row.formula}}</td>
-                        <td></td>
+                        <td>{{}}</td>
                         <td>{{row.seller.name}}</td>
                         <td>{{row.location.name}}</td>
                         <td>{{row.product.name}}</td>
-                        <td>{{row.contractedQuantity}}</td>
-                        <td>{{row.availableQuantity}}</td>
+                        <td>{{row.contractedQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
+                        <td>{{row.availableQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
                         <td>{{row.product.name}}</td>
-                        <td>{{row.minQuantity}} - {{row.maxQuantity}}</td>
+                        <td>{{row.minQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}} - {{row.maxQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
                 </tr>
             </tbody>
         </table>

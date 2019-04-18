@@ -22,9 +22,21 @@ angular.module('shiptech').service('screenLoader', [
        //  	}
        //  },1000)
     
+        function isLoading() {
+        	localStorage.setItem('lastOpenLoader', new Date().getTime());
+            $('.screen-loader').show();
+        }
+
+        function finishLoading(){
+            $('.screen-loader').hide();
+        }
+
+
         return {
             showLoader: showLoader,
             hideLoader: hideLoader,
+            isLoading: isLoading,
+            finishLoading: finishLoading,
         }
 
     }
