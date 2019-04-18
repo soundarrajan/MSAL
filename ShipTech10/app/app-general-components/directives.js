@@ -639,24 +639,16 @@ window.increment = 0;
                                         };
                                         $rootScope.$broadcast("tableLoaded", triggePayload);
 
-                                        console.load("ui-jqgrid-view##################################")
-
                                         $('select[name="asc_jqgrid__entries-entries"]').val(oldTableParams.rows);
+                                        
                                         $rootScope.getGlobalFilters().then(function(data) {
                                             if (data) {
                                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.columnFilters", data);
                                                 CLC.tableParams.unpackedFilters = data;
                                             }
                                         });
+
                                         $('select[name="asc_jqgrid__entries-entries"] option[value="999999"]').text("All");
-                                        if (Layout.table_id == 'flat_invoices_app_complete_view_list') {
-                                            $('#dp_PaymentDateFrom .date-set').on("mouseover", function() {
-                                                $(this).parent().datepicker("remove");
-                                            });
-                                            $('#dp_PaymentDateTo .date-set').on("mouseover", function() {
-                                                $(this).parent().datepicker("remove");
-                                            });
-                                        }
                                     }
                                 }
                             );
