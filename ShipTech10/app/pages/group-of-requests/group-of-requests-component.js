@@ -6234,6 +6234,76 @@ ctrl.setProductData = function(data, loc) {
         	 ctrl.sendNoQuotePayload = payload;
         }
         ctrl.sendNoQuote = function(){
+        	/**************
+        	RLS is request -location-seller unique combination
+        	 ****************/
+
+        	var validationDataAt_RLS_level = [];
+            $.each(ctrl.requests, function (reqK, reqV) {
+            	currentRequest = reqV;
+                $.each(reqV.locations, function (locK, locV) {
+	            	currentLocation = locV;
+                    $.each(locV.products, function (prodK, prodV) {
+                        $.each(prodV.sellers, function (selK, selV) {
+			            	currentSeller = selV;
+                            $.each(selV.offers, function (ofK, ofV) {
+                                if (ofV.id) {
+                        			if (typeof(validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id]) == "undefined") {
+                        				validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id] = {
+								        	allWouldBeNoQuote : false,
+								    		totalNoQuoteItems : 0,
+								    		totalOffers : 0,
+								    		hasAdditionalCostsAll : false,
+								    		selectedItemsFromThis_RLS : 0,
+								    		RLScombinationString : "request: " + currentRequest.id + ", location: " + currentLocation.location.name + " seller: " + currentSeller.sellerCounterparty.name,
+								    		hasAdditionalCostsForProduct : false,                                					
+                        				}
+                        			}
+                                	if (ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id.toString()) != -1 || 
+                                		ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id) != -1) {
+								    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].selectedItemsFromThis_RLS++;
+
+							            	$.each(currentRequest.offers, function(ok,ov){
+							            		$.each(ov.additionalCosts, function(ack,acv){
+							            			if (!acv.isDeleted) {
+											    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].hasAdditionalCostsAll = true;
+							            			}
+							            		})
+							            	})
+	            		            		$.each(ofV.additionalCosts, function(ack,acv){
+						            			if (!acv.isDeleted) {
+										    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].hasAdditionalCostsForProduct = true;
+						            			}
+						            		})
+                                	}
+						    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].totalOffers++;
+                                	if (ofV.hasNoQuote == true) {
+						        		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].totalNoQuoteItems++
+                                	}
+                                }
+                            });
+                        });
+                    });
+                });
+            });
+
+
+			allWouldBeNoQuoteError = false;
+        	Object.keys(validationDataAt_RLS_level).forEach(function(key) {
+        		value = validationDataAt_RLS_level[key];
+	            if (ctrl.sendNoQuotePayload.Payload.NoQuote == true && (value.totalNoQuoteItems + value.selectedItemsFromThis_RLS) >= value.totalOffers) {
+	            	if (value.hasAdditionalCostsAll || value.hasAdditionalCostsForProduct) {
+		            	errorMessage = "For " + value.RLScombinationString + " are additional costs applied for selected items. Please remove them before sending No Quote";
+						toastr.error(errorMessage);
+						console.log(errorMessage);
+						allWouldBeNoQuoteError = true;
+	            	}
+	            }        		
+			});
+
+        	if (allWouldBeNoQuoteError) {
+	            return;
+        	}
             groupOfRequestsModel.switchHasNoQuote(ctrl.sendNoQuotePayload).then(function(response) {
                 ctrl.initScreenAfterSendOrSkipRfq();
             });        	

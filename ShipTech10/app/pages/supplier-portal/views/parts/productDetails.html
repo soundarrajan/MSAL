@@ -461,14 +461,15 @@
 												<input class="form-control" disabled ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].product.name"/>
 											</span>
 
+											<!-- | filterNoQuoteProducts -->
                                             <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id)" 
-                                            ng-options="product as product.product.name for product in location.products | filter: {productStatus:{name: '!Stemmed'}} | filterNoQuoteProducts" 
+                                            ng-options="product as product.product.name for product in location.products | filter: {productStatus:{name: '!Stemmed'}} " 
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]" 
                                             ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);" 
                                             class="form-control" 
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products) || !additionalCost.additionalCost || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') ">
                                             <!-- additionalCost.id> 0 || -->
-                                            
+
                                             <!-- || additionalCost.costType.name == 'Flat'  -->
                                                 <option value="" >
                                                     All
