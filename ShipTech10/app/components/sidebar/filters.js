@@ -786,17 +786,12 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         });
         $scope.hidePopover = function() {
-            if ($("custom-popover").length > 0) {
-                $("custom-popover").remove();
-                $("*:not([tooltip])").tooltip("destroy");
-                $("[tooltip][data-original-title]").tooltip({
-                                    container: "body",
-                                    placement: "auto"
-                                });
-                $scope.rawFilters = [];
-                $scope.globalFilters = [];
-                $scope.applyFilters($scope.rawFilters);
-            }
+            $("custom-popover").remove();
+            $("*:not([tooltip])").tooltip("destroy");
+            $("[tooltip][data-original-title]").tooltip({
+                container: "body",
+                placement: "auto"
+            });
         };
         $scope.columnSort = function(table, column, order, sortColumn, columnObj) {
 
