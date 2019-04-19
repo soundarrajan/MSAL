@@ -947,6 +947,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                     }
                 }
             });
+
+
+
             if (!validForm) return false;
             var payload = {};
             for (var i = 0; i < ctrl.locations.length; i++) {
@@ -1271,6 +1274,36 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 				toastr.error("Please add a physical supplier for the offer before continuing");
 				return;
 			}
+
+
+            /*VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
+            hasAdditionalCostOnNoQuoteProduct = false;
+            $.each(ctrl.individuals, function(cik,civ){
+	            $.each(civ.products, function(pk,pv){
+	            	currentProduct = pv;
+					$.each(pv.sellers, function(sk,sv){
+						$.each(sv.offers, function(ok,ov){
+							hasActiveCost = false;
+							if (ov.additionalCosts.length > 0) {
+								hasActiveCost = _.find(ov.additionalCosts, function(obj) {
+								    return !obj.isDeleted;
+								})
+							}
+							if (hasActiveCost && ov.hasNoQuote == true) {
+					            if (!hasAdditionalCostOnNoQuoteProduct) {
+						            hasAdditionalCostOnNoQuoteProduct = true;
+					            }	
+							}
+						})
+					})
+	            })
+            })
+            if (hasAdditionalCostOnNoQuoteProduct) {
+            	toastr.error("Please remove Additional Costs that are applicable for no quote products");
+				return false;            	
+            }
+            /*VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
+
 
             if (payload) {
                 ctrl.buttonsDisabled = true;
