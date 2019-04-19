@@ -554,7 +554,7 @@
                             <div class="col-md-3 label-list">
                                 <span ng-repeat="location in $ctrl.request.locations" class="tag label label-info" ng-if="!location.isDeleted && location.location !== null" data-original-title=" {{ location.location.name }}">
                                     <!-- <i ng-click="$ctrl.deleteLocation(location)" class="fa fa-close clickable" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i> -->
-                                    <a   ng-click="$ctrl.showDeleteLocationConfirm(location)" ng-disabled="$ctrl.disableAllFields">
+                                    <a ng-click="$ctrl.showDeleteLocationConfirm(location)" ng-disabled="$ctrl.disableAllFields">
                                         <i class="fa fa-close clickable" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
                                         {{location.location.name }}
                                     </a>

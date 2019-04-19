@@ -644,7 +644,18 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             ctrl.deleteDataParams = {
                 location: location
             };
+            var parent = null;
+            var elm = null;
+            if ($('.confirmModal').length > 1) {
+                parent = $('.confirmModal').first().parent();
+                elm = $('.confirmModal').first().detach();
+            }
             $(".confirmModal").modal();
+            setTimeout(function() {
+                if (parent && elm) {
+                    elm.appendTo(parent);
+                }
+            });
         };
 
         ctrl.showCanBeCancelledLocationConfirm = function(locationId, message) {
