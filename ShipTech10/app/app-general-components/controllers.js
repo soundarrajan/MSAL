@@ -3127,6 +3127,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         vm.clearContractLinkCP = function(rowId){
+            try {
+                var hoverList = document.querySelectorAll(":hover");
+
+                if (hoverList.length == 5 && $(hoverList[3]).attr('id').split('-')[0] == 'typeahead') {
+                    return;
+                }
+            } catch (e) {
+                // Do nothing
+            }
+
             setTimeout(function(){
                 if ($('[ng-model="CLC.cpCtr['+rowId+']"]').hasClass("ng-dirty")) {
                 	contractValueHasChanged = CLC.jqGrid.Ascensys.gridData[rowId - 1].contract ? CLC.jqGrid.Ascensys.gridData[rowId - 1].contract.name != vm.cpCtr[rowId] : false;
