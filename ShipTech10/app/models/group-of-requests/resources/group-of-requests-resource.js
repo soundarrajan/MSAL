@@ -49,6 +49,7 @@ return $resource(API.BASE_URL_DATA_PROCUREMENT + '/api/procurement/rfq/:verb/:ac
         'deleteSeller': { method:'POST', params:{verb:'deleteSeller'}, interceptor: resourceInterceptor},
         'addPhysicalSupplierInCard': { method:'POST', params:{verb:'addPhysicalSupplier'}, interceptor: resourceInterceptor},
         'switchHasNoQuote': { method:'POST', params:{verb:'switchHasNoQuote'}, interceptor: resourceInterceptor},
+        'checkSellerRow': { method:'POST', params:{verb:'toggleSelection'}, interceptor: resourceInterceptor},
         'getPriceTimeline': { method:'POST', params:{verb:'getPriceTimeline'}}
     });
 }]);

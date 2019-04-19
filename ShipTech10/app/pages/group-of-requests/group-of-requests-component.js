@@ -1346,6 +1346,7 @@ ctrl.setProductData = function(data, loc) {
         function removeSellerRequirementsOnLocation(seller, locations) {
             var location, req;
             var productList = [];
+            var currentRowRequirements = [];
             if (typeof seller == "undefined" && typeof locations == "undefined") {
                 return false;
             }
@@ -1362,6 +1363,7 @@ ctrl.setProductData = function(data, loc) {
                     composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + seller.randUnique;
                     if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && location.id == req.RequestLocationId) {
                         if (req.randUniquePkg == seller.randUniquePkg) {
+				            currentRowRequirements.push(req);
                             ctrl.requirements.splice(i, 1);
                             break;
                         }
@@ -1376,8 +1378,43 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.requirementRequestProductIds = removeProductFromRequestProductIds(seller, productList[i], ctrl.requirementRequestProductIds);
             }
             //calculates screen actions
+            console.log(currentRowRequirements);
+            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, false)
             ctrl.calculateScreenActions();
         }
+
+
+        function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
+    		if (currentRowRequirements.length > 0) {
+	        	if (checkBool) {
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, locations, true)
+	        	} else {
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, locations, false)
+	        	}
+
+	        	groupOfRequestsModel.checkSellerRow(payload).then(
+                function (response) {
+                	console.log(response);
+                })
+
+    		}
+        }
+        function createSellerRowCheckPayload(requirements, locations, checked) {
+            var productIds = [];
+            $.each(requirements, function (rk, rv) {
+	            productIds.push(rv.RequestProductId);
+            });
+            productIds = productIds.join(",");
+            sellersPayload = {
+                RequestProductList: productIds,
+                RequestGroupId: ctrl.groupId,
+                LocationId: locations[0].location.id,
+                RequestSellerId: seller.sellerCounterparty.id,
+                Selected: checked
+            };
+            return sellersPayload;
+        }
+
 
         function removeAllSellerRequirements() {
             ctrl.requirements = [];
@@ -1860,6 +1897,7 @@ ctrl.setProductData = function(data, loc) {
          ******************************************************************************/
         ctrl.createSellerRequirements = function (seller, locations, $event) {
             var req, product, locationSeller, productOffer, request, location;
+            var currentRowRequirements = [];
 
             if ($event && ctrl.selectedNoQuoteItems ) {
 	            noQuoteCheckboxes = $($event.target).parents('tr').find('[has-no-quote="true"]');
@@ -2011,6 +2049,7 @@ ctrl.setProductData = function(data, loc) {
                         //                   }
                         // if (product.productStatus.name == "Stemmed" && !seller.packageId) { continue }
                         ctrl.requirements.push(req);
+                        currentRowRequirements.push(req);
                         //create confirmation requirements
                         ctrl.requirementRequestProductIds.push({
                             requestProductId: product.id,
@@ -2025,6 +2064,8 @@ ctrl.setProductData = function(data, loc) {
                 // }
             }
             //calculates screen actions
+            console.log(currentRowRequirements);
+            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true)
             ctrl.calculateScreenActions();
         };
         ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample) {
