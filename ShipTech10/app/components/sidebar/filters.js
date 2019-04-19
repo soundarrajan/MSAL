@@ -77,8 +77,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.applyFilters($scope.globalFilters);
         });
 
-        $scope.applyFilters = function(data, noSlide, fromcol, column, defaultConf) {
-
+        $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
             //console.log("_____________________", $scope.currentList);
 			console.log(localStorage.getItem("persistentGlobalFilters"));
@@ -787,12 +786,17 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         });
         $scope.hidePopover = function() {
-            $("custom-popover").remove();
-            $("*:not([tooltip])").tooltip("destroy");
-            $("[tooltip][data-original-title]").tooltip({
-                                container: "body",
-                                placement: "auto"
-                            });
+            if ($("custom-popover").length > 0) {
+                $("custom-popover").remove();
+                $("*:not([tooltip])").tooltip("destroy");
+                $("[tooltip][data-original-title]").tooltip({
+                                    container: "body",
+                                    placement: "auto"
+                                });
+                $scope.rawFilters = [];
+                $scope.globalFilters = [];
+                $scope.applyFilters($scope.rawFilters);
+            }
         };
         $scope.columnSort = function(table, column, order, sortColumn, columnObj) {
 
