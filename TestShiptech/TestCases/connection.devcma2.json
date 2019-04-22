@@ -1,0 +1,18 @@
+{
+      "baseurl": "http://mail.24software.ro:8163/#/",
+      "isMasterDb": true,
+      "databaseIntegration": {                        
+                                  "server": "10.1.1.9", 
+                                  "database": "IntegrationShiptech10PrimeDbCRP2",
+                                  "user": "sa",
+                                  "password": "!QAZ2wsx",
+                                  "options": {"encrypt": true}
+                                },
+      "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
+      "password": "MyDocuments72%"      
+}
+
+
+
+
+  

@@ -1,0 +1,18 @@
+
+{
+      "baseurl": "https://qc.shiptech.com/#/",      
+      "isMasterDb": false,
+      "databaseIntegration": {                                
+                  "server": "euw-sh-int-db-01.database.windows.net", 
+                  "database": "Shiptech-TNT-QC",
+                  "user": "supportuser",
+                  "password": "Inatech@123",
+                  "options": {"encrypt": true}
+                },
+      "username": "24software.ext@inatech.com",
+      "password": "24ext@123"
+}
+
+
+
+  
