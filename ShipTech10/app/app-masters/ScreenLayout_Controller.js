@@ -268,6 +268,18 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                $.each($scope.formValues.costDetails, function(k, v) {
 		                    v.id = 0;
 		                })
+				        if ($scope.formValues.costDetails) {
+				            $.each($scope.formValues.costDetails, function(k, v) {
+				                if (v.product) {
+					                if (v.product.id != -1) {
+					                	if (v.product.id != v.deliveryProductId) {
+						                	v.product.productId = angular.copy(v.product.id);
+						                	v.product.id = angular.copy(v.deliveryProductId);
+					                	}
+					                }
+				                }
+				            });                
+				        }
 
 		                var deliveryProductIds = [];
 		                $.each($scope.formValues.productDetails, function(k, v) {
