@@ -39,6 +39,8 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
 				top: "45%",
 			})	
 			screenLoader.isLoading();
+			$("contract-select-dialog").css("opacity", "0")
+			$("contract-select-dialog").css("margin-top", "-100px")
             selectContractModel.getSuggestedContracts(null, null, ctrl.filters).then(function(server_data) {
                 // destroyDataTable();
 				screenLoader.finishLoading();
@@ -47,14 +49,15 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
 					top: "0",
 					marginTop: "15px",
 				})	
-                if (ctrl.data.length == 0) {
+                // if (ctrl.data.length == 0) {
+                // }
                 	setTimeout(function(){
     					$("contract-select-dialog").css({
 							top: "0",
 							marginTop: "15px",
+							opacity: "1",
 						})		
-                	})
-                }
+                	},500)
                 // $timeout(function() {
                 //     // ctrl.table = initDatatable('#contract_select');
                 //     // var info = ctrl.table.page.info();
@@ -63,11 +66,14 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
                 //     // handleTableEvents();
                 // });
             }, function(){
-				screenLoader.finishLoading();
-				$("contract-select-dialog").css({
-					top: "0",
-					marginTop: "15px",
-				})	
+            	setTimeout(function(){
+					screenLoader.finishLoading();
+					$("contract-select-dialog").css({
+						top: "0",
+						marginTop: "15px",
+						opacity: "1",
+					})	
+            	},500)
             });
         };
 

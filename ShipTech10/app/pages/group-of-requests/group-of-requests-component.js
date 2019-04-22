@@ -1387,9 +1387,9 @@ ctrl.setProductData = function(data, loc) {
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
     		if (currentRowRequirements.length > 0) {
 	        	if (checkBool) {
-	        		payload = createSellerRowCheckPayload(currentRowRequirements, locations, true)
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true)
 	        	} else {
-	        		payload = createSellerRowCheckPayload(currentRowRequirements, locations, false)
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
 	        	}
 
 	        	groupOfRequestsModel.checkSellerRow(payload).then(
@@ -1399,7 +1399,7 @@ ctrl.setProductData = function(data, loc) {
 
     		}
         }
-        function createSellerRowCheckPayload(requirements, locations, checked) {
+        function createSellerRowCheckPayload(requirements, seller, locations, checked) {
             var productIds = [];
             $.each(requirements, function (rk, rv) {
 	            productIds.push(rv.RequestProductId);
@@ -1413,6 +1413,43 @@ ctrl.setProductData = function(data, loc) {
                 Selected: checked
             };
             return sellersPayload;
+        }
+        
+        ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId) {
+        	randUniquePkg = seller.randUniquePkg;
+        	// sellerRowSelectedProducts = [];
+        	// possibleChecks = 0;
+        	// actualChecks = 0;
+            isSelected = false;
+            $.each(ctrl.requests, function (reqK, reqV) {
+                $.each(reqV.locations, function (locK, locV) {
+                	if (locV.location.id == locationLocationId) {
+	                    $.each(locV.products, function (prodK, prodV) {
+	                    	if (prodV.id == productId) {
+		                        $.each(prodV.sellers, function (sellerK, sellerV) {
+		                            if (sellerV.sellerCounterparty.id == sellerCounterpartyId) {
+		           						hasNoQuote = false;                 	
+		                                if (sellerV.offers) {
+		                                    if (sellerV.offers.length > 0) {
+		                                        if (!sellerV.offers[0].hasNoQuote) {
+		                       						hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+		                                        }
+		                                    }
+		                                }
+		                                if (!hasNoQuote) {
+		                                	if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
+				                                isSelected = true;
+		                                	}
+		                                }
+		                            }
+		                        });
+	                    	}
+	                    });
+                	}
+                });
+            });
+
+			return isSelected;
         }
 
 
