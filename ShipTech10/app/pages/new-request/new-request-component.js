@@ -677,6 +677,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         {
                             ColumnName: "RequestLocationId",
                             Value: location.id
+                        },
+                        {
+                            ColumnName: "RequestName",
+                            Value: ctrl.request.name
+                        },
+                        {
+                            ColumnName: "RequestLocationName",
+                            Value: location.location.name
                         }
                     ]
                 };
@@ -847,6 +855,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             {
                                 ColumnName: "RequestProductId",
                                 Value: product.id
+                            },
+                            {
+                                ColumnName: "RequestName",
+                                Value: ctrl.request.name
+                            },
+                            {
+                                ColumnName: "RequestProductName",
+                                Value: product.product.name
                             }
                         ]
                     };
