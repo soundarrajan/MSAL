@@ -4300,7 +4300,7 @@ div#customPopover li a {
 	display: inline-block;
 }
 
-.confirmModal:focus {
+.confirmModal:focus .confirmModal1:focus {
 	outline: none;
 }
 div#clearUnsavedFilters {

@@ -326,11 +326,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
         };
         $scope.showSweetConfirm = function(controller, text, confirmAction) {
-            $(".confirmModal").modal();
-            $(".confirmModal").removeClass("hide");
-            $(".confirmModal").attr("ng-controller", controller);
-            $(".confirmModal .confirmAction").attr("ng-click", confirmAction);
-            $compile($(".confirmModal"))($scope);
+            $(".confirmModal1").modal();
+            $(".confirmModal1").removeClass("hide");
+            $(".confirmModal1").attr("ng-controller", controller);
+            $(".confirmModal1 .confirmAction").attr("ng-click", confirmAction);
+            $compile($(".confirmModal1"))($scope);
             $rootScope.confirmModalData = {
                 text: text
             };

@@ -644,28 +644,15 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             ctrl.deleteDataParams = {
                 location: location
             };
-            var parent = null;
-            var elm = null;
-            if ($('.confirmModal').length > 1) {
-                parent = $('.confirmModal').first().parent();
-                elm = $('.confirmModal').first().detach();
-            }
-            $(".confirmModal").modal();
-            setTimeout(function() {
-                if (parent && elm) {
-                    elm.appendTo(parent);
-                }
-            });
+            // $(".confirmModal").modal();
         };
 
         ctrl.showCanBeCancelledLocationConfirm = function(locationId, message) {
-            setTimeout(function() {
-                ctrl.entityToDelete = "canBeCanceledLocation";
-                ctrl.deleteDataParams = {
-                    locationId: locationId,
-                    confirmText: message
-                };
-            }, 50);
+            ctrl.entityToDelete = "canBeCanceledLocation";
+            ctrl.deleteDataParams = {
+                locationId: locationId,
+                confirmText: message
+            };
         };
         ctrl.canBeCancelledLocation = function(locationId) {
             newRequestModel.cancelLocation(locationId).then(function(data) {
