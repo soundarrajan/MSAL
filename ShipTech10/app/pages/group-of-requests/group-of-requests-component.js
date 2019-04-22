@@ -1454,6 +1454,11 @@ ctrl.setProductData = function(data, loc) {
             if (typeof(ctrl.checkedCounterpartyRows) == "undefined") {
             	ctrl.checkedCounterpartyRows = []
             }
+            if (typeof(ctrl.initedCheckboxes) == "undefined") {
+            	ctrl.initedCheckboxes = []
+            }
+            if (ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {return}
+            if (!ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId] = true}
 
             if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg]) == 'undefined') {
 	            ctrl.checkedCounterpartyRows[randUniquePkg] = false;
