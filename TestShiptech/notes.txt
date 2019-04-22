@@ -1,6 +1,10 @@
 Getting started
 
 install nodejs
+npm install
+
+or
+
 npm i puppeteer
 npm install mssql
 npm install html2plaintext
