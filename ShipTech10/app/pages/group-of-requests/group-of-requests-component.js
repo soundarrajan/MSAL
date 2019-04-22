@@ -1475,6 +1475,7 @@ ctrl.setProductData = function(data, loc) {
             });
 
 
+			console.log(randUniquePkg, shouldBeChecked) ;
 			return shouldBeChecked;
         }
 

@@ -504,8 +504,8 @@
                 class="bg-white {{seller.packageType == 'seller' ? 'pkgSellerRow' : '' }} {{seller.packageType == 'buyer' ? 'pkgBuyerRow' : '' }} "
                 >
                 <td style="text-align: center;">
-                    <!-- {{seller.packageType}}
-                    {{seller.randUniquePkg}} -->
+                    <!-- {{seller.packageType}} -->
+                    <!-- {{seller.randUniquePkg}} -->
     
                     <span class="hidden">{{ seller.shouldBeVisible = $ctrl.calculateSellerIsVisible(key, seller, location) }}</span>
                     <!-- <span class="hidden">{{ seller.hasRevokedRFQs = $ctrl.checkIfHasRevokedRFQs(seller, location) }}</span> -->
@@ -857,19 +857,24 @@
                             <!-- {{productOffer.id}} <br> -->
                             <span class="hidden">
                                 {{productOffer.id ? seller.isCloned = false : ''}}
-                            </span>
+                        </span>
                             <form class="form-inline" style="position: relative; width: 100%;">
                             	<!-- {{$ctrl.checkIfIsPrefferedProductForSeller(product.product.id, seller) ? "TRUE" : "FALSE"}} -->
                                 <div class="form-group GORpriceCheckbox {{$ctrl.checkIfIsPrefferedProductForSeller(product.product.id, seller) ? 'isPreferredProduct' : 'isNotPreferredProduct' }} {{productOffer.id ? 'hasOffer' : '' }} " ng-mouseover="quotedProductTooltip['productOffer.id'] = true" ng-mouseout="quotedProductTooltip['productOffer.id'] = false" style="width: 100%; height: 34px; position: absolute; top: -16px;display: flex;align-items:center; justify-content: start; flex-direction: row;">
                                     <!-- {{!productAvailable}} * {{productStatus}} *  {{productOffer.hasNoQuote}} * {{!productStatus}} * {{productOffer}} * -->
                                     <!-- individual action -->
                                     <!-- {{ $ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id) }} * -->
-                                    <!-- {{location[0].location.id}} - {{product.id}} - {{seller.sellerCounterparty.id}} -->
                                     
                                     <!-- old validations -->
-                                    <!-- {{$ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id)}}-
-                                    {{(['Quoted', 'Stemmed'].indexOf(requestStatus) == - 1)}} *
-                                    {{requestStatus}} -->
+                                    <!-- {{(['Quoted', 'Stemmed'].indexOf(requestStatus) == - 1)}} * -->
+                                    <!-- old validations -->
+
+                                    <!-- {{location[0].location.id}} - {{product.id}} - {{seller.sellerCounterparty.id}} -->
+                                    <!-- ** {{seller.randUniquePkg}} -->
+                                    <!-- {{requestStatus}} -->
+                                    <span class="hidden">
+	                                    {{$ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id)}}
+                                    </span>
 									<span ng-if="!$ctrl.prefferedSellerCheckbox" ng-init="($ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id)) ? $ctrl.createSellerRequirementsForProduct(seller, location, product) : '' "></span>
                                     <label style="margin-left:5px" class="mt-checkbox mt-checkbox-outline pull-left" ng-hide="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" ng-if="seller.packageType == 'individual' ">
                                         <!-- {{!productAvailable}}..{{productStatus == 'Stemmed'}}**{{productOffer.hasNoQuote}}++{{!productStatus}} --> <input type="checkbox" ng-disabled="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" class="checkSlr"ng-checked="$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)"
