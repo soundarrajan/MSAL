@@ -785,7 +785,8 @@ angular.module("shiptech.components").controller("FiltersController", [
                 }
             }
         });
-        $scope.hidePopover = function() {
+        $scope.hidePopover = function() { 
+        	$("custom-popover").remove();
             $("*:not([tooltip])").tooltip("destroy");
             $("[tooltip][data-original-title]").tooltip({
                 container: "body",
