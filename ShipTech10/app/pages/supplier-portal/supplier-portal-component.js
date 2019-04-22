@@ -1286,7 +1286,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 							hasActiveCost = false;
 							if (ov.additionalCosts.length > 0) {
 								hasActiveCost = _.find(ov.additionalCosts, function(obj) {
-								    return !obj.isDeleted;
+								    return !obj.isDeleted && obj.additionalCost;
 								})
 							}
 							if (hasActiveCost && ov.hasNoQuote == true) {
@@ -1619,7 +1619,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             ctrl.getAdditionalCosts(location);
         };
         ctrl.deleteAdditionalCost = function(additionalCost, location) {
-            if (additionalCost.fakeIndex < 0) {
+            if (additionalCost.fakeId < 0) {
                 //This is a newly added object, delete it altogether.
                 deleteAdditionalCost(additionalCost, location);
             } else {

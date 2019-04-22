@@ -1415,68 +1415,76 @@ ctrl.setProductData = function(data, loc) {
             return sellersPayload;
         }
         
-        ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId) {
+        ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId, sellerRandUniquePkg) {
 
-
+        	var locationId = locationLocationId;
+        	var prodId = productId;
+        	var sellerId = sellerCounterpartyId;
+        	var randUniquePkg = sellerRandUniquePkg;
         	// for individual checkbox
-            isSelected = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                	if (locV.location.id == locationLocationId) {
-	                    $.each(locV.products, function (prodK, prodV) {
-	                    	if (prodV.id == productId) {
-		                        $.each(prodV.sellers, function (sellerK, sellerV) {
-		                            if (sellerV.sellerCounterparty.id == sellerCounterpartyId) {
-							        	randUniquePkg = sellerV.randUniquePkg;
-		           						hasNoQuote = false;                 	
-		                                if (sellerV.offers) {
-		                                    if (sellerV.offers.length > 0) {
-		                                        if (!sellerV.offers[0].hasNoQuote) {
-		                       						hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
-		                                        }
-		                                    }
-		                                }
-		                                if (!hasNoQuote) {
-		                                	if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
-				                                isSelected = true;
-		                                	}
-		                                }
-		                            }
-		                        });
-	                    	}
-	                    });
-                	}
-                });
-            });
+            // var isSelected = false;
+            // $.each(ctrl.requests, function (reqK, reqV) {
+            //     $.each(reqV.locations, function (locK, locV) {
+            //     	if (locV.location.id == locationId) {
+	           //          $.each(locV.products, function (prodK, prodV) {
+	           //          	if (prodV.id == prodId) {
+		          //               $.each(prodV.sellers, function (sellerK, sellerV) {
+		          //                   if (sellerV.sellerCounterparty.id == sellerId) {
+		          //  						hasNoQuote = false;                 	
+		          //                       if (sellerV.offers) {
+		          //                           if (sellerV.offers.length > 0) {
+		          //                               if (!sellerV.offers[0].hasNoQuote) {
+		          //              						hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+		          //                               }
+		          //                           }
+		          //                       }
+		          //                       if (!hasNoQuote) {
+		          //                       	if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
+				        //                         isSelected = true;
+		          //                       	}
+		          //                       }
+		          //                   }
+		          //               });
+	           //          	}
+	           //          });
+            //     	}
+            //     });
+            // });
 
-            shouldBeChecked = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
-            	$.each(reqV.locations, function (locK, locV) {
-            		$.each(locV.products, function (prodK, prodV) {
-            			$.each(prodV.sellers, function (sellerK, sellerV) {
-            				if (sellerV.randUniquePkg == randUniquePkg) {
-            					hasNoQuote = false;                 	
-            					if (sellerV.offers) {
-            						if (sellerV.offers.length > 0) {
-            							if (!sellerV.offers[0].hasNoQuote) {
-            								hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
-            							}
-            						}
-            					}
-            					if (!hasNoQuote) {
-            						if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
-            							shouldBeChecked = true
-            						}
-            					}
-            				}
-            			});
-            		});
-            	});
-            });
+            if (typeof(ctrl.checkedCounterpartyRows) == "undefined") {
+            	ctrl.checkedCounterpartyRows = []
+            }
 
+            if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg]) == 'undefined') {
+	            ctrl.checkedCounterpartyRows[randUniquePkg] = false;
+	            $.each(ctrl.requests, function (reqK, reqV) {
+	            	$.each(reqV.locations, function (locK, locV) {
+	            		$.each(locV.products, function (prodK, prodV) {
+	            			$.each(prodV.sellers, function (sellerK, sellerV) {
+	            				if (sellerV.randUniquePkg == randUniquePkg) {
+	            					hasNoQuote = false;                 	
+	            					if (sellerV.offers) {
+	            						if (sellerV.offers.length > 0) {
+	            							if (!sellerV.offers[0].hasNoQuote) {
+	            								hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+	            							}
+	            						}
+	            					}
+	            					if (!hasNoQuote) {
+	            						if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
+	            							ctrl.checkedCounterpartyRows[randUniquePkg] = true;
+	            						}
+	            					}
+	            				}
+	            			});
+	            		});
+	            	});
+	            });
+            }
+			console.log(locationId, prodId, sellerId) ;
+            console.log(ctrl.checkedCounterpartyRows[randUniquePkg]);
+			return ctrl.checkedCounterpartyRows[randUniquePkg];
 
-			console.log(randUniquePkg, shouldBeChecked) ;
-			return shouldBeChecked;
         }
 
 
