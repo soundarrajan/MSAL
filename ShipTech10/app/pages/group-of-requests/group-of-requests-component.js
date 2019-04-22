@@ -1416,10 +1416,9 @@ ctrl.setProductData = function(data, loc) {
         }
         
         ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId) {
-        	randUniquePkg = seller.randUniquePkg;
-        	// sellerRowSelectedProducts = [];
-        	// possibleChecks = 0;
-        	// actualChecks = 0;
+
+
+        	// for individual checkbox
             isSelected = false;
             $.each(ctrl.requests, function (reqK, reqV) {
                 $.each(reqV.locations, function (locK, locV) {
@@ -1428,6 +1427,7 @@ ctrl.setProductData = function(data, loc) {
 	                    	if (prodV.id == productId) {
 		                        $.each(prodV.sellers, function (sellerK, sellerV) {
 		                            if (sellerV.sellerCounterparty.id == sellerCounterpartyId) {
+							        	randUniquePkg = sellerV.randUniquePkg;
 		           						hasNoQuote = false;                 	
 		                                if (sellerV.offers) {
 		                                    if (sellerV.offers.length > 0) {
@@ -1449,7 +1449,33 @@ ctrl.setProductData = function(data, loc) {
                 });
             });
 
-			return isSelected;
+            shouldBeChecked = false;
+            $.each(ctrl.requests, function (reqK, reqV) {
+            	$.each(reqV.locations, function (locK, locV) {
+            		$.each(locV.products, function (prodK, prodV) {
+            			$.each(prodV.sellers, function (sellerK, sellerV) {
+            				if (sellerV.randUniquePkg == randUniquePkg) {
+            					hasNoQuote = false;                 	
+            					if (sellerV.offers) {
+            						if (sellerV.offers.length > 0) {
+            							if (!sellerV.offers[0].hasNoQuote) {
+            								hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+            							}
+            						}
+            					}
+            					if (!hasNoQuote) {
+            						if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
+            							shouldBeChecked = true
+            						}
+            					}
+            				}
+            			});
+            		});
+            	});
+            });
+
+
+			return shouldBeChecked;
         }
 
 
