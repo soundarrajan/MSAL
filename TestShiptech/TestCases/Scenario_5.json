@@ -1,31 +1,22 @@
 
 {
-    "testTitle": "Invoice Test Scenarios - Scenario 5",
-    "baseurl": "http://mail.24software.ro:8161/#/",
-    "starturl": "new-order",
-    "isMasterDb": false,
-    "databaseIntegration": {                        
-                                "server": "10.1.1.9", 
-                                "database": "IntegrationShiptech10PrimeDbCRP2",
-                                "user": "sa",
-                                "password": "!QAZ2wsx"
-                              },
-    "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
-    "password": "MyDocuments72%",
+    "testTitle": "Invoice Test Scenarios - Scenario 5",  
+    "starturl": "new-order",    
     "headless": false,
     "testCases": [
       {
         "keyname": "order",
+        "input": {"products":["product1Name", "product2Name"]},
         "output": {"orderId": "order1Id"},
         "eta": 2,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 1500,
             "unitPrice": 379
           },
           {
-            "name": "DMA 0.1%",
+            "id": "product2Name",
             "quantity": 600,
             "unitPrice": 415
           }
@@ -37,11 +28,11 @@
         "bdnDate": 1,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 1500
           },
           {
-            "name": "DMA 0.1%",
+            "id": "product2Name",
             "quantity": 600
           }
         ]
@@ -52,8 +43,8 @@
         "input": {"orderId":"order1Id"},
         "output": {"invoiceId": "invoice1Id"},
         "invoiceType": "Provisional Invoice",
-        "invoiceStatusAfterSave": "New",
-        "invoiceStatusAfterSubmit": "New",
+        "invoiceStatusAfterSave": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy","WaitingForApproval"],
         "invoiceStatusAfterApprove": "Approved",
         "currency": "US Dollar",
         "testRevert": false,
@@ -61,12 +52,12 @@
         "provisionalData" :{
               "products": [
                 {
-                  "name": "RMG 500 3.5%",
+                  "id": "product1Name",
                   "quantity": 1499,
                   "rate": 380
                 },
                 {
-                  "name": "DMA 0.1%",
+                  "id": "product2Name",
                   "quantity": 600,
                   "rate": 415
                 }
@@ -107,12 +98,12 @@
         "finalData": {
           "products": [
             {
-              "name": "RMG 500 3.5%",
+              "id": "product1Name",
               "quantity": 1499,
               "rate": 373.6484
             },
             {
-              "name": "DMA 0.1%",
+              "id": "product2Name",
               "quantity": 600,
               "rate": 415
             }

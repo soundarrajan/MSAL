@@ -4,10 +4,9 @@
  */
 
 
-const puppeteer = require('puppeteer');
-const TestTools24 = require('./TestTools24.js');
 const Db = require('./MsSqlConnector.js');
 var urljoin = require('url-join');
+var endOfLine = require('os').EOL;
 
 
 class ShiptechTools {
@@ -19,7 +18,7 @@ class ShiptechTools {
     if(this.tools == null)
       throw  new Error("Tools parameters is invalid");    
     this.dbIntegrationConfig = null;
-    this.dbConfig = null;    
+    this.dbConfig = null;
   }
 
 
@@ -28,14 +27,24 @@ class ShiptechTools {
 
     if(!this.tools.baseUrl || this.tools.baseUrl.length <= 0)
       throw new Error("Missing base url.");
+    
     var url = urljoin(this.tools.baseUrl, relativeurl);
     var page = await this.tools.launchBrowser(url, headless); 
     this.tools.addPage(page);
 
     this.tools.log("Login with " + username);
     
-    if(await this.tools.isElementVisible('#otherTileText'))
-      await this.tools.click('#otherTileText');  
+    if(await this.tools.isElementVisible('#otherTileText', 4000))
+      await this.tools.click('#otherTileText');//use another account
+    else
+    {//try again
+      this.tools.waitFor(4000);
+      if(await this.tools.isElementVisible('#otherTileText', 4000))
+        await this.tools.click('#otherTileText');//use another account
+      else
+        this.tools.log("Cannot find 'Use another account' dialog.");
+    }
+    
     //username
     await this.tools.setText("#i0116", username);
     //Next
@@ -126,13 +135,29 @@ async selectWithText(selector, valueToSelect, checkSelection = true){
 }
 
 
+async readSystemError(reference)
+{
+  if(!reference || reference.length != 36)
+    return "";
+  var db = new Db(this.dbIntegrationConfig);
+  var sql = "select TOP (5) Message, ExceptionMessage from logs where reference='" + reference + "'";
+  var errors = await db.read(sql);
+  var message = "";
+  for(var i=0; i<errors.length; i++)
+  {
+    message += errors[i].Message + " " + errors[i].ExceptionMessage + endOfLine;
+  }
+  return message;
+}
+
+
 //"Data Source=10.1.1.9;Initial Catalog=Shiptech1060_PMG_20190211;User ID=sa;Password=!QAZ2wsx;MultipleActiveResultSets=true;Connection Timeout=400"
 async ConnectDb(dbconfig, url, isMaster)
 {
     if(!url)
       throw new Error("Invlid url parameter:" + url);
 
-    const urlToSearch = new URL(url);    
+    const urlToSearch = new URL(url);
 
     this.dbIntegrationConfig = dbconfig;
     var db = new Db(this.dbIntegrationConfig);
@@ -142,12 +167,13 @@ async ConnectDb(dbconfig, url, isMaster)
     var password = "";
     var start = 0;
     var end = 0;
+    var sql = "";
    
     this.dbConfig = null;
 
     if(isMaster)
     {
-        var sql = "select TenantDbConnectionString from MasterConfigurations where url like '%" + urlToSearch.host + "%'";
+        sql = "select TenantDbConnectionString from MasterConfigurations where url like '%" + urlToSearch.host + "%'";
         var tennantconfig = await db.read(sql);
 
         if(!tennantconfig || tennantconfig.length <= 0)
@@ -178,8 +204,14 @@ async ConnectDb(dbconfig, url, isMaster)
         //var vessel = this.getRandomVessel();
     }
     else
-      this.dbConfig = dbconfig;    
-
+      this.dbConfig = dbconfig;   
+      
+    //find client name
+    sql = "Select IntegrationKey From admin.TenantConfigurations";
+    db = new Db(this.dbConfig);
+    var clientName = await db.read(sql);
+        
+    this.tools.log("Client name: " + clientName[0].IntegrationKey);
     this.tools.log("Current database is: " + this.dbConfig.database);
     return this.dbConfig;
 
@@ -201,23 +233,44 @@ findProducts(products, commonTestData)
 
 
 
-async getRandomProduct()
+async getRandomProducts(count)
 {
   if(!this.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
 
-  var sql = "SELECT TOP (20)  [Name] FROM [" + this.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
+  var db = new Db(this.dbConfig);
+  var products = [];
+
+  //var sql = "SELECT TOP (30)  [Name] FROM [" + this.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
+  /*
+  var sql = `select top(50) p.Name from master.Products p 
+  inner join enums.ProductTypes pt on pt.Id = p.ProductTypeId 
+  inner join enums.ProductTypeGroups ptg on ptg.Id = pt.ProductTypeGroupId
+  where ptg.Name = 'FuelAndDistillate'
+  and p.IsDeleted=0
+  order by ptg.name, p.name`;
+  */
+
+  var sql = `select p.Name from master.Products p
+  inner join enums.ProductTypes pt on pt.Id = p.ProductTypeId
+  inner join enums.ProductTypeGroups ptg on ptg.Id = pt.ProductTypeGroupId
+  inner join master.SpecGroups sp on p.DefaultSpecGroupId = sp.Id
+  where ptg.Name = 'FuelAndDistillate' AND p.isDeleted=0`;
+
   var records = await db.read(sql);
 
-  if(!records || records.length <= 0)
-    throw  new Error("Cannot find any product " + sql);
+  if(!records || records.length <= count)
+    throw  new Error("Cannot find " +  count + " products with " + sql);
   
   //choose a random record
-  var idx = Math.floor(Math.random() * records.length);
+  for(var i=0; i<count; i++)
+  {
+    var idx = Math.floor(Math.random() * records.length);
+    products.push(records[idx].Name);
+    records.splice(idx, 1);
+  }
 
-  return records[idx].Name;
-
+  return products;
 }
 
 
@@ -306,11 +359,12 @@ async getRandomPort()
   if(!this.dbConfig)
     throw  new Error("Not connected to database");
   var db = new Db(this.dbConfig);
-  var sql = "SELECT TOP (20) [Name] FROM [" + this.dbConfig.database + "].[master].[Locations]";  
+  var sql = "SELECT TOP (50) [Name] FROM [" + this.dbConfig.database + "].[master].[Locations]";  
   var records = await db.read(sql);
   if(records.length <= 0)
     throw  new Error("Cannot find any company");
   
+    
   //choose a random record
   var idx = Math.floor(Math.random() * records.length);
 

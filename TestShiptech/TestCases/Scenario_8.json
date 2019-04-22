@@ -1,31 +1,22 @@
 
 {
-    "testTitle": "Invoice Test Scenarios - Scenario 8",
-    "baseurl": "http://mail.24software.ro:8161/#/",
-    "starturl": "new-order",
-    "isMasterDb": false,
-    "databaseIntegration": {                        
-                                "server": "10.1.1.9", 
-                                "database": "IntegrationShiptech10PrimeDbCRP2",
-                                "user": "sa",
-                                "password": "!QAZ2wsx"
-                              },
-    "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
-    "password": "MyDocuments72%",
+    "testTitle": "Invoice Test Scenarios - Scenario 8",    
+    "starturl": "new-order",    
     "headless": false,
     "testCases": [
       {
         "keyname": "order",
+        "input": {"products":["product1Name", "product2Name"]},
         "output": {"orderId": "order1Id"},
         "eta": 2,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 500,
             "unitPrice": 600
           },
           {
-            "name": "DMA 0.1%",
+            "id": "product2Name",
             "quantity": 200,
             "rate": 400
           }
@@ -41,14 +32,14 @@
           {
             "name": "BARGING",
             "type": "Unit",
-            "applicableFor": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 500,
             "unitPrice": 0.2                  
           },
           {
             "name": "BARGING",
             "type": "Percent",            
-            "applicableFor": "DMA 0.1%",
+            "id": "product2Name",
             "quantity": 200,
             "unitPrice": 0.3
           }
@@ -72,11 +63,11 @@
         "bdnDate": 1,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 495
           },
           {
-            "name": "DMA 0.1%",
+            "id": "product2Name",
             "quantity": 195
           }
         ]
@@ -106,12 +97,12 @@
         "finalData" :{
               "products": [
                 {
-                  "name": "RMG 500 3.5%",
+                  "id": "product1Name",
                   "quantity": 495,
                   "rate": 600
                 },
                 {
-                  "name": "DMA 0.1%",
+                  "id": "product2Name",
                   "quantity": 195,
                   "rate": 400
                 }
@@ -128,14 +119,14 @@
             {
               "name": "BARGING",
               "type": "Unit",
-              "applicableFor": "RMG 500 3.5%",
+              "id": "product1Name",
               "quantity": 495,
               "unitPrice": 0.2                  
             },
             {
               "name": "BARGING",
               "type": "Percent",            
-              "applicableFor": "DMA 0.1%",
+              "id": "product2Name",
               "quantity": 195,
               "unitPrice": 0.3
             }

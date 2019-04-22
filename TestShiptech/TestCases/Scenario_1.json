@@ -1,24 +1,13 @@
 
 {
     "testTitle": "Invoice Test Scenarios - Scenario 1",
-    "baseurl": "https://qc.shiptech.com/#/",
-    "starturl": "new-order",
-    "isMasterDb": false,
-    "databaseIntegration": {                                
-                                "server": "euw-sh-int-db-01.database.windows.net", 
-                                "database": "Shiptech-TNT-QC",
-                                "user": "supportuser",
-                                "password": "Inatech@123",
-                                "options": {"encrypt": true}
-                              },
-    "username": "24software.ext@inatech.com",
-    "password": "24ext@123",
-    "headless": false,    
+    "headless": false,
+    "starturl": "new-order",    
     "testCases": [
       {
         "keyname": "order",
         "input": {"products":["product1Name"]},
-        "output": {"orderId": "order1Id"},        
+        "output": {"orderId": "order1Id"},
         "eta": 2,
         "products": [
           {

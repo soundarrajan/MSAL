@@ -21,10 +21,11 @@ var shiptech = new ShiptechTools(tools);
     var testCase = tools.ReadTestCase();
     var commonTestData = {};
     var orderId = "";
-    tools.baseUrl = testCase.baseurl;
-    await shiptech.ConnectDb(testCase.databaseIntegration, testCase.baseurl, testCase.isMasterDb);
-    await validateTestCase(testCase);    
-    await shiptech.login(testCase.starturl, testCase.username, testCase.password, testCase.headless);
+    tools.baseUrl = testCase.connection.baseurl;
+    tools.log("url: " + testCase.connection.baseurl);
+    await shiptech.ConnectDb(testCase.connection.databaseIntegration, testCase.connection.baseurl, testCase.connection.isMasterDb);
+    await validateTestCase(testCase);
+    await shiptech.login(testCase.starturl, testCase.connection.username, testCase.connection.password, testCase.headless);
 
   
     var shiptechOrder = new ShiptechOrder(tools, shiptech);
@@ -34,13 +35,21 @@ var shiptech = new ShiptechTools(tools);
     var shiptechInvoicesList =  new ShiptechInvoicesList(tools, shiptech);
 
     process.on('unhandledRejection', (reason, p) => {
-      console.error(reason, 'Unhandled Rejection at Promise', p);
+      console.error(reason, 'Unhandled Rejection in Promise ', p);
     });
     process.on('uncaughtException', err => {
       console.error(err, 'Uncaught Exception thrown');
       process.exit(1);
     });
-
+    process.on('exit', async (exitCode) => {
+      if(exitCode && exitCode.length == 36 && testCase.connection.isMasterDb)
+      {
+        var msg = await this.shiptech.readSystemError(exitCode);
+        if(msg && msg.length > 0)
+          this.tools.log(msg);
+      }
+      process.exit(1);
+    });
 
   }
   catch(error)
@@ -100,7 +109,10 @@ var shiptech = new ShiptechTools(tools);
           if(hasPassed)
             tools.createResultsReport(testCase.testTitle, i+1, "PASS", orderId);
           else
+          {
             tools.createResultsReport(testCase.testTitle, i+1, "FAIL", orderId);
+            process.exit(1);
+          }
       }
       catch(error)
       {
@@ -113,6 +125,8 @@ var shiptech = new ShiptechTools(tools);
           tools.error(error.stack);          
 
         tools.createResultsReport(testCase.testTitle, i+1, "FAIL", orderId);
+
+        process.exit(1);
       }
     }
     await tools.Close();

@@ -122,6 +122,7 @@ var password = '24ext@123';
     if(error.stack)
       console.error(error.stack);
     
+    process.exit(1);
   }
 
 

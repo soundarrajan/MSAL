@@ -101,7 +101,7 @@ class ShiptechInvoicesDeliveriesList {
     else 
       productData = testCase.finalData;
 
-    //select the rows having the specified products
+    //select the rows having the specified products    
     var rowsInFocus = [];
     for (var i=0; i<productData.products.length; i++)
     {
@@ -110,12 +110,14 @@ class ShiptechInvoicesDeliveriesList {
         throw new Error("Cannot find product " + productData.products[i].name + " in deliveries list.");
         
       rowsInFocus.push(rowIdx);
-      await this.tools.click("#jqg_flat_invoices_app_deliveries_list_" + rowIdx);
-      break;//all the checkboxes will automaticaly check
+
+      if(i == 0)//all the checkboxes will automaticaly check
+        await this.tools.click("#jqg_flat_invoices_app_deliveries_list_" + rowIdx);
+      
       //now all the rows should be selected
     }
 
-    //unselect all other rows
+    //unselect all other rows that are not in the productData.products
     var rowCount = await this.shiptech.findTableRowsCount("#flat_invoices_app_deliveries_list");
     for(var i=1; i<rowCount; i++)
     {

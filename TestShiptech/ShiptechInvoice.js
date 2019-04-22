@@ -1,5 +1,4 @@
-/**
- * @name test shiptech dashboard
+/** * @name test shiptech dashboard
  * @desc Test the Shiptech dashboard
  */
 
@@ -48,6 +47,9 @@ class ShiptechInvoice {
         countButtons++;
       else
         break;    
+
+    if(countButtons < products.length)
+      throw new Error("Not enaugh products in invoice.");
   
     //delete if there are more
     for(i=0; i<countButtons; i++)
@@ -67,6 +69,9 @@ class ShiptechInvoice {
         }
       }
     }
+
+
+
   }
 
 
@@ -132,13 +137,12 @@ class ShiptechInvoice {
     if(testCase.finalData)
       this.shiptech.findProducts(testCase.finalData.products, commonTestData);    
 
-    if(!testCase.input.orderId)
+    if(!testCase.input || !testCase.input.orderId)
       throw new Error("orderId not defined in input parameters");
 
-    if(!testCase.orderId || testCase.orderId.length <= 0)
-      testCase.orderId = commonTestData[testCase.input.orderId];
+    var orderId = commonTestData[testCase.input.orderId];
 
-    if(!testCase.orderId || testCase.orderId.length <= 0)
+    if(!orderId || orderId.length <= 0)
         throw new Error("Missing orderId from parameters in InvoiceDeliveriesList()");
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
@@ -193,7 +197,7 @@ class ShiptechInvoice {
 
     if(testCase.testOrderStatus)
     {
-        await this.tools.clickOnItemByText("a[ng-href='#/edit-order/" + testCase.orderId + "']", 'Order');
+        await this.tools.clickOnItemByText("a[ng-href='#/edit-order/" + orderId + "']", 'Order');
         var labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
         this.tools.log("Order status is " + labelStatus);                
         labelStatus = labelStatus.replace(/[^0-9a-z]/gi, '').trim();
@@ -276,7 +280,6 @@ async readInvoiceNumber()
     flatStatus = statusList.join(",");
       
     var isValid = false;
-    var flatStatus = status.join
     for(var i=0; i<statusList.length; i++)
     {
       if(labelTitle.includes(statusList[i]))
@@ -301,6 +304,8 @@ async readInvoiceNumber()
     await this.tools.waitForLoader();
     await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
     await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Create Final Invoice');
+    await this.tools.closeCurrentPage();
+    await this.tools.getPage("Invoices", false, true);
     await this.tools.waitForLoader();
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
@@ -324,11 +329,21 @@ async readInvoiceNumber()
 
 
   
-  async CreateFinalInvoiceSearchProvisional(testCase)
+  async CreateFinalInvoiceSearchProvisional(testCase, commonTestData)
   {
 
     if(!testCase.finalData)
-      throw  new Error("Missing data for final invoice");    
+      throw new Error("CreateFinalInvoiceSearchProvisional(): Missing data for final invoice");
+
+    if(!testCase.input)
+      throw new Error("CreateFinalInvoiceSearchProvisional(): No input parameters.");
+    
+    var orderId = commonTestData[testCase.input.orderId];
+
+    if(!orderId)
+      throw new Error("CreateFinalInvoiceSearchProvisional(): orderId from commonTestData.");
+
+    await this.tools.getPage("Invoice - " + orderId + " - " + commonTestData.vesselName, false, true);
 
     this.tools.log("Create final invoice after searching provisional");
 
@@ -346,7 +361,8 @@ async readInvoiceNumber()
     //create final invoice
     await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
     await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Create Final Invoice');    
-    await this.tools.getPage("Invoices", false, false);    
+    //await this.tools.getPage("Invoice - " + commonTestData.orderId + " - " + commonTestData.vesselName, false, true);
+    await this.tools.getPage("Invoices", false, true);    
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
     if(!labelTitle.includes("Invoices :: Edit"))

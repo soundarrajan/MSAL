@@ -70,9 +70,8 @@ class ShiptechInvoicesList {
       // await this.tools.setText("#filter0_Text", testCase.invoiceId);
 
       await this.tools.clickOnItemByText("span.formatter.edit_link", testCase.invoiceId);
-      await this.tools.waitForLoader();
-      await this.tools.getPage("Invoice - " + testCase.orderId + " - " + commonTestData.vesselName, false, false);
-      await this.shiptechInvoice.CreateFinalInvoiceSearchProvisional(testCase);
+      await this.tools.waitForLoader();      
+      await this.shiptechInvoice.CreateFinalInvoiceSearchProvisional(testCase, commonTestData);
 
     }
     else if(testCase.action == "provisional" || testCase.action == "final" || testCase.action == "provisionalThenFinal")

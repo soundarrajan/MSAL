@@ -49,10 +49,9 @@ class ShiptechOrder {
         if(testCase.input && testCase.input.products)
         {
           commonTestData.products = [];
-          for(var i=0; i<testCase.input.products.length; i++)
-          {
-            var productName = await this.shiptech.getRandomProduct();
-            commonTestData.products.push({id: testCase.input.products[i], name: productName });
+          var productsName = await this.shiptech.getRandomProducts(testCase.input.products.length);
+          for(var i=0; i<testCase.input.products.length; i++) {
+            commonTestData.products.push({id: testCase.input.products[i], name: productsName[i] });
           }
 
           this.shiptech.findProducts(testCase.products, commonTestData);
@@ -169,7 +168,10 @@ class ShiptechOrder {
         
         await this.tools.clickOnItemByText('a.btn', 'Save');
         await this.tools.waitForLoader("Save Order");
-        var labelStatus = await this.tools.getText("#entity-status-1");        
+        if(!this.tools.isElementVisible("#entity-status-1", 2000))
+          throw new Error("Order status is missing, check if the order can be saved.");
+
+        var labelStatus = await this.tools.getText("#entity-status-1");
         this.tools.log("Order status is " + labelStatus.trim());
         if(!labelStatus.includes("Stemmed"))
         {
@@ -207,11 +209,11 @@ class ShiptechOrder {
         if(testCase.output && testCase.output.orderId)
           commonTestData[testCase.output.orderId] = await this.readOrderId();
         
-        this.tools.log("OrderId=" + commonTestData.orderId);
+        this.tools.log("OrderId=" + commonTestData[testCase.output.orderId]);
          
         if(!labelStatus.includes("Confirmed"))          
         {
-          this.tools.log("Cannot confirm the order " + commonTestData.orderId);
+          this.tools.log("Cannot confirm the order " + commonTestData[testCase.output.orderId]);
           testCase.result = false;
         }
 
@@ -225,13 +227,15 @@ class ShiptechOrder {
 
 
   async readOrderId()
-  {
+  { 
     var labelOrderId = await this.tools.getText("div.note.note-related.active>p.ng-binding:first-child");
-    labelOrderId = labelOrderId.replace(/\D/g,'');
+    labelOrderId = labelOrderId.replace("Order ID", '');
+    labelOrderId = labelOrderId.replace(":", '');
+    //labelOrderId = labelOrderId.replace(" ", "");
+    labelOrderId = labelOrderId.replace(/ +?/g, '').trim();
+    //labelOrderId = labelOrderId.replace(/\D/g,'');
     return labelOrderId;
   }
-
-
 
 
 }

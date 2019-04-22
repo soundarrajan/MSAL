@@ -1,26 +1,17 @@
 
 {
     "testTitle": "Invoice Test Scenarios - Scenario 2",
-    "baseurl": "http://mail.24software.ro:8161/#/",
-    "starturl": "new-order",
-    "isMasterDb": false,
-    "databaseIntegration": {        
-                                "server": "10.1.1.9", 
-                                "database": "IntegrationShiptech10PrimeDbCRP2",
-                                "user": "sa",
-                                "password": "!QAZ2wsx"
-                              },
-    "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
-    "password": "MyDocuments72%",
     "headless": false,
+    "starturl": "new-order",    
     "testCases": [
       {
         "keyname": "order",
-        "output": {"orderId": "order1Id"},
+        "input": {"products":["product1Name"]},
+        "output": {"orderId": "order1Id"},        
         "eta": 2,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 1500,
             "unitPrice": 379
           }
@@ -32,7 +23,7 @@
         "bdnDate": 1,
         "products": [
           {
-            "name": "RMG 500 3.5%",
+            "id": "product1Name",
             "quantity": 1500
           }
         ]
@@ -52,17 +43,16 @@
           "provisionalData" :{ 
               "products": [
                 {
-                  "name": "RMG 500 3.5%",
+                  "id": "product1Name",
                   "quantity": 1499,
                   "rate": 380
                 }
               ]
             },
-
           "finalData": {
             "products": [
               {
-                "name": "RMG 500 3.5%",
+                "id": "product1Name",
                 "quantity": 1499,
                 "rate": 387.0047
               }

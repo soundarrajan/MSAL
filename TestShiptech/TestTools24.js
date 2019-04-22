@@ -10,7 +10,7 @@ const path = require('path');
 const fsExtra = require('fs-extra')
 var endOfLine = require('os').EOL;
 var urljoin = require('url-join');
-
+const Db = require('./MsSqlConnector.js');
 
 
 
@@ -78,20 +78,22 @@ class TestTools24 {
   }
 
 
-  async navigate(pageUrl, pageTitle)
+  async navigate(pageUrl, pageTitle = "")
   {
+    var currentTitlte = "";
     if(!pageUrl || pageUrl.length <= 0)
       throw new Error("Missing url from navigate()");
 
     await this.waitForLoader();
-    this.log("Loading " + pageTitle + "...");
-    var currentTitlte = await this.page.title();
-    if(currentTitlte != pageTitle)
-    {
-      var page = await this.getPage(pageTitle, false, false);
-      if(!page)
-        page = await this.openPageRelative(pageUrl);
 
+    if(pageTitle)
+      this.log("Loading " + pageTitle + " at " + pageUrl);
+    else
+      this.log("Loading " + pageUrl)
+
+    if(this.page == null)//no open pages?
+    {
+      page = await this.openPageRelative(pageUrl);      
       currentTitlte = await this.page.title();
       if(currentTitlte != pageTitle)
       {
@@ -99,6 +101,18 @@ class TestTools24 {
         return false;
       }      
     }
+    else
+    {
+        currentTitlte = await this.page.title();
+        if(currentTitlte != pageTitle)
+        {
+          var page = await this.getPage(pageTitle, false, false);
+          if(!page)
+            page = await this.openPageRelative(pageUrl);          
+        }
+    }
+
+    
    
     await this.waitForLoader();
     await this.page.waitFor(2000);
@@ -228,6 +242,9 @@ class TestTools24 {
 
       async goto(url)
       {
+        if(!this.page)
+          throw new Error("goto(url) - no current page available.");
+
         await this.page.goto(url, {  
           waitUntil: 'networkidle2',
           timeout: 60000
@@ -289,7 +306,7 @@ class TestTools24 {
            if(!element)
             {
               var title = await page.title();
-              if(title != "Sign in to your account" && title != "Sign out")
+              if(title != "Sign in to your account" && title != "Sign out" && title != "Redirecting")
                 console.log("Element autoTestingGUIDerror not found in browser page: \"" + title + "\"");
               return;
             }
@@ -298,9 +315,9 @@ class TestTools24 {
             var errGuid = await this.page.evaluate(element => element.textContent, element);        
             if(errGuid && errGuid.length > 0)
             {
-              this.error("Backend error " + errGuid);
+              this.error("Backend error " + errGuid);              
               this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", logicalTarget);
-              process.exit(1);
+              process.exit(errGuid);
             }
             retries = 0;
         }
@@ -466,10 +483,6 @@ class TestTools24 {
     }
 
 
-
-
-
-
     
         
     async makeSelector(selector, attributeName, textToSelectInAttr, index)
@@ -515,7 +528,7 @@ class TestTools24 {
 
 
     
-    async selectFirstOptionBySelector(elementSelector)
+    async selectFirstOptionBySelector(elementSelector, selector)
     {
       var implementedText = await this.getSelectedOption(elementSelector);
       
@@ -525,7 +538,7 @@ class TestTools24 {
       var allOptions = await this.getAllOptionsBySelector(elementSelector, 0);
 
       if(allOptions.length <= 0)
-        throw new Error("no options available in " + textToSelectInAttr);
+        throw new Error("no options available in " + elementSelector + " for " + selector);
 
       var optionToSelect = "";
       for(var i=0; i<allOptions.length; i++)
@@ -536,7 +549,7 @@ class TestTools24 {
         }
 
        if(optionToSelect.length <= 0)
-        throw new Error("no options available in " + elementSelector);
+        throw new Error("no options available in " + elementSelector + " for " + selector);
 
       await this.page.select(elementSelector, optionToSelect);
 
@@ -559,7 +572,7 @@ class TestTools24 {
     {
       await this.waitFor(selector);
       var elementSelector = await this.makeSelector(selector, attributeName, textToSelectInAttr, index);
-      await this.selectFirstOptionBySelector(elementSelector);      
+      await this.selectFirstOptionBySelector(elementSelector, selector);      
     }
 
 
@@ -575,13 +588,18 @@ class TestTools24 {
       var options = await this.getAllOptionsBySelector(elementSelector);
       var valueToSelect = null;
       var found = false;
+      var allValues = "";
       //find the value knowing the text      
       for(var i=0; i<options.length; i++)
+      {
+        allValues += options[i].text + " / ";
+        
         if(options[i].text == textToSelect){
           valueToSelect = options[i].value;
           found = true;
           break;
         }
+      }
 
       if(!found)
         for(var i=0; i<options.length; i++)
@@ -592,14 +610,14 @@ class TestTools24 {
             break;
           }
 
-          if(options[i].text && options[i].text.indexOf(textToSelect) >= 0){
+          if(options[i].text && options[i].text.toUpperCase().indexOf(textToSelect.toUpperCase()) >= 0){
             valueToSelect = options[i].value;
             break;
           }
         }
 
       if(valueToSelect == null)
-        throw new Error("cannot find " + textToSelect + " into " + elementSelector);
+        throw new Error("cannot find " + textToSelect + " into " + elementSelector + " All options: " + allValues);
 
       await this.page.select(elementSelector, valueToSelect);
 
@@ -761,7 +779,7 @@ class TestTools24 {
           }
           catch(error)
           {
-  
+            //mask the error
           }
 
           totalWaitTime += this.standardWait;
@@ -1730,6 +1748,7 @@ async Close()
 
 ReadTestCase()
 {  
+  
   var args = process.argv.slice(2);
   if(args.length <= 0)
     throw new Error("No test case cmd line argument.");  
@@ -1738,15 +1757,39 @@ ReadTestCase()
   if(!fs.existsSync(filename))
     throw new Error("Test case " + filename + " not found.");
 
+  var connectionFileName = args[1];
+  if(!fs.existsSync(connectionFileName))
+    throw new Error("Connection file " + connectionFileName + " not found.");
+
   var testCase = {};
   try
   {
-    var testCase = JSON.parse(fs.readFileSync(filename, 'utf8'));
+    testCase = JSON.parse(fs.readFileSync(filename, 'utf8'));
   }
-catch(e)
-{
-  throw filename + " has an invalid format. (not JSON)" + endOfLine + e.message;
-}  
+  catch(e)
+  {
+    throw new Error(filename + " has an invalid format." + endOfLine + e.message);
+  }  
+
+  if(!testCase)
+    throw new Error(filename + " cannot be read" + endOfLine);
+  
+
+  if(!fs.existsSync(connectionFileName))
+    throw new Error(connectionFileName + " file not found " + endOfLine);
+
+  try
+  {
+    testCase.connection = JSON.parse(fs.readFileSync(connectionFileName, 'utf8'));
+  }
+  catch(e)
+  {
+    throw filename + " has an invalid format." + endOfLine + e.message;
+  }
+
+  if(!testCase.connection)
+    throw new Error(connectionFileName + " cannot be read" + endOfLine);
+  
 
  if(!testCase.testTitle || testCase.testTitle.length <= 0)
    throw filename + " has contains no testTitle" + endOfLine + e.message;
@@ -1755,8 +1798,11 @@ catch(e)
  if(!testCase.testCases || testCase.testCases.length <= 0)
   throw filename + " has no testCases array";
 
+ if(!testCase.connection)
+  throw filename + " missing connection information";
 
- if(!testCase.baseurl || testCase.baseurl.length <=0)
+
+ if(!testCase.connection.baseurl || testCase.connection.baseurl.length <=0)
   throw filename + " missing baseurl field";
 
  return testCase;
