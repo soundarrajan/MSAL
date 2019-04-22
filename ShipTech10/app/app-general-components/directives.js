@@ -57,8 +57,10 @@ window.increment = 0;
                         CLC.tableParams.PageFilters = {};
                     }
                     scope.tenantSetting = $tenantSettings;
+                    CLC.tableParams.PageFilters = {};
+                    $rootScope.rawFilters = [];
                     scope.$on("$stateChangeSuccess", function () {
-                        CLC.tableParams.PageFilters = {};
+	                    CLC.tableParams.PageFilters = {};
                         console.log("stateChangeSuccess");
                     });
                     checkProcurement = -1;
