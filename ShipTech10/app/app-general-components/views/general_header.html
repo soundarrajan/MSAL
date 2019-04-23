@@ -95,7 +95,7 @@
                             <span ng-repeat="(key, value) in screenButtons" ng-if="value.label == 'Revert' ">
                                 {{ formValuesLoaded }}
                                 <span ng-controller="Controller_Master as CM">
-									<a ng-disabled="value.disabled" class="btn btn-default btn-outline" data-group="extern" ng-click="revert_invoice()" disabled="disabled">
+									<a ng-disabled="value.disabled" class="btn btn-default btn-outline" id="revert_invoice" data-group="extern" ng-click="revert_invoice()" disabled="disabled">
 									    Revert
 									</a>
                                 </span>
