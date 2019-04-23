@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('AllRequestsTableController', ['$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService', 'notificationsModel', 'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
-    function($scope, $element, $attrs, $timeout, $filter, $state, $window, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, notificationsModel, scheduleDashboardStatusResource, tenantScheduleDashboardConfiguration, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
+angular.module('shiptech.pages').controller('AllRequestsTableController', ['$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService',  'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
+    function($scope, $element, $attrs, $timeout, $filter, $state, $window, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, scheduleDashboardStatusResource, tenantScheduleDashboardConfiguration, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
         //      var tableSelector = '#all_requests_table';
         // $scope.Math = window.Math;
         $scope.STATE = STATE;

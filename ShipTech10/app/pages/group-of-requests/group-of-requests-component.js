@@ -23,7 +23,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "groupOfRequestsModel",
     "newRequestModel",
     "tenantService",
-    "notificationsModel",
     "LOOKUP_TYPE",
     "LOOKUP_MAP",
     "SCREEN_LAYOUTS",
@@ -36,7 +35,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
     "listsModel",
     "$tenantSettings",
     "$sce",
-    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, notificationsModel, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings, $sce) {
+    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings, $sce) {
         $scope.STATE = STATE;
         var ctrl = this;
         var groupId = $stateParams.groupId;
