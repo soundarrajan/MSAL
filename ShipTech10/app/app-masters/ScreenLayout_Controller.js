@@ -277,6 +277,10 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 						                	v.product.id = angular.copy(v.deliveryProductId);
 					                	}
 					                }
+				                } else {
+				                	v.product = {
+				                		id : -1,
+				                	}
 				                }
 				            });                
 				        }
