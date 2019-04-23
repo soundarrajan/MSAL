@@ -2055,7 +2055,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (ctrl.dataReasonCancel) {
                 payload = ctrl.dataReasonCancel;
             } else {
-                payload = { id: ctrl.request.id };
+                payload = {
+                    id: ctrl.request.id
+                };
             }
             ctrl.buttonsDisabled = true;
             newRequestModel.cancelRequest(payload).then(
@@ -2117,6 +2119,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         {
                             ColumnName: "RequestId",
                             Value: ctrl.request.id
+                        },
+                        {
+                            ColumnName: "RequestName",
+                            Value: ctrl.request.Name
                         }
                     ]
                 };
@@ -2168,6 +2174,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     {
                         ColumnName: "RequestId",
                         Value: ctrl.request.id
+                    },
+                    {
+                        ColumnName: "RequestName",
+                        Value: ctrl.request.name
                     }
                 ]
             };
