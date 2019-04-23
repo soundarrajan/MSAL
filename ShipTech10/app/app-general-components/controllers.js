@@ -3656,7 +3656,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     return;
               }
                 //get table width here, it gets altered later
-                newColModel = Object.values(Elements.table)[0].jqGrid("getGridParam", "colModel");
+                // newColModel = Object.values(Elements.table)[0].jqGrid("getGridParam", "colModel");
+
+                newColModel = Elements.table[$(Elements.container[0]).find(".ui-jqgrid-bdiv table[role='presentation']").attr("id")].jqGrid("getGridParam", "colModel");
+
                 payload = [];
                 $.each(newColModel, function(k, v) {
                     if (!v.exclude && v.label) {
@@ -3672,6 +3675,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 $scope.tableData.clc.colModel = [];
                 $scope.tableData.clc.colModel = payload;
 
+    //             console.log("-------- Should save Layout");
+    //             console.log($scope.currentList, $scope.tableData);
+    //             console.log("--------");
+				// return;
                 uiApiModel.saveListLayout($scope.currentList, $scope.tableData).then(function(data) {
                     if (data.isSuccess) {
                         $rootScope.$broadcast("savedLayout");
