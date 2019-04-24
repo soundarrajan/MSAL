@@ -2915,6 +2915,11 @@ ctrl.setProductData = function(data, loc) {
 
 
         };
+
+        ctrl.triggerCommentsChange = function() {
+            $rootScope.overrideCloseNavigation = false;
+        }
+
         ctrl.saveComments = function (internalComments, externalComments, fromDate) {
             if (fromDate && ctrl.lastSavedQuoteByDateFrom == ctrl.quoteByDateFrom) {
                 return;
@@ -2927,6 +2932,7 @@ ctrl.setProductData = function(data, loc) {
 	        	externalComments = externalComments.replace(/(\r\n|\n)/g, "<br/>")
         	}
             groupOfRequestsModel.updateGroup(groupId, internalComments, externalComments, ctrl.quoteByDate, ctrl.quoteByTimezone, ctrl.quoteByCurrency, ctrl.quoteByDateFrom);
+            $rootScope.overrideCloseNavigation = true;
         };
 
         //set requote requirements needed by requote dialog
@@ -3528,6 +3534,9 @@ ctrl.setProductData = function(data, loc) {
             $bladeEntity.open("groupOfRequestBlade");
             ctrl.bladeOpened = true;
             ctrl.dataLoaded = true;
+            if (widget == 'comments') {
+                $rootScope.overrideCloseNavigation = true;
+            }
         };
         ctrl.groupSellersInLocations = function () {
             groupedLocationsIds = [];
