@@ -1277,11 +1277,16 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 
 
             /*VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
+            noQuoteProductsAndCostsByRequest = [];
             var hasNoQuoteProducts = false
             hasAdditionalCostOnNoQuoteProduct = false;
             $.each(ctrl.individuals, function(cik,civ){
+	        	noQuoteProductsAndCostsByRequest["r_" + civ.request.id] = {
+	        		"noQuoteProducts" : 0
+	        	};
 	            $.each(civ.products, function(pk,pv){
 	            	currentProduct = pv;
+	            	noQuoteProductsAndCostsByRequest["r_" + civ.request.id].noQuoteProducts--;
 					$.each(pv.sellers, function(sk,sv){
 						$.each(sv.offers, function(ok,ov){
 							hasActiveCost = false;
@@ -1289,6 +1294,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 								hasActiveCost = _.find(ov.additionalCosts, function(obj) {
 								    return !obj.isDeleted && obj.additionalCost;
 								})
+							}
+							if (ov.hasNoQuote) {
+				            	noQuoteProductsAndCostsByRequest["r_" + civ.request.id].noQuoteProducts++;
 							}
 							if (hasActiveCost && ov.hasNoQuote == true) {
 					            if (!hasAdditionalCostOnNoQuoteProduct) {
@@ -1302,16 +1310,15 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 					})
 	            })
             })
+
             $.each(ctrl.individuals, function(ik,iv){
 	            if (iv.offer) {
 	            	if (iv.offer.additionalCosts.length > 0) {
 						hasActiveCost = _.find(iv.offer.additionalCosts, function(obj) {
 						    return !obj.isDeleted && obj.additionalCost;
 						})
-						if (hasActiveCost && allProductsAreNoQuote == true) {
-				            if (!hasAdditionalCostOnNoQuoteProduct && hasNoQuoteProducts) {
-					            hasAdditionalCostOnNoQuoteProduct = true;
-				            }	
+						if (hasActiveCost && noQuoteProductsAndCostsByRequest["r_" + iv.request.id].noQuoteProducts >= 0) {
+				            hasAdditionalCostOnNoQuoteProduct = true;
 						}					
 	            	}
 	            }
