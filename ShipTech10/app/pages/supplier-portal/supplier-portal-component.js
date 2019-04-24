@@ -1277,6 +1277,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 
 
             /*VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
+            var hasNoQuoteProducts = false
             hasAdditionalCostOnNoQuoteProduct = false;
             $.each(ctrl.individuals, function(cik,civ){
 	            $.each(civ.products, function(pk,pv){
@@ -1294,9 +1295,26 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 						            hasAdditionalCostOnNoQuoteProduct = true;
 					            }	
 							}
+							if (ov.hasNoQuote) {
+								hasNoQuoteProducts = true;
+							}
 						})
 					})
 	            })
+            })
+            $.each(ctrl.individuals, function(ik,iv){
+	            if (iv.offer) {
+	            	if (iv.offer.additionalCosts.length > 0) {
+						hasActiveCost = _.find(iv.offer.additionalCosts, function(obj) {
+						    return !obj.isDeleted && obj.additionalCost;
+						})
+						if (hasActiveCost && allProductsAreNoQuote == true) {
+				            if (!hasAdditionalCostOnNoQuoteProduct && hasNoQuoteProducts) {
+					            hasAdditionalCostOnNoQuoteProduct = true;
+				            }	
+						}					
+	            	}
+	            }
             })
             if (hasAdditionalCostOnNoQuoteProduct) {
             	toastr.error("Please remove Additional Costs that are applicable for no quote products");
