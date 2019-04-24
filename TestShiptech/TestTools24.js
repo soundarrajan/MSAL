@@ -10,7 +10,6 @@ const path = require('path');
 const fsExtra = require('fs-extra')
 var endOfLine = require('os').EOL;
 var urljoin = require('url-join');
-const Db = require('./MsSqlConnector.js');
 
 
 
@@ -579,11 +578,11 @@ class TestTools24 {
 
 
             
-    async selectBySelector(elementSelector, textToSelect, test=false)
+    async selectBySelector(elementSelector, textToSelect, test=false, exactMatch = true)
     {      
 
       if(!textToSelect)
-        throw new Error("selectBySelector invalid text parameter for " + elementSelector);
+        throw new Error("selectBySelector invalid text (" + textToSelect + ") parameter for " + elementSelector);
 
       var options = await this.getAllOptionsBySelector(elementSelector);
       var valueToSelect = null;
@@ -594,11 +593,23 @@ class TestTools24 {
       {
         allValues += options[i].text + " / ";
         
-        if(options[i].text == textToSelect){
-          valueToSelect = options[i].value;
-          found = true;
-          break;
+        if(exactMatch)
+        {
+          if(options[i].text == textToSelect){
+            valueToSelect = options[i].value;
+            found = true;
+            break;
+          }
         }
+        else
+        {
+          if(options[i].text && options[i].text.toUpperCase().indexOf(textToSelect.toUpperCase()) >= 0){
+            valueToSelect = options[i].value;
+            found = true;
+            break;
+          }
+        }
+
       }
 
       if(!found)

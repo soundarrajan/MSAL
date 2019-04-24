@@ -52,25 +52,7 @@ class ShiptechInvoicesList {
     if(testCase.action == "finalAfterProvisional")
     {//search the invoice id
 
-
-      if(!testCase.input.invoiceId)
-        throw new Error("invoiceId not defined in input parameters");
-
-      testCase.invoiceId = commonTestData[testCase.input.invoiceId];
-      if(!testCase.invoiceId || testCase.invoiceId.length <= 0)
-        throw new Error("No invoiceId found in parameters to Invoice List for action " + testCase.action);
-
-      await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
-      await this.tools.selectBySelector("#rule_0_condition", "Is equal");
-      await this.tools.setText("#filter0_Number", testCase.invoiceId);
-      await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
-      await this.tools.waitFor(2000);
-      await this.tools.waitForLoader();
-      // await this.tools.click("#flat_invoices_app_invoice_list_invoice.id>a");
-      // await this.tools.setText("#filter0_Text", testCase.invoiceId);
-
-      await this.tools.clickOnItemByText("span.formatter.edit_link", testCase.invoiceId);
-      await this.tools.waitForLoader();      
+      await this.selectInvoice(testCase, commonTestData);
       await this.shiptechInvoice.CreateFinalInvoiceSearchProvisional(testCase, commonTestData);
 
     }
@@ -91,6 +73,7 @@ class ShiptechInvoicesList {
     }
     else if(testCase.action == "cancel")
     {
+      await this.selectInvoice(testCase, commonTestData);
       await this.shiptechInvoice.CancelInvoice(testCase, commonTestData);
     }
     else
@@ -103,6 +86,34 @@ class ShiptechInvoicesList {
     return testCase;
   
   }
+
+
+
+
+  async selectInvoice(testCase, commonTestData)
+  {
+    if(!testCase.input.invoiceId)
+      throw new Error("invoiceId not defined in input parameters");
+
+    testCase.invoiceId = commonTestData[testCase.input.invoiceId];
+    if(!testCase.invoiceId || testCase.invoiceId.length <= 0)
+      throw new Error("No invoiceId found in parameters to Invoice List for action " + testCase.action);
+
+    await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
+    await this.tools.selectBySelector("#rule_0_condition", "Is equal");
+    await this.tools.setText("#filter0_Number", testCase.invoiceId);
+    await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
+    await this.tools.waitFor(2000);
+    await this.tools.waitForLoader();
+    // await this.tools.click("#flat_invoices_app_invoice_list_invoice.id>a");
+    // await this.tools.setText("#filter0_Text", testCase.invoiceId);
+
+    await this.tools.clickOnItemByText("span.formatter.edit_link", testCase.invoiceId);
+    await this.tools.waitForLoader();
+
+  }
+
+
 
 
 }

@@ -35,7 +35,7 @@
         "output": {"invoiceId": "invoice1Id"},
         "invoiceType": "Provisional Invoice",
         "invoiceStatusAfterSave": ["New","Discrepancy"],
-        "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy", "WaitingForApproval"],
         "invoiceStatusAfterApprove": ["Approved"],
         "currency": "US Dollar",
         "testRevert": false,
@@ -64,16 +64,18 @@
       {
         "keyname": "invoice",
         "action": "cancel",
-        "input": {"orderId": "order1Id"},
+        "input": {"orderId": "order1Id", "invoiceId":"invoice1Id"},
+        "invoiceStatusAfterRevert": ["New","Discrepancy"],
         "invoiceStatusAfterCancel": "Cancelled"
       },
       {
         "keyname": "treasury",
         "url": "invoices/treasuryreport",
+        "input": {"orderId":"order1Id"},
         "pageTitle": "Treasury Report",
         "rows": [ 
           {
-            "Calculated Amount": "569620",
+            "Calculated Amount": "568500",
             "Invoice Amount": "",
             "Invoice Type": ""   
           }              
@@ -81,11 +83,11 @@
       },
       {
         "keyname": "invoice",
-        "action": "finalAfterProvisional",
+        "action": "final",
         "input": {"orderId": "order1Id", "invoiceId":"invoice1Id"},
         "invoiceType": "Final Invoice",
         "invoiceStatusAfterSave": ["New","Discrepancy"],
-        "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+        "invoiceStatusAfterSubmit": ["New","Discrepancy", "WaitingForApproval"],
         "invoiceStatusAfterApprove": ["Approved"],
         "orderId": "",
         "currency": "US Dollar",
@@ -96,7 +98,7 @@
                 {
                   "id": "product1Name",
                   "quantity": 1499,
-                  "rate": 380
+                  "rate": 373.65
                 }
               ]
             }
@@ -106,8 +108,8 @@
         "input": {"orderId":"order1Id"},
         "rows": [ 
           {
-            "Calculated Amount": "560099",
-            "Invoice Amount": "560099",
+            "Calculated Amount": "560101",
+            "Invoice Amount": "560101",
             "Invoice Type": "Final Invoice"            
           }
         ]

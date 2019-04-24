@@ -181,6 +181,10 @@ var shiptech = new ShiptechTools(tools);
           }
         }
 
+        if(!await shiptech.validateDatabaseConfiguration())
+          throw new Error("Cannot runt automated tests on this configuration. Please change the configuration and try again.");
+
+          
     }
     
 

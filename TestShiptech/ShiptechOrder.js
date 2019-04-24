@@ -51,6 +51,7 @@ class ShiptechOrder {
           commonTestData.products = [];
           var productsName = await this.shiptech.getRandomProducts(testCase.input.products.length);
           for(var i=0; i<testCase.input.products.length; i++) {
+            this.tools.log("Product #" + (i+1) + ": " + productsName[i]);
             commonTestData.products.push({id: testCase.input.products[i], name: productsName[i] });
           }
 
@@ -162,7 +163,10 @@ class ShiptechOrder {
           await this.tools.selectBySelector("#additional_cost_additional_cost_" + i, testCase.costs[i].name);
           await this.tools.selectBySelector("#additional_cost_type_" + i, testCase.costs[i].type);
           await this.tools.setText("#additional_cost_price_" + i, testCase.costs[i].unitPrice);
-          await this.tools.selectBySelector("#ApplicableFor_" + i, testCase.costs[i].applicableFor);
+          if(testCase.costs[i].applicableFor.toUpperCase() == "ALL")
+            await this.tools.selectBySelector("#ApplicableFor_" + i, "All", false, false);
+          else
+            await this.tools.selectBySelector("#ApplicableFor_" + i, commonTestData.products[testCase.costs[i].applicableFor], false, false);
         }
 
         

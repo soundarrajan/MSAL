@@ -34,15 +34,14 @@ class ShiptechTools {
 
     this.tools.log("Login with " + username);
     
-    if(await this.tools.isElementVisible('#otherTileText', 4000))
-      await this.tools.click('#otherTileText');//use another account
-    else
-    {//try again
-      this.tools.waitFor(4000);
+    for(var i=0; i<5; i++)
+    {
       if(await this.tools.isElementVisible('#otherTileText', 4000))
         await this.tools.click('#otherTileText');//use another account
-      else
+      else if(i >= 4)
         this.tools.log("Cannot find 'Use another account' dialog.");
+        
+      this.tools.waitFor(2000);    
     }
     
     //username
@@ -262,10 +261,22 @@ async getRandomProducts(count)
   if(!records || records.length <= count)
     throw  new Error("Cannot find " +  count + " products with " + sql);
   
+  
   //choose a random record
   for(var i=0; i<count; i++)
   {
-    var idx = Math.floor(Math.random() * records.length);
+    var idx = -1;
+    var maxtry = 10;
+    do
+    {
+       idx = Math.floor(Math.random() * records.length);
+       maxtry--;
+    }
+    while(products.findIndex(p => p.Name == records[idx].Name) >= 0 && maxtry > 0);
+
+    if(maxtry <= 0)
+      throw new Error("Cannot find " + count + " distinct products in the database.");
+
     products.push(records[idx].Name);
     records.splice(idx, 1);
   }
@@ -499,6 +510,28 @@ async getDateFormat()
   return records[0].Name;
 }
 
+
+async validateDatabaseConfiguration()
+{
+
+  var isValid = true;
+  var db = new Db(this.dbConfig);
+  
+  var sql = "Select IsSellerConfirmationDocumentMandatory From admin.TenantConfigurations";
+
+  var records = await db.read(sql);
+  if(records.length <= 0)
+    throw new Error("Cannot find IsSellerConfirmationDocumentMandatory from admin.TenantConfigurations");
+    
+  if(records[0].IsSellerConfirmationDocumentMandatory == 1)
+  {
+    this.tools.log("IsSellerConfirmationDocumentMandatory is 1 and should be 0");
+    isValid = false;
+  }
+
+  return isValid;
+  
+}
 
 
 

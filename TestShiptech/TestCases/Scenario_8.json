@@ -32,6 +32,7 @@
           {
             "name": "BARGING",
             "type": "Unit",
+            "applicableFor": "product1Name",
             "id": "product1Name",
             "quantity": 500,
             "unitPrice": 0.2                  
@@ -39,6 +40,7 @@
           {
             "name": "BARGING",
             "type": "Percent",            
+            "applicableFor": "product2Name",
             "id": "product2Name",
             "quantity": 200,
             "unitPrice": 0.3
@@ -47,7 +49,7 @@
       },
       {
         "keyname": "treasury",
-        "url": "invoices/treasuryreport",
+        "input": {"orderId":"order1Id"},
         "pageTitle": "Treasury Report",
         "rows": [ 
           {
@@ -119,13 +121,15 @@
             {
               "name": "BARGING",
               "type": "Unit",
+              "applicableFor": "product1Name",
               "id": "product1Name",
               "quantity": 495,
-              "unitPrice": 0.2                  
+              "unitPrice": 0.2
             },
             {
               "name": "BARGING",
-              "type": "Percent",            
+              "type": "Percent",
+              "applicableFor": "product2Name",
               "id": "product2Name",
               "quantity": 195,
               "unitPrice": 0.3

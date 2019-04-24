@@ -19,6 +19,8 @@ class ShiptechInvoice {
     this.db = db;
   }
 
+
+
   async CancelInvoice(testCase, commonTestData)
   {   
     if(testCase.action != "cancel")
@@ -27,7 +29,15 @@ class ShiptechInvoice {
     if(!commonTestData)
       throw new Error("Missing parameter");
 
-    await this.tools.click('a[ng-click="$eval(value.action)"]');
+    var orderId = commonTestData[testCase.input.orderId];
+
+    await this.tools.getPage("Invoice - " + orderId + " - " + commonTestData.vesselName, false, true);
+
+    await this.tools.click('#revert_invoice');     
+    await this.checkInvoiceStatus(testCase.invoiceStatusAfterRevert, "invoiceStatusAfterSave");
+
+    await this.tools.click('#openMoreActions');
+    await this.tools.click('#btn_Cancel');
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterCancel, "invoiceStatusAfterCancel");
     
     return testCase;
