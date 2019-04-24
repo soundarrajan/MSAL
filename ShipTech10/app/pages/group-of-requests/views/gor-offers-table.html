@@ -402,7 +402,7 @@
                 <td colspan="1" style="width:65px">Check All</td>
                 <td colspan="1" width="20">
                     <label class="mt-checkbox mt-checkbox-outline">
-                        <input type="checkbox" class="checkAllOnLocation" ng-click="$ctrl.checkAll(location[0].uniqueLocationIdentifier, $event)"/>
+                        <input type="checkbox" class="checkAllOnLocation" checkAllUniqueLocationIdentifier="{{location[0].uniqueLocationIdentifier}}" ng-click="$ctrl.checkAll(location[0].uniqueLocationIdentifier, $event)"/>
                         <span style="left: 6px;"></span>
                     </label>
                 </td>

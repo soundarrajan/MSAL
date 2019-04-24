@@ -130,6 +130,27 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
         });
 
+        function checkAllCheckboxesDefault() {
+        	$.each($(".checkAllOnLocation"), function(cbk, cbv){
+        		checkAllLocationIdentifier = $(cbv).attr("checkAllUniqueLocationIdentifier");
+        		var checkedItems = 0
+        		$.each($("[uniqueLocationIdentifier]"), function(rowCheckK, rowCheckV){
+        			if ($(rowCheckV).attr("uniqueLocationIdentifier") == checkAllLocationIdentifier) {
+		        		checkedItems--
+		        		if ($(rowCheckV).prop("checked") == true) {
+			        		checkedItems++
+		        		}
+        			}
+        		})
+        		console.log("***** " + checkedItems);
+        		if (checkedItems >= 0) {
+		        	$(cbv).prop("checked", true);
+        		} else {
+		        	$(cbv).prop("checked", false);
+        		}
+        	})
+        }
+
         ctrl.initScreenAfterSendOrSkipRfq = function() {
 	        	$(".checkAllOnLocation").prop("checked", false);
                 ctrl.requirements = [];
@@ -224,7 +245,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     parseRequestList(data.payload, false);
                     initializeDataArrays(data.payload);
                     getGroupInfo(groupId);
-                    ctrl.priceInputsDisabled = false;
+                    ctrl.priceInputsDisabled = false;                    
                 });
 
                 function getGroupInfo(groupId) {
@@ -1735,6 +1756,7 @@ ctrl.setProductData = function(data, loc) {
             var req;
             var location;
             physicalSupplierId = null;
+            checkAllCheckboxesDefault();
             if (sellerObj.offers.length > 0) {
                 if (sellerObj.offers[0].physicalSupplierCounterparty) {
                     physicalSupplierId = sellerObj.offers[0].physicalSupplierCounterparty.id;
@@ -2143,6 +2165,7 @@ ctrl.setProductData = function(data, loc) {
             console.log(currentRowRequirements);
             checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true)
             ctrl.calculateScreenActions();
+
         };
         ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample) {
             var request;
