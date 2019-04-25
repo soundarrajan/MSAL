@@ -1443,7 +1443,6 @@ function getText(elem) {
 
 async getAllOptionsBySelector(selector, index = 0)
 {
-   
   
   var result = await this.page.evaluate(({selector, index}) => {
     var elements = document.querySelectorAll(selector);
@@ -1460,14 +1459,17 @@ async getAllOptionsBySelector(selector, index = 0)
     for(var i=0; i<element.childNodes.length; i++ )
     {
       result.push({text: element.childNodes[i].text, value: element.childNodes[i].value});
-    }          
+    }
     valueFound = result;    
     
     return valueFound;   
 
   }, {selector, index});
   
-  return result;
+  if(Array.isArray(result))
+    return result
+  
+  throw new Error(result);
 
 }
 

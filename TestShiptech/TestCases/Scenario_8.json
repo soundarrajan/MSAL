@@ -3,6 +3,10 @@
     "testTitle": "Invoice Test Scenarios - Scenario 8",    
     "starturl": "new-order",    
     "headless": false,
+    "testData" : {
+        "additionalCostType" : {"typeId" : "PercentTypeName1", "type" : "Percent"},
+        "products":["product1Name", "product2Name"]
+    },
     "testCases": [
       {
         "keyname": "order",
@@ -18,7 +22,7 @@
           {
             "id": "product2Name",
             "quantity": 200,
-            "rate": 400
+            "unitPrice": 400
           }
         ],
        "costs": [
@@ -35,12 +39,12 @@
             "applicableFor": "product1Name",
             "id": "product1Name",
             "quantity": 500,
-            "unitPrice": 0.2                  
+            "unitPrice": 0.2
           },
-          {
-            "name": "BARGING",
-            "type": "Percent",            
+          {            
+            "nameId": "PercentTypeName1",
             "applicableFor": "product2Name",
+            "type": "Percent",
             "id": "product2Name",
             "quantity": 200,
             "unitPrice": 0.3
@@ -96,20 +100,19 @@
         "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
-        "finalData" :{
-              "products": [
-                {
-                  "id": "product1Name",
-                  "quantity": 495,
-                  "rate": 600
-                },
-                {
-                  "id": "product2Name",
-                  "quantity": 195,
-                  "rate": 400
-                }
-              ]
+        "provisionalData" :{
+          "products": [
+            {
+              "id": "product1Name",
+              "quantity": 495,
+              "rate": 600
             },
+            {
+              "id": "product2Name",
+              "quantity": 195,
+              "rate": 400
+            }
+          ],
           "costs": [
             {
               "name": "BARGING",
@@ -126,8 +129,8 @@
               "quantity": 495,
               "unitPrice": 0.2
             },
-            {
-              "name": "BARGING",
+            {              
+              "nameId": "PercentTypeName1",
               "type": "Percent",
               "applicableFor": "product2Name",
               "id": "product2Name",
@@ -135,6 +138,46 @@
               "unitPrice": 0.3
             }
           ]
+        },
+        "finalData" :{
+              "products": [
+                {
+                  "id": "product1Name",
+                  "quantity": 495,
+                  "rate": 600
+                },
+                {
+                  "id": "product2Name",
+                  "quantity": 195,
+                  "rate": 400
+                }
+              ],
+              "costs": [
+                {
+                  "name": "BARGING",
+                  "type": "Flat",            
+                  "applicableFor": "All",
+                  "quantity": 690,
+                  "unitPrice": 200                  
+                },
+                {
+                  "name": "BARGING",
+                  "type": "Unit",
+                  "applicableFor": "product1Name",
+                  "id": "product1Name",
+                  "quantity": 495,
+                  "unitPrice": 0.2
+                },
+                {              
+                  "nameId": "PercentTypeName1",
+                  "type": "Percent",
+                  "applicableFor": "product2Name",
+                  "id": "product2Name",
+                  "quantity": 195,
+                  "unitPrice": 0.3
+                }
+              ]
+            }         
       },
       {
         "keyname": "treasury",

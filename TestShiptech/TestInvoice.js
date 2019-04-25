@@ -5,6 +5,7 @@
 
 const TestTools24 = require('./TestTools24.js');
 const ShiptechTools = require('./ShiptechTools.js');
+const ShiptechTestDataGen = require('./ShiptechTestDataGen.js');
 const ShiptechOrder = require('./ShiptechOrder.js');
 const ShiptechDeliveryNew = require('./ShiptechDeliveryNew.js');
 const ShiptechInvoicesDeliveriesList = require('./ShiptechInvoicesDeliveriesList.js');
@@ -13,6 +14,7 @@ const ShiptechInvoicesList = require('./ShiptechInvoicesList.js');
 
 var tools = new TestTools24();
 var shiptech = new ShiptechTools(tools);
+var shiptechDataGen = new ShiptechTestDataGen(tools);
 
 (async () => {  
 
@@ -67,6 +69,8 @@ var shiptech = new ShiptechTools(tools);
 
   if (!testCase.testTitle)
             throw new Error("testTitle missing from the testcase.");
+
+    await shiptechDataGen.generateTestData(testCase.testData, commonTestData);
 
     for(var i=0; i<testCase.testCases.length; i++)
     {
@@ -182,9 +186,8 @@ var shiptech = new ShiptechTools(tools);
         }
 
         if(!await shiptech.validateDatabaseConfiguration())
-          throw new Error("Cannot runt automated tests on this configuration. Please change the configuration and try again.");
+          throw new Error("Cannot runt automated tests on this configuration. Please change the configuration and try again.");          
 
-          
     }
     
 

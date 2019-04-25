@@ -87,7 +87,7 @@ class ShiptechInvoice {
 
 
 
-  async insertCosts(costs)
+  async insertCosts(costs, commonTestData)
   {
     var i=0; 
     var countButtons = 0;
@@ -109,7 +109,14 @@ class ShiptechInvoice {
       //insert new ones
       for (i = 0; i < costs.length; i++)
       {       
-        await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", costs[i].name);
+        var typeCostName = costs[i].name;
+        if(!typeCostName)
+          typeCostName = commonTestData[costs[i].nameId];
+        if(!typeCostName)
+          throw new Error("Cannot find type for additional cost for invoice");
+
+        await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", typeCostName);
+
         await this.tools.click("a.btn[ng-click='addCostDetail(INV_SELECTED_COST)']");
         //find out if the items start with 0 or with 1
         if(i==0)
@@ -123,7 +130,17 @@ class ShiptechInvoice {
         }
 
         await this.tools.selectBySelector("#grid_invoiceCostDetails_costType_" + (i+startidx), costs[i].type);
-        await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+startidx), costs[i].applicableFor);
+        if(costs[i].applicableFor.toUpperCase() == "ALL")
+          await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+startidx), "All", false, false);
+        else
+        {
+          var prodName = commonTestData.products.find(p => p.id === costs[i].applicableFor).name;
+          if(!prodName || prodName.length <= 0)
+            throw new Error('Cannot find additional cost product ' + costs[i].applicableFor);
+
+          await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+startidx), prodName, false, false);          
+        }
+                
         await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + (i+startidx), costs[i].quantity);
         await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + startidx), costs[i].unitPrice);
       }
@@ -164,13 +181,13 @@ class ShiptechInvoice {
       await this.insertProducts(testCase.provisionalData.products);      
 
     if(testCase.action != "final" && testCase.provisionalData && testCase.provisionalData.costs)
-      await this.insertCosts(testCase.provisionalData.costs);
+      await this.insertCosts(testCase.provisionalData.costs, commonTestData);
 
-    if(testCase.action == "final" && testCase.finalData)
-       await this.insertProducts(testCase.finalData.products);      
+    if(testCase.action == "final" && testCase.finalData && testCase.finalData.products)
+       await this.insertProducts(testCase.finalData.products, commonTestData);      
 
-    if(testCase.action != "final" && testCase.finalData && testCase.finalData.costs)
-       await this.insertCosts(testCase.finalData.costs);
+    if(testCase.action == "final" && testCase.finalData && testCase.finalData.costs)
+       await this.insertCosts(testCase.finalData.costs, commonTestData);
       
     await this.tools.clickOnItemByText('#header_action_save', 'Save');    
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave, "invoiceStatusAfterSave");

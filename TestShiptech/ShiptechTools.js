@@ -212,6 +212,7 @@ async ConnectDb(dbconfig, url, isMaster)
         
     this.tools.log("Client name: " + clientName[0].IntegrationKey);
     this.tools.log("Current database is: " + this.dbConfig.database);
+    this.tools.dbConfig = this.dbConfig;
     return this.dbConfig;
 
 }
@@ -526,6 +527,17 @@ async validateDatabaseConfiguration()
   if(records[0].IsSellerConfirmationDocumentMandatory == 1)
   {
     this.tools.log("IsSellerConfirmationDocumentMandatory is 1 and should be 0");
+    isValid = false;
+  }
+
+
+  sql = "select top 1 ac.Name from master.AdditionalCosts ac inner join enums.CostTypes ct on ct.Id = ac.CostTypeId where ct.name = 'Percent'";
+
+  var records = await db.read(sql);
+
+  if(records[0].length <= 0)
+  {
+    this.tools.log("Cannot find Percent cost type for additional costs");
     isValid = false;
   }
 

@@ -125,7 +125,7 @@ class ShiptechOrder {
 
         for(var i=0; i<testCase.products.length; i++)
         {                    
-          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name);
+          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name, true);
 
           if(testCase.products[i].quantity)
           {
@@ -159,14 +159,26 @@ class ShiptechOrder {
         }while((countbuttons != testCase.costs.length && limit > 0  && countbuttons > 1));
         
         for(var i=0; i<testCase.costs.length; i++)
-        {          
-          await this.tools.selectBySelector("#additional_cost_additional_cost_" + i, testCase.costs[i].name);
+        { 
+          var typeCostName = testCase.costs[i].name;
+          if(!typeCostName)
+            typeCostName = commonTestData[testCase.costs[i].nameId];
+          if(!typeCostName)
+            throw new Error("Cannot find type for additional cost");
+
+          await this.tools.selectBySelector("#additional_cost_additional_cost_" + i, typeCostName);
+          
           await this.tools.selectBySelector("#additional_cost_type_" + i, testCase.costs[i].type);
           await this.tools.setText("#additional_cost_price_" + i, testCase.costs[i].unitPrice);
           if(testCase.costs[i].applicableFor.toUpperCase() == "ALL")
             await this.tools.selectBySelector("#ApplicableFor_" + i, "All", false, false);
           else
-            await this.tools.selectBySelector("#ApplicableFor_" + i, commonTestData.products[testCase.costs[i].applicableFor], false, false);
+          {
+            var prodName = commonTestData.products.find(p => p.id === testCase.costs[i].applicableFor).name;
+            if(!prodName || prodName.length <= 0)
+              throw new Error('Cannot find additional cost product ' + testCase.costs[i].applicableFor);
+            await this.tools.selectBySelector("#ApplicableFor_" + i, prodName, false, false);
+          }
         }
 
         
