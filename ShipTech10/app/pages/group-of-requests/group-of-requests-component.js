@@ -142,7 +142,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 		        		}
         			}
         		})
-        		console.log("***** " + checkedItems);
         		if (checkedItems >= 0) {
 		        	$(cbv).prop("checked", true);
         		} else {
@@ -1435,12 +1434,13 @@ ctrl.setProductData = function(data, loc) {
             return sellersPayload;
         }
         
-        ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId, sellerRandUniquePkg) {
+        ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId, sellerRandUniquePkg, uniqueLocationIdentifier) {
 
         	var locationId = locationLocationId;
         	var prodId = productId;
         	var sellerId = sellerCounterpartyId;
         	var randUniquePkg = sellerRandUniquePkg;
+        	var locationIdentifier = uniqueLocationIdentifier;
         	// for individual checkbox
             // var isSelected = false;
             // $.each(ctrl.requests, function (reqK, reqV) {
@@ -1480,35 +1480,41 @@ ctrl.setProductData = function(data, loc) {
             if (ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {return}
             if (!ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId] = true}
 
+            if (locationId+"-"+prodId+"-"+sellerId == "105-109246-366") {
+            	// debugger;
+            }	
+
             if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg]) == 'undefined') {
 	            ctrl.checkedCounterpartyRows[randUniquePkg] = false;
 	            $.each(ctrl.requests, function (reqK, reqV) {
 	            	$.each(reqV.locations, function (locK, locV) {
-	            		$.each(locV.products, function (prodK, prodV) {
-	            			$.each(prodV.sellers, function (sellerK, sellerV) {
-	            				if (sellerV.randUniquePkg == randUniquePkg) {
-	            					hasNoQuote = false;                 	
-	            					if (sellerV.offers) {
-	            						if (sellerV.offers.length > 0) {
-	            							if (!sellerV.offers[0].hasNoQuote) {
-	            								hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
-	            							}
-	            						}
-	            					}
-	            					if (!hasNoQuote) {
-	            						if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
-	            							ctrl.checkedCounterpartyRows[randUniquePkg] = true;
-	            						}
-	            					}
-	            				}
-	            			});
-	            		});
+	            		if (locationIdentifier == locV.uniqueLocationIdentifier) {
+		            		$.each(locV.products, function (prodK, prodV) {
+		            			$.each(prodV.sellers, function (sellerK, sellerV) {
+		            				if (sellerV.randUniquePkg == randUniquePkg) {
+		            					hasNoQuote = false;                 	
+		            					if (sellerV.offers) {
+		            						if (sellerV.offers.length > 0) {
+		            							if (!sellerV.offers[0].hasNoQuote) {
+		            								hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+		            							}
+		            						}
+		            					}
+		            					if (!hasNoQuote) {
+		            						if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
+		            							ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier] = true;
+		            						}
+		            					}
+		            				}
+		            			});
+		            		});
+	            		}
 	            	});
 	            });
             }
 			console.log(locationId, prodId, sellerId) ;
-            console.log(ctrl.checkedCounterpartyRows[randUniquePkg]);
-			return ctrl.checkedCounterpartyRows[randUniquePkg];
+            console.log(ctrl.checkedCounterpartyRows[randUniquePkg] + " -- " + locationIdentifier);
+			return ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier];
 
         }
 
