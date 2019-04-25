@@ -6446,13 +6446,13 @@ ctrl.setProductData = function(data, loc) {
 			allWouldBeNoQuoteError = false;
         	Object.keys(validationDataAt_RLS_level).forEach(function(key) {
         		value = validationDataAt_RLS_level[key];
-	            if (ctrl.sendNoQuotePayload.Payload.NoQuote == true && (value.totalNoQuoteItems + value.selectedItemsFromThis_RLS) >= value.totalOffers) {
-	            	if (value.hasAdditionalCostsAll || value.hasAdditionalCostsForProduct) {
+	            if ( (ctrl.sendNoQuotePayload.Payload.NoQuote == true && 
+	            	((value.totalNoQuoteItems + value.selectedItemsFromThis_RLS) >= value.totalOffers && (value.hasAdditionalCostsForProduct || value.hasAdditionalCostsAll) ) 
+	            		            	|| (value.hasAdditionalCostsForProduct)) ) {
 		            	errorMessage = "For " + value.RLScombinationString + " are additional costs applied for selected items. Please remove them before sending No Quote";
 						toastr.error(errorMessage);
 						console.log(errorMessage);
 						allWouldBeNoQuoteError = true;
-	            	}
 	            }        		
 			});
 
