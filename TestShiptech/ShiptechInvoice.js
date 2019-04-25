@@ -143,6 +143,7 @@ class ShiptechInvoice {
                 
         await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + (i+startidx), costs[i].quantity);
         await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + startidx), costs[i].unitPrice);
+        await this.tools.selectBySelector("#grid_invoiceCostDetails_Currency__invoiceRateCurrency_" + (i + startidx), "MT");
       }
   }
 
