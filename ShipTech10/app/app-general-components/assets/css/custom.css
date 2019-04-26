@@ -4394,3 +4394,21 @@ th#flat_available_contracts_checkbox > * {
 .rob-standard-head{
     padding-bottom: 15px;
 }
+
+.row-invoice-amount-treasuryreport {
+    height: 0;
+}
+
+#tab_0 > div.col-md-12.portlet.light {
+    padding-bottom: 0;
+}
+
+#tab_0 > div.col-md-12.portlet.light > div.portlet-body.main-portlet_content > div > div.col-md-12.fe_entity.edit_form_fields_GenerateReport_invoices.conditional_hidden {
+    height: 0;
+    min-height: 0 !important;
+}
+
+.go_report_cashflow {
+    margin-top: 0 !important;
+    margin-left: 15px;
+}

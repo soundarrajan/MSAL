@@ -212,7 +212,7 @@
 }
 
 .dynamic_form_editor .portlet .portlet-title {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     min-height: 0 !important;
 }
 
