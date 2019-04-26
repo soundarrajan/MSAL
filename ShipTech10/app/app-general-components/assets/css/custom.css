@@ -868,7 +868,7 @@ span.ui-grid-ico-sort.ui-icon-desc.ui-sort-ltr.ui-icon.ui-icon-triangle-1-s:not(
 }
 
 .jqgrid_component span.formatter {
-    font-size: 13px;
+    /* font-size: 13px; */
 }
 
 .jqgrid_component span.formatter[data-formatter-type="status"].notverified {}
@@ -920,7 +920,7 @@ span.ui-grid-ico-sort.ui-icon-desc.ui-sort-ltr.ui-icon.ui-icon-triangle-1-s:not(
     color: #01bae8;
     cursor: pointer;
     padding: 0;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .jqgrid_component .jqgrow td {
@@ -3102,7 +3102,7 @@ td.gridcell input.cbox {
     color: #01bae8;
     cursor: pointer;
     padding: 0;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .asc_jqgrid__entries select {
