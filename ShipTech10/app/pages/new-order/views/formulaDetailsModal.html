@@ -23,7 +23,8 @@
         </div>
         <div class="col-sm-4">
             <b>
-                {{ 'PAGES.NEW_ORDER.ETA' | translate }} :
+            	ETA : 
+                <!-- {{ 'PAGES.NEW_ORDER.ETA' | translate }} : -->
             </b>
             <span ng-controller="Controller_Master as CM">
                 {{ CM.formatDateTime($ctrl.formulaDetailsData.eta,null,'eta') }}

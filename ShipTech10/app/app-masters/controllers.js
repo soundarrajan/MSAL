@@ -2730,6 +2730,9 @@ APP_MASTERS.controller("Controller_Master", [
                 if (hasDayOfWeek) {
                 	formattedDate = moment.utc(elem).format("ddd") + " " + formattedDate;
                 }
+                if (formattedDate.endsWith("00:00")) {
+                	formattedDate = formattedDate.split("00:00")[0];
+                }
                 return formattedDate;
             }
         };

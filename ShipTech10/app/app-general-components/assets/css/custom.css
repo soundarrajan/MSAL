@@ -4416,7 +4416,7 @@ th#flat_available_contracts_checkbox > * {
 
 #flat_invoices_app_complete_view_list_isChecked .treasury_checkbox.header {
     position: absolute;
-    left: 50%;
+    left: 30px;
     top: 30%;
     transform: translate(-50%);
 }
