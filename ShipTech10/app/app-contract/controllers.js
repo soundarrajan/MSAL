@@ -311,6 +311,28 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
     };
 
 
+    function convertDecimalSeparatorStringToNumber(number) {
+    	numberToReturn = number;
+    	if (typeof(number) == "string") {
+        	if (number.indexOf(",") != -1 && number.indexOf(".") != -1) {
+        		if (number.indexOf(",") > number.indexOf(".")) {
+        			decimalSeparator = ",";
+        			thousandsSeparator = ".";
+        		} else {
+        			thousandsSeparator = ",";
+        			decimalSeparator = ".";
+        		}
+	        	numberToReturn = parseFloat( parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '')) + parseFloat("0."+number.split(decimalSeparator)[1]) );
+        	} else {
+        		numberToReturn = parseFloat(number);
+        	}
+    	}
+    	if (isNaN(numberToReturn)) {
+    		numberToReturn = 0;
+    	}
+    	return parseFloat(numberToReturn);
+    }
+
 	$scope.save_master_changes_controllerSpecific = function(ev, editInstance){
        
 		vm.editInstance = editInstance;
@@ -352,7 +374,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
                 }
 	    	}
 	    	if (v.minContractQuantity && v.maxContractQuantity) {
-	    		if (parseFloat(v.minContractQuantity.toString().replace(/\,/g, '').replace(/\./g, '')) > parseFloat(v.maxContractQuantity.toString().replace(/\,/g, '').replace(/\./g, ''))) {
+	    		if (convertDecimalSeparatorStringToNumber(v.minContractQuantity) > convertDecimalSeparatorStringToNumber(v.maxContractQuantity)) {
 			    	minQuyanityValidationError = true;
 	    		}
 	    	}

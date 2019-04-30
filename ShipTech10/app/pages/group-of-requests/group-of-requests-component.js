@@ -451,18 +451,14 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         };
 
         ctrl.recompileDefaultSellerChecks = function() {
+        	if (ctrl.initialSelectedCheckboxesRequirements.length == 0) {return}
             ctrl.initedCheckboxes = []
         	$scope.$apply(function(){
 	            ctrl.resetSellerInitChecks = false;
         	})
             $timeout(function(){
-                // ctrl.prefferedSellerCheckbox = false;
                 ctrl.resetSellerInitChecks = true;
-            },50)
-            // setTimeout(function(){
-            // 	$scope.$apply(function(){
-            // 	})
-            // },1000)
+            },150)
         }
 
         function getSellerTypeIds() {
