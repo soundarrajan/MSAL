@@ -4600,3 +4600,5 @@ input[id^="_dateinput"] {
 div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, div[uib-modal-window] .btn.export_pdf {
 	display: none;
 }
+
+
