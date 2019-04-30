@@ -365,6 +365,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 	            });
             }
 
+			ctrl.recompileDefaultSellerChecks();
+
             ctrl.setPageTitle();
         }
         ctrl.calculateRandUniquePkg = function (seller) {
@@ -447,6 +449,21 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             });
             return requestList;
         };
+
+        ctrl.recompileDefaultSellerChecks = function() {
+            ctrl.initedCheckboxes = []
+        	$scope.$apply(function(){
+	            ctrl.resetSellerInitChecks = false;
+        	})
+            $timeout(function(){
+                // ctrl.prefferedSellerCheckbox = false;
+                ctrl.resetSellerInitChecks = true;
+            },50)
+            // setTimeout(function(){
+            // 	$scope.$apply(function(){
+            // 	})
+            // },1000)
+        }
 
         function getSellerTypeIds() {
             var sellerIdList = [];
@@ -1514,6 +1531,11 @@ ctrl.setProductData = function(data, loc) {
             }
 			console.log(locationId, prodId, sellerId) ;
             console.log(ctrl.checkedCounterpartyRows[randUniquePkg] + " -- " + locationIdentifier);
+
+            setTimeout(function(){
+	            ctrl.initialSelectedCheckboxesRequirements = angular.copy(ctrl.requirements);
+	            console.log(ctrl.initialSelectedCheckboxesRequirements);
+            },250)
 			return ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier];
 
         }
@@ -6312,10 +6334,11 @@ ctrl.setProductData = function(data, loc) {
 				ctrl.bladeOpened = false;
 				ctrl.confirmedBladeNavigation = true;
 				$scope.$apply();
-				setTimeout(function(){
-					ctrl.prefferedSellerCheckbox = false;
-					$scope.$apply();
-				},500)
+				ctrl.recompileDefaultSellerChecks();
+				// setTimeout(function(){
+				// 	ctrl.prefferedSellerCheckbox = false;
+				// 	$scope.$apply();
+				// },500)
 			}
 		});
 
