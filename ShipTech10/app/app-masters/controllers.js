@@ -2727,15 +2727,26 @@ APP_MASTERS.controller("Controller_Master", [
                 } else {
                     formattedDate = $filter("date")(elem, dateFormat);
                 }
+                if (hasDayOfWeek) {
+                	formattedDate = moment.utc(elem).format("ddd") + " " + formattedDate;
+                }
                 return formattedDate;
             }
         };
         vm.formatSimpleDate = function (date) {
             dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             window.tenantFormatsDateFormat = dateFormat;
+            if (dateFormat.startsWith("DDD ")) {
+            	hasDayOfWeek = true
+            	dateFormat = dateFormat.split("DDD ")[1];
+            }
             dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
             if (date) {
-                return moment.utc(date).format(dateFormat);
+            	dateFormatted = moment.utc(date).format(dateFormat);
+                if (hasDayOfWeek) {
+                	dateFormatted = moment.utc(date).format("ddd") + " " + dateFormatted;
+                }
+                return dateFormatted;
             }
             return;
         };
