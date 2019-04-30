@@ -382,6 +382,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
 	    if (minQuyanityValidationError) {
 			toastr.error("Min Quantity must be smaller that Max Quantity ")
 	        vm.editInstance.$valid = false;
+	        return;
 	    }
 	    if (!hasTotalContractualQuantity) {
 	        toastr.error("TotalContractualQuantity option is required in Contractual Quantity section");
