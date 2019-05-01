@@ -92,7 +92,7 @@ module.exports = {
         ui: false,
         server: './dist',
         host: 'localhost',
-        port: 9009,
+        port: 9011,
         open: 'external',
         https: false,
         notify: false
@@ -103,12 +103,12 @@ module.exports = {
         ui: false,
         server: './app',
         host: 'localhost',
-        port: 9009,
+        port: 9011,
         open: 'local',
         https: false,
         notify: false,
         socket: {
-            domain: 'http://localhost:9009'
+            domain: 'http://localhost:9011'
         },
     }
 };

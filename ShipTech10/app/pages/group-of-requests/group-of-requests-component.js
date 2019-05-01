@@ -451,14 +451,17 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         };
 
         ctrl.recompileDefaultSellerChecks = function() {
-        	if (ctrl.initialSelectedCheckboxesRequirements.length == 0) {return}
-            ctrl.initedCheckboxes = []
-        	$scope.$apply(function(){
-	            ctrl.resetSellerInitChecks = false;
-        	})
-            $timeout(function(){
-                ctrl.resetSellerInitChecks = true;
-            },150)
+        	if (ctrl.initialSelectedCheckboxesRequirements) {
+                if (ctrl.initialSelectedCheckboxesRequirements.length != 0) {
+                    ctrl.initedCheckboxes = []
+                	$scope.$apply(function(){
+        	            ctrl.resetSellerInitChecks = false;
+                	})
+                    $timeout(function(){
+                        ctrl.resetSellerInitChecks = true;
+                    },150)
+                }
+            }
         }
 
         function getSellerTypeIds() {
@@ -1411,6 +1414,7 @@ ctrl.setProductData = function(data, loc) {
             }
             //calculates screen actions
             console.log(currentRowRequirements);
+            seller.selected = false;
             checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, false)
             ctrl.calculateScreenActions();
         }
@@ -1419,8 +1423,10 @@ ctrl.setProductData = function(data, loc) {
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
     		if (currentRowRequirements.length > 0) {
 	        	if (checkBool) {
+                    seller.selected = checkBool;
 	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true)
 	        	} else {
+                    seller.selected = checkBool;
 	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
 	        	}
 
@@ -2187,6 +2193,7 @@ ctrl.setProductData = function(data, loc) {
             }
             //calculates screen actions
             console.log(currentRowRequirements);
+            seller.selected = true;
             checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true)
             ctrl.calculateScreenActions();
 
