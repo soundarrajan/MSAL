@@ -452,8 +452,9 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 
         ctrl.recompileDefaultSellerChecks = function() {
         	if (ctrl.initialSelectedCheckboxesRequirements) {
-                if (ctrl.initialSelectedCheckboxesRequirements.length != 0) {
-                    ctrl.initedCheckboxes = []
+                if (ctrl.initialSelectedCheckboxesRequirements.length != 0 || ctrl.initialSelectedCheckboxesRequirements == true) {
+                    ctrl.initedCheckboxes = [];
+                    ctrl.checkedCounterpartyRows = [];
                 	$scope.$apply(function(){
         	            ctrl.resetSellerInitChecks = false;
                 	})
@@ -1503,8 +1504,8 @@ ctrl.setProductData = function(data, loc) {
             	// debugger;
             }	
 
-            if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg]) == 'undefined') {
-	            ctrl.checkedCounterpartyRows[randUniquePkg] = false;
+            if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier]) == 'undefined') {
+	            ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier] = false;
 	            $.each(ctrl.requests, function (reqK, reqV) {
 	            	$.each(reqV.locations, function (locK, locV) {
 	            		if (locationIdentifier == locV.uniqueLocationIdentifier) {
@@ -2092,6 +2093,20 @@ ctrl.setProductData = function(data, loc) {
                                 prodSeller = product.sellers[k];
                             }
                         }
+                        $.each(ctrl.requests, function (reqK, reqV) {
+                            $.each(reqV.locations, function (locK, locV) {
+                                $.each(locV.products, function (prodK, prodV) {
+                                    $.each(prodV.sellers, function (sellerK, sellerV) {
+                                        if (typeof(sellerV.uniqueLocationSellerPhysical) != 'undefined' && typeof(prodSeller.uniqueLocationSellerPhysical) != 'undefined') {
+                                            if (sellerV.uniqueLocationSellerPhysical == prodSeller.uniqueLocationSellerPhysical) {
+                                                sellerV.selected = true;
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                        ctrl.initialSelectedCheckboxesRequirements = true;
                         //create RFQ requirements
                         productOffer = ctrl.getSellerProductOfferOnLocationRewrite(product, locations, seller.sellerCounterparty.id, seller);
                         productHasRFQ = false;
@@ -2952,6 +2967,9 @@ ctrl.setProductData = function(data, loc) {
         }
 
         ctrl.saveComments = function (internalComments, externalComments, fromDate) {
+            if (ctrl.quoteByDateFrom == "0000-00-00T00:00+00:00") {
+                return;
+            }
             if (fromDate && ctrl.lastSavedQuoteByDateFrom == ctrl.quoteByDateFrom) {
                 return;
             }
