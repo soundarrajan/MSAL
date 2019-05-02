@@ -4499,9 +4499,17 @@ APP_MASTERS.controller("Controller_Master", [
 		
         
         $scope.treasury_clear_report = function() {
-			$scope.formValues.PaymentStatus = null;
-			$scope.formValues.PaymentDateFrom = null;
-			$scope.formValues.PaymentDateTo = null;
+        	$timeout(function(){
+        		$('input[ng-model="dummyModel"]').val("");
+        		$('.bootstrap-tagsinput span.label').remove();
+        		$('.date-picker-icon').next("input").val("");
+				$scope.formValues.PaymentStatus = null;
+				$scope.formValues.PaymentDateFrom = null;
+				$scope.formValues.Seller = null;
+				$scope.formValues.Broker = null;
+				$scope.formValues.Company = null;
+				$scope.formValues.PaymentDateTo = null;
+        	})
         }
         $scope.invoices_payment_due_date_filter = function() {
             $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_ui_filter({
