@@ -333,10 +333,14 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                                             packageType = "seller";
                                         }
                                     }
-                                    if (sellerV.offers[0].quotedProduct.id != prodV.product.id) {
-							            listsModel.getProductTypeByProduct(sellerV.offers[0].quotedProduct.id).then(function(server_data) {
-		                                    sellerV.offers[0].quotedProductGroupId = server_data.data.payload.productTypeGroup.id;
-							            })                                    
+                                    if (sellerV.offers[0].quotedProduct) {
+	                                    if (sellerV.offers[0].quotedProduct.id != prodV.product.id) {
+								            listsModel.getProductTypeByProduct(sellerV.offers[0].quotedProduct.id).then(function(server_data) {
+			                                    sellerV.offers[0].quotedProductGroupId = server_data.data.payload.productTypeGroup.id;
+								            })                                    
+	                                    } else {
+		                                    sellerV.offers[0].quotedProductGroupId = prodV.productTypeGroupId;
+	                                    }
                                     } else {
 	                                    sellerV.offers[0].quotedProductGroupId = prodV.productTypeGroupId;
                                     }
@@ -664,9 +668,10 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         ctrl.requestTabs = createRequestTabs(ctrl.requests);
                         initializeDataArrays(ctrl.requests);
                         parseRequestList(ctrl.requests, false);
-                        $timeout(function(){
-	                        ctrl.prefferedSellerCheckbox = false;
-                        },50)
+                        // $timeout(function(){
+	                       //  ctrl.prefferedSellerCheckbox = false;
+                        // },50)
+                        recompileDefaultSellerChecks();
 
 	                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
 	                    	if (data.payload.internalComments) {
