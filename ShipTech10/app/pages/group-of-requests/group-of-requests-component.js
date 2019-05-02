@@ -451,18 +451,20 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         };
 
         ctrl.recompileDefaultSellerChecks = function() {
-        	if (ctrl.initialSelectedCheckboxesRequirements) {
-                if (ctrl.initialSelectedCheckboxesRequirements.length != 0 || ctrl.initialSelectedCheckboxesRequirements == true) {
-                    ctrl.initedCheckboxes = [];
-                    ctrl.checkedCounterpartyRows = [];
-                	$scope.$apply(function(){
-        	            ctrl.resetSellerInitChecks = false;
-                	})
-                    $timeout(function(){
-                        ctrl.resetSellerInitChecks = true;
-                    },150)
-                }
-            }
+        	$timeout(function(){
+	        	if (ctrl.initialSelectedCheckboxesRequirements) {
+	                if (ctrl.initialSelectedCheckboxesRequirements.length != 0 || ctrl.initialSelectedCheckboxesRequirements == true) {
+	                    ctrl.initedCheckboxes = [];
+	                    ctrl.checkedCounterpartyRows = [];
+	                	$scope.$apply(function(){
+	        	            ctrl.resetSellerInitChecks = false;
+	                	})
+	                    $timeout(function(){
+	                        ctrl.resetSellerInitChecks = true;
+	                    },150)
+	                }
+	            }
+        	});
         }
 
         function getSellerTypeIds() {
