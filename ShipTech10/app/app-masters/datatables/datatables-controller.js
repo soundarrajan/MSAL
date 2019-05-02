@@ -74,6 +74,7 @@ APP_MASTERS.controller("Controller_Datatables", [
             claimsRaisedStatus: $templateCache.get("app-general-components/views/data-table-formatters/claimsRaisedStatus.html"),
             colorCodedStatus: $templateCache.get("app-general-components/views/data-table-formatters/colorCodedStatus.html"),
             multiselect: $templateCache.get("app-general-components/views/data-table-formatters/multiselect.html"),
+            readonlyNumber: $templateCache.get("app-general-components/views/data-table-formatters/readonlyNumber.html"),
         };
         $scope.gridScope = $scope;
         $scope.initGridDropdowns = function(id) {
@@ -953,7 +954,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "offerSpecParameter",
                         displayName: "Offer Spec Parameter",
-                        width: 140
+                        width: 140,
+                        cellTemplate: $scope.dataTableTemplates.readonlyNumber,
+                        decimalNumbers: vm.quantity
                     },
                     {
                         name: "value",
