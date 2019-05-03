@@ -859,7 +859,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     formattedDate = moment.utc(cellValue).add(moment().utcOffset(), 'minutes').format(dateFormat);
                     if (options.label == "ETA" || options.label == "ETB" || options.label == "ETD") {
                         formattedDate = $filter("date")(cellValue, dateFormat, 'UTC');
-                        formattedDayOfWeek = 
                     }
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
