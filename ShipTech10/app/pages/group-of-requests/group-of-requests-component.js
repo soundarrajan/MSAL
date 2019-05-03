@@ -458,6 +458,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         	$timeout(function(){
 	        	if (ctrl.initialSelectedCheckboxesRequirements) {
 	                if (ctrl.initialSelectedCheckboxesRequirements.length != 0 || ctrl.initialSelectedCheckboxesRequirements == true) {
+	                    ctrl.requirements = [];
 	                    ctrl.initedCheckboxes = [];
 	                    ctrl.checkedCounterpartyRows = [];
 	                	$scope.$apply(function(){
@@ -1508,12 +1509,13 @@ ctrl.setProductData = function(data, loc) {
             if (ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {return}
             if (!ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId] = true}
 
-            if (locationId+"-"+prodId+"-"+sellerId == "37-109307-61") {
+            if (randUniquePkg+" - "+locationIdentifier == "61-null-individual-null - 1001") {
             	// debugger;
             }	
 
-            if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier]) == 'undefined') {
-	            ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier] = false;
+	            if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier]) == 'undefined') {
+		            ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier] = false;
+	            }
 	            $.each(ctrl.requests, function (reqK, reqV) {
 	            	$.each(reqV.locations, function (locK, locV) {
 	            		if (locationIdentifier == locV.uniqueLocationIdentifier) {
@@ -1539,9 +1541,8 @@ ctrl.setProductData = function(data, loc) {
 	            		}
 	            	});
 	            });
-            }
-			console.log(locationId, prodId, sellerId) ;
-            console.log(ctrl.checkedCounterpartyRows[randUniquePkg] + " -- " + locationIdentifier);
+			// console.log(locationId, prodId, sellerId) ;
+            console.log("*************", locationId +"-"+ prodId +"-"+ sellerId , ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier]);
 
             setTimeout(function(){
 	            ctrl.initialSelectedCheckboxesRequirements = angular.copy(ctrl.requirements);

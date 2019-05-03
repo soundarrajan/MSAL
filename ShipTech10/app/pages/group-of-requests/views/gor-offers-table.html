@@ -875,8 +875,9 @@
                                     <!-- {{requestStatus}} -->
                                     <span ng-if="$ctrl.resetSellerInitChecks" ng-init="($ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)) ? $ctrl.createSellerRequirementsForProduct(seller, location, product) : ''" class="hidden"></span>
                                     <!-- --{{$ctrl.resetSellerInitChecks}}** -->
-                                    <!-- {{location[0].location.id +"-"+ product.id +"-"+ seller.sellerCounterparty.id}} -->
-	                                <!-- {{$ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id)}} -->
+                                    <!-- {{location[0].location.id +"-"+ product.id +"-"+ seller.sellerCounterparty.id}}  *  -->
+                                    <!-- {{seller.randUniquePkg + " - " + location[0].uniqueLocationIdentifier}} -->
+	                                <!-- {{$ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)}} -->
                                     <!-- ***{{!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote}} -->
                                     <!-- ++{{$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)}} -->
 									<span ng-if="!$ctrl.prefferedSellerCheckbox" ng-init="($ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)) ? $ctrl.createSellerRequirementsForProduct(seller, location, product) : '' "></span>
