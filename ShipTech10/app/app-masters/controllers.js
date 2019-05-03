@@ -779,6 +779,8 @@ APP_MASTERS.controller("Controller_Master", [
             	// }
             }
             if (vm.app_id == "masters" && vm.screen_id == "vessel") {
+            	if ($scope.formValues.earliestRedelivery == "0000-00-00T00:00+00:00") {$scope.formValues.earliestRedelivery = null};
+            	if ($scope.formValues.latestRedelivery == "0000-00-00T00:00+00:00") {$scope.formValues.latestRedelivery = null};
                 if ($scope.formValues.earliestRedelivery >= $scope.formValues.latestRedelivery && $scope.formValues.earliestRedelivery != null && $scope.formValues.latestRedelivery != null) {
                     toastr.error("Latest Redelivery Date can't be lower than Earliest redelivery date");
                     setTimeout(function() {
