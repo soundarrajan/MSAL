@@ -1449,7 +1449,11 @@ ctrl.setProductData = function(data, loc) {
         }
         function createSellerRowCheckPayload(requirements, seller, locations, checked) {
             var productIds = [];
+            hasPriceEnabled = false;
             $.each(requirements, function (rk, rv) {
+	            if (rv.productHasOffer) {
+		            hasPriceEnabled = true;
+	            }
 	            productIds.push(rv.RequestProductId);
             });
             productIds = productIds.join(",");
@@ -1458,6 +1462,7 @@ ctrl.setProductData = function(data, loc) {
                 RequestGroupId: ctrl.groupId,
                 LocationId: locations[0].location.id,
                 RequestSellerId: seller.sellerCounterparty.id,
+                HasPriceEnabled: hasPriceEnabled,
                 Selected: checked
             };
             return sellersPayload;
@@ -1792,7 +1797,7 @@ ctrl.setProductData = function(data, loc) {
          * @param {integer} sellerId - requirement seller id
          * @param {array} locations - location group where requirement is created
          */
-        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
+        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj, uniqueLocationIdentifier, randUniquePkg) {
             var req;
             var location;
             physicalSupplierId = null;
@@ -1812,8 +1817,8 @@ ctrl.setProductData = function(data, loc) {
                     // if (sellerId == requirement.SellerId && location.location.id == requirement.LocationId && location.id == requirement.RequestLocationId && physicalSupplierId == requirement.PhysicalSupplierCounterpartyId) {
                     //     return true;
                     // }
-                    composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + sellerObj.randUnique;
-                    if (requirement.UniqueLocationSellerPhysical == composedUniqueLocationSellerPhysical && requirement.randUniquePkg == sellerObj.randUniquePkg) {
+                    composedUniqueLocationSellerPhysical = uniqueLocationIdentifier + "-" + randUniquePkg;
+                    if (requirement.rowLocationSellerPhysical == composedUniqueLocationSellerPhysical) {
                         /* update requirementData in case row was checked before making changes on the row */
                         requirement.PhysicalSupplierCounterpartyId = physicalSupplierId;
                         return true;
@@ -2033,7 +2038,7 @@ ctrl.setProductData = function(data, loc) {
         /*****************************************************************************
          *   EVENT HANDLERS
          ******************************************************************************/
-        ctrl.createSellerRequirements = function (seller, locations, $event) {
+        ctrl.createSellerRequirements = function (seller, locations, $event, uniqueLocationIdentifier, randUniquePkg) {
             var req, product, locationSeller, productOffer, request, location;
             var currentRowRequirements = [];
 
@@ -2186,6 +2191,7 @@ ctrl.setProductData = function(data, loc) {
                             productHasRFQ: productHasRFQ,
                             requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
                             UniqueLocationSellerPhysical: location.uniqueLocationIdentifier + "-" + seller.randUnique,
+                            rowLocationSellerPhysical: uniqueLocationIdentifier +"-"+ randUniquePkg,
                             randUniquePkg: seller.randUniquePkg,
                             isClonedSeller: seller.isCloned,
                             currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
@@ -2222,9 +2228,11 @@ ctrl.setProductData = function(data, loc) {
             ctrl.calculateScreenActions();
 
         };
-        ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample) {
+        ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample, uniqueLocationIdentifier, randUniquePkg) {
             var request;
             var location, requestProductsInLocation;
+            var currentuniqueLocationIdentifier = uniqueLocationIdentifier;
+            var currentrandUniquePkg = randUniquePkg;
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === productSample.requestId) {
@@ -2352,6 +2360,7 @@ ctrl.setProductData = function(data, loc) {
                     productHasRFQ: productHasRFQ,
                     requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
                     UniqueLocationSellerPhysical: location.uniqueLocationIdentifier + "-" + seller.randUnique,
+                    rowLocationSellerPhysical: currentuniqueLocationIdentifier +"-"+ currentrandUniquePkg,
                     randUniquePkg: seller.randUniquePkg,
                     isClonedSeller: seller.isCloned,
                     currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
