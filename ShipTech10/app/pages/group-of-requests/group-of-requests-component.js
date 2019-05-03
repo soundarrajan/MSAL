@@ -1456,6 +1456,9 @@ ctrl.setProductData = function(data, loc) {
 	            }
 	            productIds.push(rv.RequestProductId);
             });
+            if (hasPriceEnabled) {
+            	return false;
+            }
             productIds = productIds.join(",");
             sellersPayload = {
                 RequestProductList: productIds,
