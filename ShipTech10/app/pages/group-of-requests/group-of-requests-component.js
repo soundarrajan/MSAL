@@ -1034,6 +1034,7 @@ ctrl.setProductData = function(data, loc) {
                         // }
                         //reset seller inputs template model
                         ctrl.newSeller = [];
+                        ctrl.recompileDefaultSellerChecks();
                     });
                 }
             });
@@ -1507,7 +1508,7 @@ ctrl.setProductData = function(data, loc) {
             if (ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {return}
             if (!ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId] = true}
 
-            if (locationId+"-"+prodId+"-"+sellerId == "105-109246-366") {
+            if (locationId+"-"+prodId+"-"+sellerId == "37-109307-61") {
             	// debugger;
             }	
 
