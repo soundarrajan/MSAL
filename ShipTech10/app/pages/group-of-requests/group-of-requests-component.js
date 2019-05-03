@@ -672,7 +672,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         // $timeout(function(){
 	                       //  ctrl.prefferedSellerCheckbox = false;
                         // },50)
-                        recompileDefaultSellerChecks();
+                        ctrl.recompileDefaultSellerChecks();
 
 	                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
 	                    	if (data.payload.internalComments) {
@@ -1800,7 +1800,7 @@ ctrl.setProductData = function(data, loc) {
          * @param {integer} sellerId - requirement seller id
          * @param {array} locations - location group where requirement is created
          */
-        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj, uniqueLocationIdentifier, randUniquePkg) {
+        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
             var req;
             var location;
             physicalSupplierId = null;
@@ -1820,8 +1820,8 @@ ctrl.setProductData = function(data, loc) {
                     // if (sellerId == requirement.SellerId && location.location.id == requirement.LocationId && location.id == requirement.RequestLocationId && physicalSupplierId == requirement.PhysicalSupplierCounterpartyId) {
                     //     return true;
                     // }
-                    composedUniqueLocationSellerPhysical = uniqueLocationIdentifier + "-" + randUniquePkg;
-                    if (requirement.rowLocationSellerPhysical == composedUniqueLocationSellerPhysical) {
+                    composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + sellerObj.randUnique;
+                    if (requirement.UniqueLocationSellerPhysical == composedUniqueLocationSellerPhysical && requirement.randUniquePkg == sellerObj.randUniquePkg) {
                         /* update requirementData in case row was checked before making changes on the row */
                         requirement.PhysicalSupplierCounterpartyId = physicalSupplierId;
                         return true;
@@ -6560,6 +6560,9 @@ ctrl.setProductData = function(data, loc) {
 
         ctrl.groupLocationsByUniqueLocationIdentifier = function() {
         	ctrl.locationsGroupedByULI = $filter('groupBy')(ctrl.locations, 'uniqueLocationIdentifier');
+        	if (typeof(ctrl.recompileDefaultSellerChecks) == 'function') {
+	        	ctrl.recompileDefaultSellerChecks();
+        	}
         }
 
 
