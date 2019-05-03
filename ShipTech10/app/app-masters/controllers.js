@@ -819,6 +819,12 @@ APP_MASTERS.controller("Controller_Master", [
                     vm.editInstance.$valid = false;                	
                     return false;               	
                 }
+                $.each($scope.formValues.voyages, function(k,v){
+                	if (v.voyageUpdated == "0000-00-00T00:00+00:00") {
+                		v.voyageUpdated = null;
+						delete v.voyageUpdated;
+                	}
+                })
 
             }
             if (vm.app_id == "masters" && vm.screen_id == "vesseltype") {
