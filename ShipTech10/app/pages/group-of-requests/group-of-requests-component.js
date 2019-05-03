@@ -1439,7 +1439,7 @@ ctrl.setProductData = function(data, loc) {
                     seller.selected = checkBool;
 	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
 	        	}
-
+	        	if (payload == false) {return}
 	        	groupOfRequestsModel.checkSellerRow(payload).then(
                 function (response) {
                 	console.log(response);
