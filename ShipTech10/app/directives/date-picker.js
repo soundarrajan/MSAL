@@ -349,7 +349,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                             $(element).removeClass('invalid');
                             reset();
                         } else {
-                            toastr.error("Please enter the correct format");
+                        	if ($(element).val() == "") {
+	                            toastr.error("Please fill in required field");
+                        	} else {
+	                            toastr.error("Please enter the correct format");
+                        	}
                             $('#' + dateInputId).parent().find(".datePickerDayOfWeek").text("");
                             $(element).addClass('invalid');
                             if (!mask.value) {

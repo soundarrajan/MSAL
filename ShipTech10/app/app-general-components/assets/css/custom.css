@@ -4395,8 +4395,8 @@ th#flat_available_contracts_checkbox > * {
     padding-bottom: 15px;
 }
 
-.row-invoice-amount-treasuryreport {
-    height: 0;
+.row-invoice-amount-treasuryreport .portlet{
+    margin-bottom: 5px;
 }
 
 #tab_0 > div.col-md-12.portlet.light {
