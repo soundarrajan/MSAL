@@ -430,7 +430,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     	if (typeof(v) == 'undefined') {
                     		$('#' + dateInputId).data("DateTimePicker").clear();
                     		$('#' + dateInputId).data("DateTimePicker").date(null);
-                            ngModel.$setViewValue("0000-00-00T00:00+00:00");
+                            ngModel.$setViewValue(null);
                             ngModel.$commitViewValue();
                             wasReset = true;
                     	}
