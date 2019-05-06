@@ -6885,6 +6885,17 @@ APP_API.factory("$Api_Service", [
                     if (typeof param.field.Filter != "undefined") {
                         if (param.app == "labs" && param.screen == "labresult") {
                             if (param.field.Unique_ID == "delivery") {
+                                var invalidFilter = false;
+                                if (param.field.Filter) {
+                                    $.each(param.field.Filter, function (k,v) {
+                                        if (v.ColumnName=="OrderId" && v.Value == 0) {
+                                            invalidFilter = true;
+                                        }
+                                    })
+                                }
+                                if (invalidFilter) {
+                                    return false;
+                                }
                                 var apiJSON = {
                                     Payload: {
                                         Order: null,
