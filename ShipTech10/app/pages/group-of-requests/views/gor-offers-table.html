@@ -538,9 +538,8 @@
     
                 </td>
                 <td>
-                    
                     <label class="mt-checkbox mt-checkbox-outline" ng-if="seller.packageType == 'individual' ">
-                    	<!-- {{location[0].uniqueLocationIdentifier}} + {{seller.randUniquePkg}} -->
+                    	<!-- {{location[0].id}} + {{seller.randUniquePkg}} -->
                         <input  type="checkbox" ng-checked="$ctrl.hasSellerRequirements(seller.sellerCounterparty.id, location, seller, location[0].uniqueLocationIdentifier, seller.randUniquePkg)"
                             ng-click="$ctrl.createSellerRequirements(seller, location, $event, location[0].uniqueLocationIdentifier, seller.randUniquePkg)" uniqueLocationIdentifier="{{location[0].uniqueLocationIdentifier}}"/>
                         <span style="left: 6px;"></span>

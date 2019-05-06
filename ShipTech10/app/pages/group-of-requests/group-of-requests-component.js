@@ -1478,6 +1478,7 @@ ctrl.setProductData = function(data, loc) {
         	var sellerId = sellerCounterpartyId;
         	var randUniquePkg = sellerRandUniquePkg;
         	var locationIdentifier = uniqueLocationIdentifier;
+
         	// for individual checkbox
             // var isSelected = false;
             // $.each(ctrl.requests, function (reqK, reqV) {
@@ -1507,6 +1508,7 @@ ctrl.setProductData = function(data, loc) {
             //     	}
             //     });
             // });
+            // return isSelected
 
             if (typeof(ctrl.checkedCounterpartyRows) == "undefined") {
             	ctrl.checkedCounterpartyRows = []
@@ -6459,6 +6461,15 @@ ctrl.setProductData = function(data, loc) {
         	 ****************/
 
         	var validationDataAt_RLS_level = [];
+
+        	console.log(ctrl.requirements);
+
+        	sellerSupplierLocationsOfRequirements = [];
+        	$.each(ctrl.requirements, function(rk,rv){
+        		sslCombined = rv.RequestId +"-"+ rv.SellerId + "-" + rv.PhysicalSupplierCounterpartyId + "-" + rv.RequestLocationId;
+				sellerSupplierLocationsOfRequirements.push(sslCombined);
+        	})
+
             $.each(ctrl.requests, function (reqK, reqV) {
             	currentRequest = reqV;
                 $.each(reqV.locations, function (locK, locV) {
@@ -6468,8 +6479,9 @@ ctrl.setProductData = function(data, loc) {
 			            	currentSeller = selV;
                             $.each(selV.offers, function (ofK, ofV) {
                                 if (ofV.id) {
-                        			if (typeof(validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id]) == "undefined") {
-                        				validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id] = {
+			            			currentRSSL = currentRequest.id +"-"+ currentSeller.sellerCounterparty.id + "-" + ofV.physicalSupplierCounterparty.id + "-" + currentLocation.id
+                        			if (typeof(validationDataAt_RLS_level[currentRSSL]) == "undefined") {
+                        				validationDataAt_RLS_level[currentRSSL] = {
 								        	allWouldBeNoQuote : false,
 								    		totalNoQuoteItems : 0,
 								    		totalOffers : 0,
@@ -6481,24 +6493,28 @@ ctrl.setProductData = function(data, loc) {
                         			}
                                 	if (ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id.toString()) != -1 || 
                                 		ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id) != -1) {
-								    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].selectedItemsFromThis_RLS++;
+								    		validationDataAt_RLS_level[currentRSSL].selectedItemsFromThis_RLS++;
 
 							            	$.each(currentRequest.offers, function(ok,ov){
-							            		$.each(ov.additionalCosts, function(ack,acv){
-							            			if (!acv.isDeleted) {
-											    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].hasAdditionalCostsAll = true;
-							            			}
-							            		})
+							            		currentOffer = ov;
+							            		currentOfferRSSL = currentOffer.requestId + "-" + currentOffer.sellerCounterpartyId + "-" +  currentOffer.physicalSupplierCounterpartyId + "-" + currentOffer.requestLocationId;
+							            		if (sellerSupplierLocationsOfRequirements.indexOf(currentOfferRSSL) != -1) {
+								            		$.each(ov.additionalCosts, function(ack,acv){
+								            			if (!acv.isDeleted) {
+												    		validationDataAt_RLS_level[currentRSSL].hasAdditionalCostsAll = true;
+								            			}
+								            		})
+							            		}
 							            	})
 	            		            		$.each(ofV.additionalCosts, function(ack,acv){
 						            			if (!acv.isDeleted) {
-										    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].hasAdditionalCostsForProduct = true;
+										    		validationDataAt_RLS_level[currentRSSL].hasAdditionalCostsForProduct = true;
 						            			}
 						            		})
                                 	}
-						    		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].totalOffers++;
+						    		validationDataAt_RLS_level[currentRSSL].totalOffers++;
                                 	if (ofV.hasNoQuote == true) {
-						        		validationDataAt_RLS_level[currentRequest.id+"-"+currentLocation.id+"-"+currentSeller.sellerCounterparty.id].totalNoQuoteItems++
+						        		validationDataAt_RLS_level[currentRSSL].totalNoQuoteItems++
                                 	}
                                 }
                             });
