@@ -2213,7 +2213,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
 
                 entityId = rowObject.id;
-
+                edit_required = "true";
+                if (typeof options.colModel.edit_required != "undefined")
+                    edit_required = options.colModel.edit_required;
                 _.set(vm, 'changedfields['+entityId+']['+name+']', null);
 
                 if (typeof vm.changedfields[entityId] == "undefined")  vm.changedfields[entityId] = {};
@@ -2226,7 +2228,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 // datepicker
                 tpl += '<input class="form-control date-mask new-date-picker" ' +
                             'type="text" ' +
-                            'ng-required="true" ' +
+                            'ng-required="' + edit_required + '" ' +
                             'new-date-picker ' +
                             'picker-type="date" ' + 
                             'ng-change="CLC.checkChange(' + entityId + ');" ' +

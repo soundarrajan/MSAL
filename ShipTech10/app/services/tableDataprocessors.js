@@ -156,6 +156,12 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
                 }
             }
 
+            // to be moved in the screen layout (screen id: 113)
+            if(CLC.screen_id == "treasuryreport"){
+                if(obj.name == "accountancyDate"){
+                    colmodel[key].edit_required = "false";
+                }
+            }
       
             /* Label Changes based on tenant configuration */
             if(obj.label.toLowerCase().indexOf('company') >= 0) {
