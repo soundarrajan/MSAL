@@ -869,7 +869,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     	if (hasDayOfWeek) { 
                     		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
                     	} 
-                        return "<div>" + formattedDate + "<div>";
+                        return "<div formatter='formatDate'>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
                         // return formattedDate;
@@ -1100,9 +1100,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (cellValue != null) {
                     	if (hasDayOfWeek) { 
-                    		formattedDate = moment(cellValue).format("ddd") + " " + formattedDate;
+                    		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
                     	} 
-                        return "<div>" + formattedDate + "<div>";
+                        return "<div formatter='formatOnlyDate'>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
                         // return formattedDate;
@@ -1140,7 +1140,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     	if (hasDayOfWeek) { 
                     		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
                     	} 
-                        return "<div>" + formattedDate + "<div>";
+                        return "<div formatter='formatDateUtc' >" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
                         // return formattedDate;

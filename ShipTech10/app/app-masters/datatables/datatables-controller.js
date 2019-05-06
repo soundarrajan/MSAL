@@ -3264,7 +3264,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "id",
                         displayName: "Lab Result ID",
                         cellTemplate: $scope.dataTableTemplates.link,
-                        cellLink: "#/labs/;abresult/edit/",
+                        cellLink: "#/labs/labresult/edit/",
                         required: true
                     },
                     {
