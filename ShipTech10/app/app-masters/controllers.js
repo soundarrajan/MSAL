@@ -824,6 +824,8 @@ APP_MASTERS.controller("Controller_Master", [
                 $.each($scope.formValues.voyages, function(k,v){
                 	if (v.voyageUpdated == "0000-00-00T00:00+00:00") {
                 		v.voyageUpdated = null;
+                	}
+                	if (v.voyageUpdated == null) {
 						delete v.voyageUpdated;
                 	}
                 })
