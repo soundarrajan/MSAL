@@ -2309,12 +2309,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             	vm.paymentDateHistory[currentRow.id].accountancyDate = null;
             }      
 			// console.log(vm.initialTreasuryData);
-            if (vm.initialTreasuryData[currentRow.id-1].paymentDate == changedData.paymentDate) {
-            	// return;
-            } else {
-            	payload.HasManualPaymentDate = true;
-                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
-                vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
+            if (vm.initialTreasuryData) {
+                if (vm.initialTreasuryData[currentRow.id-1].paymentDate == changedData.paymentDate) {
+                    // return;
+                } else {
+                    payload.HasManualPaymentDate = true;
+                    vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
+                    vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
+                }
             }
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
