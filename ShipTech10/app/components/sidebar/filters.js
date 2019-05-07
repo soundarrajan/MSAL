@@ -131,12 +131,25 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
             }
 
+            var isInvalidValue = false;
             $.each(loopList, function(k, v) {
-                if (v.condition.conditionNrOfValues && !v.value) {
-                    toastr.error("Please enter a value");
-                    return;
+                if (v.condition.conditionNrOfValues && (!v.value || v.value == "Invalid date")) {
+                    isInvalidValue = true;
                 }
+                $.each(v.value, function(k1,v1){
+                	if (typeof(v1) != 'undefined') {
+                		if (!v1) {
+		                    isInvalidValue = true;
+                		}
+                	} else {
+	                    isInvalidValue = true;
+                	}
+                })
             });
+            if (isInvalidValue) {
+                toastr.error("Please enter a value");
+            	return false;
+            }
 
             /*
             invalidDateFilters =  _.filter(loopList, function(obj) {

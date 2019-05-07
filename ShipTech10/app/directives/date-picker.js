@@ -427,12 +427,16 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         }
                         mask.value = prevValue;
                     } else {
-                    	if (typeof(v) == 'undefined') {
+                    	if (typeof(v) == 'undefined' || !v ) {
                     		$('#' + dateInputId).data("DateTimePicker").clear();
-                    		$('#' + dateInputId).data("DateTimePicker").date(null);
+                    		// $('#' + dateInputId).data("DateTimePicker").date(null);
+                            // ngModel.$setViewValue("0000-00-00T00:00:00");
                             ngModel.$setViewValue(null);
                             ngModel.$commitViewValue();
-                            wasReset = true;
+                            mask.updateValue('');
+                            prevValue = '';
+                            // mask.value = null
+                      //       wasReset = true;
                     	}
                     }
                 });
