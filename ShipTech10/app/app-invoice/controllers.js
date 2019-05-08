@@ -2333,7 +2333,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 if (response.status == true) {
                     console.log(response);
                     if (response.status) {
-                        toastr.success("Saved successfully!")
+                        // toastr.success("Saved successfully!")
                     } else {
                         toastr.error("An error has occured!")
                     }
@@ -2347,7 +2347,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     $rootScope.$on("gridDataDone", function(data,res){
     	isTreasuryReport = window.location.hash.indexOf("treasuryreport") != -1;
     	if (isTreasuryReport) {
-                elm = $('#tab_0 > div.col-md-12.portlet.light > div.portlet-body.main-portlet_content > div > div.col-md-12.fe_entity.edit_form_fields_GenerateReport_invoices.conditional_hidden > span > span > div > div').detach();
+                elm = $('#tab_0 > div.col-md-12.portlet.light > div.portlet-body.main-portlet_content > div > div.col-md-12.fe_entity.edit_form_fields_GenerateReport_invoices.conditional_hidden > span > span > div > div > span').detach();
                 $('#tab_0 > div.col-md-12.portlet.light > div.portlet-title.ng-scope').append(elm);
                 elm.show();
                 elm.css('padding-right', '20px');

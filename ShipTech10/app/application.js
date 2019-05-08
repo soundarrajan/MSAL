@@ -410,6 +410,9 @@ angular
 					// $(this).$valid;
 					// $compile($(this));
 				})
+
+				$(document).on("focusin", "input, textarea", function () {$(this).select();});
+				
             })
 
             $scope.pagetitle = "";

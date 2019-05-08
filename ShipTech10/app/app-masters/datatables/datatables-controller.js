@@ -125,8 +125,17 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "invoiceAmount",
                         displayName: "Invoice Amount",
-                        cellTemplate: $scope.dataTableTemplates.simpleTextUOM,
-                        cellUomName: "invoiceAmountCurrency"
+                        cellTemplate: $scope.dataTableTemplates.textUOM,
+                       // cellUomName: "invoiceAmountCurrency",
+                        cellObject: {
+                            Name: "invoiceAmountCurrency",
+                            Type: "dropdown",
+                            masterSource: "Currency",
+                            UniqueId: "invoiceAmountCurrency",
+                            UomDisabled: true
+                            // uomBindSource: "invoiceAmountCurrency"
+                        }
+
                     },
                     {
                         name: "orderCurrencyAmount",
