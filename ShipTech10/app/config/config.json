@@ -8,9 +8,7 @@
             "extraQueryParameter": "nux=1",
             "logOutUri": "",
             "endpoints": {
-                "http://mail.24software.ro:8081/": "3e7b4241-b1e6-4769-bb5c-989d64458e51",
-                "https://app.powerbi.com": "https://analysis.windows.net/powerbi/api",
-                "https://api.powerbi.com": "https://analysis.windows.net/powerbi/api"
+                "http://mail.24software.ro:8081/": "3e7b4241-b1e6-4769-bb5c-989d64458e51"
             },
             "anonymousEndpoints": ["http://shiptech10.24software.ro:8081/"],
             "postLogoutRedirectUri": null,
