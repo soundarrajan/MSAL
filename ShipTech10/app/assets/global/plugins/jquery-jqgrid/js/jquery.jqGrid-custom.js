@@ -80,7 +80,27 @@ $.jgrid.extend({
         },
         columnFilters: function(data) {
             // console.log(data)
+
+			var uniqueArray = function(arrArg) {
+			  return arrArg.filter(function(elem, pos,arr) {
+			    return arr.indexOf(elem) == pos;
+			  });
+			};
+
             if (data && data.length > 0) {
+            	removedDuplicateData = angular.copy(data);
+	            $.each(removedDuplicateData, function(k,v){
+	            	removedDuplicateData[k] = JSON.stringify(v);
+	            })
+				removedDuplicateData = _.uniqBy(removedDuplicateData, function (e) {
+					return e;
+				});
+	            $.each(removedDuplicateData, function(k,v){
+	            	removedDuplicateData[k] = JSON.parse(v);
+	            })
+				// datauniqueArray
+	            data = removedDuplicateData;
+
                 $(this).jqGrid.Ascensys.columnFiltersData = data;
                 $(this).jqGrid("Ascensys.element.filters.init");
             } else {
@@ -570,6 +590,8 @@ var Cfg = {
                 }
             });
             var element = "" + '<div class="' + Cfg.class.filters + ' dataTables_info">Filter: ##CONTENT##</div>';
+            if (conditions.startsWith(" or ")) {conditions = conditions.substring(3)}
+            if (conditions.startsWith(" and ")) {conditions = conditions.substring(4)}
             element = element.replace(/##CONTENT##/g, conditions) + '<div id="clearUnsavedFilters" ><a class="btn btn-default" >Clear Unsaved Filters</a></div>';
             // element = element.replace(/##CONTENT##/g, conditions) + '<div id="clearUnsavedFilters"  ng-controller="FiltersController" ><a class="btn btn-default" ng-click="clearUnsavedFilters();">Clear Unsaved Filters</a></div>';
             return element;

@@ -27,8 +27,7 @@
         <p>Show rows where:</p>
         <div class="filterRules">
             <div class="row" ng-repeat="(key, value) in columnFilters[column]">
-
-                <div class="col-sm-12" column-filter-item ng-init="columnFilters[column][key].column =(currentColumns | filter:{columnValue:column}:true)[0];  "
+                <div class="col-sm-12" ng-class="{'fromTreasurySummary': columnFilters[column][key].fromTreasurySummary}" column-filter-item ng-init="columnFilters[column][key].column =(currentColumns | filter:{columnValue:column}:true)[0];  "
                     ng-if=" key == 0 || columnFilters[column][key].filterOperator">
                     <div class="row mb10">
                         <!-- condition -->
@@ -46,7 +45,7 @@
 		                    	 ? renderColumnType = 'Date' 
 		                    	 : '' }}		                    	 
                             	</span>
-                                <select ng-model="columnFilters[column][key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition"
+                                <select ng-disabled="columnFilters[column][key].fromTreasurySummary" ng-model="columnFilters[column][key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition"
                                     ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue "
                                     ng-disabled="!columnFilters[column][key].column" required ng-change="clearValues(column, key)"></select>
                             </div>
@@ -54,7 +53,7 @@
                         </div>
                         <div class="col-sm-2 no-padding">
                             <span ng-show="!$first" class="">
-                                <button class=" btn default miunsAct" ng-click="columnFilters[column].splice(key, 1)">
+                                <button ng-disabled="columnFilters[column][key].fromTreasurySummary" class=" btn default miunsAct" ng-click="columnFilters[column].splice(key, 1)">
                                     <i class="fa fa-minus miunsAct"></i>
                                 </button>
                             </span>
@@ -77,9 +76,9 @@
                                     <span ng-switch-when="2">
                                         <div class="form_group no-label">
                                             <!-- 1. type date -->
-                                            <div ng-if="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly'" class="popover-filter-dates">
+                                            <div ng-class="{'disabledFromTreasury' : columnFilters[column][key].fromTreasurySummary}" ng-if="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly'" class="popover-filter-dates">
                                                 <div class="between input-group">
-                                                    <input
+                                                    <input ng-disabled="columnFilters[column][key].fromTreasurySummary"
                                                         type="text"
                                                         ng-model="columnFilters[column][key].value[0]" 
                                                         name="{{ key }}_date_0"
@@ -89,7 +88,7 @@
                                                         class="form-control date-mask new-date-picker">
                                                 </div>
                                                 <div class="between input-group">
-                                                    <input
+                                                    <input ng-disabled="columnFilters[column][key].fromTreasurySummary"
                                                         type="text"
                                                         ng-model="columnFilters[column][key].value[1]" 
                                                         name="{{ key }}_date_1"
@@ -106,13 +105,13 @@
                                                         columnFilters[column][key].column.columnType == 'Amount' ||
                                                         columnFilters[column][key].column.columnType == 'Price'">
                                                 <div class="between">
-                                                    <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control " ng-model="columnFilters[column][key].value[0]"
+                                                    <input ng-disabled="columnFilters[column][key].fromTreasurySummary" type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}0" class="form-control " ng-model="columnFilters[column][key].value[0]"
                                                         name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
                                                     />
                                                         <!-- format="number:3" -->
                                                 </div>
                                                 <div class="between">
-                                                    <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}1" class="form-control" ng-model="columnFilters[column][key].value[1]"
+                                                    <input ng-disabled="columnFilters[column][key].fromTreasurySummary" type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}1" class="form-control" ng-model="columnFilters[column][key].value[1]"
                                                         name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
                                                     />
                                                         <!-- format="number:3" -->
@@ -121,18 +120,19 @@
                                         </div>
                                     </span>
                                     <!-- one filter value -->
+                                    <!-- {{columnFilters[column][key].fromTreasurySummary}} -->
                                     <span ng-switch-when="1" >
                                         <div class="form_input no-label">
                                             <div class="column-filter-item-{{column}}-{{key}}" ng-class="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly' ? 'input-group popover-filter-date' : ''">
                                                 <!-- type number & type text -->
-                                                <input type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control" ng-model="columnFilters[column][key].value[0]"
+                                                <input ng-disabled="columnFilters[column][key].fromTreasurySummary" type="text" id="filter{{ key }}_{{ columnFilters[column][key].column.columnType }}" class="form-control" ng-model="columnFilters[column][key].value[0]"
                                                     name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
                                                     ng-if="columnFilters[column][key].column.columnType != 'Bool' &&
                                                     columnFilters[column][key].column.columnType != 'Date' && columnFilters[column][key].column.columnType != 'DateOnly'" />
                                                <!--      format="{{columnFilters[column][key].column.columnType == 'Number' ? 'number:3' : ''}}" -->
 
                                                 <!--  type bool -->
-                                                <select name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
+                                                <select ng-disabled="columnFilters[column][key].fromTreasurySummary" name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
                                                     ng-model="columnFilters[column][key].value[0]" class="form-control bs-select">
                                                     <option value="{{vl.databaseValue}}" ng-repeat="(key, vl) in listsCache.TrueFalseOptions">
                                                     	{{column != 'IsDeleted' ? vl.name : (vl.name == 'Yes' ? 'Inactive' : 'Active')}}

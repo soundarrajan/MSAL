@@ -21,6 +21,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     'Feb',
                     'Mar',
                     'Apr',
+                    'May',
                     'Jun',
                     'Jul',
                     'Aug',
@@ -156,6 +157,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             var element = null;
 
             $(elm).attr("tabindex", "-1");
+			$(elm).css("opacity", "0");
 
             var init = new Promise(function(resolve, reject) {
                 setTimeout(function() {
@@ -228,7 +230,6 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 };
 
                 $(element).datetimepicker(datePickerOptions);
-
 
                 if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                     $('#' + dateInputId + '_timeicon').click(function() {

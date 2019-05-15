@@ -79,6 +79,17 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
+
+            if (typeof($rootScope.lastFilterApplied) == 'undefined') {
+            	$rootScope.lastFilterApplied = 0;
+            }
+            var difference = new Date().getTime() - $rootScope.lastFilterApplied;
+            console.log("-----------------" + difference);
+            if (difference < 1000) {
+            	return false;
+            }
+            $rootScope.lastFilterApplied = new Date().getTime();
+
             //console.log("_____________________", $scope.currentList);
 			console.log(localStorage.getItem("persistentGlobalFilters"));
 			if (localStorage.getItem("persistentGlobalFilters")) {
@@ -86,6 +97,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 				$scope.globalFilters = angular.copy(JSON.parse(localStorage.getItem("persistentGlobalFilters")));
 				localStorage.removeItem("persistentGlobalFilters");
 			}
+
             $rootScope.listOfAppliedFiltersString = []
         	hasRequestProductStatusFilter = false;	
         	if ($scope.globalFilters) {
@@ -200,9 +212,20 @@ angular.module("shiptech.components").controller("FiltersController", [
                             differentColumns = $rootScope.rawFilters.filter(function(o) {
                                 return o && o.column.columnValue != checkColumn;
                             });
-                            if (differentColumns) {
-                                data = data.concat(differentColumns);
-                            }
+                            $.each(differentColumns, function(k,v){
+                            	v.isDuplicate = false;	
+                            	$.each(data, function(k1,v1){
+                            		if (v.column.columnName == v1.column.columnName && v.condition.conditionName == v1.condition.conditionName && JSON.stringify(v.value) == JSON.stringify(v1.value)) {
+		                            	v.isDuplicate = true;	
+                            		}
+                            	})
+                            	if (!v.isDuplicate) {
+                            		data.push(v);
+                            	}
+                            })
+                            // if (differentColumns) {
+                            //     data = data.concat(differentColumns);
+                            // }
                         }
                         // console.log(test)
                         // $.each($rootScope.rawFilters, function(k, v) {
@@ -290,7 +313,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         	window.lastclearUnsavedFiltersCall = new Date();
             var clearedFilters = [];
             $.each($rootScope.rawFilters, function(k, v) {
-                if (!v.unSaved) {
+                if (!v.unSaved || v.fromTreasurySummary) {
                     clearedFilters.push(v);
                 }
             });
@@ -308,6 +331,13 @@ angular.module("shiptech.components").controller("FiltersController", [
             	$state.reload();
             }
         })
+
+        $scope.$on("treasurySummaryFilters", function (event, data) {
+            // This should only be applied from schedule dashboard calendar
+            // $rootScope.$broadcast("filters-applied", data)
+            console.log($rootScope.rawFilters);
+            $scope.applyFilters(data, true, true);
+        })  
 
         $scope.applyDefaultConfiguration = function(data, loadDef) {
             if (ctrl.saveFilterActionEvent) {return}
@@ -442,6 +472,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                         // console.log(val);
                         var filter = {
                             columnValue: val.column.columnValue,
+                            fromTreasurySummary: val.fromTreasurySummary,
                             ColumnType: val.column.columnType,
                             isComputedColumn: val.column.isComputedColumn,
                             ConditionValue: val.condition.conditionValue,

@@ -1053,8 +1053,16 @@ ctrl.setProductData = function(data, loc) {
             });
             $.each(ctrl.locations, function (k, v) {
                 setTimeout(function () {
+					var currentLocationProductIds = [];
+						$.each(v.products, function(k2,v2){
+							currentLocationProductIds.push(v2.id);
+						})
+					// $.each(locations, function(k1,v1){
+					// })                	
+					currentLocationProductIds = currentLocationProductIds.join(",");
+
                     getSellersSortedPayload = {
-                        RequestProductList: productIds,
+                        RequestProductList: currentLocationProductIds,
                         RequestGroupId: ctrl.groupId,
                         LocationId: v.location.id,
                         RequestSellerId: sellerId
@@ -1480,35 +1488,42 @@ ctrl.setProductData = function(data, loc) {
         	var locationIdentifier = uniqueLocationIdentifier;
 
         	// for individual checkbox
-            // var isSelected = false;
-            // $.each(ctrl.requests, function (reqK, reqV) {
-            //     $.each(reqV.locations, function (locK, locV) {
-            //     	if (locV.location.id == locationId) {
-	           //          $.each(locV.products, function (prodK, prodV) {
-	           //          	if (prodV.id == prodId) {
-		          //               $.each(prodV.sellers, function (sellerK, sellerV) {
-		          //                   if (sellerV.sellerCounterparty.id == sellerId) {
-		          //  						hasNoQuote = false;                 	
-		          //                       if (sellerV.offers) {
-		          //                           if (sellerV.offers.length > 0) {
-		          //                               if (!sellerV.offers[0].hasNoQuote) {
-		          //              						hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
-		          //                               }
-		          //                           }
-		          //                       }
-		          //                       if (!hasNoQuote) {
-		          //                       	if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
-				        //                         isSelected = true;
-		          //                       	}
-		          //                       }
-		          //                   }
-		          //               });
-	           //          	}
-	           //          });
-            //     	}
-            //     });
-            // });
-            // return isSelected
+            var isSelected = false;
+            var sellerExistsForProduct = false;
+            $.each(ctrl.requests, function (reqK, reqV) {
+                $.each(reqV.locations, function (locK, locV) {
+                	if (locV.location.id == locationId) {
+	                    $.each(locV.products, function (prodK, prodV) {
+	                    	if (prodV.id == prodId) {
+		                        $.each(prodV.sellers, function (sellerK, sellerV) {
+		                            if (sellerV.sellerCounterparty.id == sellerId) {
+							            sellerExistsForProduct = true;
+		           						hasNoQuote = false;                 	
+		                                if (sellerV.offers) {
+		                                    if (sellerV.offers.length > 0) {
+		                                        if (!sellerV.offers[0].hasNoQuote) {
+		                       						hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+		                                        }
+		                                    }
+		                                }
+		                                if (!hasNoQuote) {
+		                                	if (/*(sellerV.isPreferredSeller && sellerV.selected == null) ||*/ (sellerV.selected == true) || sellerV.selected == null) {
+				                                isSelected = true;
+		                                	}
+		                                }
+		                            }
+		                        });
+	                    	}
+	                    });
+                	}
+                });
+            });
+
+            if (!sellerExistsForProduct) {
+            	isSelected = true;
+            }
+
+            return isSelected
 
             if (typeof(ctrl.checkedCounterpartyRows) == "undefined") {
             	ctrl.checkedCounterpartyRows = []
@@ -1586,7 +1601,7 @@ ctrl.setProductData = function(data, loc) {
          * @param {array} locations - location group list
          * @param {object} product - product object
          */
-        function removeSellerProductRequirementsOnLocation(seller, locations, product) {
+        function removeSellerProductRequirementsOnLocation(seller, locations, product, event) {
             var location;
             if (typeof sellerId == "undefined" && typeof locations == "undefined" && typeof product == "undefined") {
                 return false;
@@ -1607,6 +1622,9 @@ ctrl.setProductData = function(data, loc) {
                 composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + seller.randUnique;
                 if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && location.id == req.RequestLocationId && product.id == req.RequestProductId) {
                     if (req.randUniquePkg == seller.randUniquePkg) {
+		                if (typeof(event) != 'undefined') {
+				            checkUncheckSellerRowUpdate(seller, locations, [ctrl.requirements[i]], false)
+		                }                        
                         ctrl.requirements.splice(i, 1);
                     }
                 }
@@ -1632,7 +1650,7 @@ ctrl.setProductData = function(data, loc) {
 
         function removeProductFromRequestProductIds(seller, product, ids) {
             var result = ids;
-            for (var i = 0; i < ids.length; i++) {
+            for (var i = ids.length - 1; i >= 0; i--) {
                 if (ids[i].requestProductId == product.id && ids[i].productSellerId == seller.sellerCounterparty.id) {
                     result.splice(i, 1);
                 }
@@ -1806,6 +1824,27 @@ ctrl.setProductData = function(data, loc) {
             var req;
             var location;
             physicalSupplierId = null;
+
+			/*rewrite*/
+			    uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
+			    rowCheckboxes = $("[unique-row-identifier='"+uniqueRowIdentifier+"']");
+			    rowCheckboxesLength = rowCheckboxes.length;
+			    checkedRowCheckboxes = 0;
+			    $.each(rowCheckboxes, function(){
+			    	if (!$(this).is(":visible")) {
+			    		rowCheckboxesLength--;
+			    	}
+			    	if ($(this).prop("checked") == true) {
+			            checkedRowCheckboxes++;
+			    	}
+			    })
+			    if (checkedRowCheckboxes >= rowCheckboxesLength) {
+			    	return true
+			    }
+			    return false
+			/*rewrite*/
+
+
             checkAllCheckboxesDefault();
             if (sellerObj.offers.length > 0) {
                 if (sellerObj.offers[0].physicalSupplierCounterparty) {
@@ -2233,7 +2272,7 @@ ctrl.setProductData = function(data, loc) {
             ctrl.calculateScreenActions();
 
         };
-        ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample, uniqueLocationIdentifier, randUniquePkg) {
+        ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample, uniqueLocationIdentifier, randUniquePkg, event) {
             var request;
             var location, requestProductsInLocation;
             var currentuniqueLocationIdentifier = uniqueLocationIdentifier;
@@ -2274,12 +2313,13 @@ ctrl.setProductData = function(data, loc) {
                         break;
                     }
                 }
-                removeSellerProductRequirementsOnLocation(seller, locations, product);
+                removeSellerProductRequirementsOnLocation(seller, locations, product, event);
                 // if (seller.packageType != 'individual') {
                 //     ctrl.removeSellerProductRequirementsOnLocation(seller, locations, productSample)
                 // }
             } else {
                 //get actual product from location (identified by the productSample)
+                ctrl.initialSelectedCheckboxesRequirements = true;
                 for (i = 0; i < location.products.length; i++) {
                     if (location.products[i].id === productSample.id) {
                         product = location.products[i];
@@ -2377,6 +2417,7 @@ ctrl.setProductData = function(data, loc) {
                     req.PricingTypeId = null;
                 }
                 ctrl.requirements.push(req);
+                currentRowRequirements = req;
                 //create confirmation requirements
                 ctrl.requirementRequestProductIds.push({
                     requestProductId: product.id,
@@ -2385,6 +2426,9 @@ ctrl.setProductData = function(data, loc) {
                     requestOffer: productOffer,
                     randUniquePkg: seller.randUniquePkg
                 });
+                if (typeof(event) != 'undefined') {
+		            checkUncheckSellerRowUpdate(seller, locations, [currentRowRequirements], true)
+                }
             }
             //calculates screen actions
             ctrl.calculateScreenActions();
@@ -2990,7 +3034,7 @@ ctrl.setProductData = function(data, loc) {
         }
 
         ctrl.saveComments = function (internalComments, externalComments, fromDate) {
-            if (ctrl.quoteByDateFrom == "0000-00-00T00:00+00:00") {
+            if (ctrl.quoteByDateFrom == "0000-00-00T00:00+00:00" || (!$("#quoteByDateFrom_dateinput").hasClass("focusedOut") && !ctrl.quoteByDateFrom)  ) {
                 return;
             }
             if (fromDate && ctrl.lastSavedQuoteByDateFrom == ctrl.quoteByDateFrom) {

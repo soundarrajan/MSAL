@@ -132,7 +132,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                             Type: "dropdown",
                             masterSource: "Currency",
                             UniqueId: "invoiceAmountCurrency",
-                            UomDisabled: true
+                            Disabled: "grid.appScope.fVal().formValues.status.name == 'Approved'",
+                            UomDisabled: true,
+                            changeEvent: "computeTotalInvoiceAmountOnClaimAmountChange()"
                             // uomBindSource: "invoiceAmountCurrency"
                         }
 

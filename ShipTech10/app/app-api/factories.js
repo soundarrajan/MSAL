@@ -8240,9 +8240,7 @@ APP_API.factory("$Api_Service", [
                 
                     if (_debug) console.log("$APIService invoice.submitInvoiceApprove called with the following params:", param);
                     var apiJSON = {
-                        Payload: {
-                        	"id" : parseFloat(param)
-                        }
+                        Payload: param
                     };
                     var url = API.BASE_URL_DATA_INVOICES + "/api/invoice/approve";
                     screenLoader.showLoader();

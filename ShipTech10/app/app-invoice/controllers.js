@@ -1862,9 +1862,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         exchangeDate = null;
                     }
                     if (value.invoiceAmountCurrency.id != $scope.formValues.invoiceRateCurrency.id) {
-                        $scope.convertCurrency(value.baseInvoiceAmountCurrency.id, $scope.formValues.invoiceRateCurrency.id, exchangeDate, value.baseInvoiceAmount, function(response) {
-                            value.invoiceAmount = response;
-                        });
+                        // $scope.convertCurrency(value.baseInvoiceAmountCurrency.id, $scope.formValues.invoiceRateCurrency.id, exchangeDate, value.invoiceAmount, function(response) {
+                        //     if (response != 0) {
+	                       //      value.invoiceAmount = response;
+                        //     }
+                        // });
                         value.invoiceAmountCurrency = $scope.formValues.invoiceRateCurrency;
                     }
                 })
@@ -1916,6 +1918,68 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         }
 
     }
+
+	$scope.convertCurrency = function(fromCurrencyId, toCurrencyId, exchangeDate, amount, convertCallback) {
+	    var d = new Date();
+	    month = d.getMonth() + 1;
+	    day = d.getDate();
+	    hours = d.getHours();
+	    minutes = d.getMinutes();
+	    seconds = d.getSeconds();
+	    if (month < 10) {
+	        month = "0" + month;
+	    }
+	    if (day < 10) {
+	        day = "0" + day;
+	    }
+	    if (hours < 10) {
+	        hours = "0" + hours;
+	    }
+	    if (minutes < 10) {
+	        minutes = "0" + minutes;
+	    }
+	    if (seconds < 10) {
+	        seconds = "0" + seconds;
+	    }
+	    date = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
+	    if (!exchangeDate) {
+	        exchangeDate = date;
+	    }
+	    data = {
+	        Payload: {
+	            Order: null,
+	            Filters: [
+	                {
+	                    ColumnName: "FromCurrencyId",
+	                    Value: fromCurrencyId
+	                },
+	                {
+	                    ColumnName: "ToCurrencyId",
+	                    Value: toCurrencyId
+	                },
+	                {
+	                    ColumnName: "ExchangeDate",
+	                    Value: exchangeDate
+	                },
+	                {
+	                    ColumnName: "Amount",
+	                    Value: amount
+	                }
+	            ],
+	            Pagination: {
+	                Skip: 0,
+	                Take: 10
+	            }
+	        }
+	    };
+	    Factory_Master.convertCurrency(data, function(callback) {
+	        if (callback) {
+	            if (convertCallback) {
+	                convertCallback(callback.data);
+	            }
+	        }
+	    });
+	};    
     // Cancel Invoice
     $scope.cancel_invoice = function() {
         Factory_Master.cancel_invoice(vm.entity_id, function(callback) {
@@ -2347,11 +2411,12 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     $rootScope.$on("gridDataDone", function(data,res){
     	isTreasuryReport = window.location.hash.indexOf("treasuryreport") != -1;
     	if (isTreasuryReport) {
-                elm = $('#tab_0 > div.col-md-12.portlet.light > div.portlet-body.main-portlet_content > div > div.col-md-12.fe_entity.edit_form_fields_GenerateReport_invoices.conditional_hidden > span > span > div > div > span').detach();
-                $('#tab_0 > div.col-md-12.portlet.light > div.portlet-title.ng-scope').append(elm);
-                elm.show();
-                elm.css('padding-right', '20px');
+                // elm = $('#tab_0 > div.col-md-12.portlet.light > div.portlet-body.main-portlet_content > div > div.col-md-12.fe_entity.edit_form_fields_GenerateReport_invoices.conditional_hidden > span > span > div > div').detach();
+                // $('#tab_0 > div.col-md-12.portlet.light > div.portlet-title.ng-scope').append(elm);
+                // elm.show();
+                // elm.css('padding-right', '20px');
 
+                console.log($rootScope.rawFilters);
 				var CLC = $('#invoices_treasuryreport');
 				var rowData = CLC.jqGrid.Ascensys.gridData[0];
 				$scope.treasuryReportTotals = null;
@@ -2641,10 +2706,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.sellerDueDate = null;
         $rootScope.transportData.approvedDate = null;
         // $rootScope.transportData.paymentDate = null;
-        $rootScope.transportData.invoiceRateCurrency = null;
+        // $rootScope.transportData.invoiceRateCurrency = null;
         $rootScope.transportData.backOfficeComments = null;
         $rootScope.transportData.paymentDetails = null;
         $rootScope.transportData.status = null;
+        $rootScope.transportData.customStatus = null;
         $rootScope.transportData.invoiceSummary = null;
         $rootScope.transportData.invoiceClaimDetails = null;
 
@@ -2758,10 +2824,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $.each(mixedRows, function(k, rowData) {
             if (rowData.costName) {
                 transaction_type = "cost";
-            	rowData.product.productId = rowData.product.id
-                rowData.product.id = rowData.deliveryProductId;
+                var product = angular.copy(rowData.product);
+            	product.productId = angular.copy(rowData.product.id);
+                product.id = angular.copy(rowData.deliveryProductId);
                 transactionstobeinvoiced_dtRow = {
-                    product: rowData.product,
+                    product: product,
                     costName: rowData.costName,
                     costType: rowData.costType,
                     orderAdditionalCostId: rowData.orderAdditionalCostId,
@@ -2778,6 +2845,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                     pricingDate: rowData.pricingDate,
                     isDeleted: rowData.isDeleted,
                     invoiceAmount: rowData.invoiceAmount,
+                    invoiceQuantity: rowData.deliveryQuantity,
                     invoiceTotalAmount: rowData.invoiceTotalAmount,
                     estimatedTotalAmount: rowData.estimatedTotalAmount,
                     //new on 30.08.2018

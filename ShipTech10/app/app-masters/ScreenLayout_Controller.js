@@ -223,18 +223,18 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                $scope.formValues.paymentDetails = null;
 		                $scope.formValues.invoiceDetails = null;
 		                $scope.formValues.sellerInvoiceNo = null;
-		                $scope.formValues.invoiceRateCurrency = null;
 		                $scope.formValues.receivedDate = null;
 		                $scope.formValues.manualDueDate = null;
 		                $scope.formValues.sellerInvoiceDate = null;
 		                $scope.formValues.sellerDueDate = null;
 		                $scope.formValues.approvedDate = null;
-		                $scope.formValues.invoiceRateCurrency = null;
+		                // $scope.formValues.invoiceRateCurrency = null;
 		                $scope.formValues.backOfficeComments = null;
 		                $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null
 		                $scope.formValues.invoiceSummary.estimatedAmountGrandTotal = null
 		                $scope.formValues.invoiceSummary.totalDifference = null
 		                $scope.formValues.status = null
+		                $scope.formValues.customStatus = null
 		                $scope.formValues.invoiceSummary.provisionalInvoiceNo = entity_id;
 		                
 		                $scope.formValues.paymentDetails = {};     
@@ -258,9 +258,9 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
 		                $.each($scope.formValues.productDetails, function(k, v) {
 		                    v.id = 0;
-		                    v.invoiceQuantity = null;
+		                    // v.invoiceQuantity = null;
 		                    v.invoiceRate = null;
-		                    v.invoiceRateCurrency = null;
+		                    // v.invoiceRateCurrency = null;
 		                    v.invoiceAmount = null;
 		                    v.reconStatus = null;
 		                    v.amountInInvoice = null;
@@ -311,18 +311,18 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                $scope.formValues.paymentDetails = null;
 		                $scope.formValues.invoiceDetails = null;
 		                $scope.formValues.sellerInvoiceNo = null;
-		                $scope.formValues.invoiceRateCurrency = null;
 		                $scope.formValues.receivedDate = null;
 		                $scope.formValues.manualDueDate = null;
 		                $scope.formValues.sellerInvoiceDate = null;
 		                $scope.formValues.sellerDueDate = null;
 		                $scope.formValues.approvedDate = null;
-		                $scope.formValues.invoiceRateCurrency = null;
+		                // $scope.formValues.invoiceRateCurrency = null;
 		                $scope.formValues.backOfficeComments = null;
 		                $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null
 		                $scope.formValues.invoiceSummary.estimatedAmountGrandTotal = null
 		                $scope.formValues.invoiceSummary.totalDifference = null
 		                $scope.formValues.status = null
+		                $scope.formValues.customStatus = null
 		                $scope.formValues.invoiceSummary.provisionalInvoiceNo = null;
 		                
 		                $scope.formValues.paymentDetails = {};     
@@ -391,7 +391,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                    
                
                     if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
-							$scope.triggerChangeFields("InvoiceRateCurrency");
+						    $scope.triggerChangeFields("InvoiceRateCurrency");
 	                        if ($scope.formValues.costDetails) {
 		                        if ($scope.formValues.costDetails.length > 0) {
 		                            $.each($scope.formValues.costDetails, function(k, v) {

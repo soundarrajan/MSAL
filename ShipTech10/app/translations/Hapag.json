@@ -330,7 +330,7 @@
             "MANUAL_PRICING_DATE_OVERRIDE": "Manual Pricing Date Override"
         },
         "ORDER_LIST": {
-            "ORDER_ID": "Order ID",
+            "ORDER_ID": "Order No",
             "ORDER_DATE": "Order Date",
             "REQUEST_ID": "Request ID",
             "SERVICE": "Service",
@@ -473,8 +473,8 @@
         }
     },
     "claims": {
-    	"IS_VERIFIED": "Is verified",
-        "ORDER_ID": "Order ID",
+    	  "IS_VERIFIED": "Is verified",
+        "ORDER_ID": "Order No",
         "PRODUCT_TYPE": "Product Type",
         "ORDER_DATE": "Order Date",
         "ORDER_STATUS": "Order Status",
@@ -803,13 +803,13 @@
         "IS_VERIFIED": "Is Verified"
     },
     "labs": {
-        "ORDER_ID": "Order ID",
+        "ORDER_ID": "Order No",
         "IS_VERIFIED": "Is verified",
         "LAB_REPORT_ID": "Lab Report ID",
         "SAMPLE_TOKEN_FROM": "Sample Taken From",
         "PHYSICAL_SUPPLIER": "Physical Supplier",
         "SURVEYED_HOURS": "Surveyed Hours",
-		"TESTED_PRODUCT": "Tested product",
+	  "TESTED_PRODUCT": "Tested product",
         "SURVEYOR": "Surveyor",
         "SURVEYOR_NAME": "Surveyor Name",
         "LAB_REMARKS": "Remarks",
@@ -899,7 +899,7 @@
         "DOCUMENT_TYPE": "Document Type"
     },
     "delivery": {
-        "ORDER_ID": "Order ID",
+        "ORDER_ID": "Order No",
         "IS_VERIFIED": "Is verified",
         "ORDER_DATE": "Order Date",
         "DELIVERY_ID": "Delivery ID",
@@ -951,7 +951,7 @@
         "SATISFACTION_LEVEL": "Satisfaction level",
         "DELIVERY_STATUS": "Delivery Status",
         "ADD_PRODUCT": "Add product",
-        "ORDER_NUMBER": "Order Number",
+        "ORDER_NUMBER": "Order No",
         "ORDER_QUANTITY": "Order Quantity",
         "ORDERED_QTY": "Ordered QTY",
         "VAR_QTY": "Var QTY",
@@ -1023,7 +1023,7 @@
         "SELLER_DUE_DATE": "Seller Due Date",
         "BACK_OFFICE_COMMENTS": "Back Office Comments",
         "EXTERNAL_INVOICE_NO": "External Invoice No",
-        "ORDER_ID": "Order ID",
+        "ORDER_ID": "Order No",
         "ORDER_DATE": "Order Date",
         "COMPANY": "Company",
         "PAYMENT_COMPANY": "Payment Company",

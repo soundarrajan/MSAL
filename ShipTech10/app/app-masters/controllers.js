@@ -519,7 +519,7 @@ APP_MASTERS.controller("Controller_Master", [
 	            } else {
 	                toastr.error("You can't create credit note for this claim");
 	            }
-	            $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData = null
+	            // $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData = null
 	        } else {
 	            toastr.error("Please select one claim");
 	        }
@@ -4482,25 +4482,227 @@ APP_MASTERS.controller("Controller_Master", [
         // TREASURY REPORT ----
         $scope.treasury_generate_report = function() {
             var UIFilters = {};
-            if ($scope.formValues.Seller) {
-                UIFilters.SellerIds = $scope.formValues.Seller.id;
+            var treasurySummaryFilters = [];
+
+            var sellerOperator = brokerOperator = companyOperator = paymentStatusOperator = paymentDateOperator = 1;
+
+			newFilterItem = null
+            for (var i = $rootScope.rawFilters.length - 1; i >= 0; i--) {
+            	if ($rootScope.rawFilters[i].fromTreasurySummary) {
+	            	$rootScope.rawFilters.splice(i,1);
+            	} else {
+            		if ($rootScope.rawFilters[i].column.columnValue == "Seller_Name") {
+            			sellerOperator = 2
+            		}
+            		if ($rootScope.rawFilters[i].column.columnValue == "Broker_Name") {
+            			brokerOperator = 2
+            		}
+            		if ($rootScope.rawFilters[i].column.columnValue == "PaymentCompany_Name") {
+            			companyOperator = 2
+            		}
+            		if ($rootScope.rawFilters[i].column.columnValue == "PaymentStatus_Name") {
+            			paymentStatusOperator = 2
+            		}
+            		if ($rootScope.rawFilters[i].column.columnValue == "PaymentDate") {
+            			paymentDateOperator = 2
+            		}            		            		            		            		
+            	}
             }
-            if ($scope.formValues.Broker) {
-                UIFilters.BrokerIds = $scope.formValues.Broker.id;
+
+            $.each($scope.formValues.Seller, function(sk,sv){
+            	if (sv.id) {
+            		newFilterItem = {
+					    "column": {
+					        "columnRoute": "invoices/treasuryreport",
+					        "columnName": "Seller",
+					        "columnValue": "Seller_Name",
+					        "sortColumnValue": null,
+					        "columnType": "Text",
+					        "isComputedColumn": false
+					    },
+					    "condition": {
+					        "conditionName": "Is equal",
+					        "conditionValue": "=",
+					        "conditionApplicable": "Text",
+					        "conditionNrOfValues": 1
+					    },
+					    "filterOperator": sk == 0 ? sellerOperator : 2, 
+					    "value": {
+					        "0": sv.name
+					    },
+					    "unSaved": false,
+					    "fromTreasurySummary": true,
+					}
+            		treasurySummaryFilters.push(newFilterItem);
+            	}
+            })
+            $.each($scope.formValues.Broker, function(bk,bv){
+            	if (bv.id) {
+            		newFilterItem = {
+					    "column": {
+					        "columnRoute": "invoices/treasuryreport",
+					        "columnName": "Broker",
+					        "columnValue": "Broker_Name",
+					        "sortColumnValue": null,
+					        "columnType": "Text",
+					        "isComputedColumn": false
+					    },
+					    "condition": {
+					        "conditionName": "Is equal",
+					        "conditionValue": "=",
+					        "conditionApplicable": "Text",
+					        "conditionNrOfValues": 1
+					    },
+					    "filterOperator": bk == 0 ? brokerOperator : 2, 
+					    "value": {
+					        "0": bv.name
+					    },
+					    "unSaved": false,
+					    "fromTreasurySummary": true,
+					}            		
+            		treasurySummaryFilters.push(newFilterItem);
+            	}
+            })   
+            $.each($scope.formValues.Company, function(ck,cv){
+            	if (cv.id) {
+            		newFilterItem = {
+					    "column": {
+					        "columnRoute": "invoices/treasuryreport",
+					        "columnName": "PaymentCompany",
+					        "columnValue": "PaymentCompany_Name",
+					        "sortColumnValue": null,
+					        "columnType": "Text",
+					        "isComputedColumn": false
+					    },
+					    "condition": {
+					        "conditionName": "Is equal",
+					        "conditionValue": "=",
+					        "conditionApplicable": "Text",
+					        "conditionNrOfValues": 1
+					    },
+					    "filterOperator": ck == 0 ? companyOperator : 2, 
+					    "value": {
+					        "0": cv.name
+					    },
+					    "unSaved": false,
+					    "fromTreasurySummary": true,
+					}            		
+            		treasurySummaryFilters.push(newFilterItem);
+            	}
+            })            
+        	if ($scope.formValues.PaymentStatus) {
+        		newFilterItem = {
+					    "column": {
+					        "columnRoute": "invoices/treasuryreport",
+					        "columnName": "PaymentStatus",
+					        "columnValue": "PaymentStatus_Name",
+					        "sortColumnValue": null,
+					        "columnType": "Text",
+					        "isComputedColumn": false
+					    },
+					    "condition": {
+					        "conditionName": "Is equal",
+					        "conditionValue": "=",
+					        "conditionApplicable": "Text",
+					        "conditionNrOfValues": 1
+					    },
+					    "filterOperator": paymentStatusOperator, 
+					    "value": {
+					        "0": $scope.formValues.PaymentStatus.name
+					    },
+					    "unSaved": false,
+					    "fromTreasurySummary": true,
+					}
+        		treasurySummaryFilters.push(newFilterItem);
+        	}
+
+            if ($scope.formValues.PaymentDateFrom && $scope.formValues.PaymentDateTo) {
+				newFilterItem = {
+				    "column": {
+				        "columnRoute": "invoices/treasuryreport",
+				        "columnName": "Payment Date",
+				        "columnValue": "PaymentDate",
+				        "sortColumnValue": null,
+				        "columnType": "DateOnly",
+				        "isComputedColumn": true
+				    },
+				    "condition": {
+				        "conditionName": "Is between",
+				        "conditionValue": "between",
+				        "conditionApplicable": "Date",
+				        "conditionNrOfValues": 2
+				    },
+				    "filterOperator": paymentDateOperator, 
+				    "value": {
+				        "0": $scope.formValues.PaymentDateFrom,
+				        "1": $scope.formValues.PaymentDateTo
+				    },
+				    "unSaved": false,
+				    "fromTreasurySummary": true,
+				}
+        		treasurySummaryFilters.push(newFilterItem);
+            } else if ($scope.formValues.PaymentDateFrom) {
+            	newFilterItem = {
+				    "column": {
+				        "columnRoute": "invoices/treasuryreport",
+				        "columnName": "Payment Date",
+				        "columnValue": "PaymentDate",
+				        "sortColumnValue": null,
+				        "columnType": "DateOnly",
+				        "isComputedColumn": true
+				    },
+				    "condition": {
+				        "conditionName": "Is after or equal to",
+				        "conditionValue": ">=",
+				        "conditionApplicable": "Date",
+				        "conditionNrOfValues": 1
+				    },
+				    "filterOperator": paymentDateOperator, 
+				    "value": {
+				        "0": $scope.formValues.PaymentDateFrom
+				    },
+				    "unSaved": false,
+				    "fromTreasurySummary": true,
+				}
+        		treasurySummaryFilters.push(newFilterItem);
+            } else if ($scope.formValues.PaymentDateTo) {
+            	newFilterItem = {
+				    "column": {
+				        "columnRoute": "invoices/treasuryreport",
+				        "columnName": "Payment Date",
+				        "columnValue": "PaymentDate",
+				        "sortColumnValue": null,
+				        "columnType": "DateOnly",
+				        "isComputedColumn": true
+				    },
+				    "condition": {
+				        "conditionName": "Is before or equal to",
+				        "conditionValue": "<=",
+				        "conditionApplicable": "Date",
+				        "conditionNrOfValues": 1
+				    },
+				    "filterOperator": paymentDateOperator, 
+				    "value": {
+				        "0": $scope.formValues.PaymentDateTo
+				    },
+				    "unSaved": false,
+				    "fromTreasurySummary": true,
+				}
+        		treasurySummaryFilters.push(newFilterItem);            	
             }
-            if ($scope.formValues.Company) {
-                UIFilters.CompanyIds = $scope.formValues.Company.id;
-            }
-            if ($scope.formValues.PaymentStatus) {
-                UIFilters.PaymentStatusIds = $scope.formValues.PaymentStatus.id;
-            }
-            if ($scope.formValues.PaymentDateFrom) {
-                UIFilters.PaymentDateFrom = $scope.formValues.PaymentDateFrom;
-            }
-            if ($scope.formValues.PaymentDateTo) {
-                UIFilters.PaymentDateTo = $scope.formValues.PaymentDateTo;
-            }
-            $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_ui_filter(UIFilters);
+
+            console.log($rootScope.rawFilters);
+
+            $.each(treasurySummaryFilters, function(k,v){
+            	$rootScope.rawFilters.push(v);	
+            })
+            treasurySummaryFilters = angular.copy($rootScope.rawFilters);
+
+
+        	$rootScope.$broadcast("treasurySummaryFilters", treasurySummaryFilters);
+            // $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_ui_filter(UIFilters);
+
+
         };
 
         $scope.go_report_cashflow = function() {
@@ -6572,17 +6774,55 @@ APP_MASTERS.controller("Controller_Master", [
 		    // Approve Invoice
 		    $scope.approve_invoice = function() {
 		        vm.fields = angular.toJson($scope.formValues);
-		        screenLoader.showLoader();
-		        Factory_Master.approve_invoice(vm.entity_id, function(callback) {
-		            if (callback.status == true) {
-		                $scope.loaded = true;
-		                toastr.success(callback.message);
-		                $state.reload();
-		                screenLoader.hideLoader();
-		            } else {
-		                toastr.error(callback.message);
-		            }
-		        });
+		        vm.fields = angular.element($('[name="CM.editInstance"]')).scope().formValues;
+
+		        validCostDetails = []
+                if (vm.fields.costDetails.length > 0) {
+                    $.each(vm.fields.costDetails, function(k, v) {
+                        if (typeof v.product != "undefined" && v.product != null) {
+                            if (v.product.id == -1) {
+                                v.product = null;
+                                v.deliveryProductId = null;
+                            } else  {
+                            	if (v.product.productId) {
+                                    v.product.id = v.product.productId;
+                            	}
+                            	if (v.product.deliveryProductId) {
+                            		v.deliveryProductId = angular.copy(v.product.deliveryProductId);
+                            	}
+                            	v.isAllProductsCost = false;
+                            }
+                        }
+                        if ((!!v.id && !(v.id == 0 && v.isDeleted)) || (!v.Id && !v.isDeleted)) {
+                            // v.isDeleted = false;
+                        	validCostDetails.push(v);
+                        }
+                    });
+                }
+                vm.fields.costDetails = validCostDetails
+
+		        if (angular.element($('[name="CM.editInstance"]')).scope().CM.editInstance.$valid) {
+			        Factory_Master.approve_invoice(vm.fields, function(callback) {
+			            if (callback.status == true) {
+			                $scope.loaded = true;
+			                toastr.success(callback.message);
+			                $state.reload();
+			                screenLoader.hideLoader();
+			            } else {
+			                toastr.error(callback.message);
+			            }
+			        });
+		        } else {
+	                var message = "Please fill in required fields:";
+	                var names = [];
+	                $.each(angular.element($('[name="CM.editInstance"]')).scope().CM.editInstance.$error.required, function(key, val) {
+	                    if (names.indexOf(val.$name) == -1) {
+	                        message += "<br>" + val.$name;
+	                    }
+	                    names += val.$name;
+	                });
+	                toastr.error(message);
+		        }
 		    }
 		    // Revert Invoice
 		    $scope.revert_invoice = function() {
@@ -6965,6 +7205,13 @@ APP_MASTERS.controller("Controller_Master", [
                 return str.toUpperCase();
             });
         }
+        $scope.computeTotalInvoiceAmountOnClaimAmountChange = function(){
+	    	costsAmountSum = 0;
+	    	$.each($scope.CM.formValues.invoiceClaimDetails, function(k,v) {
+		    	costsAmountSum += convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+	    	})
+	    	$scope.CM.formValues.invoiceSummary.invoiceAmountGrandTotal = costsAmountSum;
+	    }
 
     }
 ]);

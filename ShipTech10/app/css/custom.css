@@ -4602,3 +4602,10 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 }
 
 
+
+.popover-filter-dates.disabledFromTreasury {
+	pointer-events: none;
+}
+.popover-filter-dates.disabledFromTreasury input, .popover-filter-dates.disabledFromTreasury .date-picker-icon{
+	background: #e6eaec;
+}

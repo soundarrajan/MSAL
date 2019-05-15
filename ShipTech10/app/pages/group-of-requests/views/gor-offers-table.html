@@ -884,8 +884,8 @@
 									<span ng-if="!$ctrl.prefferedSellerCheckbox" ng-init="($ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)) ? $ctrl.createSellerRequirementsForProduct(seller, location, product, location[0].uniqueLocationIdentifier, seller.randUniquePkg) : '' "></span>
                                     <label style="margin-left:5px" class="mt-checkbox mt-checkbox-outline pull-left" ng-hide="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" ng-if="seller.packageType == 'individual' ">
                                         <!-- {{!productAvailable}}..{{productStatus == 'Stemmed'}}**{{productOffer.hasNoQuote}}++{{!productStatus}} --> 
-                                        <input type="checkbox" ng-disabled="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" class="checkSlr"ng-checked="$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)"
-                                        ng-click="$ctrl.createSellerRequirementsForProduct(seller, location, product, location[0].uniqueLocationIdentifier, seller.randUniquePkg)"/>
+                                        <input unique-row-identifier="{{seller.randUniquePkg}}-{{location[0].uniqueLocationIdentifier}}" type="checkbox" ng-disabled="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" class="checkSlr"ng-checked="$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)"
+                                        ng-click="$ctrl.createSellerRequirementsForProduct(seller, location, product, location[0].uniqueLocationIdentifier, seller.randUniquePkg, $event)"/>
                                         <span style="height: 23px;width: 23px; top: -1px"></span>
                                     </label>
                                     <!-- package action -->

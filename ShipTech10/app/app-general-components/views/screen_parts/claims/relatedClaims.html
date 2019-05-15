@@ -7,7 +7,7 @@
 		<div class="col-sm-12">
 			<div class="note note-related active" >
 				<div class="fa fa-times remove-entity" ng-click="CC.deleteClaim(CC.entity_id)"></div>
-				<p><b>Order ID</b>: {{formValues.orderDetails.order.name}}</p>
+				<p><b>Order No</b>: {{formValues.orderDetails.order.name}}</p>
 				<p><b>Claim ID</b>: {{CC.entity_id}}</p>
 				<p><b>Claim Status</b>: {{formValues.claimDetails.status.name}}</p>
 	        </div>
@@ -19,7 +19,7 @@
 			<div class="note note-related pull-left" ng-class="{'active' : claimVal.id == CC.entity_id}" >
 				<span class="fa fa-times remove-entity" ng-click="CC.deleteClaim(claimVal.id)"></span>
 				<a href="/#/claims/claim/edit/{{claimVal.id}}">
-					<p><b>Order ID</b>: {{claimVal.order.name}}</p>
+					<p><b>Order No</b>: {{claimVal.order.name}}</p>
 					<p><b>Claim ID</b>: {{claimVal.id}}</p>
 					<p><b>Claim Status</b>: {{claimVal.status.displayName}}</p>
 				</a>
