@@ -117,6 +117,17 @@ class ShiptechInvoicesDeliveriesList {
       //now all the rows should be selected
     }
 
+    //costs that have to be selected
+    if(productData.costs)
+      for (var i=0; i<productData.costs.length; i++)
+      {
+        var rowIdx = await this.shiptech.findRowIdxContainingText("#flat_invoices_app_deliveries_list", productData.costs[i].name);
+        if(rowIdx < 0)
+          continue;//that means the costs are not on the order
+          
+        rowsInFocus.push(rowIdx);
+      }
+
     //unselect all other rows that are not in the productData.products
     var rowCount = await this.shiptech.findTableRowsCount("#flat_invoices_app_deliveries_list");
     for(var i=1; i<rowCount; i++)

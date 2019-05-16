@@ -92,7 +92,7 @@ class TestTools24 {
 
     if(this.page == null)//no open pages?
     {
-      page = await this.openPageRelative(pageUrl);      
+      page = await this.openPageRelative(pageUrl, true);
       currentTitlte = await this.page.title();
       if(currentTitlte != pageTitle)
       {
@@ -105,9 +105,9 @@ class TestTools24 {
         currentTitlte = await this.page.title();
         if(currentTitlte != pageTitle)
         {
-          var page = await this.getPage(pageTitle, false, false);
+          var page = await this.getPage(pageTitle, true, false);
           if(!page)
-            page = await this.openPageRelative(pageUrl);          
+            page = await this.openPageRelative(pageUrl, true);
         }
     }
 
@@ -153,14 +153,7 @@ class TestTools24 {
 
   createPerformanceLog(){
 
-    this.stream = fs.createWriteStream(this.filename, {flags:'a'});
-
-    var fileSize = 0;
-
-    if (fs.existsSync(this.filename)) {
-      const stats = fs.statSync(this.filename); 
-      fileSize = stats.size;
-    }    
+    this.stream = fs.createWriteStream(this.filename, {flags:'a'});    
 
     var header = "Date,";
     for (const k of this.logmap.keys()) {
@@ -169,7 +162,8 @@ class TestTools24 {
 
 
     header += "Average" + endOfLine;    
-    this.stream.write(header);
+    fs.appendFileSync(this.filename, header + endOfLine);
+    //this.stream.write(header);
   }
 
 
@@ -213,12 +207,13 @@ class TestTools24 {
 
     var average = 0;
     for (const k of this.logmap.keys()) {
-      average += this.logmap.get(k);
+      average += parseFloat(this.logmap.get(k));
       row += this.logmap.get(k) + ",";
     }
 
-    average = average / this.logmap.length;
-    this.stream.write(row +"," + average.toPrecision(3) + endOfLine);
+    average = average / this.logmap.size;
+    fs.appendFileSync(this.filename, row + " " + average.toPrecision(3) + endOfLine);
+    //this.stream.write(row + " " + average.toPrecision(3) + endOfLine);
 
     this.logmap.clear();
   }
@@ -1747,7 +1742,7 @@ replaceAll(subject, search, replacement) {
 }
  
 
-async Close()
+async Close(save = false)
 {
   if(this.page)
   {
@@ -1756,6 +1751,8 @@ async Close()
   }
   if(this.browser)
     await this.browser.close();
+
+  await this.end(save);
 }
 
 
@@ -1763,30 +1760,44 @@ ReadTestCase()
 {  
   
   var args = process.argv.slice(2);
+  var testCase = {headless: false};
+  
   if(args.length <= 0)
-    throw new Error("No test case cmd line argument.");  
+    throw new Error("No test case cmd line argument.");
+
 
   var filename = args[0];
-  if(!fs.existsSync(filename))
-    throw new Error("Test case " + filename + " not found.");
+  if(filename != "0")
+  {//no test template file
+      if(!fs.existsSync(filename))
+        throw new Error("Test case " + filename + " not found.");
+      
+      try
+      {
+        testCase = JSON.parse(fs.readFileSync(filename, 'utf8'));
+      }
+      catch(e)
+      {
+        throw new Error(filename + " has an invalid format." + endOfLine + e.message);
+      }  
 
-  var connectionFileName = args[1];
-  if(!fs.existsSync(connectionFileName))
-    throw new Error("Connection file " + connectionFileName + " not found.");
+      if(!testCase)
+        throw new Error(filename + " cannot be read" + endOfLine);
 
-  var testCase = {};
-  try
-  {
-    testCase = JSON.parse(fs.readFileSync(filename, 'utf8'));
-  }
-  catch(e)
-  {
-    throw new Error(filename + " has an invalid format." + endOfLine + e.message);
-  }  
+     if(!testCase.testTitle || testCase.testTitle.length <= 0)
+       throw filename + " has contains no testTitle" + endOfLine + e.message;
 
-  if(!testCase)
-    throw new Error(filename + " cannot be read" + endOfLine);
-  
+
+     if(!testCase.testCases || testCase.testCases.length <= 0)
+      throw filename + " has no testCases array";
+
+ }
+
+
+ var connectionFileName = args[1];
+ if(!fs.existsSync(connectionFileName))
+   throw new Error("Connection file " + connectionFileName + " not found.");
+
 
   if(!fs.existsSync(connectionFileName))
     throw new Error(connectionFileName + " file not found " + endOfLine);
@@ -1803,14 +1814,7 @@ ReadTestCase()
   if(!testCase.connection)
     throw new Error(connectionFileName + " cannot be read" + endOfLine);
   
-
- if(!testCase.testTitle || testCase.testTitle.length <= 0)
-   throw filename + " has contains no testTitle" + endOfLine + e.message;
-
-
- if(!testCase.testCases || testCase.testCases.length <= 0)
-  throw filename + " has no testCases array";
-
+ 
  if(!testCase.connection)
   throw filename + " missing connection information";
 

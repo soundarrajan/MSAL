@@ -103,12 +103,12 @@ class ShiptechInvoicesTreasuryReport {
     await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
     await this.tools.clickOnItemByText("a[ng-click='columnSort(table, sortcol, 1,  columnFilters[column][0].column.sortColumnValue, columnFilters[column][0])", 'Sort Ascending');
     await this.tools.waitFor(2000);
-    await this.tools.waitForLoader();
+    await this.tools.waitForLoader("Sort Treasury Report");
        
     var exportFolder = await this.tools.prepareDownloadFolder();
     
     await this.tools.clickOnItemWait("a.btn.export_csv");
-    await this.tools.waitForLoader();   
+    await this.tools.waitForLoader("Export with filters - Treasury Report");
     await this.tools.waitFor(2000);
 
     //wait for the file to be saved
@@ -161,11 +161,18 @@ class ShiptechInvoicesTreasuryReport {
       for(var key in rowTest)
       {
         
-        var valTest = rowTest[key];
-        valTest = valTest.replace(/,/g, '');
-        var valReport = rowReport[key];
-        valReport = valReport.replace(/,/g, '');        
+        var valTest = rowTest[key];        
 
+        if(!valTest && valTest != "")
+        {
+          this.tools.log("The field " + key + " was not found in test case.");
+          result = false;
+          continue;
+        }
+
+        valTest = valTest.toString();
+        valTest = valTest.replace(/,/g, '');
+        
         if(!rowReport[key] && valTest.length > 0 && valTest!="0")
         {
           this.tools.log("The field " + key + " was not found in raport.");
@@ -173,6 +180,11 @@ class ShiptechInvoicesTreasuryReport {
           continue;
         }
 
+        var valReport = rowReport[key];
+        if(!valReport)
+          valReport = "";
+        valReport = valReport.toString();
+        valReport = valReport.replace(/,/g, '');
 
         if(isNumber(valTest))
         {

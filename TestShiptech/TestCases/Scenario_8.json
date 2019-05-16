@@ -47,7 +47,8 @@
             "type": "Percent",
             "id": "product2Name",
             "quantity": 200,
-            "unitPrice": 0.3
+            "unitPrice": 0.3,
+            "amount": 234
           }
         ]
       },
@@ -135,7 +136,8 @@
               "applicableFor": "product2Name",
               "id": "product2Name",
               "quantity": 195,
-              "unitPrice": 0.3
+              "unitPrice": 0.3,
+              "amount": 234
             }
           ]
         },
@@ -174,7 +176,8 @@
                   "applicableFor": "product2Name",
                   "id": "product2Name",
                   "quantity": 195,
-                  "unitPrice": 0.3
+                  "unitPrice": 0.3,
+                  "amount": 234
                 }
               ]
             }         
@@ -187,6 +190,11 @@
             "Invoice Amount": "375533",
             "Calculated Amount": "375533",
             "Invoice Type": "Provisional Invoice"
+          },
+          {
+            "Invoice Amount": "0",
+            "Calculated Amount": "0",
+            "Invoice Type": "Final Invoice"
           }
         ]
     }

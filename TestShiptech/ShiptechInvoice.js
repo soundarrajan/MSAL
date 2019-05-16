@@ -144,6 +144,9 @@ class ShiptechInvoice {
         await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + (i+startidx), costs[i].quantity);
         await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + startidx), costs[i].unitPrice);
         await this.tools.selectBySelector("#grid_invoiceCostDetails_Currency__invoiceRateCurrency_" + (i + startidx), "MT");
+
+        if(costs[i].type == "Percent")
+            await this.tools.setText("#grid_invoiceCostDetails_invoiceAmount_" + (i + startidx), costs[i].amount);
       }
   }
 
@@ -184,11 +187,11 @@ class ShiptechInvoice {
     if(testCase.action != "final" && testCase.provisionalData && testCase.provisionalData.costs)
       await this.insertCosts(testCase.provisionalData.costs, commonTestData);
 
+    if(testCase.action == "final" && testCase.finalData && testCase.finalData.costs)
+      await this.insertCosts(testCase.finalData.costs, commonTestData);
+
     if(testCase.action == "final" && testCase.finalData && testCase.finalData.products)
        await this.insertProducts(testCase.finalData.products, commonTestData);      
-
-    if(testCase.action == "final" && testCase.finalData && testCase.finalData.costs)
-       await this.insertCosts(testCase.finalData.costs, commonTestData);
       
     await this.tools.clickOnItemByText('#header_action_save', 'Save');    
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave, "invoiceStatusAfterSave");

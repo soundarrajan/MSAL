@@ -87,7 +87,6 @@ var shiptechDataGen = new ShiptechTestDataGen(tools);
           tools.currentTextTitle = testCase.testTitle;
           var hasPassed = true;          
 
-
           if(currentTestCase.keyname == "order")
           {
               await shiptechOrder.CreateOrder(currentTestCase, commonTestData);
@@ -133,7 +132,8 @@ var shiptechDataGen = new ShiptechTestDataGen(tools);
         process.exit(1);
       }
     }
-    await tools.Close();
+    
+    await tools.Close(true);
     tools.log(testCase.testTitle + " FINISHED");
     process.exit(1);
   }  

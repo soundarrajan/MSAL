@@ -89,7 +89,7 @@ class ShiptechDeliveryNew {
     await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Verify Delivery');
     await this.tools.clickBySelector("#completed");
     await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
-    await this.tools.waitForLoader();
+    await this.tools.waitForLoader("Save Delivery");
     await this.tools.closeCurrentPage();
 
     return testCase;

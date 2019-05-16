@@ -245,7 +245,7 @@ class ShiptechOrder {
   async readOrderId()
   { 
     var labelOrderId = await this.tools.getText("div.note.note-related.active>p.ng-binding:first-child");
-    labelOrderId = labelOrderId.replace("Order ID", '');
+    labelOrderId = labelOrderId.replace("Order No", '');
     labelOrderId = labelOrderId.replace(":", '');
     //labelOrderId = labelOrderId.replace(" ", "");
     labelOrderId = labelOrderId.replace(/ +?/g, '').trim();

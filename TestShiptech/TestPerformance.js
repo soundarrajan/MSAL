@@ -66,22 +66,26 @@ var username = '24software.ext@inatech.com';
 var password = '24ext@123';
 //*/
 
+var tools = new TestTools24();
+var shiptech = new ShiptechTools(tools);
 
 (async () => {  
 
   try
   {
 
-    var tools = new TestTools24();
-    var shiptech = new ShiptechTools(tools);             
-    await shiptech.ConnectDb(databaseIntegration, url, true);
-    await shiptech.login(url, username, password);
+    var testCase = tools.ReadTestCase();    
+    tools.baseUrl = testCase.connection.baseurl;
+    tools.log("url: " + testCase.connection.baseurl);
+    await shiptech.ConnectDb(testCase.connection.databaseIntegration, testCase.connection.baseurl, testCase.connection.isMasterDb);  
+    await shiptech.login(testCase.starturl, testCase.connection.username, testCase.connection.password, testCase.headless);
+  
     console.log("Open the dashboard");
     await tools.waitForLoader(true);
 
-
-    await testDashboard(tools, shiptech);
-    await testCreateRequest(tools, shiptech);
+    await testDashboard(tools, shiptech);    
+    await testCreateRequest(tools, shiptech);    
+    /*
     var answerOrder = await testCreateOrder(tools, shiptech);
     await testContractPlanning(tools, shiptech);
     await testContractList(tools, shiptech);
@@ -107,10 +111,11 @@ var password = '24ext@123';
     await testAdminConfiguration(tools, shiptech);
     await testAdminSellerRating(tools, shiptech);
     await testAdminAlerts(tools, shiptech);
-    
+    */
     //await testBackend();
 
-    tools.end(true);
+    tools.Close(true);
+    process.exit(1);
   }
   catch(error)
   {

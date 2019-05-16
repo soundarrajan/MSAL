@@ -66,7 +66,7 @@ class ShiptechInvoicesList {
       await this.tools.setText("#rule_0_condition", testCase.orderId);
       await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
       await this.tools.waitFor(2000);
-      await this.tools.waitForLoader();        
+      await this.tools.waitForLoader("Invoice filter");        
 
       // await this.tools.click("#flat_invoices_app_invoice_list_order.name");
       // await this.tools.setText("#filter0_Text", commonTestData.orderId);
@@ -104,7 +104,7 @@ class ShiptechInvoicesList {
     await this.tools.setText("#filter0_Number", testCase.invoiceId);
     await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
     await this.tools.waitFor(2000);
-    await this.tools.waitForLoader();
+    await this.tools.waitForLoader("Select invoice");
     // await this.tools.click("#flat_invoices_app_invoice_list_invoice.id>a");
     // await this.tools.setText("#filter0_Text", testCase.invoiceId);
 

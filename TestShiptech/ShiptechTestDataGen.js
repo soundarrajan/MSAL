@@ -60,7 +60,7 @@ findProducts(products, commonTestData)
         throw new Error("Cannot find product name");     
     }
 
-    products.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    products.sort((a,b) => (a.name > b.name) ? -1 : ((b.name > a.name) ? 1 : 0));
 }
 
 
