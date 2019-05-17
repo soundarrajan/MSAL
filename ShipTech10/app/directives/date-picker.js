@@ -81,20 +81,20 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             }
 
             var prevValue = null;
-        	var hasDayOfWeek = false;
+            var hasDayOfWeek = false;
             if (attrs.screenType === 'supplierPortal') {
-            	tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
-	            var currentFormat = tenantService.tenantFormats.dateFormat.name;
-	            if (currentFormat.startsWith("DDD ")) {
-	            	hasDayOfWeek = true
-	            	currentFormat = currentFormat.split("DDD ")[1];
-	            }
+                tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
+                var currentFormat = tenantService.tenantFormats.dateFormat.name;
+                if (currentFormat.startsWith("DDD ")) {
+                    hasDayOfWeek = true
+                    currentFormat = currentFormat.split("DDD ")[1];
+                }
             } else {
-	            var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
-	            if (currentFormat.startsWith("DDD ")) {
-	            	hasDayOfWeek = true
-	            	currentFormat = currentFormat.split("DDD ")[1];
-	            }
+                var currentFormat = $tenantSettings.tenantFormats.dateFormat.name;
+                if (currentFormat.startsWith("DDD ")) {
+                    hasDayOfWeek = true
+                    currentFormat = currentFormat.split("DDD ")[1];
+                }
             }
 
             if (attrs['pickerType'] == 'date') {
@@ -104,7 +104,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             currentFormat = currentFormat.replace(/d/g, "D");
             currentFormat = currentFormat.replace(/y/g, "Y");
             
-            var	dayOfWeekClass = '';
+            var dayOfWeekClass = '';
             if(hasDayOfWeek) { dayOfWeekClass = "dateInputHasDayOfWeek" }
 
             var dateInputId = attrs['id'] + '_dateinput';
@@ -157,7 +157,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             var element = null;
 
             $(elm).attr("tabindex", "-1");
-			$(elm).css("opacity", "0");
+            $(elm).css("opacity", "0");
 
             var init = new Promise(function(resolve, reject) {
                 setTimeout(function() {
@@ -185,11 +185,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     }
 
                     /*PREVENT DELETION OF CHARS FROM RIGHT */
-                    if (currentFormat.split(' ')[0].indexOf("/") != -1) {separator = "/"}	
-                    if (currentFormat.split(' ')[0].indexOf(".") != -1) {separator = "."}	
+                    if (currentFormat.split(' ')[0].indexOf("/") != -1) {separator = "/"}   
+                    if (currentFormat.split(' ')[0].indexOf(".") != -1) {separator = "."}   
                     if (currentFormat.split(' ')[0].indexOf("-") != -1) {separator = "-"}
                     if (separator) {
-	                    inputPattern = inputPattern.split(separator).join("`"+separator);
+                        inputPattern = inputPattern.split(separator).join("`"+separator);
                     }
                     /*PREVENT DELETION OF CHARS FROM RIGHT */
 
@@ -211,7 +211,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 }, 0);
             });
             // if ($(".new-date-picker").length > 0) {
-	           //  $compile($(".new-date-picker").parent())(scope);
+               //  $compile($(".new-date-picker").parent())(scope);
             // }
 
             init.then(function(mask) {
@@ -310,15 +310,19 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                });
 
                 if (attrs["defaultToday"] == "true") {
-                	value = moment();
-                	scope.$apply(function() {
+                    value = moment();
+                    scope.$apply(function() {
                         ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
                         ngModel.$commitViewValue();
                         wasReset = false;
                         maskTyping = false;
                         mask.value = moment.utc(value).format(currentFormat);
                         $(element).removeClass('invalid');
-                        ngModel.$setValidity(true);
+                        try {
+                            ngModel.$setValidity('required', true);
+                        } catch (TypeError) {
+                            console.log('Failed to set date-picker validity');
+                        }
                     });
                 }
 
@@ -349,17 +353,25 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     if (showError) {
                         if (!attrs['required'] && !mask.value) {
                             $(element).removeClass('invalid');
-                            ngModel.$setValidity(true);
+                            try {
+                                ngModel.$setValidity('required', true);
+                            } catch (TypeError) {
+                                console.log('Failed to set date-picker validity');
+                            }
                             reset();
                         } else {
-                        	if ($(element).val() == "") {
-	                            toastr.error("Please fill in required field");
-                        	} else {
-	                            toastr.error("Please enter the correct format");
-                        	}
+                            if ($(element).val() == "") {
+                                toastr.error("Please fill in required field");
+                            } else {
+                                toastr.error("Please enter the correct format");
+                            }
                             $('#' + dateInputId).parent().find(".datePickerDayOfWeek").text("");
                             $(element).addClass('invalid');
-                            ngModel.$setValidity(false);
+                            try {
+                                ngModel.$setValidity('required', false);
+                            } catch (TypeError) {
+                                console.log('Failed to set date-picker validity');
+                            }
                             if (!mask.value) {
                                 wasReset = true;
                             }
@@ -375,7 +387,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                             if ((value && !prevValue) || (value && formattedValue != prevValue)) {
                                 if (value.year() < 1753) {
                                     $(element).addClass('invalid');
-                                    ngModel.$setValidity(false);
+                                    try {
+                                        ngModel.$setValidity('required', false);
+                                    } catch (TypeError) {
+                                        console.log('Failed to set date-picker validity');
+                                    }
                                     toastr.error("Please enter the correct format");
                                     return;
                                 }
@@ -391,13 +407,21 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                                         mask.value = newMaskVal;
                                     }
                                     $(element).removeClass('invalid');
-                                    ngModel.$setValidity(true);
+                                    try {
+                                        ngModel.$setValidity('required', true);
+                                    } catch (TypeError) {
+                                        console.log('Failed to set date-picker validity');
+                                    }
                                 });
                             }
                         } else {
                             if (!attrs['required'] && !mask.value) {
                                 $(element).removeClass('invalid');
-                                ngModel.$setValidity(true);
+                                try {
+                                    ngModel.$setValidity('required', true);
+                                } catch (TypeError) {
+                                    console.log('Failed to set date-picker validity');
+                                }
                                 reset();
                             }
                         }
@@ -407,27 +431,27 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 if (ngModel.$viewValue && $('#' + dateInputId).data("DateTimePicker")) {
                     $('#' + dateInputId).data("DateTimePicker").date(moment.utc(ngModel.$viewValue));
                     prevValue = moment.utc(ngModel.$viewValue).format(currentFormat);
-                  	
+                    
                 }
 
                 if (hasDayOfWeek) {
-                	var dayOfWeekText = ""
-                	if (ngModel.$viewValue) {
-                    	if (moment(ngModel.$viewValue).isValid()) {
-                    		dayOfWeekText = moment.utc(ngModel.$viewValue).format("ddd")
-                    	}
-                	}
-                	$('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
+                    var dayOfWeekText = ""
+                    if (ngModel.$viewValue) {
+                        if (moment(ngModel.$viewValue).isValid()) {
+                            dayOfWeekText = moment.utc(ngModel.$viewValue).format("ddd")
+                        }
+                    }
+                    $('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
                 }
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (hasDayOfWeek) {
-                    	var dayOfWeekText = ""
-                    	if (v) {
-	                    	if (moment(v).isValid()) {
-	                    		dayOfWeekText = moment.utc(v).format("ddd")
-	                    	}
-                    	}
-                    	$('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
+                        var dayOfWeekText = ""
+                        if (v) {
+                            if (moment(v).isValid()) {
+                                dayOfWeekText = moment.utc(v).format("ddd")
+                            }
+                        }
+                        $('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
                     }
                     if (v && $('#' + dateInputId).data("DateTimePicker")) {
                         $('#' + dateInputId).data("DateTimePicker").date(moment.utc(v));
@@ -439,14 +463,14 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         }
                         mask.value = prevValue;
                     } else {
-                    	prevValue = null;
-                    	if (typeof(v) == 'undefined') { 
-                    		$('#' + dateInputId).data("DateTimePicker").clear();
+                        prevValue = null;
+                        if (typeof(v) == 'undefined') { 
+                            $('#' + dateInputId).data("DateTimePicker").clear();
                             ngModel.$setViewValue(null);
                             ngModel.$commitViewValue();
                             wasReset = true;
                             prevValue = null;
-                    	}
+                        }
                     }
                 });
                 scope.$watch(attrs['ngDisabled'], function(v) {
