@@ -811,6 +811,12 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.$watch("globalFilters", function(newVal) {
                     // if (newVal != null) {
                     // console.log(newVal)
+                    console.log($rootScope.rawFilters);
+                    $.each($rootScope.rawFilters, function(k,v){
+                    	if (v.fromTreasurySummary) {
+                    		newVal.push(v);		
+                    	}
+                    })
                     resolve(newVal);
 
                     // }

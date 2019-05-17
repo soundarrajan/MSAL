@@ -579,8 +579,8 @@ window.increment = 0;
                                         $rootScope.$broadcast("tableLoaded", triggePayload);
                                         $rootScope.getGlobalFilters().then(function(data) {
                                             if (data) {
-                                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.columnFilters", data);
-                                                CLC.tableParams.unpackedFilters = data;
+                                                // $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.columnFilters", data);
+                                                // CLC.tableParams.unpackedFilters = data;
                                             }
                                         });
                                         $('select[name="asc_jqgrid__entries-entries"] option[value="999999"]').text("All");
