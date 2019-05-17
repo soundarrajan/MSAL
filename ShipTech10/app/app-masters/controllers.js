@@ -4714,7 +4714,19 @@ APP_MASTERS.controller("Controller_Master", [
         	$timeout(function(){
         		$('input[ng-model="dummyModel"]').val("");
         		$('.bootstrap-tagsinput span.label').remove();
-        		$('.date-picker-icon').next("input").val("");
+        		// $('.date-picker-icon').next("input").val("");
+
+        		// try refresh datepicker
+        		$('[ng-model="formValues.PaymentDateFrom"]').parent().find("input").val("").trigger("change");
+        		$('[ng-model="formValues.PaymentDateTo"]').parent().find("input").val("").trigger("change");
+        		if ($('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek')) {
+	        		$('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek').text("")
+        		}
+        		if ($('[ng-model="formValues.PaymentDateTo"]').next('.datePickerDayOfWeek')) {
+	        		$('[ng-model="formValues.PaymentDateTo"]').next('.datePickerDayOfWeek').text("")
+        		}
+        		// try refresh datepicker
+        		
 				$scope.formValues.PaymentStatus = null;
 				$scope.formValues.PaymentDateFrom = null;
 				$scope.formValues.Seller = null;

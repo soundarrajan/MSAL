@@ -318,6 +318,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         maskTyping = false;
                         mask.value = moment.utc(value).format(currentFormat);
                         $(element).removeClass('invalid');
+                        ngModel.$setValidity(true);
                     });
                 }
 
@@ -348,6 +349,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     if (showError) {
                         if (!attrs['required'] && !mask.value) {
                             $(element).removeClass('invalid');
+                            ngModel.$setValidity(true);
                             reset();
                         } else {
                         	if ($(element).val() == "") {
@@ -357,6 +359,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         	}
                             $('#' + dateInputId).parent().find(".datePickerDayOfWeek").text("");
                             $(element).addClass('invalid');
+                            ngModel.$setValidity(false);
                             if (!mask.value) {
                                 wasReset = true;
                             }
@@ -369,24 +372,32 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                                 value = moment.utc(mask.value.trim(), currentFormat.split(' ')[0], true); 
                                 formattedValue = moment(value).format(currentFormat.split(' ')[0]);
                             }
-	                            if ((value && !prevValue) || (value && formattedValue != prevValue)) {
-	                                prevValue = formattedValue;
-	                                scope.$apply(function() {
-	                                    ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
-	                                    ngModel.$commitViewValue();
-	                                    maskTyping = false;
-	                                    var newMaskVal = moment.utc(value).format(currentFormat);
-	                                    if (newMaskVal.split(' ')[1] == '00:00') {
-	                                        mask.value = newMaskVal.split(' ')[0];
-	                                    } else {
-	                                        mask.value = newMaskVal;
-	                                    }
-	                                    $(element).removeClass('invalid');
-	                                });
-	                            }
+                            if ((value && !prevValue) || (value && formattedValue != prevValue)) {
+                                if (value.year() < 1753) {
+                                    $(element).addClass('invalid');
+                                    ngModel.$setValidity(false);
+                                    toastr.error("Please enter the correct format");
+                                    return;
+                                }
+                                prevValue = formattedValue;
+                                scope.$apply(function() {
+                                    ngModel.$setViewValue(value.format('YYYY-MM-DDTHH:mm:ss') + '+00:00');
+                                    ngModel.$commitViewValue();
+                                    maskTyping = false;
+                                    var newMaskVal = moment.utc(value).format(currentFormat);
+                                    if (newMaskVal.split(' ')[1] == '00:00') {
+                                        mask.value = newMaskVal.split(' ')[0];
+                                    } else {
+                                        mask.value = newMaskVal;
+                                    }
+                                    $(element).removeClass('invalid');
+                                    ngModel.$setValidity(true);
+                                });
+                            }
                         } else {
                             if (!attrs['required'] && !mask.value) {
                                 $(element).removeClass('invalid');
+                                ngModel.$setValidity(true);
                                 reset();
                             }
                         }
@@ -428,12 +439,13 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         }
                         mask.value = prevValue;
                     } else {
-                    	if (!v && prevValue) {
+                    	prevValue = null;
+                    	if (typeof(v) == 'undefined') { 
                     		$('#' + dateInputId).data("DateTimePicker").clear();
                             ngModel.$setViewValue(null);
                             ngModel.$commitViewValue();
-                            mask.updateValue('');
-                            prevValue = '';
+                            wasReset = true;
+                            prevValue = null;
                     	}
                     }
                 });

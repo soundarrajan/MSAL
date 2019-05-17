@@ -1034,7 +1034,7 @@
         "DOCUMENT_NUMBER": "Document No",
         "ACCOUNTANCY_DATE": "Accountancy Date",
         "INVOICE_STATUS": "Invoice Status",
-        "PROCUREMENT_ORDER": "Procurement Order",
+        "PROCUREMENT_ORDER": "Order No",
         "CARRIER": "Carrier",
         "VALIDATION_DATE": "Validation Date",
         "ETA": "ETA",

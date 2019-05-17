@@ -1179,7 +1179,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
                 localStorage.setItem('deliveriesFromOrder', angular.toJson($rootScope.selectDeliveryRows));
             }
         }
-        $location.path(vm.app_id + '/' + 'delivery' + '/edit/');
+        window.open("/#/" + vm.app_id + '/' + 'delivery' + '/edit/');
     }
     $scope.watchSelectDeliveryRow = function() {
         setTimeout(function() {

@@ -2278,12 +2278,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.saveTreasuryRowChange = function(entityId, changedData) {
             var CLC = $("#invoices_treasuryreport");
             var tableData = CLC.jqGrid.Ascensys.gridObject.rows;
-            currentRow = null;
-            $.each(tableData, function(k, v) {
-                if (v.id == entityId) {
-                    currentRow = v;
+            for (var i = tableData.length - 1; i >= 0; i--) {
+                if (tableData[i].id == entityId) {
+                    tableData[i].id = i;
+                    currentRow = tableData[i];
                 }
-            });
+            }
             console.log(currentRow);
             payload = {
                 InvoiceId: currentRow.invoice ? currentRow.invoice.id : null,
@@ -2309,14 +2309,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             	vm.paymentDateHistory[currentRow.id].accountancyDate = null;
             }      
 			// console.log(vm.initialTreasuryData);
-            if (vm.initialTreasuryData) {
-                if (vm.initialTreasuryData[currentRow.id-1].paymentDate == changedData.paymentDate) {
-                    // return;
-                } else {
-                    payload.HasManualPaymentDate = true;
-                    vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
-                    vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
-                }
+            if (vm.initialTreasuryData[currentRow.id].paymentDate == changedData.paymentDate) {
+            	// return;
+            } else {
+            	payload.HasManualPaymentDate = true;
+                vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
+                vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
             }
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
