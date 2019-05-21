@@ -1130,18 +1130,15 @@
                                     </td>
                                     <!--  end unit price for product -->
                                     <td style="max-width: 180px;min-width: 140px">
-                                    		<span class="form-control disabled" tooltip data-original-title="{{product.formulaDescription ? product.formulaDescription.name : product.formula.name}}" style="background: #e6eaec;overflow: hidden;">
-                                    			{{product.formulaDescription ? product.formulaDescription.name : product.formula.name}}
-                                    		</span>
-                                        <!-- <input class="form-control" name="{{ $ctrl.productColumns.formulaDescription.name }}" ng-model="product.formulaDescription"
+                                        <input class="form-control" name="{{ $ctrl.productColumns.formulaDescription.name }}" ng-model="product.formulaDescription"
                                             ng-required="product.requiredFields['formulaDescription']"
                                             disabled="disabled"
-                                            id="product_formulaDescription_{{ $index }}" /> -->
+                                            id="product_formulaDescription_{{ $index }}" />
                                             {{product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID ? product.formulaDescription = null : ''}}
                                         <!-- ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID" -->
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px">
-                                        <a ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId" ng-click="$ctrl.triggerFormulaDetailsModal(product)" >Pricing Details</a>
+                                        <a ng-if="product.formulaDescription && $ctrl.orderId" ng-click="$ctrl.triggerFormulaDetailsModal(product)" >Pricing Details</a>
                                         <!-- ng-disabled="$ctrl.disabledProduct[product.id]" -->
                                     </td>
                                     <td style="max-width: 120px;min-width: 120px" >

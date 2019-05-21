@@ -5729,63 +5729,32 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
         jQuery(document).ready(function() {
-        	if (/*$state.current.name.indexOf('.documents') != -1 &&*/ typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
+        	if ($state.current.name.indexOf('.documents') != -1 && typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(function() {
-
-
-	            	$(document).on("change", "input.inputfile", function(){
-	            		input = $(this);
-	                    // var label = $(input).next();
-                     //    var labelVal = label.innerHTML;
-	                    // if (!label) {
-	                    // 	return;
-	                    // }
-	                    currentFile = this.files[0];
-                        
-	                    fileScope = angular.element($("input").parent().find(".fileNameLabel")).scope();
-                        $rootScope.droppedDoc = currentFile;
-                        fileScope.$apply(function() {
-                            fileScope.droppedDoc = currentFile;
-                        });
-                        // $("input").parent().find(".fileNameLabel").text(currentFile.name)
-                        
-                        // var fileName = "";
-                        // if (this.files && this.files.length > 1) {
-                        // 	fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length)
-                        // } else {
-	                       //  fileName = $(this).val().split("\\").pop();	
-                        // } 
-                        // if (fileName) {
-                        // 	$(label).children("span").innerHTML = fileName
-                        // } else {
-                        // 	label.innerHTML = labelVal;
-                        // }
-	            	})
-
-	                // var inputs = document.querySelectorAll(".inputfile");
-	                // Array.prototype.forEach.call(inputs, function(input) {
-	                //     var label = input.nextElementSibling,
-	                //         labelVal = label.innerHTML;
-	                //     input.addEventListener("change", function(e) {
-	                //         $rootScope.droppedDoc = null;
-	                //         $scope.$apply(function() {
-	                //             $scope.droppedDoc = null;
-	                //         });
-	                //         var fileName = "";
-	                //         if (this.files && this.files.length > 1) fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length);
-	                //         else fileName = e.target.value.split("\\").pop();
-	                //         if (fileName) label.querySelector("span").innerHTML = fileName;
-	                //         else label.innerHTML = labelVal;
-	                //     });
-	                //     // Firefox bug fix
-	                //     input.addEventListener("focus", function() {
-	                //         input.classList.add("has-focus");
-	                //     });
-	                //     input.addEventListener("blur", function() {
-	                //         input.classList.remove("has-focus");
-	                //     });
-	                // });
+	                var inputs = document.querySelectorAll(".inputfile");
+	                Array.prototype.forEach.call(inputs, function(input) {
+	                    var label = input.nextElementSibling,
+	                        labelVal = label.innerHTML;
+	                    input.addEventListener("change", function(e) {
+	                        $rootScope.droppedDoc = null;
+	                        $scope.$apply(function() {
+	                            $scope.droppedDoc = null;
+	                        });
+	                        var fileName = "";
+	                        if (this.files && this.files.length > 1) fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length);
+	                        else fileName = e.target.value.split("\\").pop();
+	                        if (fileName) label.querySelector("span").innerHTML = fileName;
+	                        else label.innerHTML = labelVal;
+	                    });
+	                    // Firefox bug fix
+	                    input.addEventListener("focus", function() {
+	                        input.classList.add("has-focus");
+	                    });
+	                    input.addEventListener("blur", function() {
+	                        input.classList.remove("has-focus");
+	                    });
+	                });
 	            }, 1500);
         	}
             // setTimeout(function() {
