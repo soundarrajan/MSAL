@@ -610,6 +610,8 @@ angular.module("shiptech.components").controller("FiltersController", [
             // $rootScope.CheckForFilters = 1
 	    });        
         $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        	$scope.defaultConfiguration = null;
+        	$scope.filtersConfigurations = null;        	
             $scope.noDefault = null;
             $scope.packedFilters = [];
         });
@@ -744,6 +746,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
         $scope.deleteConfig = function(selectedConfig) {
             var data = selectedConfig.id;
+			$scope.filtersConfigurations = null;
             filterConfigurationModel
                 .deleteConfiguration(data)
                 .then(function(response) {
