@@ -42,7 +42,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             }
         })
         // ctrl.scheduleDashboardConfiguration = tenantService.getScheduleDashboardConfiguration();
-
+		$scope.calledCalendarWithDefaultFilters = false;
         $scope.numberPrecision = $tenantSettings.defaultValues;
         $scope.tenantSettings = $tenantSettings;
         ctrl.tableOptions.pageLength = 9999;
@@ -107,13 +107,14 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                }
 	            }
 	            console.log("called schedule get with: ",payload);
-                if (initDone) {
+	            $scope.calledCalendarWithDefaultFilters = true;
+                // if (initDone) {
     	            setTimeout(function(){
     		            scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, payload).then(function (response) {
     		            	showData(response);
     		            });
     	            })
-                }
+                // }
 	        })
         	
                 var conditions = $filtersData.filterConditions;
@@ -368,6 +369,10 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         function loadData(startDate, endDate) {
             // Begin async request for data
 
+            if ($scope.calledCalendarWithDefaultFilters) {
+                $scope.calledCalendarWithDefaultFilters = false;
+                return;
+            }
             scheduleDashboardCalendarModel.get(startDate, endDate)
                 // Promise fulfilled:
                 .then(function (response) {
