@@ -1130,10 +1130,13 @@
                                     </td>
                                     <!--  end unit price for product -->
                                     <td style="max-width: 180px;min-width: 140px">
-                                        <input class="form-control" name="{{ $ctrl.productColumns.formulaDescription.name }}" ng-model="product.formulaDescription"
+                                    		<span class="form-control disabled" tooltip data-original-title="{{product.formulaDescription ? product.formulaDescription : product.formula.name}}" style="background: #e6eaec;overflow: hidden;">
+                                    			{{product.formulaDescription ? product.formulaDescription : product.formula.name}}
+                                    		</span>
+                                        <!-- <input class="form-control" name="{{ $ctrl.productColumns.formulaDescription.name }}" ng-model="product.formulaDescription"
                                             ng-required="product.requiredFields['formulaDescription']"
                                             disabled="disabled"
-                                            id="product_formulaDescription_{{ $index }}" />
+                                            id="product_formulaDescription_{{ $index }}" /> -->
                                             {{product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID ? product.formulaDescription = null : ''}}
                                         <!-- ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID" -->
                                     </td>
