@@ -542,7 +542,7 @@ var Cfg = {
                     }
                     if (v.column.columnRoute == 'schedule-dashboard-table' || v.column.columnRoute == 'schedule-dashboard-calendar') {
                     	if (k > 0) {
-	                    	concat = " or "
+	                    	// concat = " or "
                     	}
                     }
                     var columnName = v.column.columnName;

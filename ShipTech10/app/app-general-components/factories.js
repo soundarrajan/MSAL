@@ -283,6 +283,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
         }
     }
     function findSeparator(str){
+    	return null;
         var idx = 0;
         while(charCodes[str[idx].charCodeAt(0)] === undefined) idx++;
         return str[idx];

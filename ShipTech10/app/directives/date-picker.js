@@ -229,7 +229,30 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     widgetParent: $('.page-container')
                 };
 
-                $(element).datetimepicker(datePickerOptions);
+                $(element).datetimepicker(datePickerOptions).on('dp.show', function (e) {
+                    setTimeout(function () {
+                        if ($(".bootstrap-datetimepicker-widget").offset().left > $(window).width() - 250) {
+                            $(".bootstrap-datetimepicker-widget").css("transform", "translateX(-30%)")
+                        }
+                    })
+                });
+
+				$(element).on('keydown', function(e) { 
+					var keyCode = e.keyCode || e.which; 
+
+					if (keyCode == 9 && $(this).parents(".treasury-datepicker-input")) { 
+						e.preventDefault(); 
+						// setTimeout(function(){
+						// })
+						nextEditableElement = $($($(this)).parents("td").nextAll("td").find("input, textarea, dropdown")[0])
+						$('#gview_flat_invoices_app_complete_view_list').animate({
+						    scrollLeft: ($(nextEditableElement).offset().left - 200)
+						},100);
+						setTimeout(function(){
+							$(nextEditableElement).focus();
+						},100);
+					} 
+				});
 
                 if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
                     $('#' + dateInputId + '_timeicon').click(function() {
@@ -343,8 +366,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                     var showError = false;
 
-                    if (isValidDynamic) {
-                    } else {
+                    if (!isValidDynamic) {
                         if (maskTyping) {
                             showError = true;
                         }
@@ -445,7 +467,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 }
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (hasDayOfWeek) {
-                        var dayOfWeekText = ""
+                        var dayOfWeekText = "";
                         if (v) {
                             if (moment(v).isValid()) {
                                 dayOfWeekText = moment.utc(v).format("ddd")
@@ -466,6 +488,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         prevValue = null;
                         if (typeof(v) == 'undefined') { 
                             $('#' + dateInputId).data("DateTimePicker").clear();
+                            $('#' + dateInputId).data("DateTimePicker").date(null);
                             ngModel.$setViewValue(null);
                             ngModel.$commitViewValue();
                             wasReset = true;

@@ -4302,6 +4302,10 @@ a[disabled]{
 }
 
 
+.tooltip.in {
+	z-index: 9999;
+}
+
 
 /* end additional costs */
 

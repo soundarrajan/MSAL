@@ -1243,9 +1243,9 @@ APP_MASTERS.controller("Controller_Master", [
                 var names = [];
                 $.each(vm.editInstance.$error.required, function(key, val) {
                     if (names.indexOf(val.$name) == -1) {
-                        message += "<br>" + val.$name;
+                        message += "<br>" + (val.$name ? val.$name : val.$$attr.id);
                     }
-                    names += val.$name;
+                    names += (val.$name ? val.$name : val.$$attr.id);
                 });
                 i = 0;
                 $.each(vm.editInstance.$error.pattern, function(key, val) {
@@ -2714,6 +2714,7 @@ APP_MASTERS.controller("Controller_Master", [
             // console.log(fieldUniqueId)
             if (elem) {
                 dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            	var hasDayOfWeek = false;
 	            if (dateFormat.startsWith("DDD ")) {
 	            	hasDayOfWeek = true
 	            	dateFormat = dateFormat.split("DDD ")[1];
@@ -2749,6 +2750,7 @@ APP_MASTERS.controller("Controller_Master", [
         vm.formatSimpleDate = function (date) {
             dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             window.tenantFormatsDateFormat = dateFormat;
+            var hasDayOfWeek = false;
             if (dateFormat.startsWith("DDD ")) {
             	hasDayOfWeek = true
             	dateFormat = dateFormat.split("DDD ")[1];
@@ -5728,7 +5730,7 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
 
-        jQuery(document).ready(function() {
+		jQuery(document).ready(function() {
         	if (/*$state.current.name.indexOf('.documents') != -1 &&*/ typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(function() {

@@ -31,9 +31,30 @@
                         <a class="btn btn-auto-width font-grey-cascade" ng-click="$ctrl.orderPreviewEmail()">
                             <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                         </a>
-                        <a class="btn btn-sm btn-default" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
+                        <a class="btn btn-default" ng-click="$ctrl.saveOrder()" ng-show="$ctrl.canSave($ctrl.screenActions)" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}">
+                            Save
+                        </a>
+                        <a class="btn btn-default" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
                             Order Negotiation Report
                         </a> 
+                        <a href="" class="btn btn-sm btn-default hover-orange"
+                          ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMSELLEREMAIL)"
+                          ng-class="{'green-jungle': $ctrl.data.emailToSellerSent && !$ctrl.ConfirmToSellerDisabled}"
+                          ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"
+                          ng-disabled="$ctrl.ConfirmToSellerDisabled = !($ctrl.data.id && $ctrl.confirmToSellerManual && 
+                                      !$ctrl.data.buttonsDisabled && $ctrl.data.seller.name &&
+                                      ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
+                            Confirm to Seller
+                        </a>
+                        <a href="" class="btn btn-sm btn-default hover-orange"
+                          ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMALLEMAIL)"
+                          ng-class="{'green-jungle': $ctrl.data.emailToVesselSent && !$ctrl.ConfirmToVesselDisabled}"
+                          ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_ALL, $ctrl.data.id)"
+                          ng-disabled="$ctrl.ConfirmToVesselDisabled = !($ctrl.data.id && $ctrl.confirmToVesselManual && 
+                                      !$ctrl.data.buttonsDisabled && !ctrl.data.vessel.name &&
+                                      ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
+                            Confirm to Vessel
+                        </a>
                         <a href="" class="btn btn-sm btn-default hover-orange" 
                         ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_LABS, $ctrl.data.id)"
                         ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToLabs.name) == -1"
@@ -53,24 +74,6 @@
                             Email to Surveyor
                         </a>
                             <!-- ng&#45;class="{'disabled': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM), 'green&#45;jungle': $ctrl.data.emailToSellerSent}" ng&#45;click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)" -->
-                        <a href="" class="btn btn-sm btn-default hover-orange"
-                          ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMSELLEREMAIL)"
-                          ng-class="{'green-jungle': $ctrl.data.emailToSellerSent && !$ctrl.ConfirmToSellerDisabled}"
-                          ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"
-                          ng-disabled="$ctrl.ConfirmToSellerDisabled = !($ctrl.data.id && $ctrl.confirmToSellerManual && 
-                                      !$ctrl.data.buttonsDisabled && $ctrl.data.seller.name &&
-                                      ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
-                            Confirm to Seller
-                        </a>
-                        <a href="" class="btn btn-sm btn-default hover-orange"
-                          ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMALLEMAIL)"
-                          ng-class="{'green-jungle': $ctrl.data.emailToVesselSent && !$ctrl.ConfirmToVesselDisabled}"
-                          ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_ALL, $ctrl.data.id)"
-                          ng-disabled="$ctrl.ConfirmToVesselDisabled = !($ctrl.data.id && $ctrl.confirmToVesselManual && 
-                                      !$ctrl.data.buttonsDisabled && !ctrl.data.vessel.name &&
-                                      ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
-                            Confirm to Vessel
-                        </a>
                         <a class="btn orange btn-outline" ng-class="{'disabled': $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.SUBMITFORAPPROVAL)}"
                             ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.SUBMIT_FOR_APPROVAL, $ctrl.data.id)">
                             Submit for Approval
@@ -78,9 +81,6 @@
                         <a class="btn btn-orange {{!$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) ? '' : 'bg-yellow-gold-opacity font-white'}}" ng-class="{'disabled font-dark': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM)}"
                             ng-click="$ctrl.confirmOrder(true)">
                             Confirm
-                        </a>
-                        <a class="btn btn-default" ng-click="$ctrl.saveOrder()" ng-show="$ctrl.canSave($ctrl.screenActions)" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}">
-                            Save
                         </a>
                         <div class="btn-group">
                             <a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false" ng-class="{'disabled' : $ctrl.extraButtons() || $ctrl.buttonsDisabled}">
@@ -327,7 +327,7 @@
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.VesselImoNo.name }} input-group">
 							                                <div class="input-group" >
-							                                    <input name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name for vessel in $ctrl.listsCache.Vessel | filter:$viewValue | limitTo:5" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.data.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.data.vessel.name" required  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
+							                                    <input name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name for vessel in $ctrl.listsCache.Vessel | filter:$viewValue | limitTo:5" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.data.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.data.vessel.name" required  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id" typeahead-append-to-body="true">
 							                                    <span ng-controller="Controller_Master as CM" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_vessellist', 'Vessel' , 'vessel');" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
 							                                        <a href="" class=" btn default" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
 							                                            <i class="fa fa-search"></i>
@@ -349,7 +349,7 @@
                                                             <input name="{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" class="typeahead form-control"
                                                                 uib-typeahead="serviceCode as serviceCode.name for serviceCode in $ctrl.lists.Service | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectService($item.id)" ng-model="$ctrl.data.service.name"
-                                                                typeahead-editable="false" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
+                                                                typeahead-editable="false" typeahead-append-to-body="true" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
                                                                 required/>
                                                             <span ng-controller="Controller_Master as CM"  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_servicelist', 'Service' , 'service');">
                                                                 <a href="" class=" btn default">
@@ -405,7 +405,8 @@
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.carrierCompany.name }}">
                                                             <input name="{{ $ctrl.portFields.carrierCompany.name }}" id="id_{{ $ctrl.portFields.carrierCompany.name }}" class="typeahead form-control"
                                                                 uib-typeahead="carrierCompany as carrierCompany.name for carrierCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"
-                                                                typeahead-on-select="$ctrl.selectCompany($item.id)" ng-model="$ctrl.data.carrierCompany.name"
+                                                                typeahead-on-select="$ctrl.selectCompany($item.id)" ng-model="$ctrl.data.carrierCompany.name" 
+                                                                typeahead-append-to-body="true"
                                                                 ng-focus="$ctrl.initLookup($ctrl.portFields.carrierCompany.name, $ctrl.data.carrierCompany)"
                                                                 typeahead-editable="false" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
                                                                 ng-blur="$ctrl.setPaymentCompany()" required/>
@@ -438,6 +439,7 @@
                                                             <input name="{{ $ctrl.nominationFields.broker.name }}" id="id_{{ $ctrl.nominationFields.broker.name }}" class="typeahead form-control"
                                                                 uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
+                                                                typeahead-append-to-body="true"
                                                                 typeahead-editable="true" ng-model="$ctrl.data.broker.name" ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.broker.name, $ctrl.data.broker)"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                 ng-blur="!$ctrl.data.broker.name ? $ctrl.data.broker = null : '' "
@@ -472,6 +474,7 @@
                                                             <input name="{{ $ctrl.portFields.paymentCompany.name }}" id="id_{{ $ctrl.portFields.paymentCompany.name }}" class="typeahead form-control"
                                                                 uib-typeahead="paymentCompany as paymentCompany.name for paymentCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectCompany($item.id)" ng-model="$ctrl.data.paymentCompany.name"
+                                                                typeahead-append-to-body="true"
                                                                 ng-focus="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
                                                                 ng-change="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
@@ -519,6 +522,7 @@
                                                                 class="typeahead form-control" uib-typeahead="surveyorCounterparty as surveyorCounterparty.name for surveyorCounterparty in $ctrl.lists.Surveyor | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.surveyorCounterparty = $ctrl.setTypeahedVal($ctrl.data.surveyorCounterparty, $item, false)"
                                                                 typeahead-editable="false" ng-model="$ctrl.data.surveyorCounterparty.name"
+                                                                typeahead-append-to-body="true"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id "
                                                                 ng-blur="!$ctrl.data.surveyorCounterparty.name ? $ctrl.data.surveyorCounterparty = null : '' "
                                                             />
@@ -545,6 +549,7 @@
                                                             <input name="{{ $ctrl.vesselDetailsFields.Buyer.name }}" id="id_{{ $ctrl.vesselDetailsFields.Buyer.name }}" class="typeahead form-control"
                                                                 uib-typeahead="buyer as buyer.name for buyer in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select=" $ctrl.isTrader = false; $ctrl.selectBuyer($item);"
+                                                                typeahead-append-to-body="true"
                                                                 typeahead-editable="false" ng-model="$ctrl.data.buyer.name" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                 required/>
                                                             <span ng-controller="Controller_Master as CM" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_buyerlist', 'Buyer' ,'buyer',null,null,null,null); $ctrl.isTraderField = false" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
@@ -582,6 +587,7 @@
                                                             <input name="{{ $ctrl.portFields.agentCounterparty.name }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
                                                                 uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)" ng-model="$ctrl.data.agentCounterparty.name"
+                                                                typeahead-append-to-body="true"
                                                                 ng-click="$ctrl.setSellerDialogType($ctrl.portFields.agentCounterparty.name, $ctrl.data.agentCounterparty)"
                                                                 typeahead-editable="false" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                             />
@@ -613,6 +619,7 @@
                                                             <input name="{{ $ctrl.sellerDetails.Trader.name }}" id="id_{{ $ctrl.sellerDetails.Trader.name }}" class="typeahead form-control"
                                                                 uib-typeahead="trader as trader.name for trader in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.isTrader = true; $ctrl.selectTrader($item);"
+                                                                typeahead-append-to-body="true"
                                                                 ng-model="$ctrl.data.trader.name" typeahead-editable="false"
                                                             />
                                                             <span ng-controller="Controller_Master as CM" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_buyerlist', 'Trader' ,'trader',null,null,null,null); $ctrl.isTraderField = true">
@@ -651,6 +658,7 @@
                                                             <input name="{{ $ctrl.nominationFields.lab.name }}" id="id_{{ $ctrl.nominationFields.lab.name }}" class="typeahead form-control"
                                                                 uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.lab = $ctrl.setTypeahedVal($ctrl.data.lab, $item, false)"
+                                                                typeahead-append-to-body="true"
                                                                 typeahead-editable="false" ng-model="$ctrl.data.lab.name" ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.lab.name, $ctrl.data.lab)"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                 ng-blur="!$ctrl.data.lab.name ? $ctrl.data.lab = null : '' "
@@ -674,6 +682,7 @@
                                                             <input name="{{ $ctrl.sellerDetails.PaymntTerms.name }}" id="id_{{ $ctrl.sellerDetails.PaymntTerms.name }}" class="typeahead form-control"
                                                                 uib-typeahead="term as term.name for term in $ctrl.lists.PaymentTerm | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectPaymntTerm($item)" ng-model="$ctrl.data.paymentTerm.name"
+                                                                typeahead-append-to-body="true"
                                                                 typeahead-editable="false" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                 required/>
                                                             <span ng-controller="Controller_Master as CM" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_paymenttermlist', 'Payment Term' ,'paymentTerm',null,null,null,null);">
@@ -706,6 +715,7 @@
                                                             <input name="{{ $ctrl.nominationFields.barge.name }}" id="id_{{ $ctrl.nominationFields.barge.name }}" class="typeahead form-control"
                                                                 uib-typeahead="barge as barge.name for barge in $ctrl.lists.bargeCounterparties | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.barge = $ctrl.setTypeahedVal($ctrl.data.barge, $item, false)"
+                                                                typeahead-append-to-body="true"
                                                                 typeahead-editable="false" ng-model="$ctrl.data.barge.name" ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.barge.name, $ctrl.data.barge)"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                 ng-blur="!$ctrl.data.barge.name ? $ctrl.data.barge = null : '' "
@@ -732,6 +742,7 @@
                                                             <input name="{{ $ctrl.portFields.locationName.name }}" id="id_{{ $ctrl.portFields.locationName.name }}" class="typeahead form-control"
                                                                 uib-typeahead="location as location.name for location in $ctrl.lists.Location | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectPort($item.id)" ng-model="$ctrl.data.location"
+                                                                typeahead-append-to-body="true"
                                                                 ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
                                                                 typeahead-editable="false" required/>
                                                             <span ng-controller="Controller_Master as CM" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);">
@@ -960,6 +971,7 @@
                                             ng-init="product.tempProduct = $ctrl.setDefaultTempProduct(product.product)">
                                             <input class="typeahead form-control " uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | filter:$viewValue | limitTo:5"
                                                 typeahead-editable="false" typeahead-on-select="$ctrl.selectProduct($item.id)"
+                                                typeahead-append-to-body="true"
                                                 ng-model="product.tempProduct" name="Product {{$index}}"
                                                 id="product_{{ $index }}"
                                                 ng-focus="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
@@ -996,6 +1008,7 @@
                                             <input name="{{ $ctrl.productColumns.physicalSupplier.name }}" class="typeahead form-control"
                                                 uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | filter:$viewValue | limitTo:5"
                                                 typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
+                                                typeahead-append-to-body="true"
                                                 typeahead-editable="false" ng-required="$ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id && product.status.id != $ctrl.STATUS['Cancelled'].id"
                                                 ng-model="product.physicalSupplier.name" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                 ng-mouseover="$ctrl.setSellerDialogType($ctrl.productColumns.physicalSupplier.name, product.physicalSupplier)"
@@ -1141,7 +1154,7 @@
                                         <!-- ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID" -->
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px">
-                                        <a ng-if="product.formulaDescription && $ctrl.orderId" ng-click="$ctrl.triggerFormulaDetailsModal(product)" >Pricing Details</a>
+                                        <a ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId" ng-click="$ctrl.triggerFormulaDetailsModal(product)" >Pricing Details</a>
                                         <!-- ng-disabled="$ctrl.disabledProduct[product.id]" -->
                                     </td>
                                     <td style="max-width: 120px;min-width: 120px" >
@@ -1187,6 +1200,7 @@
                                                 uib-typeahead="contract as contract.searchString for contract in $ctrl.orderContractOptions[product.product.id] | filter:$viewValue | limitTo:5"
                                                 typeahead-on-select="selectProductContract($ctrl.productContractSelecting, $item)"
                                                 typeahead-editable="false" 
+                                                typeahead-append-to-body="true"
                                                 ng-model="product.contract.name"
                                                 ng-click="$ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
                                                 ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId"
@@ -1511,6 +1525,30 @@
                 <a class="btn btn-auto-width font-grey-cascade" ng-click="$ctrl.orderPreviewEmail()">
                     <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                 </a>
+                <a class="btn btn-default" ng-click="$ctrl.saveOrder()" ng-show="$ctrl.canSave($ctrl.screenActions)" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}">
+                    Save
+                </a>
+                <a class="btn btn-default" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
+                    Order Negotiation Report
+                </a> 
+                <a href="" class="btn btn-sm btn-default hover-orange"
+                  ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMSELLEREMAIL)"
+                  ng-class="{'green-jungle': $ctrl.data.emailToSellerSent && !$ctrl.ConfirmToSellerDisabled}"
+                  ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"
+                  ng-disabled="$ctrl.ConfirmToSellerDisabled = !($ctrl.data.id && $ctrl.confirmToSellerManual && 
+                              !$ctrl.data.buttonsDisabled && $ctrl.data.seller.name &&
+                              ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
+                    Confirm to Seller
+                </a>
+                <a href="" class="btn btn-sm btn-default hover-orange"
+                  ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMALLEMAIL)"
+                  ng-class="{'green-jungle': $ctrl.data.emailToVesselSent && !$ctrl.ConfirmToVesselDisabled}"
+                  ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_ALL, $ctrl.data.id)"
+                  ng-disabled="$ctrl.ConfirmToVesselDisabled = !($ctrl.data.id && $ctrl.confirmToVesselManual && 
+                              !$ctrl.data.buttonsDisabled && !ctrl.data.vessel.name &&
+                              ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
+                    Confirm to Vessel
+                </a>
                 <!-- ng-if="($ctrl.needsTransactionLimitApproval && $ctrl.data.status.name == 'Approved') || (!$ctrl.needsTransactionLimitApproval && $ctrl.data.status.name == 'Stemmed')" -->
 
                 <!--  Email to Seller / Email to Labs
@@ -1550,24 +1588,6 @@
                     Email to Surveyor
                 </a>
                     <!-- ng&#45;class="{'disabled': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM), 'green&#45;jungle': $ctrl.data.emailToSellerSent}" ng&#45;click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)" -->
-                <a href="" class="btn btn-sm btn-default hover-orange"
-                  ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMSELLEREMAIL)"
-                  ng-class="{'green-jungle': $ctrl.data.emailToSellerSent && !$ctrl.ConfirmToSellerDisabled}"
-                  ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"
-                  ng-disabled="$ctrl.ConfirmToSellerDisabled = !($ctrl.data.id && $ctrl.confirmToSellerManual && 
-                              !$ctrl.data.buttonsDisabled && $ctrl.data.seller.name &&
-                              ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
-                    Confirm to Seller
-                </a>
-                <a href="" class="btn btn-sm btn-default hover-orange"
-                  ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMALLEMAIL)"
-                  ng-class="{'green-jungle': $ctrl.data.emailToVesselSent && !$ctrl.ConfirmToVesselDisabled}"
-                  ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_ALL, $ctrl.data.id)"
-                  ng-disabled="$ctrl.ConfirmToVesselDisabled = !($ctrl.data.id && $ctrl.confirmToVesselManual && 
-                              !$ctrl.data.buttonsDisabled && !ctrl.data.vessel.name &&
-                              ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))">
-                    Confirm to Vessel
-                </a>
                 <a class="btn orange btn-outline" ng-class="{'disabled': $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.SUBMITFORAPPROVAL)}"
                     ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.SUBMIT_FOR_APPROVAL, $ctrl.data.id)">
                     Submit for Approval
@@ -1575,9 +1595,6 @@
                 <a class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM)}"
                     ng-click="$ctrl.confirmOrder(true)">
                     Confirm
-                </a>
-                <a class="btn btn-default" ng-click="$ctrl.saveOrder()" ng-show="$ctrl.canSave($ctrl.screenActions)" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}">
-                    Save
                 </a>
                 <div class="btn-group">
                     <a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false" ng-class="{'disabled' : $ctrl.extraButtons() || $ctrl.buttonsDisabled}">

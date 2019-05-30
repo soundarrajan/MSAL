@@ -187,7 +187,7 @@
                                                                 </div> -->
                                 <div class="col-md-11 ">
                                     <div class="input-group border-default" style="border: 1px solid;display: block;padding:0 5px;float: left;width: 100%; cursor: text" ng-click="$ctrl.focusInnerInput($event)">
-                                        <div ng-repeat="toEmail in $ctrl.email.to track by $index" class="tag label label-info pull-left font-dark bg-default" style="margin-top: 5px; margin-right: 5px;">
+                                        <div ng-repeat="toEmail in $ctrl.email.to track by $index" tooltip data-original-title="{{toEmail.idEmailAddress}}" class="tag label label-info pull-left font-dark bg-default" style="margin-top: 5px; margin-right: 5px;">
                                             <i ng-click="$ctrl.removeEmail($index, $ctrl.email.to)" class="fa fa-close clickable"></i>
                                             {{ toEmail.name }}
                                         </div>
@@ -231,7 +231,7 @@
                                                                             </div>
                                                                         </div> -->
                                     <div class="input-group border-default" style="border: 1px solid;display: block;padding:0 5px;float: left;width: 100%; cursor: text" ng-click="$ctrl.focusInnerInput($event)">
-                                        <div ng-repeat="ccEmail in $ctrl.email.cc track by $index" class="tag label label-info pull-left font-dark bg-default" style="margin-top: 5px; margin-right: 5px;">
+                                        <div ng-repeat="ccEmail in $ctrl.email.cc track by $index" tooltip data-original-title="{{ccEmail.idEmailAddress}}" class="tag label label-info pull-left font-dark bg-default" style="margin-top: 5px; margin-right: 5px;">
                                             <i ng-click="$ctrl.removeEmail($index, $ctrl.email.cc)" class="fa fa-close clickable"></i>
                                             {{ ccEmail.name }}
                                         </div>

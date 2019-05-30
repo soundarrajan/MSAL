@@ -107,7 +107,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                }
 	            }
 	            console.log("called schedule get with: ",payload);
-	            $scope.calledCalendarWithDefaultFilters = true;
+	                $scope.calledCalendarWithDefaultFilters = true;
                 // if (initDone) {
     	            setTimeout(function(){
     		            scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, payload).then(function (response) {

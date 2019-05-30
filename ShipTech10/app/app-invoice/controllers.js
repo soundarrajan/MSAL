@@ -2691,11 +2691,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         	return;
         }
 
-        $rootScope.transportData = $scope.formValues;
+        $rootScope.transportData = angular.copy($scope.formValues);
         $rootScope.transportData.id = 0;
         $rootScope.transportData.documentType = invoiceType;
-        $rootScope.transportData.productDetails = [];
-        $rootScope.transportData.costDetails = [];
+
         $rootScope.transportData.invoiceDetails = null;
         $rootScope.transportData.sellerInvoiceNo = null;
         $rootScope.transportData.receivedDate = null;
@@ -2713,6 +2712,16 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.customStatus = null;
         $rootScope.transportData.invoiceSummary = null;
         $rootScope.transportData.invoiceClaimDetails = null;
+
+
+        $.each($rootScope.transportData.productDetails, function(k,v){
+        	v.invoiceRate = null;
+        })
+        $.each($rootScope.transportData.costDetails, function(k,v){
+        	v.invoiceRate = null;
+        })
+        // $rootScope.transportData.productDetails = [];
+        // $rootScope.transportData.costDetails = [];
 
         localStorage.setItem("invoice_createInvoiceFromEdit", angular.toJson($rootScope.transportData));
         window.open("/#/invoices/invoice/edit/", "_blank");

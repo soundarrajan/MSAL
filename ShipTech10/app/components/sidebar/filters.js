@@ -486,7 +486,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                             if(key === 0) {
                                 filter.FilterOperator = 0;
                             } else {
-                                filter.FilterOperator = 2;
+                                filter.FilterOperator = 1;
                             }
                         }
                         if (val.column.dateType) {
@@ -610,8 +610,8 @@ angular.module("shiptech.components").controller("FiltersController", [
             // $rootScope.CheckForFilters = 1
 	    });        
         $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        	$scope.filtersConfigurations = null;
         	$scope.defaultConfiguration = null;
-        	$scope.filtersConfigurations = null;        	
             $scope.noDefault = null;
             $scope.packedFilters = [];
         });

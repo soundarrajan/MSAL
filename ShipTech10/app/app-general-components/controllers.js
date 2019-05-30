@@ -2040,13 +2040,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-
 	            	var hasDayOfWeek = false;
 		            if (dateFormat.startsWith("DDD ")) {
 		            	hasDayOfWeek = true;
 		            	dateFormat = dateFormat.split("DDD ")[1];
 		            }
-                    
+
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat);
                     if (cellValue != null) {

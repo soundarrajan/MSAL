@@ -34,12 +34,19 @@
 
             
               
+            <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
+                Save
+            </a>
+            <a class="btn orange btn-outline" ng-click="$ctrl.sendQuestionnaire()" ng-if="$ctrl.canQuestionnaire()> 0">
+                Send Questionnaire
+            </a>
+            <a class="btn orange btn-outline" ng-click="$ctrl.validatePreRequest()" ng-if="$ctrl.canValidate()> 0">
+                Validate
+            </a>
             <a class="btn orange btn-outline" ng-show="$ctrl.request.requestStatus.id == $ctrl.STATUS.PartiallyStemmed.id" ng-click="$ctrl.completeRequest()">
                 Complete Request
             </a> 
-            <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
-                Save
-            </a>
+     <!-- {{$ctrl.contractHasProduct }} - {{$ctrl.canSave($ctrl.screenActions)}} - {{$ctrl.checkGoContract()}} - {{!$ctrl.selectedContractHasStemmedProduct}} -->
             <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()" ng-show="$ctrl.contractHasProduct && $ctrl.canSave($ctrl.screenActions) && $ctrl.checkGoContract() && !$ctrl.selectedContractHasStemmedProduct" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
                 Proceed to order
             </a>
@@ -51,29 +58,19 @@
                     &hellip;
                 </a>
                 <ul class="dropdown-menu st-extra-buttons" role="menu">
+                    <!-- <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CANCEL)"> -->
+                    <!-- <li ng-if="$ctrl.canQuestionnaire()> 0">
+                    </li> -->
+                    <!-- <li ng-if="$ctrl.canValidate()> 0">
+                    </li> -->
+                    <li ng-if="$ctrl.canCancel() > 0">
+                        <a ng-click="$ctrl.showCancelRequestConfirm()">
+                            Cancel
+                        </a>
+                    </li>
                     <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.COPY) && $ctrl.request.requestStatus.name != 'Cancelled'">
                         <a ng-click="$ctrl.copyRequest()">
                             Copy
-                        </a>
-                    </li>
-                    <!-- <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CANCEL)">
-                        <a ng-click="$ctrl.cancelRequest()">
-                            Cancel
-                        </a>
-                    </li> -->
-                    <li ng-if="$ctrl.canCancel()> 0">
-                        <a ng-click="$ctrl.cancelRequest()">
-                            Cancel
-                        </a>
-                    </li>
-                    <li ng-if="$ctrl.canValidate()> 0">
-                        <a ng-click="$ctrl.validatePreRequest()">
-                            Validate
-                        </a>
-                    </li>
-                    <li ng-if="$ctrl.canQuestionnaire()> 0">
-                        <a ng-click="$ctrl.sendQuestionnaire()">
-                            Send Questionnaire
                         </a>
                     </li>
                 </ul>
@@ -1023,13 +1020,19 @@
                 </div>
 
               
-                <a class="btn orange btn-outline" ng-show="$ctrl.request.requestStatus.id == $ctrl.STATUS.PartiallyStemmed.id" ng-click="$ctrl.completeRequest()">
-                    Complete Request
-                </a> 
 
                 <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
                     Save
                 </a>
+                <a class="btn orange btn-outline" ng-click="$ctrl.sendQuestionnaire()" ng-if="$ctrl.canQuestionnaire()> 0">
+                    Send Questionnaire
+                </a>
+                <a class="btn orange btn-outline" ng-click="$ctrl.validatePreRequest()" ng-if="$ctrl.canValidate()> 0">
+                    Validate
+                </a>
+                <a class="btn orange btn-outline" ng-show="$ctrl.request.requestStatus.id == $ctrl.STATUS.PartiallyStemmed.id" ng-click="$ctrl.completeRequest()">
+                    Complete Request
+                </a> 
          <!-- {{$ctrl.contractHasProduct }} - {{$ctrl.canSave($ctrl.screenActions)}} - {{$ctrl.checkGoContract()}} - {{!$ctrl.selectedContractHasStemmedProduct}} -->
                 <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()" ng-show="$ctrl.contractHasProduct && $ctrl.canSave($ctrl.screenActions) && $ctrl.checkGoContract() && !$ctrl.selectedContractHasStemmedProduct" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
                     Proceed to order
@@ -1042,25 +1045,19 @@
                         &hellip;
                     </a>
                     <ul class="dropdown-menu st-extra-buttons" role="menu">
-                        <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.COPY) && $ctrl.request.requestStatus.name != 'Cancelled'">
-                            <a ng-click="$ctrl.copyRequest()">
-                                Copy
-                            </a>
-                        </li>
                         <!-- <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CANCEL)"> -->
+                        <!-- <li ng-if="$ctrl.canQuestionnaire()> 0">
+                        </li> -->
+                        <!-- <li ng-if="$ctrl.canValidate()> 0">
+                        </li> -->
                         <li ng-if="$ctrl.canCancel() > 0">
                             <a ng-click="$ctrl.showCancelRequestConfirm()">
                                 Cancel
                             </a>
                         </li>
-                        <li ng-if="$ctrl.canValidate()> 0">
-                            <a ng-click="$ctrl.validatePreRequest()">
-                                Validate
-                            </a>
-                        </li>
-                        <li ng-if="$ctrl.canQuestionnaire()> 0">
-                            <a ng-click="$ctrl.sendQuestionnaire()">
-                                Send Questionnaire
+                        <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.COPY) && $ctrl.request.requestStatus.name != 'Cancelled'">
+                            <a ng-click="$ctrl.copyRequest()">
+                                Copy
                             </a>
                         </li>
                     </ul>

@@ -52,8 +52,8 @@
                                     <span class="input-group pull-left form_input" style="margin-right: 5px;">
                                         <input ng-model="asyncSelectedTo" uib-typeahead="item as item.idEmailAddress for item in previewEmail.toList | filter:{idEmailAddress:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="toEmail" data-uniqueid="toEmail" data-value="{{ dummyModel.id }}" autocomplete="off" typeahead-on-select="addEmailAddressInPreview('previewEmail.to', $item); asyncSelectedTo=''" style="margin-bottom: 5px;"/>
                                     </span>
-                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.to">
-                                        {{ value.idEmailAddress }}
+                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.to" tooltip data-original-title="{{ value.idEmailAddress }}">
+                                        {{ value.name }}
                                         <i class="fa fa-remove" ng-click="previewEmail.to.splice(key, 1)"></i>
                                     </span>
                                 </span>
@@ -80,8 +80,8 @@
                                     <span class="input-group pull-left form_input" style="margin-right: 5px;">
                                         <input ng-model="asyncSelectedCc" uib-typeahead="item as item.idEmailAddress for item in previewEmail.ccList | filter:{idEmailAddress:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="ccEmail" data-uniqueid="ccEmail" data-value="{{ dummyModel.id }}" autocomplete="off" typeahead-on-select="addEmailAddressInPreview('previewEmail.cc', $item); asyncSelectedCc=''" style="margin-bottom: 5px;"/>
                                     </span>
-                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.cc">
-                                        {{ value.idEmailAddress }}
+                                    <span class="email-tag pull-left" ng-repeat="(key, value) in previewEmail.cc" tooltip data-original-title="{{ value.idEmailAddress }}">
+                                        {{ value.name }}
                                         <i class="fa fa-remove" ng-click="previewEmail.cc.splice(key, 1)"></i>
                                     </span>
                                 </span>

@@ -97,7 +97,7 @@
                                 <span ng-show="$ctrl.email.to.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openToList = !ctrl.openToList">
                                     &hellip;
                                 </span>
-                                <span ng-repeat="toEmail in $ctrl.email.to track by $index" data-html="true" tooltip data-original-title="{{toEmail.name}}" class="tag label label-info"  ng-show="$index < $ctrl.shownEmailNr || ctrl.openToList">
+                                <span ng-repeat="toEmail in $ctrl.email.to track by $index" data-html="true" tooltip data-original-title="{{toEmail.idEmailAddress}}" class="tag label label-info"  ng-show="$index < $ctrl.shownEmailNr || ctrl.openToList">
                                     <i ng-click="$ctrl.removeEmail($index, $ctrl.email.to)" class="fa fa-close clickable"></i>
                                     {{ toEmail.name }}
                                 </span>
@@ -133,7 +133,7 @@
                                 <span ng-show="$ctrl.email.cc.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openCcList = !ctrl.openCcList">
                                     &hellip;
                                 </span>
-                                <span ng-repeat="ccEmail in $ctrl.email.cc track by $index" data-html="true" tooltip data-original-title="{{ccEmail.name}}" class="tag label label-info" ng-show="$index < $ctrl.shownEmailNr || ctrl.openCcList">
+                                <span ng-repeat="ccEmail in $ctrl.email.cc track by $index" data-html="true" tooltip data-original-title="{{ccEmail.idEmailAddress}}" class="tag label label-info" ng-show="$index < $ctrl.shownEmailNr || ctrl.openCcList">
                                     <i ng-click="$ctrl.removeEmail($index, $ctrl.email.cc)" class="fa fa-close clickable"></i>
                                     {{ ccEmail.name }}
                                 </span>

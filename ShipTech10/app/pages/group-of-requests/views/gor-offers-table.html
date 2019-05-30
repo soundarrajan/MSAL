@@ -454,9 +454,12 @@
                 <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border border-selected-left" colspan="{{$ctrl.counterpartyDetailsIsExpanded ? 3 : 2}}" style="min-width: 145px; max-width: 175px;" >
                     <div ng-repeat="individualLocation in location" ng-if="individualLocation.requestId === requestProducts[0].requestId" class="form-group-sm form-inline" style="box-shadow: 0px 0px 8px 1px #3641504f;padding:5px;border: 1px solid #d1d8dd;">
                         <label class="control-label"><strong> ETA: </strong></label>
+                        <span class="hidden">
+	                        {{individualLocation.computedEta = individualLocation.recentEta ? individualLocation.recentEta : individualLocation.eta}}
+                        </span>
                         <b>
                             <input class="form-control" style="max-width: 120px; padding:0;"
-                                    ng-model="individualLocation.recentEta"
+                                    ng-model="individualLocation.computedEta"
                                     disabled
                                     st-date-format>
                         </b>
