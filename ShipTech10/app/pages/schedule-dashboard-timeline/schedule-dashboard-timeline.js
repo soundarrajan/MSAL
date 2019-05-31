@@ -53,6 +53,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     id: i + 5000,
                     content: vessels[i].voyageDetail.locationCode,
                     start: moment(vessels[i].voyageDetail.eta).format('YYYY-MM-DD'),
+                    end: moment(vessels[i].voyageDetail.eta).add('days', 1).format('YYYY-MM-DD'),
                     // style: 'color: gray; background-color: lightgray; border: 1px dotted gray;'
                 };
 
@@ -68,7 +69,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         id: i,
                         content: vessels[i].voyageDetail.locationCode,
                         start: moment(vessels[i].voyageDetail.eta).subtract('days', randomDays).format('YYYY-MM-DD'),
-                        end: moment(vessels[i].voyageDetail.eta).subtract('days', 1).format('YYYY-MM-DD'),
+                        end: moment(vessels[i].voyageDetail.eta).format('YYYY-MM-DD'),
                         style: 'color: gray; background-color: lavander; border: 1px dotted gray;'
                     };
                 } else {
