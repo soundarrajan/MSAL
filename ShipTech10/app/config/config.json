@@ -21,6 +21,7 @@
             "DEFAULT": "default",
             "HOME": "default.home",
             "DASHBOARD_TABLE": "default.dashboard-table",
+            "DASHBOARD_TIMELINE": "default.dashboard-timeline",
             "DASHBOARD_CALENDAR": "default.dashboard-calendar",
             "NEW_REQUEST": "default.new-request",
             "EDIT_REQUEST": "default.edit-request",

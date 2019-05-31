@@ -11,6 +11,11 @@
                     Table View
                 </a>
             </li>
+            <li ng-class="{open : state.is(STATE.DASHBOARD_TIMELINE)}">
+                <a ui-sref="default.dashboard-timeline">
+                    Timeline View
+                </a>
+            </li>
         </ul>
         <div class="form-inline pull-right">
             <div ng-if="state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)">

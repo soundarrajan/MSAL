@@ -57,6 +57,23 @@ angular.module('shiptech')
                     templateUrl: 'components/blade/templates/gor-energyContent-widget.html',
                 })
 
+                // Schedule Dashboard Timeline
+                .state(STATE.DASHBOARD_TIMELINE, {
+                    params: {
+                                path: [{
+                                            label: 'Procurement',
+                                            uisref: STATE.HOME
+                                        },
+                                        {
+                                            label: 'Schedule Dashboard Timeline',
+                                            uisref: STATE.DASHBOARD_TIMELINE
+                                        }],
+                                title: 'Schedule Dashboard Timeline',
+                            },
+                    url: '/schedule-dashboard-timeline',
+                    template: '<schedule-dashboard-timeline></schedule-dashboard-timeline>'
+                })
+
                 // Schedule Dashboard Table View
                 .state(STATE.DASHBOARD_TABLE, {
                     params: {

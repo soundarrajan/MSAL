@@ -1,0 +1,30 @@
+.vis-inner {
+	width: 100%;
+	min-height: 100%;
+	padding: 0 !important;
+	display: table !important;
+}
+
+.vis-custom-group { 
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.vis-custom-group-column { 
+	width: 25%;
+	height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #bfbfbf;
+    font-size: 0.8em;
+    text-align: center;
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.vis-custom-group-column.last { 
+	border-right: none;
+}
