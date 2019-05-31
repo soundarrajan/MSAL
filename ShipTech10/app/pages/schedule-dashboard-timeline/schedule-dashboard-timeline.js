@@ -50,7 +50,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // }
                 // Create voyage object
                 var voyage = {
-                    id: i + 5000,
+                    id: i + 20000,
                     content: vessels[i].voyageDetail.locationCode,
                     start: moment(vessels[i].voyageDetail.eta).format('YYYY-MM-DD'),
                     end: moment(vessels[i].voyageDetail.eta).add('days', 1).format('YYYY-MM-DD'),
