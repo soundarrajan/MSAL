@@ -240,7 +240,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 				$(element).on('keydown', function(e) { 
 					var keyCode = e.keyCode || e.which; 
 
-					if (keyCode == 9 && $(this).parents(".treasury-datepicker-input")) { 
+					if (keyCode == 9 && $(this).parents(".treasury-datepicker-input").length > 0) { 
 						e.preventDefault(); 
 						// setTimeout(function(){
 						// })
