@@ -6971,7 +6971,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                console.log("called getUomConversionFactor with params:" , product.product.id,product.invoiceRateUom.id,product.invoiceQuantityUom.id)
 	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
 	                	conversionFactor = response 
-	                	if (formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
+	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
 	                	} else {
 	                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity,2))

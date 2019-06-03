@@ -129,50 +129,59 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             $.each(ctrl.requirements, function(rqK, rqV) {
                 requestProductIdsForOrder.push(rqV.RequestProductId);
             })
-            ctrl.buttonsDisabled = true;
+            // ctrl.buttonsDisabled = true;
             orderModel.getExistingOrders(requestProductIdsForOrder.join(',')).then(function(responseData) {
                 responseOrderData = responseData.payload;
                 productsWithErrors = []
                 errorMessages = [];
                 $.each(ctrl.requirements, function(rqK, rqV) {
+	                foundRelatedOrder = false;
                     hasOrder = false;
-                    hasError = false;
                     $.each(responseOrderData, function(rodK, rodV) {
-                        hasError = false;
+                        // hasError = false;
                         $.each(rodV.products, function(rodProdK, rodProdV) {
                             if (rodV.requestLocationId == rqV.RequestLocationId /*&& rodProdV.requestProductId == rqV.RequestProductId*/ ) {
+			                    hasError = false;
                                 hasOrder = true;
                                 errorType = [];
                                 if (rodV.seller.id != rqV.SellerId) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
-                                        hasError = true;
                                         errorType.push("Seller");
                                     }
+                                        hasError = true;
                                 }
                                 if (rodProdV.currency.id != rqV.currencyId) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
-                                        hasError = true;
                                         errorType.push("Currency");
                                     }
+                                        hasError = true;
                                 }
                                 etasDifference = new Date(rqV.vesselETA) - new Date(rodV.orderEta)
                                 if (etasDifference > 259200000 || etasDifference < -259200000) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
-                                        hasError = true;
                                         errorType.push("ETA Difference");
                                     }
+                                        hasError = true;
                                 }
                                 if (!hasError) {
-                                    rqV.ExistingOrderId = rodV.id;
+		                            foundRelatedOrder = rodV.id;
                                 } else {
-                                    errorMessages.push(createOrderErrorMessage(rqV.RequestProductId, errorType));
+                                	if (errorType.length > 0) {
+				                        errorMessages.push(createOrderErrorMessage(rqV.RequestProductId, errorType));
+                                	}
                                 }
                             }
                         })
                     })
+                	if (foundRelatedOrder) {
+                        rqV.ExistingOrderId = foundRelatedOrder;
+                    } else {
+                    	if (typeof(errorType) != "undefined" ) {
+                    	}
+                    }
                     // if (!hasOrder) {
                     //  if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                     //      productsWithErrors.push(rqV.RequestProductId);
@@ -215,6 +224,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                 // $bladeEntity.close();
                 // ctrl.buttonsDisabled = true;
                 toastr.info("Please wait while the offer is confirmed");
+                // return;
                 setTimeout(function() {
                     groupOfRequestsModel.confirm(rfq_data).then(function(data) {
                         ctrl.buttonsDisabled = false;

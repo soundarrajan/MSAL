@@ -2461,7 +2461,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 console.log("called getUomConversionFactor with params:" , product.product.id,product.invoiceRateUom.id,product.invoiceQuantityUom.id)
                 $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
                 	conversionFactor = response 
-                	if (formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
+                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
                 	} else {
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].invoiceQuantity * (formValues.productDetails[currentRowIndex].invoiceRate / conversionFactor);
@@ -2692,42 +2692,79 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         }
 
         $rootScope.transportData = angular.copy($scope.formValues);
-        $rootScope.transportData.id = 0;
-        $rootScope.transportData.documentType = invoiceType;
 
+        if ($rootScope.transportData.documentType.internalName == "ProvisionalInvoice") {
+            !$rootScope.transportData.paymentDate ? $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate : '';
+        }
+        
+        $rootScope.transportData.id = 0;
+        $rootScope.transportData.invoiceDetails = null;
+        $rootScope.transportData.documentType = invoiceType;
+        $rootScope.transportData.paymentDetails = null;
         $rootScope.transportData.invoiceDetails = null;
         $rootScope.transportData.sellerInvoiceNo = null;
         $rootScope.transportData.receivedDate = null;
-        // $rootScope.transportData.dueDate = null;
         $rootScope.transportData.manualDueDate = null;
-        // $rootScope.transportData.workingDueDate = null;
         $rootScope.transportData.sellerInvoiceDate = null;
         $rootScope.transportData.sellerDueDate = null;
         $rootScope.transportData.approvedDate = null;
-        // $rootScope.transportData.paymentDate = null;
         // $rootScope.transportData.invoiceRateCurrency = null;
         $rootScope.transportData.backOfficeComments = null;
-        $rootScope.transportData.paymentDetails = null;
-        $rootScope.transportData.status = null;
-        $rootScope.transportData.customStatus = null;
-        $rootScope.transportData.invoiceSummary = null;
-        $rootScope.transportData.invoiceClaimDetails = null;
-
-
-        $.each($rootScope.transportData.productDetails, function(k,v){
-        	v.invoiceRate = null;
+        $rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal = null
+        $rootScope.transportData.invoiceSummary.estimatedAmountGrandTotal = null
+        $rootScope.transportData.invoiceSummary.totalDifference = null
+        $rootScope.transportData.status = null
+        $rootScope.transportData.customStatus = null
+        $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = null;
+        
+        $rootScope.transportData.paymentDetails = {};     
+        $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
+   
+        if ($rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal == null) {
+            invoiceAmountGrandTotal = 0
+        } else {
+            invoiceAmountGrandTotal = 0
+        }
+        if ($rootScope.transportData.invoiceSummary.provisionalInvoiceAmount == null) {
+            provisionalInvoiceAmount = 0
+        } else {
+            provisionalInvoiceAmount = 0
+        }
+        if ($rootScope.transportData.invoiceSummary.deductions == null) {
+            deductions = 0
+        } else {
+            deductions = 0
+        }
+        $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
+        $.each($rootScope.transportData.productDetails, function(k, v) {
+            v.id = 0;
+            v.invoiceRate = null;
+            v.invoiceAmount = null;
+            v.reconStatus = null;
+            v.amountInInvoice = null;
         })
-        $.each($rootScope.transportData.costDetails, function(k,v){
-        	v.invoiceRate = null;
-        })
-        // $rootScope.transportData.productDetails = [];
-        // $rootScope.transportData.costDetails = [];
+        if ($rootScope.transportData.costDetails) {
+            $.each($rootScope.transportData.costDetails, function(k, v) {
+	            v.id = 0;
+	            v.invoiceRate = null;
+                if (v.product) {
+	                if (v.product.id != -1) {
+	                	if (v.product.id != v.deliveryProductId) {
+		                	v.product.productId = angular.copy(v.product.id);
+		                	v.product.id = angular.copy(v.deliveryProductId);
+	                	}
+	                }
+                } else {
+                	v.product = {
+                		id : -1,
+                	}
+                }
+            });                
+        }
 
         localStorage.setItem("invoice_createInvoiceFromEdit", angular.toJson($rootScope.transportData));
         window.open("/#/invoices/invoice/edit/", "_blank");
 
-        // window.open("#/invoices/invoice/edit/", "_blank");
-        // $location.path('invoices/invoice/edit/');
     }
     $scope.createFinalInvoiceFromEditPage = function(fv) {
         

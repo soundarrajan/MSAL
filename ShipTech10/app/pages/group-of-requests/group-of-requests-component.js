@@ -151,6 +151,10 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         }
 
         ctrl.initScreenAfterSendOrSkipRfq = function() {
+                // if (action == 'sendRFQ') {
+                //     $state.reload();
+                //     return;
+                // }
 	        	$(".checkAllOnLocation").prop("checked", false);
                 ctrl.requirements = [];
                 ctrl.selectedNoQuoteItems = [];
@@ -1396,7 +1400,7 @@ ctrl.setProductData = function(data, loc) {
          * @param {object} seller - seller object
          * @param {array} locations - location group list
          */
-        function removeSellerRequirementsOnLocation(seller, locations) {
+        function removeSellerRequirementsOnLocation(seller, locations, ignoreUpdate) {
             var location, req;
             var productList = [];
             var currentRowRequirements = [];
@@ -1433,28 +1437,56 @@ ctrl.setProductData = function(data, loc) {
             //calculates screen actions
             console.log(currentRowRequirements);
             seller.selected = false;
-            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, false)
+            if (!ignoreUpdate) {
+	            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, false)
+            }
             ctrl.calculateScreenActions();
         }
 
 
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
-    		if (currentRowRequirements.length > 0) {
-	        	if (checkBool) {
-                    seller.selected = checkBool;
-	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true)
-	        	} else {
-                    seller.selected = checkBool;
-	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
-	        	}
-	        	if (payload == false) {return}
-	        	groupOfRequestsModel.checkSellerRow(payload).then(
-                function (response) {
-                	console.log(response);
-                })
+        	$.each(locations, function(k,location){
+	    		if (currentRowRequirements.length > 0) {
+	    			setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool);
+		        	if (checkBool) {
+	                    // seller.selected = checkBool;
+		        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, [location], true)
+		        	} else {
+	                    // seller.selected = checkBool;
+		        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, [location], false)
+		        	}
+		        	if (payload == false) {return}
+		        	groupOfRequestsModel.checkSellerRow(payload).then(
+	                function (response) {
+	                	console.log(response);
+	                })
 
-    		}
+	    		}
+        	})
         }
+
+        function setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool) {
+        	$.each(currentRowRequirements, function(k, requirement){
+	            $.each(ctrl.requests, function (reqK, reqV) {
+                    $.each(reqV.locations, function (locK, locV) {
+                    	if (locV.id == requirement.RequestLocationId) {
+	                        $.each(locV.products, function (prodK, prodV) {
+	                            if (prodV.id == requirement.RequestProductId) {
+	                                if (prodV.sellers.length > 0) {
+	                                    $.each(prodV.sellers, function (selK, selV) {
+	                                        if (selV.randUniquePkg == requirement.randUniquePkg) {
+	                                            selV.selected = checkBool;
+	                                        }
+	                                    });
+	                                }
+	                            }
+	                        });
+                    	}
+                    });
+	            });
+        	});
+        }
+
         function createSellerRowCheckPayload(requirements, seller, locations, checked) {
             var productIds = [];
             hasPriceEnabled = false;
@@ -1462,12 +1494,23 @@ ctrl.setProductData = function(data, loc) {
 	            if (rv.productHasOffer) {
 		            hasPriceEnabled = true;
 	            }
-	            productIds.push(rv.RequestProductId);
+	            if (rv.RequestLocationId == locations[0].id) {
+		            productIds.push(rv.RequestProductId);
+	            }
             });
             if (hasPriceEnabled) {
             	return false;
             }
+            productIds = _.uniqBy(productIds, function (e) {
+				return e;
+			});
             productIds = productIds.join(",");
+            if (!$scope.shouldSaveToggleCheckboxes()) {
+				productIds = "";
+            }
+			if (productIds == "") {
+				return false;
+			}
             sellersPayload = {
                 RequestProductList: productIds,
                 RequestGroupId: ctrl.groupId,
@@ -1479,6 +1522,16 @@ ctrl.setProductData = function(data, loc) {
             return sellersPayload;
         }
         
+        $scope.shouldSaveToggleCheckboxes = function(){
+        	var shouldSave = true;
+        	$.each(ctrl.requests, function(k,v){
+        		if (["Inquired","Quoted","Stemmed", "PartiallyQuoted", "PartiallyStemmed", "PartiallyInquired"].indexOf(v.requestStatus.name) != -1) {
+		        	shouldSave = false;
+        		}
+        	})
+        	return shouldSave;
+        }
+
         ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId, sellerRandUniquePkg, uniqueLocationIdentifier) {
 
         	var locationId = locationLocationId;
@@ -1491,13 +1544,15 @@ ctrl.setProductData = function(data, loc) {
             var isSelected = false;
             var sellerExistsForProduct = false;
             $.each(ctrl.requests, function (reqK, reqV) {
+            	loopRequest = reqV;
                 $.each(reqV.locations, function (locK, locV) {
                 	if (locV.location.id == locationId) {
 	                    $.each(locV.products, function (prodK, prodV) {
 	                    	if (prodV.id == prodId) {
 		                        $.each(prodV.sellers, function (sellerK, sellerV) {
-		                            if (sellerV.sellerCounterparty.id == sellerId) {
+		                            if (sellerV.sellerCounterparty.id == sellerId && sellerRandUniquePkg == sellerV.randUniquePkg) {
 							            sellerExistsForProduct = true;
+		           						currentCheckRequestData = loopRequest;
 		           						hasNoQuote = false;                 	
 		                                if (sellerV.offers) {
 		                                    if (sellerV.offers.length > 0) {
@@ -1522,6 +1577,12 @@ ctrl.setProductData = function(data, loc) {
             if (!sellerExistsForProduct) {
             	isSelected = true;
             }
+            // if (["Inquired","Quoted","Stemmed", "PartiallyQuoted", "PartiallyStemmed", "PartiallyInquired"].indexOf(currentCheckRequestData.requestStatus.name) != -1) {
+            // 	isSelected = false;
+            // }
+            if (!$scope.shouldSaveToggleCheckboxes()) {
+				isSelected = false;
+            }            
 
             return isSelected
 
@@ -1820,7 +1881,7 @@ ctrl.setProductData = function(data, loc) {
          * @param {integer} sellerId - requirement seller id
          * @param {array} locations - location group where requirement is created
          */
-        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
+        ctrl.hasCounterpartyAllRowRequirements = function (sellerId, locations, sellerObj) {
             var req;
             var location;
             physicalSupplierId = null;
@@ -1842,6 +1903,30 @@ ctrl.setProductData = function(data, loc) {
 			    	return true
 			    }
 			    return false
+			/*rewrite*/        	
+        }
+        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
+            var req;
+            var location;
+            physicalSupplierId = null;
+
+			/*rewrite*/
+			    // uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
+			    // rowCheckboxes = $("[unique-row-identifier='"+uniqueRowIdentifier+"']");
+			    // rowCheckboxesLength = rowCheckboxes.length;
+			    // checkedRowCheckboxes = 0;
+			    // $.each(rowCheckboxes, function(){
+			    // 	if (!$(this).is(":visible")) {
+			    // 		rowCheckboxesLength--;
+			    // 	}
+			    // 	if ($(this).prop("checked") == true) {
+			    //         checkedRowCheckboxes++;
+			    // 	}
+			    // })
+			    // if (checkedRowCheckboxes >= rowCheckboxesLength) {
+			    // 	return true
+			    // }
+			    // return false
 			/*rewrite*/
 
 
@@ -2082,7 +2167,7 @@ ctrl.setProductData = function(data, loc) {
         /*****************************************************************************
          *   EVENT HANDLERS
          ******************************************************************************/
-        ctrl.createSellerRequirements = function (seller, locations, $event, uniqueLocationIdentifier, randUniquePkg) {
+        ctrl.createSellerRequirements = function (seller, locations, $event, uniqueLocationIdentifier, randUniquePkg, event) {
             var req, product, locationSeller, productOffer, request, location;
             var currentRowRequirements = [];
 
@@ -2155,11 +2240,11 @@ ctrl.setProductData = function(data, loc) {
                             $.each(reqV.locations, function (locK, locV) {
                                 $.each(locV.products, function (prodK, prodV) {
                                     $.each(prodV.sellers, function (sellerK, sellerV) {
-                                        if (typeof(sellerV.uniqueLocationSellerPhysical) != 'undefined' && typeof(prodSeller.uniqueLocationSellerPhysical) != 'undefined') {
-                                            if (sellerV.uniqueLocationSellerPhysical == prodSeller.uniqueLocationSellerPhysical) {
-                                                sellerV.selected = true;
-                                            }
-                                        }
+                                        // if (typeof(sellerV.uniqueLocationSellerPhysical) != 'undefined' && typeof(prodSeller.uniqueLocationSellerPhysical) != 'undefined') {
+                                        //     if (sellerV.uniqueLocationSellerPhysical == prodSeller.uniqueLocationSellerPhysical) {
+                                        //         //sellerV.selected = true;
+                                        //     }
+                                        // }
                                     });
                                 });
                             });
@@ -2213,6 +2298,7 @@ ctrl.setProductData = function(data, loc) {
                         req = {
                             RequestLocationId: location.id,
                             RequestGroupId: ctrl.groupId,
+                            RequestStatus: request.requestStatus.name,
                             SellerId: seller.sellerCounterparty.id,
                             RequestSellerId: requestSellerId,
                             RequestId: request.id,
@@ -2267,8 +2353,10 @@ ctrl.setProductData = function(data, loc) {
             }
             //calculates screen actions
             console.log(currentRowRequirements);
-            seller.selected = true;
-            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true)
+            // seller.selected = true;
+            if (typeof(event) != 'undefined') {
+	            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true)
+            }
             ctrl.calculateScreenActions();
 
         };
@@ -2383,6 +2471,7 @@ ctrl.setProductData = function(data, loc) {
                 req = {
                     RequestLocationId: location.id,
                     RequestGroupId: ctrl.groupId,
+                    RequestStatus: request.requestStatus.name,
                     SellerId: seller.sellerCounterparty.id,
                     RequestSellerId: requestSellerId,
                     RequestId: request.id,
@@ -2834,7 +2923,7 @@ ctrl.setProductData = function(data, loc) {
                 }
             ).finally(function(){
             	ctrl.initScreenAfterSendOrSkipRfq();
-            });;
+            });
         };
         ctrl.countUniqueVessels = function (sellerRandUniquePkg) {
             vesselIds = [];
@@ -3033,9 +3122,11 @@ ctrl.setProductData = function(data, loc) {
             $rootScope.overrideCloseNavigation = false;
         }
 
-        ctrl.saveComments = function (internalComments, externalComments, fromDate) {
+        ctrl.saveComments = function (internalComments, externalComments, fromDate, event) {
             if (ctrl.quoteByDateFrom == "0000-00-00T00:00+00:00" || (!$("#quoteByDateFrom_dateinput").hasClass("focusedOut") && !ctrl.quoteByDateFrom)  ) {
-                return;
+                if (!event) {
+	                return;
+                }	
             }
             if (fromDate && ctrl.lastSavedQuoteByDateFrom == ctrl.quoteByDateFrom) {
                 return;
@@ -3110,8 +3201,11 @@ ctrl.setProductData = function(data, loc) {
         	ctrl.confirmedBladeNavigation = false;
 
 
+        	// removeSellerRequirementsOnLocation(seller, locations, true);
             var rowRequirements = [];
 
+			ctrl.requirements = [];
+			
             ctrl.refreshedRFQEmailBlade = false;
             if (locations.location || locations.length > 0) {
                 if (locations.length > 0) {
@@ -3142,8 +3236,8 @@ ctrl.setProductData = function(data, loc) {
 
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 var req = ctrl.requirements[i];
-                for (var locationIndex = 0; locationIndex < locations.length; locationIndex++) {
-                    var location = locations[locationIndex];
+                // for (var locationIndex = 0; locationIndex < locations.length; locationIndex++) {
+                //     var location = locations[locationIndex];
                     // if (seller.sellerCounterparty.id == req.SellerId && location.location.id == req.LocationId && location.id == req.RequestLocationId) {
                     // }
                     if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
@@ -3152,7 +3246,7 @@ ctrl.setProductData = function(data, loc) {
                             ctrl.rfqScreenToDisplayIsMail = true;
                         }
                     }
-                }
+                // }
             }
 
             // Remove SludgeProducts From emailPreview payload

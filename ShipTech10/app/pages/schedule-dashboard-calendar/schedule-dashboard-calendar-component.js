@@ -147,7 +147,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                                     payload[i]['displayName'] = 'Location';
                                     break;
                                 case 'CompanyName':
-                                    payload[i]['displayName'] = 'Pool';
+                                    payload[i]['displayName'] = 'Company'; 
                                     break;
                             }
                             if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {
@@ -605,6 +605,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                                 "day": i2,
                                 "id": v.voyageDetail[v_index].id,
                                 "portCode": v.voyageDetail[v_index].locationCode,
+                                "hasStrategy": v.voyageDetail[v_index].voyageDetail.hasStrategy,
                                 "status": v.voyageDetail[v_index].portStatus,
                                 "request": v.voyageDetail[v_index].request,
                                 "eta": v.voyageDetail[v_index].eta,
@@ -764,6 +765,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                                "day": i2,
 	                                "id": event.voyageDetail.id,
 	                                "portCode": event.voyageDetail.locationCode,
+	                                "hasStrategy": event.voyageDetail.hasStrategy,
 	                                "status": event.voyageDetail.portStatus,
 	                                "request": event.voyageDetail.request,
 	                                "eta": event.voyageDetail.eta,

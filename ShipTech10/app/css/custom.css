@@ -4613,3 +4613,15 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .popover-filter-dates.disabledFromTreasury input, .popover-filter-dates.disabledFromTreasury .date-picker-icon{
 	background: #e6eaec;
 }
+
+
+#schedule_calendar_table .dayColumn span.isSapStrategy {
+	position: absolute;
+    bottom: 0px;
+    right: 0;
+    background: #364150;
+    color: #fff;
+    font-size: 14px;
+    line-height: 14px;
+    height: 8px;
+}
