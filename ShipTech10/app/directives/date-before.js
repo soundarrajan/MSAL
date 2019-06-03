@@ -14,6 +14,7 @@ angular.module('shiptech.pages').directive('dateBefore', [ 'tenantService',
 
                 compare = moment(compare);
                 viewDate = moment(viewValue, tenantService.getDateFormat());
+                viewDate = viewDate.add(viewDate.utcOffset(), 'm');
 
                 // It's valid if model date is lower than the model we're comparing against
                 ctrl.$setValidity('dateBefore', viewDate.isBefore(compare) || viewDate.isSame(compare));
