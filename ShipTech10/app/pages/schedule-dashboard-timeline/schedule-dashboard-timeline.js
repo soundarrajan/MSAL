@@ -1,7 +1,11 @@
 angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope",  "scheduleDashboardTimelineModel",
     function ($scope, scheduleDashboardTimelineModel) {
 
-        var DEBUG = true;
+        if (window.location.hostname == 'localhost') {
+            var DEBUG = true;
+        } else {
+            var DEBUG = false;
+        }
 
         groups = [];
         timeline = null;
