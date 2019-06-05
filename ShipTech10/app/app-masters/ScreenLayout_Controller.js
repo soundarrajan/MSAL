@@ -292,6 +292,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		            }
 		        });
          	}
+         	
          	if (localStorage.getItem("invoice_createFinalInvoiceFromEditPage")) {
 	            var invoiceType = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoiceFromEditPage"))).invoiceType;
 	            var entity_id = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoiceFromEditPage"))).entityId;

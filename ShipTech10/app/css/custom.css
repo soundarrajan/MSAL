@@ -4625,3 +4625,67 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
     line-height: 14px;
     height: 8px;
 }
+
+.newStatusColoured.contextmenu {
+	border-width: 3px;
+	box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.10980392156862745);
+}
+.newStatusColoured.contextmenu .popover-header {
+	position: relative;
+	padding: 5px;
+	padding-right: 20px;
+    background-color: #ececec;
+}
+
+.newStatusColoured.contextmenu .popover-header .close{
+    position: absolute;
+    background: white;
+    z-index: 999;
+    opacity: 1;
+    right: 4px;
+    padding: 4px;
+    text-align: center;
+    top: 4px;
+    box-shadow: 0px 0px 0px 3px #fff;
+    box-shadow: 0px 0px 0px 3px #fff;
+}
+.newStatusColoured.contextmenu .content {
+	padding: 10px !important;
+}
+.newStatusColoured.contextmenu .content .voyageDetailSection table{
+	width: 100%;
+}
+.newStatusColoured.contextmenu .content .voyageDetailSection{
+    overflow: hidden;
+    /*border-bottom: 1px solid gainsboro;*/
+    /*margin-bottom: 5px;*/
+    padding: 1px;
+}
+.newStatusColoured.contextmenu .content .voyageDetailSection table td, 
+.newStatusColoured.contextmenu .content .voyageDetailSection table th {
+	padding: 0 5px;
+}
+
+.newStatusColoured.contextmenu .content .voyageDetailSection .action-btn{
+    float: right;
+    padding: 2px 5px;
+    margin: 10px 0;	
+}
+.newStatusColoured.contextmenu .content .cancelBunkerStrategy {
+	display: none;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    cursor: pointer;
+    line-height: 14px;
+    width: 15px;
+    height: 15px;
+    background: #e05959;
+    text-align: center;
+    color: #fff;
+    border-radius: 100% !important;
+    font-size: 10px;
+}
+.newStatusColoured.contextmenu .content .cancelBunkerStrategyCell:hover .cancelBunkerStrategy {
+	display: block;
+}

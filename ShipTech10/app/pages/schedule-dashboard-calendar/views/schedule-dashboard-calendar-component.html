@@ -120,6 +120,7 @@
 
                         <td class="dayColumn" ng-repeat="(key, voyageStop) in row.calendar  track by $index" id="voyageStop_{{ $index }}" data-voyage-stop-id = "{{ voyageStop.id }}"  ng-class="{'clickable': voyageStop.portCode}" ng-style="voyageStop.style" style="{{ $ctrl.calendarDates[$index].isWeekend && !$ctrl.calendarDates[$index].isNow ? ' background: #dcdcdc!important;' : ''; }}{{ $ctrl.calendarDates[$index].isNow ? 'background: #99cb82!important;' : ''; }} ;width: 44px; height: 20px;" class="voyageStopCell bg-white">
                             <span id="{{ vsVal.id }}" ng-mouseover="$ctrl.hidePopovers(); $ctrl.initPopover(vsVal.id);" ng-repeat="(vsKey, vsVal) in voyageStop  | limitTo: 1 track by $index" data-toggle="popover"  data-content="{{ $ctrl.getPopoverMarkup($index, vsVal.id, vsVal.day, vsVal) }}" ng-style="vsVal.style" class="voyageStopItem pull-left" ng-right-click="$ctrl.showContextMenu($event, voyageStop, vsVal)">
+                                <!-- <span ng-init="voayageStop.hasStrategy = $ctrl.checkIfHasStrategy(voyageStop[0].id)"></span> -->
                                 <span ng-if="vsVal.hasStrategy" class="isSapStrategy" >
 									*
                                 </span>
@@ -159,6 +160,45 @@
         </div>
     </div>
 </div>
+
+
+
+<div class="cancelStrategyModal fade bs-modal hide" tabindex="-1" role="dialog" style="transform: translateY(50%);" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="gridSystemModalLabel"><i class="fa fa-warning"></i> Warning</h4>
+			</div>
+			<div class="modal-body">
+				<div>Vessel: <b>{{$ctrl.cancelStrategyModalData.vesselName}}</b></div> 
+				<div>Port: <b>{{$ctrl.cancelStrategyModalData.portCode}}</b></div> 
+				<div>ETA: <b>{{$ctrl.cancelStrategyModalData.eta}}</b></div>
+				<br>
+				<div>
+					You expect to cancel <b>{{$ctrl.cancelStrategyModalData.fuelType}}</b> strategy to supply <b>{{$ctrl.cancelStrategyModalData.quantity}}</b> <b>{{$ctrl.cancelStrategyModalData.uom}}</b> in this port
+				</div> 
+				<br>
+				<div>
+					This action will inform SAP and the bunker plan will be recalculated.
+				</div>
+				<br>
+				<div>Do you want to proceed?</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-sm-6">
+						<button style="display: block; width: 100%" type="button" class="btn btn-danger  btn-outline confirmAction" data-dismiss="modal" ng-click="$ctrl.cancelStrategy($ctrl.cancelStrategyModalData.bunkerPlanId)">Yes</button>
+					</div>
+					<div class="col-sm-6">
+						<button style="display: block; width: 100%" type="button" class="btn btn-info" data-dismiss="modal">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 
 <style>

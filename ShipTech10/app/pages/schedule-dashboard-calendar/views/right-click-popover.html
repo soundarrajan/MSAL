@@ -1,0 +1,47 @@
+<div class="newStatusColoured contextmenu fade in" style="background-color: #fff"> 
+	<div class="popover-header" style="background-color:{{$ctrl.rightClickPopoverData.vsVal.style['background-color']}}">
+		<a href="#" class="close" aria-label="close"> &times; </a> 
+		<span>{{$ctrl.rightClickPopoverData.vsVal.request.vesselName}}</span>
+		&nbsp;&nbsp;&nbsp;
+		<span class="pull-right">Port: {{$ctrl.rightClickPopoverData.vsVal.portCode}}</span>
+	</div>
+	<div class="content">
+	
+	<div class="voyageDetailSection" ng-repeat="(key,voyage) in $ctrl.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId">
+		<hr ng-if="$index > 0" style="margin: 5px 0;" >
+		<table>
+			<thead>
+				<tr>
+					<th>
+						{{voyage[0].portCode}}
+					</th>
+					<th ng-repeat="(key2, bunkerPlan) in voyage">
+						{{bunkerPlan.productType}}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="font-blue">
+						{{key}}
+					</td>
+					<td class="cancelBunkerStrategyCell" ng-repeat="(key2, bunkerPlan) in voyage" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+						{{bunkerPlan.supplyQuantity | number:numberPrecision.quantityPrecision}}
+						<span ng-if="bunkerPlan.hasStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, $ctrl.rightClickPopoverData.vsVal)" ><i class="fa fa-times"></i></span>
+					</td>
+				</tr>
+			</tbody>			
+		</table>
+		<a class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Pre-Request</a>
+	</div>
+
+
+	<!-- {{$ctrl.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId}} -->
+
+
+	</div>
+	<div class="hidden">
+		{{$ctrl.rightClickPopoverData}}
+	</div>
+
+</div>

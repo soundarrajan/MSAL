@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$rootScope", "$scope", "$element", "$attrs", "$timeout", "$state", "$stateParams", "$filter", "$filtersData", "STATE", "TIMESCALE", "CUSTOM_EVENTS", "scheduleDashboardCalendarModel", "uiApiModel", 'SCREEN_LAYOUTS', '$tenantSettings', 'tenantService', 'tenantModel', '$interval', 'statusColors', '$listsCache', 'screenLoader', '$compile',
-    function ($rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, $filtersData, STATE, TIMESCALE, CUSTOM_EVENTS, scheduleDashboardCalendarModel, uiApiModel, SCREEN_LAYOUTS, $tenantSettings, tenantService, tenantModel, $interval, statusColors, $listsCache, screenLoader, $compile) {
+angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$rootScope", "$scope", "$element", "$attrs", "$timeout", "$state", "$stateParams", "$filter", "$filtersData", "STATE", "TIMESCALE", "CUSTOM_EVENTS", "scheduleDashboardCalendarModel", "uiApiModel", 'SCREEN_LAYOUTS', '$tenantSettings', 'tenantService', 'tenantModel', '$interval', 'statusColors', '$listsCache', 'screenLoader', '$compile', '$templateCache', 'API', '$http',
+    function ($rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, $filtersData, STATE, TIMESCALE, CUSTOM_EVENTS, scheduleDashboardCalendarModel, uiApiModel, SCREEN_LAYOUTS, $tenantSettings, tenantService, tenantModel, $interval, statusColors, $listsCache, screenLoader, $compile, $templateCache, API, $http) {
         /*******************************
          *   INITIALIZATION
          *******************************/
@@ -765,7 +765,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                                "day": i2,
 	                                "id": event.voyageDetail.id,
 	                                "portCode": event.voyageDetail.locationCode,
-	                                "hasStrategy": event.voyageDetail.hasStrategy,
+	                                "hasStrategy": ctrl.checkIfHasStrategy(event.voyageDetail.id, dataJSON.vessels),
 	                                "status": event.voyageDetail.portStatus,
 	                                "request": event.voyageDetail.request,
 	                                "eta": event.voyageDetail.eta,
@@ -1199,23 +1199,56 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
          */
         ctrl.showContextMenu = function ($event, object, vsVal) {
             console.log(123)
-            $("body > .contextmenu").remove();
+            $("schedule-dashboard-calendar > .contextmenu").remove();
             currentElem = $($event.currentTarget);
             html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content">';
+            var hasRequest = false; 
+            var hasBunkerPlan = true; 
             $.each(object, function (k, value) {
                 html += '<span> <a class="contextAction" data-index="' + k + '">';
                 if (value.request == null || value.request.id == 0) {
                     html += '<span> Create Pre-request (' + value.portCode + ') </span>';
                 } else {
                     html += '<span> Edit request (' + value.portCode + ') - ' + value.request.requestName + ' </span> '
+                    hasRequest = true;
+                }
+                if (!value.voyageDetail.bunkerPlan) {
+                	hasBunkerPlan = false
                 }
                 html += '</a> <br/> </span>'
             })
             html += '</div> </div>';
+            ctrl.rightClickPopoverData = {
+            	'object': object,
+            	'vsVal': vsVal
+            }
+            if (!hasRequest && hasBunkerPlan) { 
+            	//CASE 1 WORKITEM 9108
+	         	groupedByVoyageDetailId = {};
+	         	$.each(object, function(k,v){
+	         		if (typeof(groupedByVoyageDetailId[v.id]) == 'undefined') {
+	         			groupedByVoyageDetailId[v.id] = [];
+	         		}
+	         		var item = v.voyageDetail.bunkerPlan;
+	         		item.hasStrategy = v.hasStrategy;
+	         		item.portCode = v.portCode;
+	         		groupedByVoyageDetailId[v.id].push(item);
+	         		_.uniqBy(groupedByVoyageDetailId[v.id], 'id');
+	         	})
+	         	ctrl.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
+	            html = $templateCache.get('pages/schedule-dashboard-calendar/views/right-click-popover.html');
+            }
             if (vsVal) {
-                $('body').append(html);
-                $('.contextmenu').css("left", $(currentElem).offset().left);
-                $('.contextmenu').css("top", $(currentElem).offset().top);
+                $('schedule-dashboard-calendar').append(html);
+	            // if ((value.request == null || value.request.id == 0)) {
+	            $compile($('schedule-dashboard-calendar > .contextmenu'))($scope)
+	            // }
+	            if (window.innerWidth / 2 > $(currentElem).offset().left) {
+	                $('.contextmenu').css("left", $(currentElem).offset().left);
+	            } else {
+	                $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
+	            }
+                $('.contextmenu').css("top", $(currentElem).offset().top - 15);
                 $('.contextmenu').removeClass("hidden");
             }
             $('.contextAction').click(function () {
@@ -1226,7 +1259,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             $('.contextmenu .close').click(function (e) {
                 e.preventDefault()
                 $(this).hide();
-                $("body > .contextmenu").remove();
+                $("schedule-dashboard-calendar > .contextmenu").remove();
             })
 
             function contextAction(voyageStop) {
@@ -1250,6 +1283,72 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 window.open(href, '_blank');
             };
         };
+
+		ctrl.confirmCancelBunkerStrategy = function(bunkerPlan, vsVal) {
+			$(".cancelStrategyModal").modal();
+			$(".cancelStrategyModal").removeClass("hide");
+			ctrl.cancelStrategyModalData = {};
+			ctrl.cancelStrategyModalData.vesselName = vsVal.voyageDetail.request.vesselName;
+			ctrl.cancelStrategyModalData.portCode = vsVal.portCode;
+			ctrl.cancelStrategyModalData.eta = vsVal.eta;
+			ctrl.cancelStrategyModalData.fuelType = bunkerPlan.productType;
+			ctrl.cancelStrategyModalData.quantity = bunkerPlan.supplyQuantity;
+			ctrl.cancelStrategyModalData.uom = bunkerPlan.supplyUomName;
+			ctrl.cancelStrategyModalData.bunkerPlanId = bunkerPlan.id;
+		}
+		ctrl.checkIfHasStrategy = function(voyageStopId, dataJSONVessels) {
+       		var hasStrategy = false;
+       		if (dataJSONVessels) {
+       			$.each(dataJSONVessels, function(k,v){
+					if (v.voyageDetail.id == voyageStopId) {
+						if (v.voyageDetail.hasStrategy) {
+				       		hasStrategy = true;
+						}
+					}
+       			})
+       		} else {
+	       		$.each(ctrl.calendarDataRows, function(k, calData){
+	       			$.each(calData.calendar, function(k2, cal){
+	           			$.each(cal, function(k2, voyage){
+	           				if (voyage.id == voyageStopId) {
+	           					if (voyage.hasStrategy) {
+						       		hasStrategy = true;
+	           					}
+	           				}
+	           			})
+	       			})
+	       		})			
+       		}
+       		return hasStrategy;
+		}
+
+		ctrl.cancelStrategy = function(bunkerPlanId){
+			var url = API.BASE_URL_DATA_MASTERS + "/api/masters/vessels/cancelStrategy";
+			payload = {
+				payload : bunkerPlanId
+			}
+			var currentBunkerPlanId = bunkerPlanId;
+            $http.post(url, payload).then(function success(response) {
+                if (response.status == 200) {
+               		console.log(ctrl.calendarDataRows); 	
+               		$.each(ctrl.calendarDataRows, function(k, calData){
+               			$.each(calData.calendar, function(k2, cal){
+	               			$.each(cal, function(k2, voyage){
+	               				if (voyage.voyageDetail.bunkerPlan) {
+		               				if (voyage.voyageDetail.bunkerPlan.id == currentBunkerPlanId) {
+		               					voyage.hasStrategy = false;
+		               				}
+	               				}
+	               			})
+               			})
+               		})
+               		$(".newStatusColoured .popover-header .close").click();
+                } else {
+                    console.log("Error cancelStrategy");
+                }
+            });
+		}
+
         /**
          * Capture timescale select change event.
          */

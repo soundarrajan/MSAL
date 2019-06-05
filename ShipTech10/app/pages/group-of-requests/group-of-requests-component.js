@@ -1445,24 +1445,23 @@ ctrl.setProductData = function(data, loc) {
 
 
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
-        	$.each(locations, function(k,location){
-	    		if (currentRowRequirements.length > 0) {
-	    			setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool);
-		        	if (checkBool) {
-	                    // seller.selected = checkBool;
-		        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, [location], true)
-		        	} else {
-	                    // seller.selected = checkBool;
-		        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, [location], false)
-		        	}
-		        	if (payload == false) {return}
-		        	groupOfRequestsModel.checkSellerRow(payload).then(
+    		if (currentRowRequirements.length > 0) {
+	        	if (checkBool) {
+                    // seller.selected = checkBool;
+                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true)
+	        	} else {
+                    // seller.selected = checkBool;
+                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
+	        	}
+	        	if (payload == false) {return}
+	        	groupOfRequestsModel.checkSellerRow(payload).then(
 	                function (response) {
 	                	console.log(response);
-	                })
-
-	    		}
-        	})
+	                }
+	    		)
+        	}
         }
 
         function setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool) {
@@ -1882,6 +1881,30 @@ ctrl.setProductData = function(data, loc) {
          * @param {array} locations - location group where requirement is created
          */
         ctrl.hasCounterpartyAllRowRequirements = function (sellerId, locations, sellerObj) {
+            var req;
+            var location;
+            physicalSupplierId = null;
+
+			/*rewrite*/
+			    uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
+			    rowCheckboxes = $("[unique-row-identifier='"+uniqueRowIdentifier+"']");
+			    rowCheckboxesLength = rowCheckboxes.length;
+			    checkedRowCheckboxes = 0;
+			    $.each(rowCheckboxes, function(){
+			    	if (!$(this).is(":visible")) {
+			    		rowCheckboxesLength--;
+			    	}
+			    	if ($(this).prop("checked") == true) {
+			            checkedRowCheckboxes++;
+			    	}
+			    })
+			    if (checkedRowCheckboxes >= rowCheckboxesLength) {
+			    	return true
+			    }
+			    return false
+			/*rewrite*/        	
+        }        
+        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
             var req;
             var location;
             physicalSupplierId = null;
