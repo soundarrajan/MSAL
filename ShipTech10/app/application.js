@@ -41,8 +41,10 @@ angular
             $rootScope.$on("adal:acquireTokenSuccess", function(event, token) {
                 console.log(event);
                 console.log("adal:error - " + AuthenticationContext.prototype._getItem("adal.login.error"));
-                if (AuthenticationContext.prototype._getItem("adal.login.error").length > 0) {
-                    AuthenticationContext.prototype._saveItem("adal.idtoken", "");
+                if (AuthenticationContext.prototype._getItem("adal.login.error")) {
+                    if (AuthenticationContext.prototype._getItem("adal.login.error").length > 0) {
+                        AuthenticationContext.prototype._saveItem("adal.idtoken", "");
+                    }
                 }
             });
             $rootScope.$on("adal:loginSuccess", function(event, token) {
