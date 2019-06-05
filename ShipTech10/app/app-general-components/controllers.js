@@ -2287,13 +2287,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.saveTreasuryRowChange = function(entityId, changedData) {
             var CLC = $("#invoices_treasuryreport");
             var tableData = CLC.jqGrid.Ascensys.gridObject.rows;
-            for (var i = tableData.length - 1; i >= 0; i--) {
-                if (tableData[i].id == entityId) {
+
+            for (var i = 0; i < tableData.length; i++) {
+                if (tableData[i].id === entityId) {
                     var currentRow = angular.copy(tableData[i]);
                     currentRow.id = i;
                     break;
                 }
             }
+            
             console.log(currentRow);
             payload = {
                 InvoiceId: currentRow.invoice ? currentRow.invoice.id : null,
@@ -2342,6 +2344,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $(".datepicker").hide();
                 }
             });
+            currentRow = null;
         };
 
         vm.checkChange = function(entityId, newValue, event) {
