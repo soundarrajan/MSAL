@@ -954,7 +954,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(key, product) in $ctrl.data.products | orderBy : 'productType.id'" ng-init="$ctrl.disabledProduct[product.id] = $ctrl.isDisabledProduct(product)">
+                            	<!-- | orderBy : 'productType.id' -->
+                                <tr ng-repeat="(key, product) in $ctrl.data.products" ng-init="$ctrl.disabledProduct[product.id] = $ctrl.isDisabledProduct(product)">
                                     <td style="vertical-align: middle;" ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id">
                                     	<!-- {{product.uniqueIdUI}} -->
                                         <span id="product_addRow_{{ $index }}" class="clickable" ng-click="$ctrl.addNewProduct()">

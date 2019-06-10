@@ -2,8 +2,6 @@
 	<div class="popover-header" style="background-color:{{$ctrl.rightClickPopoverData.vsVal.style['background-color']}}">
 		<a href="#" class="close" aria-label="close"> &times; </a> 
 		<span>{{$ctrl.rightClickPopoverData.vsVal.request.vesselName}}</span>
-		&nbsp;&nbsp;&nbsp;
-		<span class="pull-right">Port: {{$ctrl.rightClickPopoverData.vsVal.portCode}}</span>
 	</div>
 	<div class="content">
 	
@@ -11,28 +9,43 @@
 		<hr ng-if="$index > 0" style="margin: 5px 0;" >
 		<table>
 			<thead>
-				<tr>
+				<tr ng-if="!voyage.id">
 					<th>
-						{{voyage[0].portCode}}
+						<span >
+							{{voyage[0].portCode}}
+						</span>
 					</th>
 					<th ng-repeat="(key2, bunkerPlan) in voyage">
 						{{bunkerPlan.productType}}
 					</th>
 				</tr>
+				<tr ng-if="voyage.id">
+					<th>
+						{{voyage.portCode}}
+					</th>
+				</tr>				
 			</thead>
 			<tbody>
-				<tr>
+				<tr ng-if="!voyage.id">
 					<td class="font-blue">
 						{{key}}
 					</td>
 					<td class="cancelBunkerStrategyCell" ng-repeat="(key2, bunkerPlan) in voyage" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
 						{{bunkerPlan.supplyQuantity | number:numberPrecision.quantityPrecision}}
-						<span ng-if="bunkerPlan.hasStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, $ctrl.rightClickPopoverData.vsVal)" ><i class="fa fa-times"></i></span>
+						<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, $ctrl.rightClickPopoverData.vsVal)" ><i class="fa fa-times"></i></span>
 					</td>
+				</tr>				
+
+				<tr ng-if="voyage.id">
+					<td class="font-blue">
+						{{key}}
+					</td>
+					<td><a class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Pre-Request</a></td>
 				</tr>
+
 			</tbody>			
 		</table>
-		<a class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Pre-Request</a>
+		<a ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Pre-Request</a>
 	</div>
 
 

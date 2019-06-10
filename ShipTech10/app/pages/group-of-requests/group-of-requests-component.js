@@ -2618,7 +2618,7 @@ ctrl.setProductData = function(data, loc) {
             var i = 0;
             sludgeMatchSellerProductError = false 
             var msg= "A Service Provider Seller is required for Sludge Product Type";
-
+            var isSludgeProduct = false;
             $.each(ctrl.requirements, function (requirementK, requirementV) {
                 var product = _.find(ctrl.locations, { id: requirementV.RequestLocationId });
                 if (!product || !product.products) {
@@ -2629,6 +2629,9 @@ ctrl.setProductData = function(data, loc) {
                     return false;
                 }
                 var productTypeId = product.productTypeId;
+                isSludgeProduct = _.find(ctrl.listsCache["ProductTypeGroup"], function(obj){
+                	return obj.name == "Sludge";
+                }, 'id').id == product.productTypeGroupId;
                 var seller = _.find(product.sellers, { sellerCounterparty: { id: requirementV.SellerId } });
                 sellerTypeSludge = false
                 $.each(ctrl.locations, function(lk,lv){
@@ -2662,7 +2665,7 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             // if (i == 0) {
-            if (sludgeMatchSellerProductError) {
+            if (isSludgeProduct) {
                 toastr.error(msg);
                 return true;
             } else {

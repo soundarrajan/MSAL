@@ -668,7 +668,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     if(columnData.DtoPath == 'requestProductStatus') columnData.DtoPath = 'requestProductStatusDisplayName';
                     if(columnData.DtoPath == 'requestStatus') columnData.DtoPath = 'requestStatusDisplayName';
                     if(columnData.DtoPath == 'agreementType') columnData.DtoPath = 'agreementType.name';
-                    if(columnData.DtoPath == 'noOfdaysBeforeExpiry') columnData.DtoPath = 'noOfDaysBeforeExpiry';
+                    if(columnData.DtoPath == 'noOfDaysBeforeExpiry') columnData.DtoPath = 'noOfDaysBeforeExpiry';
 
 
                     columnData.Label = $(ctrl.table.column(i).header()).text().trim();

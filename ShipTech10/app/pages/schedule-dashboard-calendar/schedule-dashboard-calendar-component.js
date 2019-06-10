@@ -43,6 +43,8 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         })
         // ctrl.scheduleDashboardConfiguration = tenantService.getScheduleDashboardConfiguration();
 		$scope.calledCalendarWithDefaultFilters = false;
+		$scope.filtersAppliedPayload = false;
+
         $scope.numberPrecision = $tenantSettings.defaultValues;
         $scope.tenantSettings = $tenantSettings;
         ctrl.tableOptions.pageLength = 9999;
@@ -93,6 +95,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         
         $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
 
+        	$scope.filtersAppliedPayload = payload;
 	        tenantService.scheduleDashboardConfiguration.then(function (settings) {
 	            ctrl.scheduleDashboardConfiguration = settings.payload;
 	            ctrl.hiddenCalendarColumns = 0;
@@ -106,6 +109,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                    ctrl.hiddenCalendarColumns++;
 	                }
 	            }
+                selectTimeScale($stateParams.timescale);
 	            console.log("called schedule get with: ",payload);
 	                $scope.calledCalendarWithDefaultFilters = true;
                 // if (initDone) {
@@ -372,16 +376,30 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             if ($scope.calledCalendarWithDefaultFilters) {
                 $scope.calledCalendarWithDefaultFilters = false;
                 return;
+            } else {
+            	if ($scope.filtersAppliedPayload) {
+            		payload = $scope.filtersAppliedPayload;
+					scheduleDashboardCalendarModel.get(startDate, endDate, payload)
+					// Promise fulfilled:
+					.then(function (response) {
+					    // console.log(response)
+					    window.scheduleDashboardCalendarModelGetEndTime = (new Date()).getTime()
+						console.warn("scheduleDashboardCalendarModel.get done", window.scheduleDashboardCalendarModelGetEndTime);
+					    showData(response);
+					    initDone = true;
+					});
+            	} else {
+					scheduleDashboardCalendarModel.get(startDate, endDate)
+					// Promise fulfilled:
+					.then(function (response) {
+					    // console.log(response)
+					    window.scheduleDashboardCalendarModelGetEndTime = (new Date()).getTime()
+						console.warn("scheduleDashboardCalendarModel.get done", window.scheduleDashboardCalendarModelGetEndTime);
+					    showData(response);
+					    initDone = true;
+					});
+            	}
             }
-            scheduleDashboardCalendarModel.get(startDate, endDate)
-                // Promise fulfilled:
-                .then(function (response) {
-                    // console.log(response)
-                    window.scheduleDashboardCalendarModelGetEndTime = (new Date()).getTime()
-	            	console.warn("scheduleDashboardCalendarModel.get done", window.scheduleDashboardCalendarModelGetEndTime);
-                    showData(response);
-                    initDone = true;
-                });
         }
         /**
          * Selects the calendar timescale by setting relevant global vars.
@@ -681,6 +699,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
             // apply hierarchiy
             var vessels = Array();
+	        ctrl.bunkerDetails = [];
             for (i = 0; i < dataJSON.vessels.length; i ++)
             {
                 if (typeof(vessels[dataJSON.vessels[i].ServiceName + "_" + dataJSON.vessels[i].VesselName + "_" + dataJSON.vessels[i].BuyerName]) == "undefined")
@@ -704,6 +723,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             //for(var i1 = 0; i1 < data.length; i1++)
             for(key in vessels)
             { 
+                // if (i1 == 236) { 
+                // 	debugger 
+                // }
                 v = vessels[key];
                 for (var i = 0; i < v.voyage.length; i ++)
                 {
@@ -735,11 +757,11 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
                     if ((v_index < v.voyage.length) )
                     {
-						if (v.service.indexOf("BMX") != -1 ) {
-							console.log("Stop");
-						}  
+
+
                         index = 0;
-                        
+
+
                         if (((i2 < dates.length - 1) && (dataJSON.vessels[v.voyage[v_index]].voyageDetail.eta_intts < dates[i2 +1].eta_intts))||
                         (i2 == (dates.length - 1)))
                         {
@@ -773,10 +795,18 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                                "request": event.voyageDetail.request,
 	                                "voyageDetail": event.voyageDetail,
 	                            };
-	                            if (portDetails.request.id > 0)
+	                            if (portDetails.request.id > 0) {
 	                                portDetails.request.id = portDetails.request.id;
+	                            }
                                 
                                 requestDetail.push(event.voyageDetail.request.requestDetail);
+                                if (event.voyageDetail.bunkerPlan) {
+	                                event.voyageDetail.bunkerPlan.hasStrategy = angular.copy(event.voyageDetail.hasStrategy);
+	                                event.voyageDetail.bunkerPlan.portCode = angular.copy(event.voyageDetail.locationCode);
+	                                if (typeof(ctrl.bunkerDetails[event.voyageDetail.id]) == "undefined") {ctrl.bunkerDetails[event.voyageDetail.id] = []}
+	                                ctrl.bunkerDetails[event.voyageDetail.id].push(angular.copy(event.voyageDetail.bunkerPlan));
+                                }
+	                            // portDetails.voyageDetail.bunkerPlansGrouped = angular.copy(ctrl.bunkerDetails[event.voyageDetail.id]);
 								voyageExists = [];
                                 if (portData.length > 0) {
 		                            voyageExists = $filter('filter')(portData, portDetails.voyageDetail.id);
@@ -1171,6 +1201,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             if (!voyageStopId /*&& !voyageStop.request*/) {
                 return '';
             }
+            if (voyageStopId == 3673462) {
+            	// debugger;
+            }
             var popoverId = ctrl.makePopoverId(rowId, voyageStopId, voyageStopDay);
             html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
             if (voyageStop.request && voyageStop.request.id != 0) {
@@ -1203,7 +1236,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             currentElem = $($event.currentTarget);
             html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content">';
             var hasRequest = false; 
-            var hasBunkerPlan = true; 
+            var hasBunkerPlan = false; 
             $.each(object, function (k, value) {
                 html += '<span> <a class="contextAction" data-index="' + k + '">';
                 if (value.request == null || value.request.id == 0) {
@@ -1212,8 +1245,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                     html += '<span> Edit request (' + value.portCode + ') - ' + value.request.requestName + ' </span> '
                     hasRequest = true;
                 }
-                if (!value.voyageDetail.bunkerPlan) {
-                	hasBunkerPlan = false
+
+                if (value.voyageDetail.bunkerPlan) {
+                	hasBunkerPlan = true
                 }
                 html += '</a> <br/> </span>'
             })
@@ -1225,14 +1259,35 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             if (!hasRequest && hasBunkerPlan) { 
             	//CASE 1 WORKITEM 9108
 	         	groupedByVoyageDetailId = {};
+
+	         // 	currentVoyageIds = []
+	         // 	$.each(object, function(k,v){
+	         // 		if (currentVoyageIds.indexOf(v.id) == -1) {
+		        //  		currentVoyageIds.push(v.id)
+	         // 		}
+	         // 	})
+
+	         // 	todayVoyageItems = [];
+	       		// $.each(ctrl.calendarDataRows, function(k, calData){
+	       		// 	$.each(calData.calendar, function(k2, cal){
+	         //   			$.each(cal, function(k2, voyage){
+	         //   				if (currentVoyageIds.indexOf(voyage.id) != -1) {
+	         //   					todayVoyageItems.push(voyage)
+	         //   				}
+	         //   			})
+	       		// 	})
+	       		// })	
 	         	$.each(object, function(k,v){
 	         		if (typeof(groupedByVoyageDetailId[v.id]) == 'undefined') {
 	         			groupedByVoyageDetailId[v.id] = [];
 	         		}
-	         		var item = v.voyageDetail.bunkerPlan;
-	         		item.hasStrategy = v.hasStrategy;
-	         		item.portCode = v.portCode;
-	         		groupedByVoyageDetailId[v.id].push(item);
+	         		var item = angular.copy(ctrl.bunkerDetails[v.id]);
+	         		if (typeof(item) == 'undefined') {
+	         			item = v;
+	         		}
+	         		// item[0].hasStrategy = v.hasStrategy;
+	         		// item[0].portCode = v.portCode;
+	         		groupedByVoyageDetailId[v.id] = item;
 	         		_.uniqBy(groupedByVoyageDetailId[v.id], 'id');
 	         	})
 	         	ctrl.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
@@ -1321,6 +1376,17 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
        		}
        		return hasStrategy;
 		}
+		ctrl.checkIfHasSAPStrategy = function(voyageStops) {
+			hasStrategy = false;
+			$.each(voyageStops, function(k,v){
+				$.each(ctrl.bunkerDetails[v.id], function(k2,v2){
+					if (v2.supplyStrategy) {
+						hasStrategy = true;
+					}
+				})
+			})
+			return hasStrategy;
+		}
 
 		ctrl.cancelStrategy = function(bunkerPlanId){
 			var url = API.BASE_URL_DATA_MASTERS + "/api/masters/vessels/cancelStrategy";
@@ -1339,6 +1405,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 		               					voyage.hasStrategy = false;
 		               				}
 	               				}
+	               				if (voyage.voyageDetail.bunkerPlansGrouped) {
+	               				}
+               					$.each(ctrl.bunkerDetails[voyage.id], function(k4, bp){
+		               				if (bp.id == currentBunkerPlanId) {
+		               					bp.supplyStrategy = false;
+		               				}
+               					})
 	               			})
                			})
                		})

@@ -118,18 +118,19 @@
 	                            <div style="width:90px" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name != 'No' " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName }}" >{{ row.companyName }}</div>
 	                        </td>
 
-                        <td class="dayColumn" ng-repeat="(key, voyageStop) in row.calendar  track by $index" id="voyageStop_{{ $index }}" data-voyage-stop-id = "{{ voyageStop.id }}"  ng-class="{'clickable': voyageStop.portCode}" ng-style="voyageStop.style" style="{{ $ctrl.calendarDates[$index].isWeekend && !$ctrl.calendarDates[$index].isNow ? ' background: #dcdcdc!important;' : ''; }}{{ $ctrl.calendarDates[$index].isNow ? 'background: #99cb82!important;' : ''; }} ;width: 44px; height: 20px;" class="voyageStopCell bg-white">
-                            <span id="{{ vsVal.id }}" ng-mouseover="$ctrl.hidePopovers(); $ctrl.initPopover(vsVal.id);" ng-repeat="(vsKey, vsVal) in voyageStop  | limitTo: 1 track by $index" data-toggle="popover"  data-content="{{ $ctrl.getPopoverMarkup($index, vsVal.id, vsVal.day, vsVal) }}" ng-style="vsVal.style" class="voyageStopItem pull-left" ng-right-click="$ctrl.showContextMenu($event, voyageStop, vsVal)">
-                                <!-- <span ng-init="voayageStop.hasStrategy = $ctrl.checkIfHasStrategy(voyageStop[0].id)"></span> -->
-                                <span ng-if="vsVal.hasStrategy" class="isSapStrategy" >
-									*
-                                </span>
-                                <span ng-if="voyageStop.length > 1" class="expandPorts" ng-click="$ctrl.showMorePortsPopup($event, voyageStop)">
-                                    +
-                                </span>
-                                {{ vsVal.portCode }}
-                            </span>
-                        </td>
+	                        <td class="dayColumn" ng-repeat="(key, voyageStop) in row.calendar  track by $index" id="voyageStop_{{ $index }}" data-voyage-stop-id = "{{ voyageStop.id }}"  ng-class="{'clickable': voyageStop.portCode}" ng-style="voyageStop.style" style="{{ $ctrl.calendarDates[$index].isWeekend && !$ctrl.calendarDates[$index].isNow ? ' background: #dcdcdc!important;' : ''; }}{{ $ctrl.calendarDates[$index].isNow ? 'background: #99cb82!important;' : ''; }} ;width: 44px; height: 20px;" class="voyageStopCell bg-white">
+	                            <span id="{{ vsVal.id }}" ng-mouseover="$ctrl.hidePopovers(); $ctrl.initPopover(vsVal.id);" ng-repeat="(vsKey, vsVal) in voyageStop  | limitTo: 1 track by $index" data-toggle="popover"  data-content="{{ $ctrl.getPopoverMarkup($index, vsVal.id, vsVal.day, vsVal) }}" ng-style="vsVal.style" class="voyageStopItem pull-left" ng-right-click="$ctrl.showContextMenu($event, voyageStop, vsVal)">
+	                                <span hidden>{{vsVal.hasComputedStrategy = $ctrl.checkIfHasSAPStrategy(voyageStop)}}</span>
+	                                <!-- {{vsVal.hasComputedStrategy}} -->
+	                                <span ng-if="vsVal.hasComputedStrategy" class="isSapStrategy" >
+										*
+	                                </span>
+	                                <span ng-if="voyageStop.length > 1" class="expandPorts" ng-click="$ctrl.showMorePortsPopup($event, voyageStop)">
+	                                    +
+	                                </span>
+	                                {{ vsVal.portCode }}
+	                            </span>
+	                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -188,10 +189,10 @@
 			<div class="modal-footer">
 				<div class="row">
 					<div class="col-sm-6">
-						<button style="display: block; width: 100%" type="button" class="btn btn-danger  btn-outline confirmAction" data-dismiss="modal" ng-click="$ctrl.cancelStrategy($ctrl.cancelStrategyModalData.bunkerPlanId)">Yes</button>
+						<button style="display: block; width: 100%" type="button" class="btn orange btn-outline confirmAction" data-dismiss="modal" ng-click="$ctrl.cancelStrategy($ctrl.cancelStrategyModalData.bunkerPlanId)">Yes</button>
 					</div>
 					<div class="col-sm-6">
-						<button style="display: block; width: 100%" type="button" class="btn btn-info" data-dismiss="modal">No</button>
+						<button style="display: block; width: 100%" type="button" class="btn  default" data-dismiss="modal">No</button>
 					</div>
 				</div>
 			</div>

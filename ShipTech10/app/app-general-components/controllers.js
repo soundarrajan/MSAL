@@ -2295,8 +2295,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     break;
                 }
             }
-            
-            console.log(currentRow);
+
             payload = {
                 InvoiceId: currentRow.invoice ? currentRow.invoice.id : null,
                 DeliveryId: currentRow.delivery_Id,
@@ -2338,7 +2337,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (v.id == entityId) {
                             theCLC.jqGrid("setCell", k+1, 'delayInDates', callback.payload.delayInDates);
                         }
-                    });                    
+                    });
                 } else {
                     toastr.error("There was an error when saving the field");
                     $(".datepicker").hide();

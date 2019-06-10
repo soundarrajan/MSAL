@@ -304,6 +304,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         function loadData(data) {
             ctrl.data = data.payload;
 
+            ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
+
             if (typeof ctrl.data.comments != "undefined") {
             	if (ctrl.data.comments) {
 		            ctrl.data.comments = ctrl.data.comments.replace(/<br\s?\/?>/g,"\n");
@@ -996,6 +998,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     }
                     if (data.defaultLsfoProduct !== null) {
                         ctrl.addProductAndSpecGroupToList(data.defaultLsfoProduct, data.lsfoSpecGroup, data.defaultLsfoProductTypeId, productList);
+                    }
+                    if (ctrl.data.products.length > 0) {
+	                    ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id')
                     }
                     $timeout(function () {
                         updatePageTitle();
