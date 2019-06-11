@@ -1032,17 +1032,25 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
         ctrl.initPopover = function(el) {
             console.log(el);
-            $("#" + el).popover({
-                container: 'body',
-                trigger: 'hover',
-                placement: 'bottom',
-                html: true,
-                template: '<div class="popover" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-            }).
-            on('show.bs.popover', function (event) {
-                hideContextMenus();
-            });
-            $("#" + el).popover('toggle');
+            if (!$("div.contextmenu").is(":visible")) {
+	            $("#" + el).popover({
+	                container: 'body',
+	                trigger: 'hover',
+	                placement: 'bottom',
+	                html: true,
+	                template: '<div class="popover" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+	            }).
+	            on('show.bs.popover', function (event) {
+	                hideContextMenus();
+	            });
+	            $("#" + el).popover('toggle');
+            }
+            setTimeout(function(){
+	            if ($("div.contextmenu").is(":visible")) {
+	            	$("#" + el).popover("hide")
+	            	hidePopovers();
+	            }
+            })
         }
 
         /**
@@ -1207,6 +1215,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             var popoverId = ctrl.makePopoverId(rowId, voyageStopId, voyageStopDay);
             html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
             if (voyageStop.request && voyageStop.request.id != 0) {
+            	voyageStop.request.requestDetail = _.uniqBy(voyageStop.request.requestDetail, 'Id');
                 $.each(voyageStop.request.requestDetail, function (k, row) {
                     row_requestName = voyageStop.request.requestName || '-';
                     row_vesselName = voyageStop.request.vesselName || '-';
@@ -1221,17 +1230,18 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                    html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td >' + row_location + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
                     }
                 })
+	            html += '</tbody> </table>';
             } else {
-                html += '<tr> <td colspan="9" class="text-center"> <i>No request data.</i> </td> </tr>';
+                html = '';
             }
-            html += '</tbody> </table>';
             return html;
         };
         /**
          * Displays a context menu on right click.
          */
         ctrl.showContextMenu = function ($event, object, vsVal) {
-            console.log(123)
+            // console.log(123)
+            hidePopovers();
             $("schedule-dashboard-calendar > .contextmenu").remove();
             currentElem = $($event.currentTarget);
             html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content">';
