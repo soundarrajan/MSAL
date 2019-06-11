@@ -77,7 +77,7 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
             }
 
 
-            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate") {
+            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate" || obj.name == "lastEmailSentDate") {
                 if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1) {
                 } else {
                     colmodel[key].formatter = CLC.get_formatter("formatDate");
