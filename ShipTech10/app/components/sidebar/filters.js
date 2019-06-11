@@ -335,6 +335,9 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.$on("treasurySummaryFilters", function (event, data) {
             // This should only be applied from schedule dashboard calendar
             // $rootScope.$broadcast("filters-applied", data)
+            $scope.globalFilters = _.filter($scope.globalFilters, function(v){
+            	return !v.fromTreasurySummary;
+            })
             console.log($rootScope.rawFilters);
             $scope.applyFilters(data, true, true);
         })  
