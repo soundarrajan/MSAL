@@ -5,9 +5,10 @@ var useref = require('gulp-useref'),
     cssrewrite = require('gulp-rewrite-css'),
     htmlmin = require('gulp-htmlmin'),
     uglify = require('gulp-uglify'),
-    lazypipe =require('lazypipe'),
-    slash = require('gulp-slash');
-
+    lazypipe = require('lazypipe'),
+    slash = require('gulp-slash'),
+    babel = require('gulp-babel'),
+	gulpif = require('gulp-if');
 
 module.exports = function(gulp, config) {
     return function () {
@@ -40,6 +41,12 @@ module.exports = function(gulp, config) {
             return path.indexOf(updir) >= 0;
         }
 
+        var babelFiles = ['schedule-dashboard-timeline.js'];
+
+        var isBabelFile = function(file) {
+            var fileParts = file.path.split('\\');
+            return (babelFiles.indexOf(fileParts[fileParts.length - 1]) > -1);
+        };
 
         /**
         * Create pipe for rebasing relative asset URLs in CSS files.
@@ -77,14 +84,20 @@ module.exports = function(gulp, config) {
                                                     })
                                     );
                             }
+                        ).pipe(
+                            function() {
+                                return gulpif(isBabelFile,
+                                    babel({
+                                        presets: [['babel-preset-env']],
+                                           plugins: ['babel-polyfill'],
+                                           parserOpts: { strictMode: false }
+                                        }));
+                            }
                         );
 
-        /**
-        * The actual task chain for the 'html' task.
-        */
         return gulp.src(['app/*.html', '!app/assets/'])
                         .pipe(useref({}, rebasePipe))
-                        .pipe(gulpif('*.html', htmlmin({collapseWhitespace: true})))
+                        .pipe(gulpif('*.html', htmlmin({ collapseWhitespace: true })))
                         .pipe(gulpif('*.js', uglify({mangle:false})))
                         .pipe(gulpif('*.css', css()))
                         .pipe(gulp.dest(config.dist_dir));

@@ -8,6 +8,7 @@ gulp.task('copy-vendors-dev', require('./gulp/dev/copy-vendors')(gulp, config));
 gulp.task('watch-dev', require('./gulp/dev/watch')(gulp, config));
 gulp.task('server-start-dev', require('./gulp/dev/server-start')(config));
 gulp.task('server-reload-dev', require('./gulp/dev/server-reload')());
+gulp.task('babel-dev', require('./gulp/dev/babel')(gulp, config));
 
 gulp.task('clean', require('./gulp/production/clean')(config));
 gulp.task('html', require('./gulp/production/html')(gulp, config));

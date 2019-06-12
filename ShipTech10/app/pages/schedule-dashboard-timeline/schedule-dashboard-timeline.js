@@ -1,8 +1,6 @@
 angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService',
     function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService) {
 
-        var STATUSES = null;
-
         var DEBUG = false;
         if (window.location.hostname == 'localhost') {
             // DEBUG = true;
@@ -37,86 +35,6 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                 "background-color": colorCode
             };
         };
-
-        /*
-        $rootScope.calculateTimelineStatusesCount = function() {
-            return $filter('filter')(timelineStatusList, {display : true}).length;
-        };
-        */
-
-        var getConfiguration = new Promise(function(resolve, reject) {
-            tenantService.scheduleDashboardConfiguration.then(function (settings) {
-                this.scheduleDashboardConfiguration = settings.payload;
-                if (this.scheduleDashboardConfiguration.scheduleBuyerDisplay) {
-                    if (this.scheduleDashboardConfiguration.scheduleBuyerDisplay.name == "No") {
-                        scheduleOptions.displayBuyer = false;
-                    }
-                }
-                if (this.scheduleDashboardConfiguration.scheduleCompanyDisplay) {
-                    if (this.scheduleDashboardConfiguration.scheduleCompanyDisplay.name == "No") {
-                        scheduleOptions.displayCompany = false;
-                    }
-                }
-                resolve(this.scheduleDashboardConfiguration);
-            });
-        });
-
-        var getStatuses = new Promise(function(resolve, reject) {
-            scheduleDashboardTimelineModel.getStatuses().then(function (data) {
-                statusList = data.labels;
-                resolve($filter("filter")(statusList, {
-                    displayInDashboard: true,
-                    status: {
-                        displayName: status.displayName,
-                    }
-                }, true));
-            });
-        });
-
-        var getTimelineStatuses = function () {
-
-            /* Live code */
-            /*************/
-
-            /*
-            var model = scheduleDashboardTimelineModel.getLatestVersion();
-            if (model) {
-                if (!model.payload) return;
-                timelineStatuses = model.payload.scheduleDashboardStatus;
-                scheduleDashboardTimelineModel.getStatuses().then(function(data){
-                    if (data !== null) {
-                        timelineAdminDashboardStatuses = $filter("filter")(data.labels, {displayInDashboard : true}, true);
-                        if (timelineStatuses) {
-                            return createStatusFilters();
-                        }
-                    }
-                });
-            }
-            */
-
-            /* Debug code */
-            /**************/
-
-            // timelineStatuses = STATUSES;
-            // return createStatusFilters();
-        };
-
-        var getData = new Promise(function(resolve, reject) {
-            if (DEBUG) {
-                if (localStorage.getItem('debugTimelineData')) {
-                    resolve(JSON.parse(localStorage.getItem('debugTimelineData')));
-                } else {
-                    scheduleDashboardTimelineModel.get(null, null).then(function (response) {
-                        localStorage.setItem('debugTimelineData', JSON.stringify(response));
-                        resolve(response);
-                    });
-                }
-            } else {
-                scheduleDashboardTimelineModel.get(null, null).then(function (response) {
-                    resolve(response);
-                });
-            }
-        });
 
         var createFilters = function() {
             var model = scheduleDashboardTimelineModel.getLatestVersion();
@@ -328,13 +246,55 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             timeline.setItems(voyages);
         };
 
-        // Get data and initialize timeline
-        Promise.all([getStatuses, getData, getConfiguration]).then(function(values) {
-            STATUSES = values[0];
-            createFilters();
-            $rootScope.timelineStatusList = timelineStatusList;
-            buildTimeline(values[1]);
-        });
+        async function getConfiguration() {
+            return await new Promise(resolve => {
+                tenantService.scheduleDashboardConfiguration.then(function (settings) {
+                    this.scheduleDashboardConfiguration = settings.payload;
+                    if (this.scheduleDashboardConfiguration.scheduleBuyerDisplay) {
+                        if (this.scheduleDashboardConfiguration.scheduleBuyerDisplay.name == "No") {
+                            scheduleOptions.displayBuyer = false;
+                        }
+                    }
+                    if (this.scheduleDashboardConfiguration.scheduleCompanyDisplay) {
+                        if (this.scheduleDashboardConfiguration.scheduleCompanyDisplay.name == "No") {
+                            scheduleOptions.displayCompany = false;
+                        }
+                    }
+                    resolve(this.scheduleDashboardConfiguration);
+                });
+            });
+        };
+
+        async function getStatuses() {
+            return await new Promise(resolve => {
+                scheduleDashboardTimelineModel.getStatuses().then(function (data) {
+                    statusList = data.labels;
+                    resolve($filter("filter")(statusList, {
+                        displayInDashboard: true,
+                        status: {
+                            displayName: status.displayName,
+                        }
+                    }, true));
+                });
+            })
+        };
+
+        async function getData() {
+            return await new Promise(resolve => {
+                scheduleDashboardTimelineModel.get(null, null).then(function (response) {
+                    resolve(response);
+                });
+            });
+        }
+
+        async function doTimeline() {
+            Promise.all([getData(), getStatuses(), getConfiguration()]).then(function(res) {
+                createFilters();
+                $rootScope.timelineStatusList = timelineStatusList;
+                buildTimeline(res[0]);
+            });
+        }
+        doTimeline();
     }
 ]);
 angular.module('shiptech.pages').component('scheduleDashboardTimeline', {
