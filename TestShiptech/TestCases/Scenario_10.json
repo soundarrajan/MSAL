@@ -1,0 +1,18 @@
+
+{
+    "testTitle": "Barge - Scenario 10",
+    "starturl": "masters/barge",    
+    "headless": false,
+    "testCases": [
+      {
+        "keyname": "newBarge",
+        "BargeNameNew": "Barge Test 10x",        
+        "Location": "Rotterdam",
+        "ApplicableFor": "Contract"
+      }
+  ]
+}
+
+
+
+  

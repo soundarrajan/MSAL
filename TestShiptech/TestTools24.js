@@ -4,12 +4,13 @@
  */
 
 const puppeteer = require('puppeteer');
-const fs = require('fs');
 var util = require('util');
+const fs = require('fs');
 const path = require('path');
 const fsExtra = require('fs-extra')
 var endOfLine = require('os').EOL;
 var urljoin = require('url-join');
+const Db = require('./MsSqlConnector.js');
 
 
 
@@ -18,8 +19,8 @@ var urljoin = require('url-join');
 class TestTools24 {
 
 
-  constructor() {
-    this.baseUrl = "";
+  constructor() {    
+    this.connection = {};
     this.page = null;
     this.browser = null;    
     this.timeout = 60000;//60 sec
@@ -27,7 +28,7 @@ class TestTools24 {
     var now = this.getFormattedDateNow();
     now = this.replaceAll(now, "/", "-");
     this.filename = "perf_" + now + ".csv";
-    this.filenameResults = "testResult_" + now + ".txt";
+    this.filenameResults = "testResult_" + now + ".html";
     this.stream = null;
     this.streamResults = null;
     this.logmap = new Map();
@@ -36,11 +37,83 @@ class TestTools24 {
     this.browserLogfileName = 'blog.txt';
     this.currentTextCase = 0;
     this.currentTextTitle = "";
+    this.dbConfig = null;
+    this.backendError = false;
 
     this.truncateLogfile(this.logfileName);
     this.truncateLogfile(this.browserLogfileName);
   }
 
+
+
+
+  
+//"Data Source=10.1.1.9;Initial Catalog=Shiptech1060_PMG_20190211;User ID=sa;Password=!QAZ2wsx;MultipleActiveResultSets=true;Connection Timeout=400"
+async ConnectDb(dbconfig, url, isMaster)
+{
+    if(!url)
+      throw new Error("Invlid url parameter:" + url);
+
+    const urlToSearch = new URL(url);
+
+    this.dbIntegrationConfig = dbconfig;
+    var db = new Db(this.dbIntegrationConfig);
+    var address = "";
+    var userId = "";
+    var databaseName = "";
+    var password = "";
+    var start = 0;
+    var end = 0;
+    var sql = "";
+   
+    this.dbConfig = null;
+
+    if(isMaster)
+    {
+        sql = "select TenantDbConnectionString from MasterConfigurations where url like '%" + urlToSearch.host + "%'";
+        var tennantconfig = await db.read(sql);
+
+        if(!tennantconfig || tennantconfig.length <= 0)
+          throw  new Error("Cannot find current tenant database " + urlToSearch.host + ". Call this function with false for tenant database");
+        if(!tennantconfig[0].TenantDbConnectionString)
+          throw new Error("Cannot find current database, field TenantDbConnectionString not found");
+
+        var connectionString = tennantconfig[0].TenantDbConnectionString;
+
+        //parse the connection string
+        start = connectionString.indexOf("Data Source=");
+        end =  connectionString.indexOf(";", start);
+        address = connectionString.slice(start + 12, end);
+
+        start = connectionString.indexOf("Initial Catalog=");
+        end =  connectionString.indexOf(";", start);
+        databaseName = connectionString.slice(start+16, end);
+
+        start = connectionString.indexOf("User ID=");
+        end =  connectionString.indexOf(";", start);
+        userId = connectionString.slice(start+8, end);
+
+        start = connectionString.indexOf("Password=");
+        end =  connectionString.indexOf(";", start);
+        password = connectionString.slice(start+9, end);
+
+        this.dbConfig = {server: address, database: databaseName, user: userId, password: password, options: {encrypt: true}};
+        //var vessel = this.getRandomVessel();
+    }
+    else
+      this.dbConfig = dbconfig;   
+      
+    //find client name
+    sql = "Select IntegrationKey From admin.TenantConfigurations";
+    db = new Db(this.dbConfig);
+    var clientName = await db.read(sql);
+        
+    this.log("Client name: " + clientName[0].IntegrationKey);
+    this.log("Current database is: " + this.dbConfig.database);        
+
+    return this.dbConfig;
+
+}
 
 
 
@@ -170,7 +243,7 @@ class TestTools24 {
 
   
 
-  createResultsReport(test, testCase, result, orderId){
+  async createResultsReport(test, testCase, result, orderId){
 
     this.streamResults = fs.createWriteStream(this.filenameResults, {flags:'a'});
 
@@ -183,14 +256,16 @@ class TestTools24 {
 
     if(fileSize == 0)
     {
-      var header = "Date, Test, TestCase, Result, OrderId " + endOfLine;
+      this.streamResults.write("<table border='1' style='border-collapse:collapse' cellpadding='2' cellspacing='2'>" + endOfLine);
+      var header = "<th><td>Date</td> <td`>Test</td> <td>TestCase</td> <td>Result</td> <td>OrderId</td> </th>" + endOfLine;
       this.streamResults.write(header);
     }
 
-    var row = this.getFormattedDateTimeNow() + "," + test + "," + testCase + "," + result + "," + orderId + endOfLine;
+    var row = "<tr><td>" + this.getFormattedDateTimeNow() + " </td><td> " + test + " </td><td> " + testCase + " </td><td> <b>" + result + "</b> </td><td>" + orderId + "</td></tr>" + endOfLine;
     this.streamResults.write(row);
     this.streamResults.end();
     this.streamResults = null;
+    //await this.waitFor(5000);
   }
 
 
@@ -287,6 +362,9 @@ class TestTools24 {
 
      var repeatReadError = setInterval(async () => {
 
+        if(this.backendError)
+          return;
+
         var element = null;
         var maxretry = 10;
         var retries = 0;
@@ -300,7 +378,7 @@ class TestTools24 {
            if(!element)
             {
               var title = await page.title();
-              if(title != "Sign in to your account" && title != "Sign out" && title != "Redirecting")
+              if(title != "Sign in to your account" && title != "Sign out" && title != "Redirecting" && title != "")
                 console.log("Element autoTestingGUIDerror not found in browser page: \"" + title + "\"");
               return;
             }
@@ -309,8 +387,13 @@ class TestTools24 {
             var errGuid = await this.page.evaluate(element => element.textContent, element);        
             if(errGuid && errGuid.length > 0)
             {
-              this.error("Backend error " + errGuid);              
+              this.backendError = true;
+              clearInterval(repeatReadError);
+              var message = await this.readSystemError(errGuid);
+              this.error("Backend error " + errGuid + " " + message);
               this.createResultsReport(this.currentTextTitle, this.currentTextCase, "FAIL", logicalTarget);
+
+              await this.waitFor(10000);
               process.exit(errGuid);
             }
             retries = 0;
@@ -326,7 +409,14 @@ class TestTools24 {
           retries++;
 
           if(errGuid && errGuid.length > 0)
+          {
+            if(err && err.message)
+              this.error(err.message);
+            else
+              this.error("Cannot install web page hook for reading errors.");
+
             process.exit(1);
+          }
         }
 
         if(retries >= maxretry)
@@ -393,10 +483,40 @@ class TestTools24 {
 
 
 
+    
+
+  async openBrowser(url = "about:blank", headless = false)
+  {
+    var page = await this.launchBrowser(url, headless); 
+    this.addPage(page);
+  }
+  
+
+    
+
+  
+async readSystemError(reference)
+{
+  if(!reference || reference.length != 36)
+    return "";
+  
+  var db = new Db(this.dbIntegrationConfig);
+  var sql = "select TOP (5) Message, ExceptionMessage from logs where reference='" + reference + "'";
+  var errors = await db.read(sql);
+  var message = "";
+  for(var i=0; i<errors.length; i++)
+  {
+    message += errors[i].Message + " " + errors[i].ExceptionMessage + endOfLine;
+  }
+  return message;
+}
+
+
+
 
     async openPageRelative(relativeUrl, performance = false)
     {
-      var fullUrl = urljoin(this.baseUrl, relativeUrl);
+      var fullUrl = urljoin(this.connection.baseurl, relativeUrl);
       this.log("Navigate to " + relativeUrl);
       var page = await this.goto(fullUrl);
 
@@ -411,7 +531,7 @@ class TestTools24 {
         text = "";
         
       text = text.toString();
-      if(!text)
+      if(!text && text != "")
         throw new Error("setText: missing parameter: text");
       if(!selector)
         throw new Error("setText: missing parameter: selector");
@@ -762,9 +882,9 @@ class TestTools24 {
     async waitFor(selector, actionTitle = "")
     {
 
-      if(Number.isInteger(selector))
+      if(Number.isInteger(selector) && this.page)
       {
-        this.page.waitFor(selector, {timeout: this.timeout});
+        await this.page.waitFor(selector, {timeout: this.timeout});
         return;
       }
 
@@ -1518,7 +1638,7 @@ async clickOnItem(selector, textToClick = "", itemPartType = "", attrName = "", 
         {          
           element.click();
           //element.style.display = "none";
-          valueFound = "element: " + JSON.stringify(element);
+          valueFound = "element: " + JSON.stringify(element) + " " + elements.length;
           break;
         }        
       }
@@ -1775,6 +1895,7 @@ ReadTestCase()
       try
       {
         testCase = JSON.parse(fs.readFileSync(filename, 'utf8'));
+        testCase.filename = filename;
       }
       catch(e)
       {
@@ -1790,7 +1911,7 @@ ReadTestCase()
 
      if(!testCase.testCases || testCase.testCases.length <= 0)
       throw filename + " has no testCases array";
-
+          
  }
 
 
@@ -1845,6 +1966,30 @@ isValidJSON (jsonString){
 };
 
 
+
+
+
+
+getIndicesOf(searchStr, str, caseSensitive = false) {
+  var searchStrLen = searchStr.length;
+  if (searchStrLen == 0) {
+      return [];
+  }
+  var startIndex = 0, index, indices = [];
+  if (!caseSensitive) {
+      str = str.toLowerCase();
+      searchStr = searchStr.toLowerCase();
+  }
+  while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+      indices.push(index);
+      startIndex = index + searchStrLen;
+  }
+  return indices;
+}
+
+
+
+
 }
 
 
@@ -1853,4 +1998,7 @@ module.exports = TestTools24;
 
 
 
+
+//secure: true 6000:error:1408F10B:SSL routines:ssl3_get_record:wrong version number:openssl\ssl\record\ssl3_record.c:252
+//secure: false Error: unable to verify the first certificate
 

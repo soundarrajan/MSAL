@@ -1,0 +1,17 @@
+
+{
+    "testTitle": "Buyer - Scenario 11",
+    "starturl": "masters/buyer",    
+    "headless": false,
+    "testCases": [
+      {
+        "keyname": "newBuyer",
+        "BuyerNameNew": "New Buyer Test 13xy",        
+        "TransactionLimit": "None"        
+      }
+  ]
+}
+
+
+
+  

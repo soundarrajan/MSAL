@@ -39,6 +39,7 @@ class ShiptechContract {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     console.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Contract List"))
       console.log("SUCCES!");
@@ -54,10 +55,7 @@ class ShiptechContract {
   
   async ContractNew(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "ContractNew"
-    }
+    testCase.result = true;
     console.log("Loading New Contract");    
     await this.tools.waitForLoader();
     await this.tools.click('div.menu-toggler.sidebar-toggler');
@@ -72,6 +70,7 @@ class ShiptechContract {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     console.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Contracts :: Edit"))
       console.log("SUCCES!");
@@ -79,7 +78,6 @@ class ShiptechContract {
       console.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-    return answer;
   
   }
 

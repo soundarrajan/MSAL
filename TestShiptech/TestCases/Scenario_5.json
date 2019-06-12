@@ -3,6 +3,10 @@
     "testTitle": "Invoice Test Scenarios - Scenario 5",  
     "starturl": "new-order",    
     "headless": false,
+    "testData" : {      
+      "additionalCostType" : {"typeId" : "PercentTypeName1", "type" : "Flat"},
+      "products":["product1Name", "product2Name"]
+    },
     "testCases": [
       {
         "keyname": "order",
@@ -46,7 +50,6 @@
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy","WaitingForApproval"],
         "invoiceStatusAfterApprove": "Approved",
-        "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
         "provisionalData" :{
@@ -64,9 +67,9 @@
               ],
               "costs": [
                 {
-                  "name": "BARGING",
+                  "nameId": "PercentTypeName1",
                   "type": "Flat",            
-                  "applicableFor": "All",
+                  "applicableForId": "product2Name",
                   "quantity": 2099,
                   "unitPrice": 650                  
                 }
@@ -83,7 +86,21 @@
             "Invoice Type": "Provisional Invoice"
           }        
         ]
-    },       
+    },
+    {
+      "keyname": "completeView",
+      "input": {"orderId":"order1Id"},
+      "rows": [ 
+        {
+          "Order Product Amount": "568121",
+          "Total Invoice Product Amount": "569620"
+        },
+        {
+          "Order Product Amount": "249000",
+          "Total Invoice Product Amount": "249650"
+        }
+      ]
+    },
       {
         "keyname": "invoice",
         "action": "finalAfterProvisional",
@@ -92,7 +109,6 @@
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy"],
         "invoiceStatusAfterApprove": ["Approved"],
-        "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
         "finalData": {
@@ -110,11 +126,12 @@
           ],
           "costs": [
             {
-              "name": "BARGING",
+              "nameId": "PercentTypeName1",
               "type": "Flat",            
               "applicableFor": "All",
               "quantity": 2099,
-              "unitPrice": 650                  
+              "unitPrice": 650,
+              "fromOrder": true    
             }
           ]
         }
@@ -133,6 +150,20 @@
             "Invoice Amount": "-9521",
             "Invoice Type": "Final Invoice"
           }        
+        ]
+      },
+      {
+        "keyname": "completeView",
+        "input": {"orderId":"order1Id"},
+        "rows": [ 
+          {
+            "Order Product Amount": "568121",
+            "Total Invoice Product Amount": "560099"
+          },
+          {
+            "Order Product Amount": "249000",
+            "Total Invoice Product Amount": "249650"
+          }
         ]
       }
   ]

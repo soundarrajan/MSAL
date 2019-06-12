@@ -26,10 +26,7 @@ class ShiptechReconList {
   async ReconList(testCase)
   {    
    
-    var answer = {
-      testSatus: 0,
-      testName: "ReconList",
-    }
+    testCase.result = true;
     this.tools.log("Loading Recon List");
     await this.tools.waitForLoader();
     await this.tools.click('div.menu-toggler.sidebar-toggler');
@@ -42,6 +39,7 @@ class ShiptechReconList {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Recon List"))
       this.tools.log("SUCCES!");
@@ -49,7 +47,7 @@ class ShiptechReconList {
       this.tools.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-    return answer;
+    
   
   }
 

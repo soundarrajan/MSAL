@@ -2,6 +2,9 @@
     "testTitle": "Invoice Test Scenarios - Scenario 1",
     "headless": false,
     "starturl": "new-order",    
+    "testData" : {      
+      "products":["product1Name"]
+    },
     "testCases": [
       {
         "keyname": "order",
@@ -37,6 +40,15 @@
         ]
       },
       {
+        "keyname": "completeView",
+        "input": {"orderId":"order1Id"},
+        "rows": [ 
+          {
+            "Order Product Amount": "568500"
+          }
+        ]
+      },
+      {
         "keyname":"invoice",
           "action": "provisional",
           "input": {"orderId":"order1Id"},
@@ -44,7 +56,6 @@
           "invoiceStatusAfterSave": ["New","Discrepancy"],
           "invoiceStatusAfterSubmit": ["New", "Discrepancy", "WaitingForApproval"],
           "invoiceStatusAfterApprove": ["Approved"],
-          "currency": "US Dollar",
           "testRevert": false,
           "testOrderStatus": false,
           "paymentDate": 2,
@@ -70,13 +81,22 @@
           ]
         },
         {
+          "keyname": "completeView",
+          "input": {"orderId":"order1Id"},
+          "rows": [ 
+            {
+              "Order Product Amount": "568121",
+              "Invoice Product Amount": "569620"
+            }
+          ]
+        },
+        {
           "keyname":"invoice",
             "action": "finalAfterProvisional",
             "input": {"orderId": "order1Id", "invoiceId":"invoice1Id"},
             "invoiceStatusAfterSave": ["New","Discrepancy"],
             "invoiceStatusAfterSubmit": ["New","Discrepancy", "WaitingForApproval"],
             "invoiceStatusAfterApprove": ["Approved"],
-            "currency": "US Dollar",
             "testRevert": false,
             "testOrderStatus": false,
             "paymentDate": 2,         
@@ -103,6 +123,16 @@
               "Calculated Amount": "-9518",
               "Invoice Amount": "-9518",                        
               "Invoice Type": "Final Invoice"
+            }
+          ]
+        },
+        {
+          "keyname": "completeView",
+          "input": {"orderId":"order1Id"},
+          "rows": [ 
+            {
+              "Order Product Amount": "568121",
+              "Invoice Product Amount": "560101"
             }
           ]
         } 

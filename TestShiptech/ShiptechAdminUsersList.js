@@ -25,10 +25,7 @@ class ShiptechAdminUsersList {
 
   async UsersList(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "UsersList"
-    }
+    testCase.result = true;
 
     this.tools.log("Loading Admin Users List");
     await this.tools.waitForLoader();
@@ -43,6 +40,7 @@ class ShiptechAdminUsersList {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("User"))
       this.tools.log("SUCCES!");
@@ -51,7 +49,7 @@ class ShiptechAdminUsersList {
 
     await this.tools.closeCurrentPage();
     
-    return answer;
+    testCase.result = true;
   
   }
 

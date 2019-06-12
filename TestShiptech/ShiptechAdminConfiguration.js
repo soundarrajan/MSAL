@@ -25,10 +25,7 @@ class ShiptechAdminConfiguration {
 
   async AdminConfiguration(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "AdminConfiguration"
-    }
+    testCase.result = true;
 
     this.tools.log("Loading Admin Configuration");
     await this.tools.waitForLoader();
@@ -42,6 +39,7 @@ class ShiptechAdminConfiguration {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Configuration"))
       this.tools.log("SUCCES!");
@@ -49,8 +47,6 @@ class ShiptechAdminConfiguration {
       this.tools.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-
-    return answer;  
   }
 
 

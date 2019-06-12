@@ -25,6 +25,7 @@ class ShiptechRequest {
 
   async CreateRequest(testCase)
   {
+        testCase.result = true;
         testCase.vesselName = await this.shiptech.getRandomVessel();
         testCase.bunkerablePort = await this.shiptech.getRandomPort();
         testCase.destinationPort = await this.shiptech.getRandomPort();
@@ -99,7 +100,7 @@ class ShiptechRequest {
           this.tools.log("FAIL!");
 
         await this.tools.closeCurrentPage();
-        return testCase;
+        
   
   }
 

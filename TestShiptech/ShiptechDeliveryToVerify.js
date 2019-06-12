@@ -25,10 +25,7 @@ class ShiptechDeliveryToVerify {
 
   async DeliveryToVerify(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "DeliveryToVerify"
-    }
+    testCase.result = true;
     this.tools.log("Loading Delivery To Verify");
     await this.tools.waitForLoader();
     await this.tools.click('div.menu-toggler.sidebar-toggler');
@@ -41,6 +38,7 @@ class ShiptechDeliveryToVerify {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Deliveries to be Verified"))
       this.tools.log("SUCCES!");
@@ -48,7 +46,7 @@ class ShiptechDeliveryToVerify {
       this.tools.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-    return answer;
+    
   
   }
 

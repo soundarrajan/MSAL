@@ -12,13 +12,13 @@ const Db = require('./MsSqlConnector.js');
 class ShiptechTestDataGen {
 
 
-  constructor(tools) {    
+  constructor(tools, shiptech) {    
 
     this.tools = tools;
     if(this.tools == null)
       throw  new Error("Tools parameters is invalid");    
     this.dbIntegrationConfig = null;
-    this.dbConfig = null;
+    this.shiptech = shiptech;    
   }
 
 
@@ -31,6 +31,39 @@ async generateTestData(testDataRequired, commonTestData)
   {
     commonTestData[testDataRequired.additionalCostType.typeId] = await this.getCostType(testDataRequired.additionalCostType.type);
   }
+
+          
+  if(testDataRequired.products)
+  {
+    commonTestData.products = [];
+    var productsName = await this.getRandomProducts(testDataRequired.products.length);
+    for(var i=0; i<testDataRequired.products.length; i++) {
+      this.tools.log("Product #" + (i+1) + ": " + productsName[i]);
+      commonTestData.products.push({id: testDataRequired.products[i], name: productsName[i] });
+    }
+    //this.shiptech.findProducts(testDataRequired.products, commonTestData);
+  }
+
+
+  commonTestData.defaultCurrency = await this.getDefaultCurrency();
+
+}
+
+
+
+async getDefaultCurrency()
+{
+  if(!this.tools.dbConfig)
+  throw  new Error("Not connected to database");
+  var db = new Db(this.tools.dbConfig);
+
+  var sql = "select c.Name, c.Code from admin.TenantConfigurations tc join master.Currencies c on tc.CurrencyId = c.Id";
+  var records = await db.read(sql);
+
+  if(!records || records.length <= 0)
+    throw  new Error("Cannot find default currency " + sql);
+  
+  return records[0].Name;
 }
 
 
@@ -67,13 +100,13 @@ findProducts(products, commonTestData)
 
 async getRandomProducts(count)
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
 
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
   var products = [];
 
-  //var sql = "SELECT TOP (30)  [Name] FROM [" + this.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
+  //var sql = "SELECT TOP (30)  [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
   /*
   var sql = `select top(50) p.Name from master.Products p 
   inner join enums.ProductTypes pt on pt.Id = p.ProductTypeId 
@@ -114,6 +147,8 @@ async getRandomProducts(count)
     records.splice(idx, 1);
   }
 
+  products.sort((a,b) => (a > b) ? -1 : ((b > a) ? 1 : 0));
+
   return products;
 }
 
@@ -122,11 +157,11 @@ async getRandomProducts(count)
 
 async getRandomVessel()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
 
-  var sql = "SELECT TOP (20)  [Name] FROM [" + this.dbConfig.database + "].[master].[Vessels]  WHERE [IsDeleted]=0";
+  var sql = "SELECT TOP (20)  [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Vessels]  WHERE [IsDeleted]=0";
   var records = await db.read(sql);
 
   if(!records || records.length <= 0)
@@ -145,11 +180,11 @@ async getRandomVessel()
 
 async getRandomCompany()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
 
-  var sql = "SELECT TOP (20) [Name] FROM [" + this.dbConfig.database + "].[master].[Companies] WHERE [IsDeleted]=0";  
+  var sql = "SELECT TOP (20) [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Companies] WHERE [IsDeleted]=0";  
   var records = await db.read(sql);
   if(records.length <= 0)
     throw  new Error("Cannot find any company");
@@ -168,10 +203,10 @@ async getRandomCompany()
 
 async getRandomSeller()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
-  var dbname = this.dbConfig.database;
+  var db = new Db(this.tools.dbConfig);
+  var dbname = this.tools.dbConfig.database;
 
   var sql = `SELECT TOP (20) [Id], [Name]
   FROM [${dbname}].[master].[Counterparties], [${dbname}].[master].[CounterpartyCounterpartyTypes] 
@@ -200,10 +235,10 @@ async getRandomSeller()
 
 async getRandomPort()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
-  var sql = "SELECT TOP (50) [Name] FROM [" + this.dbConfig.database + "].[master].[Locations]";  
+  var db = new Db(this.tools.dbConfig);
+  var sql = "SELECT TOP (50) [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Locations]";  
   var records = await db.read(sql);
   if(records.length <= 0)
     throw  new Error("Cannot find any company");

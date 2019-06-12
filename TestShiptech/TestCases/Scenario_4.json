@@ -3,6 +3,10 @@
     "testTitle": "Invoice Test Scenarios - Scenario 4",
     "starturl": "new-order",    
     "headless": false,
+    "testData" : {      
+      "additionalCostType" : {"typeId" : "PercentTypeName1", "type" : "Flat"},
+      "products":["product1Name"]
+    },
     "testCases": [
         {
           "keyname": "order",
@@ -37,6 +41,15 @@
             }        
           ]
         },
+        {
+          "keyname": "completeView",
+          "input": {"orderId":"order1Id"},
+          "rows": [ 
+            {
+              "Order Product Amount": "568500"              
+            }
+          ]
+        },
       {
         "keyname": "invoice", 
         "action": "provisional",
@@ -48,7 +61,6 @@
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy"],
         "invoiceStatusAfterApprove": ["Approved"],
-        "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
         "paymentDate": 2,
@@ -62,11 +74,11 @@
               ],
               "costs": [
                 {
-                  "name": "BARGING",
+                  "nameId": "PercentTypeName1",
                   "type": "Flat",            
                   "applicableFor": "All",
                   "quantity": 1499,
-                  "unitPrice": 11125                  
+                  "unitPrice": 11125               
                 }
               ]
             }        
@@ -82,6 +94,16 @@
           }        
         ]
     }, 
+    {
+      "keyname": "completeView",
+      "input": {"orderId":"order1Id"},
+      "rows": [ 
+        {
+          "Order Product Amount": "568121",
+          "Total Invoice Product Amount": "580745"
+        }
+      ]
+    },
       {
         "keyname": "invoice",
         "action": "finalAfterProvisional",
@@ -89,7 +111,6 @@
         "invoiceStatusAfterSave": ["New","Discrepancy"],
         "invoiceStatusAfterSubmit": ["New","Discrepancy"],
         "invoiceStatusAfterApprove": ["Approved"],
-        "currency": "US Dollar",
         "testRevert": false,
         "testOrderStatus": false,
         "paymentDate": 2,
@@ -117,6 +138,16 @@
             "Invoice Amount": "-9521",                        
             "Invoice Type": "Final Invoice"
           }          
+        ]
+      },
+      {
+        "keyname": "completeView",
+        "input": {"orderId":"order1Id"},
+        "rows": [ 
+          {
+            "Order Product Amount": "568121",
+            "Total Invoice Product Amount": "571224"
+          }
         ]
       }
   ]

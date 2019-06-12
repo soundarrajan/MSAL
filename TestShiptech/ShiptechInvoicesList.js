@@ -81,9 +81,8 @@ class ShiptechInvoicesList {
 
     //await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
 
+    await this.tools.waitFor(5000);
     await this.tools.closeCurrentPage();
-
-    return testCase;
   
   }
 

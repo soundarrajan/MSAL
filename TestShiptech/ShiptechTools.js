@@ -4,9 +4,14 @@
  */
 
 
-const Db = require('./MsSqlConnector.js');
+
 var urljoin = require('url-join');
 var endOfLine = require('os').EOL;
+//var nodemailer = require('nodemailer');
+var nodeoutlook = require('nodejs-nodemailer-outlook');
+const fs = require('fs');
+const Db = require('./MsSqlConnector.js');
+
 
 
 class ShiptechTools {
@@ -18,17 +23,18 @@ class ShiptechTools {
     if(this.tools == null)
       throw  new Error("Tools parameters is invalid");    
     this.dbIntegrationConfig = null;
-    this.dbConfig = null;
+    
+    
   }
 
 
 
   async login(relativeurl, username, password, headless = false){
 
-    if(!this.tools.baseUrl || this.tools.baseUrl.length <= 0)
-      throw new Error("Missing base url.");
+    if(!this.tools.connection.baseurl || this.tools.connection.baseurl.length <= 0)
+      throw new Error("Missing base url from connection file.");
     
-    var url = urljoin(this.tools.baseUrl, relativeurl);
+    var url = urljoin(this.tools.connection.baseurl, relativeurl);
     var page = await this.tools.launchBrowser(url, headless); 
     this.tools.addPage(page);
 
@@ -134,93 +140,15 @@ async selectWithText(selector, valueToSelect, checkSelection = true){
 }
 
 
-async readSystemError(reference)
-{
-  if(!reference || reference.length != 36)
-    return "";
-  var db = new Db(this.dbIntegrationConfig);
-  var sql = "select TOP (5) Message, ExceptionMessage from logs where reference='" + reference + "'";
-  var errors = await db.read(sql);
-  var message = "";
-  for(var i=0; i<errors.length; i++)
-  {
-    message += errors[i].Message + " " + errors[i].ExceptionMessage + endOfLine;
-  }
-  return message;
-}
 
-
-//"Data Source=10.1.1.9;Initial Catalog=Shiptech1060_PMG_20190211;User ID=sa;Password=!QAZ2wsx;MultipleActiveResultSets=true;Connection Timeout=400"
-async ConnectDb(dbconfig, url, isMaster)
-{
-    if(!url)
-      throw new Error("Invlid url parameter:" + url);
-
-    const urlToSearch = new URL(url);
-
-    this.dbIntegrationConfig = dbconfig;
-    var db = new Db(this.dbIntegrationConfig);
-    var address = "";
-    var userId = "";
-    var databaseName = "";
-    var password = "";
-    var start = 0;
-    var end = 0;
-    var sql = "";
-   
-    this.dbConfig = null;
-
-    if(isMaster)
-    {
-        sql = "select TenantDbConnectionString from MasterConfigurations where url like '%" + urlToSearch.host + "%'";
-        var tennantconfig = await db.read(sql);
-
-        if(!tennantconfig || tennantconfig.length <= 0)
-          throw  new Error("Cannot find current tenant database " + urlToSearch.host + ". Call this function with false for tenant database");
-        if(!tennantconfig[0].TenantDbConnectionString)
-          throw new Error("Cannot find current database, field TenantDbConnectionString not found");
-
-        var connectionString = tennantconfig[0].TenantDbConnectionString;
-
-        //parse the connection string
-        start = connectionString.indexOf("Data Source=");
-        end =  connectionString.indexOf(";", start);
-        address = connectionString.slice(start + 12, end);
-
-        start = connectionString.indexOf("Initial Catalog=");
-        end =  connectionString.indexOf(";", start);
-        databaseName = connectionString.slice(start+16, end);
-
-        start = connectionString.indexOf("User ID=");
-        end =  connectionString.indexOf(";", start);
-        userId = connectionString.slice(start+8, end);
-
-        start = connectionString.indexOf("Password=");
-        end =  connectionString.indexOf(";", start);
-        password = connectionString.slice(start+9, end);
-
-        this.dbConfig = {server: address, database: databaseName, user: userId, password: password, options: {encrypt: true}};
-        //var vessel = this.getRandomVessel();
-    }
-    else
-      this.dbConfig = dbconfig;   
-      
-    //find client name
-    sql = "Select IntegrationKey From admin.TenantConfigurations";
-    db = new Db(this.dbConfig);
-    var clientName = await db.read(sql);
-        
-    this.tools.log("Client name: " + clientName[0].IntegrationKey);
-    this.tools.log("Current database is: " + this.dbConfig.database);
-    this.tools.dbConfig = this.dbConfig;
-    return this.dbConfig;
-
-}
 
 
 //inserts product name based on id
 findProducts(products, commonTestData)
 {
+  if(!commonTestData.products)
+    throw new Error("Cannot find products");
+    
   for(var i=0; i<products.length; i++)
     {     
       if(!products[i].name && products[i].id)      
@@ -232,24 +160,24 @@ findProducts(products, commonTestData)
 }
 
 
-
+/*
 async getRandomProducts(count)
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
 
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
   var products = [];
 
-  //var sql = "SELECT TOP (30)  [Name] FROM [" + this.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
-  /*
-  var sql = `select top(50) p.Name from master.Products p 
-  inner join enums.ProductTypes pt on pt.Id = p.ProductTypeId 
-  inner join enums.ProductTypeGroups ptg on ptg.Id = pt.ProductTypeGroupId
-  where ptg.Name = 'FuelAndDistillate'
-  and p.IsDeleted=0
-  order by ptg.name, p.name`;
-  */
+  //var sql = "SELECT TOP (30)  [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Products]  WHERE [IsDeleted]=0";
+  
+  // var sql = `select top(50) p.Name from master.Products p 
+  // inner join enums.ProductTypes pt on pt.Id = p.ProductTypeId 
+  // inner join enums.ProductTypeGroups ptg on ptg.Id = pt.ProductTypeGroupId
+  // where ptg.Name = 'FuelAndDistillate'
+  // and p.IsDeleted=0
+  // order by ptg.name, p.name`;
+  
 
   var sql = `select p.Name from master.Products p
   inner join enums.ProductTypes pt on pt.Id = p.ProductTypeId
@@ -281,20 +209,22 @@ async getRandomProducts(count)
     products.push(records[idx].Name);
     records.splice(idx, 1);
   }
-
+  
+  products.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+  
   return products;
 }
-
+*/
 
 
 
 async getRandomVessel()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
 
-  var sql = "SELECT TOP (20)  [Name] FROM [" + this.dbConfig.database + "].[master].[Vessels]  WHERE [IsDeleted]=0";
+  var sql = "SELECT TOP (20)  [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Vessels]  WHERE [IsDeleted]=0";
   var records = await db.read(sql);
 
   if(!records || records.length <= 0)
@@ -313,11 +243,11 @@ async getRandomVessel()
 
 async getRandomCompany()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
 
-  var sql = "SELECT TOP (20) [Name] FROM [" + this.dbConfig.database + "].[master].[Companies] WHERE [IsDeleted]=0";  
+  var sql = "SELECT TOP (20) [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Companies] WHERE [IsDeleted]=0";  
   var records = await db.read(sql);
   if(records.length <= 0)
     throw  new Error("Cannot find any company");
@@ -336,10 +266,10 @@ async getRandomCompany()
 
 async getRandomSeller()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
-  var dbname = this.dbConfig.database;
+  var db = new Db(this.tools.dbConfig);
+  var dbname = this.tools.dbConfig.database;
 
   var sql = `SELECT TOP (20) [Id], [Name]
   FROM [${dbname}].[master].[Counterparties], [${dbname}].[master].[CounterpartyCounterpartyTypes] 
@@ -368,10 +298,10 @@ async getRandomSeller()
 
 async getRandomPort()
 {
-  if(!this.dbConfig)
+  if(!this.tools.dbConfig)
     throw  new Error("Not connected to database");
-  var db = new Db(this.dbConfig);
-  var sql = "SELECT TOP (50) [Name] FROM [" + this.dbConfig.database + "].[master].[Locations]";  
+  var db = new Db(this.tools.dbConfig);
+  var sql = "SELECT TOP (50) [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Locations]";  
   var records = await db.read(sql);
   if(records.length <= 0)
     throw  new Error("Cannot find any company");
@@ -498,11 +428,11 @@ async selectFirstItem(textToSelectInAttr, attributeName, index)
 
 async getDateFormat()
 {
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
   
-  var sql = "SELECT [" + this.dbConfig.database + "].[enums].[TransactionDates].Name " + 
-  "FROM [" + this.dbConfig.database + "].[enums].[TransactionDates], [admin].[TenantConfigurations] " +
-  "WHERE [" + this.dbConfig.database + "].[enums].[TransactionDates].Id=[admin].[TenantConfigurations].[TransactionDateId]";
+  var sql = "SELECT [" + this.tools.dbConfig.database + "].[enums].[TransactionDates].Name " + 
+  "FROM [" + this.tools.dbConfig.database + "].[enums].[TransactionDates], [admin].[TenantConfigurations] " +
+  "WHERE [" + this.tools.dbConfig.database + "].[enums].[TransactionDates].Id=[admin].[TenantConfigurations].[TransactionDateId]";
 
   var records = await db.read(sql);
   if(records.length <= 0)
@@ -516,7 +446,7 @@ async validateDatabaseConfiguration()
 {
 
   var isValid = true;
-  var db = new Db(this.dbConfig);
+  var db = new Db(this.tools.dbConfig);
   
   var sql = "Select IsSellerConfirmationDocumentMandatory From admin.TenantConfigurations";
 
@@ -531,18 +461,28 @@ async validateDatabaseConfiguration()
   }
 
 
-  sql = "select top 1 ac.Name from master.AdditionalCosts ac inner join enums.CostTypes ct on ct.Id = ac.CostTypeId where ct.name = 'Percent'";
+  return isValid;
+  
+}
+
+
+
+async validatePercentCost()
+{
+
+  var isValid = true;
+  var db = new Db(this.tools.dbConfig);
+  var sql = "select top 1 ac.Name from master.AdditionalCosts ac inner join enums.CostTypes ct on ct.Id = ac.CostTypeId where ct.name = 'Percent'";
 
   var records = await db.read(sql);
 
-  if(records[0].length <= 0)
+  if(records.length <= 0 || records[0].length <= 0)
   {
     this.tools.log("Cannot find Percent cost type for additional costs");
     isValid = false;
   }
+  return true;
 
-  return isValid;
-  
 }
 
 
@@ -627,6 +567,181 @@ async findTableRowsCount(selector)
 
   return result;
 }
+
+
+
+
+async clearFilters()
+{
+    await this.tools.waitForLoader();
+    var selector = "input[name='isDefault']";
+    this.tools.waitFor(selector);
+    var checkbox = await this.tools.page.$(selector);
+    var ischecked = await (await checkbox.getProperty('checked')).jsonValue();
+    if(ischecked)
+    {        
+      await this.tools.clickBySelector(selector);
+      await this.tools.waitForLoader();
+      checkbox = await this.tools.page.$(selector);
+      ischecked = await (await checkbox.getProperty('checked')).jsonValue();
+      if(ischecked)
+        throw  new Error("Cannot uncheck " + selector);
+      
+      //save this configuration
+      await this.tools.clickBySelector("#save_layout");
+      await this.tools.waitForLoader();
+      //const links = await this.tools.page.evaluate(() => { location.reload() });
+      //await this.tools.waitForLoader();
+    }    
+}
+
+
+
+
+
+
+
+async sendEmail()
+{
+
+  if (!fs.existsSync(this.tools.filenameResults)) {
+    this.tools.log("Results file doesn't exist. Cannot send email.");
+    return;
+  }
+
+  
+  var testResults = fs.readFileSync(this.tools.filenameResults, 'utf8');
+  //testResults = testResults.split("\n").join("<br />");
+
+  if(testResults.length <= 0)
+  {
+    this.tools.log("Results file is empty. Cannot send email.");
+    return;
+  }
+
+  testResults += "</table>" + endOfLine;
+
+  var subject = "Shiptech Auto Test";  
+  var logfile = fs.readFileSync("log.txt", 'utf8');
+  var errorIdxs = this.tools.getIndicesOf("Backend error", logfile, true);
+  var message = "Automated tests coverage: 16.9%";
+
+  testResults = "<p>" + message + "</p>" + endOfLine + testResults;
+  
+
+  if(errorIdxs.length > 0)
+  {
+    
+    testResults += "<br/>"
+    testResults += "<br/>"
+    testResults += "<p>Backend errors:</p>"
+    testResults += "<ul>";
+    for(var i=0; i<errorIdxs.length; i++)
+    {
+      var nextNewLine = logfile.indexOf(endOfLine, errorIdxs[i]);
+      
+      if(nextNewLine - errorIdxs[i] < 10000)
+      {
+        var line = logfile.substring(errorIdxs[i]+13, nextNewLine) + "</li>";
+        if(line.length > 1000)
+          line = line.substring(0, 1000);
+        testResults += "<li>" + line + "</li>";    
+      }
+    }
+    testResults += "</ul>";
+  }
+
+  if(testResults.indexOf("FAIL") >= 0 || errorIdxs.length > 0)
+      subject += " - FAIL!";
+  else
+    subject += " - SUCCESS";
+
+  testResults = "<p>" + subject + "</p>" + endOfLine + testResults;
+  testResults += "<p>Some of the errors are caused by: #14719, ";
+
+  this.sendEmailEx(this.tools.connection.emailrecipients, subject, testResults);
+  await this.tools.waitFor(10000);
+
+}
+
+
+
+
+
+sendEmailEx(recipients, emailSubject, emailBody)
+{
+
+  if(!this.tools.connection)
+    throw new Error("sendEmailEx: No connection defined.");
+ 
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+  nodeoutlook.sendEmail({
+    host: this.tools.connection.emailhost,
+    port: this.tools.connection.emailport,
+    secure: false,
+    auth: {
+        user: this.tools.connection.emailuser,
+        domain: this.tools.connection.emaildomain,
+        pass: this.tools.connection.emailpass
+    },
+    to: recipients,
+    subject: emailSubject,
+    html: emailBody,
+    text: emailBody,
+    onError: (e) => console.log(e),
+    onSuccess: (i) => {
+      console.log("Email sent to " + recipients); 
+      //console.log(i);
+    }
+  });
+
+}
+
+
+
+
+
+/*
+//obsolete
+async sendEmail()
+{
+  
+  if(!this.tools.connection.sendEmails)
+    return;
+
+  this.tools.log("Sending emails");
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'pintea.petru@gmail.com',
+      pass: 'xxxxxx'
+    }  
+  });
+
+    var mailOptions = {
+      from: 'pintea.petru@gmail.com',
+      to: 'rares.tohanean@24software.ro ',
+      subject: 'Sending Email using Node.js',
+      text: 'That was easy!'
+  };
+
+
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
+  await this.tools.waitFor(10000);
+
+}
+*/
+
 
 
 }

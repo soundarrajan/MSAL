@@ -26,10 +26,7 @@ class ShiptechBackend {
   
     
         var tools = new TestTools24();
-        var shiptech = new ShiptechTools(tools);             
-  
-        var dbConfig = await shiptech.ConnectDb(testCase.DatabaseIntegration, testCase.url);
-        var db = new Db(dbConfig);
+        var shiptech = new ShiptechTools(tools);
 
         var autoTestCase = 
         {
@@ -42,13 +39,8 @@ class ShiptechBackend {
                         
         this.tools.log("Choose vessel: " + autoTestCase.vesselName);
   
-        var page = await shiptech.login(testCase.url, testCase.username, testCase.password);
-        
-
-
-        
-        
-        await browser.close()
+        //var page = await shiptech.login(testCase.url, testCase.username, testCase.password);
+        //await browser.close()
   
   }
 

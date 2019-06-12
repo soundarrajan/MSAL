@@ -23,6 +23,8 @@ class ShiptechInvoice {
 
   async CancelInvoice(testCase, commonTestData)
   {   
+    testCase.result = true;
+
     if(testCase.action != "cancel")
       return testCase;
 
@@ -40,7 +42,6 @@ class ShiptechInvoice {
     await this.tools.click('#btn_Cancel');
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterCancel, "invoiceStatusAfterCancel");
     
-    return testCase;
   }
 
 
@@ -91,8 +92,7 @@ class ShiptechInvoice {
   {
     var i=0; 
     var countButtons = 0;
-    var startidx = 0;
-
+    var endidx = -1;
 
     while(i < 100)
     {
@@ -102,53 +102,124 @@ class ShiptechInvoice {
         break;
       i++;
     }
+
+    while(countButtons > costs.length)
+    {
+      await this.tools.click("#grid_invoiceCostDetails_remRow_0");
+      countButtons--;
+    }
+
+
+    for(var k=0; k<15; k++)
+    {
+      var rowExists = await this.tools.page.$("#grid_invoiceCostDetails_remRow_" + k);
+      if(rowExists)
+        endidx = k;
+    }
     
-    for(i=0; i<countButtons; i++)
-      await this.tools.click("#grid_invoiceCostDetails_remRow_" + i);
 
-      //insert new ones
-      for (i = 0; i < costs.length; i++)
-      {       
-        var typeCostName = costs[i].name;
-        if(!typeCostName)
-          typeCostName = commonTestData[costs[i].nameId];
-        if(!typeCostName)
-          throw new Error("Cannot find type for additional cost for invoice");
-
-        await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", typeCostName);
-
-        await this.tools.click("a.btn[ng-click='addCostDetail(INV_SELECTED_COST)']");
-        //find out if the items start with 0 or with 1
-        if(i==0)
+      //insert costs
+      for (i = 0; i < costs.length; i++) 
+      {
+        if(costs[i].fromOrder)
         {
-          var row0Exists = await this.tools.page.$("#grid_invoiceCostDetails_remRow_" + 0);
-          var row1Exists = await this.tools.page.$("#grid_invoiceCostDetails_remRow_" + 1);
-          if(!row0Exists && row1Exists)
-            startidx = 1;
-          if(!row0Exists && !row1Exists)
-            throw new Error("Cannot add costs to the list.");
-        }
+            var idx = await this.findCostIdx(costs[i], commonTestData);
 
-        await this.tools.selectBySelector("#grid_invoiceCostDetails_costType_" + (i+startidx), costs[i].type);
-        if(costs[i].applicableFor.toUpperCase() == "ALL")
-          await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+startidx), "All", false, false);
+            if(idx < 0)
+              throw new Error("Cannot find cost from order " + costs[i].nameId);
+
+            await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + idx, costs[i].quantity);
+            await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + idx, costs[i].unitPrice);  
+            if(costs[i].type == "Percent")
+                await this.tools.setText("#grid_invoiceCostDetails_invoiceAmount_" + idx, costs[i].amount);
+        }
         else
         {
-          var prodName = commonTestData.products.find(p => p.id === costs[i].applicableFor).name;
-          if(!prodName || prodName.length <= 0)
-            throw new Error('Cannot find additional cost product ' + costs[i].applicableFor);
+          var typeCostName = costs[i].name;
+          if(!typeCostName)
+            typeCostName = commonTestData[costs[i].nameId];
+          if(!typeCostName)
+            throw new Error("Cannot find type for additional cost for invoice");          
 
-          await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+startidx), prodName, false, false);          
-        }
-                
-        await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + (i+startidx), costs[i].quantity);
-        await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + startidx), costs[i].unitPrice);
-        await this.tools.selectBySelector("#grid_invoiceCostDetails_Currency__invoiceRateCurrency_" + (i + startidx), "MT");
+          await this.tools.selectBySelector("select.form-control[ng-model='INV_SELECTED_COST']", typeCostName);
 
-        if(costs[i].type == "Percent")
-            await this.tools.setText("#grid_invoiceCostDetails_invoiceAmount_" + (i + startidx), costs[i].amount);
+          await this.tools.click("a.btn[ng-click='addCostDetail(INV_SELECTED_COST)']");
+          endidx++;
+        
+          await this.tools.selectBySelector("#grid_invoiceCostDetails_costType_" + (i+endidx), costs[i].type);
+          if(costs[i].applicableFor && costs[i].applicableFor.toUpperCase() == "ALL")
+            await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+endidx), "All", false, false);
+          else
+          {
+            var prodName = commonTestData.products.find(p => p.id === costs[i].applicableForId).name;
+            if(!prodName || prodName.length <= 0)
+              throw new Error('Cannot find additional cost product ' + prodName + " " + costs[i].applicableForId);
+
+            await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+endidx), prodName, false, false);
+          }
+                  
+          await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + (i+endidx), costs[i].quantity);
+          await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + endidx), costs[i].unitPrice);
+          await this.tools.selectBySelector("#grid_invoiceCostDetails_Currency__invoiceRateCurrency_" + (i + endidx), "MT");
+
+          if(costs[i].type == "Percent")
+              await this.tools.setText("#grid_invoiceCostDetails_invoiceAmount_" + (i + endidx), costs[i].amount);
+       }
       }
   }
+
+
+
+
+  //search the cost from the screen matching with the cost parameter
+  async findCostIdx(cost, commonTestData)
+  {
+    var prodName = "";
+    var i = 0;
+    var validIdx = -1;
+    var foundIdx = -1;
+
+    if(cost.applicableFor == "All")
+      prodName = "All";
+    else
+    {
+      var commonDataCost = commonTestData.products.find(p => p.id == cost.applicableForId);
+      if(commonDataCost == null)
+        throw new Error('Cannot find common data for ' + cost.applicableForId);
+
+      prodName = commonDataCost.name;
+    }
+
+    if(!prodName || prodName.length <= 0)
+      throw new Error('Cannot find additional cost product ' + cost.applicableForId);
+    
+    while(i < 100)
+      {
+        if (await this.tools.page.$("#grid_invoiceCostDetails_remRow_" + i) != null) 
+          {
+            var costType = await this.tools.getSelectedOption("#grid_invoiceCostDetails_costType_" + i);
+            var product = await this.tools.getSelectedOption("#grid_invoiceCostDetails_product_" + i);
+            if(costType == cost.type && product.indexOf(prodName) >= 0)
+            {
+              if(foundIdx >= 0)
+                throw new Error("Multiple similar costs found for " + cost.type + " and " + prodName);
+              foundIdx = i;
+            }
+   
+            validIdx = i;
+          }
+        else 
+          {
+            if(validIdx >= 0)
+              break;//finish the continuous indexed zone
+          }
+        i++;
+      }
+
+      return foundIdx;
+  }
+
+
 
 
   async CreateInvoice(testCase, commonTestData)
@@ -177,7 +248,7 @@ class ShiptechInvoice {
         throw new Error("Missing orderId from parameters in InvoiceDeliveriesList()");
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
-    await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
+    await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", commonTestData.defaultCurrency);
     if(testCase.paymentDate)
       await this.tools.setText("#PaymentDate_dateinput", testCase.paymentDate);
 
@@ -187,7 +258,7 @@ class ShiptechInvoice {
     if(testCase.action != "final" && testCase.provisionalData && testCase.provisionalData.costs)
       await this.insertCosts(testCase.provisionalData.costs, commonTestData);
 
-    if(testCase.action == "final" && testCase.finalData && testCase.finalData.costs)
+    if((testCase.action == "final" || testCase.action == "provisionalThenFinal") && testCase.finalData && testCase.finalData.costs)
       await this.insertCosts(testCase.finalData.costs, commonTestData);
 
     if(testCase.action == "final" && testCase.finalData && testCase.finalData.products)
@@ -195,14 +266,31 @@ class ShiptechInvoice {
       
     await this.tools.clickOnItemByText('#header_action_save', 'Save');    
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave, "invoiceStatusAfterSave");
+
+
     
+
     if(testCase.invoiceStatusAfterSubmit)
     {
-      if(!await this.tools.isElementVisible("a[ng-click='$eval(value.action)']", 200, "Submit For Approval Invoice"))
-        await this.tools.clickOnItemByText("a[data-toggle='dropdown']", '...');
-      await this.tools.clickOnItemByText("a[ng-click='$eval(value.action)']", 'Submit For Approval Invoice');
-      await this.checkInvoiceStatus(testCase.invoiceStatusAfterSubmit, "invoiceStatusAfterSubmit");
+      await this.tools.click("#openMoreActions");
+
+      if(await this.tools.isElementVisible("#btn_SubmitForReview")){
+        await this.tools.click("#btn_SubmitForReview");
+        await this.tools.click("#openMoreActions");        
+      }
+
+      if(await this.tools.isElementVisible("#btn_SubmitForReview")){
+        await this.tools.click("#btn_Accept");
+        await this.tools.click("#openMoreActions");        
+      }
+
+      if(await this.tools.isElementVisible("#btn_SubmitForApprovalInvoice", 200, "Submit For Approval Invoice"))
+        await this.tools.click("#btn_SubmitForApprovalInvoice");
+      
+      var currentStatus = await this.checkInvoiceStatus(testCase.invoiceStatusAfterSubmit, "invoiceStatusAfterSubmit");      
     }
+
+    
 
     
     await this.tools.click("#btn_ApproveInvoice");
@@ -240,7 +328,7 @@ class ShiptechInvoice {
     }
 
     if(testCase.action == "provisionalThenFinal") {
-      await this.CreateFinalInvoiceFromProvizional(testCase);      
+      await this.CreateFinalInvoiceFromProvizional(testCase, commonTestData);      
     }
 
     if(testCase.output && testCase.output.invoiceId)
@@ -320,12 +408,12 @@ async readInvoiceNumber()
     if(!isValid)
         throw new Error("The invoice " + title + " status is not as expected: (expected: " + flatStatus + ", current: " + labelTitle + ")");
     
-    return true;
+    return labelTitle;
   }
 
 
 
-  async CreateFinalInvoiceFromProvizional(testCase)
+  async CreateFinalInvoiceFromProvizional(testCase, commonTestData)
   {
 
     if(!testCase.finalData)
@@ -344,7 +432,7 @@ async readInvoiceNumber()
       this.tools.log("FAIL!");
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
-    await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
+    await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", commonTestData.defaultCurrency);
 
     await this.insertProducts(testCase.finalData.products);
     
@@ -400,7 +488,7 @@ async readInvoiceNumber()
       this.tools.log("FAIL!");
 
     await this.tools.setText("#SellerInvoiceNo", "123456AutoTests");
-    await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", testCase.currency);
+    await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", commonTestData.defaultCurrency);
 
     for (let i = 0; i < testCase.finalData.products.length; i++) 
     { 

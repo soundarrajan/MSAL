@@ -1,5 +1,5 @@
 {
-      "baseurl": "http://mail.24software.ro:8163/#/",
+      "baseurl": "http://mail.24software.ro:8164/#/",
       "isMasterDb": true,
       "databaseIntegration": {                        
                                   "server": "10.1.1.11", 

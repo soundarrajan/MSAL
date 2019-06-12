@@ -1,0 +1,13 @@
+
+{
+  "testTitle": "Delivery option - Scenario 19",
+  "starturl": "masters/deliveryoption",
+  "headless": false,
+  "testCases": [
+    {
+      "keyname": "newDeliveryOption",
+      "DeliveryOptionNameNew": "Test Delivery 19"
+    }
+]
+}
+

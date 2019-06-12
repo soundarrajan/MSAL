@@ -44,21 +44,6 @@ class ShiptechOrder {
           testCase.port =  await  this.shiptech.getRandomPort();
           commonTestData.port = testCase.port;
         }
-
-        
-        if(testCase.input && testCase.input.products)
-        {
-          commonTestData.products = [];
-          var productsName = await this.shiptech.getRandomProducts(testCase.input.products.length);
-          for(var i=0; i<testCase.input.products.length; i++) {
-            this.tools.log("Product #" + (i+1) + ": " + productsName[i]);
-            commonTestData.products.push({id: testCase.input.products[i], name: productsName[i] });
-          }
-
-          this.shiptech.findProducts(testCase.products, commonTestData);
-
-        }
-        
           
         if(!testCase.seller)
         {
@@ -123,6 +108,16 @@ class ShiptechOrder {
 
         }while(countbuttons != testCase.products.length && limit > 0);
 
+        this.shiptech.findProducts(testCase.products, commonTestData);
+
+        //clear products name
+        var last = testCase.products.length - 1;
+        for(var i=0; i<testCase.products.length; i++)
+        {                    
+          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[last].name, true);          
+        }
+      
+
         for(var i=0; i<testCase.products.length; i++)
         {                    
           await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name, true);
@@ -136,6 +131,7 @@ class ShiptechOrder {
           if(testCase.products[i].unitPrice)
             await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
         }
+      
 
         //ensure the number of costs
         if(!testCase.costs)
@@ -170,13 +166,13 @@ class ShiptechOrder {
           
           await this.tools.selectBySelector("#additional_cost_type_" + i, testCase.costs[i].type);
           await this.tools.setText("#additional_cost_price_" + i, testCase.costs[i].unitPrice);
-          if(testCase.costs[i].applicableFor.toUpperCase() == "ALL")
+          if(testCase.costs[i].applicableFor && testCase.costs[i].applicableFor.toUpperCase() == "ALL")
             await this.tools.selectBySelector("#ApplicableFor_" + i, "All", false, false);
           else
           {
-            var prodName = commonTestData.products.find(p => p.id === testCase.costs[i].applicableFor).name;
+            var prodName = commonTestData.products.find(p => p.id === testCase.costs[i].applicableForId).name;
             if(!prodName || prodName.length <= 0)
-              throw new Error('Cannot find additional cost product ' + testCase.costs[i].applicableFor);
+              throw new Error('Cannot find additional cost product ' + testCase.costs[i].applicableForId);
             await this.tools.selectBySelector("#ApplicableFor_" + i, prodName, false, false);
           }
         }
@@ -233,10 +229,9 @@ class ShiptechOrder {
           testCase.result = false;
         }
 
+        await this.tools.waitFor(5000);
         await this.tools.closeCurrentPage();
-
-        testCase.result = true;
-        return testCase;  
+        
   }
 
 

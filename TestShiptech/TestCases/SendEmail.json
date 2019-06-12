@@ -1,0 +1,13 @@
+{
+  "testTitle": "Send emails",
+  "starturl": "/",
+  "headless": false,
+  "testCases": [
+    {
+      "keyname": "sendemail"
+    }
+]
+}
+
+
+

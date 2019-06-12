@@ -21,33 +21,6 @@ class ShiptechInvoicesTreasuryReport {
 
 
 
-  async clearFilters()
-  {
-      await this.tools.waitForLoader();
-      var selector = "input[name='isDefault']";
-      this.tools.waitFor(selector);
-      var checkbox = await this.tools.page.$(selector);
-      var ischecked = await (await checkbox.getProperty('checked')).jsonValue();
-      if(ischecked)
-      {        
-        await this.tools.clickBySelector(selector);
-        await this.tools.waitForLoader();
-        checkbox = await this.tools.page.$(selector);
-        ischecked = await (await checkbox.getProperty('checked')).jsonValue();
-        if(ischecked)
-          throw  new Error("Cannot uncheck " + selector);
-        
-        //save this configuration
-        await this.tools.clickBySelector("#save_layout");
-        await this.tools.waitForLoader();
-        //const links = await this.tools.page.evaluate(() => { location.reload() });
-        //await this.tools.waitForLoader();
-      }
-      
-      
-  }
-
-
 
   async TreasuryReport(testCase, commonTestData)
   {
@@ -97,7 +70,7 @@ class ShiptechInvoicesTreasuryReport {
       return testCase;
     }
 
-    await this.clearFilters();
+    await this.shiptech.clearFilters();
     await this.shiptech.filterByOrderId(testCase.orderId);
     
     await this.tools.clickOnItemWait("a[data-sortcol='invoice_id']");
@@ -135,8 +108,9 @@ class ShiptechInvoicesTreasuryReport {
       testCase.result = false;
     }
     
+    await this.tools.waitFor(5000);
     await this.tools.closeCurrentPage();    
-    return testCase;
+    
   
   }
 
@@ -201,13 +175,13 @@ class ShiptechInvoicesTreasuryReport {
             this.tools.log("Invlid number in testCase: " + floatReport);
             result = false;
           }
-          else if(Math.trunc(floatTest) != Math.trunc(floatReport))
+          else if(Math.abs(floatTest - floatReport) > 1)          
           {
             this.tools.log("Numbers don't match for " + key + "; row: " + (i+1) + " : test: " + floatTest + " report: " + floatReport);
             result = false;
           }
         }
-        else if(valTest != valReport)
+        else if(Math.abs(floatTest - floatReport) > 1)
         {
            this.tools.log("Difference in report: " + key + "; row: "+ (i+1)  +" Report:" + rowReport[key] + "; TestCase:" + rowTest[key]);
            result = false;

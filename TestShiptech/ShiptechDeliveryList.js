@@ -25,10 +25,7 @@ class ShiptechDeliveryList {
 
   async DeliveryList(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "DeliveryList"
-    }
+    testCase.result = true;
 
     this.tools.log("Loading Delivery List");
     await this.tools.waitForLoader();
@@ -42,6 +39,7 @@ class ShiptechDeliveryList {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Delivery List"))
       this.tools.log("SUCCES!");
@@ -49,7 +47,6 @@ class ShiptechDeliveryList {
       this.tools.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-    return answer;
   
   }
 

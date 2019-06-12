@@ -119,22 +119,34 @@ class ShiptechInvoicesDeliveriesList {
 
     //costs that have to be selected
     if(productData.costs)
+    {      
       for (var i=0; i<productData.costs.length; i++)
       {
+        if(!productData.costs[i].nameId)
+           throw new Error("Cost name was not generated, invalid testcase.");
+
+        if(commonTestData[productData.costs[i].nameId])
+          productData.costs[i].name = commonTestData[productData.costs[i].nameId];
+
+        //doesn't work because I can't identify corectly the costs
+        //for example BARGING may appear multiple times
         var rowIdx = await this.shiptech.findRowIdxContainingText("#flat_invoices_app_deliveries_list", productData.costs[i].name);
         if(rowIdx < 0)
           continue;//that means the costs are not on the order
           
         rowsInFocus.push(rowIdx);
       }
+    }
 
-    //unselect all other rows that are not in the productData.products
+    /*
+    //unselect all other rows that are not in the productData.products    
     var rowCount = await this.shiptech.findTableRowsCount("#flat_invoices_app_deliveries_list");
     for(var i=1; i<rowCount; i++)
     {
       if(rowsInFocus.indexOf(i) < 0)
         await this.tools.click("#jqg_flat_invoices_app_deliveries_list_" + i);
     }
+    */
     
     if(testCase.action == "provisional")
       testCase.invoiceType = "Provisional Invoice";
@@ -151,9 +163,9 @@ class ShiptechInvoicesDeliveriesList {
     
     await this.shiptechInvoice.CreateInvoice(testCase, commonTestData);
 
+    await this.tools.waitFor(5000);
     await this.tools.closeCurrentPage();
-    
-    return testCase;
+  
   
   }
 

@@ -1,0 +1,17 @@
+
+{
+    "testTitle": "Country - Scenario 16",
+    "starturl": "masters/country",
+    "headless": false,
+    "testCases": [
+      {
+        "keyname": "newCountry",
+        "CountryNameNew": "Test Country 17",
+        "CountryCode": "Test Country 17"       
+      }
+  ]
+}
+
+
+
+  

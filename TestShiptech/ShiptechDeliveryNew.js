@@ -66,6 +66,7 @@ class ShiptechDeliveryNew {
    
     
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is: " + labelTitle.trim());
     if(!labelTitle.includes("Delivery Entity Edit"))  
     {  
@@ -77,6 +78,14 @@ class ShiptechDeliveryNew {
     await this.tools.setText("input[id='productProduct']", testCase.orderId);
     await this.tools.page.keyboard.press("Tab", {delay: 500});
     await this.tools.setText("input[id='bdnDate_dateinput']", testCase.bdnDate, 0, false);
+
+    if(await this.tools.isElementVisible("#buyerQuantity"))
+      await this.tools.selectBySelector("#buyerQuantity", "Bdn Quantity", false);
+
+    if(await this.tools.isElementVisible("#sellerQuantity"))
+      await this.tools.selectBySelector("#sellerQuantity", "Bdn Quantity", false);
+    
+    
     
     for (let i = 0; i < testCase.products.length; i++) {        
       await this.tools.selectBySelector("#addProductToDeliverySelect", testCase.products[i].name, false);
@@ -90,9 +99,8 @@ class ShiptechDeliveryNew {
     await this.tools.clickBySelector("#completed");
     await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
     await this.tools.waitForLoader("Save Delivery");
-    await this.tools.closeCurrentPage();
-
-    return testCase;
+    await this.tools.waitFor(5000);
+    await this.tools.closeCurrentPage();    
   
   }
 

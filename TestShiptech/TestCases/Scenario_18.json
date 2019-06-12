@@ -1,0 +1,13 @@
+
+{
+  "testTitle": "Currency - Scenario 18",
+  "starturl": "masters/currency",
+  "headless": false,
+  "testCases": [
+    {
+      "keyname": "newCurrency",        
+      "CurrencyDescriptionNew": "Test Currency 18"
+    }
+]
+}
+

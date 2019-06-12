@@ -25,11 +25,7 @@ class ShiptechLabsList {
 
   async LabsList(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "LabsList"
-    }
-
+    testCase.result = true;
     this.tools.log("Loading Labs List");
     await this.tools.waitForLoader();
     await this.tools.click('div.menu-toggler.sidebar-toggler');
@@ -42,6 +38,7 @@ class ShiptechLabsList {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Labs Results List"))
       this.tools.log("SUCCES!");
@@ -49,7 +46,7 @@ class ShiptechLabsList {
       this.tools.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-    return answer;
+  
   
   }
 

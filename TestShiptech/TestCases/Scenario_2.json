@@ -3,6 +3,9 @@
     "testTitle": "Invoice Test Scenarios - Scenario 2",
     "headless": false,
     "starturl": "new-order",    
+    "testData" : {      
+      "products":["product1Name"]
+    },
     "testCases": [
       {
         "keyname": "order",
@@ -36,7 +39,6 @@
           "invoiceStatusAfterSave": ["New","Discrepancy"],
           "invoiceStatusAfterSubmit": ["New","Discrepancy"],
           "invoiceStatusAfterApprove": ["Approved"],
-          "currency": "US Dollar",
           "testRevert": false,          
           "testOrderStatus": false,
           "paymentDate": 2,
@@ -74,7 +76,17 @@
               "Invoice Type": "Final Invoice"
             }
           ]
-        }
+        },
+        {
+          "keyname": "completeView",
+          "input": {"orderId":"order1Id"},
+          "rows": [ 
+            {
+              "Order Product Amount": "568121",
+              "Invoice Product Amount": "580120"
+            }
+          ]
+        } 
   ]
 }
 

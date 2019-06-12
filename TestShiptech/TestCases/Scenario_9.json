@@ -1,0 +1,18 @@
+
+{
+    "testTitle": "Agreement Type - Scenario 9",
+    "starturl": "masters/agreementtype",    
+    "headless": false,    
+    "testCases": [
+      {
+        "keyname": "newAgreementType",
+        "AgreementTypeNameNew": "Agreement Type Test 1",        
+        "DefaultStrategy": "Strategy Test Percent 1",
+        "ApplicableFor": "Contract"
+      }
+  ]
+}
+
+
+
+  

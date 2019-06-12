@@ -1,0 +1,13 @@
+
+{
+  "testTitle": "Event - Scenario 22",
+  "starturl": "masters/event",
+  "headless": false,
+  "testCases": [
+    {
+      "keyname": "newEvent",
+      "EventNameNew": "Event Name 22"      
+    }
+]
+}
+

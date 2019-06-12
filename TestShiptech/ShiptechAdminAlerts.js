@@ -26,6 +26,7 @@ class ShiptechAdminAlerts {
   async AdminAlerts(testCase)
   {    
 
+    testCase.result = true;
     this.tools.log("Loading Admin Alerts");
     await this.tools.waitForLoader();
     await this.tools.click('div.menu-toggler.sidebar-toggler');
@@ -39,6 +40,7 @@ class ShiptechAdminAlerts {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Alerts"))
       this.tools.log("SUCCES!");

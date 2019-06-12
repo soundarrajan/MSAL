@@ -25,11 +25,7 @@ class ShiptechClaimsList {
 
   async ClaimsList(testCase)
   {    
-    var answer = {    
-      testSatus: 0,
-      testName: "ClaimsList"
-    }
-    
+    testCase.result = true;
     this.tools.log("Loading Claims List");
     await this.tools.waitForLoader();
     await this.tools.click('div.menu-toggler.sidebar-toggler');
@@ -42,6 +38,7 @@ class ShiptechClaimsList {
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
+    labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
     if(labelTitle.includes("Claims List"))
       this.tools.log("SUCCES!");
@@ -49,8 +46,7 @@ class ShiptechClaimsList {
       this.tools.log("FAIL!");
 
     await this.tools.closeCurrentPage();
-    
-    return answer;
+  
   
   }
 

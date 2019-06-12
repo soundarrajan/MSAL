@@ -1,0 +1,16 @@
+
+{
+    "testTitle": "Claim - Scenario 13",
+    "starturl": "masters/claimtype",
+    "headless": false,
+    "testCases": [
+      {
+        "keyname": "newClaim",
+        "ClaimNameNew": "Test Claim 16"
+      }
+  ]
+}
+
+
+
+  

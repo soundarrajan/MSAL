@@ -1,0 +1,26 @@
+{
+      "baseurl": "http://mail.24software.ro:8166/#/",
+      "isMasterDb": true,
+      "databaseIntegration": {                        
+                                  "server": "10.1.1.11", 
+                                  "database": "Shiptech10.PrimeDatabase",
+                                  "user": "sa",
+                                  "password": "!QAZ2wsx",
+                                  "options": {"encrypt": true}
+                                },
+      "username": "superuser@twentyfoursoftwareoutlook.onmicrosoft.com",
+      "password": "MyDocuments72%",
+      "sendEmails": true,
+      "emailhost": "192.168.1.223",
+      "emailport": 587,
+      "emailuser": "autotests",
+      "emaildomain": "24soft",
+      "emailpass": "!QAZ2wsxc",
+      "emailrecipients": "rares.tohanean@24software.ro"
+
+}
+
+
+
+
+  

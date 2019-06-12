@@ -1,0 +1,18 @@
+
+{
+    "testTitle": "Additioal cost edit - 0",    
+    "headless": false,    
+    "starturl": "masters/additionalcost",
+    "testCases": [
+      {
+        "keyname": "newAdditionalCost",
+        "AdditioalCostNameNew": "PercentTypeName1",
+        "CostType": "Percent",
+        "ComponentType": "ProductComponent"
+      }
+  ]
+}
+
+
+
+  

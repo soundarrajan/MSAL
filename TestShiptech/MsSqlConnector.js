@@ -11,21 +11,25 @@ class MsSqlConnector {
 
   constructor(dbConfig) {
 
-    this.config = dbConfig;
-
+    this.config = dbConfig;    
+    this.isConnected = false;
   }
 
 
 
-    async read(sql)
+    async read(sql, config = "")
     {
+
 
       try 
       {
-        await SQLLib.connect(this.config)
+        if(!this.isConnected)
+          await SQLLib.connect(this.config)
+        this.isConnected = true;
 
         const result = await SQLLib.query(sql);//`select * from Logs where id = ${value}`        
         SQLLib.close()
+        this.isConnected = false;
 
         if(!result || !result.recordset)
           return [];
@@ -40,6 +44,7 @@ class MsSqlConnector {
 
       } catch (err) {
           SQLLib.close();
+          this.isConnected = false;
           throw err;
       }
 

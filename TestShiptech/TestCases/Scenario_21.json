@@ -1,0 +1,13 @@
+
+{
+  "testTitle": "Email Logs - Scenario 21",
+  "starturl": "masters/emaillogs",
+  "headless": false,
+  "testCases": [
+    {
+      "keyname": "editEmailLog",
+      "emailToEdit": "donotsend@donotsend.donotsend"
+    }
+]
+}
+
