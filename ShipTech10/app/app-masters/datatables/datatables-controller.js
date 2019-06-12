@@ -2964,22 +2964,41 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "sellerQuantity",
                         displayName: "Seller quantity",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        format: "number:"+vm.quantity                        
                     },
                     {
                         name: "buyerQuantity",
                         displayName: "Buyer quantity",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        format: "number:"+vm.quantity                        
                     },
                     {
                         name: "quantityUom.name",
                         displayName: "UOM",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        // cellTemplate: $scope.dataTableTemplates.text,
+                        cellTemplate: $scope.dataTableTemplates.dropdown,
+                        cellObject: {
+                            Name: "Uom",
+                            Type: "dropdown",
+                            masterSource: "Uom",
+                            required: false
+                        }                         
                     },
                     {
                         name: "reconStatus",
                         displayName: "Recon status",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.dropdown,
+                        cellObject: {
+                            Name: "reconStatus",
+                            Type: "dropdown",
+                            masterSource: "ReconMatch",
+                            required: false
+                        }                        
                     },
                     {
                         name: "claimAppreciation",
@@ -3029,12 +3048,16 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "bdnDensity",
                         displayName: "BDN density",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        format: "number:"+vm.quantity                          
                     },
                     {
                         name: "labDensity",
                         displayName: "Lab density",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        format: "number:"+vm.quantity                          
                     },
                     {
                         name: "densityDifference",
@@ -3094,12 +3117,16 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "minValue",
                         displayName: "Min Value",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,                        
+                        format: "number:"+vm.quantity                            
                     },
                     {
                         name: "maxValue",
                         displayName: "Max Value",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,                        
+                        format: "number:"+vm.quantity                            
                     },
                     {
                         name: "testValue",
@@ -3161,12 +3188,16 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "minValue",
                         displayName: "Min Value",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,                        
+                        format: "number:"+vm.quantity                             
                     },
                     {
                         name: "maxValue",
                         displayName: "Max Value",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,                        
+                        format: "number:"+vm.quantity                             
                     },
                     {
                         name: "testValue",
