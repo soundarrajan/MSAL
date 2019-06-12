@@ -71,3 +71,14 @@
 .vis-sunday {
 	background: #d3d3d3;
 }
+
+
+
+schedule-dashboard-timeline .vis-inner {
+	height: 100%;
+}
+
+.timeline-popover-hover.popover-body {
+	padding: 0 15px;
+}
+
