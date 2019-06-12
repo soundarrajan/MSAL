@@ -176,7 +176,7 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
                 // 	createStatusFilters();
                 // }
 	        	console.log(new Date())
-	            if($state.current.name == STATE.DASHBOARD_TABLE || $state.current.name == STATE.DASHBOARD_CALENDAR || $state.current.name == STATE.HOME) { 
+	            if($state.current.name == STATE.DASHBOARD_TABLE || $state.current.name == STATE.DASHBOARD_CALENDAR || $state.current.name == STATE.DASHBOARD_TIMELINE || $state.current.name == STATE.HOME) { 
 
 			    	if (window.scheduleDashboardConfiguration) {
 

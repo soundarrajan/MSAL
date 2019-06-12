@@ -58,6 +58,20 @@
                 </div>
             </div>
 
+            <div ng-if="state.is(STATE.DASHBOARD_TIMELINE)">
+                <div class="form-group">
+                    <div class="input-group st-content-search-box">
+                        <div id="search_box_dummy1">
+                            <input type="search" class="form-control ng-pristine ng-valid ng-empty ng-touched" placeholder="Search" ng-model="search_box"
+                                aria-controls="timelineSearch" ng-keydown="$event.keyCode === 13 && searchTimeline(search_box)">
+                        </div>
+                        <span class="input-group-addon" ng-click="searchTimeline(search_box);">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
 
             </form>
             <div class="form-group " ng-if="state.is(STATE.DASHBOARD_TABLE)">

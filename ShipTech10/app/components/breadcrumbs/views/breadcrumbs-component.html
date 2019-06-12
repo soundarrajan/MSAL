@@ -32,13 +32,13 @@
             </a>
         </span>
     </div>
-<!--     <div ng-if="state.is(STATE.HOME)""  class="btn-group pull-right layout-button">
-        <a   class="btn btn-fit-height">
-            <i class="icon-grid"></i>
-        </a>
-    </div> -->
+
     <navigation-topbar class="pull-right"></navigation-topbar>
-    <div class="page-toolbar" ng-class="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME) ? 'schedule_toolbar' : ''">
+
+    <div class="page-toolbar" ng-class="state.is(STATE.DASHBOARD_TABLE) ||
+                                        state.is(STATE.DASHBOARD_CALENDAR) ||
+                                        state.is(STATE.DASHBOARD_TIMELINE) ||
+                                        state.is(STATE.HOME) ? 'schedule_toolbar' : ''">
 
         <div class="st-breadcrumbs-pins" ng-if="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)" ng-init="getCalendarStatus()">
             <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
@@ -57,48 +57,45 @@
                          {{status.statusDisplayName}} 
                     </div>
                 </li>
-
             </ul>
         </div>
 
-<!--         <div ng-if="state.is(STATE.NEW_REQUEST) ||
-        state.is(STATE.ORDER_LIST) ||
-        state.is(STATE.ORDER_TRANSACTION_KPI) ||
-        state.is(STATE.PREVIEW_EMAIL) ||
-        state.is(STATE.NEW_ORDER) ||
-        state.is(STATE.CONTRACT_PLANNING)" class="st-breadcrumbs-progress-bar">
-        <ul class="page-breadcrumb">
-            <li class="btn btn-fit-height st-progress-bar-next"> Request</li>
-            <li class="btn btn-fit-height"> Contract</li>
-            <li class="btn btn-fit-height"> Order</li>
-            <li class="btn btn-fit-height"> Delivery</li>
-            <li class="btn btn-fit-height"> Labs</li>
-            <li class="btn btn-fit-height"> Claims</li>
-            <li class="btn btn-fit-height"> Invoices</li>
-            <li class="btn btn-fit-height"> Recon</li>
-        </ul> -->
-    </div>
-
+        <div class="st-breadcrumbs-pins" ng-if="timelineStatusList && state.is(STATE.DASHBOARD_TIMELINE)">
+            <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
+                {{ statusesCount = calculateTimelineStatusesCount() }}
+                <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.statusDisplayName.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in timelineStatusList | filter:{ display: true } track by $index" style="width: {{ 100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;" ng-click="breadcrumbsFilter(status.label,status.count)">
+                    <div class="tear clickable" ng-style="{{status.style}}">
+                        <span>
+                            {{ status.count }}
+                        </span>
+                    </div
+>                    <div class="caption clickable center-line" ng-class="{'center-line': status.statusDisplayName.indexOf(' ') < 0}" style="margin-bottom: 10px;" >
+                        <!--{{status.name}}-->
+                         {{ status.statusDisplayName }} 
+                    </div>
+                </li>
+            </ul>
+        </div>
 
     </div>
 </div>
 
 
 <!-- confirm modal -->
-	<div class="confirmModal1 fade bs-modal hide" style="transform: translateY(50%);" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
-				</div>
-				<div class="modal-body">
-					{{confirmModalData.text}} 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-					<button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
-				</div>
+<div class="confirmModal1 fade bs-modal hide" style="transform: translateY(50%);" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+			</div>
+			<div class="modal-body">
+				{{confirmModalData.text}} 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
 			</div>
 		</div>
 	</div>
+</div>

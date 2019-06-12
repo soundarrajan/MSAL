@@ -1,8 +1,11 @@
-angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', ['scheduleDashboardTimelineResource', 'payloadDataModel', '$q',
-    function(scheduleDashboardTimelineResource, payloadDataModel, $q) {
+angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', ['scheduleDashboardTimelineResource', 'scheduleDashboardStatusResource', 'payloadDataModel', '$q',
+    function(scheduleDashboardTimelineResource, scheduleDashboardStatusResource, payloadDataModel, $q) {
         var request_data;
         var payload = {};
         var currentModel = new scheduleDashboardTimelineModel();
+
+        var statuses = null;
+
         // flag for determining if model info has been retrieved
         var modelReady = false;
 
@@ -76,9 +79,21 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', ['sc
             return modelReady;
         }
 
+        function getStatuses() {
+            if (statuses !== null) {
+                return $q.when(statuses);
+            }
+            var requestData = payloadDataModel.create();
+            return scheduleDashboardStatusResource.fetch(requestData).$promise.then(function(data) {
+                statuses = data.payload;
+                return statuses;
+            });
+        }
+
         // return public model API
         return {
             get: get,
+            getStatuses: getStatuses,
             getLatestVersion: getLatestVersion,
             isModelReady: isModelReady,
         };

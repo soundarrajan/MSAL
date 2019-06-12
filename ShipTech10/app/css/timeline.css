@@ -1,19 +1,26 @@
+.vis-timeline {
+	background: #f3f3f3;
+	padding-bottom: 20px;
+}
+
 .vis-inner {
-	width: 100%;
-	min-height: 100%;
+	/* width: 100%; */
+	/* min-height: 100%; */
+	/* height: 100%; */
 	padding: 0 !important;
 	display: table !important;
 }
 
 .vis-custom-group { 
-	width: 100%;
+	/* width: 100%; */
+	height: 100%;
 	display: flex;
 	justify-content: space-between;
 }
 
 .vis-custom-group-column { 
-	width: 25%;
-	height: 100%;
+	width: 100px;
+	/* height: 100%; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,4 +34,40 @@
 
 .vis-custom-group-column.last { 
 	border-right: none;
+}
+
+.vis-time-axis .vis-text {
+	text-align: center;
+}
+
+.vis-today {
+	background: #99cb82;
+	color: #f3f3f3 !important;
+}
+
+.vis-item {
+	min-height: 35px;
+}
+
+.vis-item-content {
+	font-size: 0.9em;
+	text-align: center;
+	padding: 0 !important;
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.vis-item-addon {
+    top: 0px;
+    right: 0px;
+    background: gray;
+    color: #f3f3f3;
+}
+
+.vis-saturday {
+	background: #d3d3d3;
+}
+
+.vis-sunday {
+	background: #d3d3d3;
 }
