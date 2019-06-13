@@ -143,11 +143,17 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
 
                 voyageContent += '<span voyage-detail-id="'+vessels[i].voyageDetail.id+'"> ' + vessels[i].voyageDetail.locationCode + ' </span>';
 
+                if (vessels[i].voyageDetail.etd) {
+                	endDate = moment(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
+                } else {
+                	endDate = moment(vessels[i].voyageDetail.eta).add('days', 1).format('YYYY-MM-DD HH:mm');
+                }
+
                 var voyage = {
                     id: i,
                     content: voyageContent,
                     start: moment(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm'),
-                    end: moment(vessels[i].voyageDetail.eta).add('days', 1).format('YYYY-MM-DD HH:mm'),
+                    end: endDate,
                     style: 'background-color: ' + statusColor
                 };
 
@@ -213,7 +219,7 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                 // 'moveable': false,
                 // Disable red line
                 'showCurrentTime': false,
-                'stack': true,
+                'stack': false,
                 'maxHeight': 700,
                 'orientation': 'top',
                 'start': new Date(2019, 4, 3),
@@ -319,7 +325,7 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
         	$(this).popover({
                 container: 'body',
                 trigger: 'hover',
-                placement: 'bottom',
+                placement: 'auto bottom',
                 html: true,
                 template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
             }).
