@@ -2976,10 +2976,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                         format: "number:"+vm.quantity                        
                     },
                     {
-                        name: "quantityUom.name",
+                        name: "quantityUom",
                         displayName: "UOM",
                         enableCellEdit: false,
-                        // cellTemplate: $scope.dataTableTemplates.text,
                         cellTemplate: $scope.dataTableTemplates.dropdown,
                         cellObject: {
                             Name: "Uom",
