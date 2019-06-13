@@ -3,6 +3,9 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
 
     	var ctrl = this;
 		$scope.numberPrecision = $tenantSettings.defaultValues;
+		$scope.tenantSettings = $tenantSettings;
+		
+
 
         var DEBUG = false;
         if (window.location.hostname == 'localhost') {
@@ -144,15 +147,15 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                 voyageContent += '<span voyage-detail-id="'+vessels[i].voyageDetail.id+'"> ' + vessels[i].voyageDetail.locationCode + ' </span>';
 
                 if (vessels[i].voyageDetail.etd) {
-                	endDate = moment(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
+                	endDate = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
                 } else {
-                	endDate = moment(vessels[i].voyageDetail.eta).add('days', 1).format('YYYY-MM-DD HH:mm');
+                	endDate = moment.utc(vessels[i].voyageDetail.eta).add('days', 1).format('YYYY-MM-DD HH:mm');
                 }
 
                 var voyage = {
                     id: i,
                     content: voyageContent,
-                    start: moment(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm'),
+                    start: moment.utc(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm'),
                     end: endDate,
                     style: 'background-color: ' + statusColor
                 };
@@ -218,7 +221,7 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                 'verticalScroll': true,
                 // 'moveable': false,
                 // Disable red line
-                'showCurrentTime': false,
+                'showCurrentTime': true,
                 'stack': false,
                 'maxHeight': 700,
                 'orientation': 'top',
@@ -341,8 +344,12 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
         	}); 
 			voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
 
+			html = "";
+			
 
-            html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+
+
+            html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
             $.each(voyageStop, function(k,v){
             	var voyage = v.voyageDetail;
 	            if (voyage.request && voyage.request.id != 0) {
@@ -364,9 +371,38 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             html += '</tbody> </table>';
             if (voyageStop.length == 0 || !hasRequest) {
             	html = "";
+            } else {
+				preHtml = "<p><b>";
+				preHtml += voyageStop[0].voyageDetail.request.requestDetail.location + " - ";
+				preHtml += " ETA : " + moment(voyageStop[0].voyageDetail.eta).format($scope.dateFormat) + " - ";
+				if (voyageStop[0].voyageDetail.etd) {
+					preHtml += " ETD : " + moment(voyageStop[0].voyageDetail.etd).format($scope.dateFormat) + " - ";
+				}
+				if (voyageStop[0].voyageDetail.deliveryFrom && voyageStop[0].voyageDetail.deliveryTo) {
+					preHtml += " Delivery Window : " + moment(voyageStop[0].voyageDetail.deliveryFrom).format($scope.dateFormat) + " - " + moment(voyageStop[0].voyageDetail.deliveryTo).format($scope.dateFormat);
+				}				
+				preHtml += "</b></p>";
+				html = preHtml + html;            	
             }
             return html;
         }
+
+        $scope.formatDateToMomentFormat = function( dateFormat ){
+        	dbFormat = dateFormat;
+        	hasDayOfWeek = false;
+        	currentFormat = angular.copy(dateFormat);
+	        if (currentFormat.startsWith("DDD ")) {
+	            hasDayOfWeek = true
+	            currentFormat = currentFormat.split("DDD ")[1];
+	        }        	
+            currentFormat = currentFormat.replace(/d/g, "D");
+            currentFormat = currentFormat.replace(/y/g, "Y");
+            if (hasDayOfWeek) {
+            	currentFormat = "ddd " + currentFormat;
+            }
+            return currentFormat;
+        }
+        $scope.dateFormat = $scope.formatDateToMomentFormat($scope.tenantSettings.tenantFormats.dateFormat.name);
 
     }
 ]);
