@@ -192,7 +192,8 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		            if (response) {
 		                if (response.status == true) {
 							$scope.formValues = response.data;
-	                        localStorage.removeItem('raiseClaimFromLabsPayload');
+                            localStorage.removeItem('raiseClaimFromLabsPayload');
+                            $scope.triggerChangeFields('OrderID');
 		                } else {
 		                    $scope.loaded = true;
 		                    toastr.error(response.message);
