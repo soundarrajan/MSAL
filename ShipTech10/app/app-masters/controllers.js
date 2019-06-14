@@ -6221,6 +6221,7 @@ APP_MASTERS.controller("Controller_Master", [
                 Payload: {
                     Id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
                     Name: $rootScope.previewEmail.comment.name,
+	                AttachmentsList: $rootScope.previewEmail.attachmentsList,
                     Content: $rootScope.previewEmail.content,
                     EmailTemplate: {
                         Id: $rootScope.currentEmailTemplate
@@ -7266,6 +7267,44 @@ APP_MASTERS.controller("Controller_Master", [
 		    	costsAmountSum += convertDecimalSeparatorStringToNumber(v.invoiceAmount);
 	    	})
 	    	$scope.CM.formValues.invoiceSummary.invoiceAmountGrandTotal = costsAmountSum;
+	    }
+
+	    $scope.getAavailableDocumentAttachments = function(entityId, transaction){
+	    	var referenceNo = entityId;
+	    	var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+	    		return el.name == transaction;
+	    	}).id;
+	    	payload = {
+	    		"PageFilters": {
+	    			"Filters": []
+	    		},
+	    		"SortList": {
+	    			"SortList": []
+	    		},
+	    		"Filters": [
+	    		{
+	    			"ColumnName": "ReferenceNo",
+	    			"Value": referenceNo
+	    		},
+	    		{
+	    			"ColumnName": "TransactionTypeId",
+	    			"Value": transactionTypeId
+	    		}
+	    		],
+	    		"SearchText": null,
+	    		"Pagination": {
+	    			"Skip": 0,
+	    			"Take": 9999
+	    		}
+	    	}
+	    	$http.post(API.BASE_URL_DATA_MASTERS + "/api/masters/documentupload/list", {
+	            "Payload": payload
+	        }).then(function successCallback(response) {
+		    	$scope.availableDocumentAttachmentsList = response.data.payload;
+	        	$.each($scope.availableDocumentAttachmentsList, function(k,v){
+	        		v.isIncludedInMail = true;
+	        	});
+	        });
 	    }
 
 
