@@ -10,6 +10,8 @@
 		            	<th class="padding">Reply To</th>
 		            	<th class="padding">To email configuration</th>
 		            	<th class="padding">CC email configuration</th>
+		            	<th class="padding">Attachment Document Types</th>
+		            	<th class="padding">Email Attachment Required</th>
 		            </tr>
 		        </thead>
 		        <tbody>
@@ -59,7 +61,18 @@
 							<div ng-controller="Controller_Master as CM">
 								<multiselect ng-model="value.ccEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
 							</div>							
+						</td>						
+						<td class="">
+							<div ng-controller="Controller_Master as CM">
+								<multiselect ng-model="value.attachmentDocumentTypes" ng-disabled="!value.isEmailAttachmentRequired" options="CM.listsCache['DocumentType']" id-prop="id" display-prop="name" show-search="true"></multiselect>
+							</div>								
 						</td>
+						<td class="">
+							<label class="mt-checkbox">
+								<input type="checkbox" ng-model="value.isEmailAttachmentRequired" >
+									<span style="background:#fff; border: 1px solid #dedede;"></span>
+							</label>							
+						</td>						
 		            </tr>		            
 		        </tbody>
 		    </table>

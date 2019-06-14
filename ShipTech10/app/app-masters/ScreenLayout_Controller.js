@@ -619,7 +619,15 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 			                            			tempCcEmailsConfiguration.push({"id" : parseFloat(tov)});
 		                            			})
 		                        				$scope.formValues.email[k].ccEmailsConfiguration = tempCcEmailsConfiguration;
-		                            		}                            		
+		                            		}     
+		                            		if (v.attachmentDocumentTypes) {
+		                            			v.attachmentDocumentTypes = v.attachmentDocumentTypes.split(",");
+		                            			tempAttachmentDocumentTypes = [];
+		                            			$.each(v.attachmentDocumentTypes, function(tok,tov){
+			                            			tempAttachmentDocumentTypes.push({"id" : parseFloat(tov)});
+		                            			})
+		                        				$scope.formValues.email[k].attachmentDocumentTypes = tempAttachmentDocumentTypes;
+		                            		}  		                            		                       		
 		                            	})
                                     }
 

@@ -930,6 +930,7 @@ APP_MASTERS.controller("Controller_Master", [
                 $.each($scope.formValues.email, function(key, val) {
 	                toEmailsConfigurationSimplified = []
 	                ccEmailsConfigurationSimplified = []
+	                attachmentDocumentTypesSimplified = []
                 	if (val.toEmailsConfiguration) {
 	                	if (val.toEmailsConfiguration.length > 0) {
 	                		$.each(val.toEmailsConfiguration, function(tok,tov){
@@ -944,8 +945,17 @@ APP_MASTERS.controller("Controller_Master", [
 	                		})
 	                	}  
                 	}  
+
+                  	if (val.attachmentDocumentTypes) {
+	                	if (val.attachmentDocumentTypes.length > 0) {
+	                		$.each(val.attachmentDocumentTypes, function(cck,ccv){
+				                attachmentDocumentTypesSimplified.push(ccv.id);
+	                		})
+	                	}  
+                	}  
                 	val.toEmailsConfiguration = toEmailsConfigurationSimplified.length > 0 ? toEmailsConfigurationSimplified.join(",") : null;              	
                 	val.ccEmailsConfiguration = ccEmailsConfigurationSimplified.length > 0 ? ccEmailsConfigurationSimplified.join(",") : null;              	
+                	val.attachmentDocumentTypes = attachmentDocumentTypesSimplified.length > 0 ? attachmentDocumentTypesSimplified.join(",") : null;              	
                 });
             }
 
@@ -7257,6 +7267,8 @@ APP_MASTERS.controller("Controller_Master", [
 	    	})
 	    	$scope.CM.formValues.invoiceSummary.invoiceAmountGrandTotal = costsAmountSum;
 	    }
+
+
 
     }
 ]);
