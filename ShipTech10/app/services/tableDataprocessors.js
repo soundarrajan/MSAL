@@ -77,7 +77,7 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
             }
 
 
-            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate" || obj.name == "lastEmailSentDate") {
+            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate") {
                 if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1) {
                 } else {
                     colmodel[key].formatter = CLC.get_formatter("formatDate");
@@ -94,7 +94,7 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
 
             }
             if (obj.name == "claimDate" || obj.name == "orderDate" || /*obj.name == "requestDate" ||*/ obj.name == "date" || obj.name == "quoteDate" || obj.name == "validTo" || obj.name == "validFrom" || (obj.name.indexOf("Date") > -1) || (obj.name.indexOf("date") > -1)) {
-                if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1) {
+                if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1 || obj.name == "lastEmailSentDate") {
                 } else {
                     if (obj.label == "Date (UTC)" || obj.label == "Due Date" || obj.label == "Working Due Date" || obj.label == "Seller Due Date" || obj.label == "Order Date") {
                         colmodel[key].formatter = CLC.get_formatter("formatDateUtc");
@@ -117,13 +117,13 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
             // if (obj.name.toLowerCase().indexOf("quantity") != -1 || obj.name.toLowerCase().indexOf("qty") != -1) {
             //     colmodel[key].formatter = CLC.get_formatter("quantity");
             // }  
-            if (obj.name == "etd" || obj.name == "eta" || obj.name == "deliveryDate" || obj.name == "etb" || obj.name == "bunkeringEta" || obj.name == "orderEta" || obj.name.indexOf(".eta") != -1 ) {
+            if (obj.name == "etd" || obj.name == "eta" || obj.name == "deliveryDate" || obj.name == "etb" || obj.name == "bunkeringEta" || obj.name == "orderEta" || obj.name.indexOf(".eta") != -1 || obj.name == "lastEmailSentDate" ) {
                 if (colmodel[key].formatter) {
                     if (colmodel[key].formatter.name != "formatOnlyDate") {
                         colmodel[key].formatter = CLC.get_formatter("formatDateUtc");
-                      }
-                    } else {
-                      colmodel[key].formatter = CLC.get_formatter("formatDateUtc");
+                    }
+                } else {
+                  colmodel[key].formatter = CLC.get_formatter("formatDateUtc");
                 }
             }
             // if(obj.name =="sumOfCosts"){
