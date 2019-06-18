@@ -6313,6 +6313,11 @@ APP_MASTERS.controller("Controller_Master", [
 	                ccOthersString = ccOthersString.toString();
 	            }
 
+	            var validAttachments = angular.copy($rootScope.previewEmail.attachmentsList);
+	            validAttachments = _.filter(validAttachments, function(el){
+	            	return el.isIncludedInMail == true || el.isIncludedInMail == null;
+	            })
+
 	            toString = toString.toString();
 	            ccString = ccString.toString();
 	            var saveData = {
@@ -6321,7 +6326,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                    Name: $rootScope.previewEmail.comment.name,
 	                    Content: $rootScope.previewEmail.content,
 	                    Subject: $rootScope.previewEmail.subject,
-						AttachmentsList: $rootScope.previewEmail.attachmentsList,	                    
+						AttachmentsList: validAttachments,	                    
 	                    EmailTemplateId: $rootScope.currentEmailTemplate,
 	                    BusinessId: vm.entity_id,
 	                    To: toString,
@@ -7309,7 +7314,20 @@ APP_MASTERS.controller("Controller_Master", [
 	        });
 	    }
 
-
+	    $scope.addToAttachments = function(el) {
+	    	var isInList = _.find($scope.previewEmail.attachmentsList, function(v){
+	    		return v.id == el.id
+	    	});
+	    	if (isInList) {
+	    		if (isInList.isIncludedInMail == false) {
+	    			isInList.isIncludedInMail = true;
+	    		} else {
+		    		toastr.error("Attachment already added");
+	    		}
+	    	} else {
+	    		$scope.previewEmail.attachmentsList.push(el);
+	    	}
+	    }
 
     }
 ]);
