@@ -21,7 +21,11 @@
     	<b>Related Contract : <span style="padding: 5px 5px;margin-left:10px;float: right;margin-top: -5px;" class="bg-green-sharp font-white ng-binding">{{isContractInFormulaScreen()}}</span></b>
     </div>
 
-    <div class="btn-group pull-right "  ng-if="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)">
+    <div class="btn-group pull-right"
+        ng-if="state.is(STATE.DASHBOARD_TABLE) ||
+               state.is(STATE.DASHBOARD_CALENDAR) || 
+               state.is(STATE.DASHBOARD_TIMELINE) || 
+               state.is(STATE.HOME)">
         <!-- <a class="btn btn-fit-height dropdown-toggle" ng-show="visibleSidebarToggle()"> -->
 
             <span class="hidden">{{CheckForFilters}}</span>
@@ -40,7 +44,11 @@
                                         state.is(STATE.DASHBOARD_TIMELINE) ||
                                         state.is(STATE.HOME) ? 'schedule_toolbar' : ''">
 
-        <div class="st-breadcrumbs-pins" ng-if="state.is(STATE.DASHBOARD_TABLE) || state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)" ng-init="getCalendarStatus()">
+        <div class="st-breadcrumbs-pins"
+             ng-if="state.is(STATE.DASHBOARD_TABLE) ||
+                    state.is(STATE.DASHBOARD_CALENDAR) ||
+                    state.is(STATE.HOME)"
+             ng-init="getCalendarStatus()">
             <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
             	<li class="hidden">
@@ -61,6 +69,7 @@
         </div>
 
         <div class="st-breadcrumbs-pins" ng-if="timelineStatusList && state.is(STATE.DASHBOARD_TIMELINE)">
+            <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
                 {{ statusesCount = calculateTimelineStatusesCount() }}
                 <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.statusDisplayName.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in timelineStatusList | filter:{ display: true } track by $index" style="width: {{ 100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;" ng-click="breadcrumbsFilter(status.label,status.count)">
@@ -68,10 +77,9 @@
                         <span>
                             {{ status.count }}
                         </span>
-                    </div
->                    <div class="caption clickable center-line" ng-class="{'center-line': status.statusDisplayName.indexOf(' ') < 0}" style="margin-bottom: 10px;" >
+                    </div>                    <div class="caption clickable center-line" ng-class="{'center-line': status.statusDisplayName.indexOf(' ') < 0}" style="margin-bottom: 10px;">
                         <!--{{status.name}}-->
-                         {{ status.statusDisplayName }} 
+                        {{ status.statusDisplayName }}
                     </div>
                 </li>
             </ul>

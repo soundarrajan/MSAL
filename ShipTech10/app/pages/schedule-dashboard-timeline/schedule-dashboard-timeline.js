@@ -1,11 +1,12 @@
-angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings',
-    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings) {
+angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData',
+    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData) {
 
     	var ctrl = this;
 		$scope.numberPrecision = $tenantSettings.defaultValues;
-		$scope.tenantSettings = $tenantSettings;
-		
-
+        $scope.tenantSettings = $tenantSettings;
+        
+        ctrl.startDate = null;
+        ctrl.endDate = null;
 
         var DEBUG = false;
         if (window.location.hostname == 'localhost') {
@@ -86,8 +87,8 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                                 status.display = true;
 
                                 var sts1 = null;
-                                for (var j = 0; j < timelineStatuses.length; j++) {
-                                    sts1 = timelineStatuses[j];
+                                for (var j = 0; j < statusList.length; j++) {
+                                    sts1 = statusList[j];
                                     if (sts1.status.displayName == sts.status.displayName) {
                                         status.style = createStyle(colorCode);
                                         status.count = sts1.count;
@@ -249,6 +250,7 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             timeline.setGroups(groups);
             timeline.setItems(voyages);
 
+            $rootScope.clc_loaded = true;
         };
 
         var updateTimeline = function(data) {
@@ -292,14 +294,15 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             })
         };
 
-        async function getData() {
+        async function getData(payload) {
             return await new Promise(resolve => {
-                scheduleDashboardTimelineModel.get(null, null).then(function (response) {
+                scheduleDashboardTimelineModel.get(null, null, payload).then(function (response) {
                     resolve(response);
                 });
             });
         }
 
+        // Get data and initialize timeline
         async function doTimeline() {
             Promise.all([getData(), getStatuses(), getConfiguration()]).then(function(res) {
                 createFilters();
@@ -308,17 +311,6 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             });
         }
         doTimeline();
-        // Get data and initialize timeline
-        Promise.all([getStatuses, getData, getConfiguration]).then(function(values) {
-            STATUSES = values[0];
-            createFilters();
-            $rootScope.timelineStatusList = timelineStatusList;
-            buildTimeline(values[1]);
-        });
-
-
-
-
 
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
@@ -403,6 +395,122 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             return currentFormat;
         }
         $scope.dateFormat = $scope.formatDateToMomentFormat($scope.tenantSettings.tenantFormats.dateFormat.name);
+
+        $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
+
+            $scope.filtersAppliedPayload = payload;
+            
+            getConfiguration().then(function(settings) {
+                getData(payload).then(function(response) {
+                    updateTimeline(response);
+                });
+            });
+
+            var conditions = $filtersData.filterConditions;
+
+            for(var i = 0; i < payload.length; i++) {
+                for(var j = 0; j < conditions.length; j++) {
+                    if(payload[i].ColumnType === conditions[j].conditionApplicable && payload[i].ConditionValue === conditions[j].conditionValue) {
+                        payload[i]['conditionName'] = conditions[j].conditionName;
+                        switch(payload[i].columnValue) {
+                            case 'BuyerName':
+                                payload[i]['displayName'] = 'Buyer';
+                                break;
+                            case 'VesselName':
+                                payload[i]['displayName'] = 'Vessel name';
+                                break;
+                            case 'ServiceName':
+                                payload[i]['displayName'] = 'Service';
+                                break;
+                            case 'VoyageDetail_ETA':
+                                payload[i]['displayName'] = 'ETA';
+                                break;
+                            case 'VoyageDetail_ETB':
+                                payload[i]['displayName'] = 'ETB';
+                                break;
+                            case 'VoyageDetail_PortStatus_DisplayName':
+                                payload[i]['displayName'] = 'Port Status';
+                                break;
+                            case 'VoyageDetail_LocationName':
+                                payload[i]['displayName'] = 'Location';
+                                break;
+                            case 'CompanyName':
+                                payload[i]['displayName'] = 'Company'; 
+                                break;
+                        }
+                        if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {
+                            payload[i].displayName = 'Port Status';
+                        }
+                        if (payload[i].displayName) {
+                            if ($scope.tenantSettings.companyDisplayName == "Pool") {
+                                payload[i].displayName = payload[i].displayName.replace("Carrier", $scope.tenantSettings.companyDisplayName.name);
+                            }
+                            payload[i].displayName = payload[i].displayName.replace("Company", $scope.tenantSettings.companyDisplayName.name);
+                            payload[i].displayName = payload[i].displayName.replace("Service", $scope.tenantSettings.serviceDisplayName.name);                            
+                        }
+                    }
+                }
+            }
+
+            if (isBreadcrumbFilter) {
+                if ($scope.appFilters) {
+                    for (var i = 0; i < $scope.appFilters.length; i++) {
+                        if ($scope.appFilters[i].columnValue === "VoyageDetail_PortStatus_DisplayName" ||
+                            $scope.appFilters[i].ColumnValue === "VoyageDetail_PortStatus_DisplayName") {
+                                $scope.appFilters.splice(i, 1);
+                        }
+                    }
+                }
+                if (payload.length === 0) {
+                } else {
+                    if (!$scope.appFilters) {
+                        $scope.appFilters = [];
+                    }
+                    for (var i = 0; i < payload.length; i++) {
+                        if (payload[i].ColumnValue === 'VoyageDetail_PortStatus_DisplayName') {
+                            if ($rootScope.activeBreadcrumbFilters === payload[i].Values[0]) {
+                            }
+                        } else {
+                            $scope.appFilters.push(payload[i]);
+                        }
+                    }
+                }
+                return;
+            } else {
+                $scope.appFilters = payload;
+            }
+        })
+
+        $scope.$on(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, function (event, filter, no) {
+            if (ctrl.breadcrumbsFilter == filter) {
+                filterPayload = [];
+                getData(filterPayload).then(function(response) {
+                    updateTimeline(response);
+                });
+                ctrl.breadcrumbsFilter = null;
+                $rootScope.activeBreadcrumbFilters = null;
+            } else {
+                ctrl.breadcrumbsFilter = filter;
+                $rootScope.activeBreadcrumbFilters = filter;
+                filterPayload = [{
+                    "ColumnValue": "VoyageDetail_PortStatus_DisplayName",
+                    "ColumnType": "Text",
+                    "ConditionValue": "=",
+                    "Values": [filter]
+                }];
+	            $rootScope.$broadcast("filters-applied", filterPayload, true);
+            }
+        });
+
+        $scope.initBreadcrumbsFilter = function () {
+            if ($rootScope.activeBreadcrumbFilters) {
+                ctrl.breadcrumbsFilter = $rootScope.activeBreadcrumbFilters;
+            }
+        }
+
+        $scope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, function (event) {
+            $rootScope.$broadcast("clearUnsavedFilters");
+        });
 
     }
 ]);
