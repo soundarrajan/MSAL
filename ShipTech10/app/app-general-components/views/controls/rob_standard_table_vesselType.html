@@ -12,7 +12,7 @@
             <td style="padding-right: 50px;">{{element.productType.name}}</td>
             <td>
                 <div class="form-group row w100">
-                    <div class="form_input" class="w100">
+                    <div class="form_input no-label" class="w100">
                         <input ng-model="element.minQty" type="text" class="form-control " format="number:{{tenantSetting.defaultValues.quantityPrecision}}" name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" >
                         <!-- format="number:{{tenantSetting.defaultValues.quantityPrecision}}" -->
                     </div>
@@ -20,7 +20,7 @@
             </td>
             <td>
                 <div class="form-group row w100"> 
-                    <div class="form_input">
+                    <div class="form_input no-label">
                         <input ng-model="element.maxQty" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" type="text" class="form-control " name="hsfo_max" id="hsfo_max"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" >
                         <!-- format="number:{{tenantSetting.defaultValues.quantityPrecision}}" -->
                     </div>

@@ -6167,7 +6167,8 @@ APP_MASTERS.controller("Controller_Master", [
             data = {
                 Payload: {
                     EmailTemplateId: $rootScope.currentEmailTemplate,
-                    BusinessId: vm.entity_id
+                    BusinessId: vm.entity_id,
+                    AttachmentsList : $rootScope.previewEmail.attachmentsList
                 }
             };
             Factory_Master.discardSavedPreview(data, function(response) {
@@ -6320,6 +6321,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                    Name: $rootScope.previewEmail.comment.name,
 	                    Content: $rootScope.previewEmail.content,
 	                    Subject: $rootScope.previewEmail.subject,
+						AttachmentsList: $rootScope.previewEmail.attachmentsList,	                    
 	                    EmailTemplateId: $rootScope.currentEmailTemplate,
 	                    BusinessId: vm.entity_id,
 	                    To: toString,
