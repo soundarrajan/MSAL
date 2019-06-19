@@ -7315,6 +7315,10 @@ APP_MASTERS.controller("Controller_Master", [
 	    }
 
 	    $scope.addToAttachments = function(el) {
+	    	if (!el) {
+	    		toastr.error("Please select a document");
+	    		return;
+	    	}
 	    	var isInList = _.find($scope.previewEmail.attachmentsList, function(v){
 	    		return v.id == el.id
 	    	});

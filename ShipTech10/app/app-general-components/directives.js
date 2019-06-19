@@ -1209,10 +1209,10 @@ window.increment = 0;
                         $('tbody').first().attr('id', 'scrollArea');
                         $('.ui-jqgrid-bdiv').first().attr('id', 'contentArea');
                         // -end- TABLE
-                        var clusterize = new window.Clusterize({
-                          scrollId: 'scrollArea',
-                          contentId: 'contentArea'
-                        });
+                        // var clusterize = new window.Clusterize({
+                        //   scrollId: 'scrollArea',
+                        //   contentId: 'contentArea'
+                        // });
 
                     }
                 }
