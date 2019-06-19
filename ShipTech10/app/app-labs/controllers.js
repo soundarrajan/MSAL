@@ -22,14 +22,18 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         // $scope.reconMatchDisplayName();
         $scope.setStatusForHeader('init');
         $scope.registerDropdowns();
-        $.each($scope.formFields, function(index, value) {
-            $.each(value.children, function(key, val) {
-            	if ($scope.formValues.status.name == 'Verified') {
-            		val.disabled = true;
-            		val.Disabled = true;
-            	}	
-            });
-        });
+        if (!JSON.stringify($state.params.path).contains("labs.documents")) {
+	        $.each($scope.formFields, function(index, value) {
+	            $.each(value.children, function(key, val) {
+	            	if (val.Name != "DocumentType") {
+		            	if ($scope.formValues.status.name == 'Verified') {
+		            		val.disabled = true; 
+		            		val.Disabled = true;
+		            	}	
+	            	}
+	            });
+	        });
+        }
 
     });
 
