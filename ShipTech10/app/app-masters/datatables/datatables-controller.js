@@ -3205,7 +3205,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "testValue",
                         displayName: "Test Value",
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        cellTemplate: $scope.dataTableTemplates.text,                        
+                        format: "number:"+vm.quantity                                  
                     },
                     {
                         name: "claimAppreciation",
