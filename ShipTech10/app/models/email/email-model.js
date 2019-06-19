@@ -144,6 +144,8 @@ angular.module('shiptech.models').factory('emailModel', ['emailResource', 'paylo
             var payload = {
                 "EmailTemplateId": template.id,
                 "businessId": emailData.businessId,
+                "secondBusinessId": emailData.secondBusinessId,
+                "thirdBusinessId": emailData.thirdBusinessId,
                 "businessIds": emailData.businessIds ? formArray(emailData.businessIds) : [],
             };
             request_data = payloadDataModel.create(payload);
