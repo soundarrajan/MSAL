@@ -151,6 +151,7 @@ angular.module("shiptech.pages").controller("ReportsController", [
             ctrl.getStandardReports();
             ctrl.reportsLoading = false;
         } else {
+            ctrl.getStandardReports();
             ctrl.initComponent();
         }
         ctrl.loadReport = function(selection) {

@@ -34,7 +34,7 @@
                         <a class="btn btn-default" ng-click="$ctrl.saveOrder()" ng-show="$ctrl.canSave($ctrl.screenActions)" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}">
                             Save
                         </a>
-                        <a class="btn btn-default" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
+                        <a class="btn btn-default" ng-show="{{$ctrl.tenantSettings.defaultValues.isSSRSReports}}" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
                             Order Negotiation Report
                         </a> 
                         <a href="" class="btn btn-sm btn-default hover-orange"
@@ -1529,7 +1529,7 @@
                 <a class="btn btn-default" ng-click="$ctrl.saveOrder()" ng-show="$ctrl.canSave($ctrl.screenActions)" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}">
                     Save
                 </a>
-                <a class="btn btn-default" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
+                <a class="btn btn-default" ng-show="{{$ctrl.tenantSettings.defaultValues.isSSRSReports}}" ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"  ng-class="{'disabled': !$ctrl.data.id}" target="blank">
                     Order Negotiation Report
                 </a> 
                 <a href="" class="btn btn-sm btn-default hover-orange"

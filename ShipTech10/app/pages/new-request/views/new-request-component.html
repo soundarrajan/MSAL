@@ -32,8 +32,9 @@
                 </a>
             </div>
 
-            
-              
+            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" class="btn orange btn-outline" href="#/reports/operationalreport">
+                Report
+            </a>
             <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
                 Save
             </a>

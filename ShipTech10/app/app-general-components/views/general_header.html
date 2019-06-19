@@ -77,7 +77,7 @@
                         <span ng-if="action.html_element == 'ordertoinvoice'">
                             <!-- <span ng-controller="Controller_Master as CM"> -->
                               <!-- {{action.html_element}} -->
-                                <a ng-disabled="!formValues.id" class="btn btn-default btn-outline "  ng-href="#/reports/{{action.html_element}}/IID={{formValues.id}}" target="blank">
+                                <a ng-disabled="!formValues.id" class="btn btn-default btn-outline " ng-show="{{tenantSetting.defaultValues.isSSRSReports}}"  ng-href="#/reports/{{action.html_element}}/IID={{formValues.id}}" target="blank">
                                         {{ action.label }}
                                 </a>
                             <!-- </span> -->
