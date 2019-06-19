@@ -773,6 +773,31 @@ APP_CLAIMS.controller("Controller_Claims", [
         };
         // $timeout(vm.compiles(), 100);
 
+        $scope.computeDensityDifference = function(rowIdx, fval) {
+        	fval.densitySubtypes[rowIdx].densityDifference = convertDecimalSeparatorStringToNumber(fval.densitySubtypes[rowIdx].bdnDensity) - convertDecimalSeparatorStringToNumber(fval.densitySubtypes[rowIdx].labDensity);
+        }
+
+        function convertDecimalSeparatorStringToNumber(number) {
+        	numberToReturn = number;
+        	if (typeof(number) == "string") {
+	        	if (number.indexOf(",") != -1 && number.indexOf(".") != -1) {
+	        		if (number.indexOf(",") > number.indexOf(".")) {
+	        			decimalSeparator = ",";
+	        			thousandsSeparator = ".";
+	        		} else {
+	        			thousandsSeparator = ",";
+	        			decimalSeparator = ".";
+	        		}
+		        	numberToReturn = parseFloat( parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '')) + parseFloat("0."+number.split(decimalSeparator)[1]) );
+	        	} else {
+	        		numberToReturn = parseFloat(number);
+	        	}
+        	}
+        	if (isNaN(numberToReturn)) {
+        		numberToReturn = 0;
+        	}
+        	return parseFloat(numberToReturn);
+        }
 
         $scope.setPageTitle = function(claim, vessel){
             //tab title

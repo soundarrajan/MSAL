@@ -7325,6 +7325,9 @@ APP_MASTERS.controller("Controller_Master", [
 		    		toastr.error("Attachment already added");
 	    		}
 	    	} else {
+	    		if (!$scope.previewEmail.attachmentsList) {
+	    			$scope.previewEmail.attachmentsList = []
+	    		}
 	    		$scope.previewEmail.attachmentsList.push(el);
 	    	}
 	    }
