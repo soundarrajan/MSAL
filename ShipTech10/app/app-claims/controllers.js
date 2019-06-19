@@ -182,6 +182,11 @@ APP_CLAIMS.controller("Controller_Claims", [
                 } else {
                     $(".group_debunkerDetails").hide();
                 }
+                $scope.formValues.complianceSubtypes = [];
+                $scope.formValues.densitySubtypes = [];
+                $scope.formValues.qualitySubtypes = [];
+                $scope.formValues.quantitySubtypes = [];
+                
                 if (type == "Debunker" && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$rootScope.EstimatedSettlementAmountManualChange)) {
                     if (!$scope.formValues.claimDebunkerDetails || typeof $scope.formValues.claimDebunkerDetails == "undefined") {
                         $scope.formValues.claimDebunkerDetails = {};
