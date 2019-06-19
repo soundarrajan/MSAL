@@ -7623,64 +7623,66 @@ APP_API.factory("$Api_Service", [
                         );
                         return;
                     }
-                    if (param.app == "masters" && param.field.masterSource.includes("Parent")) {
-                        var apiJSON = {
-                            Payload: {}
-                        };
-                        var url = "";
-                        if (param.field.masterSource == "ParentCounterparty") {
-                            url = api_map["masters"]["counterparty"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (param.field.masterSource == "ParentLocation") {
-                            url = api_map["masters"]["location"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (param.field.masterSource == "ParentProduct") {
-                            url = api_map["masters"]["product"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (param.field.masterSource == "ParentCompany") {
-                            url = api_map["masters"]["company"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (param.field.masterSource == "ParentStrategy") {
-                            url = api_map["masters"]["strategy"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (param.field.masterSource == "ParentService") {
-                            url = api_map["masters"]["service"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (param.field.masterSource == "ParentBuyer") {
-                            url = api_map["masters"]["buyer"]["entity"]["getParentForSearch"]["endpoint"];
-                        }
-                        if (url != "") {
-                            $http.post(url, apiJSON).then(
-                                function successCallback(response) {
-                                    if (response.data) {
-                                        var res = [];
-                                        res.push({
-                                            id: -1,
-                                            name: "No Parent"
-                                        });
-                                        response.data.payload.forEach(function(entry) {
-                                            var temp = {
-                                                id: entry.id,
-                                                name: entry.name
-                                            };
-                                            res.push(temp);
-                                            delete temp;
-                                        });
-                                        callback(res);
-                                    } else {
-                                        callback({
-                                            id: 0,
-                                            name: "Error retrieving parents"
-                                        });
-                                    }
-                                },
-                                function errorCallback(response) {
-                                    console.log("HTTP ERROR");
-                                    callback(false);
-                                    return;
-                                }
-                            );
-                        }
+                    if (param.app == "masters" && param.field.masterSource) {
+                    	if (param.field.masterSource.includes("Parent")) {
+	                        var apiJSON = {
+	                            Payload: {}
+	                        };
+	                        var url = "";
+	                        if (param.field.masterSource == "ParentCounterparty") {
+	                            url = api_map["masters"]["counterparty"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (param.field.masterSource == "ParentLocation") {
+	                            url = api_map["masters"]["location"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (param.field.masterSource == "ParentProduct") {
+	                            url = api_map["masters"]["product"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (param.field.masterSource == "ParentCompany") {
+	                            url = api_map["masters"]["company"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (param.field.masterSource == "ParentStrategy") {
+	                            url = api_map["masters"]["strategy"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (param.field.masterSource == "ParentService") {
+	                            url = api_map["masters"]["service"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (param.field.masterSource == "ParentBuyer") {
+	                            url = api_map["masters"]["buyer"]["entity"]["getParentForSearch"]["endpoint"];
+	                        }
+	                        if (url != "") {
+	                            $http.post(url, apiJSON).then(
+	                                function successCallback(response) {
+	                                    if (response.data) {
+	                                        var res = [];
+	                                        res.push({
+	                                            id: -1,
+	                                            name: "No Parent"
+	                                        });
+	                                        response.data.payload.forEach(function(entry) {
+	                                            var temp = {
+	                                                id: entry.id,
+	                                                name: entry.name
+	                                            };
+	                                            res.push(temp);
+	                                            delete temp;
+	                                        });
+	                                        callback(res);
+	                                    } else {
+	                                        callback({
+	                                            id: 0,
+	                                            name: "Error retrieving parents"
+	                                        });
+	                                    }
+	                                },
+	                                function errorCallback(response) {
+	                                    console.log("HTTP ERROR");
+	                                    callback(false);
+	                                    return;
+	                                }
+	                            );
+	                        }
+                    	}
                         return;
                     }
                     if (param.app == "labs" && param.field.masterSource == "Order") {

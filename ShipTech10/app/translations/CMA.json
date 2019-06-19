@@ -1063,6 +1063,7 @@
 		"TENANT_CONFIGURATION_ID": "Tenant configuration id",
 		"REPORT_VIEWER_URL": "Report viewer url",
 		"POWER_BI_WORKSPACE_ID": "Power BI workspace id",
+		"SHOW_OPERATIONAL_REPORT": "Show Operational Report",
 		"SSRS_SERVER_GUID": "SSRS server guid",
         "EMAIL_SERVER_TYPE": "Email server type",
         "INTEGRATIONS_URL": "Integrations URL",

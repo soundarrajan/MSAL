@@ -709,7 +709,20 @@
                                 id="PopulateRequestCommentsTo" ng-model="formValues.procurement.request.populateRequestCommentsTo"></select>
                         </div>
                     </div>
-                </div>                
+                </div>  
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_showOperationalReport">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosshowOperationalReport" id="showOperationalReport" ng-model="formValues.procurement.request.showOperationalReport"
+                                    /> {{ CM.app_id + '.SHOW_OPERATIONAL_REPORT' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>                            
             </div>
             <div class="portlet">
                 <div class="portlet-title">
