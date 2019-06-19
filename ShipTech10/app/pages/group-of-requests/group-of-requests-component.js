@@ -6643,7 +6643,11 @@ ctrl.setProductData = function(data, loc) {
 			            	currentSeller = selV;
                             $.each(selV.offers, function (ofK, ofV) {
                                 if (ofV.id) {
-			            			currentRSSL = currentRequest.id +"-"+ currentSeller.sellerCounterparty.id + "-" + ofV.physicalSupplierCounterparty.id + "-" + currentLocation.id
+                                	currentPhysicalSupplierId = null;
+                                	if (ofV.physicalSupplierCounterparty) {
+	                                	currentPhysicalSupplierId = ofV.physicalSupplierCounterparty.id;
+                                	}
+			            			currentRSSL = currentRequest.id +"-"+ currentSeller.sellerCounterparty.id + "-" + currentPhysicalSupplierId + "-" + currentLocation.id
                         			if (typeof(validationDataAt_RLS_level[currentRSSL]) == "undefined") {
                         				validationDataAt_RLS_level[currentRSSL] = {
 								        	allWouldBeNoQuote : false,
