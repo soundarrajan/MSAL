@@ -32,7 +32,7 @@
                 </a>
             </div>
 
-            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" class="btn orange btn-outline" href="#/reports/operationalreport" target="_blank">
+            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" class="btn orange btn-outline" ng-disabled="!$ctrl.getServiceIdForReport()" href="#/reports/operationalreport/{{$ctrl.getServiceIdForReport()}}" target="_blank">
                 Report
             </a>
             <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
@@ -1021,7 +1021,7 @@
                 </div>
 
               
-	            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" class="btn orange btn-outline" href="#/reports/operationalreport" target="_blank">
+	            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport && ctrl.request.id != 0" class="btn orange btn-outline" href="#/reports/operationalreport/{{$ctrl.getServiceIdForReport()}}" target="_blank">
 	                Report
 	            </a>
                 <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">

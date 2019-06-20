@@ -2906,6 +2906,46 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             });
             return found;
         };
+
+        ctrl.getServiceIdForReport = function() {
+        	if (!ctrl.requestTenantSettings || !ctrl.request.locations) {
+        		return;
+        	}
+			var computedServiceId = 0;
+			if (ctrl.requestTenantSettings.displayOfService.internalName == "PortSection") {
+				var servicesEtas = [];
+				$.each(ctrl.request.locations, function(k,v){
+					if (v.service) {
+						if (v.service.id) {
+							var currentDateEta = null;
+							if (v.recentEta) {
+								currentDateEta = v.recentEta;
+							}
+							if (v.eta) {
+								currentDateEta = v.eta;
+							}
+							servicesEtas.push([v.service.id, currentDateEta]);
+						}
+					}
+				})
+				var minIdx = 0;
+				for(var i = 0; i < servicesEtas.length; i++) {
+				    if(servicesEtas[i][1] < servicesEtas[minIdx][1]) minIdx = i;
+				}
+				if (servicesEtas.length > 0) {
+					computedServiceId = servicesEtas[minIdx][0];
+				}	
+			} else {
+				if (ctrl.request.vesselDetails) {
+					if (ctrl.request.vesselDetails.service) {
+						computedServiceId = ctrl.request.vesselDetails.service.id;
+					}
+				}
+			}
+			return computedServiceId;
+        	// console.log();
+        }
+
     }
 
 
