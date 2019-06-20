@@ -1,0 +1,60 @@
+<div class="newStatusColoured contextmenu fade in" style="background-color: #fff"> 
+	<div class="popover-header" style="background-color:{{rightClickPopoverData.vsVal.style['background-color']}}">
+		<a href="#" class="close" aria-label="close"> &times; </a> 
+		<span>{{rightClickPopoverData.vsVal.request.vesselName}}</span>
+	</div>
+	<div class="content">
+	
+	<div class="voyageDetailSection" ng-repeat="(key,voyage) in rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId">
+		<hr ng-if="$index > 0" style="margin: 5px 0;" >
+		<table>
+			<thead>
+				<tr ng-if="!voyage.id">
+					<th>
+						<span >
+							{{voyage[0].portCode}}
+						</span>
+					</th>
+					<th ng-repeat="(key2, bunkerPlan) in voyage">
+						{{bunkerPlan.productType}}
+					</th>
+				</tr>
+				<tr ng-if="voyage.id">
+					<th>
+						{{voyage.portCode}}
+					</th>
+				</tr>				
+			</thead>
+			<tbody>
+				<tr ng-if="!voyage.id">
+					<td class="font-blue">
+						{{key}}
+					</td>
+					<td class="cancelBunkerStrategyCell" ng-repeat="(key2, bunkerPlan) in voyage" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+						{{bunkerPlan.supplyQuantity | number:numberPrecision.quantityPrecision}}
+						<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="confirmCancelBunkerStrategy(bunkerPlan, rightClickPopoverData.vsVal)" ><i class="fa fa-times"></i></span>
+					</td>
+				</tr>				
+
+				<tr ng-if="voyage.id">
+					<td class="font-blue">
+						{{key}}
+					</td>
+					<td><a class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a></td>
+				</tr>
+
+			</tbody>			
+		</table>
+		<a ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a>
+	</div>
+
+
+	<!-- {{rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId}} -->
+
+
+	</div>
+	<div class="hidden">
+		{{rightClickPopoverData}}
+	</div>
+
+</div>
