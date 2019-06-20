@@ -1,12 +1,10 @@
-angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData',
-    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData) {
+angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings', '$compile', '$state', 'STATE', '$templateCache', 'CUSTOM_EVENTS', '$filtersData',
+    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings, $compile, $state, STATE, $templateCache, CUSTOM_EVENTS, $filtersData) {
 
     	var ctrl = this;
 		$scope.numberPrecision = $tenantSettings.defaultValues;
-        $scope.tenantSettings = $tenantSettings;
-        
-        ctrl.startDate = null;
-        ctrl.endDate = null;
+		$scope.tenantSettings = $tenantSettings;
+		ctrl.bunkerDetails = [];
 
         var DEBUG = false;
         if (window.location.hostname == 'localhost') {
@@ -87,8 +85,8 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                                 status.display = true;
 
                                 var sts1 = null;
-                                for (var j = 0; j < statusList.length; j++) {
-                                    sts1 = statusList[j];
+                                for (var j = 0; j < timelineStatuses.length; j++) {
+                                    sts1 = timelineStatuses[j];
                                     if (sts1.status.displayName == sts.status.displayName) {
                                         status.style = createStyle(colorCode);
                                         status.count = sts1.count;
@@ -136,6 +134,10 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                 if (i > 200) {
                     break;
                 }
+                
+                if (typeof(ctrl.bunkerDetails[vessels[i].voyageDetail.id]) == "undefined") {ctrl.bunkerDetails[vessels[i].voyageDetail.id] = []}
+                ctrl.bunkerDetails[vessels[i].voyageDetail.id].push(angular.copy(vessels[i].voyageDetail.bunkerPlan));
+
                 // Create voyage object
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
 
@@ -145,7 +147,7 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
                     voyageContent += '<span class="vis-item-addon"> SAP </span>';
                 }
 
-                voyageContent += '<span voyage-detail-id="'+vessels[i].voyageDetail.id+'"> ' + vessels[i].voyageDetail.locationCode + ' </span>';
+                voyageContent += '<span oncontextmenu="return false;" voyage-detail-id="'+vessels[i].voyageDetail.id+'"> ' + vessels[i].voyageDetail.locationCode + ' </span>';
 
                 if (vessels[i].voyageDetail.etd) {
                 	endDate = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
@@ -250,7 +252,6 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             timeline.setGroups(groups);
             timeline.setItems(voyages);
 
-            $rootScope.clc_loaded = true;
         };
 
         var updateTimeline = function(data) {
@@ -294,15 +295,14 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             })
         };
 
-        async function getData(payload) {
+        async function getData() {
             return await new Promise(resolve => {
-                scheduleDashboardTimelineModel.get(null, null, payload).then(function (response) {
+                scheduleDashboardTimelineModel.get(null, null).then(function (response) {
                     resolve(response);
                 });
             });
         }
 
-        // Get data and initialize timeline
         async function doTimeline() {
             Promise.all([getData(), getStatuses(), getConfiguration()]).then(function(res) {
                 createFilters();
@@ -311,8 +311,19 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             });
         }
         doTimeline();
+        // Get data and initialize timeline
+        Promise.all([getStatuses, getData, getConfiguration]).then(function(values) {
+            STATUSES = values[0];
+            createFilters();
+            $rootScope.timelineStatusList = timelineStatusList;
+            buildTimeline(values[1]);
+        });
 
-        /*build hover popover*/
+
+
+
+
+        /*BUILD HOVER POPOVER*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
 			voyageDetailId = $(this).attr("voyage-detail-id");
         	html = buildHoverPopoverMarkup(voyageDetailId);
@@ -335,12 +346,7 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
         		return el.voyageDetail.id == voyageDetailId;
         	}); 
 			voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
-
 			html = "";
-			
-
-
-
             html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
             $.each(voyageStop, function(k,v){
             	var voyage = v.voyageDetail;
@@ -378,6 +384,110 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
             }
             return html;
         }
+        /*BUILD HOVER POPOVER*/
+
+        /*BUILD RIGHT CLICK POPOVER*/ 
+
+        $(document).on("mousedown", "span[voyage-detail-id]", function(event){
+        	if (event.which == 3) {
+        		event.preventDefault();
+				voyageDetailId = $(this).attr("voyage-detail-id");
+	        	object = _.filter(ctrl.voyageData, function(el){
+	        		return el.voyageDetail.id == voyageDetailId;
+	        	}); 
+	        	object = _.uniqBy(object, 'voyageDetail.request.id');
+	        	var vsVal = true;
+				// return;
+	            $(".schedule-dashboard-timeline > .contextmenu").remove();
+	            currentElem = $(event.currentTarget);
+	            html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content">';
+	            var hasRequest = false; 
+	            var hasBunkerPlan = false; 
+	            $.each(object, function (k, value) {
+	                html += '<span> <a class="contextAction" data-index="' + k + '">';
+	                if (value.voyageDetail.request == null || value.voyageDetail.request.id == 0) {
+	                    html += '<span> Create Pre-request (' + value.voyageDetail.locationCode + ') </span>';
+	                } else {
+	                    html += '<span> Edit request (' + value.voyageDetail.locationCode + ') - ' + value.voyageDetail.request.requestName + ' </span> '
+	                    hasRequest = true;
+	                }
+
+	                if (value.voyageDetail.bunkerPlan) {
+	                	hasBunkerPlan = true
+	                }
+	                html += '</a> <br/> </span>'
+	            })
+	            html += '</div> </div>';
+	            if (!hasRequest && hasBunkerPlan) { 
+		            $scope.rightClickPopoverData = {
+		            	'object': object,
+		            	'vsVal': vsVal
+		            }
+	            	//CASE 1 WORKITEM 9108
+		         	groupedByVoyageDetailId = {};
+		         	$.each(object, function(k,v){
+		         		if (typeof(groupedByVoyageDetailId[v.id]) == 'undefined') {
+		         			groupedByVoyageDetailId[v.id] = [];
+		         		}
+		         		var item = angular.copy(ctrl.bunkerDetails[v.id]);
+		         		if (typeof(item) == 'undefined') {
+		         			item = v;
+		         		}
+		         		groupedByVoyageDetailId[v.id] = item;
+		         		_.uniqBy(groupedByVoyageDetailId[v.id], 'id');
+		         	})
+		         	$scope.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
+		            html = $compile($templateCache.get('pages/schedule-dashboard-timeline/views/right-click-popover-timeline.html'))($scope);
+	            }
+	            if (vsVal) {
+	                $('.schedule-dashboard-timeline').append(html);
+		            $compile($('.schedule-dashboard-timeline > .contextmenu'))($scope)
+		            if (window.innerWidth / 2 > $(currentElem).offset().left) {
+		                $('.contextmenu').css("left", $(currentElem).offset().left);
+		            } else {
+		                $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
+		            }
+	                $('.contextmenu').css("top", $(currentElem).offset().top - 15);
+	                $('.contextmenu').removeClass("hidden");
+	            }
+	            $('.contextAction').click(function () {
+	                index = $(this).attr('data-index');
+	                contextAction(object[index]);
+	            })
+	            $('.contextmenu .close').click(function (e) {
+	                e.preventDefault()
+	                $(this).hide();
+	                $(".schedule-dashboard-timeline > .contextmenu").remove();
+	            })
+	            setTimeout(function(){
+					$compile($('.schedule-dashboard-timeline > .contextmenu'))($scope)
+	            },1000)
+	            function contextAction(voyageStop) {
+	                var href;
+	                if (!voyageStop) {
+	                    return;
+	                }
+	                if (voyageStop.voyageDetail.request && voyageStop.voyageDetail.request.id != 0) {
+	                    href = $state.href(STATE.EDIT_REQUEST, {
+	                        requestId: voyageStop.voyageDetail.request.id
+	                    }, {
+	                            absolute: false
+	                        });
+	                } else {
+	                    href = $state.href(STATE.NEW_REQUEST, {
+	                        voyageId: voyageStop.id
+	                    }, {
+	                            absolute: false
+	                        });
+	                }
+	                window.open(href, '_blank');
+	            };
+	            return false;
+        	}
+
+        })
+
+        /*BUILD RIGHT CLICK POPOVER*/ 
 
         $scope.formatDateToMomentFormat = function( dateFormat ){
         	dbFormat = dateFormat;
@@ -396,125 +506,9 @@ angular.module("shiptech.pages").controller("ScheduvarimelineController", ["$sco
         }
         $scope.dateFormat = $scope.formatDateToMomentFormat($scope.tenantSettings.tenantFormats.dateFormat.name);
 
-        $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
-
-            $scope.filtersAppliedPayload = payload;
-            
-            getConfiguration().then(function(settings) {
-                getData(payload).then(function(response) {
-                    updateTimeline(response);
-                });
-            });
-
-            var conditions = $filtersData.filterConditions;
-
-            for(var i = 0; i < payload.length; i++) {
-                for(var j = 0; j < conditions.length; j++) {
-                    if(payload[i].ColumnType === conditions[j].conditionApplicable && payload[i].ConditionValue === conditions[j].conditionValue) {
-                        payload[i]['conditionName'] = conditions[j].conditionName;
-                        switch(payload[i].columnValue) {
-                            case 'BuyerName':
-                                payload[i]['displayName'] = 'Buyer';
-                                break;
-                            case 'VesselName':
-                                payload[i]['displayName'] = 'Vessel name';
-                                break;
-                            case 'ServiceName':
-                                payload[i]['displayName'] = 'Service';
-                                break;
-                            case 'VoyageDetail_ETA':
-                                payload[i]['displayName'] = 'ETA';
-                                break;
-                            case 'VoyageDetail_ETB':
-                                payload[i]['displayName'] = 'ETB';
-                                break;
-                            case 'VoyageDetail_PortStatus_DisplayName':
-                                payload[i]['displayName'] = 'Port Status';
-                                break;
-                            case 'VoyageDetail_LocationName':
-                                payload[i]['displayName'] = 'Location';
-                                break;
-                            case 'CompanyName':
-                                payload[i]['displayName'] = 'Company'; 
-                                break;
-                        }
-                        if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {
-                            payload[i].displayName = 'Port Status';
-                        }
-                        if (payload[i].displayName) {
-                            if ($scope.tenantSettings.companyDisplayName == "Pool") {
-                                payload[i].displayName = payload[i].displayName.replace("Carrier", $scope.tenantSettings.companyDisplayName.name);
-                            }
-                            payload[i].displayName = payload[i].displayName.replace("Company", $scope.tenantSettings.companyDisplayName.name);
-                            payload[i].displayName = payload[i].displayName.replace("Service", $scope.tenantSettings.serviceDisplayName.name);                            
-                        }
-                    }
-                }
-            }
-
-            if (isBreadcrumbFilter) {
-                if ($scope.appFilters) {
-                    for (var i = 0; i < $scope.appFilters.length; i++) {
-                        if ($scope.appFilters[i].columnValue === "VoyageDetail_PortStatus_DisplayName" ||
-                            $scope.appFilters[i].ColumnValue === "VoyageDetail_PortStatus_DisplayName") {
-                                $scope.appFilters.splice(i, 1);
-                        }
-                    }
-                }
-                if (payload.length === 0) {
-                } else {
-                    if (!$scope.appFilters) {
-                        $scope.appFilters = [];
-                    }
-                    for (var i = 0; i < payload.length; i++) {
-                        if (payload[i].ColumnValue === 'VoyageDetail_PortStatus_DisplayName') {
-                            if ($rootScope.activeBreadcrumbFilters === payload[i].Values[0]) {
-                            }
-                        } else {
-                            $scope.appFilters.push(payload[i]);
-                        }
-                    }
-                }
-                return;
-            } else {
-                $scope.appFilters = payload;
-            }
-        })
-
-        $scope.$on(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, function (event, filter, no) {
-            if (ctrl.breadcrumbsFilter == filter) {
-                filterPayload = [];
-                getData(filterPayload).then(function(response) {
-                    updateTimeline(response);
-                });
-                ctrl.breadcrumbsFilter = null;
-                $rootScope.activeBreadcrumbFilters = null;
-            } else {
-                ctrl.breadcrumbsFilter = filter;
-                $rootScope.activeBreadcrumbFilters = filter;
-                filterPayload = [{
-                    "ColumnValue": "VoyageDetail_PortStatus_DisplayName",
-                    "ColumnType": "Text",
-                    "ConditionValue": "=",
-                    "Values": [filter]
-                }];
-	            $rootScope.$broadcast("filters-applied", filterPayload, true);
-            }
-        });
-
-        $scope.initBreadcrumbsFilter = function () {
-            if ($rootScope.activeBreadcrumbFilters) {
-                ctrl.breadcrumbsFilter = $rootScope.activeBreadcrumbFilters;
-            }
-        }
-
-        $scope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, function (event) {
-            $rootScope.$broadcast("clearUnsavedFilters");
-        });
-
     }
 ]);
 angular.module('shiptech.pages').component('scheduleDashboardTimeline', {
     templateUrl: 'pages/schedule-dashboard-timeline/views/schedule-dashboard-timeline.html',
-    controller: "ScheduvarimelineController"
+    controller: "ScheduleTimelineController"
 });
