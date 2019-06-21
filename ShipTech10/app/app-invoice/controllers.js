@@ -2699,6 +2699,13 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         
         $rootScope.transportData.id = 0;
         $rootScope.transportData.invoiceDetails = null;
+        $rootScope.transportData.documentNo = null;
+        $rootScope.transportData.dueDate = null;
+        $rootScope.transportData.invoiceDate = null;
+        $rootScope.transportData.invoiceSummary.deductions = null;
+        $rootScope.transportData.paymentDate = null;
+        $rootScope.transportData.accountNumber = null;
+        $rootScope.transportData.paymentDetails.paidAmount = null;
         $rootScope.transportData.documentType = invoiceType;
         $rootScope.transportData.paymentDetails = null;
         $rootScope.transportData.invoiceDetails = null;
@@ -2718,7 +2725,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = null;
         
         $rootScope.transportData.paymentDetails = {};     
-        $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
+        // $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
    
         if ($rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal == null) {
             invoiceAmountGrandTotal = 0
