@@ -854,11 +854,12 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 })
             },100)
         }
-        $(document).on("click",".contract_planning_min_max_qty_wrap a", function(e){
+        $("body").off("click").on("click",".contract_planning_min_max_qty_wrap a", function(e){
             e.preventDefault()
             rowIndex = $(this).attr("rowId");
             rowData = $('#flat_contract_planning').jqGrid.Ascensys.gridObject.rows[parseFloat(rowIndex) - 1];
             // $rootScope.$broadcast('contractPlanningChange', $rootScope.contractPlanningChange);
+			$scope.minMaxModalEdit = null;
             $timeout(function(){
                 ctrl.currentRowData = rowData
                 ctrl.currentRowIndex = parseFloat(rowIndex);
@@ -870,7 +871,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 $("#minMaxModal").modal();
             })
 
-            // ctrl.openMinMaxModalEdit(rowData) 
+            ctrl.openMinMaxModalEdit(rowData) 
 
         })
         ctrl.saveMinMaxModal = function(minEdit, maxEdit, qtyUom) {

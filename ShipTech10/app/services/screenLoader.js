@@ -64,6 +64,7 @@ angular.module("shiptech").config([
 			"api/recon/invoiceproduct",
 			"api/invoice/updateTreasuryInfo",
 			"api/procurement/request/getQuantityAverage",
+			"api/procurement/request/getQuantityAndStrategy",
     	];
 
         $httpProvider.interceptors.push([

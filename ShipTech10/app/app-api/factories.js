@@ -10187,7 +10187,7 @@ APP_API.factory("$Api_Service", [
                 contractPlanningGetQuantityAverage: function(param, callback) {
                     // if (_debug) console.log("$APIService contract.confirm called with the following params:", param);
                     var apiJSON = param;
-                    var url = API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/request/getQuantityAverage";
+                    var url = API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/request/getQuantityAndStrategy";
                     $http.post(url, apiJSON).then(
                         function success(response) {
                             if (response.status == 200) {

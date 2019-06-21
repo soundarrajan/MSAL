@@ -2792,17 +2792,23 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             Factory_Master.contractPlanningGetQuantityAverage(payload, function(response) {
                 if (response) {
-                    maxEdit = response.data.payload.avgMaxOrderedQuantity
-                    minEdit = response.data.payload.avgMinOrderedQuantity
+                    maxEdit = response.data.payload.avgMaxOrderedQuantity;
+                    minEdit = response.data.payload.avgMinOrderedQuantity;
+                    bunkerStrategy = response.data.payload.bunkerStrategy;
                     ctrl.currentRowIndex = rowIdx;
                     ctrl.currentRowData.minQuantity = minEdit;
                     ctrl.currentRowData.maxQuantity = maxEdit;
                     ctrl.tableData[ctrl.currentRowIndex-1] = ctrl.currentRowData;
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
+                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "bunkerStrategy", bunkerStrategy);
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)
-                    callback(true);
+                    if (minEdit != 0 && maxEdit != 0) {
+	                    callback(true);
+                    } else {
+	                    callback(false);
+                    }
                 } else {
                     maxEdit = 0;
                     minEdit = 0;
