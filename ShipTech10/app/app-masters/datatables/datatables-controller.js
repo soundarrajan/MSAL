@@ -73,6 +73,7 @@ APP_MASTERS.controller("Controller_Datatables", [
             yesNoInverted: $templateCache.get("app-general-components/views/data-table-formatters/yesNoInverted.html"),
             claimsRaisedStatus: $templateCache.get("app-general-components/views/data-table-formatters/claimsRaisedStatus.html"),
             colorCodedStatus: $templateCache.get("app-general-components/views/data-table-formatters/colorCodedStatus.html"),
+            multiSelectCell: $templateCache.get("app-general-components/views/data-table-formatters/multiSelectCell.html"),
             multiselect: $templateCache.get("app-general-components/views/data-table-formatters/multiselect.html"),
             readonlyNumber: $templateCache.get("app-general-components/views/data-table-formatters/readonlyNumber.html"),
         };
@@ -2194,6 +2195,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                 multiSelect: false,
                 noUnselect: true,
                 rowHeight: 40,
+                enableColumnMenus: false,
                 excessRows: 999,
                 rowEditWaitInterval: -1, //Important for skipping the promise
                 columnDefs: [
@@ -2217,6 +2219,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "location",
                         displayName: "Location",
+                        enableSorting: false,
                         cellTemplate: $scope.dataTableTemplates.lookup,
                         cellObject: {
                             Name: "Location",
@@ -2226,20 +2229,37 @@ APP_MASTERS.controller("Controller_Datatables", [
                         }
                     },
                     {
+                        name: "productTypes",
+                        displayName: "Product Type",
+                        width: 500,
+                        enableSorting: false,
+                        cellTemplate: $scope.dataTableTemplates.multiSelectCell,
+                        cellObject: {
+                            Name: "ProductType",
+                            Type: "dropdown",
+                            customChangeAction : "addProductTypeMasterService(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)",
+                            masterSource: "ProductType"
+                        },
+                    },                    
+                    {
+                        enableSorting: false,
                         name: "createdBy.name",
                         displayName: "Created by"
                     },
                     {
                         name: "createdOn",
+                        enableSorting: false,
                         displayName: "Created on",
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
                         type: "date"
                     },
                     {
+                        enableSorting: false,
                         name: "lastModifiedByUser.name",
                         displayName: "Last Modified by"
                     },
                     {
+                        enableSorting: false,
                         name: "lastModifiedOn",
                         displayName: "Last Modified on",
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
@@ -3561,6 +3581,85 @@ APP_MASTERS.controller("Controller_Datatables", [
                 }
             });
         };
+
+
+		$scope.initMultiselectPopover = function() {
+			$('.multiselectcell-show-all-tags').popover({
+				placement: "auto top",
+				container: 'div.page-content',
+				html: true,
+				trigger: 'click',
+				content: function () {
+				    var pop_dest = $(this).attr("data-pop");
+				    setTimeout(function(){
+				    	$(".multiselectcell-show-all-tags").popover('hide');
+				    },10000)
+				    return $("#"+pop_dest).html();
+
+			}});
+		}
+		$scope.initMultiselectPopover();
+
+		$scope.addProductTypeMasterService = function(rowIdx, item, fVal){
+			if (!item) {
+				toastr.warning("Please select a product type");
+				return;
+			}
+			if (!fVal.locations[rowIdx].productTypes) {
+				fVal.locations[rowIdx].productTypes = [];
+			}
+			itemExists = _.find(fVal.locations[rowIdx].productTypes, function(el){
+				return el.productType.id == item.id
+			});
+			if (itemExists) {
+				if (itemExists.isDeleted != true) {
+					toastr.warning("This product type is already added");
+					return;
+				}
+			}
+			itemToAdd = angular.copy(item);
+			itemToAdd.id = 0;
+			itemToAdd.productType = item;
+
+			if (itemExists) {
+				if (itemExists.isDeleted == true) {
+					itemExists.isDeleted = false
+					$(".multiselectcell-wrapper .multiselect-typeahead").val("")	
+					return;
+				}
+			}
+			fVal.locations[rowIdx].productTypes.push(itemToAdd);
+			$(".multiselectcell-wrapper .multiselect-typeahead").val("")	
+		}
+
+		$scope.removeProductTypeMasterService = function(rowIndex, productTypeKey) {
+			scope = angular.element($("entity-edit-form > div")).scope();
+			if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
+				scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
+			} else {
+				scope.formValues.locations[rowIndex].productTypes[productTypeKey].isDeleted = true;
+			}			
+		}
+
+
+		$(document).off('click').on("click", ".removeProductTypeMasterService", function(el){
+			$(".multiselectcell-show-all-tags").popover('hide');
+			var rowIndex = $(el.currentTarget).attr("row-index");
+			var productTypeKey = $(el.currentTarget).attr("product-type-key");
+			scope = angular.element($("entity-edit-form > div")).scope();
+			scope.$apply(function(){
+				if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
+					scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
+				} else {
+					scope.formValues.locations[rowIndex].productTypes[productTypeKey].isDeleted = true;
+				}
+			});
+			$compile($(el.currentTarget).parents(".multiselectcell-wrapper"))(scope);
+			$(el.currentTarget).parent().remove();
+			$scope.initMultiselectPopover();
+			// $scope.initMultiselectPopover();
+		})	
+
         // $scope.$watch('formValues.temp.sellectedRow', function(newVal,oldVal) {
         //     // console.log(newVal, oldVal);
 

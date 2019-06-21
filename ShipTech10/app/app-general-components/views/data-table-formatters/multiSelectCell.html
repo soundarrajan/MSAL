@@ -1,0 +1,47 @@
+<div class="multiselectcell-wrapper">
+	<div class="input-group pull-left" style="width: 50%" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
+	data-original-title="{{MODEL_COL_FIELD.name}}">
+	    <input ng-model="productTypeTypeahead[rowRenderIndex]" 
+	    ng-class="'colt' + col.uid" 
+	    uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | filter:{name:$viewValue}"  
+	    class="form-control multiselect-typeahead"  
+	    typeahead-show-hint="true" 
+	    typeahead-min-length="1" 
+	    typeahead-append-to-body="true" 
+	    typeahead-wait-ms="100" 
+	    id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" 
+	    ng-required="$eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false" 
+	    name="{{ col.colDef.name }}"    
+	    autocomplete="off"  
+	    data-row-index="{{ rowRenderIndex }}" 
+	    data-cell-id="{{MODEL_COL_FIELD.id}}" 
+	    ng-disabled="$eval(col.colDef.cellObject.Disabled)"
+	    />
+
+	    <span class="input-group-addon "  
+	    ng-class="{'disabled': $eval(col.colDef.cellObject.Disabled)}"
+	    ng-click="$eval(col.colDef.cellObject.customChangeAction)"
+	    >
+	        <a   class=" btn default">
+	            <i class="fa fa-plus"></i>
+	        </a> 
+	    </span>
+	</div>
+	<div style="width: 50%; padding-left: 5px;"class="pull-left">
+		<span class="email-tag pull-left" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD" tooltip="">
+            {{value.productType.name}}
+            <i class="fa fa-remove" ng-click="value.id == 0 ? MODEL_COL_FIELD.splice(key, 1) : MODEL_COL_FIELD[key].isDeleted = true"></i>
+        </span>
+	</div>
+
+	<div class="hidden popover-content" id="popoverContent-{{rowRenderIndex}}">
+		<span ng-repeat="(key, value) in MODEL_COL_FIELD" ng-show="value.isDeleted != true">
+            {{value.productType.name}}
+            <i class="fa fa-remove font-red removeProductTypeMasterService" row-index="{{rowRenderIndex}}" product-type-key="{{key}}" ></i>
+            <br>
+        </span>
+	</div>
+	<span ng-show="MODEL_COL_FIELD.length > 2" class="multiselectcell-show-all-tags" ng-hover="initMultiselectPopover()" data-pop="popoverContent-{{rowRenderIndex}}" data-html="true" data-toggle="popover">
+		<i class="fa fa-ellipsis-h"></i>
+	</span>
+</div>

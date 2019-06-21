@@ -7336,5 +7336,14 @@ APP_MASTERS.controller("Controller_Master", [
 	    	}
 	    }
 
+		$scope.removeProductTypeMasterService = function(rowIndex, productTypeKey) {
+			scope = angular.element($("entity-edit-form > div")).scope();
+			if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
+				scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
+			} else {
+				scope.formValues.locations[rowIndex].productTypes[productTypeKey].isDeleted = true;
+			}			
+		}	    
+
     }
 ]);
