@@ -3642,7 +3642,7 @@ APP_MASTERS.controller("Controller_Datatables", [
 		}
 
 
-		$(document).off('click').on("click", ".removeProductTypeMasterService", function(el){
+		$("body").on("click", ".removeProductTypeMasterService", function(el){
 			$(".multiselectcell-show-all-tags").popover('hide');
 			var rowIndex = $(el.currentTarget).attr("row-index");
 			var productTypeKey = $(el.currentTarget).attr("product-type-key");
@@ -3660,10 +3660,10 @@ APP_MASTERS.controller("Controller_Datatables", [
 			// $scope.initMultiselectPopover();
 		})	
 
-        // $scope.$watch('formValues.temp.sellectedRow', function(newVal,oldVal) {
-        //     // console.log(newVal, oldVal);
+        $scope.$watch('formValues.temp.sellectedRow', function(newVal,oldVal) {
+            // console.log(newVal, oldVal);
 
-        // 	// alert('hey, myVar has changed!');
-        // });
+        	// alert('hey, myVar has changed!');
+        });
     }
 ]);
