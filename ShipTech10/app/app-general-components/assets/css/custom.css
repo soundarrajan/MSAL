@@ -2849,11 +2849,11 @@ span.weightage {
 
 .email-tag {
     border: 1px solid #c2cad8;
-    padding: 4px;
+    padding: 6px;
     float: left;
     margin-right: 5px;
     line-height: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .email-tag .fa-remove {
@@ -2865,6 +2865,14 @@ span.weightage {
 }
 
 /* End Contract Preview */
+
+.multiselectcell-wrapper {
+	overflow: hidden;
+	max-height: 100%;
+}
+.ui-grid-canvas {
+    height: auto !important;
+}
 
 /*.modal-alerts .form-wizard .steps>li:not(.active)>a.step:hover {
     background-color: #337ab7!important;
