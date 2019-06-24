@@ -779,7 +779,11 @@ APP_CLAIMS.controller("Controller_Claims", [
         // $timeout(vm.compiles(), 100);
 
         $scope.computeDensityDifference = function(rowIdx, fval) {
-        	fval.densitySubtypes[rowIdx].densityDifference = convertDecimalSeparatorStringToNumber(fval.densitySubtypes[rowIdx].bdnDensity) - convertDecimalSeparatorStringToNumber(fval.densitySubtypes[rowIdx].labDensity);
+            if (fval.densitySubtypes[rowIdx].bdnDensity && fval.densitySubtypes[rowIdx].labDensity) {
+                fval.densitySubtypes[rowIdx].densityDifference = convertDecimalSeparatorStringToNumber(fval.densitySubtypes[rowIdx].bdnDensity) - convertDecimalSeparatorStringToNumber(fval.densitySubtypes[rowIdx].labDensity);
+            } else {
+                fval.densitySubtypes[rowIdx].densityDifference = '';
+            }
         }
 
         function convertDecimalSeparatorStringToNumber(number) {
