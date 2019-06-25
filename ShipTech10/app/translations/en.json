@@ -1206,6 +1206,7 @@
         "INCLUDE_AVERAGE_SURVEYOR_CHARGE": "Include average surveyor charge",
         "INTEREST_RATE": "Interest rate",
         "AVERAGE_SURVEYOR_COST": "Average surveyor cost",
+        "SIX_MONTH_HISTORY": "Display 6 Month history of Lab Results for",
         "IS_PREREQ_EMAIL_ATTACHMENT": "Is prerequest email attachment",
         "IS_SKIP_RFQ_ALLOWED": "Is skip rfq allowed",
         "IS_OFFER_REVIEW_MANDATORY": "Is offer review mandatory",

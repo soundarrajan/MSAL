@@ -66,7 +66,7 @@
                         </label>
                         <div class="form_input form_input_passwordFailedCount">
                             <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,100) track by item"
-                                ng-model="formValues.general.authenticationConfiguration.passwordFailedCount"></select>
+                                    ng-model="formValues.general.authenticationConfiguration.passwordFailedCount"></select>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         </label>
                         <div class="form_input form_input_passwordValidDays">
                             <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,100) track by item"
-                                ng-model="formValues.general.authenticationConfiguration.passwordValidDays"></select>
+                                    ng-model="formValues.general.authenticationConfiguration.passwordValidDays"></select>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                         </label>
                         <div class="form_input form_input_accountReleasedMinutes">
                             <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(1,120) track by item"
-                                ng-model="formValues.general.authenticationConfiguration.accountReleasedMinutes"></select>
+                                    ng-model="formValues.general.authenticationConfiguration.accountReleasedMinutes"></select>
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                         </label>
                         <div class="input-group form_input form_input_numericFormatCulture">
                             <select name="numericFormat" class="form-control bs-select changeIT" id="numericFormatCulture" ng-required="true" ng-options="item as item.name for item in options.Culture track by item.id"
-                                ng-model="formValues.general.tenantFormats.numericFormatCulture"></select>
+                                    ng-model="formValues.general.tenantFormats.numericFormatCulture"></select>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                         </label>
                         <div class="form_input form_input_dateFormat" ng-init='options.TransactionDate ? return : CM.getOptions({"Name": "TransactionDate", "Type": "dropdown", "masterSource": "TransactionDate"})'>
                             <select name="dateFormat" class="form-control bs-select changeIT" id="dateFormat" ng-required="true" ng-options="item as item.name for item in options.TransactionDate track by item.id"
-                                ng-model="formValues.general.tenantFormats.dateFormat"></select>
+                                    ng-model="formValues.general.tenantFormats.dateFormat"></select>
                             <!-- <input type="text" ng-required="true" class="form-control " name="dateFormat" id="dateFormat" ng-model="formValues.general.tenantFormats.dateFormat"/> -->
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         </label>
                         <div class="form_input form_input_emailDateFormat" ng-init='options.EmailDate ? return : CM.getOptions({"Name": "EmailDate", "Type": "dropdown", "masterSource": "EmailDate"})'>
                             <select name="emailDateFormat" class="form-control bs-select changeIT" id="emailDateFormat" ng-required="true" ng-options="item as item.name for item in options.EmailDate track by item.id"
-                                ng-model="formValues.general.tenantFormats.emailDateFormat"></select>
+                                    ng-model="formValues.general.tenantFormats.emailDateFormat"></select>
                             <!-- <input type="text" ng-required="true" class="form-control " name="emailDateFormat" id="emailDateFormat" ng-model="formValues.general.tenantFormats.emailDateFormat"/> -->
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                         </label>
                         <div class="input-group form_input form_input_timeZone">
                             <select name="timeZone" class="form-control bs-select changeIT" ng-required="true" id="timeZone" ng-options="item as item.name for item in options.TimeZone track by item.id"
-                                ng-model="formValues.general.tenantFormats.timeZone"></select>
+                                    ng-model="formValues.general.tenantFormats.timeZone"></select>
                         </div>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                         </label>
                         <div class="input-group form_input form_input_csvDelimiter" ng-init='options.CsvDelimiter ? return : CM.getOptions({"Name": "CsvDelimiter", "Type": "dropdown", "masterSource": "CsvDelimiter"})'>
                             <select name="CsvDelimiter" class="form-control bs-select changeIT" id="CsvDelimiter" ng-required="true" ng-options="item as item.name for item in options.CsvDelimiter track by item.id"
-                                ng-model="formValues.general.tenantFormats.csvDelimiter"></select>
+                                    ng-model="formValues.general.tenantFormats.csvDelimiter"></select>
                             <!-- <input type="text" name="csvDelimiter" class="form-control" ng-required="true" id="csvDelimiter"  ng-model="formValues.general.tenantFormats.csvDelimiter"/> -->
                         </div>
                     </div>
@@ -201,7 +201,7 @@
                         </label>
                         <div class="input-group form_input form_input_quantityPrecision">
                             <select name="quantityPrecision" class="form-control bs-select changeIT" ng-required="true" id="quantityPrecision" ng-options="item as item for item in createRange(0,4) track by item"
-                                ng-model="formValues.general.defaultValues.quantityPrecision"></select>
+                                    ng-model="formValues.general.defaultValues.quantityPrecision"></select>
                         </div>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
                         </label>
                         <div class="input-group form_input form_input_pricePrecision">
                             <select name="pricePrecision" class="form-control bs-select changeIT" ng-required="true" id="pricePrecision" ng-options="item as item for item in createRange(0,4) track by item"
-                                ng-model="formValues.general.defaultValues.pricePrecision"></select>
+                                    ng-model="formValues.general.defaultValues.pricePrecision"></select>
                         </div>
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                         </label>
                         <div class="input-group form_input form_input_amountPrecision">
                             <select name="amountPrecision" class="form-control bs-select changeIT" ng-required="true" id="amountPrecision" ng-options="item as item for item in createRange(0,4) track by item"
-                                ng-model="formValues.general.defaultValues.amountPrecision"></select>
+                                    ng-model="formValues.general.defaultValues.amountPrecision"></select>
                         </div>
                     </div>
                 </div>
@@ -245,12 +245,12 @@
                         </label>
                         <div class="input-group form_input form_input_formula_quotes">
                             <input ng-model="formValues.general.tenantFormats.uom" uib-typeahead="item as item.name for item in options.Uom | filter:{name:$viewValue}"
-                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
-                                typeahead-wait-ms="100" ng-required="true" name="uom" autocomplete="off" />
+                                   class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
+                                   typeahead-wait-ms="100" ng-required="true" name="uom" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_uomlist', 'UOM', 'formValues.general.tenantFormats.uom');"
-                                ng-init="modal = false">
+                                  ng-init="modal = false">
                                 <!-- triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product'); -->
-                                <a   class=" btn default">
+                                <a class=" btn default">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </span>
@@ -267,7 +267,7 @@
                         </label>
                         <div class="input-group form_input form_input_maximumUploadFileSize">
                             <select class="form-control bs-select changeIT" name="maximumUploadFileSize" id="maximumUploadFileSize" ng-required="true"
-                                ng-options="item as item for item in createRange(1,20) track by item" ng-model="formValues.general.defaultValues.maximumUploadFileSize"></select>
+                                    ng-options="item as item for item in createRange(1,20) track by item" ng-model="formValues.general.defaultValues.maximumUploadFileSize"></select>
                         </div>
                     </div>
                 </div>
@@ -281,11 +281,11 @@
                         </label>
                         <div class="input-group form_input form_input_formula_quotes">
                             <input ng-model="formValues.general.tenantFormats.currency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"
-                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
-                                typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}" autocomplete="off" />
+                                   class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
+                                   typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_currencylist', 'Currency', 'formValues.general.tenantFormats.currency');"
-                                ng-init="modal = false">
-                                <a   class=" btn default">
+                                  ng-init="modal = false">
+                                <a class=" btn default">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </span>
@@ -295,88 +295,14 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="averageSurveyorCost" class="averageSurveyorCost_label">
-                            {{ CM.app_id + '.AVERAGE_SURVEYOR_COST' | translate }}
-                        </label>
-                        <div class="input-group form_input form_input_averageSurveyorCost">
-                            <input type="number" name="averageSurveyorCost" class="form-control averageSurveyorCost" ng-model="formValues.general.defaultValues.averageSurveyorCost"
-                                ng-class="CM.invalid_form ? 'ng-touched' : ''" />
-                            <span class="input-group-addon uom_group pseudoSelect">
-                                <select class="bs-select" ng-required="formValues.general.defaultValues.averageSurveyorCost != null && formValues.general.defaultValues.averageSurveyorCost != ''"
-                                    id="" ng-model="formValues.general.defaultValues.averageSurveyorCostCurrency" ng-options="item as item.code for item in options.Currency track by item.id"
-                                    data-width="fit">
-                                    <option></option>
-                                </select>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-          
-                <div class="col-md-4">
                     <div class="form-group  row">
                         <div class="form_input form_input_isSSRSReports">
                             <div class="">
                                 <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisSSRSReports" id="isSSRSReports" ng-model="formValues.general.defaultValues.isSSRSReports"
-                                    /> {{ CM.app_id + '.SSR_REPORTS' | translate }}
+                                    <input type="checkbox" name="inlineRadiosisSSRSReports" id="isSSRSReports" ng-model="formValues.general.defaultValues.isSSRSReports" /> {{ CM.app_id + '.SSR_REPORTS' | translate }}
                                     <span></span>
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isEnergyCalculationRequired">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisEnergyCalculationRequired" id="isEnergyCalculationRequired" ng-model="formValues.general.defaultValues.isEnergyCalculationRequired"
-                                    /> {{ CM.app_id + '.IS_ENERGY_CALCULATION_REQUIRED' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- {{isEnergyCalculationRequired}} -->
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_includeAverageSurveyorCharge">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosincludeAverageSurveyorCharge" id="inlinecheckincludeAverageSurveyorCharge" ng-model="formValues.general.defaultValues.includeAverageSurveyorCharge"
-                                    /> {{ CM.app_id + '.INCLUDE_AVERAGE_SURVEYOR_CHARGE' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="averageSurveyorCost" class="interestRate_label">
-                            {{ CM.app_id + '.INTEREST_RATE' | translate }}
-                        </label>
-                        <div class="input-group form_input form_input_interestRate">
-                            <input type="number" name="interestRate" class="form-control interestRate" ng-model="formValues.general.defaultValues.interestRate"
-                                ng-class="CM.invalid_form ? 'ng-touched' : ''" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="buyerPaymentTerm" class="simpleLookupLabel">
-                            {{ CM.app_id + '.BUYER_PAYMENT_TERM' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_buyerPaymentTerm">
-                            <select class="form-control bs-select changeIT" name="buyerPaymentTerm" id="buyerPaymentTerm" ng-required="true" ng-options="item as item.name for item in CM.listsCache.PaymentTerm track by item.id"
-                                ng-model="formValues.general.defaultValues.buyerPaymentTerm"></select>
                         </div>
                     </div>
                 </div>
@@ -387,8 +313,7 @@
                         <div class="form_input form_input_IsComplexFormulaWeightEnforced">
                             <div class="">
                                 <label class="mt-checkbox">
-                                    <input type="checkbox" name="IsComplexFormulaWeightEnforced" id="IsComplexFormulaWeightEnforced" ng-model="formValues.general.defaultValues.isComplexFormulaWeightEnforced"
-                                    /> {{ CM.app_id + '.WEIGHT_ENFORCED' | translate }}
+                                    <input type="checkbox" name="IsComplexFormulaWeightEnforced" id="IsComplexFormulaWeightEnforced" ng-model="formValues.general.defaultValues.isComplexFormulaWeightEnforced" /> {{ CM.app_id + '.WEIGHT_ENFORCED' | translate }}
                                     <span></span>
                                 </label>
                             </div>
@@ -407,7 +332,7 @@
                         </label>
                         <div class="input-group form_input form_input_defaultSpotAgreementType">
                             <select class="form-control bs-select changeIT" name="defaultSpotAgreementType" id="defaultSpotAgreementType" ng-required="true" ng-options="item as item.name for item in spotAgreementTypesList track by item.id"
-                                ng-model="formValues.general.defaultValues.defaultSpotAgreementType"></select>
+                                    ng-model="formValues.general.defaultValues.defaultSpotAgreementType"></select>
                         </div>
                     </div>
                 </div>
@@ -421,13 +346,13 @@
                         </label>
                         <div class="input-group form_input form_input_defaultContractAgreementType">
                             <select class="form-control bs-select changeIT" name="defaultContractAgreementType" id="defaultContractAgreementType" ng-required="true" ng-options="item as item.name for item in contractAgreementTypesList track by item.id"
-                                ng-model="formValues.general.defaultValues.defaultContractAgreementType"></select>
+                                    ng-model="formValues.general.defaultValues.defaultContractAgreementType"></select>
                         </div>
                     </div>
-                </div> 
+                </div>
 
             </div>
-        	<div class="row">
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group row">
                         <label for="emailServerType" class="simpleLookupLabel">
@@ -438,7 +363,7 @@
                         </label>
                         <div class="input-group form_input form_input_emailServerType">
                             <select class="form-control bs-select changeIT" name="emailServerType" id="emailServerType" ng-required="true" ng-options="item as item.name for item in CM.listsCache.EmailServerTypes track by item.id"
-                                ng-model="formValues.general.defaultValues.emailServerType"></select>
+                                    ng-model="formValues.general.defaultValues.emailServerType"></select>
                         </div>
                     </div>
                 </div>
@@ -449,7 +374,7 @@
                         </label>
                         <div class="input-group form_input form_input_IntegrationsUrl">
                             <input type="text" class="form-control bs-select changeIT" name="IntegrationsUrl" id="IntegrationsUrl"
-                                ng-model="formValues.general.defaultValues.integrationsUrl">
+                                   ng-model="formValues.general.defaultValues.integrationsUrl">
                         </div>
                     </div>
                 </div>
@@ -460,11 +385,11 @@
                         </label>
                         <div class="input-group form_input form_input_userManualLink">
                             <input type="text" class="form-control bs-select changeIT" name="userManualLink" id="userManualLink"
-                                ng-model="formValues.general.userManualLink">
+                                   ng-model="formValues.general.userManualLink">
                         </div>
                     </div>
-                </div>                                     
-        	</div>
+                </div>
+            </div>
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">
@@ -483,7 +408,7 @@
                         </label>
                         <div class="input-group form_input form_input_companyDisplayName">
                             <select class="form-control bs-select changeIT" name="companyDisplayName" id="companyDisplayName" ng-required="true" ng-options="item as item.name for item in CM.listsCache.CompanyDisplayName track by item.id"
-                                ng-model="formValues.general.companyDisplayName"></select>
+                                    ng-model="formValues.general.companyDisplayName"></select>
                         </div>
                     </div>
                 </div>
@@ -497,7 +422,7 @@
                         </label>
                         <div class="input-group form_input form_input_serviceDisplayName">
                             <select class="form-control bs-select changeIT" name="serviceDisplayName" id="serviceDisplayName" ng-required="true" ng-options="item as item.name for item in CM.listsCache.ServiceDisplayName track by item.id"
-                                ng-model="formValues.general.serviceDisplayName"></select>
+                                    ng-model="formValues.general.serviceDisplayName"></select>
                         </div>
                     </div>
                 </div>
@@ -1343,6 +1268,99 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Energy Calculation
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <div class="form_input form_input_isEnergyCalculationRequired">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisEnergyCalculationRequired" id="isEnergyCalculationRequired" ng-model="formValues.procurement.energyConfiguration.isEnergyCalculationRequired" /> {{ CM.app_id + '.IS_ENERGY_CALCULATION_REQUIRED' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="buyerPaymentTerm" class="simpleLookupLabel">
+                            {{ CM.app_id + '.BUYER_PAYMENT_TERM' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_buyerPaymentTerm">
+                            <select class="form-control bs-select changeIT" name="buyerPaymentTerm" id="buyerPaymentTerm" ng-required="true" ng-options="item as item.name for item in CM.listsCache.PaymentTerm track by item.id"
+                                    ng-model="formValues.procurement.energyConfiguration.buyerPaymentTerm"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="averageSurveyorCost" class="interestRate_label">
+                            {{ CM.app_id + '.INTEREST_RATE' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_interestRate">
+                            <input type="number" name="interestRate" class="form-control interestRate" ng-model="formValues.procurement.energyConfiguration.interestRate"
+                                   ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_includeAverageSurveyorCharge">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosincludeAverageSurveyorCharge" id="inlinecheckincludeAverageSurveyorCharge" ng-model="formValues.procurement.energyConfiguration.includeAverageSurveyorCharge" /> {{ CM.app_id + '.INCLUDE_AVERAGE_SURVEYOR_CHARGE' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="averageSurveyorCost" class="averageSurveyorCost_label">
+                            {{ CM.app_id + '.AVERAGE_SURVEYOR_COST' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_averageSurveyorCost">
+                            <input type="number" name="averageSurveyorCost" class="form-control averageSurveyorCost" ng-model="formValues.procurement.energyConfiguration.averageSurveyorCost"
+                                   ng-class="CM.invalid_form ? 'ng-touched' : ''" />
+                            <span class="input-group-addon uom_group pseudoSelect">
+                                <select class="bs-select" ng-required="formValues.procurement.energyConfiguration.averageSurveyorCost != null && formValues.procurement.energyConfiguration.averageSurveyorCost != ''"
+                                        id="" ng-model="formValues.procurement.energyConfiguration.averageSurveyorCostCurrency" ng-options="item as item.code for item in options.Currency track by item.id"
+                                        data-width="fit">
+                                    <option></option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="sixMonthHistoryFor" class="simpleLookupLabel">
+                            {{ CM.app_id + '.SIX_MONTH_HISTORY' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_sixMonthHistoryFor">
+                            <select class="form-control bs-select changeIT" name="sixMonthHistoryFor" id="sixMonthHistoryFor" ng-required="true" ng-options="item as item.name for item in CM.listsCache.SixMonthHistoryOptions track by item.id"
+                                    ng-model="formValues.procurement.energyConfiguration.sixMonthHistoryFor"></select>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 
