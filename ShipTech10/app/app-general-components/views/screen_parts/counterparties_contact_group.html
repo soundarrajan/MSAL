@@ -31,7 +31,7 @@
                     </label>
                     <div class="input-group form_input form_input_ContactType">
                         <input  uib-typeahead="item as item.name for item in options.ContactType | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}contactType" name="contactType{{ $index }}" ng-model="formValues.contacts[$index].contactType"  autocomplete="off" ng-required="true"/>
-                        <span class="input-group-addon" ng-click="triggerModal('general', 'masters_contacttypelist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.contactType');">
+                        <span class="input-group-addon" ng-click="triggerModal('general', 'masters_contacttypelist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.contactType');" id="{{ field.masterSource }}contactType_lookup">
                             <a   class=" btn default">
                                 <i class="fa fa-search"></i>
                             </a>
