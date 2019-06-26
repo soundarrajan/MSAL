@@ -1265,6 +1265,26 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td style="max-width: 250px; min-width: 200px">
+                                        <div class="input-group">
+                                            <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="product_RobOnArrival_{{ $index }}" class="form-control input-md" ng-model="$ctrl.data.products[key].robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
+                                            <div class="input-group-btn" ng-init="!product.robOnArrivalUom.id ? product.robOnArrivalUom = $ctrl.tenantUom : '' ">
+                                                <select style="min-width: 75px; max-width: 75px;"
+                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="$ctrl.data.products[key].robOnArrivalUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.robOnArrivalUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                                    id="product_robOnArrivalUom_{{ $index }}"></select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="max-width: 250px; min-width: 200px">
+                                        <div class="input-group">
+                                            <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption"  data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
+                                            <div class="input-group-btn" ng-init="!product.roundVoyageConsumptionUom.id ? product.roundVoyageConsumptionUom = $ctrl.tenantUom : '' ">
+                                                <select style="min-width: 75px; max-width: 75px;"
+                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.roundVoyageConsumptionUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.roundVoyageConsumptionUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                                    id="product_roundVoyageConsumptionUom_{{ $index }}"></select>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

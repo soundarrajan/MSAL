@@ -123,6 +123,7 @@
             "AGREEMENT_TYPE": "Agreement Type",
             "COMMENT": "Comment",
             "PRODUCT_STATUS": "Status",
+            "ROUND_VOYAGE_CONSUMPTION": "Round voyage consumption",
             "CREATED_BY": "Created By",
             "CREATED_ON": "Created On",
             "LAST_MODIFIED_BY": "Last Modified By",
@@ -327,7 +328,9 @@
             "CONFIRM_ORDER_OK": "Ok",
             "PRODUCT_TYPE": "Product Type",
             "EXCHANGE_RATE": "Exchange Rate",
-            "MANUAL_PRICING_DATE_OVERRIDE": "Manual Pricing Date Override"
+            "MANUAL_PRICING_DATE_OVERRIDE": "Manual Pricing Date Override",
+            "ROB_ON_ARRIVAL": "RoB on Arrival",
+            "ROUND_VOYAGE_CONSUMPTION": "Round voyage consumption",
         },
         "ORDER_LIST": {
             "ORDER_ID": "Order No",
