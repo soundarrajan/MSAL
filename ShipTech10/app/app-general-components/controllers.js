@@ -200,10 +200,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 // }
                 // vm.hasChangedOn_page_filter = true;
                 if (Elements.settings[table_id]) {
-                	// $(Elements.table[Elements.settings[table_id].table]).jqGrid(Elements.settings[table_id].source);
-                	if (payload.raw || payload.sortList) {
-		                    Elements.settings[table_id].source.on_page_filter(payload);
-                	}
+                    // $(Elements.table[Elements.settings[table_id].table]).jqGrid(Elements.settings[table_id].source);
+                    if (payload.raw || payload.sortList) {
+                            Elements.settings[table_id].source.on_page_filter(payload);
+                    }
                 }
                 // console.log(Elements.settings[$rootScope.listTableSelector].source)
             }, 300);
@@ -398,43 +398,43 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         $scope.getStatuses = function() {
 
         scheduleDashboardConfigurationInterval = setInterval(function(){
-	    	if (window.scheduleDashboardConfiguration) {
-	    		clearInterval(scheduleDashboardConfigurationInterval);
-				$scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
-            	// $scope.adminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.data.labels, { displayInDashboard : true}, true);
+            if (window.scheduleDashboardConfiguration) {
+                clearInterval(scheduleDashboardConfigurationInterval);
+                $scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
+                // $scope.adminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.data.labels, { displayInDashboard : true}, true);
              //    if ($scope.calendarStatuses) {
-             //    	$scope.createStatusFilters()
+             //     $scope.createStatusFilters()
              //    }
 
-	    		// $scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
-		     //    statusList = ctrl.dashboardConfiguration.labels;
-	      //       selectTimeScale($stateParams.timescale);
-	    	}
-        },500)        	
-        	// setTimeout(function(){
-		       //  $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
-        	// },550)
+                // $scope.adminDashboardStatuses = $filter("filter")(data.labels, { displayInDashboard : true}, true);
+             //    statusList = ctrl.dashboardConfiguration.labels;
+          //       selectTimeScale($stateParams.timescale);
+            }
+        },500)          
+            // setTimeout(function(){
+               //  $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;    
+            // },550)
 
 
-	    //     	if (!window.scheduleDashboardConfiguration) {
-		   //          var requestData = {
-		   //              Payload: true
-		   //          };
+        //      if (!window.scheduleDashboardConfiguration) {
+           //          var requestData = {
+           //              Payload: true
+           //          };
 
-					// return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
-					// 	window.scheduleDashboardConfiguration = data;
-					//  //    scheduleDashboardConfiguration = data;
-					//  //    return data;
-		   //      	tenantModel.getScheduleDashboardConfiguration()	
-					//     $scope.statuses = data.payload.labels;
-					// })
+                    // return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
+                    //  window.scheduleDashboardConfiguration = data;
+                    //  //    scheduleDashboardConfiguration = data;
+                    //  //    return data;
+           //       tenantModel.getScheduleDashboardConfiguration() 
+                    //     $scope.statuses = data.payload.labels;
+                    // })
 
-		   //          // return tenantScheduleDashboardConfiguration.fetch(requestData).$promise.then(function(data) {
-		   //          //     $scope.statuses = data.payload.labels;
-		   //          // });
-	    //     	} else {
-				 //    $scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
-	    //     	}
+           //          // return tenantScheduleDashboardConfiguration.fetch(requestData).$promise.then(function(data) {
+           //          //     $scope.statuses = data.payload.labels;
+           //          // });
+        //      } else {
+                 //    $scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
+        //      }
         };
         $scope.getStatuses();
 
@@ -769,7 +769,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
 
                         if (options.colModel.name.indexOf("customStatus") != -1) {
-                        	return label;
+                            return label;
                         }
 
                         if (label && color) {
@@ -805,15 +805,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         color,
                         status;
                     if(rowObject.voyageDetail) {
-	                    if (rowObject.voyageDetail.portStatus) {
-	                        status = rowObject.voyageDetail.portStatus;
-	                        label = status.displayName ? status.displayName : status.name;
-	                        color =  $scope.getStatusColor(null, rowObject.voyageDetail.portStatus);
+                        if (rowObject.voyageDetail.portStatus) {
+                            status = rowObject.voyageDetail.portStatus;
+                            label = status.displayName ? status.displayName : status.name;
+                            color =  $scope.getStatusColor(null, rowObject.voyageDetail.portStatus);
 
-	                        if (label && color) {
-	                            return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
-	                        } 
-	                    }
+                            if (label && color) {
+                                return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
+                            } 
+                        }
                     }
                     return "";
                 }
@@ -850,11 +850,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-	            	var hasDayOfWeek = false;
-		            if (dateFormat.startsWith("DDD ")) {
-		            	hasDayOfWeek = true;
-		            	dateFormat = dateFormat.split("DDD ")[1];
-		            }
+                    var hasDayOfWeek = false;
+                    if (dateFormat.startsWith("DDD ")) {
+                        hasDayOfWeek = true;
+                        dateFormat = dateFormat.split("DDD ")[1];
+                    }
                     dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
                     formattedDate = moment.utc(cellValue).add(moment().utcOffset(), 'minutes').format(dateFormat);
                     if (options.label == "ETA" || options.label == "ETB" || options.label == "ETD") {
@@ -866,9 +866,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (cellValue != null) {
-                    	if (hasDayOfWeek) { 
-                    		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                    	} 
+                        if (hasDayOfWeek) { 
+                            formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
+                        } 
                         return "<div formatter='formatDate'>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -1087,11 +1087,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var tpl = '<span class="formatter">:content</span>';
                     var element = tpl;
                     var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-	            	var hasDayOfWeek = false;
-		            if (dateFormat.startsWith("DDD ")) {
-		            	hasDayOfWeek = true;
-		            	dateFormat = dateFormat.split("DDD ")[1];
-		            }                     
+                    var hasDayOfWeek = false;
+                    if (dateFormat.startsWith("DDD ")) {
+                        hasDayOfWeek = true;
+                        dateFormat = dateFormat.split("DDD ")[1];
+                    }                     
                     formattedDate = $filter("date")(cellValue, dateFormat.split(" ")[0], "UTC");
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
@@ -1099,9 +1099,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (cellValue != null) {
-                    	if (hasDayOfWeek) { 
-                    		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                    	} 
+                        if (hasDayOfWeek) { 
+                            formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
+                        } 
                         return "<div formatter='formatOnlyDate'>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -1114,21 +1114,21 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-	            	var hasDayOfWeek = false;
-		            if (dateFormat.startsWith("DDD ")) {
-		            	hasDayOfWeek = true;
-		            	dateFormat = dateFormat.split("DDD ")[1];
-		            }                    
+                    var hasDayOfWeek = false;
+                    if (dateFormat.startsWith("DDD ")) {
+                        hasDayOfWeek = true;
+                        dateFormat = dateFormat.split("DDD ")[1];
+                    }                    
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat, "UTC");
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
                         formattedDate = $filter("date")(cellValue, dateFormat.split(" ")[0], "UTC");
                     } else {
-	                    if (formattedDate) {
-		                    if (formattedDate.split(" ")[1] == "00:00") {
-		                    	formattedDate = formattedDate.split(" ")[0];
-		                    }
-	                    }
+                        if (formattedDate) {
+                            if (formattedDate.split(" ")[1] == "00:00") {
+                                formattedDate = formattedDate.split(" ")[0];
+                            }
+                        }
                     }
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
@@ -1137,9 +1137,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (cellValue != null) {
 
-                    	if (hasDayOfWeek) { 
-                    		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                    	} 
+                        if (hasDayOfWeek) { 
+                            formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
+                        } 
                         return "<div formatter='formatDateUtc' >" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -1563,11 +1563,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var edit_invoice_link = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.invoice) {
-                      	if (rowObject.claimNo) {
-	                        var tpl = '  <a target="_blank" href="#/invoices/claims/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
-                      	} else {
-	                        var tpl = '  <a target="_blank" href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
-                      	}
+                        if (rowObject.claimNo) {
+                            var tpl = '  <a target="_blank" href="#/invoices/claims/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        } else {
+                            var tpl = '  <a target="_blank" href="#/invoices/invoice/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        }
                     } else {
                         var tpl = '  <a target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
@@ -2040,18 +2040,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var element = tpl;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-	            	var hasDayOfWeek = false;
-		            if (dateFormat.startsWith("DDD ")) {
-		            	hasDayOfWeek = true;
-		            	dateFormat = dateFormat.split("DDD ")[1];
-		            }
+                    var hasDayOfWeek = false;
+                    if (dateFormat.startsWith("DDD ")) {
+                        hasDayOfWeek = true;
+                        dateFormat = dateFormat.split("DDD ")[1];
+                    }
 
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat);
                     if (cellValue != null) {
-                    	if (hasDayOfWeek) { 
-                    		formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                    	} 
+                        if (hasDayOfWeek) { 
+                            formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
+                        } 
                         return "<div>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -2308,22 +2308,22 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 IsChecked: changedData.isChecked ? changedData.isChecked : null
             };
             if (typeof(vm.paymentDateHistory) == "undefined") {
-				vm.paymentDateHistory = [];
+                vm.paymentDateHistory = [];
             }
             if (typeof(vm.paymentDateHistory[currentRow.id]) == 'undefined') {
-            	vm.paymentDateHistory[currentRow.id] = {}
+                vm.paymentDateHistory[currentRow.id] = {}
             }
             if (typeof(vm.paymentDateHistory[currentRow.id].paymentDate) == 'undefined') {
-            	vm.paymentDateHistory[currentRow.id].paymentDate = null;
+                vm.paymentDateHistory[currentRow.id].paymentDate = null;
             }
             if (typeof(vm.paymentDateHistory[currentRow.id].accountancyDate) == 'undefined') {
-            	vm.paymentDateHistory[currentRow.id].accountancyDate = null;
+                vm.paymentDateHistory[currentRow.id].accountancyDate = null;
             }      
-			// console.log(vm.initialTreasuryData);
+            // console.log(vm.initialTreasuryData);
             if (vm.initialTreasuryData[currentRow.id].paymentDate == changedData.paymentDate) {
-            	// return;
+                // return;
             } else {
-            	payload.HasManualPaymentDate = true;
+                payload.HasManualPaymentDate = true;
                 vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
                 vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
             }
@@ -2361,9 +2361,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 });
                 vm.treasury_checkbox_header = allSelected;
                 if (event) {
-	                if ($(event.currentTarget)[0].hasAttribute("initialValue") && $($(event.currentTarget)[0]).attr("initialValue") == newValue) {
-	                	return;
-	                }
+                    if ($(event.currentTarget)[0].hasAttribute("initialValue") && $($(event.currentTarget)[0]).attr("initialValue") == newValue) {
+                        return;
+                    }
                 }
                 if (entityId) {
                     vm.saveTreasuryRowChange(entityId, vm.changedfields[entityId]);
@@ -2377,7 +2377,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         vm.setInitialValue = function(value, event){
-        	$($(event.currentTarget)[0]).attr("initialValue", value);
+            $($(event.currentTarget)[0]).attr("initialValue", value);
         }
 
 
@@ -2497,7 +2497,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $scope.resetTreasuryCheckboxes();
                 vm.lastCallTableParams = res;
                 if ($(".treasury-datepicker-input").length > 0) {
-	                $compile($(".treasury-datepicker-input"))(angular.element($(".treasury-datepicker-input")).scope())
+                    $compile($(".treasury-datepicker-input"))(angular.element($(".treasury-datepicker-input")).scope())
                 }
                 // vm.cpCtr = [];
             },500)
@@ -2506,7 +2506,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             setTimeout(function(){
                 vm.lastCallTableData = data;
                 if (vm.screen_id == "treasuryreport") {
-                	vm.initialTreasuryData = data.tableData.rows;
+                    vm.initialTreasuryData = data.tableData.rows;
                 }
                 jQuery(document).ready(function(){
                     $('select.contract_planning_product').select2();
@@ -2804,11 +2804,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "bunkerStrategy", bunkerStrategy);
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)
+                    /*
                     if (minEdit != 0 && maxEdit != 0) {
-	                    callback(true);
+                        callback(true);
                     } else {
-	                    callback(false);
+                        callback(false);
                     }
+                    */
+                    callback(true);
                 } else {
                     maxEdit = 0;
                     minEdit = 0;
@@ -2820,7 +2823,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)   
-                    callback(false);               
+                    callback(true);               
                 }
             })
 
@@ -2856,7 +2859,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (vm.cpCtr) {
                             if (vm.cpCtr[rowIdx]) {
                                 $rootScope.editableCProwsModel[keyRow]['contract'] = null;
-				                $rootScope.editableCProwsModel[keyRow]['contractProductId'] = null;
+                                $rootScope.editableCProwsModel[keyRow]['contractProductId'] = null;
                                 CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contract = null;
                                 CLC.jqGrid.Ascensys.gridData[rowIdx - 1].contractProductId = null;
                                 vm.cpCtr[rowIdx] = null;
@@ -2869,39 +2872,39 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (!isOnInit) {
                         setTimeout(function(){
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contract", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "seller.name", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractProductId", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "formulaDescription", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "deliveryPrice", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "premiumDiscount", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "noOfDaysBeforeExpiry", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMinQuantity", null);
-			                $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMaxQuantity", null);
-							$("#flat_contract_planning").jqGrid.Ascensys.gridData[rowIdx - 1 ]["contractMaxQuantity"] = null;
-							$("#flat_contract_planning").jqGrid.Ascensys.gridData[rowIdx - 1 ]["contractMinQuantity"] = null;
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contract", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "seller.name", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractProductId", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "formulaDescription", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "deliveryPrice", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "premiumDiscount", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "noOfDaysBeforeExpiry", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMinQuantity", null);
+                            $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractMaxQuantity", null);
+                            $("#flat_contract_planning").jqGrid.Ascensys.gridData[rowIdx - 1 ]["contractMaxQuantity"] = null;
+                            $("#flat_contract_planning").jqGrid.Ascensys.gridData[rowIdx - 1 ]["contractMinQuantity"] = null;
 
-							$('tr#'+rowIdx+' [aria-describedby="flat_contract_planning_contractMaxQuantity"]').text(" - ");
+                            $('tr#'+rowIdx+' [aria-describedby="flat_contract_planning_contractMaxQuantity"]').text(" - ");
 
                             $scope.updateMinMaxQuantities(rowIdx, value.id, function(resp){
-                            	if (resp) {
-			                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
-                            	} else {
-                            		toastr.error("Please enter Min and Max quantities to save the Request product");
-                            	}
+                                if (resp) {
+                                    angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                                } else {
+                                    toastr.error("Please enter Min and Max quantities to save the Request product");
+                                }
                             })
                         })
                     }
                 } else {
                     if (!isOnInit && columnKey != "contract") {
-                    	if (columnKey == "comment") {
-                    		if ($('[ng-model="cpcomment['+rowIdx+']"]').val() != CLC.jqGrid.Ascensys.gridData[rowIdx - 1].comment) {
-		                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
-                    		}
-                    	} else {
-	                        angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
-                    	}
-                    }	
+                        if (columnKey == "comment") {
+                            if ($('[ng-model="cpcomment['+rowIdx+']"]').val() != CLC.jqGrid.Ascensys.gridData[rowIdx - 1].comment) {
+                                angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                            }
+                        } else {
+                            angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowIdx - 1)          
+                        }
+                    }   
                 }
             }
             if (columnKey == "contract") {
@@ -3093,14 +3096,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                 $rootScope.editableCProwsModel['row-'+rowId]['contract'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['contractProductId'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['seller'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['formulaDescription'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['premiumDiscount'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['noOfDaysBeforeExpiry'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['contractMinQuantity'] = null;
-				$rootScope.editableCProwsModel['row-'+rowId]['contractMaxQuantity'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['seller'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['formulaDescription'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['premiumDiscount'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['noOfDaysBeforeExpiry'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['contractMinQuantity'] = null;
+                $rootScope.editableCProwsModel['row-'+rowId]['contractMaxQuantity'] = null;
 
             }
             angular.element($("#minMaxModal")).scope().$ctrl.contractPlanningAutoSave(rowId - 1);
@@ -3159,7 +3162,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             setTimeout(function(){
                 if ($('[ng-model="CLC.cpCtr['+rowId+']"]').hasClass("ng-dirty")) {
-                	contractValueHasChanged = CLC.jqGrid.Ascensys.gridData[rowId - 1].contract ? CLC.jqGrid.Ascensys.gridData[rowId - 1].contract.name != vm.cpCtr[rowId] : false;
+                    contractValueHasChanged = CLC.jqGrid.Ascensys.gridData[rowId - 1].contract ? CLC.jqGrid.Ascensys.gridData[rowId - 1].contract.name != vm.cpCtr[rowId] : false;
                     if (vm.cpCtr[rowId]) {
                         if (!vm.cpCtr[rowId].name) {
                             vm.cpCtr[rowId] = null;
@@ -3188,7 +3191,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 })
                             }
                             if (contractValueHasChanged) {
-		                        vm.selectContract(null, rowId);
+                                vm.selectContract(null, rowId);
                             }
                             $scope.$apply();
                         }
@@ -3220,7 +3223,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 })
                             }
                             if (contractValueHasChanged) {
-		                        vm.selectContract(null, rowId);
+                                vm.selectContract(null, rowId);
                             }
                             $scope.$apply();                        
       //                   CLC.jqGrid.Ascensys.gridData[rowId - 1].contract = null;
@@ -3334,7 +3337,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             vsc.agreementType = value.agreementType;
                             vsc.product = value.product;
                             if (typeof(value.contractProductId) != 'undefined') {
-	                            vsc.contractProductId = value.contractProductId;
+                                vsc.contractProductId = value.contractProductId;
                             }
                             // if (value.agreementType != null) {
                             //     vsc.agreementType = {};
@@ -3625,25 +3628,25 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 
 
         $scope.$watch("selectedConfig", function(o, n){
-        		console.log("selectedConfig: ", $scope.selectedConfig);
-	        	$scope.enableDisableDeleteLayout()
+                console.log("selectedConfig: ", $scope.selectedConfig);
+                $scope.enableDisableDeleteLayout()
         })
         $(document).on("change", "#configurations_list", function() {
-        	$scope.enableDisableDeleteLayout()
+            $scope.enableDisableDeleteLayout()
         })
         $scope.enableDisableDeleteLayout = function(){
-        	if ($("#configurations_list").val()) {
-        		if ($("#configurations_list").val() != "0") {
-        			$(".st-content-action-icons .delete_layout").css("opacity", 1)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "initial");
-        		} else {
-        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
-        		}
-        	} else {
-        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
-        	}
+            if ($("#configurations_list").val()) {
+                if ($("#configurations_list").val() != "0") {
+                    $(".st-content-action-icons .delete_layout").css("opacity", 1)
+                    $(".st-content-action-icons .delete_layout").css("pointer-events", "initial");
+                } else {
+                    $(".st-content-action-icons .delete_layout").css("opacity", 0.3)
+                    $(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+                }
+            } else {
+                    $(".st-content-action-icons .delete_layout").css("opacity", 0.3)
+                    $(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+            }
         }
 
         vm.export = function(icon, params) {
@@ -3659,13 +3662,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 return;
             }
             if (icon.action == "delete_layout") {
-            	if ($("#configurations_list").val() == "0" || !$("#configurations_list").val() || $("#configurations_list").val() == 0) {
-	                toastr.error("Please select configuration to be deleted");
-            		return
-            	}
-            	sweetConfirmScope = angular.element($("clc-table-list div")).scope();
-            	$scope.confirmModalData = {};
-            	$scope.confirmModalData.text = "Do you want to delete the configuration?";
+                if ($("#configurations_list").val() == "0" || !$("#configurations_list").val() || $("#configurations_list").val() == 0) {
+                    toastr.error("Please select configuration to be deleted");
+                    return
+                }
+                sweetConfirmScope = angular.element($("clc-table-list div")).scope();
+                $scope.confirmModalData = {};
+                $scope.confirmModalData.text = "Do you want to delete the configuration?";
                 sweetConfirmScope.showSweetConfirm("Controller_General_Header", "Do you want to delete the configuration?", "deleteSelectedConfiguration(false)");
                 return;
             }
@@ -3698,7 +3701,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
     //             console.log("-------- Should save Layout");
     //             console.log($scope.currentList, $scope.tableData);
     //             console.log("--------");
-				// return;
+                // return;
                 uiApiModel.saveListLayout($scope.currentList, $scope.tableData).then(function(data) {
                     if (data.isSuccess) {
                         $rootScope.$broadcast("savedLayout");
@@ -3773,7 +3776,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             }
 
             if ($scope.currentList == 'contractscontract') {
-            	if (typeof(contract_list_columns) == 'undefined') { contract_list_columns = []; }
+                if (typeof(contract_list_columns) == 'undefined') { contract_list_columns = []; }
                 for(var i = 0; i < $filtersData.filterColumns.length; i++) {
                     if($filtersData.filterColumns[i].columnRoute == 'contracts/contract') {
                         contract_list_columns.push($filtersData.filterColumns[i]);
@@ -3787,7 +3790,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                             continue;
                         }
                     }
-                }            	
+                }               
             }
 
 
@@ -3826,16 +3829,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         };
         /*GET SCREEN ACTIONS*/
 
-		function array_move(arr, old_index, new_index) {
-		    if (new_index >= arr.length) {
-		        var k = new_index - arr.length + 1;
-		        while (k--) {
-		            arr.push(undefined);
-		        }
-		    }
-		    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-		    return arr; // for testing
-		};        
+        function array_move(arr, old_index, new_index) {
+            if (new_index >= arr.length) {
+                var k = new_index - arr.length + 1;
+                while (k--) {
+                    arr.push(undefined);
+                }
+            }
+            arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+            return arr; // for testing
+        };        
         vm.getScreenActions = function() {
             var data = {
                 app: vm.app_id,
@@ -3876,7 +3879,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                                         }
                                     }
                                     if (value.mappedScreenActionName == "ApproveInvoice") {
-                                    	approveInvoiceIndex = key;
+                                        approveInvoiceIndex = key;
                                     }
                                 });
                             } else {
@@ -3884,7 +3887,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                             }
 
                             if (approveInvoiceIndex) {
-	                            screenButtons = array_move(screenButtons, approveInvoiceIndex, 0);
+                                screenButtons = array_move(screenButtons, approveInvoiceIndex, 0);
                             }
                             $scope.screenButtons = screenButtons;
                             $rootScope.screenButtons = screenButtons;
@@ -3972,20 +3975,20 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         }
 
         jQuery(document).ready(function($){
-        	$(document).on('mouseenter', 'td[data-original-title] , .treasury-datepicker-input', function(){
-        		if ($(this).attr("data-original-title") != "" && $(this).attr("data-original-title") != " ") {
-	        		$(this).tooltip({container:'body'}).tooltip("show");
-        		} else {
-	        		$(this).tooltip("hide");
-        			$(this).removeAttr("data-original-title");
-	        		// $(this).tooltip("dispose");
-        		}
-        		if ($(this).hasClass("treasury-datepicker-input") || $(this).parents("treasury-datepicker-input").length > 0) {
-        			$(this).attr('data-original-title', $(this).children("input").val())
-			          .tooltip('fixTitle')
-			          .tooltip('show');
-        		}
-        	})  
+            $(document).on('mouseenter', 'td[data-original-title] , .treasury-datepicker-input', function(){
+                if ($(this).attr("data-original-title") != "" && $(this).attr("data-original-title") != " ") {
+                    $(this).tooltip({container:'body'}).tooltip("show");
+                } else {
+                    $(this).tooltip("hide");
+                    $(this).removeAttr("data-original-title");
+                    // $(this).tooltip("dispose");
+                }
+                if ($(this).hasClass("treasury-datepicker-input") || $(this).parents("treasury-datepicker-input").length > 0) {
+                    $(this).attr('data-original-title', $(this).children("input").val())
+                      .tooltip('fixTitle')
+                      .tooltip('show');
+                }
+            })  
 
         })
 
