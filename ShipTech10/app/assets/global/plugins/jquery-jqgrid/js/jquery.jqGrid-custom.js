@@ -226,7 +226,11 @@ $.jgrid.extend({
                     //var row_list = $(this).jqGrid('getGridParam', 'rowList');
                     var row_list = $(this).jqGrid("getGridParam", "tenantData").rowList;
                     if (row_list.length == 0) {
-                        row_list = [100, 50, 25];
+                        row_list = [100, 75, 50, 25];
+                    }
+                    // Failsafe
+                    if (row_list.length > 0 && row_list[0] === 999999) {
+                        row_list = [100, 75, 50, 25];
                     }
                     var selected_option = $(this).jqGrid("getGridParam", "rowNum");
                     console.log(selected_option)

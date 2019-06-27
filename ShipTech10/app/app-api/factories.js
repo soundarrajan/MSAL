@@ -4185,7 +4185,7 @@ APP_API.factory("$Api_Service", [
                                 datatype: "local",
                                 language: "en",
                                 rowNum: 25,
-                                rowList: [999999, 100, 50, 25],
+                                // rowList: [999999, 100, 50, 25],
                                 multiselect: false,
                                 viewrecords: true,
                                 sortable: { options: { items: '>th:not(:has([id*="_cb"],[id*="_actions"]),:hidden)' } },
