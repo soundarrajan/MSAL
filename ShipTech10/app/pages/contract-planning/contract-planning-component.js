@@ -316,7 +316,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 return;
             }
             noContractAssigned = '';
-            noMinMaxQuantity = '';
+            // noMinMaxQuantity = '';
             noAgreementType = '';
             requestStatusError = '';
             $.each(contractList, function(k, v) {
@@ -336,14 +336,16 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 }
 
             })
-            if (noContractAssigned.length > 0 || noMinMaxQuantity.length > 0 || noAgreementType.length > 0) {
+            if (noContractAssigned.length > 0 /* || noMinMaxQuantity.length > 0 */ || noAgreementType.length > 0) {
                 displayError = '';
                 if (noContractAssigned.length > 0) {
                     displayError += "The following vessels: " + noContractAssigned + " have no contract assigned\r\n";
                 }
+                /*
                 if (noMinMaxQuantity.length > 0) {
                     displayError += "The following vessels: " + noMinMaxQuantity + " have invalid Min-Max Quantities\r\n";
                 }
+                */
 
                 if (noAgreementType.length > 0) {
                     displayError += "The following vessels: " + noAgreementType + " have no Agreement Types selected";
