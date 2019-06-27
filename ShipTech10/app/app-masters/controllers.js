@@ -748,6 +748,19 @@ APP_MASTERS.controller("Controller_Master", [
             $("form").addClass("submitted");
             vm.invalid_form = false;
             // console.log(vm.editInstance);
+            
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+                var periods = [];
+                if($scope.formValues && $scope.formValues.periods) {
+                    for (var i = 0; i < $scope.formValues.periods.length; i++) {
+                        if ($scope.formValues.periods[i].period && $scope.formValues.periods[i].validFrom && $scope.formValues.periods[i].validTo) {
+                            periods.push($scope.formValues.periods[i]);
+                        }
+                    }
+                }
+                $scope.formValues.periods = periods;
+            }
+
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
                 if($scope.formValues && $scope.formValues.counterpartyTypes) {
                     var validCounterpartyTypes = [];

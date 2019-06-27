@@ -33,19 +33,15 @@
                         {{ $ctrl.requestDetailsFields.validity.caption | translate }}
                     </label>
                     <div class="input-group form_input date form_meridian_datetimes">
-                        <input class="form-control date-mask new-date-picker" 
-                        readonly="" 
-                        id="validity" 
-                        screen-type="supplierPortal"
-		                new-date-picker
-                        ng-model="$ctrl.validity" 
-                        ng-blur="$ctrl.validityChanged($ctrl.validity);"/>
-                       <!--  <input class="form-control" id="validity" st-date-format="supplierPortal" st-date-to-local  ng-model="$ctrl.validity"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-sm date-set" type="button">
-                                <i class="fa fa-calendar"></i>
-                            </button>
-                        </span> -->
+                        <input type="text"
+                               name="validity"
+                               id="validity" 
+                               screen-type="supplierPortal"
+                               new-date-picker
+                               picker-type="date"
+                               ng-model="$ctrl.validity" 
+                               ng-blur="$ctrl.validityChanged($ctrl.validity);" 
+                               class="form-control date-mask new-date-picker" />
                     </div>
                 </div>
             </div>
