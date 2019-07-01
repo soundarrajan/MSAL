@@ -61,7 +61,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             ctrl.quoteByCurrency = settings.payload.tenantFormats.currency;
             ctrl.quoteByTimezone = settings.payload.tenantFormats.timeZone;
             ctrl.numberPrecision = settings.payload.defaultValues;
-            ctrl.isEnergyCalculationRequired = settings.payload.defaultValues.isEnergyCalculationRequired;
             ctrl.includeAverageSurveyorCharge = settings.payload.defaultValues.includeAverageSurveyorCharge;
             ctrl.averageSurveyorCost = settings.payload.defaultValues.averageSurveyorCost;
             ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
@@ -70,6 +69,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             //ctrl.needSupplierQuote = settings.payload.
         });
         tenantService.procurementSettings.then(function (settings) {
+            ctrl.isEnergyCalculationRequired = settings.payload.energyConfiguration.isEnergyCalculationRequired;
             ctrl.needSupplierQuote = settings.payload.offer.needSupplierQuoteValidityDateExpiry;
             ctrl.isSkipRfqAllowed = settings.payload.offer.isSkipRfqAllowed;
             ctrl.allowAddNewContact = settings.payload.request.allowAddNewContact;
@@ -1159,12 +1159,12 @@ ctrl.setProductData = function(data, loc) {
          */
         ctrl.getSellerProductOfferOnLocation = function (product, locations, sellerId, sellerObj) {
             var seller;
-            var location;
+            var theLocation;
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) { }
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
@@ -1177,14 +1177,14 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
             //if there is no matching location. return null offer
-            if (!location) {
+            if (!theLocation) {
                 return null;
             }
-            for (i = 0; i < location.products.length; i++) {
+            for (i = 0; i < theLocation.products.length; i++) {
                 //productIds should match
-                if (location.products[i].product.id === product.product.id) {
-                    for (var j = 0; j < location.products[i].sellers.length; j++) {
-                        seller = location.products[i].sellers[j];
+                if (theLocation.products[i].product.id === product.product.id) {
+                    for (var j = 0; j < theLocation.products[i].sellers.length; j++) {
+                        seller = theLocation.products[i].sellers[j];
                         if (seller.sellerCounterparty.id == sellerId) {
                             loopPhysicalSupplierId = null;
                             if (typeof seller.offers != "undefined") {
@@ -1294,16 +1294,16 @@ ctrl.setProductData = function(data, loc) {
         		return;
         	}
             data = {};
-            var location;
+            var theLocation;
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
             //if there is no matching location. return empty quantity
-            if (!location) {
+            if (!theLocation) {
                 return 0;
             }
             // var productList = $filter("filter")(location.products, {
@@ -1312,7 +1312,7 @@ ctrl.setProductData = function(data, loc) {
             //     }
             // });
             productList = [];
-            $.each(location.products, function (k, v) {
+            $.each(theLocation.products, function (k, v) {
                 if (v.id == product.id) {
                     productList.push(v);
                 }
@@ -1401,7 +1401,7 @@ ctrl.setProductData = function(data, loc) {
          * @param {array} locations - location group list
          */
         function removeSellerRequirementsOnLocation(seller, locations, ignoreUpdate) {
-            var location, req;
+            var theLocation, req;
             var productList = [];
             var currentRowRequirements = [];
             if (typeof seller == "undefined" && typeof locations == "undefined") {
@@ -1416,9 +1416,9 @@ ctrl.setProductData = function(data, loc) {
             for (var i = ctrl.requirements.length - 1; i >= 0; i--) {
                 for (var j = 0; j < locations.length; j++) {
                     req = ctrl.requirements[i];
-                    location = locations[j];
-                    composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + seller.randUnique;
-                    if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && location.id == req.RequestLocationId) {
+                    theLocation = locations[j];
+                    composedUniqueLocationSellerPhysical = theLocation.uniqueLocationIdentifier + "-" + seller.randUnique;
+                    if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && theLocation.id == req.RequestLocationId) {
                         if (req.randUniquePkg == seller.randUniquePkg) {
 				            currentRowRequirements.push(req);
                             ctrl.requirements.splice(i, 1);
@@ -1662,25 +1662,25 @@ ctrl.setProductData = function(data, loc) {
          * @param {object} product - product object
          */
         function removeSellerProductRequirementsOnLocation(seller, locations, product, event) {
-            var location;
+            var theLocation;
             if (typeof sellerId == "undefined" && typeof locations == "undefined" && typeof product == "undefined") {
                 return false;
             }
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
             //if there is no matching location. product is not available
-            if (!location) {
+            if (!theLocation) {
                 return false;
             }
             for (i = ctrl.requirements.length - 1; i >= 0; i--) {
                 req = ctrl.requirements[i];
-                composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + seller.randUnique;
-                if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && location.id == req.RequestLocationId && product.id == req.RequestProductId) {
+                composedUniqueLocationSellerPhysical = theLocation.uniqueLocationIdentifier + "-" + seller.randUnique;
+                if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && theLocation.id == req.RequestLocationId && product.id == req.RequestProductId) {
                     if (req.randUniquePkg == seller.randUniquePkg) {
 		                if (typeof(event) != 'undefined') {
 				            checkUncheckSellerRowUpdate(seller, locations, [ctrl.requirements[i]], false)
@@ -1728,27 +1728,27 @@ ctrl.setProductData = function(data, loc) {
         ctrl.getSellerProductTotalOnLocation = function (products, locations, sellerId) {
             var total = 0;
             var seller, offer, product, requestProductsInLocation;
-            var location;
+            var theLocation;
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === products[0].requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
             //if there is no matching location. return empty total
-            if (!location) {
+            if (!theLocation) {
                 return 0;
             }
-            for (i = 0; i < location.products.length; i++) {
-                product = location.products[i];
+            for (i = 0; i < theLocation.products.length; i++) {
+                product = theLocation.products[i];
                 requestProductsInLocation = $filter("filter")(products, {
                     // product: {
                     //     id: product.product.id
                     // }
                     id : product.id
                 });
-                if (requestProductsInLocation.length > 0 && requestProductsInLocation[0].requestId == location.requestId) {
+                if (requestProductsInLocation.length > 0 && requestProductsInLocation[0].requestId == theLocation.requestId) {
                     for (var j = 0; j < product.sellers.length; j++) {
                         seller = product.sellers[j];
                         if (seller.sellerCounterparty.id == sellerId) {
@@ -1844,27 +1844,27 @@ ctrl.setProductData = function(data, loc) {
          */
         ctrl.hasSellerProductRequirements = function (sellerObj, locations, physicalSupplierId, product) {
             var req, locationProduct;
-            var location;
+            var theLocation;
             if (typeof sellerId == "undefined" && typeof locations == "undefined" && typeof product == "undefined") {
                 return false;
             }
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
             //if there is no matching location. product is not available
-            if (!location) {
+            if (!theLocation) {
                 return false;
             }
             for (i = 0; i < ctrl.requirements.length; i++) {
                 req = ctrl.requirements[i];
                 if (req.randUniquePkg == sellerObj.randUniquePkg) {
-                    if (location.location.id == req.LocationId && location.id == req.RequestLocationId) {
-                        for (var j = 0; j < location.products.length; j++) {
-                            locationProduct = location.products[j];
+                    if (theLocation.location.id == req.LocationId && theLocation.id == req.RequestLocationId) {
+                        for (var j = 0; j < theLocation.products.length; j++) {
+                            locationProduct = theLocation.products[j];
                             if (product.id == req.RequestProductId && product.requestId == req.RequestId) {
                                 return true;
                             }
@@ -1882,7 +1882,6 @@ ctrl.setProductData = function(data, loc) {
          */
         ctrl.hasCounterpartyAllRowRequirements = function (sellerId, locations, sellerObj) {
             var req;
-            var location;
             physicalSupplierId = null;
 
 			/*rewrite*/
@@ -1906,7 +1905,6 @@ ctrl.setProductData = function(data, loc) {
         }        
         ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
             var req;
-            var location;
             physicalSupplierId = null;
 
 			/*rewrite*/
@@ -1930,7 +1928,7 @@ ctrl.setProductData = function(data, loc) {
         }
         ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
             var req;
-            var location;
+            var theLocation;
             physicalSupplierId = null;
 
 			/*rewrite*/
@@ -1965,11 +1963,11 @@ ctrl.setProductData = function(data, loc) {
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 for (var j = 0; j < locations.length; j++) {
                     requirement = ctrl.requirements[i];
-                    location = locations[j];
+                    theLocation = locations[j];
                     // if (sellerId == requirement.SellerId && location.location.id == requirement.LocationId && location.id == requirement.RequestLocationId && physicalSupplierId == requirement.PhysicalSupplierCounterpartyId) {
                     //     return true;
                     // }
-                    composedUniqueLocationSellerPhysical = location.uniqueLocationIdentifier + "-" + sellerObj.randUnique;
+                    composedUniqueLocationSellerPhysical = theLocation.uniqueLocationIdentifier + "-" + sellerObj.randUnique;
                     if (requirement.UniqueLocationSellerPhysical == composedUniqueLocationSellerPhysical && requirement.randUniquePkg == sellerObj.randUniquePkg) {
                         /* update requirementData in case row was checked before making changes on the row */
                         requirement.PhysicalSupplierCounterpartyId = physicalSupplierId;
@@ -2191,7 +2189,7 @@ ctrl.setProductData = function(data, loc) {
          *   EVENT HANDLERS
          ******************************************************************************/
         ctrl.createSellerRequirements = function (seller, locations, $event, uniqueLocationIdentifier, randUniquePkg, event) {
-            var req, product, locationSeller, productOffer, request, location;
+            var req, product, locationSeller, productOffer, request, theLocation;
             var currentRowRequirements = [];
 
             if ($event && ctrl.selectedNoQuoteItems ) {
@@ -2246,13 +2244,13 @@ ctrl.setProductData = function(data, loc) {
                 }
             } else {
                 for (var i = 0; i < locations.length; i++) {
-                    location = locations[i];
-                    for (var j = 0; j < location.products.length; j++) {
-                        product = location.products[j];
+                    theLocation = locations[i];
+                    for (var j = 0; j < theLocation.products.length; j++) {
+                        product = theLocation.products[j];
                         //for(var j = 0; j < product.sellers.length; j++) {
                         //locationSeller = location.products[i].sellers[j];
                         // if (seller.sellerCounterparty.id == locationSeller.sellerCounterparty.id){
-                        request = getRequestById(location.requestId);
+                        request = getRequestById(theLocation.requestId);
                         prodSeller = null;
                         for (var k = 0; k < product.sellers.length; k++) {
                             if (product.sellers[k].randUniquePkg == seller.randUniquePkg) {
@@ -2319,15 +2317,15 @@ ctrl.setProductData = function(data, loc) {
                             productHasOffer = false;
                         }
                         req = {
-                            RequestLocationId: location.id,
+                            RequestLocationId: theLocation.id,
                             RequestGroupId: ctrl.groupId,
                             RequestStatus: request.requestStatus.name,
                             SellerId: seller.sellerCounterparty.id,
                             RequestSellerId: requestSellerId,
                             RequestId: request.id,
                             VesselId: request.vesselId,
-                            LocationId: location.location.id,
-                            VesselVoyageDetailId: location.vesselVoyageDetailId,
+                            LocationId: theLocation.location.id,
+                            VesselVoyageDetailId: theLocation.vesselVoyageDetailId,
                             ProductId: product.product.id,
                             RfqId: prodSeller != null && prodSeller.rfq !== null ? prodSeller.rfq.id : null,
                             WorkflowId: product.workflowId,
@@ -2343,12 +2341,12 @@ ctrl.setProductData = function(data, loc) {
                             productHasPrice: productOffer ? (productOffer.price ? true : false) : false,
                             productHasRFQ: productHasRFQ,
                             requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
-                            UniqueLocationSellerPhysical: location.uniqueLocationIdentifier + "-" + seller.randUnique,
+                            UniqueLocationSellerPhysical: theLocation.uniqueLocationIdentifier + "-" + seller.randUnique,
                             rowLocationSellerPhysical: uniqueLocationIdentifier +"-"+ randUniquePkg,
                             randUniquePkg: seller.randUniquePkg,
                             isClonedSeller: seller.isCloned,
                             currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
-                            vesselETA: location.eta
+                            vesselETA: theLocation.eta
                         };
                         if (product.pricingType) {
                             req.PricingTypeId = product.pricingType.id;
@@ -2385,18 +2383,18 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample, uniqueLocationIdentifier, randUniquePkg, event) {
             var request;
-            var location, requestProductsInLocation;
+            var theLocation, requestProductsInLocation;
             var currentuniqueLocationIdentifier = uniqueLocationIdentifier;
             var currentrandUniquePkg = randUniquePkg;
             //get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === productSample.requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
             //if there is no matching location. product is not available
-            if (!location) {
+            if (!theLocation) {
                 return false;
             }
             physicalSupplier = {};
@@ -2418,9 +2416,9 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
             if (ctrl.hasSellerProductRequirements(seller, locations, physicalSupplier.id, productSample)) {
-                for (i = 0; i < location.products.length; i++) {
-                    if (location.products[i].id === productSample.id) {
-                        product = location.products[i];
+                for (i = 0; i < theLocation.products.length; i++) {
+                    if (theLocation.products[i].id === productSample.id) {
+                        product = theLocation.products[i];
                         break;
                     }
                 }
@@ -2431,9 +2429,9 @@ ctrl.setProductData = function(data, loc) {
             } else {
                 //get actual product from location (identified by the productSample)
                 ctrl.initialSelectedCheckboxesRequirements = true;
-                for (i = 0; i < location.products.length; i++) {
-                    if (location.products[i].id === productSample.id) {
-                        product = location.products[i];
+                for (i = 0; i < theLocation.products.length; i++) {
+                    if (theLocation.products[i].id === productSample.id) {
+                        product = theLocation.products[i];
                         break;
                     }
                 }
@@ -2441,7 +2439,7 @@ ctrl.setProductData = function(data, loc) {
                 if (!product) {
                     return false;
                 }
-                request = getRequestById(location.requestId);
+                request = getRequestById(theLocation.requestId);
                 prodSeller = null;
                 for (var k = 0; k < product.sellers.length; k++) {
                     if (product.sellers[k].randUniquePkg == seller.randUniquePkg) prodSeller = product.sellers[k];
@@ -2492,15 +2490,15 @@ ctrl.setProductData = function(data, loc) {
                     productHasOffer = false;
                 }
                 req = {
-                    RequestLocationId: location.id,
+                    RequestLocationId: theLocation.id,
                     RequestGroupId: ctrl.groupId,
                     RequestStatus: request.requestStatus.name,
                     SellerId: seller.sellerCounterparty.id,
                     RequestSellerId: requestSellerId,
                     RequestId: request.id,
                     VesselId: request.vesselId,
-                    LocationId: location.location.id,
-                    VesselVoyageDetailId: location.vesselVoyageDetailId,
+                    LocationId: theLocation.location.id,
+                    VesselVoyageDetailId: theLocation.vesselVoyageDetailId,
                     ProductId: product.product.id,
                     RfqId: prodSeller != null && prodSeller.rfq !== null ? prodSeller.rfq.id : null,
                     WorkflowId: product.workflowId,
@@ -2516,12 +2514,12 @@ ctrl.setProductData = function(data, loc) {
                      productHasPrice: productOffer ? (productOffer.price ? true : false) : false,
                     productHasRFQ: productHasRFQ,
                     requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
-                    UniqueLocationSellerPhysical: location.uniqueLocationIdentifier + "-" + seller.randUnique,
+                    UniqueLocationSellerPhysical: theLocation.uniqueLocationIdentifier + "-" + seller.randUnique,
                     rowLocationSellerPhysical: currentuniqueLocationIdentifier +"-"+ currentrandUniquePkg,
                     randUniquePkg: seller.randUniquePkg,
                     isClonedSeller: seller.isCloned,
                     currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
-                    vesselETA: location.eta
+                    vesselETA: theLocation.eta
                 };
                 if (product.pricingType) {
                     req.PricingTypeId = product.pricingType.id;
@@ -3032,14 +3030,14 @@ ctrl.setProductData = function(data, loc) {
             }
         };
         ctrl.setLatestOfferProduct = function (product, locations, seller) {
-            var location = locations[0];
+            var theLocation = locations[0];
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
-                    var location = locations[i];
+                    var theLocation = locations[i];
                     break;
                 }
             }
-            var productList = $filter("filter")(location.products, {
+            var productList = $filter("filter")(theLocation.products, {
                 product: {
                     id: product.product.id
                 }
@@ -3050,11 +3048,11 @@ ctrl.setProductData = function(data, loc) {
             ctrl.latestOfferProduct = product;
             ctrl.latestOfferSeller = seller;
         };
-        ctrl.setOfferDetailsParams = function (product, seller, location) {
-            ctrl.offerDetailsLocation = location;
+        ctrl.setOfferDetailsParams = function (product, seller, theLocation) {
+            ctrl.offerDetailsLocation = theLocation;
             ctrl.offerDetailsProduct = product;
             ctrl.offerDetails = 0;
-            ctrl.offerDetails = ctrl.getSellerProductOfferOnLocation(product, location, seller.sellerCounterparty.id, seller);
+            ctrl.offerDetails = ctrl.getSellerProductOfferOnLocation(product, theLocation, seller.sellerCounterparty.id, seller);
             setTimeout(function () {
                 if (ctrl.offerDetails != 0) {
                     $bladeEntity.open("offerDetails");
@@ -3169,13 +3167,13 @@ ctrl.setProductData = function(data, loc) {
         };
 
         //set requote requirements needed by requote dialog
-        ctrl.setRequoteRequirements = function (seller, location) {
-            ctrl.requirementsToRequote = ctrl.getRequoteRequirements(seller, location);
+        ctrl.setRequoteRequirements = function (seller, theLocation) {
+            ctrl.requirementsToRequote = ctrl.getRequoteRequirements(seller, theLocation);
         };
         //get requote requirements matching location/seller pair
         ctrl.getRequoteRequirements = function (seller, locations) {
             var requoteRequirements = [];
-            var product, req, location;
+            var product, req, theLocation;
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 req = ctrl.requirements[i];
                 $.each(ctrl.requests, function (reqK, reqV) {
@@ -3316,7 +3314,8 @@ ctrl.setProductData = function(data, loc) {
                 };
                 ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
                 ctrl.blade.counterpartyActiveSeller = seller;
-                ctrl.blade.counterpartyActiveLocation = location;
+                theLocation = locations[0];
+                ctrl.blade.counterpartyActiveLocation = theLocation;
                 ctrl.blade.colLayout = "double";
                 setTimeout(function () { });
                 ctrl.blade.activeWidget = "email";
@@ -3335,10 +3334,8 @@ ctrl.setProductData = function(data, loc) {
                 };
                 ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
                 ctrl.blade.counterpartyActiveSeller = seller;
-                if (!location) {
-                	location = locations[0];
-                }
-                ctrl.blade.counterpartyActiveLocation = location;
+            	theLocation = locations[0];
+                ctrl.blade.counterpartyActiveLocation = theLocation;
                 ctrl.blade.colLayout = "double";            	
                 ctrl.blade.activeWidget = "email";
                 ctrl.blade.widgetType = "counterparty";
@@ -3456,9 +3453,9 @@ ctrl.setProductData = function(data, loc) {
         ctrl.canDeleteSeller = function (seller, locations) {
             var canDeleteSeller = true;
             locationLoop: for (var locationIndex = 0; locationIndex < locations.length; locationIndex++) {
-                var location = locations[locationIndex];
-                for (var i = 0; i < location.products.length; i++) {
-                    var product = location.products[i];
+                var theLocation = locations[locationIndex];
+                for (var i = 0; i < theLocation.products.length; i++) {
+                    var product = theLocation.products[i];
                     for (var j = product.sellers.length - 1; j >= 0; j--) {
                         if (product.sellers[j].randUniquePkg === seller.randUniquePkg) {
                             if (product.sellers[j].offers) {
@@ -3488,7 +3485,7 @@ ctrl.setProductData = function(data, loc) {
         ctrl.reloadGroup = function () {
             $state.reload();
         };
-        ctrl.viewEditCounterpartyBlade = function (counterpartyId, location, seller) {
+        ctrl.viewEditCounterpartyBlade = function (counterpartyId, theLocation, seller) {
 
         	ctrl.changeBladeWidgetFunction = null;
             ctrl.blade.widgetType = "none";
@@ -3497,7 +3494,7 @@ ctrl.setProductData = function(data, loc) {
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewEditCounterpartyBlade',
-	        		params : [counterpartyId,location,seller]
+	        		params : [counterpartyId,theLocation,seller]
 	        	}
 	        	return;
         	}
@@ -3508,7 +3505,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.blade = {};
             }
             ctrl.blade.counterpartyActiveSeller = seller;
-            ctrl.blade.counterpartyActiveLocation = location;
+            ctrl.blade.counterpartyActiveLocation = theLocation;
             Factory_Master.get_master_entity(counterpartyId, "counterparty", "masters", function (callback) {
                 if (callback) {
                     console.log(callback);
@@ -3519,8 +3516,8 @@ ctrl.setProductData = function(data, loc) {
                     // ctrl.blade.colLayout = 'none';
                     ctrl.blade.colLayout = "double";
                     ctrl.blade.activeWidget = "contact";
-                    ctrl.blade.counterpartyActiveLocation = location;
-                    ctrl.blade.counterpartyActiveProducts = location[0].products;
+                    ctrl.blade.counterpartyActiveLocation = theLocation;
+                    ctrl.blade.counterpartyActiveProducts = theLocation[0].products;
                     ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
                     // $rootScope.counterpartyData = callback;
                     $bladeEntity.open("groupOfRequestBlade");
@@ -3578,7 +3575,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.bladeOpened = true;
             });
         };
-        ctrl.viewEnergyContentBlade = function (seller, location, products, productOffer) {
+        ctrl.viewEnergyContentBlade = function (seller, loc, products, productOffer) {
 
 
         	ctrl.changeBladeWidgetFunction = null;
@@ -3587,15 +3584,15 @@ ctrl.setProductData = function(data, loc) {
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewEnergyContentBlade',
-	        		params : [seller,location,products,productOffer]
+	        		params : [seller,loc,products,productOffer]
 	        	}
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
 
             ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
-            if (location[0]) {
-                location = location[0];
+            if (loc[0]) {
+                loc = loc[0];
             }
             if (typeof ctrl.blade == "undefined") {
                 ctrl.blade = {};
@@ -3610,7 +3607,7 @@ ctrl.setProductData = function(data, loc) {
      
             
             ctrl.dataLoaded = false;
-            ctrl.blade.counterpartyActiveLocation = location;
+            ctrl.blade.counterpartyActiveLocation = loc;
             ctrl.blade.counterpartyActiveSeller = seller;
             // ctrl.blade.counterpartyData = seller.sellerCounterparty;
             // ctrl.blade.counterpartyActiveSeller = seller;
@@ -3621,7 +3618,7 @@ ctrl.setProductData = function(data, loc) {
             ctrl.blade.colLayout = "double";
             ctrl.blade.activeWidget = "energyContent";
             ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
-            ctrl.initEnergyBlade(location, seller, productOffer);
+            ctrl.initEnergyBlade(loc, seller, productOffer);
             // $rootScope.counterpartyData = callback;
             $bladeEntity.open("groupOfRequestBlade");
             ctrl.bladeOpened = true;
@@ -3854,9 +3851,9 @@ ctrl.setProductData = function(data, loc) {
             // ctrl.groupedSellersByLocation = groupedLocations;
             // return ctrl.groupedSellersByLocation;
         };
-        ctrl.duplicateSeller = function (seller, location, event) {
+        ctrl.duplicateSeller = function (seller, theLocation, event) {
             // console.log(seller);
-            currentLocationId = location[0].uniqueLocationIdentifier;
+            currentLocationId = theLocation[0].uniqueLocationIdentifier;
             locations = [];
             $.each(ctrl.locations, function (k, v) {
                 if (v.uniqueLocationIdentifier == currentLocationId) {
@@ -4169,7 +4166,7 @@ ctrl.setProductData = function(data, loc) {
                 return returnData;
             }
         };
-        ctrl.findTotalSellersOnLocation = function (location) {
+        ctrl.findTotalSellersOnLocation = function (theLocation) {
             groupedLocationsIds = [];
             groupedLocations = [];
             $.each(ctrl.locations, function (locationK, locationV) {
@@ -4210,7 +4207,7 @@ ctrl.setProductData = function(data, loc) {
                 });
                 v.sellers = filteredSellers;
             });
-            locationId = location[0].location.id;
+            locationId = theLocation[0].location.id;
             sellerLocations = groupedLocations;
             data = {};
             // allSellersIds = [];
@@ -4236,7 +4233,7 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             /*rewrite*/
-            uniqueLocationIdentifier = location[0].uniqueLocationIdentifier;
+            uniqueLocationIdentifier = theLocation[0].uniqueLocationIdentifier;
             uniqeSellers = [];
             $.each(ctrl.requests, function (reqK, reqV) {
                 $.each(reqV.locations, function (locK, locV) {
@@ -4287,7 +4284,7 @@ ctrl.setProductData = function(data, loc) {
                 });
             });
         };
-        ctrl.updatePhysicalSupplierForSellers = function (seller, newSupplier, location, event) {
+        ctrl.updatePhysicalSupplierForSellers = function (seller, newSupplier, theLocation, event) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disablePhysicalSupplierLookup = true;
             oldSupplier = seller.oldPhysicalSupplier;
@@ -4302,7 +4299,7 @@ ctrl.setProductData = function(data, loc) {
             }
 
             if (!newSupplier) {
-                $.each(location, function (locK, locV) {
+                $.each(theLocation, function (locK, locV) {
                     $.each(locV.products, function (prodK, prodV) {
                         $.each(prodV.sellers, function (sellerK, sellerV) {
                             if (sellerV.randUnique == randUnique) {
@@ -4321,7 +4318,7 @@ ctrl.setProductData = function(data, loc) {
                 return
             }
             if (seller.isCloned) {
-                $.each(location, function (locK, locV) {
+                $.each(theLocation, function (locK, locV) {
                     $.each(locV.products, function (prodK, prodV) {
                         $.each(prodV.sellers, function (sellerK, sellerV) {
                             if (sellerV.randUnique == randUnique) {
@@ -4357,7 +4354,7 @@ ctrl.setProductData = function(data, loc) {
                     LOGIC FOR PACKAGES ACROSS SAME LOCATION
                     ****/
                     if (seller.packageType == "individual") {
-                        $.each(location, function (locK, locV) {
+                        $.each(theLocation, function (locK, locV) {
                             $.each(locV.products, function (prodK, prodV) {
                                 $.each(prodV.sellers, function (sellerK, sellerV) {
                                     if (sellerV.randUnique == newRandUnique && sellerV.packageType == seller.packageType) {
@@ -4369,7 +4366,7 @@ ctrl.setProductData = function(data, loc) {
                     } else {
                         activeRandUniquePkg = seller.randUniquePkg;
                         activeRandUnique = randUnique;
-                        activeLocationId = location[0].location.id;
+                        activeLocationId = theLocation[0].location.id;
                         activePackageType = seller.packageType;
                         activeRequestProductIds = [];
                         sameSellerSupplierRequestProductIds = [];
@@ -4418,7 +4415,7 @@ ctrl.setProductData = function(data, loc) {
                     ****/
                     console.log(sellerWithSupplierExists);
                     if (sellerWithSupplierExists) {
-                        $.each(location, function (locK, locV) {
+                        $.each(theLocation, function (locK, locV) {
                             $.each(locV.products, function (prodK, prodV) {
                                 $.each(prodV.sellers, function (sellerK, sellerV) {
                                     if (sellerV.randUnique == randUnique) {
@@ -4438,7 +4435,7 @@ ctrl.setProductData = function(data, loc) {
                         toastr.error("The selected Physical Supplier already exist for that seller on that location");
                     } else {
                         requestOfferIds = [];
-                        $.each(location, function (locK, locV) {
+                        $.each(theLocation, function (locK, locV) {
                             $.each(locV.products, function (prodK, prodV) {
                                 $.each(prodV.sellers, function (sellerK, sellerV) {
                                     if (sellerV.randUniquePkg == randUniquePkg) {
@@ -4464,7 +4461,7 @@ ctrl.setProductData = function(data, loc) {
                                     ctrl.disablePhysicalSupplierLookup = false;
                                     if (newRequestData.isSuccess) {
                                         if (seller.packageType == "individual") {
-                                            $.each(location, function (locK, locV) {
+                                            $.each(theLocation, function (locK, locV) {
                                                 $.each(locV.products, function (prodK, prodV) {
                                                     $.each(prodV.sellers, function (sellerK, sellerV) {
                                                         if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
@@ -4516,7 +4513,7 @@ ctrl.setProductData = function(data, loc) {
                                     // $state.reload();
                                 },
                                 function (response) {
-                                    $.each(location, function (locK, locV) {
+                                    $.each(theLocation, function (locK, locV) {
                                         $.each(locV.products, function (prodK, prodV) {
                                             $.each(prodV.sellers, function (sellerK, sellerV) {
                                                 if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
@@ -4540,7 +4537,7 @@ ctrl.setProductData = function(data, loc) {
                                 }
                             );
                         } else {
-                            $.each(location, function (locK, locV) {
+                            $.each(theLocation, function (locK, locV) {
                                 $.each(locV.products, function (prodK, prodV) {
                                     $.each(prodV.sellers, function (sellerK, sellerV) {
                                         if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
@@ -4567,7 +4564,7 @@ ctrl.setProductData = function(data, loc) {
                         }
                     }
                 } else {
-                    $.each(location, function (locK, locV) {
+                    $.each(theLocation, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
                             $.each(prodV.sellers, function (sellerK, sellerV) {
                                 if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
@@ -4587,16 +4584,16 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.disablePhysicalSupplierLookup = false;
                 }
             }
-            if (ctrl.hasSellerRequirements(seller.sellerCounterparty.id, location, seller)) {
-                ctrl.createSellerRequirements(seller, location, null);
+            if (ctrl.hasSellerRequirements(seller.sellerCounterparty.id, theLocation, seller)) {
+                ctrl.createSellerRequirements(seller, theLocation, null);
             }
             setTimeout(function () {
                 ctrl.disablePhysicalSupplierLookup = false;
             }, 3000);
         };
-        ctrl.returnLocationReqOffIds = function (location, randUniquePkg) {
+        ctrl.returnLocationReqOffIds = function (theLocation, randUniquePkg) {
             requestOfferIds = [];
-            $.each(location, function (locK, locV) {
+            $.each(theLocation, function (locK, locV) {
                 $.each(locV.products, function (prodK, prodV) {
                     $.each(prodV.sellers, function (sellerK, sellerV) {
                         if (sellerV.randUniquePkg == randUniquePkg) {
@@ -4609,7 +4606,7 @@ ctrl.setProductData = function(data, loc) {
             });
             return requestOfferIds;
         };
-        ctrl.updateBrokerForSellers = function (seller, newBroker, location) {
+        ctrl.updateBrokerForSellers = function (seller, newBroker, theLocation) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disableBrokerLookup = true;
             oldBroker = seller.oldBroker;
@@ -4619,7 +4616,7 @@ ctrl.setProductData = function(data, loc) {
                 return false;
             }
             if (seller.isCloned) {
-                $.each(location, function (locK, locV) {
+                $.each(theLocation, function (locK, locV) {
                     $.each(locV.products, function (prodK, prodV) {
                         $.each(prodV.sellers, function (sellerK, sellerV) {
                             if (sellerV.randUniquePkg == randUniquePkg) {
@@ -4644,7 +4641,7 @@ ctrl.setProductData = function(data, loc) {
                 });
                 ctrl.disableBrokerLookup = false;
             } else {
-                requestOfferIds = ctrl.returnLocationReqOffIds(location, randUniquePkg);
+                requestOfferIds = ctrl.returnLocationReqOffIds(theLocation, randUniquePkg);
                 data = {
                     RequestOfferIds: requestOfferIds,
                     BrokerId: newBroker ? newBroker.id : null
@@ -4656,7 +4653,7 @@ ctrl.setProductData = function(data, loc) {
                             ctrl.initScreen();
                             return false;
                             if (response.isSuccess) {
-                                $.each(location, function (locK, locV) {
+                                $.each(theLocation, function (locK, locV) {
                                     $.each(locV.products, function (prodK, prodV) {
                                         $.each(prodV.sellers, function (sellerK, sellerV) {
                                             if (sellerV.randUniquePkg == randUniquePkg) {
@@ -4687,7 +4684,7 @@ ctrl.setProductData = function(data, loc) {
                     );
                 } else {
                     ctrl.disableBrokerLookup = false;
-                    $.each(location, function (locK, locV) {
+                    $.each(theLocation, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
                             $.each(prodV.sellers, function (sellerK, sellerV) {
                                 if (seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
@@ -4724,7 +4721,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.disableBrokerLookup = false;
             }, 3000);
         };
-        ctrl.updateContactForSellers = function (seller, newContact, location) {
+        ctrl.updateContactForSellers = function (seller, newContact, theLocation) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disableContactLookup = true;
             oldContact = seller.oldContact;
@@ -4736,7 +4733,7 @@ ctrl.setProductData = function(data, loc) {
                         return false;
                     }
             if (seller.isCloned) {
-                $.each(location, function (locK, locV) {
+                $.each(theLocation, function (locK, locV) {
                     $.each(locV.products, function (prodK, prodV) {
                         $.each(prodV.sellers, function (sellerK, sellerV) {
                             if (sellerV.randUniquePkg == randUniquePkg) {
@@ -4762,7 +4759,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.disableContactLookup = false;
             } else {
                 requestOfferIds = [];
-                $.each(location, function (locK, locV) {
+                $.each(theLocation, function (locK, locV) {
                     $.each(locV.products, function (prodK, prodV) {
                         $.each(prodV.sellers, function (sellerK, sellerV) {
                             if (sellerV.sellerCounterparty.id == seller.sellerCounterparty.id) {
@@ -4784,7 +4781,7 @@ ctrl.setProductData = function(data, loc) {
                             if (response.isSuccess) {
                                 ctrl.initScreen();
                                 return false;
-                                $.each(location, function (locK, locV) {
+                                $.each(theLocation, function (locK, locV) {
                                     $.each(locV.products, function (prodK, prodV) {
                                         $.each(prodV.sellers, function (sellerK, sellerV) {
                                             if (sellerV.randUniquePkg == randUniquePkg) {
@@ -4815,7 +4812,7 @@ ctrl.setProductData = function(data, loc) {
                     );
                 } else {
                     ctrl.disableContactLookup = false;
-                    $.each(location, function (locK, locV) {
+                    $.each(theLocation, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
                             $.each(prodV.sellers, function (sellerK, sellerV) {
                                 if (seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
@@ -4932,7 +4929,7 @@ ctrl.setProductData = function(data, loc) {
             });
             return ctrl.bestTotalTCOGrandTotal;
         };
-        ctrl.calculateSellerIsVisible = function (key, seller, location) {
+        ctrl.calculateSellerIsVisible = function (key, seller, theLocation) {
             isVisible = true;
             if (ctrl.displayNoOfSellers) {
 	            if (ctrl.displayNoOfSellers.name == "All") {
@@ -4947,10 +4944,10 @@ ctrl.setProductData = function(data, loc) {
                 if (key >= numberOfSellersToDisplay) {
                     isVisible = false;
                 }
-                if (location[0].sellersExpanded) {
+                if (theLocation[0].sellersExpanded) {
                     isVisible = true;
                 }
-                if (location[0].fullLocationSellersExpanded) {
+                if (theLocation[0].fullLocationSellersExpanded) {
                     isVisible = false;
                 }
             } else {
@@ -4960,10 +4957,10 @@ ctrl.setProductData = function(data, loc) {
                 if (key >= numberOfSellersToDisplay) {
                     isVisible = false;
                 }
-                if (location[0].sellersExpanded) {
+                if (theLocation[0].sellersExpanded) {
                     isVisible = true;
                 }
-                if (location[0].fullLocationSellersExpanded) {
+                if (theLocation[0].fullLocationSellersExpanded) {
                     isVisible = false;
                 }
             }
@@ -5861,18 +5858,18 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.getMarketPricePopup = function (product, locations) {
             data = {};
-            var location;
+            var theLocation;
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
-                    location = locations[i];
+                    theLocation = locations[i];
                     break;
                 }
             }
-            if (!location) {
+            if (!theLocation) {
                 return 0;
             }
             productList = [];
-            $.each(location.products, function (k, v) {
+            $.each(theLocation.products, function (k, v) {
                 if (v.product.id == product.product.id) {
                     product = v;
                 }
@@ -5883,7 +5880,7 @@ ctrl.setProductData = function(data, loc) {
             }
             return popupHtml;
         };
-        ctrl.openContactCounterpartyModal = function (seller, location) {
+        ctrl.openContactCounterpartyModal = function (seller, theLocation) {
             // ctrl.OptionsContactCounterpartyModal = ctrl.sellerContactList["s" + seller.id];
             // tpl = $templateCache.get("components/sellers-dialog/views/contactCounterpartyModal.html");
             // ctrl.activeSellerForContactCounterparty = seller;
@@ -5899,7 +5896,7 @@ ctrl.setProductData = function(data, loc) {
 	            ctrl.OptionsContactCounterpartyModal = data;
 	            tpl = $templateCache.get('components/sellers-dialog/views/contactCounterpartyModal.html');
 	            ctrl.activeSellerForContactCounterparty = seller;
-	            ctrl.activeLocationForContactCounterparty = location;
+	            ctrl.activeLocationForContactCounterparty = theLocation;
 	            $scope.modalInstance = $uibModal.open({
 	                template: tpl,
 	                appendTo: angular.element(document.getElementsByClassName("page-container")),
@@ -6021,12 +6018,12 @@ ctrl.setProductData = function(data, loc) {
             });
             return hasContact;
         };
-        ctrl.openSellerInterstedModal = function (seller, location) {
+        ctrl.openSellerInterstedModal = function (seller, theLocation) {
             // ctrl.OptionsContactCounterpartyModal = ctrl.sellerContactList['s'+seller.id]
             tpl = $templateCache.get("pages/group-of-requests/views/not-interested-modal.html");
             ctrl.notInterstedModalActiveData = {
                 seller: seller,
-                location: location,
+                location: theLocation,
                 sellerNotInterested: angular.copy(seller.isNotInterested)
             };
             // ctrl.activeLocationForContactCounterparty = location;
@@ -6092,7 +6089,7 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
         };
-        ctrl.getIncoterm = function (request, location, seller, incoterm) {
+        ctrl.getIncoterm = function (request, theLocation, seller, incoterm) {
             // incotermHasSellers = 0;
             baseIncoterm = {
                 hasSellerOffer: 0,
@@ -6101,7 +6098,7 @@ ctrl.setProductData = function(data, loc) {
             $.each(ctrl.requests, function (k, v) {
                 if (v.id == request) {
                     $.each(v.locations, function (kl, vl) {
-                        if (vl.uniqueLocationIdentifier == location[0].uniqueLocationIdentifier) {
+                        if (vl.uniqueLocationIdentifier == theLocation[0].uniqueLocationIdentifier) {
                             $.each(vl.products, function (pk, pv) {
                                 if (pv.sellers.length > 0) {
                                     $.each(pv.sellers, function (sk, sv) {
@@ -6137,7 +6134,7 @@ ctrl.setProductData = function(data, loc) {
             }
             return baseIncoterm;
         };
-        ctrl.updateIncoterm = function (incoterm, location, seller, request) {
+        ctrl.updateIncoterm = function (incoterm, theLocation, seller, request) {
             // requestOfferIds = ctrl.returnLocationReqOffIds(location, seller.randUniquePkg);
             requestOfferIds = [];
             $.each(ctrl.requests, function (reqK, reqV) {
@@ -6164,7 +6161,7 @@ ctrl.setProductData = function(data, loc) {
             if (typeof data.RequestOfferIds[0] != "undefined") {
                 groupOfRequestsModel.updateIncoterm(data).then(function (response) {
                     if (response.isSuccess) {
-                        ctrl.getIncoterm(request, location, seller, incoterm);
+                        ctrl.getIncoterm(request, theLocation, seller, incoterm);
                     }
                 });
             }
@@ -6515,7 +6512,7 @@ ctrl.setProductData = function(data, loc) {
             // })
         }
 
-		ctrl.gorTableRendered = function(rowIdx,location) {
+		ctrl.gorTableRendered = function(rowIdx,theLocation) {
 			locationsLength = 0
 			$.each($filter('groupBy')(ctrl.locations, 'uniqueLocationIdentifier'), function(k,v){
 				if (k) {
