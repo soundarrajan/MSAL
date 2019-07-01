@@ -297,7 +297,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.setContractFilters(res);
         });
 
-        ctrl.saveContractPlanning = function(saveAndSend) {
+        ctrl.saveContractPlanning = function(manual, saveAndSend) {
             var contractList = ctrl.contractPlanningSelectedRows;
             ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
@@ -316,14 +316,16 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 return;
             }
             noContractAssigned = '';
-            // noMinMaxQuantity = '';
+            if (manual) {
+                noMinMaxQuantity = '';
+            }
             noAgreementType = '';
             requestStatusError = '';
             $.each(contractList, function(k, v) {
                 if (v.requestId == 0 && v.contract == null) {
                     noContractAssigned += v.vessel.name + ", ";
                 }
-                if (v.minQuantity == null || v.maxQuantity == null || v.minQuantity == 0 || v.maxQuantity == 0) {
+                if (manual && (v.minQuantity == null || v.maxQuantity == null || v.minQuantity == 0 || v.maxQuantity == 0)) {
                     noMinMaxQuantity += v.vessel.name + ", ";
                 }
                 if (v.agreementType == null) {
@@ -336,17 +338,14 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 }
 
             })
-            if (noContractAssigned.length > 0 /* || noMinMaxQuantity.length > 0 */ || noAgreementType.length > 0) {
+            if (noContractAssigned.length > 0 || (manual && noMinMaxQuantity.length > 0) || noAgreementType.length > 0) {
                 displayError = '';
                 if (noContractAssigned.length > 0) {
                     displayError += "The following vessels: " + noContractAssigned + " have no contract assigned\r\n";
                 }
-                /*
-                if (noMinMaxQuantity.length > 0) {
+                if (manual && noMinMaxQuantity.length > 0) {
                     displayError += "The following vessels: " + noMinMaxQuantity + " have invalid Min-Max Quantities\r\n";
                 }
-                */
-
                 if (noAgreementType.length > 0) {
                     displayError += "The following vessels: " + noAgreementType + " have no Agreement Types selected";
                 }
