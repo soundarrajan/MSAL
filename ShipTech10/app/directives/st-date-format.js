@@ -15,7 +15,7 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
             // dateFormat = tenantService.getDateFormat();
             ctrl.$formatters.unshift(function(modelValue) {
 	            dateFormat = tenantService.getDateFormat();
-	            if (dateFormat.startsWith("DDD ")) {
+	            if (dateFormat && dateFormat.startsWith("DDD ")) {
 	            	hasDayOfWeek = true
 	                dateFormat = dateFormat.split("DDD ")[1];
 	            }            
@@ -24,7 +24,7 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
                     if (attrs.onlyDate) {
                         dateFormat = tenantService.getDateFormat();
                     	var hasDayOfWeek = false;
-                        if (dateFormat.startsWith("DDD ")) {
+                        if (dateFormat && dateFormat.startsWith("DDD ")) {
                         	hasDayOfWeek = true
 	                        dateFormat = dateFormat.split("DDD ")[1];
                         }
@@ -34,13 +34,13 @@ angular.module('shiptech.pages').directive('stDateFormat', ['$window', '$injecto
                         // dateFormat = 'DD/MM/YYYY';
                     } else {
                         dateFormat = tenantService.getDateFormat();
-                        if (dateFormat.startsWith("DDD ")) {
+                        if (dateFormat && dateFormat.startsWith("DDD ")) {
                         	hasDayOfWeek = true
 	                        dateFormat = dateFormat.split("DDD ")[1];
                         }                    
                     }
                 } else {
-                    if (dateFormat.startsWith("DDD ")) {
+                    if (dateFormat && dateFormat.startsWith("DDD ")) {
 	                	hasDayOfWeek = true
 	                    dateFormat = dateFormat.split("DDD ")[1];
 	                }

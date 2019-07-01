@@ -95,7 +95,6 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                                     ctrl.payload = data.payload;
                                     ctrl.buyerComments = data.payload.buyerComments;
                                     ctrl.packages = [];
-                                    ctrl.initializeDateInputs();
                                     // ctrl.packages = data.payload.packages;
                                     $.each(data.payload.packages, function(k, v) {
                                         if (v.isPackageOffer) {
@@ -390,7 +389,6 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                                     // $('.select2').select2({
                                     //     width: null
                                     // });
-                                    ctrl.initializeDateInputs();
                                     ctrl.initSellersCardNavigation()
                                 }, 10);
                             });
@@ -462,28 +460,6 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                 })
             })
             return rfqProducts;
-        }
-        ctrl.initializeDateInputs = function() {
-            ctrl.dateFormat = tenantSupplierPortalService.getDateFormatForPicker();
-            setTimeout(function() {
-                var date = $(".form_meridian_datetimes");
-                date.datetimepicker({
-                    format: ctrl.dateFormat,
-                    isRTL: App.isRTL(),
-                    showMeridian: true,
-                    autoclose: true,
-                    pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left"),
-                    todayBtn: false
-                }).on('changeDate', function(ev) {
-                    $timeout(function() {
-                        $(ev.target).find('input').val(tenantSupplierPortalService.formatDate(ev.date));
-                    });
-                }).on('hide', function(ev) {
-                    $timeout(function() {
-                        $(ev.target).find('input').val(tenantSupplierPortalService.formatDate(ev.date));
-                    });
-                });
-            }, 10);
         }
 
         function initNoQuoteCheckBoxAllLocations(locations) {
