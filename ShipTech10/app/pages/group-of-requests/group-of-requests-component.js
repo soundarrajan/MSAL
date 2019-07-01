@@ -2630,6 +2630,8 @@ ctrl.setProductData = function(data, loc) {
                 isSludgeProduct = _.find(ctrl.listsCache["ProductTypeGroup"], function(obj){
                 	return obj.name == "Sludge";
                 }, 'id').id == product.productTypeGroupId;
+
+
                 var seller = _.find(product.sellers, { sellerCounterparty: { id: requirementV.SellerId } });
                 sellerTypeSludge = false
                 $.each(ctrl.locations, function(lk,lv){
@@ -2645,8 +2647,15 @@ ctrl.setProductData = function(data, loc) {
                 		})
                 	})
                 })
-                // var sellerTypeSludge
-                // var sellerTypeSludge = _.find(seller.counterpartyTypes, { name: "Service Provider" });
+                
+                if (isSludgeProduct && !sellerTypeSludge) {
+                    toastr.error(msg);
+                    return true;
+                } else {
+                    return false;
+                }
+
+                /*
                 if (productTypeId == 4) {
                     if (sellerTypeSludge) {
                         i++;
@@ -2661,14 +2670,9 @@ ctrl.setProductData = function(data, loc) {
                         i++;
                     }
                 }
+                */
             });
             // if (i == 0) {
-            if (isSludgeProduct) {
-                toastr.error(msg);
-                return true;
-            } else {
-                return false;
-            }
         };
         ctrl.sendRFQ = function (reload) {
             /*validate unicity for location-seller-physical-supplier*/
