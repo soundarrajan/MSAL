@@ -700,6 +700,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             // apply hierarchiy
             var vessels = Array();
 	        ctrl.bunkerDetails = [];
+	        ctrl.sludgeVoyages = [];
             for (i = 0; i < dataJSON.vessels.length; i ++)
             {
                 if (typeof(vessels[dataJSON.vessels[i].ServiceName + "_" + dataJSON.vessels[i].VesselName + "_" + dataJSON.vessels[i].BuyerName]) == "undefined")
@@ -805,13 +806,18 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                                event.voyageDetail.bunkerPlan.portCode = angular.copy(event.voyageDetail.locationCode);
 	                                if (typeof(ctrl.bunkerDetails[event.voyageDetail.id]) == "undefined") {ctrl.bunkerDetails[event.voyageDetail.id] = []}
 									var itemToAdd = angular.copy(event.voyageDetail.bunkerPlan);
-									if (event.voyageDetail.request) {
-										if (event.voyageDetail.request.requestDetail) {
-											itemToAdd.isSludgeProduct = angular.copy(event.voyageDetail.request.requestDetail.isSludgeProduct);
-										}
-									}
 	                                ctrl.bunkerDetails[event.voyageDetail.id].push(itemToAdd);
                                 }
+								if (event.voyageDetail.request) {
+									if (event.voyageDetail.request.requestDetail) {
+		                                if (typeof(ctrl.sludgeVoyages[event.voyageDetail.id]) == "undefined") {
+		                                	ctrl.sludgeVoyages[event.voyageDetail.id] = false
+		                                }
+		                                if (event.voyageDetail.request.requestDetail.isSludgeProduct) {
+		                                	ctrl.sludgeVoyages[event.voyageDetail.id] = true
+		                                }
+									}
+								}
 	                            // portDetails.voyageDetail.bunkerPlansGrouped = angular.copy(ctrl.bunkerDetails[event.voyageDetail.id]);
 								voyageExists = [];
                                 if (portData.length > 0) {
@@ -1407,11 +1413,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 		ctrl.checkIfHasSludge = function(voyageStops) {
 			hasSludge = false;
 			$.each(voyageStops, function(k,v){
-				$.each(ctrl.bunkerDetails[v.id], function(k2,v2){
-					if (v2.isSludgeProduct) {
-						hasSludge = true;
-					}
-				})
+				hasSludge = ctrl.sludgeVoyages[v.id];
 			})
 			return hasSludge;
 		}		
