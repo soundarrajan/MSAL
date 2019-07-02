@@ -218,24 +218,31 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 			                !$scope.formValues.paymentDate ? $scope.formValues.paymentDate = $scope.formValues.workingDueDate : '';
 		                }
 		                
-		                $scope.formValues.id = 0;
-		                $scope.formValues.invoiceDetails = null;
-		                $scope.formValues.documentType = invoiceType;
-		                $scope.formValues.paymentDetails = null;
-		                $scope.formValues.invoiceDetails = null;
-		                $scope.formValues.sellerInvoiceNo = null;
-		                $scope.formValues.receivedDate = null;
-		                $scope.formValues.manualDueDate = null;
-		                $scope.formValues.sellerInvoiceDate = null;
-		                $scope.formValues.sellerDueDate = null;
-		                $scope.formValues.approvedDate = null;
-		                // $scope.formValues.invoiceRateCurrency = null;
-		                $scope.formValues.backOfficeComments = null;
-		                $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null
-		                $scope.formValues.invoiceSummary.estimatedAmountGrandTotal = null
-		                $scope.formValues.invoiceSummary.totalDifference = null
-		                $scope.formValues.status = null
-		                $scope.formValues.customStatus = null
+				        $scope.formValues.id = 0;
+				        $scope.formValues.invoiceDetails = null;
+				        $scope.formValues.documentNo = null;
+				        $scope.formValues.dueDate = null;
+				        $scope.formValues.invoiceDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split("T")[0] + "T00:00:00";
+				        $scope.formValues.invoiceSummary.deductions = null;
+				        $scope.formValues.paymentDate = null;
+				        $scope.formValues.accountNumber = null;
+				        $scope.formValues.paymentDetails.paidAmount = null;
+				        $scope.formValues.documentType = invoiceType;
+				        $scope.formValues.paymentDetails = null;
+				        $scope.formValues.invoiceDetails = null;
+				        $scope.formValues.sellerInvoiceNo = null;
+				        $scope.formValues.receivedDate = null;
+				        $scope.formValues.manualDueDate = null;
+				        $scope.formValues.sellerInvoiceDate = null;
+				        $scope.formValues.sellerDueDate = null;
+				        $scope.formValues.approvedDate = null;
+				        // $scope.formValues.invoiceRateCurrency = null;
+				        $scope.formValues.backOfficeComments = null;
+				        $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null
+				        $scope.formValues.invoiceSummary.estimatedAmountGrandTotal = null
+				        $scope.formValues.invoiceSummary.totalDifference = null
+				        $scope.formValues.status = null
+				        $scope.formValues.customStatus = null
 		                $scope.formValues.invoiceSummary.provisionalInvoiceNo = entity_id;
 		                
 		                $scope.formValues.paymentDetails = {};     
@@ -290,6 +297,19 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                $.each($scope.formValues.productDetails, function(k, v) {
 		                    deliveryProductIds.push(v.deliveryProductId);
 		                });
+		                var payload = {
+		                    "Payload": {
+		                        "DeliveryProductIds": deliveryProductIds,
+		                        "OrderId": $scope.formValues.orderDetails.order.id
+		                    }
+		                }
+		                Factory_Master.finalInvoiceDuedates(payload, function(callback3) {
+		                    if(callback3) {
+		                        $scope.formValues.dueDate = callback3.dueDate;
+		                        $scope.formValues.paymentDate = callback3.paymentDate;
+		                        $scope.formValues.workingDueDate = callback3.workingDueDate;
+		                    }
+		                });		                
 		            }
 		        });
          	}
@@ -299,7 +319,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 	            var entity_id = angular.copy(JSON.parse(localStorage.getItem("invoice_createFinalInvoiceFromEditPage"))).entityId;
                 localStorage.removeItem('invoice_createFinalInvoiceFromEditPage');
                 Factory_Master.get_master_entity(entity_id, vm.screen_id, vm.app_id, function(callback2) {
-		            if (callback2) {
+		            if (callback2) { 
 		                
 		                tempformValues = callback2;
 		                $scope.formValues = tempformValues;
@@ -318,6 +338,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                $scope.formValues.sellerInvoiceDate = null;
 		                $scope.formValues.sellerDueDate = null;
 		                $scope.formValues.approvedDate = null;
+		                // $scope.formValues.invoiceDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split("T")[0] + "T00:00:00";
 		                // $scope.formValues.invoiceRateCurrency = null;
 		                $scope.formValues.backOfficeComments = null;
 		                $scope.formValues.invoiceSummary.invoiceAmountGrandTotal = null

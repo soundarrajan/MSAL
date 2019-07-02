@@ -2686,10 +2686,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             return;
         }
         invoiceType = JSON.parse(invoiceType);
-        if (invoiceType.name == "Final Invoice") {
-        	$scope.createFinalInvoiceFromEditPage();
-        	return;
-        }
+        // if (invoiceType.name == "Final Invoice") {
+        // 	$scope.createFinalInvoiceFromEditPage();
+        // 	return;
+        // }
 
         $rootScope.transportData = angular.copy($scope.formValues);
 
@@ -2701,7 +2701,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.invoiceDetails = null;
         $rootScope.transportData.documentNo = null;
         $rootScope.transportData.dueDate = null;
-        $rootScope.transportData.invoiceDate = null;
+        $rootScope.transportData.invoiceDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split("T")[0] + "T00:00:00";
         $rootScope.transportData.invoiceSummary.deductions = null;
         $rootScope.transportData.paymentDate = null;
         $rootScope.transportData.accountNumber = null;
