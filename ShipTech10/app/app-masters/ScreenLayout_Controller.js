@@ -357,6 +357,24 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 
 	            var data = angular.copy(JSON.parse(localStorage.getItem("invoice_createInvoiceFromEdit")));
 				$scope.formValues = data;
+                
+                var deliveryProductIds = [];
+                $.each(data.productDetails, function(k, v) {
+                    deliveryProductIds.push(v.deliveryProductId);
+                });
+                var payload = {
+                    "Payload": {
+                        "DeliveryProductIds": deliveryProductIds,
+                        "OrderId": data.orderDetails.order.id
+                    }
+                }
+                Factory_Master.finalInvoiceDuedates(payload, function(callback3) {
+                    if(callback3) {
+                        $scope.formValues.dueDate = callback3.dueDate;
+                        $scope.formValues.paymentDate = callback3.paymentDate;
+                        $scope.formValues.workingDueDate = callback3.workingDueDate;
+                    }
+                });
                 localStorage.removeItem('invoice_createInvoiceFromEdit');
          	}
 
