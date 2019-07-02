@@ -121,6 +121,7 @@
 	                        <td class="dayColumn" ng-repeat="(key, voyageStop) in row.calendar  track by $index" id="voyageStop_{{ $index }}" data-voyage-stop-id = "{{ voyageStop.id }}"  ng-class="{'clickable': voyageStop.portCode}" ng-style="voyageStop.style" style="{{ $ctrl.calendarDates[$index].isWeekend && !$ctrl.calendarDates[$index].isNow ? ' background: #dcdcdc!important;' : ''; }}{{ $ctrl.calendarDates[$index].isNow ? 'background: #99cb82!important;' : ''; }} ;width: 44px; height: 20px;" class="voyageStopCell bg-white">
 	                            <span id="{{ vsVal.id }}" ng-mouseover="$ctrl.hidePopovers(); $ctrl.initPopover(vsVal.id);" ng-repeat="(vsKey, vsVal) in voyageStop  | limitTo: 1 track by $index" data-toggle="popover"  data-content="{{ $ctrl.getPopoverMarkup($index, vsVal.id, vsVal.day, vsVal) }}" ng-style="vsVal.style" class="voyageStopItem pull-left" ng-right-click="$ctrl.showContextMenu($event, voyageStop, vsVal)">
 	                                <span hidden>{{vsVal.hasComputedStrategy = $ctrl.checkIfHasSAPStrategy(voyageStop)}}</span>
+	                                <span hidden>{{vsVal.hasSludge = $ctrl.checkIfHasSludge(voyageStop)}}</span>
 	                                <!-- {{vsVal.hasComputedStrategy}} -->
 	                                <span ng-if="vsVal.hasComputedStrategy" class="isSapStrategy" >
 										*
@@ -128,7 +129,9 @@
 	                                <span ng-if="voyageStop.length > 1" class="expandPorts" ng-click="$ctrl.showMorePortsPopup($event, voyageStop)">
 	                                    +
 	                                </span>
-	                                {{ vsVal.portCode }}
+	                                <span class="portCode {{vsVal.hasSludge ? 'hasSludgeProduct' : ''}}">
+		                                {{ vsVal.portCode }}
+	                                </span>
 	                            </span>
 	                        </td>
                     </tr>

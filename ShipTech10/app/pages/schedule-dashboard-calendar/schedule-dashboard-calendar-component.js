@@ -804,7 +804,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                                event.voyageDetail.bunkerPlan.hasStrategy = angular.copy(event.voyageDetail.hasStrategy);
 	                                event.voyageDetail.bunkerPlan.portCode = angular.copy(event.voyageDetail.locationCode);
 	                                if (typeof(ctrl.bunkerDetails[event.voyageDetail.id]) == "undefined") {ctrl.bunkerDetails[event.voyageDetail.id] = []}
-	                                ctrl.bunkerDetails[event.voyageDetail.id].push(angular.copy(event.voyageDetail.bunkerPlan));
+									var itemToAdd = angular.copy(event.voyageDetail.bunkerPlan);
+									if (event.voyageDetail.request) {
+										if (event.voyageDetail.request.requestDetail) {
+											itemToAdd.isSludgeProduct = angular.copy(event.voyageDetail.request.requestDetail.isSludgeProduct);
+										}
+									}
+	                                ctrl.bunkerDetails[event.voyageDetail.id].push(itemToAdd);
                                 }
 	                            // portDetails.voyageDetail.bunkerPlansGrouped = angular.copy(ctrl.bunkerDetails[event.voyageDetail.id]);
 								voyageExists = [];
@@ -1386,6 +1392,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
        		}
        		return hasStrategy;
 		}
+
 		ctrl.checkIfHasSAPStrategy = function(voyageStops) {
 			hasStrategy = false;
 			$.each(voyageStops, function(k,v){
@@ -1397,6 +1404,17 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 			})
 			return hasStrategy;
 		}
+		ctrl.checkIfHasSludge = function(voyageStops) {
+			hasSludge = false;
+			$.each(voyageStops, function(k,v){
+				$.each(ctrl.bunkerDetails[v.id], function(k2,v2){
+					if (v2.isSludgeProduct) {
+						hasSludge = true;
+					}
+				})
+			})
+			return hasSludge;
+		}		
 
 		ctrl.cancelStrategy = function(bunkerPlanId){
 			var url = API.BASE_URL_DATA_MASTERS + "/api/masters/vessels/cancelStrategy";

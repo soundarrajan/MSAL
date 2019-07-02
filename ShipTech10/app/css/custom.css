@@ -4701,3 +4701,9 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
     height: 15px;
     border: 1px solid #c2cad8;
 }
+
+.dayColumn .portCode.hasSludgeProduct {
+	background-color: #fff;
+	display: block;
+}
+
