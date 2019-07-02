@@ -217,6 +217,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                if ($scope.formValues.documentType.internalName == "ProvisionalInvoice") {
 			                !$scope.formValues.paymentDate ? $scope.formValues.paymentDate = $scope.formValues.workingDueDate : '';
 		                }
+	                    $scope.formValues.invoiceSummary.provisionalInvoiceAmount = angular.copy($scope.formValues.invoiceSummary.invoiceAmountGrandTotal)
 		                
 				        $scope.formValues.id = 0;
 				        $scope.formValues.invoiceDetails = null;
@@ -252,11 +253,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                    invoiceAmountGrandTotal = 0
 		                } else {
 		                    invoiceAmountGrandTotal = 0
-		                }
-		                if (tempformValues.invoiceSummary.provisionalInvoiceAmount == null) {
-		                    provisionalInvoiceAmount = 0
-		                } else {
-		                    provisionalInvoiceAmount = 0
 		                }
 		                if (tempformValues.invoiceSummary.deductions == null) {
 		                    deductions = 0
@@ -309,7 +305,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                        $scope.formValues.paymentDate = callback3.paymentDate;
 		                        $scope.formValues.workingDueDate = callback3.workingDueDate;
 		                    }
-		                });		                
+		                });
 		            }
 		        });
          	}
