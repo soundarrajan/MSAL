@@ -678,6 +678,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     formattedDate = fecha.format(utc, dateFormat);
                 }
+                if (formattedDate == null) {
+                	formattedDate = "";
+                }
                 return formattedDate;
             }
         };
@@ -1923,7 +1926,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     // newDate = vm.formatDate(d, "DD/mm/yyyy")
                     // element = '<input type=text disabled value="'+d+'" >';
                     fdate = $filter("date")(cellValue, "dd/MM/yyyy hh:mm", "+0");
-                    if (typeof fdate == "undefined") {
+                    if (typeof fdate == "undefined" || !fdate) {
                         fdate = "";
                     }
                     element = "<span>" + fdate + "</span>";
