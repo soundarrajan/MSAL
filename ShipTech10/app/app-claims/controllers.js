@@ -784,6 +784,8 @@ APP_CLAIMS.controller("Controller_Claims", [
             } else {
                 fval.densitySubtypes[rowIdx].densityDifference = '';
             }
+            if (fval.densitySubtypes[rowIdx].bdnDensity == "") { fval.densitySubtypes[rowIdx].bdnDensity = null}
+            if (fval.densitySubtypes[rowIdx].labDensity == "") { fval.densitySubtypes[rowIdx].labDensity = null}
         }
 
         function convertDecimalSeparatorStringToNumber(number) {
