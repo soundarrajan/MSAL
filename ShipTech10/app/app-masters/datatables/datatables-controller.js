@@ -3591,12 +3591,17 @@ APP_MASTERS.controller("Controller_Datatables", [
 				trigger: 'click',
 				content: function () {
 				    var pop_dest = $(this).attr("data-pop");
-				    setTimeout(function(){
-				    	$(".multiselectcell-show-all-tags").popover('hide');
-				    },10000)
+				    // setTimeout(function(){
+				    // 	$(".multiselectcell-show-all-tags").popover('hide');
+				    // },10000)
 				    return $("#"+pop_dest).html();
 
 			}});
+		    $(document).on("click", function(e){
+		    	if (!$(e.target).hasClass("multiselectcell-show-all-tags") && !$(e.target).parents(".multiselectcell-show-all-tags").length > 0 && !$(e.target).parents(".popover").length > 0) {
+			    	$(".multiselectcell-show-all-tags").popover('hide');
+		    	}
+		    })
 		}
 		$scope.initMultiselectPopover();
 
