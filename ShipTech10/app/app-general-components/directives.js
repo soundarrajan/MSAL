@@ -98,9 +98,10 @@ window.increment = 0;
                     });
 
                     scope.initialLayout = {};
-                    checkCanBuildTable(scope.id, checkProcurement);
 
-
+                    setTimeout(function(){
+	                    checkCanBuildTable(scope.id, checkProcurement);
+                    })
 
                     function checkCanBuildTable(table_id, checkProcurement) {
                         isDev = 0;
