@@ -6328,7 +6328,7 @@ APP_MASTERS.controller("Controller_Master", [
 
 	            var validAttachments = angular.copy($rootScope.previewEmail.attachmentsList);
 	            validAttachments = _.filter(validAttachments, function(el){
-	            	return el.isIncludedInMail == true || el.isIncludedInMail == null;
+	            	return el.isIncludedInMail == true || el.isIncludedInMail == false;
 	            })
 
 	            toString = toString.toString();
