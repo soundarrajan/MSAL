@@ -879,10 +879,16 @@ angular.module("shiptech.components").controller("FiltersController", [
                     	col: column.replace(/\./g, "_").toLowerCase() 
                     });
                 } else {
+                	isComputedColumn = false;
+                	if (columnObj.column) {
+                		if (columnObj.column.isComputedColumn) {
+		                	isComputedColumn = true;
+                		}
+                	}
                     $rootScope.sortList.push({ 
                     	columnValue: column.replace(/\./g, "_").toLowerCase(), 
                     	sortIndex: idx, 
-                    	isComputedColumn: columnObj.column.isComputedColumn, 
+                    	isComputedColumn: isComputedColumn, 
                     	sortParameter: order 
                     });
                 }
