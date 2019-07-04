@@ -15,7 +15,6 @@
 			ng-change="$eval(col.colDef.ChangeAction); CM.chg = true"
 			ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
 			format="{{ col.colDef.format }}" />
-
 		<span ng-if="col.colDef.readOnly == true">
 			<input type="text" format="number:3" class="form-control w100" disabled ng-model="MODEL_COL_FIELD" />
 		</span>

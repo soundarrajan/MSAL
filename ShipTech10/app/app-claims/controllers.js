@@ -788,6 +788,21 @@ APP_CLAIMS.controller("Controller_Claims", [
             if (fval.densitySubtypes[rowIdx].labDensity == "") { fval.densitySubtypes[rowIdx].labDensity = null}
         }
 
+        $scope.clearTestValueNull = function(rowIdx, fval) {
+            if (fval.qualitySubtypes[rowIdx]) {
+            	if (fval.qualitySubtypes[rowIdx].testValue == "") {
+            		fval.qualitySubtypes[rowIdx].testValue = null;
+            	}
+            }
+            if (fval.complianceSubtypes[rowIdx]) {
+            	if (fval.complianceSubtypes[rowIdx].testValue == "") {
+            		fval.complianceSubtypes[rowIdx].testValue = null;
+            	}
+            }            	
+        }    
+
+    
+
         function convertDecimalSeparatorStringToNumber(number) {
         	numberToReturn = number;
         	if (typeof(number) == "string") {

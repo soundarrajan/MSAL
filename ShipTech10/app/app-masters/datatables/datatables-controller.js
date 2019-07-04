@@ -3154,7 +3154,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         displayName: "Test Value",
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.text,                        
-                        format: "number:"+vm.quantity                              
+                        format: "number:"+vm.quantity,
+                        ChangeAction: "clearTestValueNull(rowRenderIndex, grid.appScope.fVal().formValues)"                              
                     },
                     {
                         name: "claimAppreciation",
@@ -3227,7 +3228,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         displayName: "Test Value",
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.text,                        
-                        format: "number:"+vm.quantity                                  
+                        format: "number:"+vm.quantity,
+						ChangeAction: "clearTestValueNull(rowRenderIndex, grid.appScope.fVal().formValues)"                               
                     },
                     {
                         name: "claimAppreciation",
