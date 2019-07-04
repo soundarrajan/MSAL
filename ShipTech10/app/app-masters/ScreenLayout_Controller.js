@@ -959,6 +959,14 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                     source: id,
                     field_name: field_name
                 };
+
+
+                if (clc == "claims_entity_documents") {
+                    $scope.modal.app = "claims";
+                    $scope.modal.screen = "entity_documents";
+                    $scope.modal.clc = "entity_documents";
+                }
+
                 if (clc == "payableTo") {
                     $scope.modal.app = "masters";
                     $scope.modal.screen = "counterpartylist";
