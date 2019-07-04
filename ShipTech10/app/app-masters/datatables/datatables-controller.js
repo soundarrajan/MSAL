@@ -3610,6 +3610,10 @@ APP_MASTERS.controller("Controller_Datatables", [
 				toastr.warning("Please select a product type");
 				return;
 			}
+			if (!item.name) {
+				toastr.warning("Please select a valid product type");
+				return;
+			}			
 			if (!fVal.locations[rowIdx].productTypes) {
 				fVal.locations[rowIdx].productTypes = [];
 			}
