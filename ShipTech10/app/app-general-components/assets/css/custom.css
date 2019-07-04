@@ -4429,6 +4429,6 @@ th#flat_available_contracts_checkbox > * {
     transform: translate(-50%);
 }
 
-#gview_flat_invoices_app_complete_view_list {
+/*#gview_flat_invoices_app_complete_view_list {
     min-height: 500px;
-}
+}*/
