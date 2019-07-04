@@ -4232,7 +4232,7 @@ APP_API.factory("$Api_Service", [
                     }
 
 
-                    if(param.generic && $state.current.url.indexOf("emailpreview") == -1 ) {
+                    if(param.generic && $state.current.url.indexOf("emailpreview") == -1 && $state.current.url.indexOf("-documents") == -1) {
                         // if app is requesting a generic layout, first check if it is already loaded 
                         if($Generic_Layout.layoutLoaded(param.generic.layout)){
                             // layut loaded, return what you have
