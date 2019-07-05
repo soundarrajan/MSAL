@@ -28,7 +28,7 @@
 	    </span>
 	</div>
 	<div style="width: 50%; padding-left: 5px;"class="pull-left">
-		<span class="email-tag pull-left" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD" tooltip="">
+		<span class="email-tag pull-left" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD" tooltip="" data-original-title="{{value.productType.name}}" >
             {{value.productType.name}}
             <i class="fa fa-remove" ng-click="value.id == 0 ? MODEL_COL_FIELD.splice(key, 1) : MODEL_COL_FIELD[key].isDeleted = true"></i>
         </span>
