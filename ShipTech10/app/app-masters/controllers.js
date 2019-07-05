@@ -5762,6 +5762,10 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
 		jQuery(document).ready(function() {
+            if ($scope.readyOnce) {
+                return;
+            }
+            $scope.readyOnce = true;
         	if (/*$state.current.name.indexOf('.documents') != -1 &&*/ typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(function() {
