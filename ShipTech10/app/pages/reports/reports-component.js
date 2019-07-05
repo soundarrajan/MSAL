@@ -138,7 +138,7 @@ angular.module("shiptech.pages").controller("ReportsController", [
                         } else if (reportType.internalName == 'Cashflow') {
 	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=') + resp.payload.items[0].filterId;
                         } else if (reportType.internalName == "OperationalReport") {
-	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('ServiceId') + "=" + entity_id;
+	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('&ServiceId') + "=" + entity_id;
                         }
 
 						// <items[0].link>&GUID=<items[0].filterId>
