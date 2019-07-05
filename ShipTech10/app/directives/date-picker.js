@@ -252,6 +252,10 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 							$(nextEditableElement).focus();
 						},100);
 					} 
+
+                    if (keyCode == 13) {
+                        $('.bootstrap-datetimepicker-widget').remove();
+                    }
 				});
 
                 if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
