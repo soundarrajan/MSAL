@@ -3657,18 +3657,24 @@ APP_MASTERS.controller("Controller_Datatables", [
 			$(".multiselectcell-show-all-tags").popover('hide');
 			var rowIndex = $(el.currentTarget).attr("row-index");
 			var productTypeKey = $(el.currentTarget).attr("product-type-key");
+			var productTypeId = $(el.currentTarget).attr("product-type-id");
 			scope = angular.element($("entity-edit-form > div")).scope();
-			scope.$apply(function(){
-				if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
-					scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
-				} else {
-					scope.formValues.locations[rowIndex].productTypes[productTypeKey].isDeleted = true;
+			$.each(scope.formValues.locations[rowIndex].productTypes, function(k,v){
+				if (v) {
+					if (v.productType.id == parseFloat(productTypeId)) {
+						scope.$apply(function(){
+							if (scope.formValues.locations[rowIndex].productTypes[k].id == 0) {
+								scope.formValues.locations[rowIndex].productTypes.splice(k, 1);
+							} else {
+								scope.formValues.locations[rowIndex].productTypes[k].isDeleted = true;
+							}					
+						});
+						$(el.currentTarget).parent().remove();
+						$compile($(el.currentTarget).parents(".multiselectcell-wrapper"))(scope);
+						$scope.initMultiselectPopover();
+					}
 				}
-			});
-			$compile($(el.currentTarget).parents(".multiselectcell-wrapper"))(scope);
-			$(el.currentTarget).parent().remove();
-			$scope.initMultiselectPopover();
-			// $scope.initMultiselectPopover();
+			})
 		})	
 
         $scope.$watch('formValues.temp.sellectedRow', function(newVal,oldVal) {

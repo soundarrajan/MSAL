@@ -37,7 +37,7 @@
 	<div class="hidden popover-content" id="popoverContent-{{rowRenderIndex}}">
 		<span ng-repeat="(key, value) in MODEL_COL_FIELD" ng-show="value.isDeleted != true">
             {{value.productType.name}}
-            <i class="fa fa-remove font-red removeProductTypeMasterService" row-index="{{rowRenderIndex}}" product-type-key="{{key}}" ></i>
+            <i class="fa fa-remove font-red removeProductTypeMasterService" row-index="{{rowRenderIndex}}" product-type-key="{{key}}" product-type-id="{{value.productType.id}}" ></i>
             <br>
         </span>
 	</div>
