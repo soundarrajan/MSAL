@@ -4616,14 +4616,9 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 
 
 #schedule_calendar_table .dayColumn span.isSapStrategy {
-	position: absolute;
-    bottom: 0px;
-    right: 0;
-    background: #364150;
-    color: #fff;
-    font-size: 14px;
-    line-height: 14px;
-    height: 8px;
+	box-shadow: 0px 2px 0px 0px #000 inset,
+				0px 3px 0px 0px #fff inset,
+				0px 5px 0px 0px #000 inset 
 }
 
 .newStatusColoured.contextmenu {
