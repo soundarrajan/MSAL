@@ -33,11 +33,13 @@ APP_CLAIMS.controller("Controller_Claims", [
         $rootScope.$on("formValues", function(event, data) {
             $scope.formValues = data;
             if ($scope.formValues.claimDetails.status.name != 'New') {
-                $.each($scope.formFields['Order Details'].children, function(k, v) {
-                    if (v.Name == 'DeliveryDate') {
-                        v.Disabled = true;
-                    }
-                });
+                if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
+                    $.each($scope.formFields['Order Details'].children, function(k, v) {
+                        if (v.Name == 'DeliveryDate') {
+                            v.Disabled = true;
+                        }
+                    });
+                }
                 if ($scope.formFields.deliveryDate) {
                     $scope.formFields.deliveryDate.Disabled = true;
                 }
