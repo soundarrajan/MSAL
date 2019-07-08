@@ -1,0 +1,15 @@
+
+{
+  "testTitle": "Period - 29",
+  "starturl": "masters/period",
+  "headless": false,  
+  "testCases": [
+    {
+      "keyname": "newPeriod",
+      "Name": "PER29",
+      "Code": "PERTEST",
+      "RemoveAfterSave": true
+    }
+]
+}
+

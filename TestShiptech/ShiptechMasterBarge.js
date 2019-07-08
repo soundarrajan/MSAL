@@ -45,6 +45,13 @@ class ShiptechMasterBarge {
       throw new Error("Barge " + testCase.BargeNameNew + " not found in list.");
 
     await this.tools.waitFor(5000);
+
+    if(testCase.RemoveAfterSave)
+    {
+      await this.tools.executeSql("delete from [" + this.tools.databaseName + "].[master].[barges] where name = '" + testCase.BargeNameNew  + "'");
+      await this.tools.waitFor(1000);
+    }
+  
   }
 
 

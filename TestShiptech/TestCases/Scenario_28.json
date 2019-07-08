@@ -1,0 +1,18 @@
+
+{
+  "testTitle": "Payment Term - 28",
+  "starturl": "masters/paymentterm",
+  "headless": false,  
+  "testCases": [
+    {
+      "keyname": "newPaymentTerm",
+      "Name": "NPT 28 TEST",
+      "PaymentCondition": "LastDate",
+      "Days": "1",
+      "Condition": "On",
+      "Event": "Eta",
+      "RemoveAfterSave": true
+    }
+]
+}
+

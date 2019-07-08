@@ -8,7 +8,8 @@
         "keyname": "newCalendar",
         "CalendarNameNew": "Test Calendar 13xz",
         "HolidayDate": -1,
-        "HolidayName": "Test holiday"
+        "HolidayName": "Test holiday",
+        "RemoveAfterSave": true
       }
   ]
 }

@@ -1,0 +1,23 @@
+{
+    "testTitle": "Vessel - 39",
+    "starturl": "masters/vessel",
+    "headless": false,
+    "testData": {
+        "buyer": ["buyer1"],
+        "contactType": ["contactType1"],
+        "vesselType": ["vesselType1"]
+    },
+    "testCases": [{
+        "keyname": "newVessel",
+        "Name": "New Vessel 39",   
+        "Code": "CODE39",
+        "IMONo": "1",
+        "BuyerId": "buyer1",
+        "ContactTypeId": "contactType1",
+        "ContactName": "Contact Name",
+        "ContactEmail": "email@email.xx",
+        "EmailContact": true,
+        "VesselTypeId": "vesselType1"
+    }]
+}
+

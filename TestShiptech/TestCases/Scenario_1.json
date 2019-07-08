@@ -23,6 +23,8 @@
         "keyname": "delivery",        
         "input": {"orderId":"order1Id"},
         "bdnDate": 1,
+        "buyerQuantity": "Bdn Quantity",
+        "sellerQuantity": "Bdn Quantity",  
         "products": [
           {
             "id": "product1Name",

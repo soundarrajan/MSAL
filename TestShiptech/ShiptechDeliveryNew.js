@@ -80,10 +80,10 @@ class ShiptechDeliveryNew {
     await this.tools.setText("input[id='bdnDate_dateinput']", testCase.bdnDate, 0, false);
 
     if(await this.tools.isElementVisible("#buyerQuantity"))
-      await this.tools.selectBySelector("#buyerQuantity", "Bdn Quantity", false);
+      await this.tools.selectBySelector("#buyerQuantity", testCase.buyerQuantity, false);
 
     if(await this.tools.isElementVisible("#sellerQuantity"))
-      await this.tools.selectBySelector("#sellerQuantity", "Bdn Quantity", false);
+      await this.tools.selectBySelector("#sellerQuantity", testCase.sellerQuantity, false);
     
     
     
@@ -95,10 +95,15 @@ class ShiptechDeliveryNew {
     }
 
     await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
-    await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Verify Delivery');
-    await this.tools.clickBySelector("#completed");
-    await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
     await this.tools.waitForLoader("Save Delivery");
+    await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Verify Delivery');
+    await this.tools.waitForLoader("Verify Delivery");
+    if(testCase.completeDelivery)
+    {
+      await this.tools.clickBySelector("#completed");
+      await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
+    }
+    
     await this.tools.waitFor(5000);
     await this.tools.closeCurrentPage();    
   

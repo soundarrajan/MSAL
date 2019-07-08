@@ -1,0 +1,14 @@
+
+{
+  "testTitle": "Incoterms - 25",
+  "starturl": "masters/incoterms",
+  "headless": false,  
+  "testCases": [
+    {
+      "keyname": "newIncoterms",
+      "Name": "Incoterm New Name Test 25",
+      "RemoveAfterSave": true
+    }
+]
+}
+

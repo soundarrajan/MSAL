@@ -1,0 +1,18 @@
+
+{
+  "testTitle": "Price - 30",
+  "starturl": "masters/price",
+  "headless": false,  
+  "testData" : {      
+    "marketInstrument":"systemInstrument1"
+  },
+  "testCases": [
+    {
+      "keyname": "newPrice",
+      "SystemInstrument": "systemInstrument1",
+      "QuoteDate": "1",
+      "RemoveAfterSave": true
+    }
+]
+}
+

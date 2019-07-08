@@ -94,6 +94,7 @@ async getFutureDate(days, withTime)
 }
 
 
+
 async selectWithText(selector, valueToSelect, checkSelection = true){
 
   this.tools.log("Select  " + selector + " / " + valueToSelect);
@@ -624,11 +625,10 @@ async sendEmail()
   var subject = "Shiptech Auto Test";  
   var logfile = fs.readFileSync("log.txt", 'utf8');
   var errorIdxs = this.tools.getIndicesOf("Backend error", logfile, true);
-  var message = "Automated tests coverage: 16.9%";
+  var message = "Automated tests coverage: 35.3% (UI actions)";
 
-  testResults = "<p>" + message + "</p>" + endOfLine + testResults;
+  testResults = "<p>" + message + "</p>" + endOfLine + "<p>" + this.tools.connection.baseurl +  "</p>" + testResults;
   
-
   if(errorIdxs.length > 0)
   {
     
@@ -657,7 +657,7 @@ async sendEmail()
     subject += " - SUCCESS";
 
   testResults = "<p>" + subject + "</p>" + endOfLine + testResults;
-  testResults += "<p>Some of the errors are caused by: #14719, ";
+  testResults += "<p>Open bugs, test impediments: #14719, #14994, #15185 </p>";
 
   this.sendEmailEx(this.tools.connection.emailrecipients, subject, testResults);
   await this.tools.waitFor(10000);

@@ -1,0 +1,16 @@
+
+{
+  "testTitle": "Market Instrument - 27",
+  "starturl": "masters/marketinstrument",
+  "headless": false,  
+  "testCases": [
+    {
+      "keyname": "newMarketinstrument",
+      "Name": "New Market Instrument 27",
+      "Code": "MKI27",
+      "Uom": "MT",
+      "RemoveAfterSave": true
+    }
+]
+}
+

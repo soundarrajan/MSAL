@@ -6,9 +6,10 @@
     "testCases": [
       {
         "keyname": "newBarge",
-        "BargeNameNew": "Barge Test 10x",        
+        "BargeNameNew": "Barge Test 11x",        
         "Location": "Rotterdam",
-        "ApplicableFor": "Contract"
+        "ApplicableFor": "Contract",
+        "RemoveAfterSave": true
       }
   ]
 }

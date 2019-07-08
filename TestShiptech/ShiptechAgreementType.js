@@ -52,6 +52,13 @@ class ShiptechAgreementType {
 
     await this.tools.waitFor(5000);
 
+    if(testCase.RemoveAfterSave)
+    {
+      await this.tools.executeSql("delete from [" + this.tools.databaseName + "].[master].[agreementtypes] where name = '" + testCase.AgreementTypeNameNew  + "'");
+      await this.tools.waitFor(1000);
+    }
+  
+
   }
 
 
@@ -76,7 +83,11 @@ class ShiptechAgreementType {
     await this.tools.click("#header_action_select");    
     
    // await this.shiptech.selectWithText("#IncotermDefaultIncoterm", testCase.DefaultIncoterm);
-    await this.shiptech.selectWithText("#strategyDefaultStrategy", testCase.DefaultStrategy);
+    //await this.shiptech.selectWithText("#strategyDefaultStrategy", testCase.DefaultStrategy);
+    await this.tools.click("span[id='lookup-search-defaultStrategy']");
+    await this.tools.click("tr[id='1']");
+    await this.tools.click("#header_action_select");    
+
     await this.tools.selectBySelector("#ApplicableForApplicableFor", testCase.ApplicableFor);
     
     await this.tools.click("#header_action_save");

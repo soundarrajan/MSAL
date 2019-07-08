@@ -1,0 +1,17 @@
+
+{
+  "testTitle": "Spec Group - 34",
+  "starturl": "masters/specgroup",
+  "headless": false,  
+  "testData" : {      
+    "products":["product1Name"]
+  },
+  "testCases": [
+    {
+      "keyname": "newSpecGroup",
+      "SpecGroupName": "Test Spec Group 34",
+      "ProductId": "product1Name"      
+    }
+]
+}
+

@@ -35,3 +35,27 @@ launch.json example
         }
     ]
 }
+
+
+Add trusted machine
+Start WinRM service
+winrm set winrm/config/client '@{TrustedHosts="machineA,machineB"}'
+winrm set winrm/config/client '@{TrustedHosts="10.1.1.6"}'
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value '10.1.1.6'
+
+$Username = 'shiptech\Administrator'
+$Password = '!QAZ2wsxc'
+$pass = ConvertTo-SecureString -AsPlainText $Password -Force
+$credbuild = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$pass
+
+or
+
+$credbuild=get-credential
+shiptech\Administrator
+!QAZ2wsxc
+
+Invoke-Command -ComputerName 10.1.1.6 -Credential $credbuild -ScriptBlock {dir "c:\automated deployment"}
+
+Make sure that the machine doesn't lock after a while. The PC should be allways on, without screen saver or other form of lock.
+
+

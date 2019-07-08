@@ -40,10 +40,17 @@ class ShiptechAdditionalCost {
 
     isFound = await this.SearchAdditionalCost(testCase);
     
-    if(!isFound)    
+    if(!isFound)
       throw new Error("Additional Cost not found in list " + testCase.AdditioalCostNameNew);    
 
     await this.tools.waitFor(5000);
+
+    if(testCase.RemoveAfterSave)
+    {
+      await this.tools.executeSql("delete from [" + this.tools.databaseName + "].[master].[AdditionalCosts] where name = '" + testCase.AdditioalCostNameNew  + "'");
+      await this.tools.waitFor(1000);
+    }
+    
   }
 
 

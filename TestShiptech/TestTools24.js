@@ -39,6 +39,7 @@ class TestTools24 {
     this.currentTextTitle = "";
     this.dbConfig = null;
     this.backendError = false;
+    this.databaseName = "";
 
     this.truncateLogfile(this.logfileName);
     this.truncateLogfile(this.browserLogfileName);
@@ -60,7 +61,6 @@ async ConnectDb(dbconfig, url, isMaster)
     var db = new Db(this.dbIntegrationConfig);
     var address = "";
     var userId = "";
-    var databaseName = "";
     var password = "";
     var start = 0;
     var end = 0;
@@ -87,7 +87,7 @@ async ConnectDb(dbconfig, url, isMaster)
 
         start = connectionString.indexOf("Initial Catalog=");
         end =  connectionString.indexOf(";", start);
-        databaseName = connectionString.slice(start+16, end);
+        this.databaseName = connectionString.slice(start+16, end);
 
         start = connectionString.indexOf("User ID=");
         end =  connectionString.indexOf(";", start);
@@ -97,7 +97,7 @@ async ConnectDb(dbconfig, url, isMaster)
         end =  connectionString.indexOf(";", start);
         password = connectionString.slice(start+9, end);
 
-        this.dbConfig = {server: address, database: databaseName, user: userId, password: password, options: {encrypt: true}};
+        this.dbConfig = {server: address, database: this.databaseName, user: userId, password: password, options: {encrypt: true}};
         //var vessel = this.getRandomVessel();
     }
     else
@@ -257,7 +257,7 @@ async ConnectDb(dbconfig, url, isMaster)
     if(fileSize == 0)
     {
       this.streamResults.write("<table border='1' style='border-collapse:collapse' cellpadding='2' cellspacing='2'>" + endOfLine);
-      var header = "<th><td>Date</td> <td`>Test</td> <td>TestCase</td> <td>Result</td> <td>OrderId</td> </th>" + endOfLine;
+      var header = "<tr><td>Date</td> <td>Test</td> <td>TestCase</td> <td>Result</td> <td>OrderId</td> </tr>" + endOfLine;
       this.streamResults.write(header);
     }
 
@@ -495,6 +495,38 @@ async ConnectDb(dbconfig, url, isMaster)
     
 
   
+async executeSql(sql)
+{
+  if(!sql || sql.length <= 0)
+    return "";  
+  var db = new Db(this.dbIntegrationConfig);  
+  this.log(sql);
+  await db.executeSql(sql);  
+}
+
+
+
+
+  
+async querySql(sql)
+{
+  if(!sql || sql.length <= 0)
+    return "";  
+  var db = new Db(this.dbIntegrationConfig);  
+  var records = await db.read(sql);
+
+  if(!records || records.length <= 0)
+    throw  new Error("Cannot find any vessel " + sql);
+
+  return records;
+}
+
+
+
+
+
+
+  
 async readSystemError(reference)
 {
   if(!reference || reference.length != 36)
@@ -525,7 +557,7 @@ async readSystemError(reference)
     }
 
         
-    async setText(selector, text, index = 0, test = false)
+    async setText(selector, text, index = 0, test = false, tabOut = false)
     {
       if(!text)
         text = "";
@@ -593,7 +625,10 @@ async readSystemError(reference)
           throw new Error("setText() - cannot set " + text +  " into " + selector);
       }
 
-     // await this.page.keyboard.press("Tab", {delay: 1000});
+      await this.page.waitFor(this.standardWait);
+      
+      if(tabOut)
+         await this.page.keyboard.press("Tab", {delay: 1000});
     }
 
 
@@ -642,7 +677,7 @@ async readSystemError(reference)
 
 
     
-    async selectFirstOptionBySelector(elementSelector, selector)
+    async selectFirstOptionBySelector(elementSelector, selector = "")
     {
       var implementedText = await this.getSelectedOption(elementSelector);
       
@@ -680,6 +715,11 @@ async readSystemError(reference)
 
 
 
+    async pressTab()
+    {
+      await this.page.keyboard.press("Tab", {delay: 1000});
+    }
+
     
         
     async selectFirstOption(selector, attributeName, textToSelectInAttr, index)
@@ -696,7 +736,7 @@ async readSystemError(reference)
     async selectBySelector(elementSelector, textToSelect, test=false, exactMatch = true)
     {      
 
-      if(!textToSelect)
+      if(!textToSelect && textToSelect != "")
         throw new Error("selectBySelector invalid text (" + textToSelect + ") parameter for " + elementSelector);
 
       var options = await this.getAllOptionsBySelector(elementSelector);

@@ -5,8 +5,9 @@
   "headless": false,
   "testCases": [
     {
-      "keyname": "newCurrency",        
-      "CurrencyDescriptionNew": "Test Currency 18"
+      "keyname": "searchInCurrencyList",        
+      "CurrencyCode": "EUR",
+      "RemoveAfterSave": true
     }
 ]
 }

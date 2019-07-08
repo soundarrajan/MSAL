@@ -1,4 +1,4 @@
-/**
+ /**
  * @name create-request
  * @desc Create a request  
  */
@@ -16,6 +16,26 @@ class MsSqlConnector {
   }
 
 
+  async executeSql(sql)
+  {
+    try 
+      {
+        
+        if(!this.isConnected)
+          await SQLLib.connect(this.config)
+        this.isConnected = true;
+
+        await SQLLib.query(sql);     
+
+        SQLLib.close()
+        this.isConnected = false;
+
+      } catch (err) {
+          SQLLib.close();
+          this.isConnected = false;
+          throw err;
+      }
+  }
 
     async read(sql, config = "")
     {

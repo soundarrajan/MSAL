@@ -9,6 +9,7 @@
   "author": "Rares Tohanean",
   "license": "ISC",
   "dependencies": {
+    "commander": "^2.20.0",
     "csvtojson": "^2.0.8",
     "fs-extra": "^7.0.1",
     "html2plaintext": "^2.1.2",
@@ -18,6 +19,7 @@
     "nodejs-nodemailer-outlook": "^1.1.0",
     "nodemailer": "^6.2.1",
     "puppeteer": "^1.13.0",
+    "shutdown-computer": "^1.0.2",
     "skype-http": "0.0.15",
     "url-join": "^4.0.0"
   }

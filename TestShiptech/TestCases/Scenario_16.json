@@ -9,7 +9,8 @@
         "CounterpartyNameNew": "Test Counterparty 16",
         "CounterpartyType": "inlineCheckboxSupplier",
         "Contact": "Contact Test 16",
-        "Email": "email@test.com"
+        "Email": "email@test.com",
+        "RemoveAfterSave": true
       }
   ]
 }

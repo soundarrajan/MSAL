@@ -24,6 +24,8 @@
         "keyname": "delivery",
         "input": {"orderId":"order1Id"},
         "bdnDate": 1,
+        "buyerQuantity": "Bdn Quantity",
+        "sellerQuantity": "Bdn Quantity",
         "products": [
           {
             "id": "product1Name",
@@ -37,7 +39,7 @@
           "input": {"orderId":"order1Id"},
           "invoiceType": "Provisional Invoice",
           "invoiceStatusAfterSave": ["New","Discrepancy"],
-          "invoiceStatusAfterSubmit": ["New","Discrepancy"],
+          "invoiceStatusAfterSubmit": ["New","Discrepancy", "WaitingForApproval"],
           "invoiceStatusAfterApprove": ["Approved"],
           "testRevert": false,          
           "testOrderStatus": false,

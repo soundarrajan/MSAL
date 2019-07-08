@@ -1,0 +1,21 @@
+
+{
+  "testTitle": "ExchangeRate - Scenario 23",
+  "starturl": "masters/exchangerate",
+  "headless": false,
+  "testData" : {      
+    "company":"company1Name"
+  },
+  "testCases": [
+    {
+      "keyname": "newExchangeRate",
+      "BaseCurrency": "EUR",
+      "CompanyId": "company1Name",
+      "ExchangeRateType": "Market",
+      "Currency": "EURO",
+      "ExchangeRate": "1",
+      "RemoveAfterSave": true
+    }
+]
+}
+

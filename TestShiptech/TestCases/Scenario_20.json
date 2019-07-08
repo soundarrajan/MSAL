@@ -6,7 +6,8 @@
   "testCases": [
     {
       "keyname": "newDocumentType",
-      "DocumentTypeNameNew": "Test Document Type 20"
+      "DocumentTypeNameNew": "Test Document Type 20",
+      "RemoveAfterSave": true
     }
 ]
 }

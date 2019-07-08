@@ -1,0 +1,24 @@
+
+{
+  "testTitle": "Formula - 24",
+  "starturl": "masters/formula",
+  "headless": false,  
+  "testCases": [
+    {
+      "keyname": "newFormula",
+      "FormulaName": "New Formula Name 24",
+      "FormulaType": "Simple",
+      "Amount": "100",
+      "PriceType": "Low",
+      "FlatOrPercentage": "Flat",
+      "PlusMinus": "Premium",
+      "Uom": "MT",
+      "Event": "DateRange",
+      "ScheduleDescription": "new formula desc",
+      "FromDate": 0,
+      "ToDate": 10,
+      "RemoveAfterSave": true
+    }
+]
+}
+

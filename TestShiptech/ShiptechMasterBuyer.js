@@ -45,6 +45,22 @@ class ShiptechMasterBuyer {
       throw new Error("Buyer not found in list " + testCase.BuyerNameNew);
 
     await this.tools.waitFor(5000);
+
+    
+    if(testCase.RemoveAfterSave)
+    {
+      var result = await this.tools.querySql("select id from [" + this.tools.databaseName + "].[master].[buyers] where name = '" + testCase.BuyerNameNew  + "'");
+      if(result.length <= 0)
+        return;
+      var buyerId = result[0].id;
+      if(!buyerId)
+        return;
+      this.tools.log("Removing buyer " + testCase.BuyerNameNew + " id=" + buyerId);
+      await this.tools.executeSql("delete from [" + this.tools.databaseName + "].[admin].[UserBuyers] where BuyerId = '" + buyerId  + "'");
+      await this.tools.executeSql("delete from [" + this.tools.databaseName + "].[master].[BuyerTransactionLimits] where BuyerId = '" + buyerId  + "'");
+      await this.tools.executeSql("delete from [" + this.tools.databaseName + "].[master].[buyers] where name = '" + testCase.BuyerNameNew  + "'");
+      await this.tools.waitFor(1000);
+    }
   }
 
 

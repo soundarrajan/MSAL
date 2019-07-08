@@ -6,7 +6,8 @@
     "testCases": [
       {
         "keyname": "newClaim",
-        "ClaimNameNew": "Test Claim 16"
+        "ClaimNameNew": "Test Claim 16",
+        "RemoveAfterSave": true
       }
   ]
 }

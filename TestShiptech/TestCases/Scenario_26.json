@@ -1,0 +1,16 @@
+
+{
+  "testTitle": "Location - 26",
+  "starturl": "masters/location",
+  "headless": false,  
+  "testCases": [
+    {
+      "keyname": "newLocation",
+      "Name": "New Location 26",
+      "Code": "NLC26",
+      "Country": "ROMANIA",
+      "RemoveAfterSave": true
+    }
+]
+}
+

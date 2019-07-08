@@ -8,7 +8,8 @@
         "keyname": "newCompany",
         "CompanyNameNew": "Test Company 15",
         "PaymentInstructions": "Payment Test",
-        "TimeZone": "Central European Time Zone"
+        "TimeZone": "Central European Time Zone",
+        "RemoveAfterSave": true
       }
   ]
 }

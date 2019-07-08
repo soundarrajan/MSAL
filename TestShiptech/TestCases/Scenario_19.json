@@ -6,7 +6,8 @@
   "testCases": [
     {
       "keyname": "newDeliveryOption",
-      "DeliveryOptionNameNew": "Test Delivery 19"
+      "DeliveryOptionNameNew": "Test Delivery 19",
+      "RemoveAfterSave": true
     }
 ]
 }

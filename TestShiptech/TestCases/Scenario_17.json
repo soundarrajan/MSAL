@@ -7,7 +7,8 @@
       {
         "keyname": "newCountry",
         "CountryNameNew": "Test Country 17",
-        "CountryCode": "Test Country 17"       
+        "CountryCode": "Test Country 17",
+        "RemoveAfterSave": true 
       }
   ]
 }

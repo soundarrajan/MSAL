@@ -1,0 +1,18 @@
+
+{
+  "testTitle": "Service - 33",
+  "starturl": "masters/service",
+  "headless": false,  
+
+  "testCases": [
+    {
+      "keyname": "newService",
+      "ServiceName": "Test Service 33",
+      "ServiceContact": "Service Test Contact",
+      "ServiceCode": "SCTEST",
+      "ServiceEmail": "testemail@email.com"
+      
+    }
+]
+}
+

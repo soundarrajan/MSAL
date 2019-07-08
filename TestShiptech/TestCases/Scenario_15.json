@@ -6,7 +6,8 @@
     "testCases": [
       {
         "keyname": "newContactType",
-        "ContactTypeNew": "Test Contact Type 17"
+        "ContactTypeNew": "Test Contact Type 17",
+        "RemoveAfterSave": true
       }
   ]
 }

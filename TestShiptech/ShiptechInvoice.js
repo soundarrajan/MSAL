@@ -25,9 +25,6 @@ class ShiptechInvoice {
   {   
     testCase.result = true;
 
-    if(testCase.action != "cancel")
-      return testCase;
-
     if(!commonTestData)
       throw new Error("Missing parameter");
 
@@ -35,8 +32,11 @@ class ShiptechInvoice {
 
     await this.tools.getPage("Invoice - " + orderId + " - " + commonTestData.vesselName, false, true);
 
-    await this.tools.click('#revert_invoice');     
-    await this.checkInvoiceStatus(testCase.invoiceStatusAfterRevert, "invoiceStatusAfterSave");
+    if(testCase.invoiceStatusAfterRevert)
+    {
+      await this.tools.click('#revert_invoice');     
+      await this.checkInvoiceStatus(testCase.invoiceStatusAfterRevert, "invoiceStatusAfterSave");
+    }
 
     await this.tools.click('#openMoreActions');
     await this.tools.click('#btn_Cancel');
@@ -268,6 +268,14 @@ class ShiptechInvoice {
     await this.checkInvoiceStatus(testCase.invoiceStatusAfterSave, "invoiceStatusAfterSave");
 
 
+    if(testCase.cancelInvoice)
+    {
+      await this.CancelInvoice(testCase, commonTestData);
+      if(testCase.output && testCase.output.invoiceId)
+        commonTestData[testCase.output.invoiceId] = await this.readInvoiceNumber();    
+      await this.tools.closeCurrentPage();
+      return testCase;
+    }
     
 
     if(testCase.invoiceStatusAfterSubmit)

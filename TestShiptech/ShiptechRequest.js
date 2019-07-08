@@ -6,7 +6,6 @@
 
 
 const puppeteer = require('puppeteer');
-const Db = require('./MsSqlConnector.js');
 const TestTools24 = require('./TestTools24.js');
 const ShiptechTools = require('./ShiptechTools.js');
 
@@ -15,21 +14,62 @@ const ShiptechTools = require('./ShiptechTools.js');
 class ShiptechRequest {
 
 
-  constructor(tools, shiptech, db) {    
+  constructor(tools, shiptech) {
     this.tools = tools;    
     this.shiptech = shiptech;
-    this.db = db;
   }
 
 
 
-  async CreateRequest(testCase)
+  async CreateRequest(testCase, commonTestData)
   {
         testCase.result = true;
-        testCase.vesselName = await this.shiptech.getRandomVessel();
-        testCase.bunkerablePort = await this.shiptech.getRandomPort();
-        testCase.destinationPort = await this.shiptech.getRandomPort();
-        testCase.company = await this.shiptech.getRandomCompany();      
+        var vesselName;
+        var bunkerablePort;
+        var destinationPort;
+        var company;
+        var product;
+        var serviceCode;
+        var url = "new-request";
+        
+        testCase.eta = await this.shiptech.getFutureDate(testCase.eta, true);
+
+        if (testCase.VesselId) {
+          vesselName = commonTestData.vessels[testCase.VesselId];
+          if (!vesselName)
+              throw new Error("Cannot generate Vessel");
+        }
+
+      if (testCase.BunkerablePortId) {
+        bunkerablePort = commonTestData.ports[testCase.BunkerablePortId];
+        if (!bunkerablePort)
+            throw new Error("Cannot generate bunkerablePort");
+      }
+
+      if (testCase.DestinationPortId) {
+        destinationPort = commonTestData.ports[testCase.DestinationPortId];
+      if (!destinationPort)
+          throw new Error("Cannot generate destinationPortId");
+      }
+
+      if (testCase.CompanyId) {
+        company = commonTestData.companies[testCase.CompanyId];
+      if (!company)
+          throw new Error("Cannot generate company");
+      }
+
+      if (testCase.ProductId) {
+        product = commonTestData.products[testCase.ProductId];
+      if (!product)
+          throw new Error("Cannot generate product");
+      }
+
+      if (testCase.ServiceCodeId) {
+        serviceCode = commonTestData.serviceCodes[testCase.ServiceCodeId];
+      if (!serviceCode)
+          throw new Error("Cannot generate service code");
+      }
+
                    
         if(await this.shiptech.validateDate(testCase.eta) != true)
         {
@@ -37,12 +77,12 @@ class ShiptechRequest {
           throw  new Error("Invalid date format " + testCase.eta + " valid format: " + dateFormat); 
         }
 
-        const pageTitle = await this.tools.page.title();
+        var pageTitle = await this.tools.page.title();
         if(pageTitle != "New Request")
         {      
-          var page = await this.tools.getPage("New Request", true);
+          var page = await this.tools.getPage("New Request", false, false);
           if(!page)
-            page = this.tools.openPageRelative(testCase.url);
+            page = this.tools.openPageRelative(url);
 
           /*//navigate using the menu
             await this.tools.waitForLoader();
@@ -62,19 +102,25 @@ class ShiptechRequest {
           this.shiptech.page = page;
         }
              
+        pageTitle = await this.tools.page.title();
+        if(pageTitle != "New Request")
+          throw new Error("Incorrect page name:" + pageTitle);
                       
-        await this.shiptech.selectWithText("input[name='Vessel']", testCase.vesselName);
-        await this.shiptech.selectWithText("input[name='ports']", testCase.bunkerablePort, false);
-        await this.shiptech.selectWithText("input[name='DestinationPort0']", testCase.destinationPort, false);
-
-        if(await this.tools.page.waitFor("input[name='Location 1 Company']"))
-          await this.shiptech.selectWithText("input[name='Location 1 Company']", testCase.company);
+        await this.shiptech.selectWithText("input[name='Vessel']", vesselName);
+        await this.shiptech.selectWithText("input[name='ports']", bunkerablePort, false);
+        await this.shiptech.selectWithText("input[name='DestinationPort0']", destinationPort, false);        
+        await this.shiptech.selectWithText("#id_Company", company);
+        await this.shiptech.selectWithText("#id_ServiceCode", serviceCode);
+        
         
         await this.tools.setText('input[id="0_eta_dateinput"]', testCase.eta);
         await this.tools.setText('input[name="MinQuantity_0"]', testCase.MinQuantity_0);            
         await this.tools.waitForLoader();
         await this.tools.page.waitFor(800);
         await this.shiptech.selectWithText("input[name='Product']", testCase.product, false);
+
+        await this.tools.setText('input[id="id_delivery_from-0_dateinput"]', testCase.eta, 0, false, true);
+        await this.tools.setText('input[id="id_delivery_to-0_dateinput"]', testCase.eta, 0, false, true);
   
         var countbuttons = 0;
   
@@ -83,21 +129,31 @@ class ShiptechRequest {
           var countbuttons = await this.tools.countElements('a', 'deleteProductFromLocation', "attr", 'ng-click');
           //delete the second product
           if(countbuttons > 1)
-            result = await this.tools.clickOnItemByAttr('a', 'deleteProductFromLocation', 'ng-click', 1);
+            await this.tools.clickOnItemByAttr('a', 'deleteProductFromLocation', 'ng-click', 1);
         }while(countbuttons > 1);
   
-        result = await this.tools.clickOnItemByText('a.btn', 'Save');      
+        await this.tools.click("a[ng-click=\"$ctrl.saveRequest()\"]");
         await this.tools.waitForLoader("Save Request");
-        result = await this.tools.clickOnItemByText('a.btn', '…'); 
-        result = await this.tools.clickOnItemByAttr('a', 'validatePreRequest', 'ng-click');
-        await this.tools.waitForLoader("Validate Request");
-
         var labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
+        labelStatus = labelStatus.trim();
+
+        if(labelStatus != "Validated" && testCase.Validate)
+        {
+          await this.tools.clickOnItemByText('a.btn', '…'); 
+          await this.tools.clickOnItemByAttr('a', 'validatePreRequest', 'ng-click');
+          await this.tools.waitForLoader("Validate Request");
+          labelStatus = await this.tools.getText("span[ng-if='state.params.status.name']");
+        }
+
         this.tools.log("Request status is " + labelStatus);
-        if(labelStatus.includes("Validated"))
-          this.tools.log("SUCCES!");
-        else
-          this.tools.log("FAIL!");
+
+        if(testCase.Validate)
+        {
+          if(labelStatus.includes("Validated"))
+            this.tools.log("SUCCES!");
+          else
+            this.tools.log("FAIL!");
+        }
 
         await this.tools.closeCurrentPage();
         

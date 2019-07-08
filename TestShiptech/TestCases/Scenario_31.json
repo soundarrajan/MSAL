@@ -1,0 +1,18 @@
+
+{
+  "testTitle": "Price Type - 31",
+  "starturl": "masters/product",
+  "headless": false,  
+  "testData" : {      
+    "marketInstrument":"systemInstrument1"
+  },
+  "testCases": [
+    {
+      "keyname": "newPriceType",
+      "PriceTypeName": "Test Price Type 31",
+      "PriceTypeCode": "Price Code 31"
+      
+    }
+]
+}
+

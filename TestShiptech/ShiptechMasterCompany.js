@@ -65,7 +65,7 @@ class ShiptechMasterCompany {
         throw new Error("FAIL!");
 
 
-    await this.tools.clickOnItemWait("a[data-sortcol='displayname']");
+    await this.tools.clickOnItemWait("a[data-sortcol='name']");
     await this.tools.setText("#filter0_Text", testCase.CompanyNameNew);
     await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
     await this.tools.waitForLoader();

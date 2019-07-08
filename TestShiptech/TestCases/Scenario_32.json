@@ -1,0 +1,17 @@
+
+{
+  "testTitle": "Product - 32",
+  "starturl": "masters/product",
+  "headless": false,  
+
+  "testCases": [
+    {
+      "keyname": "newProduct",
+      "ProductName": "Test Product 32",
+      "ProductType": "HSFO",
+      "ProductCode": "TP32"
+      
+    }
+]
+}
+

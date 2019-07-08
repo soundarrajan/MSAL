@@ -6,9 +6,9 @@
     "testCases": [
       {
         "keyname": "newAgreementType",
-        "AgreementTypeNameNew": "Agreement Type Test 1",        
-        "DefaultStrategy": "Strategy Test Percent 1",
-        "ApplicableFor": "Contract"
+        "AgreementTypeNameNew": "Agreement Type Test 2",        
+        "ApplicableFor": "Contract",
+        "RemoveAfterSave": true
       }
   ]
 }

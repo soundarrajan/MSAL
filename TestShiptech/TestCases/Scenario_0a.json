@@ -8,7 +8,8 @@
         "keyname": "newStrategy",
         "StrategyNameNew": "Strategy Test Percent 1",
         "CostType": "Percent",
-        "ComponentType": "ProductComponent"
+        "ComponentType": "ProductComponent",
+        "RemoveAfterSave": true
       }
   ]
 }

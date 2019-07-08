@@ -6,7 +6,8 @@
   "testCases": [
     {
       "keyname": "newEvent",
-      "EventNameNew": "Event Name 22"      
+      "EventNameNew": "Event Name 22",
+      "RemoveAfterSave": true
     }
 ]
 }

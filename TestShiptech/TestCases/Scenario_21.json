@@ -6,7 +6,8 @@
   "testCases": [
     {
       "keyname": "editEmailLog",
-      "emailToEdit": "donotsend@donotsend.donotsend"
+      "emailToEdit": "donotsend@donotsend.donotsend",
+      "RemoveAfterSave": true
     }
 ]
 }

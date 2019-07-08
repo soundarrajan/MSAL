@@ -6,9 +6,10 @@
     "testCases": [
       {
         "keyname": "newAdditionalCost",
-        "AdditioalCostNameNew": "PercentTypeName1",
+        "AdditioalCostNameNew": "PercentTypeName10",
         "CostType": "Percent",
-        "ComponentType": "ProductComponent"
+        "ComponentType": "ProductComponent",
+        "RemoveAfterSave": true
       }
   ]
 }

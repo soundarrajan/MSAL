@@ -1,0 +1,71 @@
+
+{
+  "testTitle": "Invoice Test Scenarios - Scenario 8a #12585",    
+  "starturl": "new-order",
+  "headless": false,
+  "testData" : {      
+      "products":["product1Name"]
+  },
+  "testCases": [
+    {
+      "keyname": "order",
+      "input": {"products":["product1Name"]},
+      "output": {"orderId": "order1Id"},
+      "eta": 2,
+      "products": [
+        {
+          "id": "product1Name",
+          "quantity": 500,
+          "unitPrice": 600
+        }        
+      ]     
+    },    
+    {
+      "keyname": "delivery",
+      "input": {"orderId":"order1Id"},
+      "bdnDate": 1,
+      "completeDelivery": true,
+      "buyerQuantity": "Confirm Quantity",
+      "sellerQuantity": "Bdn Quantity",
+      "products": [
+        {
+          "id": "product1Name",
+          "quantity": 495
+        }
+      ]
+    },
+    {
+      "keyname":"invoice",
+        "action": "provisional",
+        "input": {"orderId":"order1Id"},
+        "output": {"invoiceId": "invoice1Id"},          
+        "invoiceStatusAfterSave": ["New","Discrepancy"],        
+        "invoiceStatusAfterCancel": ["Cancelled"],
+        "cancelInvoice": true,
+        "paymentDate": 2,
+        "provisionalData" :{ 
+            "products": [
+              {
+                "id": "product1Name",
+                "quantity": 500,
+                "rate": 600
+              }
+            ]
+          }
+      },
+    {
+      "keyname": "treasury",
+      "input": {"orderId":"order1Id"},
+      "rows": [ 
+        {
+          "Invoice Amount": "",
+          "Calculated Amount": "297000",
+          "Invoice Type": ""
+        }
+      ]
+    }
+]
+}
+
+
+
