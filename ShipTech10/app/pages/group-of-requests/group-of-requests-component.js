@@ -1493,9 +1493,11 @@ ctrl.setProductData = function(data, loc) {
 	            if (rv.productHasOffer) {
 		            hasPriceEnabled = true;
 	            }
-	            if (rv.RequestLocationId == locations[0].id) {
-		            productIds.push(rv.RequestProductId);
-	            }
+	            $.each(locations, function(lk,lv){
+		            if (rv.RequestLocationId == lv.id) {
+			            productIds.push(rv.RequestProductId);
+		            }
+	            })
             });
             if (hasPriceEnabled) {
             	return false;
@@ -3232,50 +3234,55 @@ ctrl.setProductData = function(data, loc) {
         	// removeSellerRequirementsOnLocation(seller, locations, true);
             var rowRequirements = [];
 
-			ctrl.requirements = [];
+			// ctrl.requirements = [];
 			
             ctrl.refreshedRFQEmailBlade = false;
-            if (locations.location || locations.length > 0) {
-                if (locations.length > 0) {
-                    uniqueLocationIdentifier = locations[0].uniqueLocationIdentifier;
-                } else {
-                    uniqueLocationIdentifier = locations.uniqueLocationIdentifier;
-                }
-                ctrl.blade.activeWidget = null;
-                $.each(ctrl.requirements, function(reqK, reqV){
-                	if (reqV.randUniquePkg != seller.randUniquePkg) {
-		                ctrl.requirements = [];
-                	}
-                })
-                locationsList = [];
-                $.each(ctrl.requests, function (reqK, reqV) {
-                    $.each(reqV.locations, function (locK, locV) {
-                        if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
-                            locationsList.push(locV);
-                        }
-                    });
-                });
-                locations = locationsList;
-                if (ctrl.requirements.length == 0) {
-	                ctrl.createSellerRequirements(seller, locations);
-                }
-            }
-            ctrl.rfqScreenToDisplayIsMail = false;
+   //          if (locations.location || locations.length > 0) {
+   //              if (locations.length > 0) {
+   //                  uniqueLocationIdentifier = locations[0].uniqueLocationIdentifier;
+   //              } else {
+   //                  uniqueLocationIdentifier = locations.uniqueLocationIdentifier;
+   //              }
+   //              ctrl.blade.activeWidget = null;
+   //              $.each(ctrl.requirements, function(reqK, reqV){
+   //              	if (reqV.randUniquePkg != seller.randUniquePkg) {
+		 //                ctrl.requirements = [];
+   //              	}
+   //              })
+   //              locationsList = [];
+   //              $.each(ctrl.requests, function (reqK, reqV) {
+   //                  $.each(reqV.locations, function (locK, locV) {
+   //                      if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
+   //                          locationsList.push(locV);
+   //                      }
+   //                  });
+   //              });
+   //              locations = locationsList;
+   //              if (ctrl.requirements.length == 0) {
+	  //               ctrl.createSellerRequirements(seller, locations);
+   //              }
+   //          }
+   //          ctrl.rfqScreenToDisplayIsMail = false;
+
+   //          for (var i = 0; i < ctrl.requirements.length; i++) {
+   //              var req = ctrl.requirements[i];
+   //                  if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
+   //                      rowRequirements.push(req);
+   //                      if (!req.productHasRFQ) {
+   //                          ctrl.rfqScreenToDisplayIsMail = true;
+   //                      }
+   //                  }
+   //          }
 
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 var req = ctrl.requirements[i];
-                // for (var locationIndex = 0; locationIndex < locations.length; locationIndex++) {
-                //     var location = locations[locationIndex];
-                    // if (seller.sellerCounterparty.id == req.SellerId && location.location.id == req.LocationId && location.id == req.RequestLocationId) {
-                    // }
-                    if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
-                        rowRequirements.push(req);
-                        if (!req.productHasRFQ) {
-                            ctrl.rfqScreenToDisplayIsMail = true;
-                        }
+                if (req.randUniquePkg.indexOf(seller.randUniquePkg) != -1) {
+                    rowRequirements.push(req);
+                    if (!req.productHasRFQ) {
+                        ctrl.rfqScreenToDisplayIsMail = true;
                     }
-                // }
-            }
+                }
+            }            
 
             // Remove SludgeProducts From emailPreview payload
             requirementsFilteredWithoutSludgeProduct = []
