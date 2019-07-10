@@ -210,6 +210,14 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             });
         }
 
+        function getManualCancellationEmail (data) {
+            var payload = payloadDataModel.create(data);
+            return orderResource.getManualCancellationEmail (payload).$promise.then(function(data) {
+            
+                return data;
+            });
+        }        
+
 
 
         function createWithContract(order, filters, pagination) {
@@ -385,6 +393,7 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             getOrderEmailTemplate: getOrderEmailTemplate,
             getOrderListForRequest : getOrderListForRequest,
             mailPreviewConfirmToSeller: mailPreviewConfirmToSeller,
+            getManualCancellationEmail : getManualCancellationEmail,
             getContractProductAdditionalCosts: getContractProductAdditionalCosts,
             getOrderConfirmationEmailTemplate: getOrderConfirmationEmailTemplate,
             checkIfOrderCanBeCreatedUsingSelectedContract : checkIfOrderCanBeCreatedUsingSelectedContract,

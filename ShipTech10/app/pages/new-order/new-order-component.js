@@ -1617,11 +1617,19 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 	                return false;
             	}
             }        
+            currentCommand = command;
             if ((ctrl.comfirmCancelOrder && command == "cancel") || command != "cancel") {
                 ctrl.buttonsDisabled = true;
                 screenLoader.showLoader();
                 orderModel.sendOrderCommand(command, orderId).
                     then(function (response) {
+	                	if (currentCommand == "cancel") {
+			                orderModel.getManualCancellationEmail(ctrl.data).then(function (response) {
+		                    	console.log(response);
+		                        ctrl.orderPreviewEmail();
+		                    })
+	                	}
+
                         ctrl.buttonsDisabled = false;
                         $state.go(STATE.EDIT_ORDER, {
                             orderId: ctrl.orderId
