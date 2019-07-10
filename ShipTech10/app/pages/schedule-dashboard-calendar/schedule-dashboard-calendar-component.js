@@ -1256,7 +1256,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             hidePopovers();
             $("schedule-dashboard-calendar > .contextmenu").remove();
             currentElem = $($event.currentTarget);
-            html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content">';
+            html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content" style="text-align: center;">';
             var hasRequest = false; 
             var hasBunkerPlan = false; 
             $.each(object, function (k, value) {
@@ -1271,7 +1271,22 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 if (value.voyageDetail.bunkerPlan) {
                 	hasBunkerPlan = true
                 }
-                html += '</a> <br/> </span>'
+
+                html += '</a> <br/> </span>';
+
+                html += '<span> <a class="contextActionContractPlanning" data-index="' + k + '">';
+                if (value.request == null || value.request.id == 0) {
+                    html += '<span> Add to Contract Planning (' + value.portCode + ') </span>';
+                } else {
+                    html += '<span> Add to Contract Planning (' + value.portCode + ') - ' + value.request.requestName + ' </span> '
+                    hasRequest = true;
+                }
+
+                html += '</a> <br/> </span>';
+
+                if (k < object.length - 1) {
+                    html +=  '</br>';
+                }
             })
             html += '</div> </div>';
             ctrl.rightClickPopoverData = {
@@ -1333,6 +1348,11 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 contextAction(object[index]);
                 removePopups()
             })
+            $('.contextActionContractPlanning').click(function () {
+                index = $(this).attr('data-index');
+                contextActionContractPlanning(object[index]);
+                removePopups();
+            })
             $('.contextmenu .close').click(function (e) {
                 e.preventDefault()
                 $(this).hide();
@@ -1358,6 +1378,12 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                         });
                 }
                 window.open(href, '_blank');
+            };
+            function contextActionContractPlanning(voyageStop) {
+                $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
+                localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
+                $rootScope.activeBreadcrumbFilters = [];
+                window.location.href = "/#/contract-planning/";
             };
         };
 
