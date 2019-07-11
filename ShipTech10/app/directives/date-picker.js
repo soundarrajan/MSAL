@@ -223,6 +223,9 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     useStrict: true,
                     useCurrent: false,
                     keyBinds: false,
+                    locale:  moment.locale('en', {
+				        week: { dow: 1 }
+				    }),
                     // sideBySide: true,
                     // debug: true,
                     // inline: true,
@@ -311,6 +314,9 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         $(e.target).closest('#' + dateInputId + '_timeicon').length === 0 ) {
                             $('#' + dateInputId + '_time').remove();
                     }
+                    if ($(e.target).closest('.new-date-picker-input').length === 0 && $(e.target).parent().find("input[new-date-picker]").length == 0) {
+                        $('.bootstrap-datetimepicker-widget').remove();
+                    }                    
                 });
 
                 $('#' + dateInputId).on('dp.change', function(e) {
