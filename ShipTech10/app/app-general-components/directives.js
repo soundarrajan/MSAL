@@ -438,7 +438,11 @@ window.increment = 0;
 	                            Elements.settings[table_id].source.multiselect = true;
                             }
                         } else {
-                            Elements.settings[table_id].source.height = "50vh";
+                        	if (table_id != "flat_available_contracts") {
+	                            Elements.settings[table_id].source.height = "calc(100vh - 450px)";
+                        	} else {
+	                            Elements.settings[table_id].source.height = "50vh";
+                        	}
                         }
                  
                         Elements.settings[table_id].source.pager = "#" + Elements.settings[table_id].pager;
@@ -552,7 +556,11 @@ window.increment = 0;
 	                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
 	                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
 	                                        })
-	                                        $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 35 + 15 + "px")
+				                        	if (table_id == "flat_available_contracts") { 
+		                                        $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 60 + 15 + "px")
+				                        	} else {
+		                                        // $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 37 + 15 + "px")
+				                        	}
                                         // END VERTICALS SCROLLBAR
                                         // 
                                         // REMOVE MASTER LINKS FROM LOOKUPS

@@ -2630,24 +2630,24 @@ ctrl.setProductData = function(data, loc) {
                 }
                 var productTypeId = product.productTypeId;
                 isSludgeProduct = _.find(ctrl.listsCache["ProductTypeGroup"], function(obj){
-                	return obj.name == "Sludge";
+                    return obj.name == "Sludge";
                 }, 'id').id == product.productTypeGroupId;
 
 
                 var seller = _.find(product.sellers, { sellerCounterparty: { id: requirementV.SellerId } });
                 sellerTypeSludge = false
                 $.each(ctrl.locations, function(lk,lv){
-                	$.each(lv.products, function(pk,pv){
-                		$.each(pv.sellers, function(sk,sv) {
-                			if (sv.randUniquePkg == requirementV.randUniquePkg) {
-								$.each(sv.counterpartyTypes, function(ctk,ctv){
-									if (ctv.name == "Service Provider") {
-						                sellerTypeSludge = true
-									}
-								})
-                			}
-                		})
-                	})
+                    $.each(lv.products, function(pk,pv){
+                        $.each(pv.sellers, function(sk,sv) {
+                            if (sv.randUniquePkg == requirementV.randUniquePkg) {
+                                $.each(sv.counterpartyTypes, function(ctk,ctv){
+                                    if (ctv.name == "Service Provider") {
+                                        sellerTypeSludge = true
+                                    }
+                                })
+                            }
+                        })
+                    })
                 })
                 
                 if (isSludgeProduct && !sellerTypeSludge) {
@@ -2663,7 +2663,7 @@ ctrl.setProductData = function(data, loc) {
                         i++;
                     } else {
                         i = 0;
-	                    sludgeMatchSellerProductError = true
+                        sludgeMatchSellerProductError = true
                     }
                 } else {
                     if (sellerTypeSludge) {
