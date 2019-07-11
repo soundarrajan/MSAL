@@ -177,6 +177,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         }
                         break;
                     case EMAIL_TRANSACTION.ORDER:
+	                    ctrl.defaultTemplate = ctrl.templateList[0];
                         break;
                     case EMAIL_TRANSACTION.ORDER_CONFIRM:
                         ctrl.template = {
@@ -320,7 +321,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         }).finally(function(){setTimeout(function(){screenLoader.hideLoader()},1500)});
                     break;
                 case EMAIL_TRANSACTION.ORDER:
-                   screenLoader.showLoader();
+                    if (ctrl.data.defaultCancellationEmail) {
+	                    ctrl.template = ctrl.data.defaultCancellationEmail;
+	                    ctrl.data.defaultCancellationEmail - null;
+                    }
+                    screenLoader.showLoader();
                     if (ctrl.template.id === 0) {
                         setTimeout(function(){screenLoader.hideLoader()},1500);
                         return false;

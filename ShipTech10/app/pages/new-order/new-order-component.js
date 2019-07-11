@@ -1626,7 +1626,15 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 	                	if (currentCommand == "cancel") {
 			                orderModel.getManualCancellationEmail(ctrl.data).then(function (response) {
 		                    	console.log(response);
+		                    	ctrl.defaultCancellationEmail = null;
+		                    	if (response.payload.id) {
+		                    		ctrl.defaultCancellationEmail = {
+		                    			"id" : response.payload.id,
+		                    			"name" : response.payload.name
+		                    		}
+		                    	}
 		                        ctrl.orderPreviewEmail();
+		                        return;
 		                    })
 	                	}
 
@@ -1670,6 +1678,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     canSendConfirmToVessel : !ctrl.data.ConfirmToVesselDisabled,                    
                     canSendConfirm : ctrl.hasAction(ctrl.SCREEN_ACTIONS.CONFIRM)
                 };
+
+                if (ctrl.defaultCancellationEmail) {
+                	data.defaultCancellationEmail = ctrl.defaultCancellationEmail
+                }
 
                 // $state.go(STATE.PREVIEW_EMAIL, {
                 //     data: data,
