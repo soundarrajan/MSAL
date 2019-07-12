@@ -1274,15 +1274,11 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
                 html += '</a> <br/> </span>';
 
-                html += '<span> <a class="contextActionContractPlanning" data-index="' + k + '">';
                 if (value.request == null || value.request.id == 0) {
+                    html += '<span> <a class="contextActionContractPlanning" data-index="' + k + '">';
                     html += '<span> Add to Contract Planning (' + value.portCode + ') </span>';
-                } else {
-                    html += '<span> Add to Contract Planning (' + value.portCode + ') - ' + value.request.requestName + ' </span> '
-                    hasRequest = true;
-                }
-
-                html += '</a> <br/> </span>';
+                    html += '</a> <br/> </span>';
+                } 
 
                 if (k < object.length - 1) {
                     html +=  '</br>';
@@ -1296,6 +1292,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             if (!hasRequest && hasBunkerPlan) { 
             	//CASE 1 WORKITEM 9108
 	         	groupedByVoyageDetailId = {};
+                groupedByVoyageDetailIdVoyageStops = {};
 
 	         // 	currentVoyageIds = []
 	         // 	$.each(object, function(k,v){
@@ -1326,8 +1323,10 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	         		// item[0].portCode = v.portCode;
 	         		groupedByVoyageDetailId[v.id] = item;
 	         		_.uniqBy(groupedByVoyageDetailId[v.id], 'id');
+                    groupedByVoyageDetailIdVoyageStops[v.id] = v; 
 	         	})
 	         	ctrl.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
+                ctrl.rightClickPopoverData.groupedByVoyageDetailIdVoyageStops = groupedByVoyageDetailIdVoyageStops;
 	            html = $templateCache.get('pages/schedule-dashboard-calendar/views/right-click-popover.html');
             }
             if (vsVal) {
@@ -1386,6 +1385,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 window.location.href = "/#/contract-planning/";
             };
         };
+
+        ctrl.addVoyageToContractPlanning = function(voyageStop) {
+            $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
+            localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
+            $rootScope.activeBreadcrumbFilters = [];
+            window.location.href = "/#/contract-planning/";
+        }
 
 		ctrl.confirmCancelBunkerStrategy = function(bunkerPlan, vsVal) {
 			$(".cancelStrategyModal").modal();

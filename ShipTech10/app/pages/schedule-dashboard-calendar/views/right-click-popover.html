@@ -41,11 +41,13 @@
 						{{key}}
 					</td>
 					<td><a class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a></td>
+					<td><span class="action-btn btn btn-sm btn-default" ng-click="$ctrl.addVoyageToContractPlanning($ctrl.rightClickPopoverData.groupedByVoyageDetailIdVoyageStops[key])"> <i class="fa fa-plus"></i> Add to Contract Planning </span></td>
 				</tr>
 
 			</tbody>			
 		</table>
-		<a ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a>
+		<a ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request </a>
+		<span ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" ng-click="$ctrl.addVoyageToContractPlanning($ctrl.rightClickPopoverData.groupedByVoyageDetailIdVoyageStops[key])"><i class="fa fa-plus"></i> Add to Contract Planning </span>
 	</div>
 
 
