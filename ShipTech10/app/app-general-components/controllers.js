@@ -2848,9 +2848,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 if (columnKey == 'product') {
                     $('#flat_contract_planning').jqGrid("setCell", rowIdx, "product", value);
                     if ($('#contract_planning_product_select_' + rowIdx).hasClass("select2-hidden-accessible")) {
-                        $('#contract_planning_product_select_' + rowIdx).select2("destroy");
-                        $('#contract_planning_product_select_' + rowIdx).val(value.id);
-                        $('#contract_planning_product_select_' + rowIdx).select2();                 
+                        // $('#contract_planning_product_select_' + rowIdx).select2("destroy");
+                        // $('#contract_planning_product_select_' + rowIdx).val(value.id);
+                        // $('#contract_planning_product_select_' + rowIdx).select2();                 
                     }
                     // vm.product[rowIdx] = value;
                     // $('#contract_planning_product_select_' + rowIdx).val(value.id).trigger('change');
@@ -3684,7 +3684,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 //get table width here, it gets altered later
                 // newColModel = Object.values(Elements.table)[0].jqGrid("getGridParam", "colModel");
 
-                newColModel = Elements.table[$(Elements.container[0]).find(".ui-jqgrid-bdiv table[role='presentation']").attr("id")].jqGrid("getGridParam", "colModel");
+                newTable = Elements.table[$(Elements.container[0]).find(".ui-jqgrid-bdiv table[role='presentation']").attr("id")];
+                newColModel = newTable.jqGrid("getGridParam", "colModel");
 
                 payload = [];
                 $.each(newColModel, function(k, v) {
@@ -3705,6 +3706,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
     //             console.log($scope.currentList, $scope.tableData);
     //             console.log("--------");
                 // return;
+                $scope.tableData.clc.rowNum = newTable.jqGrid("getGridParam", "rowNum");
                 uiApiModel.saveListLayout($scope.currentList, $scope.tableData).then(function(data) {
                     if (data.isSuccess) {
                         $rootScope.$broadcast("savedLayout");

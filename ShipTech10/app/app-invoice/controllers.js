@@ -2723,7 +2723,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.status = null
         $rootScope.transportData.customStatus = null
         $rootScope.transportData.invoiceSummary.provisionalInvoiceNo = null;
-        
+        $rootScope.transportData.accountancyDate = null;
+        $rootScope.transportData.counterpartyDetails.paymentTerm = null;        
+        $rootScope.transportData.sellerName = null;        
+
         $rootScope.transportData.paymentDetails = {};     
         // $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
    
@@ -2745,7 +2748,8 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
         $.each($rootScope.transportData.productDetails, function(k, v) {
             v.id = 0;
-            v.invoiceRate = null;
+            v.invoiceRate = 0;
+            v.description = null;
             v.invoiceAmount = null;
             v.reconStatus = null;
             v.amountInInvoice = null;
@@ -2754,6 +2758,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             $.each($rootScope.transportData.costDetails, function(k, v) {
 	            v.id = 0;
 	            v.invoiceRate = null;
+	            v.invoiceExtras = null;
+	            v.description = null;
+	            v.invoiceAmount = null;
                 if (v.product) {
 	                if (v.product.id != -1) {
 	                	if (v.product.id != v.deliveryProductId) {
@@ -2769,7 +2776,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             });                
         }
 
-        localStorage.setItem("invoice_createInvoiceFromEdit", angular.toJson($rootScope.transportData));
+        passedData = angular.copy($rootScope.transportData); 
+        $rootScope.transportData = null;
+        localStorage.setItem("invoice_createInvoiceFromEdit", angular.toJson(passedData));
         window.open("/#/invoices/invoice/edit/", "_blank");
 
     }

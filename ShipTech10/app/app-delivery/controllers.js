@@ -1567,7 +1567,11 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
                     toastr.success("Delivery deleted!");
                     console.log($scope.relatedDeliveries);
                     var path = "/delivery/delivery/edit/" + redirect;
-                    $location.path(path);
+                    if ($location.$$path == path) {
+                    	$state.reload();
+                    } else {
+	                    $location.path(path);
+                    }
                 } else {
                     toastr.error(response.message);
                 }

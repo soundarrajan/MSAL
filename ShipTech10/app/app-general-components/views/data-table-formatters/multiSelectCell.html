@@ -39,9 +39,9 @@
             {{value.productType.name}}
             <i class="fa fa-remove font-red removeProductTypeMasterService" row-index="{{rowRenderIndex}}" product-type-key="{{key}}" product-type-id="{{value.productType.id}}" ></i>
             <br>
-        </span>
-	</div>
-	<span ng-show="MODEL_COL_FIELD.length > 2" class="multiselectcell-show-all-tags" ng-hover="initMultiselectPopover()" data-pop="popoverContent-{{rowRenderIndex}}" data-html="true" data-toggle="popover">
-		<i class="fa fa-ellipsis-h"></i>
+        </span> 
+	</div> 
+	<span ng-show="MODEL_COL_FIELD.length > 0" class="multiselectcell-show-all-tags" ng-hover="initMultiselectPopover()" data-pop="popoverContent-{{rowRenderIndex}}" data-html="true" data-toggle="popover">
+		<i class="fa fa-ellipsis-h"></i> 
 	</span>
 </div>

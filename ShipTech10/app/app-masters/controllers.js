@@ -4034,9 +4034,11 @@ APP_MASTERS.controller("Controller_Master", [
                         toastr.success("Document saved!");
                         $state.reload();
                         // $('.ui-jqgrid-btable').trigger('reloadGrid');
+                        // location.reload();
                     } else {
                         toastr.error("Upload error");
                         $state.reload();
+                        // location.reload();
                     }
                 });
             }

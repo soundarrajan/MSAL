@@ -641,7 +641,13 @@ window.increment = 0;
                                         $compile($("clc-table-list > *"))(scope);
                                         CLC.search_table = table_id;
                                         MCScustom.load();
-                                        if (!customLayout) resizeTableWidth();
+                                        // if (!customLayout) resizeTableWidth();
+                                        // If the width of all the columns is smaller than the container,
+                                        // Resize the columns to take 100% of the width of the container,
+                                        // Otherwise let the columns overflow and allow scroll
+                                        if ($('.ui-jqgrid-view').width() - $('.ui-jqgrid-hbox').width() > 0) {
+                                            resizeTableWidth();
+                                        }
                                         reloadGridPlugins();
                                         triggePayload = {
                                             table: table_id,

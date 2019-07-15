@@ -108,7 +108,8 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             if(hasDayOfWeek) { dayOfWeekClass = "dateInputHasDayOfWeek" }
 
             var dateInputId = attrs['id'] + '_dateinput';
-            var dateInput = '<input type="text" class="form-control '+dayOfWeekClass+' " id="' + dateInputId + '">';
+            // var dateInput = '<input type="text" class="form-control new-date-picker-input '+dayOfWeekClass+' " id="' + dateInputId + '">';
+			var dateInput = '<input type="text" class="form-control '+dayOfWeekClass+' " id="' + dateInputId + '">';
             var dateIcon = '<i class="fa fa-calendar date-picker-icon"';
 
             if (attrs['pickerType'] == 'datetime' || attrs['pickerType'] == 'dynamic') {
@@ -234,9 +235,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 $(element).datetimepicker(datePickerOptions).on('dp.show', function (e) {
                     setTimeout(function () {
-                        if ($(".bootstrap-datetimepicker-widget").offset().left > $(window).width() - 250) {
-                            $(".bootstrap-datetimepicker-widget").css("transform", "translateX(-30%)")
-                        }
+                    	if ($(".bootstrap-datetimepicker-widget").length > 0) {
+	                        if ($(".bootstrap-datetimepicker-widget").offset().left > $(window).width() - 250) {
+	                            $(".bootstrap-datetimepicker-widget").css("transform", "translateX(-30%)")
+	                        }
+                    	}
                     })
                 });
 

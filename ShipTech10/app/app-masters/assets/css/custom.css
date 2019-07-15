@@ -222,7 +222,7 @@
 
 clc-table-list>.jqgrid_component {
     margin: 0 -15px;
-	padding-bottom: 0px;
+    padding-bottom: 0px;    
 }
 
 .dynamic_form_editor .form-group .btn.default:not(.btn-outline):hover {
@@ -799,7 +799,7 @@ span.variance {
 .asc_jqgrid__container.section_bottom {
     padding: 0!important;
     padding-top: 5px !important;
-    padding-bottom: 5px !important;
+    padding-bottom: 5px !important;    
 }
 
 .ui-grid-viewport {

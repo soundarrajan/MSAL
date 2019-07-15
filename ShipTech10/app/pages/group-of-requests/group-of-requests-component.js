@@ -2768,6 +2768,7 @@ ctrl.setProductData = function(data, loc) {
                     	toastr.info(response.errorMessage);
                     }
                     if (reload) {
+                    	angular.element($(".bladeEntity .closeBlade")).scope().closeBlade();
                     	ctrl.initScreenAfterSendOrSkipRfq();
                         // $state.reload();
                     }
@@ -6396,7 +6397,7 @@ ctrl.setProductData = function(data, loc) {
 	        	ctrl.confirmedBladeNavigation = true;
 		        	$rootScope.onSendEmailRFQDoneGOR = true;
 		        	ctrl.requirements = data;
-		            ctrl.sendRFQ(false);
+		            ctrl.sendRFQ(true);
         	}
         	setTimeout(function(){
 				$rootScope.onSendEmailRFQDoneGOR = false;
