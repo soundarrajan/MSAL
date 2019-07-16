@@ -1,0 +1,141 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "shiptech": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/workspace:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/shiptech",
+      "sourceRoot": "apps/shiptech/src",
+      "prefix": "shiptech",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/shiptech",
+            "index": "apps/shiptech/src/index.html",
+            "main": "apps/shiptech/src/main.ts",
+            "polyfills": "apps/shiptech/src/polyfills.ts",
+            "tsConfig": "apps/shiptech/tsconfig.app.json",
+            "assets": [
+              "apps/shiptech/src/favicon.ico",
+              "apps/shiptech/src/assets"
+            ],
+            "styles": ["apps/shiptech/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/shiptech/src/environments/environment.ts",
+                  "with": "apps/shiptech/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "shiptech:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "shiptech:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "shiptech:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/shiptech/tsconfig.app.json",
+              "apps/shiptech/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/shiptech/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/shiptech/jest.config.js",
+            "tsConfig": "apps/shiptech/tsconfig.spec.json",
+            "setupFile": "apps/shiptech/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "shiptech-e2e": {
+      "root": "apps/shiptech-e2e",
+      "sourceRoot": "apps/shiptech-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/shiptech-e2e/cypress.json",
+            "tsConfig": "apps/shiptech-e2e/tsconfig.e2e.json",
+            "devServerTarget": "shiptech:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "shiptech:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/shiptech-e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**", "!apps/shiptech-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "shiptech"
+}
