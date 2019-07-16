@@ -1274,7 +1274,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
                 html += '</a> <br/> </span>';
 
-                if (value.request == null || value.request.id == 0) {
+                if ((value.request == null || value.request.id == 0) && moment.utc(value.eta) >= moment()) {
                     html += '<span> <a class="contextActionContractPlanning" data-index="' + k + '">';
                     html += '<span> Add to Contract Planning (' + value.portCode + ') </span>';
                     html += '</a> <br/> </span>';
@@ -1323,7 +1323,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	         		// item[0].portCode = v.portCode;
 	         		groupedByVoyageDetailId[v.id] = item;
 	         		_.uniqBy(groupedByVoyageDetailId[v.id], 'id');
-                    groupedByVoyageDetailIdVoyageStops[v.id] = v; 
+                    if ((v.request == null || v.request.id == 0) && moment.utc(v.eta) >= moment()) {
+                        groupedByVoyageDetailIdVoyageStops[v.id] = v; 
+                    }
 	         	})
 	         	ctrl.rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
                 ctrl.rightClickPopoverData.groupedByVoyageDetailIdVoyageStops = groupedByVoyageDetailIdVoyageStops;
