@@ -231,9 +231,14 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                         receivedOffers = data.payload;
                         $rootScope.tempFilterOrdersFromConfirm = receivedOffers;
                         // if (receivedOffers.length == 1) {
+                            /*
                             $state.go(STATE.EDIT_ORDER, {
                                 orderId: receivedOffers[0]
                             });
+                            */
+                            for (var i = 0; i < receivedOffers.length; i++) {
+                                window.open('/#/edit-order/' + receivedOffers[i], '_blank');
+                            }
                         // } else if (receivedOffers.length > 1) {
                         //     $state.go(STATE.ORDER_LIST);
                         // }
