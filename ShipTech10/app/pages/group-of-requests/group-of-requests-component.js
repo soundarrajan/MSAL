@@ -3238,42 +3238,42 @@ ctrl.setProductData = function(data, loc) {
 			// ctrl.requirements = [];
 			
             ctrl.refreshedRFQEmailBlade = false;
-   //          if (locations.location || locations.length > 0) {
-   //              if (locations.length > 0) {
-   //                  uniqueLocationIdentifier = locations[0].uniqueLocationIdentifier;
-   //              } else {
-   //                  uniqueLocationIdentifier = locations.uniqueLocationIdentifier;
-   //              }
-   //              ctrl.blade.activeWidget = null;
-   //              $.each(ctrl.requirements, function(reqK, reqV){
-   //              	if (reqV.randUniquePkg != seller.randUniquePkg) {
-		 //                ctrl.requirements = [];
-   //              	}
-   //              })
-   //              locationsList = [];
-   //              $.each(ctrl.requests, function (reqK, reqV) {
-   //                  $.each(reqV.locations, function (locK, locV) {
-   //                      if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
-   //                          locationsList.push(locV);
-   //                      }
-   //                  });
-   //              });
-   //              locations = locationsList;
-   //              if (ctrl.requirements.length == 0) {
-	  //               ctrl.createSellerRequirements(seller, locations);
-   //              }
-   //          }
-   //          ctrl.rfqScreenToDisplayIsMail = false;
+            if (locations.location || locations.length > 0) {
+                if (locations.length > 0) {
+                    uniqueLocationIdentifier = locations[0].uniqueLocationIdentifier;
+                } else {
+                    uniqueLocationIdentifier = locations.uniqueLocationIdentifier;
+                }
+                ctrl.blade.activeWidget = null;
+                $.each(ctrl.requirements, function(reqK, reqV){
+                	if (reqV.randUniquePkg != seller.randUniquePkg) {
+		                ctrl.requirements = [];
+                	}
+                })
+                locationsList = [];
+                $.each(ctrl.requests, function (reqK, reqV) {
+                    $.each(reqV.locations, function (locK, locV) {
+                        if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
+                            locationsList.push(locV);
+                        }
+                    });
+                });
+                locations = locationsList;
+                if (ctrl.requirements.length == 0) {
+	                ctrl.createSellerRequirements(seller, locations);
+                }
+            }
+            ctrl.rfqScreenToDisplayIsMail = false;
 
-   //          for (var i = 0; i < ctrl.requirements.length; i++) {
-   //              var req = ctrl.requirements[i];
-   //                  if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
-   //                      rowRequirements.push(req);
-   //                      if (!req.productHasRFQ) {
-   //                          ctrl.rfqScreenToDisplayIsMail = true;
-   //                      }
-   //                  }
-   //          }
+            for (var i = 0; i < ctrl.requirements.length; i++) {
+                var req = ctrl.requirements[i];
+                    if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
+                        rowRequirements.push(req);
+                        if (!req.productHasRFQ) {
+                            ctrl.rfqScreenToDisplayIsMail = true;
+                        }
+                    }
+            }
 
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 var req = ctrl.requirements[i];
@@ -3332,9 +3332,9 @@ ctrl.setProductData = function(data, loc) {
                 setTimeout(function () { });
                 ctrl.blade.activeWidget = "email";
                 ctrl.blade.widgetType = "counterparty";
-                if (!ctrl.rfqScreenToDisplayIsMail) {
-                    ctrl.setBladeCounterpartyActiveSeller();
-                }
+                // if (!ctrl.rfqScreenToDisplayIsMail) {
+                //     ctrl.setBladeCounterpartyActiveSeller();
+                // }
                 $bladeEntity.open("groupOfRequestBlade");
                 ctrl.bladeOpened = true;
                 ctrl.dataLoaded = true;
@@ -5189,7 +5189,7 @@ ctrl.setProductData = function(data, loc) {
                         if (productOffer.totalAmount || productOffer.hasNoQuote) {
                             totalAmount += productOffer.totalAmount || 0;
                         } else {
-                            foundNoValidTco = true;
+                            // foundNoValidTco = true;
                         }
                     }
                 } else {
