@@ -9,7 +9,7 @@
         ] }"></general-header>
 <!-- <clc-table-list id="'alerts_alertlist'" app="'alerts'" screen="'alertlist'" controls="'[entries, columns, info, pager]'"></clc-table-list> -->
 <clc-table-list id="'alerts_alertslist'" app="'alerts'" screen="'alertslist'" data-screen="alertslist" controls="'[entries, columns, info, pager]'"></clc-table-list>
-<general-header actions="{ primary: [ {label: 'Create rule', special: 'true', url: '#', html_element:'alerts', extern:true}, ], secondary: [], }" color="'white'"></general-header>
+<general-header class="footer-general-header" actions="{ primary: [ {label: 'Create rule', special: 'true', url: '#', html_element:'alerts', extern:true}, ], secondary: [], }" color="'white'"></general-header>
 <div ng-controller="Controller_Master as CM">
     <div ng-init="CM.delayaddHeadeActions();"></div>
 </div>

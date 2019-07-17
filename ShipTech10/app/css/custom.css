@@ -4702,3 +4702,6 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 	display: block;
 }
 
+.footer-general-header .tabs_bar {
+	display: none;
+}

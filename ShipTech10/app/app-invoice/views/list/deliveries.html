@@ -23,7 +23,7 @@
 	}"></general-header>
 
 	<clc-table-list id="'deliveries_transactionstobeinvoiced'" app="'invoices'" screen="'transactionstobeinvoiced'" controls="'[entries, columns,invoice_type_select, info, pager]'"></clc-table-list>
-	<general-header color="'white'" actions="{
+	<general-header class="footer-general-header" color="'white'" actions="{
 	    primary: [
 	        {label: 'Create Invoice', special: true, url: '#', type: 'goto', method: 'createInvoiceFromDelivery()', extern: true},
 	    ],
