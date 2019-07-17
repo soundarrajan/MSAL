@@ -439,6 +439,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 default:
                     return false;
             }
+
+            if (ctrl.email.subject) {
+            	emailData.subject = ctrl.email.subject;
+            }
             //switch to prevstate to create correct payload fo save
             if (action == "discard") {
             	ctrl.buttonsDisabled = true;

@@ -6251,6 +6251,7 @@ APP_MASTERS.controller("Controller_Master", [
                     Name: $rootScope.previewEmail.comment.name,
 	                AttachmentsList: $rootScope.previewEmail.attachmentsList,
                     Content: $rootScope.previewEmail.content,
+                    subject: $rootScope.previewEmail.subject,
                     EmailTemplate: {
                         Id: $rootScope.currentEmailTemplate
                     },
@@ -6268,6 +6269,7 @@ APP_MASTERS.controller("Controller_Master", [
             var comments = {
                 "id": $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
                 "name": $rootScope.previewEmail.comment.name,
+                "emailTemplate":  $rootScope.currentEmailTemplate,
                 "emailTemplate":  $rootScope.currentEmailTemplate,
                 "businessId": vm.entity_id,
                 "secondBusinessId": null,
