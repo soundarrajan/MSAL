@@ -3247,7 +3247,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.blade.activeWidget = null;
                 $.each(ctrl.requirements, function(reqK, reqV){
                 	if (reqV.randUniquePkg != seller.randUniquePkg) {
-		                ctrl.requirements = [];
+		                // ctrl.requirements = [];
                 	}
                 })
                 locationsList = [];
@@ -3265,15 +3265,15 @@ ctrl.setProductData = function(data, loc) {
             }
             ctrl.rfqScreenToDisplayIsMail = false;
 
-            for (var i = 0; i < ctrl.requirements.length; i++) {
-                var req = ctrl.requirements[i];
-                    if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
-                        rowRequirements.push(req);
-                        if (!req.productHasRFQ) {
-                            ctrl.rfqScreenToDisplayIsMail = true;
-                        }
-                    }
-            }
+            // for (var i = 0; i < ctrl.requirements.length; i++) {
+            //     var req = ctrl.requirements[i];
+            //         if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
+            //             rowRequirements.push(req);
+            //             if (!req.productHasRFQ) {
+            //                 ctrl.rfqScreenToDisplayIsMail = true;
+            //             }
+            //         }
+            // }
 
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 var req = ctrl.requirements[i];
