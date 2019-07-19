@@ -126,15 +126,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                 var loopList = [];
                 if($scope.currentList === "schedule-dashboard-calendar"){
                     loopList = data.Filters;
-                }else{
+               }else{
                     loopList = data;
                 }
                 $.each(loopList, function(_, v) {
-                    if(v.column.columnValue === 'Open' || v.column.columnValue === 'Close') {
-                        v.column.columnValue = '[' + v.column.columnValue + ']';
-                    }
-
-
                     $.each($scope.colModel, function(_, v1) {
                         if(v.column.columnName.toLowerCase().replace(' ', '.') === v1.name.toLowerCase()) {
                             v.column.columnName = v1.label;
@@ -374,12 +369,20 @@ angular.module("shiptech.components").controller("FiltersController", [
             sortList = data.sortList;
 
             $.each(filtersList, function(key, val) {
+                if (val.columnValue == '[Open]') {
+                    val.columnValue = 'Open';
+                }
+                if (val.columnValue == '[Close]') {
+                    val.columnValue = 'Close';
+                }
+
                 var newFilter = {
                     column: null,
                     condition: null,
                     filterOperator: val.filterOperator,
                     value: []
                 };
+
                 //check in current columns
                 $.each($scope.currentColumns, function(key2, val2) {
                     if (val2.columnValue == val.columnValue) {
@@ -481,6 +484,9 @@ angular.module("shiptech.components").controller("FiltersController", [
                             ConditionValue: val.condition.conditionValue,
                             Values: _.toArray(val.value)
                         };
+                        if(filter.columnValue === 'Open' || filter.columnValue === 'Close') {
+                            filter.columnValue = '[' + filter.columnValue + ']';
+                        }
                         // if (key > 0) {
 
                         if(val.filterOperator) {
@@ -521,7 +527,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.currentList = list + "/" + $rootScope.modalTableId;
             }
             // console.log(modalTableId)
-            if ($state.current.name == "default.home") {
+            if ($state.current.name == "default.home" || $state.current.name == "default.dashboard-timeline") {
                 $scope.currentList = "schedule-dashboard-calendar";
             }
             if ($scope.currentList == "contract-planning/") $scope.currentList = "contract-planning";
