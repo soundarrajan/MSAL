@@ -1967,6 +1967,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 // return new Date();
             };
             var treasury_checkbox = function(cellValue, options, rowObject) {
+            	entityId = rowObject.id;
                 uniqueModel = "checked_" + rowObject.id;
                 vm.changedfields[entityId]["isChecked"] = cellValue;
                 // tpl = "<label class='mt-checkbox'><input type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(); CLC.calculateSubtotal(CLC.changedfields[" + entityId + "].isChecked)' /><span></span></label>"

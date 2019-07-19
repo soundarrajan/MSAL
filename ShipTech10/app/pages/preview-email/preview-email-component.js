@@ -473,7 +473,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             	ctrl.buttonsDisabled = true;
                 return emailModel.saveForBusinessIds(emailData, ctrl.email.comment, ctrl.template, ctrl.email).then(function() {
                  	
-                }).finally(function(){
+                }).finally(function(){                	
                 	ctrl.buttonsDisabled = false;
                 });
             } else {
@@ -654,6 +654,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                             $window.history.back();
 						})
 					} else {
+
 		                if (ctrl.transaction != EMAIL_TRANSACTION.GROUP_OF_REQUESTS) {
 	                        if(!remainOnSamePage){
 	                            $window.history.back();
@@ -661,6 +662,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 		                }
 					} 	                
 	            }).finally(function(){
+	                if (ctrl.transaction == EMAIL_TRANSACTION.CONTRACT_PLANNING) {
+	                	window.location.href = "#/contract-planning/";
+	                	return;
+	                }
 	            	ctrl.buttonsDisabled = false;
 	            	$state.reload()
 	            });

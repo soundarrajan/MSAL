@@ -2187,8 +2187,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.changedfields = [];
         vm.editable_formatter = function(format, name) {
             var treasury_checkbox = function(cellValue, options, rowObject) {
+            	entityId = rowObject.id;
                 uniqueModel = "checked_" + rowObject.id;
-                vm.changedfields[entityId]["isChecked"] = cellValue;
+                if (vm.changedfields.length > 0) {
+                	if (vm.changedfields[entityId]) {
+		                vm.changedfields[entityId]["isChecked"] = cellValue;
+                	}
+                }
                 // tpl = "<label class='mt-checkbox'><input type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(); CLC.calculateSubtotal(CLC.changedfields[" + entityId + "].isChecked)' /><span></span></label>"
                 tpl = "<input class='treasury_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + "); CLC.calculateSubtotal(CLC.changedfields[" + entityId + "].isChecked)' /><label class='treasury_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";
                 return tpl;

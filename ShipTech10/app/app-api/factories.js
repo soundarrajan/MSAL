@@ -5301,30 +5301,38 @@ APP_API.factory("$Api_Service", [
                         ];
                     }
                     if (param.clc_id == "procurement_scheduleDashboardTable") {
-                        if (!param.params.dates) {
-                            if (typeof startDate == "undefined" || startDate === null || typeof endDate == "undefined" || endDate === null) {
-                                apiJSON.Payload.Start = moment()
-                                    .subtract(7, "d")
-                                    .utc()
-                                    .startOf("day")
-                                    .toISOString();
-                                apiJSON.Payload.End = moment()
-                                    .add(21, "d")
-                                    .utc()
-                                    .endOf("day")
-                                    .toISOString();
-                            }
+                    	if (!localStorage.getItem('scheduleDatesTable')) {
+                    		interval = setInterval(function(){
+                    			if (localStorage.getItem('scheduleDatesTable')) {
+                    				param.params.tableDates = {};
+                    				scheduleDatesTable = JSON.parse(localStorage.getItem('scheduleDatesTable'));
+                    				param.params.tableDates.startDate = scheduleDatesTable.start;
+                    				param.params.tableDates.endDate = scheduleDatesTable.end;
+									Elements.settings["flat_table_schedule_dashboard"].source.loadComplete();
+									clearInterval(interval);
+                    			}
+                    		},200);
+                    		return
+                    	}
+						// apiJSON.Payload.Start = localStorage.getItem('scheduleDatesTable').start;
+						// apiJSON.Payload.End = localStorage.getItem('scheduleDatesTable').end;
+                        if (!param.params.tableDates) {
+                        	// return false;
+                            // if (typeof startDate == "undefined" || startDate === null || typeof endDate == "undefined" || endDate === null) {
+                            //     apiJSON.Payload.Start = moment()
+                            //         .subtract(7, "d")
+                            //         .utc()
+                            //         .startOf("day")
+                            //         .toISOString();
+                            //     apiJSON.Payload.End = moment()
+                            //         .add(21, "d")
+                            //         .utc()
+                            //         .endOf("day")
+                            //         .toISOString();
+                            // }
                         } else {
-                            apiJSON.Payload.Start = moment
-                                .unix(param.params.dates.startDate.timestamp)
-                                .utc("dd")
-                                .startOf("day")
-                                .toISOString();
-                            apiJSON.Payload.End = moment
-                                .unix(param.params.dates.endDate.timestamp)
-                                .utc("dd")
-                                .endOf("day")
-                                .toISOString();
+                            apiJSON.Payload.Start = param.params.tableDates.startDate;
+                            apiJSON.Payload.End = param.params.tableDates.endDate;
                         }
                     }
                     

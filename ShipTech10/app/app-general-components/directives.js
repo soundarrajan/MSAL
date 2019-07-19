@@ -134,6 +134,9 @@ window.increment = 0;
                                                 },
                                                 function(callback) {
                                                     if (callback && callback.clc) {
+														if (scope.source) {
+															callback.clc = angular.copy(scope.source);
+														}
         	                                            $.each(callback.clc.colModel, function(k, v) {
 			                                                v.label = v.label.replace("Service", scope.tenantSetting.serviceDisplayName.name);
 			                                                v.label = v.label.replace("Company", scope.tenantSetting.companyDisplayName.name);
@@ -204,6 +207,9 @@ window.increment = 0;
                                     function(callback) {
                                         if (callback && callback.clc) {
                                             callback.id = null;
+                                            if (scope.source) {
+                                            	callback.clc = angular.copy(scope.source);
+                                            }
 	                                    	if ($rootScope.adminConfiguration) {
 		                                    	if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
 		                                    		if (callback.clc.table_name == "Available Contracts") {
@@ -252,6 +258,9 @@ window.increment = 0;
 	                            	userColumns.clc.table_name = defaultColumns.clc.table_name;
                                 	toastr.error("The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.");
                                 	return;
+                                }
+                                if ( scope.source) {
+                                	defaultColumns.clc.colModel = angular.copy(scope.source.colModel);
                                 }
 
                                 //debugger;
@@ -322,6 +331,9 @@ window.increment = 0;
                                 },
                                 function(callback) {
                                     var Layout = "";
+                                    if (scope.source) {
+                                    	callback.clc = angular.copy(scope.source);
+                                    }
                                     Layout = callback.clc;
                                     if (callback && callback.clc) {
                                         $.each(callback.clc.colModel, function(k, v) {
@@ -356,7 +368,7 @@ window.increment = 0;
                    
                         if (scope.source) {
                             console.log("clc static src:", scope.source);
-                            newValue = scope.source;
+                            // newValue = scope.source;
                         }
                         // console.log(attrs.modal)
                         CLC.tableParams.modal = attrs.modal;
@@ -507,9 +519,16 @@ window.increment = 0;
                                     startDate: startDate,
                                     endDate: endDate
                                 };
-                                // console.log(startDate, endDate);
                             }
 
+                            if (localStorage.getItem("scheduleDatesTable")) {
+                                startDate = JSON.parse(localStorage.getItem("scheduleDatesTable"))["start"];
+                                endDate = JSON.parse(localStorage.getItem("scheduleDatesTable"))["end"];
+                                CLC.tableParams.tableDates = {
+                                    startDate: startDate,
+                                    endDate: endDate
+                                };
+                            }
                             $rootScope.$broadcast('colModel', Elements.settings[table_id].source.colModel);
                             if (Elements.settings[table_id].source.rowNum) {
                             	CLC.tableParams.rows = Elements.settings[table_id].source.rowNum
@@ -699,7 +718,9 @@ window.increment = 0;
                             $(".ui-jqgrid-view,.ui-jqgrid-bdiv,.ui-jqgrid-hdiv").width($(Elements.table[Elements.settings[table_id].table]).width());
                             MCScustom.load();
                         };
-                        Elements.settings[table_id].source.onSortCol = function(index, iCol, sortorder) {};
+                        Elements.settings[table_id].source.sortupdate = function(index, iCol, sortorder) {
+                        	$(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid("setGridWidth", Elements.settings[settings_keys[i]].source.width, true);
+                        };
                         Elements.settings[table_id].source.on_page_change = function(data) {
                             CLC.tableParams.page = data.page;
                             CLC.tableParams.PageFilters.sortList = CLC.tableParams.sortList;
@@ -978,9 +999,9 @@ window.increment = 0;
 										} else {
 										  zoomLevel = "unknown";
 										}
-										if (zoomLevel == "0") {
+										// if (zoomLevel == "0") {
 	                                        $(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid("setGridWidth", Elements.settings[settings_keys[i]].source.width, true);
-										}
+										// }
                                     }
                                     MCScustom.load();
                                 }

@@ -525,6 +525,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             ctrl.startDateString = moment.unix(ctrl.startDate.timestamp).format('DD-MMM-YYYY'); // Solely for printing in the timeframe selector (template).
             ctrl.endDate = ctrl.calendarDates[ctrl.calendarDates.length - 1];
             ctrl.endDateString = moment.unix(ctrl.endDate.timestamp).format('DD-MMM-YYYY'); // Idem.
+        	
+        	if (localStorage.getItem("scheduleDatesTable")) {
+	        	lSscheduleDatesTable = JSON.parse(localStorage.getItem("scheduleDatesTable"));
+	        	lSscheduleDatesTable.start = moment.unix(ctrl.startDate.timestamp).format("YYYY-MM-DDTHH:mm:ss")
+	        	lSscheduleDatesTable.end = moment.unix(ctrl.endDate.timestamp).format("YYYY-MM-DDTHH:mm:ss")
+	        	localStorage.setItem("scheduleDatesTable", JSON.stringify(lSscheduleDatesTable));
+        	}
         }
         /**
          * Generates an array of dates, given a starting date and a day count.

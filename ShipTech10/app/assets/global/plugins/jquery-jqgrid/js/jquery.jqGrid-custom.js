@@ -590,11 +590,13 @@ var Cfg = {
                             value = dates.join(' - ');
                         }
                     }
-                    if (value === "1") {
-                        value = "Yes";
-                    }
-                    if (value === "0") {
-                        value = "No";
+                    if (v.column.columnType != "Number") {
+	                    if (value === "1") {
+	                        value = "Yes";
+	                    }
+	                    if (value === "0") {
+	                        value = "No";
+	                    }
                     }
                     conditions += concat + ' <div class="filterCondition">' + v.column.columnName + " " + condition + ' <span class="filterVal">' + value + "</span></div>";
                 }
