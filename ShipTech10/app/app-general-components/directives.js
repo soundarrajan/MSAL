@@ -621,6 +621,14 @@ window.increment = 0;
                                                 var column = v.columnValue;
                                                 var sort = v.sortParameter;
 
+                                                if (column == '[open]') {
+                                                    column = 'open';
+                                                }
+
+                                                if (column == '[close]') {
+                                                    column = 'close';
+                                                }
+
                                                 if (v.col) {
                                                     column = v.col;
                                                 }

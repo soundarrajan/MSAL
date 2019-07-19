@@ -369,6 +369,13 @@ angular.module("shiptech.components").controller("FiltersController", [
             sortList = data.sortList;
 
             $.each(filtersList, function(key, val) {
+                if (val.columnValue == '[Open]') {
+                    val.columnValue = 'Open';
+                }
+                if (val.columnValue == '[Close]') {
+                    val.columnValue = 'Close';
+                }
+           
                 var newFilter = {
                     column: null,
                     condition: null,
@@ -477,6 +484,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                             ConditionValue: val.condition.conditionValue,
                             Values: _.toArray(val.value)
                         };
+
+                        if(filter.columnValue === 'Open' || filter.columnValue === 'Close') {
+                            filter.columnValue = '[' + filter.columnValue + ']';
+                        }
 
                         if(val.filterOperator) {
                             filter.FilterOperator = val.filterOperator;
@@ -846,6 +857,15 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
         $scope.columnSort = function(table, column, order, sortColumn, columnObj) {
 
+            $.each($rootScope.sortList, function(k, v) {
+                if (v.columnValue == '[open]') {
+                    v.columnValue = 'open';
+                }
+                if (v.columnValue == '[close]') {
+                    v.columnValue = 'open';
+                }
+            });
+
             if ($rootScope.sortList && $rootScope.sortList.length > 0) {
                 $.each($rootScope.sortList, function(k, v) {
                     if (v) {
@@ -888,6 +908,12 @@ angular.module("shiptech.components").controller("FiltersController", [
                     });
                 }
             }
+
+            $.each($rootScope.sortList, function(k, v) {
+                if (v.columnValue == 'open' || v.columnValue == 'close') {
+                    v.columnValue = '[' + v.columnValue + ']';
+                }
+            });
 
             $scope.applyFilters($rootScope.rawFilters);
 
