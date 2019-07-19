@@ -48,6 +48,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 },
             };
 
+            var WEEK_DAYS = {
+                'Sunday': 0,
+                'Monday': 1
+            }; 
+
             function reset(element) {
                 scope.$apply(function() {
                     ngModel.$setViewValue(null);
@@ -216,6 +221,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             // }
 
             init.then(function(mask) {
+                var calendarWeekStartsFrom = _.get($tenantSettings, 'tenantFormats.calendarWeekStartsFrom.name');
+                var dow = 1;
+                if (calendarWeekStartsFrom && WEEK_DAYS[calendarWeekStartsFrom] !== undefined) {
+                    dow = WEEK_DAYS[calendarWeekStartsFrom];
+                }
                 var datePickerOptions = {
                     format: currentFormat,
                     // showMeridian: true,
@@ -225,7 +235,9 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     useCurrent: false,
                     keyBinds: false,
                     locale:  moment.locale('en', {
-				        week: { dow: 1 }
+				        week: {
+                            dow: dow
+                        }
 				    }),
                     // sideBySide: true,
                     // debug: true,

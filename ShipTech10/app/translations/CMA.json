@@ -1115,6 +1115,7 @@
     "ALLOW_EMAIL_EDIT": "Allow email preview edit",
     "EMAI_BODY_HTML": "HTML email body",
     "CSV_DELIMITER": "Csv delimiter",
+    "CALENDAR_WEEK_STARTS_FROM": "Calendar week Starts From",
     "QUANTITY_PRECISION": "Quantity precision",
     "PRICE_PRECISION": "Price precision",
     "AMOUNT_PRECISION": "Amount precision",

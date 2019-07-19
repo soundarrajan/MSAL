@@ -182,6 +182,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="csvDelimiter" class="simpleLookupLabel">
+                            {{ CM.app_id + '.CALENDAR_WEEK_STARTS_FROM' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_calendarWeekStartsFrom" ng-init='options.CalendarWeekStartDay ? return : CM.getOptions({"Name": "CalendarWeekStartDay", "Type": "dropdown", "masterSource": "CalendarWeekStartDay"})'>
+                            <select name="calendarWeekStartsFrom" class="form-control bs-select changeIT" id="calendarWeekStartsFrom" ng-required="true" ng-options="item as item.name for item in options.CalendarWeekStartDay track by item.id"
+                                    ng-model="formValues.general.tenantFormats.calendarWeekStartsFrom"></select>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="portlet">
                 <div class="portlet-title">
