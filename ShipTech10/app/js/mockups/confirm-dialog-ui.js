@@ -70,7 +70,7 @@
                 "caption": "PAGES.CONFIRM_DIALOG.CONTRACT_NAME",
                 "visible": true,
                 "sortable": true,
-                "sortableName": "pricingScheduleOptionName"
+                "sortableName": "contractName"
             },{
                 "caption": "PAGES.CONFIRM_DIALOG.FORMULA",
                 "visible": true,
@@ -80,7 +80,7 @@
                 "caption": "PAGES.CONFIRM_DIALOG.SCHEDULE",
                 "visible": true,
                 "sortable": true,
-                "sortableName": "contractName"
+                "sortableName": "pricingScheduleOptionName"
             },{
                 "caption": "PAGES.CONFIRM_DIALOG.CONTRACT_QUANTITY",
                 "visible": true,
