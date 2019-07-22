@@ -1099,7 +1099,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 ">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="useOrderPhysicalSupplierFlow" class="simpleLookupLabel" style="max-height: initial;">
+                            {{ CM.app_id + '.ORDER_PHYSICAL_SUPPLIER_FLOW' | translate }}
+                            <span class="orange-txt">
+                                *
+                            </span>
+                        </label>
+                        <div class="input-group form_input form_input_useOrderPhysicalSupplierFlow">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id"
+                                ng-required="true" id="useOrderPhysicalSupplierFlow" ng-model="formValues.procurement.order.useOrderPhysicalSupplierFlow"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-group row" ng-init='CM.getOptions({"Name": "specRequest", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
                         <label for="specGroupFlowFromRequest" class="simpleLookupLabel" style="max-height: initial;">
                             {{ CM.app_id + '.SPEC_FROM_REQUEST' | translate }}

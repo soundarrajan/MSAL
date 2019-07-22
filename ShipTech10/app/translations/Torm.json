@@ -1230,6 +1230,7 @@
             "COMPANY_DISPLAY_NAME": "Company Display Name",
             "SERVICE_DISPLAY_NAME": "Service Display Name",
             "PRICE_DETAILS_DEFAULT_VIEW": "Price details default view",
+            "ORDER_PHYSICAL_SUPPLIER_FLOW": "Phyisical Supplier flow from Offer",
             "SPEC_FROM_REQUEST": "Spec group flow from Request",
             "SPEC_FROM_CONTRACT": "Spec group flow from Contract",
             "NEED_ORDER_CONFIRMATION_EMAIL_VESSEL": "Need order confirmation email to vessel",
