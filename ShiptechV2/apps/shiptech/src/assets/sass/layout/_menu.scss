@@ -2,7 +2,7 @@
     .layout-menu-container {
         position: fixed;
         height: 100%;
-        top: 70px;
+        top: $topbarHeight;
         z-index: 999;
 
         .layout-profile {
@@ -440,7 +440,7 @@
     }
 
     .layout-main {
-        padding-top: 70px;
+        padding-top: $topbarHeight;
 
         .layout-content {
             padding: 16px;
@@ -452,18 +452,18 @@
     .layout-wrapper {
         &.layout-static {
             .layout-menu-container {
-                width: 288px;
+                width: $sideBarWidth;
                 left: 0;
                 @include transition(left $transitionDuration);
             }
     
             .layout-main {
-                margin-left: 288px;
+                margin-left: $sideBarWidth;
                 @include transition(margin-left $transitionDuration);
             }
 
             .layout-footer {
-                margin-left: 288px;
+                margin-left: $sideBarWidth;
                 @include transition(margin-left $transitionDuration);
             }
     

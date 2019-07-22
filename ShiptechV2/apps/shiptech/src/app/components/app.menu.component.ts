@@ -2,6 +2,7 @@ import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/cor
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MenuItem, ScrollPanel } from 'primeng/primeng';
 import { AppMainComponent } from './app.main.component';
+import { menuItems } from './menu.items';
 
 @Component({
     selector: 'app-menu',
@@ -18,13 +19,22 @@ import { AppMainComponent } from './app.main.component';
             transition('visibleAnimated => hiddenAnimated', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
             transition('hiddenAnimated => visibleAnimated', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
         ])
-    ]
+    ],
+  styles: [`
+    .menu-title {
+      color: #75808e;
+      font-size: 15px;
+      font-weight: 600;
+      margin: 17px 10px;
+      display: inline-block;
+    }`]
 })
 export class AppMenuComponent implements OnInit, AfterViewInit {
 
     @Input() reset: boolean;
 
     model: any[];
+    model2: any[];
 
     inlineModel: any[];
 
@@ -35,7 +45,8 @@ export class AppMenuComponent implements OnInit, AfterViewInit {
     constructor(public app: AppMainComponent) { }
 
     ngOnInit() {
-        this.model = [
+      this.model = menuItems;
+        this.model2 = [
             { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/']},
             {
                 label: 'Layouts', icon: 'pi pi-fw pi-th-large',

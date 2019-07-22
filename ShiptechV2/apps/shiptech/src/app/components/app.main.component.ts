@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
     selector: 'shiptech-main',
     templateUrl: './app.main.component.html',
 })
-export class AppMainComponent {
+export class AppMainComponent implements AfterViewInit {
     menuMode = 'static';
 
     overlayMenuActive: boolean;
@@ -188,5 +188,8 @@ export class AppMainComponent {
             document.body.className = document.body.className.replace(new RegExp('(^|\\b)' +
                 'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
         }
+    }
+
+    ngAfterViewInit(): void {
     }
 }
