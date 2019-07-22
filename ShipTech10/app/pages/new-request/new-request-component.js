@@ -2351,28 +2351,34 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             function toggleInvalid(elm, action) {
                 if (action === 'add') {
                     elm.parent().addClass('datepicker-container-invalid');
-                    elm.addClass('invalid');
+                    // elm.addClass('invalid');
                 }
                 if (action === 'remove') {
                     elm.parent().removeClass('datepicker-container-invalid');
-                    elm.removeClass('invalid');
+                    // elm.removeClass('invalid');
                 }
             }
+
+            var hasError = false;
 
             if (moment.utc(location.etb) < moment.utc(location.eta)) {
                 toastr.error("ETA must be lower or equal to ETB.");
                 toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'add');
-                toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'add');
+                hasError = true;
             } else {
                 toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'remove');
-                toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'remove');
             }
             if (moment.utc(location.etd) < moment.utc(location.eta)) {
                 toastr.error("ETA must be lower or equal to ETD.");
                 toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'add');
-                toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'add');
+                hasError = true;
             } else {
                 toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'remove');
+            }
+
+            if (hasError) {
+                toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'add');
+            } else {
                 toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'remove');
             }
         };
