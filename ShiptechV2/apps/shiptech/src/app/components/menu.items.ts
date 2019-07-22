@@ -18,16 +18,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Additional cost List",
-        "url": "/masters/additionalcost",
-        "target": "_blank"
-      },
-      {
-        "label": "New additional cost",
-        "url": "/masters/additionalcost/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Agreement type",
         "items": [
           {
@@ -41,16 +31,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Agreement type List",
-        "url": "/masters/agreementtype",
-        "target": "_blank"
-      },
-      {
-        "label": "New agreement type",
-        "url": "/masters/agreementtype/edit/",
-        "target": "_blank"
       },
       {
         "label": "Barge",
@@ -68,16 +48,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Barge List",
-        "url": "/masters/barge",
-        "target": "_blank"
-      },
-      {
-        "label": "New barge",
-        "url": "/masters/barge/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Buyer",
         "items": [
           {
@@ -91,16 +61,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Buyer List",
-        "url": "/masters/buyer",
-        "target": "_blank"
-      },
-      {
-        "label": "New buyer",
-        "url": "/masters/buyer/edit/",
-        "target": "_blank"
       },
       {
         "label": "Calendar",
@@ -118,16 +78,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Calendar List",
-        "url": "/masters/calendar",
-        "target": "_blank"
-      },
-      {
-        "label": "New calendar",
-        "url": "/masters/calendar/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Claim Type",
         "items": [
           {
@@ -143,14 +93,19 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Claim Type List",
-        "url": "/masters/claimtype",
-        "target": "_blank"
-      },
-      {
-        "label": "New claim type",
-        "url": "/masters/claimtype/edit/",
-        "target": "_blank"
+        "label": "{{tenantSettings.companyDisplayName.name}}",
+        "items": [
+          {
+            "label": "{{tenantSettings.companyDisplayName.name}} List",
+            "url": "openInNewTab('company','",
+            "target": "_blank"
+          },
+          {
+            "label": "New {{tenantSettings.companyDisplayName.name}}",
+            "url": "openInNewTab('company', '/edit/",
+            "target": "_blank"
+          }
+        ]
       },
       {
         "label": "Contact type",
@@ -168,16 +123,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Contact type List",
-        "url": "/masters/contacttype",
-        "target": "_blank"
-      },
-      {
-        "label": "New contact type",
-        "url": "/masters/contacttype/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Counterparty",
         "items": [
           {
@@ -191,16 +136,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Counterparty List",
-        "url": "/masters/counterparty",
-        "target": "_blank"
-      },
-      {
-        "label": "New Counterparty",
-        "url": "/masters/counterparty/edit/",
-        "target": "_blank"
       },
       {
         "label": "Country",
@@ -218,16 +153,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Country List",
-        "url": "/masters/country",
-        "target": "_blank"
-      },
-      {
-        "label": "New country",
-        "url": "/masters/country/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Currency",
         "items": [
           {
@@ -241,16 +166,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Currency List",
-        "url": "/masters/currency",
-        "target": "_blank"
-      },
-      {
-        "label": "New currency",
-        "url": "/masters/currency/edit/",
-        "target": "_blank"
       },
       {
         "label": "Delivery option",
@@ -268,16 +183,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Delivery option List",
-        "url": "/masters/deliveryoption",
-        "target": "_blank"
-      },
-      {
-        "label": "New delivery option",
-        "url": "/masters/deliveryoption/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Document type",
         "items": [
           {
@@ -293,16 +198,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Document type List",
-        "url": "/masters/documenttype",
-        "target": "_blank"
-      },
-      {
-        "label": "New document type",
-        "url": "/masters/documenttype/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Email Logs",
         "items": [
           {
@@ -311,11 +206,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Email Logs",
-        "url": "/masters/emaillogs",
-        "target": "_blank"
       },
       {
         "label": "Event",
@@ -333,16 +223,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Event List",
-        "url": "/masters/event",
-        "target": "_blank"
-      },
-      {
-        "label": "New event",
-        "url": "/masters/event/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Exchange rate",
         "items": [
           {
@@ -356,16 +236,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Exchange rate List",
-        "url": "/masters/exchangerate",
-        "target": "_blank"
-      },
-      {
-        "label": "New exchange rate",
-        "url": "/masters/exchangerate/edit/",
-        "target": "_blank"
       },
       {
         "label": "Formula",
@@ -383,16 +253,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Formula List",
-        "url": "/masters/formula",
-        "target": "_blank"
-      },
-      {
-        "label": "New formula",
-        "url": "/masters/formula/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Incoterms",
         "items": [
           {
@@ -406,16 +266,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Incoterms List",
-        "url": "/masters/incoterms",
-        "target": "_blank"
-      },
-      {
-        "label": "New incoterms",
-        "url": "/masters/incoterms/edit/",
-        "target": "_blank"
       },
       {
         "label": "Location",
@@ -433,16 +283,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Location List",
-        "url": "/masters/location",
-        "target": "_blank"
-      },
-      {
-        "label": "New Location",
-        "url": "/masters/location/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Market instrument",
         "items": [
           {
@@ -456,16 +296,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Market instrument List",
-        "url": "/masters/marketinstrument",
-        "target": "_blank"
-      },
-      {
-        "label": "New market instrument",
-        "url": "/masters/marketinstrument/edit/",
-        "target": "_blank"
       },
       {
         "label": "Payment term",
@@ -483,16 +313,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Payment term List",
-        "url": "/masters/paymentterm",
-        "target": "_blank"
-      },
-      {
-        "label": "New payment term",
-        "url": "/masters/paymentterm/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Period",
         "items": [
           {
@@ -506,16 +326,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Period List",
-        "url": "/masters/period",
-        "target": "_blank"
-      },
-      {
-        "label": "New period",
-        "url": "/masters/period/edit/",
-        "target": "_blank"
       },
       {
         "label": "Price master",
@@ -533,16 +343,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Price List",
-        "url": "/masters/price",
-        "target": "_blank"
-      },
-      {
-        "label": "New price",
-        "url": "/masters/price/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Price type",
         "items": [
           {
@@ -556,16 +356,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Price type List",
-        "url": "/masters/pricetype",
-        "target": "_blank"
-      },
-      {
-        "label": "New Price type",
-        "url": "/masters/pricetype/edit/",
-        "target": "_blank"
       },
       {
         "label": "Product",
@@ -583,14 +373,19 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Product List",
-        "url": "/masters/product",
-        "target": "_blank"
-      },
-      {
-        "label": "New product",
-        "url": "/masters/product/edit/",
-        "target": "_blank"
+        "label": "{{tenantSettings.serviceDisplayName.name}}",
+        "items": [
+          {
+            "label": "{{tenantSettings.serviceDisplayName.name}} List",
+            "url": "openInNewTab('service','",
+            "target": "_blank"
+          },
+          {
+            "label": "New {{tenantSettings.serviceDisplayName.name.toLowerCase()}}",
+            "url": "openInNewTab('service','/edit/",
+            "target": "_blank"
+          }
+        ]
       },
       {
         "label": "Spec group",
@@ -608,16 +403,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Spec group List",
-        "url": "/masters/specgroup",
-        "target": "_blank"
-      },
-      {
-        "label": "New Spec group",
-        "url": "/masters/specgroup/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Spec parameter",
         "items": [
           {
@@ -631,16 +416,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Spec parameter List",
-        "url": "/masters/specparameter",
-        "target": "_blank"
-      },
-      {
-        "label": "New Spec parameter",
-        "url": "/masters/specparameter/edit/",
-        "target": "_blank"
       },
       {
         "label": "Status",
@@ -658,16 +433,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Status List",
-        "url": "/masters/status",
-        "target": "_blank"
-      },
-      {
-        "label": "New status",
-        "url": "/masters/status/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Strategy",
         "items": [
           {
@@ -681,16 +446,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Strategy List",
-        "url": "/masters/strategy",
-        "target": "_blank"
-      },
-      {
-        "label": "New strategy",
-        "url": "/masters/strategy/edit/",
-        "target": "_blank"
       },
       {
         "label": "System instrument",
@@ -708,16 +463,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "System instrument List",
-        "url": "/masters/systeminstrument",
-        "target": "_blank"
-      },
-      {
-        "label": "New system instrument",
-        "url": "/masters/systeminstrument/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "UOM",
         "items": [
           {
@@ -731,16 +476,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "UOM List",
-        "url": "/masters/uom",
-        "target": "_blank"
-      },
-      {
-        "label": "New UOM",
-        "url": "/masters/uom/edit/",
-        "target": "_blank"
       },
       {
         "label": "Vessel",
@@ -758,16 +493,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Vessel List",
-        "url": "/masters/vessel",
-        "target": "_blank"
-      },
-      {
-        "label": "New vessel",
-        "url": "/masters/vessel/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Vessel type",
         "items": [
           {
@@ -781,16 +506,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Vessel type List",
-        "url": "/masters/vesseltype",
-        "target": "_blank"
-      },
-      {
-        "label": "New vessel type",
-        "url": "/masters/vesseltype/edit/",
-        "target": "_blank"
       }
     ]
   },
@@ -813,16 +528,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Schedule Dashboard Calendar",
-        "url": "openInNewTab('state','DASHBOARD_CALENDAR",
-        "target": "_blank"
-      },
-      {
-        "label": "Schedule Dashboard Table",
-        "url": "/schedule-dashboard-table",
-        "target": "_blank"
-      },
-      {
         "label": "Request",
         "items": [
           {
@@ -836,16 +541,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Request List",
-        "url": "/all-requests-table",
-        "target": "_blank"
-      },
-      {
-        "label": "New Request",
-        "url": "/new-request",
-        "target": "_blank"
       },
       {
         "label": "Order",
@@ -866,21 +561,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Order List",
-        "url": "/order-list",
-        "target": "_blank"
-      },
-      {
-        "label": "New Order",
-        "url": "/new-order",
-        "target": "_blank"
-      },
-      {
-        "label": "SAP Export",
-        "url": "/sap-export",
-        "target": "_blank"
       },
       {
         "label": "Contract Planning",
@@ -1018,16 +698,6 @@ export const menuItems = [
         ]
       },
       {
-        "label": "Users List",
-        "url": "/admin/users",
-        "target": "_blank"
-      },
-      {
-        "label": "New user",
-        "url": "/admin/users/edit/",
-        "target": "_blank"
-      },
-      {
         "label": "Roles list",
         "items": [
           {
@@ -1041,16 +711,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Roles List",
-        "url": "/admin/role",
-        "target": "_blank"
-      },
-      {
-        "label": "New Role",
-        "url": "/admin/role/edit/",
-        "target": "_blank"
       },
       {
         "label": "Configuration",
@@ -1071,11 +731,6 @@ export const menuItems = [
             "target": "_blank"
           }
         ]
-      },
-      {
-        "label": "Alerts list",
-        "url": "/alerts",
-        "target": "_blank"
       }
     ]
   },
@@ -1083,5 +738,8 @@ export const menuItems = [
     "label": "Reports",
     "url": "/reports",
     "target": "_blank"
+  },
+  {
+    "label": "Integrations"
   }
 ]
