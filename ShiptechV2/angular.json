@@ -26,7 +26,11 @@
               "apps/shiptech/src/favicon.ico",
               "apps/shiptech/src/assets"
             ],
-            "styles": ["apps/shiptech/src/styles.scss"],
+            "styles": [
+              "apps/shiptech/src/styles.scss",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css"
+            ],
             "scripts": []
           },
           "configurations": {
