@@ -27,7 +27,9 @@
     "help": "nx help",
     "azure-build-debug": "ng build --output-path=dist/debug",
     "azure-build-release": "ng build --prod --output-path=dist/release",
-    "azure-pull-request-validatation": "ng build --aot --optimization=false --build-optimizer=false --vendorChunk=false --sourceMap=false --commonChunk=false"
+    "azure-pull-request-validatation": "ng build --aot --optimization=false --build-optimizer=false --vendorChunk=false --sourceMap=false --commonChunk=false",
+    "watch-sass-layout": "sass --update apps/shiptech/src/assets/layout/css/layout-shiptech.scss:apps/shiptech/src/assets/layout/css/layout-shiptech.css",
+    "watch-sass-blue": "sass --update apps/shiptech/src/assets/layout/css/layout-blue.scss:apps/shiptech/src/assets/layout/css/layout-blue.css"
   },
   "private": true,
   "dependencies": {
