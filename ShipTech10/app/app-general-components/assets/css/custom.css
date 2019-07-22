@@ -4147,6 +4147,10 @@ input.invalid {
     border: 1px solid red !important;
 }
 
+.datepicker-container-invalid {
+    box-shadow: 0 0 0 1px red;
+}
+
 span.isMatch {
     display: inline-block;
     padding: 2px 10px;

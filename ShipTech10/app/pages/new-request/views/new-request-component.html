@@ -603,7 +603,7 @@
                                                             <input
                                                                 ng-model="$ctrl.request.locations[locationIdx].eta" 
                                                                 ng-disabled="$ctrl.disableAllFields"
-                                                                ng-change="$ctrl.etaChanged(location, locationIdx)"
+                                                                ng-change="$ctrl.etaChanged(location, locationIdx); $ctrl.validateRequestDateFields(location, locationIdx)"
                                                                 name="{{ locationIdx }}_eta"
                                                                 id="{{ locationIdx }}_eta"
                                                                 new-date-picker
@@ -622,9 +622,9 @@
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8 col-sm-12">
                                                             <input
-                                                                ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                                 ng-model="$ctrl.request.locations[locationIdx].etb" 
                                                                 ng-disabled="$ctrl.disableAllFields"
+                                                                ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
                                                                 name="{{ locationIdx }}_etb"
                                                                 id="{{ locationIdx }}_etb"
                                                                 new-date-picker
@@ -643,9 +643,9 @@
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8 col-sm-12">
                                                             <input
-                                                                ng-class="{'invalid': location.etb > location.etd}"
                                                                 ng-model="$ctrl.request.locations[locationIdx].etd" 
                                                                 ng-disabled="$ctrl.disableAllFields"
+                                                                ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
                                                                 name="{{ locationIdx }}_etd"
                                                                 id="{{ locationIdx }}_etd"
                                                                 new-date-picker
