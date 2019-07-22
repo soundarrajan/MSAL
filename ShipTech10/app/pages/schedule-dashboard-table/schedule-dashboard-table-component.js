@@ -107,25 +107,25 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
             }));
             $rootScope.$broadcast("sdDataLoaded");
         });
-        // scheduleDashboardCalendarModel.getTable(ctrl.startDate, ctrl.endDate).then(function() {
-        //     if (!ctrl.startDate || !ctrl.endDate) {
-        //          scheduleDashboardCalendarModel.getStatuses().then(function (data) {
-        //             ctrl.dashboardConfiguration = data;
-        //             ctrl.startDate = moment.utc().startOf('day').subtract(ctrl.dashboardConfiguration.startsBefore, 'd').startOf("day").toISOString();
-        //             ctrl.endDate = moment.utc().startOf('day').add(ctrl.dashboardConfiguration.endsAfter, 'd').startOf("day").toISOString();
-        //             if (localStorage.getItem('scheduleDatesTable')) {
-        //                 localStorage.removeItem('scheduleDatesTable');
-        //             }
-        //             localStorage.setItem('scheduleDatesTable', JSON.stringify({
-        //                 start: ctrl.startDate,
-        //                 end: ctrl.endDate
-        //             }));
-        //             $rootScope.$broadcast("sdDataLoaded");
-        //         });
-        //     } else {
-        //         $rootScope.$broadcast("sdDataLoaded");
-        //     }
-        // });
+        scheduleDashboardCalendarModel.getTable(ctrl.startDate, ctrl.endDate).then(function() {
+            if (!ctrl.startDate || !ctrl.endDate) {
+                 scheduleDashboardCalendarModel.getStatuses().then(function (data) {
+                    // ctrl.dashboardConfiguration = data;
+                    // ctrl.startDate = moment.utc().startOf('day').subtract(ctrl.dashboardConfiguration.startsBefore, 'd').startOf("day").toISOString();
+                    // ctrl.endDate = moment.utc().startOf('day').add(ctrl.dashboardConfiguration.endsAfter, 'd').startOf("day").toISOString();
+                    // if (localStorage.getItem('scheduleDatesTable')) {
+                    //     localStorage.removeItem('scheduleDatesTable');
+                    // }
+                    // localStorage.setItem('scheduleDatesTable', JSON.stringify({
+                    //     start: ctrl.startDate,
+                    //     end: ctrl.endDate
+                    // }));
+                    $rootScope.$broadcast("sdDataLoaded");
+                });
+            } else {
+                $rootScope.$broadcast("sdDataLoaded");
+            }
+        });
         
         // });
         $rootScope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, function(event, args) {
