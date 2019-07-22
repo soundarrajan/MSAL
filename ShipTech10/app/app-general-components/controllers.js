@@ -3999,11 +3999,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                       .tooltip('show');
                 }
             })  
-            $(window).on("scroll", function(e){
-            	// , ".ui-jqgrid-view"
-            	console.log(e);
-            	e.preventDefault();
-            })
 
 			$(document).on('keydown', function(e) { 
 				var keyCode = e.keyCode || e.which; 

@@ -1445,39 +1445,68 @@ ctrl.setProductData = function(data, loc) {
 
 
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
+    		checkValue = checkBool;
+    		activeRequirements = currentRowRequirements;
+    		activeSeller = seller;
     		if (currentRowRequirements.length > 0) {
 	        	if (checkBool) {
                     // seller.selected = checkBool;
-                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
+                    // setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
 	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true)
 	        	} else {
                     // seller.selected = checkBool;
-                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
+                    // setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
 	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
 	        	}
 	        	if (payload == false) {return}
 	        	groupOfRequestsModel.checkSellerRow(payload).then(
 	                function (response) {
+
+	                    setSelectedBoolOnSellerCheckbox(activeRequirements, checkValue, response.payload)
 	                	console.log(response);
 	                }
 	    		)
         	}
         }
 
-        function setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool) {
+        function setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool, response) {
         	$.each(currentRowRequirements, function(k, requirement){
 	            $.each(ctrl.requests, function (reqK, reqV) {
                     $.each(reqV.locations, function (locK, locV) {
                     	if (locV.id == requirement.RequestLocationId) {
 	                        $.each(locV.products, function (prodK, prodV) {
 	                            if (prodV.id == requirement.RequestProductId) {
+				                	activeSellerFromResponse = _.find(response, function(obj){
+				                		return obj.requestProductId == requirement.RequestProductId;
+				                	})
+				                	if (activeSellerFromResponse.length > 0) {
+				                		activeSellerFromResponse = activeSellerFromResponse[0]
+				                	}	                            	
+						        	fakeSellerObj = {
+						        		"id": activeSellerFromResponse.id,
+						        		"randUniquePkg" : requirement.randUniquePkg,
+						        		"selected" : activeSellerFromResponse.selected,
+						        		"offers" : [],
+						        		"rfq" : {},
+						        		"sellerCounterparty" : {
+						        			"id" : activeSellerFromResponse.requestSellerId
+						        		}
+						        	}
 	                                if (prodV.sellers.length > 0) {
 	                                    $.each(prodV.sellers, function (selK, selV) {
 	                                        if (selV.randUniquePkg == requirement.randUniquePkg) {
+	                                        	foundSeller = true;
 	                                            selV.selected = checkBool;
 	                                        }
 	                                    });
-	                                }
+	                                } 
+				                	foundSeller = _.find(prodV.sellers, function(obj){
+				                		return obj.randUniquePkg == requirement.randUniquePkg;
+				                	})
+				                	if (!foundSeller) {
+				                		prodV.sellers.push(fakeSellerObj);
+				                	};
+
 	                            }
 	                        });
                     	}
