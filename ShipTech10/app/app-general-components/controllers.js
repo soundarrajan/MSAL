@@ -3999,6 +3999,52 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                       .tooltip('show');
                 }
             })  
+            $(window).on("scroll", function(e){
+            	// , ".ui-jqgrid-view"
+            	console.log(e);
+            	e.preventDefault();
+            })
+
+			$(document).on('keydown', function(e) { 
+				var keyCode = e.keyCode || e.which; 
+				if (keyCode == 9 ) { 
+					// e.preventDefault(); 
+					if ($(document.activeElement).parents(".ui-jqgrid-bdiv").length > 0) {
+						$(".ui-jqgrid-bdiv > div").css("float", "right");
+						setTimeout(function(){
+							$(".ui-jqgrid-bdiv > div").css("float", "left");
+							setTimeout(function(){
+								// $(document.activeElement)[0].scrollIntoViewIfNeeded()
+								// $(".ui-jqgrid-view").animate(
+								// 	{
+								// 		scrollLeft : $(document.activeElement).offset().left - 250
+								// 	},200	
+								// )
+								computedScrollLeft = 0;
+								// setTimeout(function(){
+									if ($(document.activeElement).offset().left > $(document.activeElement).parents(".ui-jqgrid-view").width() || 
+										$(document.activeElement).offset().left < $(document.activeElement).parents(".ui-jqgrid-view").width()/2
+										) {
+										computedScrollLeft = $(document.activeElement).position().left - $(document.activeElement).parents(".ui-jqgrid-view").width()/4;
+										// computedScrollLeft = $(document.activeElement).parents(".ui-jqgrid-view").width()/2;
+									}
+								// },50)
+								// setTimeout(function(){
+									// console.log($(document.activeElement));
+									// console.log("left", $(document.activeElement).position().left);
+									// console.log(computedScrollLeft);
+									if (computedScrollLeft > 0) {
+										$(".ui-jqgrid-view").scrollLeft(computedScrollLeft);
+									}
+								// },100)
+							},250)
+							// $(document.activeElement).offset().left
+							// $(document.activeElement)[0].scrollIntoView();
+						})				
+					}
+				} 
+			}); 
+		
 
         })
 
