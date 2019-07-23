@@ -1,33 +1,29 @@
 import { MenuItem } from 'primeng/api';
-import { Omit } from 'yargs';
 import * as _ from 'lodash';
 
-export type MappedMenuItems = Record<string, MenuItemMap>;
+export interface OrderedMenuItem extends  MenuItem {
+  order?: number;
+}
+export type KeyedMenuItems = Record<string, KeyedMenuItem>;
 
-export interface MenuItemMap extends Omit<MenuItem, 'items'> {
-  items: MappedMenuItems;
+//TODO: Move to proper core types
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
+export interface KeyedMenuItem extends Omit<OrderedMenuItem, 'items'> {
+  items?: KeyedMenuItems;
 }
 
-export class SidebarViewModel {
-  items: MenuItem[];
-  baseMenu: MappedMenuItems;
+//TODO: Rename file, move to where it's supposed to be
+export function transformMenu(baseMenu: KeyedMenuItems, patchMenu: KeyedMenuItems): MenuItem[] {
 
-  // constructor(public baseMenu: MappedMenuItems) {
-  constructor() {}
+  const mergedMenu: KeyedMenuItems = _.merge(baseMenu, patchMenu );
 
-  public set patchMenu(patch: MappedMenuItems) {
-    const merged = _.merge(this.baseMenu, patch);
-    this.items = this.transform(merged);
-  }
+  let itemsToArray: (obj: KeyedMenuItems) => MenuItem[];
 
-  private transform(menuMap: MappedMenuItems): MenuItem[] {
-    return [];
-    // return _.values(menuMap).map(item => {
-    //   if (!item.items) {
-    //     return item;
-    //   }
-    //
-    //   return this.transform(item.items);
-    // });
-  }
+  itemsToArray = (obj: KeyedMenuItems) => {
+
+    return _.values(obj).map(i => ({ ...i, items: itemsToArray(i.items) }));
+  };
+
+  return  itemsToArray(mergedMenu);
 }
