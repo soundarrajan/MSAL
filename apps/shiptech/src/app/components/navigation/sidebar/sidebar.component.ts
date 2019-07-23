@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
 
   model: any[];
 
-  @ViewChild('layoutMenuScroller', {static: true}) layoutMenuScrollerViewChild: ScrollPanel;
+  @ViewChild('layoutMenuScroller', { static: true }) layoutMenuScrollerViewChild: ScrollPanel;
 
   constructor(public app: MainComponent) {
   }
@@ -45,7 +45,10 @@ export class SidebarComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-    setTimeout(() => { this.layoutMenuScrollerViewChild.moveBar(); }, 100);
+    setTimeout(() => {
+      this.layoutMenuScrollerViewChild.style = {height: '100%'};
+      this.layoutMenuScrollerViewChild.moveBar();
+    }, 100);
   }
 
   changeTheme(theme: string) {
