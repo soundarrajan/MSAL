@@ -1,8 +1,10 @@
 import { AfterContentInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MainComponent } from '../../main.component';
-import { menuItems } from '../models/menu.items';
+import { BASE_MENU } from '../models/menu.items';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ScrollPanel } from 'primeng/primeng';
+import { transformMenu } from '../models/sidebar-view.model';
+import * as jp from 'jsonpath';
 
 @Component({
   selector: 'shiptech-sidebar',
@@ -35,17 +37,61 @@ export class SidebarComponent implements OnInit, AfterContentInit {
 
   model: any[];
 
-  @ViewChild('layoutMenuScroller', {static: true}) layoutMenuScrollerViewChild: ScrollPanel;
+  @ViewChild('layoutMenuScroller', { static: true }) layoutMenuScrollerViewChild: ScrollPanel;
 
   constructor(public app: MainComponent) {
   }
 
   ngOnInit() {
-    this.model = menuItems;
+    // TODO: replace this with values from tenant settings
+    // TODO: TsList disable double qoues
+    jp.value(BASE_MENU, 'masters.items.company.label', 'Company');
+    jp.value(BASE_MENU, 'masters.items.company.items.company_list.label', 'Company List');
+    jp.value(BASE_MENU, 'masters.items.company.items.new_company.label', 'New Company');
+
+    this.model = transformMenu(BASE_MENU, {
+        'masters': {
+          items: {
+            // 'company': {
+            //   label: 'Company',
+            //   items: {
+            //     'company_list': {
+            //       label: 'Company List'
+            //     },
+            //     'new_company': {
+            //       label: 'New Company'
+            //     }
+            //   }
+            // },
+            'service': {
+              label: 'Service',
+              items: {
+                'service_list': {
+                  label: 'Service List'
+                },
+                'new-service': {
+                  label: 'New Service'
+                }
+              }
+            }
+          }
+        },
+        'invoices': {
+          label: 'Invoices',
+          items: {
+            'invoice_list': {
+              label: 'Invoice List'
+            }
+          }
+        }
+      }
+    );
   }
 
   ngAfterContentInit() {
-    setTimeout(() => { this.layoutMenuScrollerViewChild.moveBar(); }, 100);
+    setTimeout(() => {
+      this.layoutMenuScrollerViewChild.moveBar();
+    }, 100);
   }
 
   changeTheme(theme: string) {
