@@ -4158,7 +4158,7 @@ Uncomment to see border around all .col-*
 }
 
 .invoiceslist .asc_jqgrid__container.section_top .col.center {
-	width: 67%!important;
+	/*width: 67%!important;*/
 }
 
 .sweetConfirmModal:focus {

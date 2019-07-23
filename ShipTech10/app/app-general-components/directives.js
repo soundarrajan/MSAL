@@ -452,7 +452,7 @@ window.increment = 0;
                         } else {
                             Elements.settings[table_id].source.height = "50vh";
                         	if (table_id != "flat_available_contracts") {
-	                            Elements.settings[table_id].source.height = "calc(100vh - 450px)";
+	                            Elements.settings[table_id].source.height = "calc(100vh - 400px)";
                         	} 
                         	if (table_id == "flat_audit_log") {
 	                            Elements.settings[table_id].source.height = "calc(100vh - 340px)";

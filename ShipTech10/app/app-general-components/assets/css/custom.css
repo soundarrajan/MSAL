@@ -4270,7 +4270,7 @@ custom-popover {
     float: right;
 }
 #gbox_flat_invoices_app_deliveries_list  .asc_jqgrid__container.section_top .col.right{
-    max-width: initial!important;
+    /*max-width: initial!important;*/
 }
  .asc_jqgrid__container.section_top .col.center {
     float: left;
