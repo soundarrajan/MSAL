@@ -1191,8 +1191,12 @@ div.asc_jqgrid__columns-list a.dt-button:not(.active):hover {
 
 .asc_jqgrid__payment_due_date {
     width: 420px;
-    right: 30px;
+    right: 50px;
     position: absolute;
+}
+
+#gbox_flat_invoices_app_invoice_list > div.asc_jqgrid__container.section_top > div.right.col > div.asc_jqgrid__payment_due_date.dynamic_form_editor.ng-scope > div:nth-child(2) > i {
+    right: 77px;
 }
 
 .asc_jqgrid__payment_due_date .input-group-btn {

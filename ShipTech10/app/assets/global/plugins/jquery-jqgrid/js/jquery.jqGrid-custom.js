@@ -641,7 +641,7 @@ var Cfg = {
             return (
                 '<div ng-controller="Controller_Master as CM" class="' +
                 Cfg.class.payment_due_date +
-                ' dynamic_form_editor"><div class="form-group  "> <a data-ng-if="!action.special" id="general_action_1" class="btn btn-default btn-default ng-binding ng-scope" ng-click="invoices_payment_due_date_filter()"> Filter </a> <span class="label">Payment Due Date</span> <div class="input-group date date-picker" data-provide="datepicker" data-date-format="mm/dd/yyyy" data-date-viewmode="years" data-date-minviewmode="months"> <input id="invoices_payment_due_date_filter" type="text" class="form-control" readonly=""> <span class="input-group-btn"> <button class="btn default" type="button"> <i class="fa fa-calendar"></i> </button> </span> </div> </div></div>'
+                ' dynamic_form_editor"> <div class="display: flex;"> <a data-ng-if="!action.special" id="general_action_1" class="btn btn-default btn-default ng-binding ng-scope" ng-click="invoices_payment_due_date_filter()"> Filter </a> <span class="label">Payment Due Date</span> </div display: flex;><div style="display: flex;"><input type="text" ng-model="paymentDueDate"name="invoices_payment_due_date_filter"id="invoices_payment_due_date_filter"new-date-picker picker-type="date"class="form-control date-mask new-date-picker"> </div> </div>'
             );
         },
         invoice_type_select: function() {
