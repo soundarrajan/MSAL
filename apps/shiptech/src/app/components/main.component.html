@@ -8,10 +8,10 @@
     'layout-mobile-active': staticMenuMobileActive,
     'layout-static-inactive': staticMenuDesktopInactive,
     'layout-rtl': isRTL}" [class]="topbarColor" (click)="onLayoutClick()">
-    <app-topbar></app-topbar>
 
-    <app-menu [reset]="resetMenu"></app-menu>
-    <app-right-menu></app-right-menu>
+    <shiptech-topbar></shiptech-topbar>
+
+    <shiptech-sidebar [reset]="resetMenu"></shiptech-sidebar>
 
     <div class="layout-main">
         <div class="layout-content">
@@ -19,8 +19,9 @@
             <router-outlet></router-outlet>
         </div>
     </div>
-    <!--<div class="layout-footer">-->
-        <!--<app-footer></app-footer>-->
-    <!--</div>-->
+
+
     <div class="layout-content-mask"></div>
+
+
 </div>
