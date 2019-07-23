@@ -193,8 +193,8 @@
             }
 
             .menu-scroll-content {
-                width: 306px;
-                padding-right: 18px;
+                width: $sideBarWidth;
+                padding-right: $sideBarPaddingRight;
                 padding-bottom: 120px;
             }
         }

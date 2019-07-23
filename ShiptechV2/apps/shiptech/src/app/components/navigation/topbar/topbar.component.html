@@ -12,11 +12,6 @@
     <i class="pi pi-bars"></i>
   </a>
 
-  <span class="layout-topbar-search">
-        <i class="pi pi-search"></i>
-        <input type="text" placeholder="Enter your search term">
-    </span>
-
   <ul class="topbar-menu">
     <li class="user-profile" [ngClass]="{'active-topmenuitem fadeInDown': app.topbarUserMenuActive}">
       <a href="#" (click)="app.onTopbarUserMenuButtonClick($event)" *ngIf="!app.inlineUser">

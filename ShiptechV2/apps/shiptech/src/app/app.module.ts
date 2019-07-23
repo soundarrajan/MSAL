@@ -30,7 +30,7 @@ import {
   PanelMenuModule,
   PanelModule,
   PasswordModule,
-  PickListModule, ProgressBarModule, RadioButtonModule, RatingModule,
+  PickListModule, ProgressBarModule, RadioButtonModule, RatingModule, ScrollPanelModule,
   SelectButtonModule, SlideMenuModule,
   SliderModule, SpinnerModule, SplitButtonModule, StepsModule,
   TabMenuModule, TabViewModule,
@@ -38,14 +38,13 @@ import {
   TreeModule,
   TreeTableModule
 } from 'primeng/primeng';
-import { FullCalendarModule } from 'primeng/fullcalendar';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { DataViewModule } from 'primeng/dataview';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AppSubMenuComponent } from './components/navigation/sub-menu/sub-menu.component';
+import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
 
 export const PRIME_IMPORTS = [
   AccordionModule,
@@ -68,7 +67,6 @@ export const PRIME_IMPORTS = [
   EditorModule,
   FieldsetModule,
   FileUploadModule,
-  FullCalendarModule,
   GalleriaModule,
   GrowlModule,
   InplaceModule,
@@ -95,7 +93,7 @@ export const PRIME_IMPORTS = [
   ProgressBarModule,
   RadioButtonModule,
   RatingModule,
-  // ScrollPanelModule,
+  ScrollPanelModule,
   SelectButtonModule,
   SlideMenuModule,
   SliderModule,
