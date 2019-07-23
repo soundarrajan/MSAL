@@ -836,13 +836,24 @@ a {
   line-height: inherit;
   font-size: 20px;
 }
+.layout-wrapper .layout-topbar .menu-toggler {
+  width: 16px;
+  height: 13px;
+  margin-top: 13px;
+}
+.layout-wrapper .layout-topbar .navbar-text {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #364150;
+  font-size: 16px;
+  margin: 10px 0;
+}
 .layout-wrapper .layout-topbar .layout-topbar-logo {
   display: inline-block;
   vertical-align: middle;
-  margin-left: 1.5em;
 }
 .layout-wrapper .layout-topbar .layout-topbar-logo img {
-  height: 24px;
+  height: 16px;
 }
 .layout-wrapper .layout-topbar .layout-topbar-search {
   position: relative;
@@ -3478,6 +3489,10 @@ a {
 }
 
 /* Add your customizations of layout here */
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: "Open Sans", sans-serif;
+}
+
 .layout-wrapper.layout-menu-dark .layout-menu-container {
   background-color: #364150;
 }

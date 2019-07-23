@@ -45,6 +45,7 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export const PRIME_IMPORTS = [
   AccordionModule,
@@ -129,6 +130,7 @@ export const PRIME_IMPORTS = [
     RouterModule.forRoot([]),
     FormsModule,
     ScrollingModule,
+    // FlexLayoutModule,
     ...PRIME_IMPORTS
   ],
   providers: [],
