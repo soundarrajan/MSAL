@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MenuItem } from 'primeng/api';
-import { MainComponent } from '../../main.component';
-import { SidebarComponent } from '../sidebar/sidebar.component';
+import { MainComponent } from '../../../main.component';
+import { SidebarComponent } from '../sidebar.component';
 
 @Component({
   /* tslint:disable:component-selector */
-  selector: '[app-submenu]',
+  selector: '[shiptech-menu-items]',
   /* tslint:enable:component-selector */
-  templateUrl: './sub-menu.component.html',
+  templateUrl: './menu-items.component.html',
   animations: [
     trigger('children', [
       state('hiddenAnimated', style({
@@ -68,7 +68,7 @@ export class AppSubMenuComponent {
     // prevent hash change
     if (item.items || (!item.url && !item.routerLink)) {
       setTimeout(() => {
-        // this.appMenu.layoutMenuScrollerViewChild.moveBar();
+        this.appMenu.layoutMenuScrollerViewChild.moveBar();
       }, 450);
       event.preventDefault();
     }

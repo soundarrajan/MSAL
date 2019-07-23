@@ -1268,8 +1268,8 @@ a {
   display: none;
 }
 .layout-wrapper .layout-menu-container .ui-scrollpanel .menu-scroll-content {
-  width: 306px;
-  padding-right: 18px;
+  width: 200px;
+  padding-right: 0;
   padding-bottom: 120px;
 }
 .layout-wrapper .layout-menu-container .ui-scrollpanel {

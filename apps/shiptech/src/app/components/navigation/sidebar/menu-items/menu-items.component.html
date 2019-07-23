@@ -1,5 +1,6 @@
 <ng-template ngFor let-child let-i="index" [ngForOf]="(root ? item : item.items)">
-  <li [ngClass]="{'active-menuitem': isActive(i)}" [class]="child.badgeStyleClass" *ngIf="child.visible === false ? false : true">
+  <li [ngClass]="{'active-menuitem': isActive(i)}" [class]="child.badgeStyleClass"
+      *ngIf="child.visible === false ? false : true">
     <a [href]="child.url||'#'" (click)="itemClick($event,child,i)" (mouseenter)="onMouseEnter(i)"
        *ngIf="!child.routerLink" [ngClass]="child.styleClass"
        [attr.tabindex]="!visible ? '-1' : null" [attr.target]="child.target">
@@ -18,7 +19,8 @@
       <div class="layout-menu-tooltip-arrow"></div>
       <div class="layout-menu-tooltip-text">{{child.label}}</div>
     </div>
-    <ul app-submenu [item]="child" *ngIf="child.items" [visible]="isActive(i)" [reset]="reset" [parentActive]="isActive(i)"
+    <ul shiptech-menu-items [item]="child" *ngIf="child.items" [visible]="isActive(i)" [reset]="reset"
+        [parentActive]="isActive(i)"
         [@children]="(app.isSlim()||app.isHorizontal())&&root ? isActive(i) ?
                     'visible' : 'hidden' : isActive(i) ? 'visibleAnimated' : 'hiddenAnimated'"></ul>
   </li>
