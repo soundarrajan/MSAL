@@ -24,7 +24,12 @@
             "tsConfig": "apps/shiptech/tsconfig.app.json",
             "assets": [
               "apps/shiptech/src/favicon.ico",
-              "apps/shiptech/src/assets"
+              "apps/shiptech/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./assets/",
+                "output": "./assets"
+              }
             ],
             "styles": [
               "apps/shiptech/src/styles.scss",

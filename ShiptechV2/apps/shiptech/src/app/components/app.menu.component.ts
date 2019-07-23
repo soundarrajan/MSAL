@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { MenuItem, ScrollPanel } from 'primeng/primeng';
 import { AppMainComponent } from './app.main.component';
 import { menuItems } from './menu.items';
+import { SidebarViewModel } from './models/sidebar-view.model';
 
 @Component({
     selector: 'app-menu',
@@ -27,7 +28,8 @@ import { menuItems } from './menu.items';
       font-weight: 600;
       margin: 17px 10px;
       display: inline-block;
-    }`]
+    }`],
+  providers: [SidebarViewModel]
 })
 export class AppMenuComponent implements OnInit, AfterViewInit {
 
@@ -42,7 +44,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit {
 
     @ViewChild('layoutMenuScroller', { static: true }) layoutMenuScrollerViewChild: ScrollPanel;
 
-    constructor(public app: AppMainComponent) { }
+    constructor(public app: AppMainComponent, private menuViewModel: SidebarViewModel) { }
 
     ngOnInit() {
       this.model = menuItems;
