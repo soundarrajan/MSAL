@@ -2,11 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { AppFooterComponent } from './components/app.footer.component';
-import { AppMainComponent } from './components/app.main.component';
-import { AppMenuComponent, AppSubMenuComponent } from './components/app.menu.component';
-import { AppTopBarComponent } from './components/app.topbar.component';
-import { AppRightMenuComponent } from './components/app.right-menu.component';
+import { MainComponent } from './components/main.component';
+import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import { TopbarComponent } from './components/navigation/topbar/topbar.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -47,6 +45,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { AppSubMenuComponent } from './components/navigation/sub-menu/sub-menu.component';
 
 export const PRIME_IMPORTS = [
   AccordionModule,
@@ -121,12 +120,10 @@ export const PRIME_IMPORTS = [
 @NgModule({
   declarations: [
     AppComponent,
-    AppMainComponent,
-    AppMenuComponent,
-    AppRightMenuComponent,
+    MainComponent,
+    SidebarComponent,
     AppSubMenuComponent,
-    AppTopBarComponent,
-    AppFooterComponent
+    TopbarComponent
   ],
   imports: [
     BrowserModule,

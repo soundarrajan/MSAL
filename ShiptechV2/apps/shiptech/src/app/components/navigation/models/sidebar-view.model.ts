@@ -10,10 +10,10 @@ export interface MenuItemMap extends Omit<MenuItem, 'items'> {
 
 export class SidebarViewModel {
   items: MenuItem[];
+  baseMenu: MappedMenuItems;
 
-  constructor(public baseMenu: MappedMenuItems) {
-    this.items = this.transform(baseMenu);
-  }
+  // constructor(public baseMenu: MappedMenuItems) {
+  constructor() {}
 
   public set patchMenu(patch: MappedMenuItems) {
     const merged = _.merge(this.baseMenu, patch);
