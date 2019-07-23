@@ -1445,10 +1445,10 @@ ctrl.setProductData = function(data, loc) {
 
 
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
-    		checkValue = checkBool;
-    		activeRequirements = currentRowRequirements;
-    		activeSeller = seller;
     		if (currentRowRequirements.length > 0) {
+	    		activeSeller = seller;
+				checkValue = checkBool;
+				activeRequirements = currentRowRequirements;
 	        	if (checkBool) {
                     // seller.selected = checkBool;
                     // setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
@@ -1461,7 +1461,6 @@ ctrl.setProductData = function(data, loc) {
 	        	if (payload == false) {return}
 	        	groupOfRequestsModel.checkSellerRow(payload).then(
 	                function (response) {
-
 	                    setSelectedBoolOnSellerCheckbox(activeRequirements, checkValue, response.payload)
 	                	console.log(response);
 	                }

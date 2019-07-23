@@ -527,7 +527,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.currentList = list + "/" + $rootScope.modalTableId;
             }
             // console.log(modalTableId)
-            if ($state.current.name == "default.home" || $state.current.name == "default.dashboard-timeline" || $state.current.name == "default.dashboard-table" || $state.current.name == "default.dashboard-calendar") {
+            if ($state.current.name == "default.home" || $state.current.name == "default.dashboard-timeline") {
                 $scope.currentList = "schedule-dashboard-calendar";
             }
             if ($scope.currentList == "contract-planning/") $scope.currentList = "contract-planning";
