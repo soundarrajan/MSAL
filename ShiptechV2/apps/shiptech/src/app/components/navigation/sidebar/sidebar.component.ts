@@ -90,6 +90,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit() {
     setTimeout(() => {
+      this.layoutMenuScrollerViewChild.style = {height: '100%'};
       this.layoutMenuScrollerViewChild.moveBar();
     }, 100);
   }

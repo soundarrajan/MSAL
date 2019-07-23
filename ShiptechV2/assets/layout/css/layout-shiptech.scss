@@ -3,6 +3,10 @@ $primaryTextColor: #ffffff;
 
 @import '../../sass/layout/_layout';
 
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: "Open Sans",sans-serif;
+}
+
 .layout-wrapper.layout-menu-dark .layout-menu-container {
   background-color: #364150;
 }
