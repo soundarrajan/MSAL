@@ -12,6 +12,10 @@
     <i class="pi pi-bars"></i>
   </a>
 
+  <span class="navbar-text">
+    PAGE TITLE
+  </span>
+
   <ul class="topbar-menu">
     <li class="user-profile" [ngClass]="{'active-topmenuitem fadeInDown': app.topbarUserMenuActive}">
       <a href="#" (click)="app.onTopbarUserMenuButtonClick($event)" *ngIf="!app.inlineUser">
@@ -50,7 +54,7 @@
     </li>
     <li [ngClass]="{'active-topmenuitem fadeInDown': app.topbarNotificationMenuActive}">
       <a href="#" class="layout-topbar-icon" (click)="app.onTopbarNotificationMenuButtonClick($event)">
-        <i class="topbar-icon pi pi-fw pi-bell"></i>
+        <i class="topbar-icon pi pi-fw pi-bell" style="font-size: 24px"></i>
       </a>
       <ul class="fadeInDown">
         <li role="menuitem">

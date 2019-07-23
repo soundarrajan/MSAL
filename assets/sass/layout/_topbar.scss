@@ -26,13 +26,28 @@
             }
         }
 
+      .menu-toggler {
+        width: 16px;
+        height: 13px;
+        //background-image: url('../layout/images/icons/sidebar_toggler_icon_darkblue.png');
+        margin-top: 13px;
+      }
+
+      .navbar-text {
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #364150;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
         .layout-topbar-logo {
             display: inline-block;
             vertical-align: middle;
-            margin-left: 1.5em;
+            //margin-left: 1.5em;
 
             img {
-                height: 24px;
+                height: $logoHeight;
             }
         }
 
