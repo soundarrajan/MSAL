@@ -1204,6 +1204,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     location.eta = eta;
                     location.etb = etb;
                     location.etd = etd;
+                    if (eta && etb && etd) {
+                        if (!ctrl.etaDefaultedCount) {
+                            ctrl.etaDefaultedCount = {};
+                        }
+                        ctrl.etaDefaultedCount[locationId] = 3;
+                    }
                 }
             }
         }
@@ -2384,56 +2390,59 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
 
         ctrl.etaChanged = function(location, locationIdx) {
-            if (!ctrl.etaDefaultedCount) {
-                ctrl.etaDefaultedCount = {};
-            }
-            if (!ctrl.etaDefaultedCount[locationIdx]) {
-                if(!ctrl.request.id) {
-                    ctrl.etaDefaultedCount[locationIdx] = 0;
-                } else {
-                    if (location.etb) {
-                        ctrl.etaDefaultedCount[locationIdx] = 3;
+            locationId = _.get(location, 'location.id');
+            if (locationId) {
+                if (!ctrl.etaDefaultedCount) {
+                    ctrl.etaDefaultedCount = {};
+                }
+                if (!ctrl.etaDefaultedCount[locationId]) {
+                    if(!ctrl.request.id) {
+                        ctrl.etaDefaultedCount[locationId] = 0;
                     } else {
-                        ctrl.etaDefaultedCount[locationIdx] = 0;
-                    }
-                }
-            }
-            $timeout(function(){
-                //
-                // 1. picker change 
-                //      - change other pickers
-                //      - change other dates
-                // 2. typing change
-                //      - change other pickers
-                //      - change other dates
-
-                if (location.etb && 
-                    location.etb.split('T')[1].substr(0, 5) == '00:00' &&
-                    ctrl.etaDefaultedCount[locationIdx] == 1 &&
-                    location.eta.split('T')[1].substr(0, 5) != '00:00') {
-                        ctrl.etaDefaultedCount[locationIdx]++;
-                        location.etb = location.eta;
-                        location.etd = location.eta;
-                } else if (location.etb && ctrl.etaDefaultedCount[locationIdx] == 2 && location.etb.split('T')[1].substr(3, 2) == '00') {
-                    ctrl.etaDefaultedCount[locationIdx]++;
-                    location.etb = location.eta;
-                    location.etd = location.eta;
-                } else {
-                    if (ctrl.etaDefaultedCount[locationIdx] < 1) {
-                        ctrl.etaDefaultedCount[locationIdx]++;
-                    }
-                    if (ctrl.etaDefaultedCount[locationIdx] < 2) {
-                        if (location.eta.split('T')[1].substr(0, 5) != '00:00') {
-                            ctrl.etaDefaultedCount[locationIdx] = 3;
+                        if (location.etb) {
+                            ctrl.etaDefaultedCount[locationId] = 3;
+                        } else {
+                            ctrl.etaDefaultedCount[locationId] = 0;
                         }
-                        location.etb = location.eta;
-                        location.etd = location.eta;
                     }
                 }
+                $timeout(function(){
+                    //
+                    // 1. picker change 
+                    //      - change other pickers
+                    //      - change other dates
+                    // 2. typing change
+                    //      - change other pickers
+                    //      - change other dates
 
-                location.recentEta = location.eta;
+                    if (location.etb && 
+                        location.etb.split('T')[1].substr(0, 5) == '00:00' &&
+                        ctrl.etaDefaultedCount[locationId] == 1 &&
+                        location.eta.split('T')[1].substr(0, 5) != '00:00') {
+                            ctrl.etaDefaultedCount[locationId]++;
+                            location.etb = location.eta;
+                            location.etd = location.eta;
+                    } else if (location.etb && ctrl.etaDefaultedCount[locationId] == 2 && location.etb.split('T')[1].substr(3, 2) == '00') {
+                        ctrl.etaDefaultedCount[locationId]++;
+                        location.etb = location.eta;
+                        location.etd = location.eta;
+                    } else {
+                        if (ctrl.etaDefaultedCount[locationId] < 1) {
+                            ctrl.etaDefaultedCount[locationId]++;
+                        }
+                        if (ctrl.etaDefaultedCount[locationId] < 2) {
+                            if (location.eta.split('T')[1].substr(0, 5) != '00:00') {
+                                ctrl.etaDefaultedCount[locationId] = 3;
+                            }
+                            location.etb = location.eta;
+                            location.etd = location.eta;
+                        }
+                    }
 
-            },5);
+                    location.recentEta = location.eta;
+
+                },5);
+            }
         };
 
         $scope.updateDestinations = function(val, index) {
