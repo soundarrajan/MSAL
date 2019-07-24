@@ -8,8 +8,14 @@ import { TopbarComponent } from './components/navigation/topbar/topbar.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthenticationModule, CoreModule, DefaultModule, PrimeNGModule, SharedPackagesModule } from '@shiptech/core';
-import { AppConfig, loadConfiguration } from '../../../../libs/core/src/lib/config/app-config.service';
+import {
+  AppConfig,
+  AuthenticationModule,
+  CoreModule,
+  DefaultModule, loadConfiguration,
+  PrimeNGModule,
+  SharedPackagesModule
+} from '@shiptech/core';
 import { first, tap } from 'rxjs/operators';
 import { LicenseManager } from 'ag-grid-enterprise';
 
