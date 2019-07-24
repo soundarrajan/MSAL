@@ -4,8 +4,7 @@ import { mapTo, tap } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
 
 export interface IAppConfig {
-  tenantId: string;
-  clientId: string;
+  auth: adal.Config;
 
   agGridLicense: string;
 
@@ -14,8 +13,7 @@ export interface IAppConfig {
 
 @Injectable()
 export class AppConfig {
-  public tenantId: string;
-  public clientId: string;
+  public auth: adal.Config;
 
   public agGridLicense: string;
 
@@ -29,8 +27,9 @@ export class AppConfig {
       .get('/assets/config/settings.runtime.json')
       .pipe(
         tap((result: IAppConfig) => {
-          this.tenantId = result.tenantId;
-          this.clientId = result.clientId;
+
+          this.auth = result.auth;
+
           this.agGridLicense = result.agGridLicense;
 
           this.loaded$.next(this);

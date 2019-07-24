@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@shiptech/core": ["libs/core/src/index.ts"],
+      "@shiptech/environment": ["apps/shiptech/src/environments/environment.ts"],
       "@shiptech/feature/quality-control": ["libs/feature/quality-control/src/index.ts"]
     }
   },

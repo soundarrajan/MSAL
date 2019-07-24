@@ -1,6 +1,5 @@
-import { Observable, timer } from 'rxjs';
+import { Observable, throwError, timer } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { _throw } from 'rxjs-compat/observable/throw';
 
 export const retryStrategy = ({
                                 maxRetryAttempts = 3,
@@ -17,7 +16,7 @@ export const retryStrategy = ({
       // if maximum number of retries have been met
       // or response is a status code we don't wish to retry, throw error
       if (retryAttempt > maxRetryAttempts || excludedStatusCodes.find(e => e === error.status)) {
-        return _throw(error);
+        return throwError(error);
       }
       // retry after 1s, 2s, etc...
       return timer(retryAttempt * scalingDuration);
