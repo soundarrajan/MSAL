@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export interface IAuthLegacyConfig {
   instance: string;
   tenant: string;
@@ -324,4 +326,7 @@ export interface ILegacyConfig {
   EXPORT_FILETYPE_EXTENSION: EXPORTFILETYPEEXTENSION;
   PACKAGES_CONFIGURATION: IPackagesConfigurationLegacyConfig;
   EMAIL_TRANSACTION: IEmailTransactionLegacyConfig;
+
+  agGridLicense: string;
+  loaded$: Observable<ILegacyConfig>;
 }
