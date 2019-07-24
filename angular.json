@@ -15,8 +15,14 @@
       "prefix": "shiptech",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./tools/custom-build.options.js",
+              "mergeStrategies": {
+                "externals": "replace"
+              }
+            },
             "outputPath": "dist/apps/shiptech",
             "index": "apps/shiptech/src/index.html",
             "main": "apps/shiptech/src/main.ts",

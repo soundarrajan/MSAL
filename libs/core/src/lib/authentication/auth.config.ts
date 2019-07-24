@@ -6,13 +6,13 @@ import { AppConfig } from '../config/app-config.service';
 export class AuthConfig {
   constructor(private appConfig: AppConfig) {}
 
-  // public get adalConfig(): any {
-    // return {
-    //   tenant: this.appConfig.tenantId,
-    //   clientId: this.appConfig.clientId,
-    //   redirectUri: window.location.origin + '/',
-    //   postLogoutRedirectUri: window.location.origin + '/',
-    //   cacheLocation: 'localStorage'
-    // };
-  // }
+  public get adalConfig(): any {
+    return {
+      tenant: this.appConfig.tenantId,
+      clientId: this.appConfig.clientId,
+      redirectUri: window.location.origin + '/',
+      postLogoutRedirectUri: window.location.origin + '/',
+      cacheLocation: 'localStorage'
+    };
+  }
 }
