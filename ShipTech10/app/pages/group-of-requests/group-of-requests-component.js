@@ -1446,9 +1446,9 @@ ctrl.setProductData = function(data, loc) {
 
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
     		if (currentRowRequirements.length > 0) {
-	    		activeSeller = seller;
-				checkValue = checkBool;
-				activeRequirements = currentRowRequirements;
+	   //  		activeSeller = seller;
+				// checkValue = checkBool;
+				// activeRequirements = currentRowRequirements;
 	        	if (checkBool) {
                     // seller.selected = checkBool;
                     // setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
@@ -1461,7 +1461,7 @@ ctrl.setProductData = function(data, loc) {
 	        	if (payload == false) {return}
 	        	groupOfRequestsModel.checkSellerRow(payload).then(
 	                function (response) {
-	                    setSelectedBoolOnSellerCheckbox(activeRequirements, checkValue, response.payload)
+	                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool, response.payload)
 	                	console.log(response);
 	                }
 	    		)
@@ -1470,38 +1470,45 @@ ctrl.setProductData = function(data, loc) {
 
         function setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool, response) {
         	$.each(currentRowRequirements, function(k, requirement){
+        		currentRequirement = angular.copy(requirement);
 	            $.each(ctrl.requests, function (reqK, reqV) {
                     $.each(reqV.locations, function (locK, locV) {
-                    	if (locV.id == requirement.RequestLocationId) {
+                    	if (locV.id == currentRequirement.RequestLocationId) {
 	                        $.each(locV.products, function (prodK, prodV) {
-	                            if (prodV.id == requirement.RequestProductId) {
+	                        	currentProduct = angular.copy(prodV);
+	                            if (prodV.id == currentRequirement.RequestProductId) {
+					        		console.log("++++++++ currentRowRequirements:", currentRequirement.RequestProductId, currentRequirement.randUniquePkg);
 				                	activeSellerFromResponse = _.find(response, function(obj){
-				                		return obj.requestProductId == requirement.RequestProductId;
+				                		return obj.requestProductId == currentRequirement.RequestProductId;
 				                	})
 				                	if (activeSellerFromResponse.length > 0) {
 				                		activeSellerFromResponse = activeSellerFromResponse[0]
 				                	}	                            	
 						        	fakeSellerObj = {
 						        		"id": activeSellerFromResponse.id,
-						        		"randUniquePkg" : requirement.randUniquePkg,
+						        		"randUniquePkg" : currentRequirement.randUniquePkg,
 						        		"selected" : activeSellerFromResponse.selected,
 						        		"offers" : [],
 						        		"rfq" : {},
+						        		"packageType" : "individual",
 						        		"sellerCounterparty" : {
 						        			"id" : activeSellerFromResponse.requestSellerId
 						        		}
 						        	}
+	                                foundSeller = false;
 	                                if (prodV.sellers.length > 0) {
 	                                    $.each(prodV.sellers, function (selK, selV) {
-	                                        if (selV.randUniquePkg == requirement.randUniquePkg) {
+	                                        if (selV.randUniquePkg == currentRequirement.randUniquePkg) {
+	                                        	// console.log("++++++++ found Seller" + selV.randUniquePkg + " on product: " + prodV.id)
 	                                        	foundSeller = true;
 	                                            selV.selected = checkBool;
 	                                        }
 	                                    });
-	                                } 
+	                                }
 				                	foundSeller = _.find(prodV.sellers, function(obj){
-				                		return obj.randUniquePkg == requirement.randUniquePkg;
+				                		return obj.randUniquePkg == currentRequirement.randUniquePkg;
 				                	})
+				                	// console.log("++++++++ lodash found Seller"+ JSON.stringify(foundSeller) + " *** " + currentRequirement.randUniquePkg + " on product: " + prodV.id)
 				                	if (!foundSeller) {
 				                		prodV.sellers.push(fakeSellerObj);
 				                	};
