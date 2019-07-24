@@ -55,6 +55,7 @@
     "intl": "1.2.5",
     "jsonpath": "^1.0.2",
     "lodash": "^4.17.15",
+    "ngx-toastr": "^10.0.4",
     "primeflex": "1.0.0-rc.1",
     "primeicons": "1.0.0",
     "primeng": "8.0.0",
@@ -62,6 +63,7 @@
     "quill": "1.1.8",
     "runtypes": "^4.0.0",
     "rxjs": "6.4.0",
+    "ts-md5": "^1.2.4",
     "web-animations-js": "github:angular/web-animations-js#release_pr208",
     "zone.js": "0.9.1"
   },

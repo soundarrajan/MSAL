@@ -17,7 +17,7 @@
     "core": {
       "tags": []
     },
-    "feature-quality-control": {
+    "quality-control": {
       "tags": []
     }
   }

@@ -17,10 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@shiptech/core": ["libs/core/src/index.ts"],
-      "@shiptech/feature/quality-control": [
-        "libs/feature/quality-control/src/index.ts"
-      ]
-    },
+      "@shiptech/feature/quality-control": ["libs/feature/quality-control/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
