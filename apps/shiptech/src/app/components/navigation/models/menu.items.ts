@@ -1,7 +1,12 @@
 import { KeyedMenuItems } from './sidebar-view.model';
+import { KnownModulesPaths } from '@shiptech/core';
 
 
 export const BASE_MENU: KeyedMenuItems = {
+  'qualityControl': {
+    'label': 'Quality Control',
+    'routerLink': KnownModulesPaths.QualityControl,
+  },
   'masters': {
     'label': 'Masters',
     'items': {
