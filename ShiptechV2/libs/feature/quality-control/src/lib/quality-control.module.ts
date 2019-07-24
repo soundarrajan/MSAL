@@ -6,7 +6,7 @@ import { MainQualityControlComponent } from './main-quality-control/main-quality
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot([
+    RouterModule.forChild([
       {path: '', component: MainQualityControlComponent}
     ])
   ],
