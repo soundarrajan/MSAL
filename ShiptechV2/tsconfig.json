@@ -15,7 +15,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@shiptech/feature/quality-control": [
+        "libs/feature/quality-control/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

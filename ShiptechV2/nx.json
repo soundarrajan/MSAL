@@ -13,6 +13,9 @@
     },
     "shiptech": {
       "tags": []
+    },
+    "feature-quality-control": {
+      "tags": []
     }
   }
 }
