@@ -11,12 +11,12 @@ export class AuthenticationGuard implements CanActivate {
   constructor(private toastr: ToastrService) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const result = false;
+    const result = true;
 
     if(!result) {
       this.toastr.warning('You are not authorized, redirecting')
     }
 
-    return false;
+    return result;
   }
 }
