@@ -46,6 +46,7 @@ import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AppRoutingModule } from './app-routing.module';
 
 export const PRIME_IMPORTS = [
   AccordionModule,
@@ -127,11 +128,7 @@ export const PRIME_IMPORTS = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot([
-      {
-        path: 'quality-control',
-        loadChildren: () => import('../../../../libs/feature/quality-control/src/lib/quality-control.module').then(m => m.QualityControlModule)}
-    ]),
+    AppRoutingModule,
     FormsModule,
     ScrollingModule,
     // FlexLayoutModule,
