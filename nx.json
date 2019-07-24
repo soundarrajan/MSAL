@@ -13,6 +13,9 @@
     },
     "shiptech": {
       "tags": []
+    },
+    "core": {
+      "tags": []
     }
   }
 }
