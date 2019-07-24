@@ -132,7 +132,7 @@
         }
       }
     },
-    "feature-quality-control": {
+    "quality-control": {
       "projectType": "library",
       "root": "libs/feature/quality-control",
       "sourceRoot": "libs/feature/quality-control/src",

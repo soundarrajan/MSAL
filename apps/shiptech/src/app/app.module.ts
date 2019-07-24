@@ -127,7 +127,11 @@ export const PRIME_IMPORTS = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot([]),
+    RouterModule.forRoot([
+      {
+        path: 'quality-control',
+        loadChildren: () => import('../../../../libs/feature/quality-control/src/lib/quality-control.module').then(m => m.QualityControlModule)}
+    ]),
     FormsModule,
     ScrollingModule,
     // FlexLayoutModule,
