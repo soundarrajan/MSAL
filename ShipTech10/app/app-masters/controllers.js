@@ -7377,7 +7377,7 @@ APP_MASTERS.controller("Controller_Master", [
 
 		$(document).bind("DOMNodeRemoved", function(e)
 		{
-		    $(".tooltip").tooltip("hide");
+		    // $(".tooltip").tooltip("hide");
 		});
 
     }
