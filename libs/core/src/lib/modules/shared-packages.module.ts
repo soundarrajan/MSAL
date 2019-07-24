@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppCoreModule } from './modules/app-core.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
     CommonModule,
-    AppCoreModule
+    ToastrModule.forRoot()
   ],
   exports: [
-    AppCoreModule
+    ToastrModule
   ]
 })
-export class CoreModule {}
+export class SharedPackagesModule {}
