@@ -25,12 +25,13 @@ import { LicenseManager } from 'ag-grid-enterprise';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
+
     CoreModule,
     DefaultModule,
     SharedPackagesModule,
     PrimeNGModule,
-    AuthenticationModule.forRoot(),
-    AppRoutingModule
+    AuthenticationModule.forRoot()
   ],
   providers: [
     AppConfig,
@@ -44,12 +45,11 @@ import { LicenseManager } from 'ag-grid-enterprise';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private appConfig: AppConfig) {
+  constructor(appConfig: AppConfig) {
     appConfig.loaded$
       .pipe(
         tap((config: AppConfig) => LicenseManager.setLicenseKey(config.agGridLicense)),
         first()
-      )
-      .subscribe();
+      ).subscribe();
   }
 }
