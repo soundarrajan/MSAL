@@ -13,7 +13,7 @@
   </span>
 
   <div style="float:right;padding: 5px;">
-    <button pButton *ngIf="(adal.getUser() | async).profile" (click)="adal.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
+    <button pButton *ngIf="adal.userInfo.authenticated" (click)="adal.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
   </div>
 
 </div>

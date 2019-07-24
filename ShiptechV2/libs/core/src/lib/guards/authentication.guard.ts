@@ -14,8 +14,10 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if(!this.adal.userInfo.authenticated) {
-      this.toastr.warning('You are not authorized, redirecting')
-      this.adal.login();
+      this.toastr.warning('You are not authorized, redirecting');
+      setTimeout(() => {
+        this.adal.login();
+      }, 2000)
     }
     return this.adal.userInfo.authenticated;
   }

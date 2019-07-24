@@ -7,9 +7,9 @@ import { AdalGuard } from 'adal-angular4';
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AuthenticationGuard],
     children: [
       {
+        canActivate: [AuthenticationGuard],
         path: KnownModulesPaths.QualityControl,
         loadChildren: () => import('@shiptech/feature/quality-control').then(m => m.QualityControlModule)
       }
