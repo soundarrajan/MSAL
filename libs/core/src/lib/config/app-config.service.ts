@@ -62,7 +62,7 @@ export class AppConfig implements ILegacyConfig {
   loadAppConfigAsync(): Promise<ILegacyConfig> {
     // Note: Angular APP_INITIALIZER only waits for Promise, and NOT Observables
     return this.http
-      .get('/assets/config/settings.runtime.json')
+      .get('http://dev.shiptech.24software.ro:81/config/defaultConfig.json')
       .pipe(
         tap((result: ILegacyConfig) => {
 
