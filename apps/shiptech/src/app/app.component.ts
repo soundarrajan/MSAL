@@ -13,5 +13,6 @@ export class AppComponent {
   title = 'shiptech';
   constructor(private adal: AdalService, private authConfig: AuthConfig) {
     this.adal.init(authConfig.adalConfig);
+    this.adal.handleWindowCallback();
   }
 }

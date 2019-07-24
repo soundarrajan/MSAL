@@ -1,6 +1,6 @@
 <div class="layout-topbar">
 
-  <a href="#" class="layout-topbar-logo">
+  <a routerLink="/" class="layout-topbar-logo">
     <img id="topbar-logo" src="http://mail.24software.ro:8160/img/logo.png">
   </a>
 
@@ -11,5 +11,9 @@
   <span class="navbar-text">
     PAGE TITLE
   </span>
+
+  <div style="float:right;padding: 5px;">
+    <button pButton *ngIf="(adal.getUser() | async).profile" (click)="adal.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
+  </div>
 
 </div>

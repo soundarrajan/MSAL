@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MainComponent } from '../../main.component';
+import { AdalService } from 'adal-angular4';
 
 @Component({
   selector: 'shiptech-topbar',
@@ -7,5 +8,10 @@ import { MainComponent } from '../../main.component';
 })
 export class TopbarComponent {
 
-  constructor(public app: MainComponent) {}
+  constructor(public app: MainComponent, public adal: AdalService) {
+  }
+
+  display(val: any) {
+    console.log(val);
+  }
 }
