@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { environment } from '@techoil/environment';
 
 export const RANDOM_DELAY = -1;
 export const defaultCannnedResponse: ICannedResponse = { name: 'Default', response: undefined };

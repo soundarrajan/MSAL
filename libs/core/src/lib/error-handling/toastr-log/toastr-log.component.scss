@@ -1,0 +1,26 @@
+.toastr-copy-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.toastr-copy-icon {
+  color: white;
+  font-size: 16px;
+  position: relative;
+  right: -12px;
+  opacity: 0.3;
+}
+
+.toastr-copy-input {
+  width: 210px;
+  height: 11px;
+  color: rgba(255, 255, 255, 0.31);
+  position: relative;
+  top: -4px;
+  background-color: transparent;
+}
+
+::ng-deep .toast-container .toast {
+  width: 550px;
+}

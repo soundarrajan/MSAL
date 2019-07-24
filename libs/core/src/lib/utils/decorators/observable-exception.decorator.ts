@@ -1,7 +1,6 @@
 import { throwError } from 'rxjs';
 import { MethodDecoratorFactory } from '../type-definitions';
-import { environment } from '@techoil/environment';
-import { RootLogger } from '../../logging/logger-factory.service';
+import { environment } from '@shiptech/environment';
 
 export function ObservableException<T = unknown>(overrideError?: T): MethodDecoratorFactory {
   return (target: any, methodName: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
@@ -12,7 +11,8 @@ export function ObservableException<T = unknown>(overrideError?: T): MethodDecor
         return oldMethod.apply(this, args);
       } catch (err) {
         if (!environment.production) {
-          RootLogger.warn(`Wrapped {MethodName}'s exception in Observable. Original Exception: {@Exception}`, methodName, err);
+          // TODO: Add root logger here
+          // RootLogger.warn(`Wrapped {MethodName}'s exception in Observable. Original Exception: {@Exception}`, methodName, err);
         }
 
         return throwError(overrideError || err);

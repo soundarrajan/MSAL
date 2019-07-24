@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
 import { copyIntoClipoard } from './clipboard.utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Directive({
   selector: '[appToClipboard]'
@@ -12,7 +12,7 @@ export class CopyToClipboardDirective {
   @Input() propertyName: string = undefined;
   @Output() addedToClipboard = new EventEmitter<string>();
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private toastr: ToastrService) {}
 
   @HostListener('click') onClick(): void {
     this.copyToClipboard(this.value);
@@ -22,7 +22,7 @@ export class CopyToClipboardDirective {
     copyIntoClipoard(value);
 
     if (this.showNotifications) {
-      this.snackBar.open(`${this.propertyName || 'Property'} has been copied to clipboard`, 'Close', { duration: 3000 });
+      this.toastr.info(`${this.propertyName || 'Property'} has been copied to clipboard`);
     }
 
     this.addedToClipboard.emit(this.value);

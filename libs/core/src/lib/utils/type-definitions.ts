@@ -1,12 +1,5 @@
-import { TableColumn } from '@swimlane/ngx-datatable';
 
 export type MethodDecoratorFactory = (target: any, methodName: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
-
-export interface NgxDataTableCell<TRow, TValue> {
-  row: TRow;
-  column: TableColumn;
-  value: TValue;
-}
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 

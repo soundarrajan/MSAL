@@ -3,7 +3,6 @@
  */
 
 export * from "./app-context";
-export * from "./core.module.spec";
 export * from "./core.module";
 export * from "./authentication/auth.config";
 export * from "./authentication/authentication-context";
@@ -19,7 +18,6 @@ export * from "./utils/clipboard.utils";
 export * from "./utils/copy-to-clipboard.directive";
 export * from "./utils/dateTime.utils";
 export * from "./utils/math";
-export * from "./utils/ngxs-utils";
 export * from "./utils/QueryString";
 export * from "./utils/rxjs-operators";
 export * from "./utils/rxjs.utils";

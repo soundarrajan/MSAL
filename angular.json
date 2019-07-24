@@ -76,7 +76,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "shiptech:build"
           },
@@ -108,33 +108,6 @@
             "jestConfig": "apps/shiptech/jest.config.js",
             "tsConfig": "apps/shiptech/tsconfig.spec.json",
             "setupFile": "apps/shiptech/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "shiptech-e2e": {
-      "root": "apps/shiptech-e2e",
-      "sourceRoot": "apps/shiptech-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/shiptech-e2e/cypress.json",
-            "tsConfig": "apps/shiptech-e2e/tsconfig.e2e.json",
-            "devServerTarget": "shiptech:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "shiptech:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "apps/shiptech-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**", "!apps/shiptech-e2e/**"]
           }
         }
       }
