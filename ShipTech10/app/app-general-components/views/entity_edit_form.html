@@ -34,7 +34,7 @@
                                 <div class="caption">
 
                                 	<span class="caption-subject">
-                                		{{ parents.name }}
+                                		{{ parents.label ? parents.label : parents.name }}
                                 		<span ng-if="CM.screen_id == 'delivery' && CM.app_id == 'delivery' && parents.name == 'Deliveries'">
                                 			<span ng-if="formValues.info.requestId"> - {{ formValues.info.requestId }}</span>
                                 			<span ng-if="formValues.info.request.id">- {{ formValues.info.request.id }}</span>
@@ -184,6 +184,11 @@
                                         <span ng-switch-when="robCustom_vesselType">
                                             <span ng-include="'app-general-components/views/controls/rob_standard_table_vesselType.html'"></span>
                                         </span>
+
+                                        <span ng-switch-when="preferredLocationsGroup">
+                                            <span ng-include="'app-general-components/views/screen_parts/masters/preferredLocationsGroup.html'"></span>
+                                        </span>
+
                                         <div class="form-group  form-inline row" ng-switch-when="CLC">
                                             <div class=" group_{{ field.Unique_ID }}">
                                                 <span ng-include="'app-general-components/views/controls/dataTable.html'"></span>
