@@ -3,11 +3,16 @@ import { NgModule } from '@angular/core';
 import { KnownModulesPaths } from '@shiptech/core';
 import { AuthenticationGuard } from '@shiptech/core';
 import { AdalGuard } from 'adal-angular4';
+import { BlankComponent } from './components/blank/blank.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: '',
+        component: BlankComponent
+      },
       {
         canActivate: [AuthenticationGuard],
         path: KnownModulesPaths.QualityControl,

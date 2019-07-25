@@ -18,6 +18,8 @@ import {
   PrimeNGModule,
   SharedPackagesModule
 } from '@shiptech/core';
+import { BlankComponent } from './components/blank/blank.component';
+import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import {
     MainComponent,
     SidebarComponent,
     AppSubMenuComponent,
-    TopbarComponent
+    TopbarComponent,
+    BlankComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
