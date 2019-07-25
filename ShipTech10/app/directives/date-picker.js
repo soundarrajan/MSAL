@@ -1,4 +1,4 @@
-angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$window', '$injector', '$tenantSettings', '$stateParams', '$compile', function(tenantModel, $window, $injector, $tenantSettings, $stateParams, $compile) {
+angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$window', '$injector', '$tenantSettings', '$stateParams', '$compile', '$timeout', function(tenantModel, $window, $injector, $tenantSettings, $stateParams, $compile, $timeout) {
     return {
         require: '^ngModel',
         restrict: 'A',
@@ -54,11 +54,15 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
             }; 
 
             function reset(element) {
-                scope.$apply(function() {
+                $timeout(function() {
                     ngModel.$setViewValue(null);
                     ngModel.$commitViewValue();
                     wasReset = true;
                 });
+                /*
+                scope.$apply(function() {
+                });
+                */
             }
 
             function isDynamicFormat(val) {
@@ -345,6 +349,10 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                             newVal = moment(e.date).format(currentFormat.split(' ')[0]);
                             if (newVal != 'Invalid date') {
                                 mask.value = newVal;
+                            } else {
+                                if (!e.date) {
+                                    reset();
+                                }
                             }
                         } else {
                             if (newVal.split(' ')[1] == '00:00') {
@@ -505,6 +513,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         var newVal = moment.utc(v).format(currentFormat);
                         if (newVal.split(' ')[1] == '00:00') {
                             prevValue = newVal.split(' ')[0];
+                            $(element).removeClass('invalid');
                         } else {
                             prevValue = newVal;
                         }

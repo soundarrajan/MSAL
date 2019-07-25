@@ -2353,96 +2353,60 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
 
         ctrl.validateRequestDateFields = function(location, locationIdx, elm) {
-
-            function toggleInvalid(elm, action) {
-                if (action === 'add') {
-                    elm.parent().addClass('datepicker-container-invalid');
-                    // elm.addClass('invalid');
+            $timeout(function() {
+                function toggleInvalid(elm, action) {
+                    if (action === 'add') {
+                        // elm.parent().addClass('datepicker-container-invalid');
+                        elm.addClass('invalid');
+                    }
+                    if (action === 'remove') {
+                        // elm.parent().removeClass('datepicker-container-invalid');
+                        elm.removeClass('invalid');
+                    }
                 }
-                if (action === 'remove') {
-                    elm.parent().removeClass('datepicker-container-invalid');
-                    // elm.removeClass('invalid');
+
+                var hasError = false;
+
+                if (moment.utc(ctrl.request.locations[locationIdx].etb).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
+                    toastr.error("ETA must be lower or equal to ETB.");
+                    toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'add');
+                    hasError = true;
+                } else {
+                    if (ctrl.request.locations[locationIdx].etb) {
+                        toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'remove');
+                    }
                 }
-            }
+                if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
+                    toastr.error("ETA must be lower or equal to ETD.");
+                    toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'add');
+                    hasError = true;
+                } else {
+                    if (ctrl.request.locations[locationIdx].etd) {
+                        toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'remove');
+                    }
+                }
 
-            var hasError = false;
-
-            if (moment.utc(location.etb) < moment.utc(location.eta)) {
-                toastr.error("ETA must be lower or equal to ETB.");
-                toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'add');
-                hasError = true;
-            } else {
-                toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'remove');
-            }
-            if (moment.utc(location.etd) < moment.utc(location.eta)) {
-                toastr.error("ETA must be lower or equal to ETD.");
-                toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'add');
-                hasError = true;
-            } else {
-                toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'remove');
-            }
-
-            if (hasError) {
-                toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'add');
-            } else {
-                toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'remove');
-            }
+                if (hasError) {
+                    toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'add');
+                } else {
+                    if (ctrl.request.locations[locationIdx].eta) {
+                        toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'remove');
+                    }
+                }
+            });
         };
 
         ctrl.etaChanged = function(location, locationIdx) {
-            locationId = _.get(location, 'location.id');
-            if (locationId) {
-                if (!ctrl.etaDefaultedCount) {
-                    ctrl.etaDefaultedCount = {};
+            $timeout(function() {
+                if (!location.etb) {
+                    location.etb = location.eta;
                 }
-                if (!ctrl.etaDefaultedCount[locationId]) {
-                    if(!ctrl.request.id) {
-                        ctrl.etaDefaultedCount[locationId] = 0;
-                    } else {
-                        if (location.etb) {
-                            ctrl.etaDefaultedCount[locationId] = 3;
-                        } else {
-                            ctrl.etaDefaultedCount[locationId] = 0;
-                        }
-                    }
+                if (!location.etd) {
+                    location.etd = location.eta;
                 }
-                $timeout(function(){
-                    //
-                    // 1. picker change 
-                    //      - change other pickers
-                    //      - change other dates
-                    // 2. typing change
-                    //      - change other pickers
-                    //      - change other dates
-
-                    if (location.etb && 
-                        location.etb.split('T')[1].substr(0, 5) == '00:00' &&
-                        ctrl.etaDefaultedCount[locationId] == 1 &&
-                        location.eta.split('T')[1].substr(0, 5) != '00:00') {
-                            ctrl.etaDefaultedCount[locationId]++;
-                            location.etb = location.eta;
-                            location.etd = location.eta;
-                    } else if (location.etb && ctrl.etaDefaultedCount[locationId] == 2 && location.etb.split('T')[1].substr(3, 2) == '00') {
-                        ctrl.etaDefaultedCount[locationId]++;
-                        location.etb = location.eta;
-                        location.etd = location.eta;
-                    } else {
-                        if (ctrl.etaDefaultedCount[locationId] < 1) {
-                            ctrl.etaDefaultedCount[locationId]++;
-                        }
-                        if (ctrl.etaDefaultedCount[locationId] < 2) {
-                            if (location.eta.split('T')[1].substr(0, 5) != '00:00') {
-                                ctrl.etaDefaultedCount[locationId] = 3;
-                            }
-                            location.etb = location.eta;
-                            location.etd = location.eta;
-                        }
-                    }
-
-                    location.recentEta = location.eta;
-
-                },5);
-            }
+                location.recentEta = location.eta;
+            });
+            return;
         };
 
         $scope.updateDestinations = function(val, index) {
