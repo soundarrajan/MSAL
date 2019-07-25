@@ -1,7 +1,7 @@
 body {
     .ui-breadcrumb {
         background-color: $panelContentBgColor;
-        border: $panelContentBorder;
+        //border: $panelContentBorder;
         padding: $panelContentPadding;
 
         ul {
@@ -11,7 +11,7 @@ body {
                 vertical-align: middle;
 
                 .ui-menuitem-link {
-                    color: $textSecondaryColor;
+                    color: $breadcrumbTextColor;
                     margin: 0;
                     float: none;
                     padding: $menuitemPadding;
@@ -26,14 +26,15 @@ body {
                     }
 
                     &:hover {
-                        color: $textColor;
+                        color: $breadcrumbTextColor;
+                        text-decoration: underline;
                     }
                 }
 
                 &.ui-breadcrumb-chevron {
                     margin: 0;
                     font-size: .8em;
-                    color: $textSecondaryColor;
+                    color: $breadcrumbTextColor;
                 }
 
                 &:first-child {
@@ -44,7 +45,7 @@ body {
 
                     a {
                         font-size: $fontSize + 4;
-                        color: $textSecondaryColor;
+                        color: $breadcrumbTextColor;
                         margin: 0;
                         padding: 0;
                     }
