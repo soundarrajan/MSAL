@@ -5919,23 +5919,42 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
         /*Location Master Preffered Seller Product Table*/
-        $scope.openLocationPreferredSellerProducts = function(currentSellerKey) {
+        $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
+        	if (master) {
+        		if (master == "counterpartyMaster") {
+        			objMapping = "counterpartyLocations";
+        		} else {
+        			objMapping = "sellers";
+        		}
+        	} else {
+				objMapping = "sellers";
+        	}
             $scope.locationCurrentPreferredSellerKey = currentSellerKey;
             tpl = $templateCache.get("app-general-components/views/modal_preferredSellersProduct.html");
             // payload
             $scope.locationMasterPreferredSellerProductsTableConfig = {};
             getPayload = $scope.createLocationPreferredSellerProductsPayload();
-            getPreferredProductsForSellerInLocation = {
-                Payload: {
-                    LocationId: vm.entity_id != "" ? vm.entity_id : 0,
-                    SellerId: $scope.formValues.sellers[currentSellerKey].id
-                }
-            };
+            if (objMapping == "sellers") {
+	            getPreferredProductsForSellerInLocation = {
+	                Payload: {
+	                    LocationId: vm.entity_id != "" ? vm.entity_id : 0,
+	                    SellerId: $scope.formValues[objMapping][currentSellerKey].id
+	                }
+	            };
+            } 
+            if (objMapping == "counterpartyLocations") {
+	            getPreferredProductsForSellerInLocation = {
+	                Payload: {
+	                    SellerId: vm.entity_id != "" ? vm.entity_id : 0,
+	                    LocationId: $scope.formValues[objMapping][currentSellerKey].id
+	                }
+	            };
+            }            
             
             // preferred products
             $scope.preferredProductsForSellerInLocation = [];
             $scope.NOTpreferredProductsForSellerInLocation = [];
-            $.each($scope.formValues.sellers[currentSellerKey].products, function(ppk, ppv) {
+            $.each($scope.formValues[objMapping][currentSellerKey].products, function(ppk, ppv) {
                 if ($scope.preferredProductsForSellerInLocation.indexOf(ppv.product.id + "") == -1) {
 
                     //append preffered products to payload
@@ -5986,6 +6005,19 @@ APP_MASTERS.controller("Controller_Master", [
             }
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.order) {
                 $scope.locationMasterPreferredSellerProductsTableConfig.order = {};
+                sortList = [
+                    {
+                        columnValue: "name",
+                        sortParameter: 2
+                    }
+                ]                
+            } else {
+            	sortList = [
+	            	{
+	            		columnValue : $scope.locationMasterPreferredSellerProductsTableConfig.order.columnName,
+	            		sortParameter : $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder == "asc" ? 1 : 2
+	            	}
+            	]
             }
             $scope.locationMasterPreferredSellerProductsTableConfig.skip = ($scope.locationMasterPreferredSellerProductsTableConfig.currentPage - 1) * $scope.locationMasterPreferredSellerProductsTableConfig.take;
             payload = {
@@ -6004,17 +6036,7 @@ APP_MASTERS.controller("Controller_Master", [
                         Skip: $scope.locationMasterPreferredSellerProductsTableConfig.skip,
                         Take: $scope.locationMasterPreferredSellerProductsTableConfig.take
                     },
-                    SortList: [
-                        {
-                            columnValue: "name",
-                            sortParameter: 2
-                        },
-                        {
-                            columnValue: "parent_name",
-                            sortIndex: 1,
-                            sortParameter: 1
-                        }
-                    ]
+                    SortList: sortList
                 }
             };
             if (reloadTable) {
@@ -6037,6 +6059,13 @@ APP_MASTERS.controller("Controller_Master", [
             return payload;
         };
         $scope.savePrefferedSellerProducts = function() {
+
+    		if (vm.screen_id == "counterparty") {
+    			objMapping = "counterpartyLocations";
+    		} else {
+    			objMapping = "sellers";
+    		}
+
             if ($scope.preferredProductsForSellerInLocation.length <= 0) {
                 toastr.error("Please select at least one product");
                 return;
@@ -6059,7 +6088,7 @@ APP_MASTERS.controller("Controller_Master", [
             //     });
             // });
             $scope.prettyCloseModal();
-            $.each($scope.formValues.sellers[$scope.locationCurrentPreferredSellerKey].products, function(_, initProdV) {
+            $.each($scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products, function(_, initProdV) {
             	$.each(preferredProducts, function(_,pv){
             		if (pv.product.id == initProdV.product.id) {
 						pv.id = initProdV.id;
@@ -6077,7 +6106,7 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             });
       
-            $scope.formValues.sellers[$scope.locationCurrentPreferredSellerKey].products = preferredProducts;
+            $scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products = preferredProducts;
             
         };
         $scope.preferredSellersSelectAllProducts = function(selectAll) {

@@ -1477,7 +1477,7 @@ ctrl.setProductData = function(data, loc) {
 	                        $.each(locV.products, function (prodK, prodV) {
 	                        	currentProduct = angular.copy(prodV);
 	                            if (prodV.id == currentRequirement.RequestProductId) {
-					        		console.log("++++++++ currentRowRequirements:", currentRequirement.RequestProductId, currentRequirement.randUniquePkg);
+					        		// console.log("++++++++ currentRowRequirements:", currentRequirement.RequestProductId, currentRequirement.randUniquePkg);
 				                	activeSellerFromResponse = _.find(response, function(obj){
 				                		return obj.requestProductId == currentRequirement.RequestProductId;
 				                	})
