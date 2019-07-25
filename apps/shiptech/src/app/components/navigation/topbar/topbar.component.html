@@ -13,6 +13,7 @@
   </span>
 
   <div style="float:right;padding: 5px;">
+    <span>{{adal.userInfo.userName}}</span>
     <button pButton *ngIf="adal.userInfo.authenticated" (click)="adal.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
   </div>
 
