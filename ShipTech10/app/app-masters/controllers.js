@@ -6769,10 +6769,13 @@ APP_MASTERS.controller("Controller_Master", [
         }
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		  var target = $(e.target).attr("href") // activated tab
-		  setTimeout(function(){
-		  	$scope.$apply();
-		  });
+          var href = _.get(window, 'location.href');
+          if (href && typeof(href) === 'string' && href.indexOf('admin/configuration') === -1) {
+              var target = $(e.target).attr("href") // activated tab
+              setTimeout(function(){
+                $scope.$apply();
+              });
+          }
 		});
 // .custom-hardcoded-table.fixed-header 
 		// $('tbody').on("scroll", function(e) { //detect a scroll event on the tbody
