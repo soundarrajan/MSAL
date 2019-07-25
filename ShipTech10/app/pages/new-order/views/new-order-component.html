@@ -516,6 +516,9 @@
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.surveyorCounterparty.name }}_label" for="{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
                                                             {{ $ctrl.nominationFields.surveyorCounterparty.caption | translate }}
+                                                            <span class="orange-txt" ng-if="$ctrl.isSurveyorMandatory">
+                                                                *
+                                                            </span>
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
                                                             <input name="{{ $ctrl.nominationFields.surveyorCounterparty.name }}" id="id_{{ $ctrl.nominationFields.surveyorCounterparty.name }}"
@@ -525,6 +528,8 @@
                                                                 typeahead-append-to-body="true"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id "
                                                                 ng-blur="!$ctrl.data.surveyorCounterparty.name ? $ctrl.data.surveyorCounterparty = null : '' "
+                                                                ng-required="$ctrl.isSurveyorMandatory"
+
                                                             />
                                                             <span ng-controller="Controller_Master as CM" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_counterpartylist_surveyors', 'Surveyor' ,'surveyorCounterparty',null,null,null,null)" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id ">
                                                                 <a href="" class=" btn default" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id ">
@@ -582,6 +587,9 @@
                                                     <div class="form-group row">
                                                         <label for="{{ $ctrl.sellerDetails.agentCounterparty.name }}" class="{{ $ctrl.sellerDetails.agentCounterparty.name }}_label">
                                                             {{ $ctrl.portFields.agentCounterparty.caption | translate }}
+                                                            <span class="orange-txt" ng-if="$ctrl.isAgentMandatory">
+                                                                *
+                                                            </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group" ng-if="!$ctrl.isAgentFreeText">
                                                             <input name="{{ $ctrl.portFields.agentCounterparty.name }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
@@ -589,6 +597,7 @@
                                                                 typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)" ng-model="$ctrl.data.agentCounterparty.name"
                                                                 typeahead-append-to-body="true"
                                                                 ng-click="$ctrl.setSellerDialogType($ctrl.portFields.agentCounterparty.name, $ctrl.data.agentCounterparty)"
+                                                                ng-required="$ctrl.isAgentMandatory"
                                                                 typeahead-editable="false" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                             />
                                                             <span ng-controller="Controller_Master as CM" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'procurement_agentlist', 'agentCounterparty','agentCounterparty',null,null,null,null);" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
@@ -600,7 +609,7 @@
                                                         </div>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group" ng-if="$ctrl.isAgentFreeText">
                                                             <input name="{{ $ctrl.portFields.agentCounterparty.name }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
-                                                                ng-model="$ctrl.data.agentCounterpartyFreeText" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                ng-model="$ctrl.data.agentCounterpartyFreeText" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" ng-required="$ctrl.isAgentMandatory"
                                                             />
                                                         </div>
                                                     </div>

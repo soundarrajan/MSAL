@@ -90,6 +90,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.autoPopulateLabFrom = settings.payload.order.autoPopulateLabInOrderOption;
             ctrl.manualPricingDateOverride = settings.payload.price.pricingEventDateManualOverrride;
             ctrl.defaultDeliveryOption = settings.payload.request.defaultDeliveryOption;
+            ctrl.isAgentMandatory = settings.payload.order.isOrderAgentMandatory;
+            ctrl.isSurveyorMandatory = settings.payload.order.isOrderSurveyorMandatory;
         });
         ctrl.$onInit = function () {
             screenLoader.showLoader();
