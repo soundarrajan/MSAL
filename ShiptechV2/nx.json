@@ -8,9 +8,6 @@
     "nx.json": "*"
   },
   "projects": {
-    "shiptech-e2e": {
-      "tags": []
-    },
     "shiptech": {
       "tags": []
     },

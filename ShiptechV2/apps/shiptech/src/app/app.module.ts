@@ -11,13 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import {
   AppConfig,
   AuthenticationModule,
+  bootstrap,
+  BootstrapService,
   CoreModule,
-  DefaultModule, loadConfiguration,
+  DefaultModule,
   PrimeNGModule,
   SharedPackagesModule
 } from '@shiptech/core';
-import { first, tap } from 'rxjs/operators';
-import { LicenseManager } from 'ag-grid-enterprise';
 
 
 @NgModule({
@@ -43,19 +43,12 @@ import { LicenseManager } from 'ag-grid-enterprise';
     AppConfig,
     {
       provide: APP_INITIALIZER,
-      useFactory: loadConfiguration,
+      useFactory: bootstrap,
       multi: true,
-      deps: [AppConfig]
+      deps: [BootstrapService]
     }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(appConfig: AppConfig) {
-    appConfig.loaded$
-      .pipe(
-        tap((config: AppConfig) => LicenseManager.setLicenseKey(config.agGridLicense)),
-        first()
-      ).subscribe();
-  }
 }

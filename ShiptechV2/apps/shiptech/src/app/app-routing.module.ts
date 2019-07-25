@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { KnownModulesPaths } from '@shiptech/core';
-import { AuthenticationGuard } from '../../../../libs/core/src/lib/guards/authentication.guard';
+import { AuthenticationGuard } from '@shiptech/core';
 import { AdalGuard } from 'adal-angular4';
 
 const routes: Routes = [

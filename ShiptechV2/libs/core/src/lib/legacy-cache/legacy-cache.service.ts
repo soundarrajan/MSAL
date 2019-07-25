@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 import { HttpClient } from '@angular/common/http';
+import { AppConfig } from '@shiptech/core';
 
 
 
@@ -67,8 +68,8 @@ export class LegacyCacheService {
 
   private apiBaseUrl = 'TODO';
 
-  constructor(private $http: HttpClient, private db: ShiptechLegacyDatabase) {
-
+  constructor(private appConfig: AppConfig, private db: ShiptechLegacyDatabase, private $http: HttpClient) {
+    this.apiBaseUrl = appConfig.API.BASE_URL;
   }
 
   load(): void {
