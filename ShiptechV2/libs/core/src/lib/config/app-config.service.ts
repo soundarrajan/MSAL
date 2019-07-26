@@ -98,7 +98,7 @@ export class BootstrapService {
   private loadAppConfigAsync(): Observable<AppConfig> {
     // TODO: Remove hardcoded path to settings
     return this.http
-      .get<AppConfig>('http://dev.shiptech.24software.ro:81/config/defaultConfig.json');
+      .get<AppConfig>('/assets/config/settings.runtime.json');
   }
 }
 
