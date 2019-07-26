@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AdalService } from 'adal-angular4';
+import { AdalService } from 'adal-angular-wrapper';
 
 
 @Injectable({

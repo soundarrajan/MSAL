@@ -167,7 +167,7 @@ body {
   padding: 0;
   margin: 0;
   min-height: 100%;
-  background-color: #f4f4f4;
+  background-color: #dce3eb;
 }
 
 a {
@@ -1439,7 +1439,7 @@ a {
   padding-top: 40px;
 }
 .layout-wrapper .layout-main .layout-content {
-  padding: 16px;
+  padding: 16px 5px;
 }
 
 @media screen and (min-width: 897px) {
