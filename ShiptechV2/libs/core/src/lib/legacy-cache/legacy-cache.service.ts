@@ -73,12 +73,12 @@ export class LookupsCacheService {
 
   private async loadInternal(): Promise<any> {
 
+    //TODO Handle errors properly
     try {
       await this.db.open();
     }catch (e) {
       console.log(e);
     }
-
 
     const currentLookupVersions = await this.db.lookupVersions.toArray();
 

@@ -9,7 +9,7 @@ export class MainComponent implements AfterViewInit {
 
     overlayMenuActive: boolean;
 
-    staticMenuDesktopInactive: boolean;
+    staticMenuDesktopInactive: boolean = true;
 
     staticMenuMobileActive: boolean;
 

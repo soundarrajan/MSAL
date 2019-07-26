@@ -52,17 +52,6 @@ export class SidebarComponent implements OnInit, AfterContentInit {
     this.model = transformMenu(BASE_MENU, {
         'masters': {
           items: {
-            // 'company': {
-            //   label: 'Company',
-            //   items: {
-            //     'company_list': {
-            //       label: 'Company List'
-            //     },
-            //     'new_company': {
-            //       label: 'New Company'
-            //     }
-            //   }
-            // },
             'service': {
               label: 'Service',
               items: {
@@ -93,19 +82,6 @@ export class SidebarComponent implements OnInit, AfterContentInit {
       this.layoutMenuScrollerViewChild.style = {height: '100%'};
       this.layoutMenuScrollerViewChild.moveBar();
     }, 100);
-  }
-
-  changeTheme(theme: string) {
-    const layoutLink: HTMLLinkElement = document.getElementById('layout-css') as HTMLLinkElement;
-    layoutLink.href = 'assets/layout/css/layout-' + theme + '.css';
-    const themeLink: HTMLLinkElement = document.getElementById('theme-css') as HTMLLinkElement;
-    themeLink.href = 'assets/theme/' + 'theme-' + theme + '.css';
-  }
-
-  changeTopbarColor(topbarColor, logo) {
-    this.app.topbarColor = topbarColor;
-    const topbarLogoLink: HTMLImageElement = document.getElementById('topbar-logo') as HTMLImageElement;
-    topbarLogoLink.src = 'assets/layout/images/' + logo + '.svg';
   }
 
   onMenuClick(event) {

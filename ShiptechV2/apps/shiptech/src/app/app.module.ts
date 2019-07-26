@@ -18,6 +18,11 @@ import {
   SharedPackagesModule
 } from '@shiptech/core';
 import { bootstrapApplication } from '../../../../libs/core/src/lib/config/bootstrap.service';
+import { BlankComponent } from './components/blank/blank.component';
+import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AdalInterceptor } from 'adal-angular-wrapper';
+import { TokenInterceptor } from '../../../../libs/core/src/lib/authentication/token.interceptor';
 
 
 @NgModule({
@@ -26,7 +31,9 @@ import { bootstrapApplication } from '../../../../libs/core/src/lib/config/boots
     MainComponent,
     SidebarComponent,
     AppSubMenuComponent,
-    TopbarComponent
+    TopbarComponent,
+    BlankComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +53,11 @@ import { bootstrapApplication } from '../../../../libs/core/src/lib/config/boots
       useFactory: bootstrapApplication,
       multi: true,
       deps: [BootstrapService]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
