@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { concatMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import {
   EXPORTFILETYPEEXTENSION,
   IApiUrlsLegacyConfig,
@@ -29,13 +26,12 @@ import {
   IvalidationStopTypeIdsLegacyConfig,
   IViewTypesLegacyConfig
 } from './legacy-config.interfaces';
-import { AdalService } from 'adal-angular4';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { IAppConfig } from './app-config.interface';
-import { EMPTY$ } from '../utils/rxjs-operators';
 
-@Injectable()
-export class AppConfig implements ILegacyConfig, IAppConfig {
+@Injectable({
+  providedIn: 'root'
+})
+export class AppConfig implements IAppConfig {
   public auth: IAuthLegacyConfig;
   API: IApiUrlsLegacyConfig;
   COMPONENT_TYPE_IDS: IComponentTypeIdsLegacyConfig;
@@ -63,45 +59,5 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
 
   public agGridLicense: string;
 }
-//TODO: refactor and cleanup all of this.
-@Injectable({
-  providedIn: 'root'
-})
-export class BootstrapService {
-  private appConfig: AppConfig;
 
-  constructor(private adal: AdalService, private http: HttpClient) {
-  }
 
-  initApp(): Observable<any> {
-    return this.loadAppConfigAsync().pipe(
-      concatMap(config => {
-        this.appConfig = config;
-
-        LicenseManager.setLicenseKey(config.agGridLicense);
-
-        this.adal.init(config.auth);
-        this.adal.handleWindowCallback();
-
-        if (!this.adal.userInfo.authenticated) {
-          this.adal.login();
-
-          return new Observable<ILegacyConfig>(() => {
-            // Note: Intentionally left blank, this obs should never complete
-          });
-        }
-
-        return EMPTY$;
-      }));
-  }
-
-  private loadAppConfigAsync(): Observable<AppConfig> {
-    // TODO: Remove hardcoded path to settings
-    return this.http
-      .get<AppConfig>('http://dev.shiptech.24software.ro:81/config/defaultConfig.json');
-  }
-}
-
-export function bootstrap(bootstrapService: BootstrapService): () => Promise<any> {
-  return () => bootstrapService.initApp().toPromise();
-}
