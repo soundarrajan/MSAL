@@ -346,7 +346,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.ServiceCode.name }} input-group">
-                                                            <input name="{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate }}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" class="typeahead form-control"
                                                                 uib-typeahead="serviceCode as serviceCode.name for serviceCode in $ctrl.lists.Service | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectService($item.id)" ng-model="$ctrl.data.service.name"
                                                                 typeahead-editable="false" typeahead-append-to-body="true" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
@@ -369,7 +369,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.Seller.name }} input-group">
-                                                            <input name="{{ $ctrl.sellerDetails.Seller.name }}" id="id_{{ $ctrl.sellerDetails.Seller.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.sellerDetails.Seller.caption | translate }}" id="id_{{ $ctrl.sellerDetails.Seller.name }}" class="typeahead form-control"
                                                                 typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                                 typeahead-wait-ms="100" autocomplete="off" uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | filter:{name:$viewValue}"
                                                                 typeahead-on-select="$ctrl.selectSeller($item)" ng-model="$ctrl.data.seller.name"
@@ -403,7 +403,8 @@
                                                             </span>
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.carrierCompany.name }}">
-                                                            <input name="{{ $ctrl.portFields.carrierCompany.name }}" id="id_{{ $ctrl.portFields.carrierCompany.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.tenantSettings.companyDisplayName.name == 'Pool' ? ($ctrl.tenantSettings.companyDisplayName.name | translate) : ($ctrl.portFields.carrierCompany.caption | translate) }}" 
+                                                            	id="id_{{ $ctrl.portFields.carrierCompany.name }}" class="typeahead form-control"
                                                                 uib-typeahead="carrierCompany as carrierCompany.name for carrierCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectCompany($item.id)" ng-model="$ctrl.data.carrierCompany.name" 
                                                                 typeahead-append-to-body="true"
@@ -436,7 +437,7 @@
                                                             {{ $ctrl.nominationFields.broker.caption | translate }}
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.nominationFields.broker.name }}">
-                                                            <input name="{{ $ctrl.nominationFields.broker.name }}" id="id_{{ $ctrl.nominationFields.broker.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.nominationFields.broker.caption | translate }}" id="id_{{ $ctrl.nominationFields.broker.name }}" class="typeahead form-control"
                                                                 uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
                                                                 typeahead-append-to-body="true"
@@ -471,7 +472,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.paymentCompany.name }}">
-                                                            <input name="{{ $ctrl.portFields.paymentCompany.name }}" id="id_{{ $ctrl.portFields.paymentCompany.name }}" class="typeahead form-control"
+                                                            <input name="{{ 'Payment ' + $ctrl.tenantSettings.companyDisplayName.name | translate }}" id="id_{{ $ctrl.portFields.paymentCompany.name }}" class="typeahead form-control"
                                                                 uib-typeahead="paymentCompany as paymentCompany.name for paymentCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectCompany($item.id)" ng-model="$ctrl.data.paymentCompany.name"
                                                                 typeahead-append-to-body="true"
@@ -504,7 +505,7 @@
                                                                 ng-model="$ctrl.data.eta"
                                                                 ng-change="$ctrl.inputChangeProcessing('eta')"
                                                                 ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || disableFromFreezeStatus"
-                                                                name="eta"
+                                                                name="{{ $ctrl.portFields.eta.caption | translate }}"
                                                                 id="eta"
                                                                 new-date-picker
                                                                 picker-type="dynamic"
@@ -521,7 +522,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
-                                                            <input name="{{ $ctrl.nominationFields.surveyorCounterparty.name }}" id="id_{{ $ctrl.nominationFields.surveyorCounterparty.name }}"
+                                                            <input name="{{ $ctrl.nominationFields.surveyorCounterparty.caption | translate }}" id="id_{{ $ctrl.nominationFields.surveyorCounterparty.name }}"
                                                                 class="typeahead form-control" uib-typeahead="surveyorCounterparty as surveyorCounterparty.name for surveyorCounterparty in $ctrl.lists.Surveyor | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.surveyorCounterparty = $ctrl.setTypeahedVal($ctrl.data.surveyorCounterparty, $item, false)"
                                                                 typeahead-editable="false" ng-model="$ctrl.data.surveyorCounterparty.name"
@@ -592,7 +593,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group" ng-if="!$ctrl.isAgentFreeText">
-                                                            <input name="{{ $ctrl.portFields.agentCounterparty.name }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.portFields.agentCounterparty.caption | translate }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
                                                                 uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)" ng-model="$ctrl.data.agentCounterparty.name"
                                                                 typeahead-append-to-body="true"
@@ -748,7 +749,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="input-group form_input">
-                                                            <input name="{{ $ctrl.portFields.locationName.name }}" id="id_{{ $ctrl.portFields.locationName.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.portFields.locationName.caption | translate }}" id="id_{{ $ctrl.portFields.locationName.name }}" class="typeahead form-control"
                                                                 uib-typeahead="location as location.name for location in $ctrl.lists.Location | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.selectPort($item.id)" ng-model="$ctrl.data.location"
                                                                 typeahead-append-to-body="true"
