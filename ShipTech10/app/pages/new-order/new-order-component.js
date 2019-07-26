@@ -1454,8 +1454,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             model[property] = value;
         };
         ctrl.sendOrderCommand = function (command, orderId) {
-            if (command == 'cancel') {
-                ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
+            if (command == 'cancel' && !ctrl.comfirmCancelOrder) {
+				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
+					console.log(modalresponse)
+					if (modalresponse) {
+						ctrl.comfirmCancelOrder = true;
+						ctrl.sendOrderCommand("cancel", ctrl.orderId)
+                        $scope.prettyCloseModal();
+					}
+				})            	
+                // ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
             }
             if (command == 'confirmToLab') {
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
@@ -1634,8 +1642,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 		                    			"id" : response.payload.id,
 		                    			"name" : response.payload.name
 		                    		}
+			                        ctrl.orderPreviewEmail();
 		                    	}
-		                        ctrl.orderPreviewEmail();
 		                        return;
 		                    })
 	                	}

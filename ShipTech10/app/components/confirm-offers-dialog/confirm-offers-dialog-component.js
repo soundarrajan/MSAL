@@ -236,9 +236,14 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                                 orderId: receivedOffers[0]
                             });
                             */
-                            for (var i = 0; i < receivedOffers.length; i++) {
-                                window.open('/#/edit-order/' + receivedOffers[i], '_blank');
-                            }
+                           if (receivedOffers.length == 1) {
+                                window.open('/#/edit-order/' + receivedOffers[0]);
+                           } else {
+								$("a.closeBlade").click();
+                           }
+                            // for (var i = 0; i < receivedOffers.length; i++) {
+                            //     window.open('/#/edit-order/' + receivedOffers[i], '_blank');
+                            // }
                         // } else if (receivedOffers.length > 1) {
                         //     $state.go(STATE.ORDER_LIST);
                         // }
