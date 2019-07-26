@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MainComponent } from '../../main.component';
-import { AdalService } from 'adal-angular4';
+import { AdalService } from 'adal-angular-wrapper';
 
 @Component({
   selector: 'shiptech-topbar',

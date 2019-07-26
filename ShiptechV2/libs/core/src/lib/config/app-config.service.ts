@@ -29,7 +29,7 @@ import {
   IvalidationStopTypeIdsLegacyConfig,
   IViewTypesLegacyConfig
 } from './legacy-config.interfaces';
-import { AdalService } from 'adal-angular4';
+import { AdalService } from 'adal-angular-wrapper';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { IAppConfig } from './app-config.interface';
 import { EMPTY$ } from '../utils/rxjs-operators';
