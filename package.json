@@ -51,7 +51,7 @@
     "@nrwl/angular": "8.2.0",
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.136",
-    "adal-angular4": "^4.0.12",
+    "adal-angular-wrapper": "1.0.3",
     "ag-grid-angular": "^21.1.0",
     "ag-grid-community": "^21.1.0",
     "ag-grid-enterprise": "^21.1.0",

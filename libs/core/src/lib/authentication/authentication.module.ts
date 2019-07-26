@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { AdalService } from 'adal-angular4';
+import { AdalService } from 'adal-angular-wrapper';
 import { AuthConfig } from './auth.config';
 
 @NgModule()
