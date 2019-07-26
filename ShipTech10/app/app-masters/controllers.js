@@ -5953,13 +5953,17 @@ APP_MASTERS.controller("Controller_Master", [
             
             // preferred products
             $scope.preferredProductsForSellerInLocation = [];
-            $scope.NOTpreferredProductsForSellerInLocation = [];
+            if (!$scope.NOTpreferredProductsForSellerInLocation) {
+	            $scope.NOTpreferredProductsForSellerInLocation = [];
+            }
             $.each($scope.formValues[objMapping][currentSellerKey].products, function(ppk, ppv) {
                 if ($scope.preferredProductsForSellerInLocation.indexOf(ppv.product.id + "") == -1) {
 
                     //append preffered products to payload
                     getPayload.Payload.SelectedProductIds.push(ppv.product.id); // number needed
-                    $scope.preferredProductsForSellerInLocation.push(ppv.product.id + "");
+                    if (!ppv.isDeleted) {
+	                    $scope.preferredProductsForSellerInLocation.push(ppv.product.id + "");
+                    }
                 }
             });
 
@@ -5971,7 +5975,16 @@ APP_MASTERS.controller("Controller_Master", [
     
             Factory_Master.getProductsForSellerInLocation(getPayload, function(response) {
                 if (response) {
+                    $.each($scope.NOTpreferredProductsForSellerInLocation, function(k,v){
+                    	$.each(response.data.payload, function(rk,rv){
+                    		if (rv.id == parseFloat(v)) {
+                    			rv.selected = false;
+                    			rv.isDeleted = true;
+                    		}
+                    	})	
+                    })
                     $scope.locationPreferredSellerProductsData = response.data.payload;
+
 
                     //all products
                     if(!$scope.locationPreferredSellerProductsDataAllProd){
@@ -6079,14 +6092,14 @@ APP_MASTERS.controller("Controller_Master", [
                     isDeleted: false
                 });
             });
-            // $.each($scope.NOTpreferredProductsForSellerInLocation, function(k, v) {
-            //     preferredProducts.push({
-            //         product: {
-            //             id: parseFloat(v),
-            //         },
-            //         isDeleted: true
-            //     });
-            // });
+            $.each($scope.NOTpreferredProductsForSellerInLocation, function(k, v) {
+                preferredProducts.push({
+                    product: {
+                        id: parseFloat(v),
+                    },
+                    isDeleted: true
+                });
+            });
             $scope.prettyCloseModal();
             $.each($scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products, function(_, initProdV) {
             	$.each(preferredProducts, function(_,pv){
@@ -6171,9 +6184,13 @@ APP_MASTERS.controller("Controller_Master", [
             });
             if (isAlreadyPreferred == -1) {
                 $scope.preferredProductsForSellerInLocation.push(productId + "");
-                $scope.NOTpreferredProductsForSellerInLocation.splice(productId + "");
+                if ($scope.NOTpreferredProductsForSellerInLocation.indexOf(productId+"") != -1) {
+	                $scope.NOTpreferredProductsForSellerInLocation.splice($scope.NOTpreferredProductsForSellerInLocation.indexOf(productId+""), 1);
+                }
             } else {
-                $scope.preferredProductsForSellerInLocation.splice(isAlreadyPreferred, 1);
+                if ($scope.preferredProductsForSellerInLocation.indexOf(productId+"") != -1) {
+	                $scope.preferredProductsForSellerInLocation.splice($scope.preferredProductsForSellerInLocation.indexOf(productId+""), 1);
+                }
                 $scope.NOTpreferredProductsForSellerInLocation.push(productId + "");
             }
         };

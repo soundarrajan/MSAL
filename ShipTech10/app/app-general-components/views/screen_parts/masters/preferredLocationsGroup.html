@@ -31,7 +31,7 @@
 				</td>
 				<td width="20%">
 					<div class="location-preffered-sellers">
-	                    <span ng-repeat="(key2,product) in value.products">
+	                    <span ng-repeat="(key2,product) in value.products" ng-hide="product.isDeleted">
                             <span ng-if="key2 != 0">,</span>
                             {{ product.product.name }}
                         </span>			
