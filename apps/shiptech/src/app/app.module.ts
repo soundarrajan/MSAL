@@ -11,13 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import {
   AppConfig,
   AuthenticationModule,
-  bootstrap,
   BootstrapService,
   CoreModule,
   DefaultModule,
   PrimeNGModule,
   SharedPackagesModule
 } from '@shiptech/core';
+import { bootstrapApplication } from '../../../../libs/core/src/lib/config/bootstrap.service';
 
 
 @NgModule({
@@ -43,7 +43,7 @@ import {
     AppConfig,
     {
       provide: APP_INITIALIZER,
-      useFactory: bootstrap,
+      useFactory: bootstrapApplication,
       multi: true,
       deps: [BootstrapService]
     }

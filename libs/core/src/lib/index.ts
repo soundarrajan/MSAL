@@ -26,3 +26,5 @@ export * from "./utils/decorators/api-call-settings";
 export * from "./utils/decorators/api-call.decorator";
 export * from "./utils/decorators/method-name.decorator";
 export * from "./utils/decorators/observable-exception.decorator";
+export { AppConfig } from './config/app-config.service';
+export { BootstrapService } from './config/bootstrap.service';

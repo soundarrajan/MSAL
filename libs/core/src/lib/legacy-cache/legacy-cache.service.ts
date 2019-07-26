@@ -1,271 +1,132 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '@shiptech/core';
+import { AppConfig } from '../config/app-config.service';
+import { nameof } from '../utils/type-definitions';
+import { ILookupDto } from '../lookups/lookup-dto.interface';
+import { Observable } from 'rxjs';
+import { fromPromise } from 'rxjs/internal-compatibility';
 
-
-
-
-export interface IListsCache {
-  id: number;
-  data: any;
-}
-
-export interface IListsHash {
-  id: number;
-  data: any;
+interface ILookupVersion {
+  name: string;
+  lastModificationDate: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class ShiptechLegacyDatabase extends Dexie {
+export class LookupsDatabase extends Dexie {
 
-  listsCache: Dexie.Table<IListsCache, number>;
-  listsHash: Dexie.Table<IListsHash, number>;
+  company: Dexie.Table<ILookupDto, number>;
+  currency: Dexie.Table<ILookupDto, number>;
+  uom: Dexie.Table<ILookupDto, number>;
+  lookupVersions: Dexie.Table<ILookupVersion, string>;
 
   constructor() {
-    super('Shiptech');
-    this.version(1).stores({
-      listsCache: '++id, data',
-      listsHash: '++id, data'
+    super('Shiptech-UI.Lookups');
+
+    const lookupId = nameof<ILookupDto>('id');
+    const lookupName = nameof<ILookupDto>('name');
+    const lookupSchema = `++${lookupId}, ${lookupName}`;
+
+    const schema = {
+      [nameof<LookupsDatabase>('company')]: lookupSchema,
+      [nameof<LookupsDatabase>('currency')]: lookupSchema,
+      [nameof<LookupsDatabase>('uom')]: lookupSchema,
+      [nameof<LookupsDatabase>('lookupVersions')]: `++${nameof<ILookupVersion>('name')}`
+    };
+
+    this.version(1).stores(schema);
+
+    Object.keys(schema).forEach(tableName =>{
+      this[tableName] = this.table(tableName);
     });
   }
 }
 
-interface IServerResponse {
-  data: IServerResponseData;
-}
 
-interface IStaticListResponseItem {
-  name: any;
-  items: any;
-}
-
-interface IStaticListResponse {
-  data: IStaticListResponseItem[];
-}
-
-interface ISelectListTimestamps {
-  lastModificationDate: string;
+interface ILegacyListStatus {
   name: string;
+  lastModificationDate: string;
 }
 
-interface IServerResponseData {
-  selectListTimestamps: ISelectListTimestamps[];
+export interface IHashListsLegacyResponse {
   initTime: string;
-  data: any;
+  selectListTimestamps: ILegacyListStatus[]
 }
 
-interface IListsHashResponse {
-  data: any;
+const NonLookupTables = [nameof<LookupsDatabase>('lookupVersions').toString()];
+
+interface IStaticListLegacy {
+  name: string;
+  items: ILookupDto[]
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class LegacyCacheService {
+export class LookupsCacheService {
 
-  private apiBaseUrl = 'TODO';
-
-  constructor(private appConfig: AppConfig, private db: ShiptechLegacyDatabase, private $http: HttpClient) {
-    this.apiBaseUrl = appConfig.API.BASE_URL;
+  constructor(private appConfig: AppConfig, private db: LookupsDatabase, private http: HttpClient) {
+    //TODO: AppConfig might come uninitialized yet.
   }
 
-  load(): void {
+  private async loadInternal(): Promise<any> {
 
-
-    // if (localStorage.getItem("loggedOut")) {
-    //   localStorage.removeItem("loggedOut");
-    // }
-
-    const query = [
-      this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Admin/api/admin/generalConfiguration/get', {
-        Payload: false
-      }).toPromise()
-    ];
-
-    query.push(
-      this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters', {
-        Payload: false
-      }).toPromise()
-    );
-
-
-    if (window.indexedDB) {
-      try {
-        this.db = new ShiptechLegacyDatabase();
-
-        this.db.version(1).stores({
-          listsCache: '++id, data',
-          listsHash: '++id, data'
-        });
-
-        if (!window.localStorage.getItem('listsInitTime')) {
-          this.$http.post<IListsHashResponse>(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash', {
-            Payload: false
-          }).toPromise().then((data) => {
-            this.db.delete();
-            this.db.open();
-
-            this.db.transaction('rw', this.db.listsHash, () => {
-              // noinspection JSIgnoredPromiseFromCall
-              this.db.listsHash.add({ data: data.data, id: 1 });
-            });
-            localStorage.setItem('listsInitTime', String(data.data.initTime));
-          });
-          query.push(
-            this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-              Payload: false
-            }).toPromise()
-          );
-          this.makeQueries(query);
-          return;
-        } else {
-          this.db.open();
-          this.$http.post<IServerResponse>(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash', {
-            Payload: false
-          }).toPromise().then(data => {
-            if (new Date(data.data.initTime) > new Date(localStorage.getItem('listsInitTime'))) {
-              this.db.delete();
-              this.db.open();
-              this.db.transaction('rw', this.db.listsHash, () => {
-                // noinspection JSIgnoredPromiseFromCall
-                this.db.listsHash.update(1, { data: data.data });
-              });
-              localStorage.setItem('listsInitTime', String(data.data.initTime));
-              query.push(
-                this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-                  Payload: false
-                }).toPromise()
-              );
-              this.makeQueries(query);
-              return;
-
-            } else {
-              this.db.transaction('rw', this.db.listsCache, this.db.listsHash, () => {
-                this.db.listsCache.get(1).then(listsCacheDB => {
-                  if (listsCacheDB) {
-                    // listsCache = listsCacheDB.db.data;
-                    this.db.listsHash.get(1).then(listsHashDB => {
-                      if (listsHashDB) {
-                        const currentLists = listsHashDB.data;
-                        const listsCache = listsCacheDB.data;
-
-                        if (currentLists && !(JSON.stringify(data.data) === JSON.stringify(currentLists))) {
-                          const listsToUpdate = [];
-                          let listFound = false;
-
-                          data.data.selectListTimestamps.forEach(element => {
-                            currentLists.selectListTimestamps.forEach((element1) => {
-                              if (element1.name === element.name && (element1.lastModificationDate !== element.lastModificationDate)) {
-                                listsToUpdate.push(element1.name);
-                                listFound = true;
-                              }
-                            });
-                            if (!listFound) {
-                              listsToUpdate.push(element.name);
-                            }
-                          });
-
-                          this.$http.post<IStaticListResponse>(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-                            Payload: listsToUpdate
-                          }).toPromise().then(res => {
-                            res.data.forEach(v => {
-                              listsCache[v.name] = v.items;
-                            });
-                            this.db.listsCache.update(1, { data: listsCache }).then(() => {
-                              // noinspection JSIgnoredPromiseFromCall
-                              this.db.listsHash.update(1, { data: data.data });
-                            });
-                            this.makeQueries(query);
-                          });
-                        } else {
-                          this.makeQueries(query);
-                        }
-                      } else {
-                        // noinspection JSIgnoredPromiseFromCall
-                        this.db.listsHash.add({ data: data.data, id: 1 });
-                        // this.db.listsCache.update(1, {data: listsCache});
-                        this.makeQueries(query);
-                      }
-                    });
-
-                  } else {
-                    query.push(
-                      this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-                        Payload: false
-                      }).toPromise()
-                    );
-                    this.makeQueries(query);
-                  }
-                }).catch(() => {
-                  query.push(
-                    this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-                      Payload: false
-                    }).toPromise()
-                  );
-                  this.makeQueries(query);
-                });
-              });
-            }
-          });
-        }
-      } catch (err) {
-        query.push(
-          this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-            Payload: false
-          }).toPromise()
-        );
-        this.makeQueries(query);
-      }
-    } else {
-      query.push(
-        this.$http.post(this.apiBaseUrl + '/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists', {
-          Payload: false
-        }).toPromise()
-      );
-      this.makeQueries(query);
+    try {
+      await this.db.open();
+    }catch (e) {
+      console.log(e);
     }
 
+
+    const currentLookupVersions = await this.db.lookupVersions.toArray();
+
+    const serverLookupVersions = (await this.http.post<IHashListsLegacyResponse>(
+        `${this.appConfig.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`,
+        {}).toPromise()
+    ).selectListTimestamps;
+
+
+    const lookupTableNames = this.db.tables.filter(t => NonLookupTables.includes(t.name)).map(t => t.name);
+
+    const minDate = new Date(0);
+    const toDateOrDefault = (date: string) => date ? new Date(date) : minDate;
+
+    const updateLists = lookupTableNames.filter(lookupName => {
+      const lookupServerVersion = toDateOrDefault(serverLookupVersions[lookupName]);
+      const lookupCurrentVersion = toDateOrDefault(currentLookupVersions[lookupName]);
+
+      return lookupCurrentVersion <= lookupServerVersion;
+    });
+
+    const serverLookups = await this.http.post<IStaticListLegacy[]>(`${this.appConfig.API.BASE_URL}//Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, updateLists).toPromise();
+
+    const allUpdates = serverLookups.map(async serverLookup => {
+      const lookupTable = this.db.table(this.mapTableName(serverLookup.name));
+
+      await lookupTable.clear();
+
+      const lookupItems = serverLookup.items.map(i => ({ id: i.id, name: i.name }));
+      await lookupTable.bulkPut(lookupItems);
+
+      return lookupItems;
+    });
+
+    return await Promise.all(allUpdates);
   }
 
-  makeQueries(query: any[]): any {
-    return Promise.all(query).then(
-      (response) => {
-        // if (response[0].status === 200) {
-        //   //angular.module('shiptech').value('$tenantSettings', response[0].data.payload);
-        // }
-        if (query.length === 3) {
-          if (response[2].status === 200) {
-            const lists = {};
-            response[2].data.forEach((entry) => {
-              lists[entry.name] = entry.items;
-            });
-
-            if (window.indexedDB) {
-              try {
-                this.db.listsCache.add({ data: lists, id: 1 }).catch((err) => {
-                  console.log(err);
-                });
-              } catch (err) {
-                // To nothing
-              }
-            }
-            // @ts-ignore
-            delete lists;
-          }
-          //   if (response[1].status == 200) {
-          //     angular.module('shiptech').value('$filtersData', response[1].data);
-          //   }
-          // } else {
-          //   if (response[1].status == 200) {
-          //     angular.module('shiptech').value('$filtersData', response[1].data);
-          //   }
-        }
-      }
-    );
+  // noinspection JSMethodCanBeStatic
+  private mapTableName(tableName: string): string {
+    // Note: In case the server tables names do not match desired names locally, map them here
+    return tableName[0].toLowerCase() + tableName.slice(1);
   }
+
+  public load(): Observable<any> {
+    return fromPromise(this.loadInternal());
+  }
+
+
 }
 
 
