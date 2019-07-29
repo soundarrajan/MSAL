@@ -2637,6 +2637,8 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             };
             $("[modal-render='true']").css(modalStyles);
             $(".modal-backdrop").css(bckStyles);
+
+
             setTimeout(function() {
                 if ($scope.modalInstance) {
                     $scope.modalInstance.close();
@@ -2660,7 +2662,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (canCancelLocation) {
                 return true;
             } else {
-                toastr.error("The Location is already cancelled.");
+                if( ctrl.request.requestStatus.name == "Stemmed") {
+                    toastr.error("Order stemmed for the location and can't be removed");
+
+                } else {
+                    toastr.error('The location is already cancelled');
+                }
                 return false;
             }
         };
