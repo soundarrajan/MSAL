@@ -3,6 +3,8 @@ import { AdalService } from 'adal-angular-wrapper';
 import { AuthConfig } from './auth.config';
 import { AuthenticationContext } from './authentication-context';
 import { AuthenticationService } from './authentication.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './token.interceptor';
 
 // Note: Workaround angular aot: Function calls are not supported in decorators
 export function authContextFactory(): AuthenticationContext {
@@ -21,6 +23,11 @@ export class AuthenticationModule {
         {
           provide: AuthenticationContext,
           useFactory: authContextFactory
+        },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: TokenInterceptor,
+          multi: true
         }
       ]
     };

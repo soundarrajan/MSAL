@@ -53,11 +53,6 @@ import { TokenInterceptor } from '../../../../libs/core/src/lib/authentication/t
       useFactory: bootstrap,
       multi: true,
       deps: [BootstrapService]
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
     }
   ],
   bootstrap: [AppComponent]
