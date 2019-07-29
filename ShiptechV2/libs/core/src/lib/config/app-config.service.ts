@@ -9,7 +9,6 @@ import {
   IEmailTransactionLegacyConfig,
   IExportFileTypeLegacyConfig,
   IIDSLegacyConfig,
-  ILegacyConfig,
   ILookupMapLegacyConfig,
   ILookupTypeLegacyConfig,
   IOrderCommandsLegacyConfig,
@@ -26,8 +25,6 @@ import {
   IvalidationStopTypeIdsLegacyConfig,
   IViewTypesLegacyConfig
 } from './legacy-config.interfaces';
-import { AdalService } from 'adal-angular-wrapper';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { IAppConfig } from './app-config.interface';
 
 @Injectable({

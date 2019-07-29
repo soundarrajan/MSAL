@@ -17,7 +17,7 @@ import {
   PrimeNGModule,
   SharedPackagesModule
 } from '@shiptech/core';
-import { bootstrapApplication } from '../../../../libs/core/src/lib/config/bootstrap.service';
+import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.service';
 import { BlankComponent } from './components/blank/blank.component';
 import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
