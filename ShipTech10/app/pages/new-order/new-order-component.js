@@ -257,10 +257,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     Value: ctrl.data.location.id
                 },                {
                     ColumnName: "EtaDate", 
-                    Value: ctrl.data.eta ? ctrl.data.eta.split("T")[0] /*+ "T00:00:00+00:00"*/ : null
-                },                {
+                    Value: ctrl.data.eta ? ctrl.data.eta.split("T")[0] + "T00:00:00+00:00" : null
+                },                
+                {
                     ColumnName: "DeliveryDate", 
-                    Value: ctrl.data.deliveryDate ? ctrl.data.deliveryDate.split("T")[0] /*+ "T00:00:00+00:00"*/ : null
+                    Value: ctrl.data.deliveryDate ? ctrl.data.deliveryDate.split("T")[0] + "T00:00:00+00:00" : null
                 },
                 { 
                     ColumnName: "ProductId", 
