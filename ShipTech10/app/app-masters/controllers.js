@@ -6121,7 +6121,7 @@ APP_MASTERS.controller("Controller_Master", [
             $.each(preferredProducts, function(key1, val1){
                 if(typeof val1.product.name == 'undefined'){
                     $.each($scope.locationPreferredSellerProductsDataAllProd, function(key2, val2){
-                        if(val2.id == val1.product.id){
+                        if(val2.id == val1.product.id && val2.name){
                             val1.product.name = val2.name;
                         }
                     });
@@ -6157,9 +6157,10 @@ APP_MASTERS.controller("Controller_Master", [
                 if (response) {
                     $scope.preferredProductsForSellerInLocation = [];
                     response.data.payload;
+                    $scope.locationPreferredSellerProductsDataAllProd = _.union($scope.locationPreferredSellerProductsDataAllProd, response.data.payload);
                     $.each(response.data.payload, function(k, v) {
                         $scope.preferredProductsForSellerInLocation.push(v.id + "");
-                        $scope.setPrefferedPoductsForSellerInTable();
+                        // $scope.setPrefferedPoductsForSellerInTable();
                     });
                 }
             });
