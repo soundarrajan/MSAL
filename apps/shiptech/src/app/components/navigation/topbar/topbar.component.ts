@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MainComponent } from '../../main.component';
-import { AdalService } from 'adal-angular-wrapper';
+import { AuthenticationService } from '@shiptech/core';
 
 @Component({
   selector: 'shiptech-topbar',
@@ -8,7 +8,7 @@ import { AdalService } from 'adal-angular-wrapper';
 })
 export class TopbarComponent {
 
-  constructor(public app: MainComponent, public adal: AdalService) {
+  constructor(public app: MainComponent, public authService: AuthenticationService) {
   }
 
   display(val: any) {

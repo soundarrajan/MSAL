@@ -29,10 +29,10 @@ import {
   IvalidationStopTypeIdsLegacyConfig,
   IViewTypesLegacyConfig
 } from './legacy-config.interfaces';
-import { AdalService } from 'adal-angular-wrapper';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { IAppConfig } from './app-config.interface';
 import { EMPTY$ } from '../utils/rxjs-operators';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable()
 export class AppConfig implements ILegacyConfig, IAppConfig {
@@ -63,6 +63,7 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
 
   public agGridLicense: string;
 }
+
 //TODO: refactor and cleanup all of this.
 @Injectable({
   providedIn: 'root'
@@ -70,7 +71,7 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
 export class BootstrapService {
   private appConfig: AppConfig;
 
-  constructor(private adal: AdalService, private http: HttpClient) {
+  constructor(private authService: AuthenticationService, private http: HttpClient) {
   }
 
   initApp(): Observable<any> {
@@ -80,11 +81,11 @@ export class BootstrapService {
 
         LicenseManager.setLicenseKey(config.agGridLicense);
 
-        this.adal.init(config.auth);
-        this.adal.handleWindowCallback();
+        this.authService.init(config.auth);
+        this.authService.handleWindowCallback();
 
-        if (!this.adal.userInfo.authenticated) {
-          this.adal.login();
+        if (!this.authService.userInfo.authenticated) {
+          this.authService.login();
 
           return new Observable<ILegacyConfig>(() => {
             // Note: Intentionally left blank, this obs should never complete
