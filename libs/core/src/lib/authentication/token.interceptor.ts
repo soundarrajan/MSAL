@@ -1,21 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthenticationContext } from './authentication-context';
+import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { AuthenticationService } from './authentication.service';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private authContext: AuthenticationContext) {
+  constructor(private authService: AuthenticationService) {
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const request = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${this.authContext.token}`
-      }
-    });
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    if (!this.authService.isInitialized) {
+      return next.handle(req);
+    }
 
-    return next.handle(request);
+    // get api url from adal config
+    const resource = this.authService.getResourceForEndpoint(req.url);
+    if (!resource || !this.authService.isAuthenticated) {
+      return next.handle(req);
+    }
+
+    // merge the bearer token into the existing headers
+    return this.authService.acquireToken(resource).pipe(
+      mergeMap((token: string) => {
+        const authorizedRequest = req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${token}`)
+        });
+        return next.handle(authorizedRequest);
+      }));
   }
 }
