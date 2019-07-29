@@ -231,13 +231,36 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             // $scope.forms.additionalCostsForm[inputName].$setValidity(inputName, true);
         }
 
-        ctrl.getAllOrderContractOptions = function(){
-            $.each(ctrl.data.products, function(key, val){
-                ctrl.getOrderContractOptions(val);
-            });
+        $scope.$watchGroup([/*'$ctrl.data.eta',*/ '$ctrl.data.deliveryDate'], function() {
+        	if (typeof(ctrl.data) != "undefined") {
+	        	if (typeof(ctrl.data.products) != "undefined") {
+	        		setTimeout(function(){
+		        		ctrl.getAllOrderContractOptions();		
+	        		},500)
+	        	}
+        	}
+        });
+        // $scope.$watch("$ctrl.data.deliveryDate", function() {
+        // 	if (typeof(ctrl.data) != "undefined") {
+	       //  	if (typeof(ctrl.data.products) != "undefined") {
+	       //  		setTimeout(function(){
+		      //   		ctrl.getAllOrderContractOptions();		
+	       //  		},500)
+	       //  	}
+        // 	}
+        // });        
+        ctrl.getAllOrderContractOptions = function(onlyBuildPayload){
+        	shouldOnlyBuildPayload = onlyBuildPayload;
+        	setTimeout(function(){
+	        	if (typeof(ctrl.data.products) != "undefined") {
+			        $.each(ctrl.data.products, function(key, val){
+			            ctrl.getOrderContractOptions(val, shouldOnlyBuildPayload);
+			        });
+	        	}
+        	})
         }
 
-        ctrl.getOrderContractOptions = function (product) {
+        ctrl.getOrderContractOptions = function (product, onlyBuildPayload) {
 
         	if (!product.product || !ctrl.data.location || !ctrl.data.seller) {
         		return false;
@@ -272,7 +295,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     Value: ctrl.data.seller.id
                 }
             ]
-       
+       		
+       		if (onlyBuildPayload) {
+       			return;
+       		}
+
             field = {
                 Type: "lookup",
                 Name: "Contract",
@@ -1251,6 +1278,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.getAllOrderContractOptions();
             });
         };
+
         ctrl.selectProduct = function (productId) {
             var product;
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then(function (server_data) {
