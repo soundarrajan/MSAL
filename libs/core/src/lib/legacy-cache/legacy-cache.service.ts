@@ -6,120 +6,122 @@ import { nameof } from '../utils/type-definitions';
 import { ILookupDto } from '../lookups/lookup-dto.interface';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
-
-interface ILookupVersion {
-  name: string;
-  lastModificationDate: string;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class LookupsDatabase extends Dexie {
-
-  company: Dexie.Table<ILookupDto, number>;
-  currency: Dexie.Table<ILookupDto, number>;
-  uom: Dexie.Table<ILookupDto, number>;
-  lookupVersions: Dexie.Table<ILookupVersion, string>;
-
-  constructor() {
-    super('Shiptech-UI.Lookups');
-
-    const lookupId = nameof<ILookupDto>('id');
-    const lookupName = nameof<ILookupDto>('name');
-    const lookupSchema = `++${lookupId}, ${lookupName}`;
-
-    const schema = {
-      [nameof<LookupsDatabase>('company')]: lookupSchema,
-      [nameof<LookupsDatabase>('currency')]: lookupSchema,
-      [nameof<LookupsDatabase>('uom')]: lookupSchema,
-      [nameof<LookupsDatabase>('lookupVersions')]: `++${nameof<ILookupVersion>('name')}`
-    };
-
-    this.version(1).stores(schema);
-
-    Object.keys(schema).forEach(tableName =>{
-      this[tableName] = this.table(tableName);
-    });
-  }
-}
-
+import { LegacyLookupsDatabase } from './legacy-lookups-database.service';
 
 interface ILegacyListStatus {
   name: string;
   lastModificationDate: string;
 }
 
-export interface IHashListsLegacyResponse {
+interface IHashListsLegacyResponse {
   initTime: string;
   selectListTimestamps: ILegacyListStatus[]
 }
-
-const NonLookupTables = [nameof<LookupsDatabase>('lookupVersions').toString()];
 
 interface IStaticListLegacy {
   name: string;
   items: ILookupDto[]
 }
 
+
+const NonLookupTables = [nameof<LegacyLookupsDatabase>('lookupVersions').toString()];
+
 @Injectable({
   providedIn: 'root'
 })
 export class LookupsCacheService {
 
-  constructor(private appConfig: AppConfig, private db: LookupsDatabase, private http: HttpClient) {
+  constructor(private appConfig: AppConfig, private db: LegacyLookupsDatabase, private http: HttpClient) {
     //TODO: AppConfig might come uninitialized yet.
   }
 
   private async loadInternal(): Promise<any> {
+    await this.db.open();
 
-    //TODO Handle errors properly
-    try {
-      await this.db.open();
-    }catch (e) {
-      console.log(e);
-    }
+    const lookupTableNames = this.db.tables.filter(t => !NonLookupTables.includes(t.name)).map(t => t.name);
 
-    const currentLookupVersions = await this.db.lookupVersions.toArray();
+    const localLookupVersions = await this.db.lookupVersions.toArray();
 
-    const serverLookupVersions = (await this.http.post<IHashListsLegacyResponse>(
+    const listsHashResponse = (await this.http.post<IHashListsLegacyResponse>(
         `${this.appConfig.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`,
         {}).toPromise()
     ).selectListTimestamps;
 
+    const serverLookupVersions = listsHashResponse
+    // Note: The server returns versions of lookups we're not interested in, e.g used in v1
+      .filter(listHash => lookupTableNames.some(lookupName => lookupName.toUpperCase() === listHash.name.toUpperCase()))
+      // Note: server returns lookup names with uppercase first letter.
+      .map(listHash => ({ ...listHash, name: this.mapToTableName(listHash.name) }));
 
-    const lookupTableNames = this.db.tables.filter(t => NonLookupTables.includes(t.name)).map(t => t.name);
+    const lookupsToUpdate = [];
+    lookupTableNames.forEach(lookupName => {
+      const localLookupVersion = localLookupVersions.find(l => l.name === lookupName);
 
-    const minDate = new Date(0);
-    const toDateOrDefault = (date: string) => date ? new Date(date) : minDate;
+      // Note: if we don't have the lookups in the current lookup versions, it means it's newly added (schema changed) and we should get it..
+      if (!localLookupVersion) {
+        lookupsToUpdate.push(lookupName);
+        return;
+      }
 
-    const updateLists = lookupTableNames.filter(lookupName => {
-      const lookupServerVersion = toDateOrDefault(serverLookupVersions[lookupName]);
-      const lookupCurrentVersion = toDateOrDefault(currentLookupVersions[lookupName]);
+      const serverLookupVersion = serverLookupVersions.find(listHash => listHash.name === lookupName);
+      if (!serverLookupVersion) {
+        // TODO: Log, think what happens if we request a list and the server doesn't have it
+        return;
+      }
 
-      return lookupCurrentVersion <= lookupServerVersion;
+      if (new Date(localLookupVersion.lastModificationDate) < new Date(serverLookupVersion.lastModificationDate)) {
+        lookupsToUpdate.push(lookupName);
+      }
     });
 
-    const serverLookups = await this.http.post<IStaticListLegacy[]>(`${this.appConfig.API.BASE_URL}//Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, updateLists).toPromise();
+    if (!lookupsToUpdate.length) {
+      // TODO: log nothing to update
+      return;
+    }
 
-    const allUpdates = serverLookups.map(async serverLookup => {
-      const lookupTable = this.db.table(this.mapTableName(serverLookup.name));
+    const lookupsResponse = await this.http.post<IStaticListLegacy[]>(`${this.appConfig.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`,
+      { Payload: lookupsToUpdate.map(this.mapFromTableName) }).toPromise();
 
-      await lookupTable.clear();
+    // Note: Due to a bug?! the backend returns more lists than actually requested.
+    // Note: If we decide that the server will force push updates, then we need to also update the lookup version. Currently the server does not return this info.
+    const updatedLookups = lookupsResponse
+      .filter(s => lookupsToUpdate.some(l => s.name.toUpperCase() === l.toUpperCase()))
+      .map(s => {
+        const tableName = this.mapToTableName(s.name);
+        return { ...s, name: tableName, table: this.db.table(tableName) };
+      });
 
-      const lookupItems = serverLookup.items.map(i => ({ id: i.id, name: i.name }));
-      await lookupTable.bulkPut(lookupItems);
+    // Process the updates
+    await this.db.transaction('rw!', [this.db.lookupVersions, ...updatedLookups.map(s => s.table)], async () => {
+      const allUpdates = updatedLookups.map(async tableAndLookup => {
+        const lookupTable = tableAndLookup.table;
 
-      return lookupItems;
+        await lookupTable.clear();
+
+        const lookupItems = tableAndLookup.items.map(i => ({ id: i.id, name: i.name }));
+        await lookupTable.bulkPut(lookupItems);
+
+        return lookupItems;
+      });
+
+      // Note: In transaction it's important to use the Dexie.Promise so that the context flows down.
+      await Dexie.Promise.all(allUpdates);
+
+      await this.db.lookupVersions.clear();
+      await this.db.lookupVersions.bulkAdd(serverLookupVersions);
     });
-
-    return await Promise.all(allUpdates);
   }
 
   // noinspection JSMethodCanBeStatic
-  private mapTableName(tableName: string): string {
+  private mapToTableName(listName: string): string {
     // Note: In case the server tables names do not match desired names locally, map them here
-    return tableName[0].toLowerCase() + tableName.slice(1);
+    return listName[0].toLowerCase() + listName.slice(1);
+  }
+
+  // noinspection JSMethodCanBeStatic
+  private mapFromTableName(tableName: string): string {
+    // Note: In case the server tables names do not match desired names locally, map them here
+    return tableName[0].toUpperCase() + tableName.slice(1);
   }
 
   public load(): Observable<any> {
