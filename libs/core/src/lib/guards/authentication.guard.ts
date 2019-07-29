@@ -15,10 +15,14 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (!this.authService.userInfo.authenticated) {
+
       this.toastr.warning('You are not authorized, redirecting');
+
+      // Note: using timeout to give user some time to read the toaster
       setTimeout(() => {
         this.authService.login();
       }, 2000);
+
     }
     return this.authService.userInfo.authenticated;
   }
