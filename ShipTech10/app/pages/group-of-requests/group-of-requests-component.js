@@ -5380,6 +5380,9 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
         };
+	    $rootScope.$on("initScreenAfterSendOrSkipRfq", function (event, res) {
+			ctrl.initScreenAfterSendOrSkipRfq()
+	    })    
         $rootScope.$on("supplierCardChangedData", function (event, supplierCardData) {
             console.log(supplierCardData);
             ctrl.initScreen();
@@ -6801,6 +6804,66 @@ ctrl.setProductData = function(data, loc) {
 		});		
 		$scope.$watch('ctrl.requirements', function(newValue, oldValue) {
 		});
+
+
+		ctrl.goToOrderForProduct = function(product){
+			requestId = product.requestId;
+			productId = product.product.id;
+			foundOffers = [];
+            $.each(ctrl.requests, function (reqK, reqV) {
+            	if (requestId == reqV.id) {
+	                $.each(reqV.locations, function (locK, locV) {
+	                	currentLocation = locV;
+	                    $.each(locV.products, function (prodK, prodV) {
+	                        if (productId == prodV.product.id) {
+	                        	if (product.orderId) {
+	                        		data = {
+	                        			"eta" : currentLocation.eta,
+	                        			"orderId" : product.orderId
+	                        		}
+	                        		foundOffers.push(data);
+	                        	}
+	                        }
+	                    });
+	                });
+            	}
+            });
+            if (foundOffers.length > 0) {
+	            if (_.orderBy(foundOffers, 'eta', 'asc')[0]) {
+	            	earliestEtaOrder = _.orderBy(foundOffers, 'eta', 'asc')[0].orderId;
+	            	window.open("/#/edit-order/"+earliestEtaOrder, '_blank');
+	            }
+            }
+			console.log(foundOffers);
+		}
+		ctrl.checkIfProductHasOrder = function(product){
+			requestId = product.requestId;
+			productId = product.product.id;
+			foundOffers = [];
+            $.each(ctrl.requests, function (reqK, reqV) {
+            	if (requestId == reqV.id) {
+	                $.each(reqV.locations, function (locK, locV) {
+	                	currentLocation = locV;
+	                    $.each(locV.products, function (prodK, prodV) {
+	                        if (productId == prodV.product.id) {
+	                        	if (product.orderId) {
+	                        		data = {
+	                        			"eta" : currentLocation.eta,
+	                        			"orderId" : product.orderId
+	                        		}
+	                        		foundOffers.push(data);
+	                        	}
+	                        }
+	                    });
+	                });
+            	}
+            });
+            if (foundOffers.length > 0) {
+            	return true;
+            }
+        	return false;
+			
+		}		
 
 
     }

@@ -4720,3 +4720,8 @@ input[id$="eta_dateinput"] {
 input[id$="etd_dateinput"] {
     border: 1px solid #c2cad8 !important;
 }
+
+#group_of_requests_table .productHasOrderLink {
+    color: #3598dc;
+    cursor: pointer;
+}

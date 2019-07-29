@@ -204,8 +204,6 @@
                         <div ng-repeat="product in requestProducts" class="form-group-sm">
                             
                             <label class="control-label st-product-name"><strong>{{product.product.name}}</strong></label>
-                            <!-- <select ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
-                            </select> -->
                             <hr ng-hide="$last"/>
                         </div>
                     </form>
@@ -230,9 +228,7 @@
                     <form class="form-inline" style="width: calc(100% - 20px); display: flex; align-items: center; height: 35px;">
                         <div class="form-group-sm">
                             
-                            <label class="control-label font-dark" ><b>{{product.product.name}}</b></label>
-                            <!-- <select style="width: 50%" ng-options="pricingType.id as pricingType.name for pricingType in $ctrl.lists.PricingType" class="select form-control pull-right" ng-model="product.pricingType.id" ng-change="$ctrl.changeRequirementsPricingType(product)" disabled>
-                            </select> -->
+                            <label class="control-label font-dark" ><b ng-click="$ctrl.goToOrderForProduct(product)" ng-class="{'productHasOrderLink' : $ctrl.checkIfProductHasOrder(product)}">{{product.product.name}}</b></label>
                         </div>
                        
                     </form>
