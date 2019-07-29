@@ -7,6 +7,7 @@ export * from "./core.module";
 export * from "./authentication/auth.config";
 export * from "./authentication/authentication-context";
 export * from "./authentication/authentication.module";
+export * from "./authentication/authentication.service";
 export * from "./config/app-config.service";
 export * from "./enums/known-modules-routes.enum";
 export * from "./guards/authentication.guard";
