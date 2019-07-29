@@ -5007,6 +5007,15 @@ APP_MASTERS.controller("Controller_Master", [
             $rootScope.previewEmail.bcc == null ? ($rootScope.previewEmail.bcc = []) : "";
             $rootScope.previewEmail.toEmailOthers = $scope.formEmailString($rootScope.previewEmail.toOthers);
             $rootScope.previewEmail.ccEmailOthers = $scope.formEmailString($rootScope.previewEmail.ccOthers);
+            $.each($rootScope.availableDocumentAttachmentsList, function(k, v) {
+                if (v.isIncludedInMail) {
+                    $.each($rootScope.previewEmail.attachmentsList, function(k1, v1) {
+                        if (v1.id === v.id) {
+                            v1.isIncludedInMail = true;
+                        }
+                    });
+                }
+            });
         });
         if (!$scope.onMyEvent)
             $scope.onMyEvent = $scope.$on("tableLayoutLoaded", function(e, arg) {
@@ -7386,8 +7395,8 @@ APP_MASTERS.controller("Controller_Master", [
 	    	$http.post(API.BASE_URL_DATA_MASTERS + "/api/masters/documentupload/list", {
 	            "Payload": payload
 	        }).then(function successCallback(response) {
-		    	$scope.availableDocumentAttachmentsList = response.data.payload;
-	        	$.each($scope.availableDocumentAttachmentsList, function(k,v){
+		    	$rootScope.availableDocumentAttachmentsList = response.data.payload;
+	        	$.each($rootScope.availableDocumentAttachmentsList, function(k,v){
 	        		v.isIncludedInMail = true;
 	        	});
 	        });
