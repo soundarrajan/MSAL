@@ -1496,6 +1496,18 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 						ctrl.comfirmCancelOrder = true;
 						ctrl.sendOrderCommand("cancel", ctrl.orderId)
                         $scope.prettyCloseModal();
+		                orderModel.getManualCancellationEmail(ctrl.data).then(function (response) {
+	                    	console.log(response);
+	                    	ctrl.defaultCancellationEmail = null;
+	                    	if (response.payload.id) {
+	                    		ctrl.defaultCancellationEmail = {
+	                    			"id" : response.payload.id,
+	                    			"name" : response.payload.name
+	                    		}
+		                        ctrl.orderPreviewEmail();
+	                    	}
+	                        return;
+	                    })					
 					}
 				})            	
                 // ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
@@ -1669,18 +1681,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 orderModel.sendOrderCommand(command, orderId).
                     then(function (response) {
 	                	if (currentCommand == "cancel") {
-			                orderModel.getManualCancellationEmail(ctrl.data).then(function (response) {
-		                    	console.log(response);
-		                    	ctrl.defaultCancellationEmail = null;
-		                    	if (response.payload.id) {
-		                    		ctrl.defaultCancellationEmail = {
-		                    			"id" : response.payload.id,
-		                    			"name" : response.payload.name
-		                    		}
-			                        ctrl.orderPreviewEmail();
-		                    	}
-		                        return;
-		                    })
+	                        return;
 	                	}
 
                         ctrl.buttonsDisabled = false;
