@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { concatMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import {
   EXPORTFILETYPEEXTENSION,
   IApiUrlsLegacyConfig,
@@ -62,6 +62,8 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
   tenantConfigs: ITenantLegacyConfig;
 
   public agGridLicense: string;
+  public loggingApi: string;
+  public loaded$: ReplaySubject<IAppConfig>;
 }
 
 //TODO: refactor and cleanup all of this.
@@ -92,8 +94,18 @@ export class BootstrapService {
           });
         }
 
+        this.appConfig.loaded$ = this.setupLoadedSubject(this.appConfig);
+
         return EMPTY$;
       }));
+  }
+
+  private setupLoadedSubject(value?: AppConfig): ReplaySubject<IAppConfig> {
+    const subject = new ReplaySubject<IAppConfig>(1);
+    if (value) {
+      subject.next(value);
+    }
+    return subject;
   }
 
   private loadAppConfigAsync(): Observable<AppConfig> {

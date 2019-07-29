@@ -22,7 +22,7 @@ import { BlankComponent } from './components/blank/blank.component';
 import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdalInterceptor } from 'adal-angular-wrapper';
-import { TokenInterceptor } from '../../../../libs/core/src/lib/authentication/token.interceptor';
+import { TokenInterceptor } from '../../../../libs/core/src/lib/interceptors/token-interceptor.service';
 
 
 @NgModule({
