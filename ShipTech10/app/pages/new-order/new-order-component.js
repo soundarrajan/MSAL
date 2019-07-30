@@ -1092,7 +1092,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             })
             newProduct.quantityUom = {};
             newProduct.currency = ctrl.currency;
-            newProduct.physicalSupplier = angular.copy(ctrl.data.seller);
+            // newProduct.physicalSupplier = angular.copy(ctrl.data.seller);
+            ctrl.setPhysicalSupplier(newProduct);
             newProduct.additionalCosts = [];
             addFirstAdditionalCost();
 
@@ -1255,13 +1256,17 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
         }
 
-        ctrl.setPhysicalSupplier = function () {
+        ctrl.setPhysicalSupplier = function (product) {
             function setPS() {
-                if (ctrl.data) {
-                    if (ctrl.data.products) {
-                        $.each(ctrl.data.products, function (prodK, prodV) {
-                            prodV.physicalSupplier = angular.copy(ctrl.data.seller);
-                        })
+                if (product) {
+                    product.physicalSupplier = angular.copy(ctrl.data.seller);
+                } else {
+                    if (ctrl.data) {
+                        if (ctrl.data.products) {
+                            $.each(ctrl.data.products, function (prodK, prodV) {
+                                prodV.physicalSupplier = angular.copy(ctrl.data.seller);
+                            })
+                        }
                     }
                 }
             }
@@ -2546,9 +2551,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.addNewProduct= function() {
         	newProduct = {
   				uniqueIdUI: Math.random().toString(36).substring(7),
-  				physicalSupplier: angular.copy(ctrl.data.seller),
+  				// physicalSupplier: angular.copy(ctrl.data.seller),
   				deliveryOption : angular.copy(ctrl.defaultDeliveryOption),
         	}
+            ctrl.setPhysicalSupplier(newProduct);
             if(ctrl.data.products.length > 0) {
                 newProduct.currency = ctrl.data.products[0].currency;
             }
@@ -2605,7 +2611,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				})
 			}
 			if (product.uniqueIdUI) {
-				toastr.info("Please consider changing any additional cost that is applicable for " + currentProduct.product.name + " before removing the product")
+                if (_.has(currentProduct, 'product.name')) {
+                    toastr.info("Please consider changing any additional cost that is applicable for " + currentProduct.product.name + " before removing the product")
+                }
 				$.each(ctrl.data.products, function(pk, pv){
 					if (pv.uniqueIdUI == product.uniqueIdUI) {
 						ctrl.data.products.splice(pk,1);
@@ -2645,7 +2653,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                 angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType; 
                 ctrl.data.products[idx].requiredFields = [];
-				ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
+                ctrl.setPhysicalSupplier(ctrl.data.products[idx]);
+				// ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
 				if (ctrl.procurementSettings.order.specGroupFlowFromContract.name == "Yes") {
 					ctrl.data.products[idx].specGroup = selection.specGroup;
 				}
