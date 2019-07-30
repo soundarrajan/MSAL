@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthenticationService {
 
+  // TODO: Do not expose adal, create custom object model
   get config(): adal.Config {
       return (this.adalService || <AdalService>{}).config
   }
@@ -15,23 +16,17 @@ export class AuthenticationService {
     return (this.adalService || <AdalService>{}).userInfo;
   }
 
-  get isInitialized(): boolean {
-    try {
-      return !!this.config
-    } catch(e) {
-      return false;
-    }
-  }
-
-  get isAuthenticated(): boolean {
-    return this.adalService.userInfo.authenticated;
+  get isAuthenticated(): boolean{
+    return  ((this.adalService || <AdalService>{}).userInfo || <adal.User>{}).authenticated;
   }
 
   constructor(private adalService: AdalService) {
+    //TODO: setup AuthenticationContext
   }
 
   public init(configOptions: adal.Config): void {
     this.adalService.init(configOptions);
+    this.adalService.handleWindowCallback();
   }
 
   public login(): void {
@@ -48,9 +43,5 @@ export class AuthenticationService {
 
   public getResourceForEndpoint(url: string): string | null {
     return this.adalService.getResourceForEndpoint(url);
-  }
-
-  public handleWindowCallback(removeHash?: boolean): void {
-    this.adalService.handleWindowCallback();
   }
 }
