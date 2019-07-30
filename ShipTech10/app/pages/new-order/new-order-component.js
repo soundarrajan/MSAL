@@ -1708,13 +1708,13 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }        
             currentCommand = command;
-            if ((ctrl.comfirmCancelOrder && command == "cancel") || command != "cancel") {
+            if (command != "cancel") {
                 ctrl.buttonsDisabled = true;
+            	if (currentCommand == "cancel") {
+                    return;
+            	}
                 orderModel.sendOrderCommand(command, orderId).
                     then(function (response) {
-	                	if (currentCommand == "cancel") {
-	                        return;
-	                	}
 
                         ctrl.buttonsDisabled = false;
                         $state.go(STATE.EDIT_ORDER, {
