@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import {
   EXPORTFILETYPEEXTENSION,
   IApiUrlsLegacyConfig,
@@ -9,6 +10,7 @@ import {
   IEmailTransactionLegacyConfig,
   IExportFileTypeLegacyConfig,
   IIDSLegacyConfig,
+  ILegacyConfig,
   ILookupMapLegacyConfig,
   ILookupTypeLegacyConfig,
   IOrderCommandsLegacyConfig,
@@ -27,10 +29,11 @@ import {
 } from './legacy-config.interfaces';
 import { IAppConfig } from './app-config.interface';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class AppConfig implements IAppConfig {
+export class AppConfig implements ILegacyConfig, IAppConfig {
   public auth: IAuthLegacyConfig;
   API: IApiUrlsLegacyConfig;
   COMPONENT_TYPE_IDS: IComponentTypeIdsLegacyConfig;
@@ -57,6 +60,7 @@ export class AppConfig implements IAppConfig {
   tenantConfigs: ITenantLegacyConfig;
 
   public agGridLicense: string;
+  public loggingApi: string;
+  public loaded$ = new ReplaySubject<IAppConfig>(1);
 }
-
 

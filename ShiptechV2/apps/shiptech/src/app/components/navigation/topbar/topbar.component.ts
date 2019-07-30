@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { MainComponent } from '../../main.component';
-import { AdalService } from 'adal-angular-wrapper';
+import { AuthenticationService } from '@shiptech/core';
+import { BreadcrumbsService } from '../../../../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.service';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import * as _ from 'lodash';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'shiptech-topbar',
@@ -8,10 +13,9 @@ import { AdalService } from 'adal-angular-wrapper';
 })
 export class TopbarComponent {
 
-  constructor(public app: MainComponent, public adal: AdalService) {
-  }
+  public pageTitle$: Observable<string>;
 
-  display(val: any) {
-    console.log(val);
+  constructor(public app: MainComponent, public authService: AuthenticationService, breadcrumbService: BreadcrumbsService, titleService: Title) {
+    this.pageTitle$ = breadcrumbService.get().pipe(map(breadcrumbs => _.last(breadcrumbs).label), tap(title => titleService.setTitle(title)));
   }
 }
