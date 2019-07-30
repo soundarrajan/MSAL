@@ -22,7 +22,7 @@ export class BootstrapService {
               private adal: AdalService,
               private http: HttpClient,
               private authService: AuthenticationService,
-              private legacyLookupsDatabase: LegacyLookupsDatabase,
+              private legacyLookupsDatabase: LegacyLookupsDatabase
   ) {
   }
 
@@ -31,7 +31,7 @@ export class BootstrapService {
 
     // Note: Order is very important here.
     return this.loadAppConfig().pipe(
-      concatMap(() => this.authenticate()),
+      concatMap(() => this.setupAuthentication()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
       tap(() => this.setupAgGrid())
@@ -51,15 +51,15 @@ export class BootstrapService {
       );
   }
 
-  private authenticate(): Observable<any> {
-    this.adal.init(this.appConfig.auth);
-    this.adal.handleWindowCallback();
+  private setupAuthentication(): Observable<any> {
 
-        if (this.authService.userInfo.authenticated) {
+    this.authService.init();
+
+    if (this.authService.isAuthenticated) {
       return EMPTY$;
     }
     //TODO: handle adal errors and token expire
-          this.authService.login();
+    this.authService.login();
 
     return new Observable<IAppConfig>(() => {
       // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
