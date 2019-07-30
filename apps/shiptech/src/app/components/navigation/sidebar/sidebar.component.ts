@@ -23,13 +23,13 @@ import * as jp from 'jsonpath';
     ])
   ],
   styles: [`
-    .menu-title {
-      color: #75808e;
-      font-size: 15px;
-      font-weight: 600;
-      margin: 17px 10px;
-      display: inline-block;
-    }`]
+      .menu-title {
+          color: #75808e;
+          font-size: 15px;
+          font-weight: 600;
+          margin: 17px 10px;
+          display: inline-block;
+      }`]
 })
 export class SidebarComponent implements OnInit, AfterContentInit {
 
@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
   constructor(public app: MainComponent) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // TODO: replace this with values from tenant settings
     // TODO: TsList disable double qoues
     jp.value(BASE_MENU, 'masters.items.company.label', 'Company');
@@ -77,14 +77,14 @@ export class SidebarComponent implements OnInit, AfterContentInit {
     );
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     setTimeout(() => {
-      this.layoutMenuScrollerViewChild.style = {height: '100%'};
+      this.layoutMenuScrollerViewChild.style = { height: '100%' };
       this.layoutMenuScrollerViewChild.moveBar();
     }, 100);
   }
 
-  onMenuClick(event) {
+  onMenuClick(event: any):void  {
     if (!this.app.isHorizontal()) {
       setTimeout(() => {
         this.layoutMenuScrollerViewChild.moveBar();

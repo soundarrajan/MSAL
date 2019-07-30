@@ -44,9 +44,10 @@ export class AppSubMenuComponent {
 
   activeIndex: number;
 
-  constructor(public app: MainComponent, public appMenu: SidebarComponent) { }
+  constructor(public app: MainComponent, public appMenu: SidebarComponent) {
+  }
 
-  itemClick(event: Event, item: MenuItem, index: number) {
+  itemClick(event: Event, item: MenuItem, index: number): boolean {
     if (this.root) {
       this.app.menuHoverActive = !this.app.menuHoverActive;
     }
@@ -75,11 +76,7 @@ export class AppSubMenuComponent {
 
     // hide menu
     if (!item.items) {
-      if (this.app.isHorizontal() || this.app.isSlim()) {
-        this.app.resetMenu = true;
-      } else {
-        this.app.resetMenu = false;
-      }
+      this.app.resetMenu = this.app.isHorizontal() || this.app.isSlim();
 
       this.app.overlayMenuActive = false;
       this.app.staticMenuMobileActive = false;
@@ -88,7 +85,7 @@ export class AppSubMenuComponent {
     }
   }
 
-  onMouseEnter(index: number) {
+  onMouseEnter(index: number): void {
     if (this.root && this.app.menuHoverActive && (this.app.isHorizontal() || this.app.isSlim())
       && !this.app.isMobile() && !this.app.isTablet()) {
       this.activeIndex = index;
@@ -113,6 +110,7 @@ export class AppSubMenuComponent {
   @Input() get parentActive(): boolean {
     return this._parentActive;
   }
+
   set parentActive(val: boolean) {
     this._parentActive = val;
     if (!this._parentActive) {
