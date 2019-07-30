@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CopyToClipboardDirective } from '@shiptech/core';
+import { CopyToClipboardDirective } from './directives/copy-to-clipboard.directive';
 
 @NgModule({
   declarations: [
@@ -9,5 +9,5 @@ import { CopyToClipboardDirective } from '@shiptech/core';
     CopyToClipboardDirective
   ]
 })
-export class SharedModule {
+export class UIModule {
 }

@@ -8,14 +8,7 @@ import { TopbarComponent } from './components/navigation/topbar/topbar.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
 import { AppRoutingModule } from './app-routing.module';
-import {
-  AuthenticationModule,
-  BootstrapService,
-  CoreModule,
-  DefaultModule,
-  PrimeNGModule,
-  SharedPackagesModule
-} from '@shiptech/core';
+import { AuthenticationModule, BootstrapService, CoreModule, PrimeNGModule } from '@shiptech/core';
 import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.service';
 import { BlankComponent } from './components/blank/blank.component';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
@@ -23,7 +16,8 @@ import { environment } from '../environments/environment.prod';
 import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.module';
 import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-bar.component';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
-import { SharedModule } from '../../../../libs/core/src/lib/modules/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -38,17 +32,16 @@ import { SharedModule } from '../../../../libs/core/src/lib/modules/shared.modul
     AccessDeniedComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-
     CoreModule,
-    DefaultModule,
-    SharedPackagesModule,
     PrimeNGModule,
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: environment.production }),
-    SharedModule,
     BreadcrumbsModule
   ],
   providers: [

@@ -1,12 +1,12 @@
+@import '../variables';
 .exception-body {
     padding: 0;
     height: 100vh;
     $borderColor: transparent;
 
     &.error {
-        background: url("../../layout/images/pages/error-bg.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
+      background: url($layoutPath + "/images/pages/error-bg.jpg") no-repeat;
+      background-size: cover;
 
         .exception-panel {
             border-left: #f56f64 solid 23px;
@@ -14,20 +14,17 @@
     }
 
     &.notfound {
-        background: url("../../layout/images/pages/notfound-bg.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: bottom;
+      background-size: cover;
+      background: url($layoutPath + "/images/pages/error-bg.jpg") no-repeat bottom;
 
-        .exception-panel {
+      .exception-panel {
             border-left: #0f97c7 solid 23px;
         }
     }
 
     &.accessdenied {
-        background: url("../../layout/images/pages/accessdenied-bg.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
+      background: url($layoutPath + "/images/pages/accessdenied-bg.jpg") no-repeat;
+      background-size: cover;
 
         .exception-panel {
             border-left: #f5b064 solid 23px;
@@ -69,7 +66,7 @@
             }
         }
     }
-    
+
 }
 
 @media screen and (max-width: 40em) {
@@ -79,5 +76,5 @@
             width: 100%;
         }
     }
-    
+
 }
