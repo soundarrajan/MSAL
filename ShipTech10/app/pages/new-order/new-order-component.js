@@ -1518,21 +1518,29 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
 					if (modalresponse) {
-						ctrl.comfirmCancelOrder = true;
-						ctrl.sendOrderCommand("cancel", ctrl.orderId)
-                        $scope.prettyCloseModal();
-		                orderModel.getManualCancellationEmail(ctrl.data).then(function (response) {
-	                    	console.log(response);
-	                    	ctrl.defaultCancellationEmail = null;
-	                    	if (response.payload.id) {
-	                    		ctrl.defaultCancellationEmail = {
-	                    			"id" : response.payload.id,
-	                    			"name" : response.payload.name
-	                    		}
-		                        ctrl.orderPreviewEmail();
-	                    	}
-	                        return;
-	                    })					
+
+						orderModel.sendOrderCommand(command, orderId).
+	                    then(function (response) {
+							ctrl.comfirmCancelOrder = true;
+							ctrl.sendOrderCommand("cancel", ctrl.orderId)
+	                        $scope.prettyCloseModal();
+			                orderModel.getManualCancellationEmail(ctrl.data).then(function (response) {
+		                    	console.log(response);
+		                    	ctrl.defaultCancellationEmail = null;
+		                    	if (response.payload.id) {
+		                    		ctrl.defaultCancellationEmail = {
+		                    			"id" : response.payload.id,
+		                    			"name" : response.payload.name
+		                    		}
+			                        ctrl.orderPreviewEmail();
+		                    	}
+		                        return;
+		                    })					
+	                    }).catch(function (error) {
+	                        ctrl.buttonsDisabled = false;
+	                        $scope.prettyCloseModal();
+	                    });
+
 					}
 				})            	
                 // ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
