@@ -21,6 +21,7 @@ import { BlankComponent } from './components/blank/blank.component';
 import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
+import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.module';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { environment } from '../environments/environment.prod';
     SharedPackagesModule,
     PrimeNGModule,
     AuthenticationModule.forRoot(),
-    LoggingModule.forRoot({ developmentMode: environment.production })
+    LoggingModule.forRoot({ developmentMode: environment.production }),
+    BreadcrumbsModule
   ],
   providers: [
     {
