@@ -2662,7 +2662,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (canCancelLocation) {
                 return true;
             } else {
-                if( ctrl.request.requestStatus.name == "Stemmed") {
+                if(location.portStatus.name === "Stemmed") {
                     toastr.error("Order stemmed for the location and can't be removed");
 
                 } else {
