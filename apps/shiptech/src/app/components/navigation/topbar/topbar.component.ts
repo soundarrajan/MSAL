@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { MainComponent } from '../../main.component';
 import { AuthenticationService } from '@shiptech/core';
+import { BreadcrumbsService } from '../../../../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'shiptech-topbar',
@@ -8,10 +12,9 @@ import { AuthenticationService } from '@shiptech/core';
 })
 export class TopbarComponent {
 
-  constructor(public app: MainComponent, public authService: AuthenticationService) {
-  }
+  public pageTitle$: Observable<string>;
 
-  display(val: any) {
-    console.log(val);
+  constructor(public app: MainComponent, public authService: AuthenticationService, breadcrumbService: BreadcrumbsService) {
+    this.pageTitle$ = breadcrumbService.get().pipe(map(breadcrumbs => _.last(breadcrumbs).label));
   }
 }
