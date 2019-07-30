@@ -3,19 +3,27 @@ import { Injectable } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { AppConfig } from './config/app-config.service';
 import { IAppConfig } from './config/app-config.interface';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
+import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BootstrapService {
-  constructor(private appConfig: AppConfig, private legacyLookupsDatabase: LegacyLookupsDatabase, private legacyCache: LookupsCacheService, private adal: AdalService, private http: HttpClient) {
+
+  constructor(private appConfig: AppConfig,
+              private legacyCache: LookupsCacheService,
+              private adal: AdalService,
+              private http: HttpClient,
+              private authService: AuthenticationService,
+              private legacyLookupsDatabase: LegacyLookupsDatabase,
+  ) {
   }
 
   initApp(): Observable<any> {
@@ -47,11 +55,11 @@ export class BootstrapService {
     this.adal.init(this.appConfig.auth);
     this.adal.handleWindowCallback();
 
-    if (this.adal.userInfo.authenticated) {
+        if (this.authService.userInfo.authenticated) {
       return EMPTY$;
     }
     //TODO: handle adal errors and token expire
-    this.adal.login();
+          this.authService.login();
 
     return new Observable<IAppConfig>(() => {
       // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.

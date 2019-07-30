@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
 import { AppRoutingModule } from './app-routing.module';
 import {
-  AppConfig,
   AuthenticationModule,
   BootstrapService,
   CoreModule,
@@ -19,10 +18,10 @@ import {
 } from '@shiptech/core';
 import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.service';
 import { BlankComponent } from './components/blank/blank.component';
-import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AdalInterceptor } from 'adal-angular-wrapper';
-import { TokenInterceptor } from '../../../../libs/core/src/lib/authentication/token.interceptor';
+import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
+import { environment } from '../environments/environment.prod';
+import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.module';
+import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-bar.component';
 
 
 @NgModule({
@@ -33,7 +32,7 @@ import { TokenInterceptor } from '../../../../libs/core/src/lib/authentication/t
     AppSubMenuComponent,
     TopbarComponent,
     BlankComponent,
-    BreadcrumbComponent
+    WonderBarComponent
   ],
   imports: [
     BrowserModule,
@@ -44,20 +43,16 @@ import { TokenInterceptor } from '../../../../libs/core/src/lib/authentication/t
     DefaultModule,
     SharedPackagesModule,
     PrimeNGModule,
-    AuthenticationModule.forRoot()
+    AuthenticationModule.forRoot(),
+    LoggingModule.forRoot({ developmentMode: environment.production }),
+    BreadcrumbsModule
   ],
   providers: [
-    AppConfig,
     {
       provide: APP_INITIALIZER,
       useFactory: bootstrapApplication,
       multi: true,
       deps: [BootstrapService]
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
     }
   ],
   bootstrap: [AppComponent]

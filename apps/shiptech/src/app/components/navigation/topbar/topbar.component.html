@@ -9,12 +9,12 @@
   </a>
 
   <span class="navbar-text">
-    PAGE TITLE
+    {{pageTitle$ | async}}
   </span>
 
   <div style="float:right;padding: 5px;">
-    <span>{{adal.userInfo.userName}}</span>
-    <button pButton *ngIf="adal.userInfo.authenticated" (click)="adal.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
+    <span>{{authService.userInfo.userName}}</span>
+    <button pButton *ngIf="authService.userInfo.authenticated" (click)="authService.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
   </div>
 
 </div>
