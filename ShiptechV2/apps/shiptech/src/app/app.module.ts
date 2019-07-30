@@ -23,6 +23,7 @@ import { environment } from '../environments/environment.prod';
 import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.module';
 import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-bar.component';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { SharedModule } from '../../../../libs/core/src/lib/modules/shared.module';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { AccessDeniedComponent } from './components/access-denied/access-denied.
     PrimeNGModule,
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: environment.production }),
+    SharedModule,
     BreadcrumbsModule
   ],
   providers: [
