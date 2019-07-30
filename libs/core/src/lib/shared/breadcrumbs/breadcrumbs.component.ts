@@ -3,12 +3,13 @@ import {Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET} from "@an
 import {filter} from "rxjs/operators";
 import {IBreadcrumb} from "./breadcrumbs.model";
 import {BreadcrumbsService} from "./breadcrumbs.service";
+import { MenuItem } from 'primeng/primeng';
 
 
 @Component({
     selector: "shiptech-breadcrumbs",
     template: `
-        <p-breadcrumb [model]="breadcrumbs" [home]="{icon: 'pi pi-home'}"></p-breadcrumb>
+        <p-breadcrumb [model]="breadcrumbs" [home]="{icon: 'pi pi-home'}" (itemClick)="display($event)"></p-breadcrumb>
     `,
     encapsulation: ViewEncapsulation.None
 })
@@ -21,22 +22,15 @@ export class BreadcrumbComponent implements OnInit {
   // The breadcrumbs of the current route
   private currentBreadcrumbs: IBreadcrumb[];
   // All the breadcrumbs
-  public breadcrumbs: IBreadcrumb[];
-
-  @Input()
-  public allowBootstrap: boolean;
-
-  @Input()
-  public addClass: string;
-
+  public breadcrumbs: MenuItem[];
 
   public constructor(private breadcrumbService: BreadcrumbsService, private activatedRoute: ActivatedRoute, private router: Router) {
     breadcrumbService.get().subscribe((breadcrumbs: IBreadcrumb[]) => {
-      this.breadcrumbs = breadcrumbs as IBreadcrumb[];
+      this.breadcrumbs = breadcrumbs.map(breadcrumb => ({label: breadcrumb.label, routerLink: breadcrumb.url}));
     });
   }
 
-  public hasParams(breadcrumb: IBreadcrumb) {
+  public hasParams(breadcrumb: IBreadcrumb): any {
     return Object.keys(breadcrumb.params).length ? [breadcrumb.url, breadcrumb.params] : [breadcrumb.url];
   }
 
