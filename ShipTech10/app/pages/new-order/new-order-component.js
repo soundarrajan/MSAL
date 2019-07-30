@@ -1267,25 +1267,18 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
 
             $timeout(function() {
-                if (ctrl.useOrderPhysicalSupplierFlow) {
-                    setPS();
-                    return;
+                if (ctrl.useOrderPhysicalSupplierFlow && _.has(ctrl, 'data.seller.id')) {
+                    Factory_Master.getCounterpartyTypes(ctrl.data.seller.id, function (data) {
+                        if (data && data.payload) {
+                            $.each(data.payload, function(k, v) {
+                                if (v.internalName === "Supplier") {
+                                    setPS();
+                                    return;
+                                }
+                            });
+                        } 
+                    });
                 }
-
-                if (!_.has(ctrl, 'data.seller.id')) {
-                    return;
-                }
-
-                Factory_Master.getCounterpartyTypes(ctrl.data.seller.id, function (data) {
-                    if (data && data.payload) {
-                        $.each(data.payload, function(k, v) {
-                            if (v.internalName === "Supplier") {
-                                setPS();
-                                return;
-                            }
-                        });
-                    } 
-                });
             })
 
         }
