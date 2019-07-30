@@ -239,7 +239,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                            if (receivedOffers.length == 1) {
 	                           	$("a.closeBlade").click();
 	                           	$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);                           	
-                                window.open('/#/edit-order/' + receivedOffers[0]);
+                                window.location.href = '/#/edit-order/' + receivedOffers[0];
                            } else {
 	                           	$("a.closeBlade").click();
 	                           	$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
