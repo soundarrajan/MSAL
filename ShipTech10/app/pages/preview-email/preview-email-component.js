@@ -249,6 +249,12 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     	ctrl.template = angular.copy(JSON.parse(localStorage.getItem('setQuestionnaireTemplate')));
                     	localStorage.removeItem("setQuestionnaireTemplate");
                     }
+                    if(!ctrl.template) {
+                    	return;
+                    }
+                    if(ctrl.template.id == 0) {
+                    	return;
+                    }                    
                     newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId).then(function(data) {
                         ctrl.email = data.payload;
 
@@ -271,7 +277,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         ctrl.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
                     }, function(){
                     	ctrl.template = null;
-                    	ctrl.data = {};
+                    	// ctrl.data = {};
                     	ctrl.email = {};
                     }).finally(function(){setTimeout(function(){screenLoader.hideLoader()},1500)});
                     break;

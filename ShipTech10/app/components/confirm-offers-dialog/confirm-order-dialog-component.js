@@ -198,6 +198,7 @@ angular.module("shiptech.components").controller("ConfirmOrderDialogController",
                     toastr.info("Please wait, the order is being created");
                     orderModel.createOrders(ctrl.orderList).then(
                         function(data) {
+                        	$(".modal-header .close").click();
                             // debugger
                             ctrl.buttonsDisabled = false;
                             receivedOffers = data.payload;
