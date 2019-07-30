@@ -374,7 +374,7 @@
                                                                 typeahead-wait-ms="100" autocomplete="off" uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | filter:{name:$viewValue}"
                                                                 typeahead-on-select="$ctrl.selectSeller($item)" ng-model="$ctrl.data.seller.name"
                                                                 typeahead-editable="false" ng-required="true" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                ng-blur="$ctrl.setPhysicalSupplier()" />
+                                                                ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null" />
                                                             <span ng-controller="Controller_Master as CM" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_counterpartylist', 'Seller' ,'seller',null,null,null,'sellerList');">
                                                                 <a href="" class=" btn default">
                                                                     <i class="fa fa-search"></i>

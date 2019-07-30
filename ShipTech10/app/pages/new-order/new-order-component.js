@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$element', '$listsCache', '$attrs', '$timeout', '$state', '$filter', '$stateParams', '$templateCache', '$tenantSettings', '$uibModal', 'STATE', 'SCREEN_LAYOUTS', 'LOOKUP_TYPE', 'LOOKUP_MAP', 'IDS', 'ORDER_COMMANDS', 'VALIDATION_MESSAGES', 'SCREEN_ACTIONS', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'EMAIL_TRANSACTION', 'uiApiModel', 'listsModel', 'orderModel', 'lookupModel', 'screenActionsModel', 'tenantService', 'newRequestModel', '$uibModal', 'Factory_Master','Factory_Admin', '$rootScope', '$compile', 'statusColors','$window', 'screenLoader','$location',
-    function ($scope, $element, $listsCache, $attrs, $timeout, $state, $filter, $stateParams, $templateCache, $tenantSettings, uibModal, STATE, SCREEN_LAYOUTS, LOOKUP_TYPE, LOOKUP_MAP, IDS, ORDER_COMMANDS, VALIDATION_MESSAGES, SCREEN_ACTIONS, COST_TYPE_IDS, COMPONENT_TYPE_IDS, EMAIL_TRANSACTION, uiApiModel, listsModel, orderModel, lookupModel, screenActionsModel, tenantService, newRequestModel, $uibModal, Factory_Master, Factory_Admin, $rootScope, $compile, statusColors,$window,screenLoader, $location) {
+angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$element', '$listsCache', '$attrs', '$timeout', '$state', '$filter', '$stateParams', '$templateCache', '$tenantSettings', '$uibModal', 'STATE', 'SCREEN_LAYOUTS', 'LOOKUP_TYPE', 'LOOKUP_MAP', 'IDS', 'ORDER_COMMANDS', 'VALIDATION_MESSAGES', 'SCREEN_ACTIONS', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'EMAIL_TRANSACTION', 'uiApiModel', 'listsModel', 'orderModel', 'lookupModel', 'screenActionsModel', 'tenantService', 'newRequestModel', '$uibModal', 'Factory_Master','Factory_Admin', '$rootScope', '$compile', 'statusColors', '$window', '$location',
+    function ($scope, $element, $listsCache, $attrs, $timeout, $state, $filter, $stateParams, $templateCache, $tenantSettings, uibModal, STATE, SCREEN_LAYOUTS, LOOKUP_TYPE, LOOKUP_MAP, IDS, ORDER_COMMANDS, VALIDATION_MESSAGES, SCREEN_ACTIONS, COST_TYPE_IDS, COMPONENT_TYPE_IDS, EMAIL_TRANSACTION, uiApiModel, listsModel, orderModel, lookupModel, screenActionsModel, tenantService, newRequestModel, $uibModal, Factory_Master, Factory_Admin, $rootScope, $compile, statusColors, $window, $location) {
         var ctrl = this;
         ctrl.state = $state;
         ctrl.STATE = STATE;
@@ -92,9 +92,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.defaultDeliveryOption = settings.payload.request.defaultDeliveryOption;
             ctrl.isAgentMandatory = settings.payload.order.isOrderAgentMandatory;
             ctrl.isSurveyorMandatory = settings.payload.order.isOrderSurveyorMandatory;
+            ctrl.useOrderPhysicalSupplierFlow = _.get(settings, 'payload.order.useOrderPhysicalSupplierFlow.name') === 'Yes';
         });
         ctrl.$onInit = function () {
-            screenLoader.showLoader();
             uiApiModel.get(SCREEN_LAYOUTS.NEW_ORDER).then(function (data) {
                 ctrl.ui = data;
                 ctrl.defaultScreenActions = uiApiModel.getScreenActions();
@@ -1137,6 +1137,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.data.seller.name = seller.name;
             ctrl.data.seller.code = seller.code;
             ctrl.data.seller.id = seller.id;
+            ctrl.setPhysicalSupplier();
             ctrl.getAllOrderContractOptions();
         };
 
@@ -1244,20 +1245,51 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 }
             }
         }
-        ctrl.setPhysicalSupplier = function () {
+        ctrl.clearPhysicalSupplier = function () {
             if (ctrl.data) {
                 if (ctrl.data.products) {
                     $.each(ctrl.data.products, function (prodK, prodV) {
-                        prodV.physicalSupplier = angular.copy(ctrl.data.seller);
+                        prodV.physicalSupplier = null;
                     })
                 }
             }
-            // for (var product in ctrl.data.products) {
-            //     if ($.isEmptyObject(ctrl.data.products[product].physicalSupplier)) {
-            //         angular.copy(ctrl.data.seller,ctrl.data.products[product].physicalSupplier);
-            //     }
-            // }
         }
+
+        ctrl.setPhysicalSupplier = function () {
+            function setPS() {
+                if (ctrl.data) {
+                    if (ctrl.data.products) {
+                        $.each(ctrl.data.products, function (prodK, prodV) {
+                            prodV.physicalSupplier = angular.copy(ctrl.data.seller);
+                        })
+                    }
+                }
+            }
+
+            $timeout(function() {
+                if (ctrl.useOrderPhysicalSupplierFlow) {
+                    setPS();
+                    return;
+                }
+
+                if (!_.has(ctrl, 'data.seller.id')) {
+                    return;
+                }
+
+                Factory_Master.getCounterpartyTypes(ctrl.data.seller.id, function (data) {
+                    if (data && data.payload) {
+                        $.each(data.payload, function(k, v) {
+                            if (v.internalName === "Supplier") {
+                                setPS();
+                                return;
+                            }
+                        });
+                    } 
+                });
+            })
+
+        }
+        
         ctrl.selectPort = function (locationId) {
             var location,
                 productList,
@@ -1677,7 +1709,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             currentCommand = command;
             if ((ctrl.comfirmCancelOrder && command == "cancel") || command != "cancel") {
                 ctrl.buttonsDisabled = true;
-                screenLoader.showLoader();
                 orderModel.sendOrderCommand(command, orderId).
                     then(function (response) {
 	                	if (currentCommand == "cancel") {
@@ -1693,7 +1724,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                         ctrl.buttonsDisabled = false;
                         $scope.prettyCloseModal();
                     }).then(function(){
-                        screenLoader.hideLoader();
                     });
             }
         };
@@ -1757,7 +1787,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
         };
         ctrl.saveOrder = function () {
-            screenLoader.showLoader();
             $("form").addClass("submitted");
             var forms_validation = validateForms(),
                 payload = {};
@@ -1907,30 +1936,24 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
 
             if (ctrl.orderId) {
-                screenLoader.showLoader();
                 orderModel.update(payload).then(function (responseData) {
-                    screenLoader.hideLoader();
                     ctrl.buttonsDisabled = false;
                     $state.go(STATE.EDIT_ORDER, {
                         orderId: ctrl.orderId
                     });
                     addFirstAdditionalCost(null);
                 }).catch(function (err) {
-                    screenLoader.hideLoader();
                     ctrl.buttonsDisabled = false;
                     addFirstAdditionalCost(null);
                 });
             } else {
-                screenLoader.showLoader();
                 orderModel.create(payload).then(function (responseData) {
-                    screenLoader.hideLoader();
                     ctrl.buttonsDisabled = false;
                     $state.go(STATE.EDIT_ORDER, {
                         orderId: responseData.payload.id
                     });
                     addFirstAdditionalCost(null);
                 }).catch(function (err) {
-                    screenLoader.hideLoader();
                     ctrl.buttonsDisabled = false;
                     addFirstAdditionalCost(null);
                 });

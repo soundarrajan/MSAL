@@ -4,6 +4,21 @@
 APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API', 'screenLoader', function($window, $http, $Api_Service, API, screenLoader) {
     var general_api = '';
     return {
+        getCounterpartyTypes: function(data, callback) {
+            var payload = {
+                "Payload": data
+            };
+            var url =  API.BASE_URL_DATA_MASTERS + "/api/masters/counterparties/getCounterpartyTypes";
+            $http({
+                method: 'POST',
+                url: url,
+                data: payload
+            }).then(function successCallback(response) {
+                callback(response.data);
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+        },
         mastersTree: function(callback) {
             $http({
                 method: 'GET',
