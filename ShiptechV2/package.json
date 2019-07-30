@@ -75,6 +75,7 @@
     "runtypes": "^4.0.0",
     "rxjs": "6.4.0",
     "rxjs-observe": "^2.1.4",
+    "rxjs-take-while-inclusive": "^2.1.0",
     "ts-md5": "^1.2.4",
     "web-animations-js": "github:angular/web-animations-js#release_pr208",
     "zone.js": "0.9.1"
