@@ -4,7 +4,7 @@ import { AuthConfig } from './auth.config';
 import { AuthenticationContext } from './authentication-context';
 import { AuthenticationService } from './authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from '../interceptors/token-interceptor.service';
+import { AuthenticationInterceptor } from '../interceptors/authentication-http.interceptor.service.';
 
 // Note: Workaround angular aot: Function calls are not supported in decorators
 export function authContextFactory(): AuthenticationContext {
@@ -26,7 +26,7 @@ export class AuthenticationModule {
         },
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: TokenInterceptor,
+          useClass: AuthenticationInterceptor,
           multi: true
         }
       ]
@@ -39,7 +39,7 @@ export class AuthenticationModule {
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: TokenInterceptor,
+          useClass: AuthenticationInterceptor,
           multi: true
         }
       ]

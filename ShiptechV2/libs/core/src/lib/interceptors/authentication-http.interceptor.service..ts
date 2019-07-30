@@ -5,7 +5,7 @@ import { mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
+export class AuthenticationInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthenticationService) {
   }
@@ -18,7 +18,12 @@ export class TokenInterceptor implements HttpInterceptor {
     // get api url from adal config
     const resource = this.authService.getResourceForEndpoint(req.url);
     if (!resource || !this.authService.isAuthenticated) {
-      return next.handle(req);
+
+      this.authService.login();
+
+      return new Observable<HttpEvent<any>>(() => {
+        // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
+      });
     }
 
     // merge the bearer token into the existing headers

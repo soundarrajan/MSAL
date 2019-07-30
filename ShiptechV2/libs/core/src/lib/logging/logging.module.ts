@@ -32,11 +32,12 @@ export function LoggerSettingsFactory(settings: ILoggerSettings): Object {
       provide: Logger,
       useValue: RootLogger
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: CorrelationIdHttpInterceptor,
-      multi: true
-    },
+    //TODO: Setup backend for serilog
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: CorrelationIdHttpInterceptor,
+    //   multi: true
+    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoggingInterceptor,
