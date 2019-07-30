@@ -3,18 +3,26 @@ import { Injectable } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { ILegacyConfig } from './config/legacy-config.interfaces';
 import { AppConfig } from './config/app-config.service';
 import { IAppConfig } from './config/app-config.interface';
+import { AuthenticationService } from './authentication/authentication.service';
+import { EMPTY$ } from './utils/rxjs-operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BootstrapService {
-  constructor(private appConfig: AppConfig, private legacyCache: LookupsCacheService, private adal: AdalService, private http: HttpClient) {
+
+  constructor(private appConfig: AppConfig,
+              private legacyCache: LookupsCacheService,
+              private adal: AdalService,
+              private http: HttpClient,
+              private authService: AuthenticationService
+  ) {
   }
 
   initApp(): Observable<any> {
@@ -25,28 +33,39 @@ export class BootstrapService {
 
         LicenseManager.setLicenseKey(config.agGridLicense);
 
-        this.adal.init(config.auth);
-        this.adal.handleWindowCallback();
+        this.authService.init(config.auth);
+        this.authService.handleWindowCallback();
 
-        if (!this.adal.userInfo.authenticated) {
+        if (!this.authService.userInfo.authenticated) {
           //TODO: handle adal errors and token expire
-          this.adal.login();
+          this.authService.login();
 
           return new Observable<ILegacyConfig>(() => {
             // Note: Intentionally left blank, this obs should never complete
           });
         }
+
+        this.appConfig.loaded$ = this.setupLoadedSubject(this.appConfig);
+
         //TODO: What happens if loading cache fails? Handle failure anyway.
         return this.legacyCache.load();
-        //return EMPTY$;
+        return EMPTY$;
       }));
   }
 
-  private loadAppConfigAsync(): Observable<IAppConfig> {
+  private setupLoadedSubject(value?: AppConfig): ReplaySubject<IAppConfig> {
+    const subject = new ReplaySubject<IAppConfig>(1);
+    if (value) {
+      subject.next(value);
+    }
+    return subject;
+  }
+
+  private loadAppConfigAsync(): Observable<AppConfig> {
     // TODO: Remove hardcoded path to settings
     // TODO: use dynamic settings json from v1
     return this.http
-      .get<IAppConfig>('/assets/config/settings.runtime.json');
+      .get<AppConfig>('/assets/config/settings.runtime.json');
   }
 }
 
