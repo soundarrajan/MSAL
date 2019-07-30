@@ -16,7 +16,7 @@ export * from "./modules/default.module";
 export * from "./modules/primeng.module";
 export * from "./modules/shared-packages.module";
 export * from "./utils/clipboard.utils";
-export * from "./utils/copy-to-clipboard.directive";
+export * from "./ui/directives/copy-to-clipboard.directive";
 export * from "./utils/dateTime.utils";
 export * from "./utils/math";
 export * from "./utils/QueryString";

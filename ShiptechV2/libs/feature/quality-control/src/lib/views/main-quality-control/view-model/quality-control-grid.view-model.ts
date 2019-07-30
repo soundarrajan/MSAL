@@ -1,10 +1,10 @@
-import { BaseGridViewModel } from '../../../../../../../core/src/lib/shared/ag-grid/base.grid-view-model';
-import { AgColumnPreferencesService } from '../../../../../../../core/src/lib/shared/ag-grid/ag-column-preferences/ag-column-preferences.service';
+import { BaseGridViewModel } from '../../../../../../../core/src/lib/ui/components/ag-grid/base.grid-view-model';
+import { AgColumnPreferencesService } from '../../../../../../../core/src/lib/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { QuantityControlColumnsLabels } from './quantity-control.columns';
-import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/shared/ag-grid/type.definition';
+import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/ui/components/ag-grid/type.definition';
 
 @Injectable()
 export class QualityControlGridViewModel extends BaseGridViewModel {

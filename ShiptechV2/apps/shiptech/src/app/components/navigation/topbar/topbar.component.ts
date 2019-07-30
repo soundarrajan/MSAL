@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MainComponent } from '../../main.component';
 import { AuthenticationService } from '@shiptech/core';
-import { BreadcrumbsService } from '../../../../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.service';
+import { BreadcrumbsService } from '../../../../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.service';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as _ from 'lodash';

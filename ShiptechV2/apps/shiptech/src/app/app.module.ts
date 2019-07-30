@@ -20,8 +20,9 @@ import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.se
 import { BlankComponent } from './components/blank/blank.component';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
-import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.module';
+import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.module';
 import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-bar.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-ba
     AppSubMenuComponent,
     TopbarComponent,
     BlankComponent,
-    WonderBarComponent
+    WonderBarComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,144 @@
+import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
+import { GridOptions } from 'ag-grid-community';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { debounceTime, filter, groupBy, map, mergeMap, switchMap, tap, throttleTime } from 'rxjs/operators';
+import * as _ from 'lodash';
+import { ColumnState } from 'ag-grid-community/src/ts/columnController/columnController';
+import { LocalPreferenceService } from '../../../../services/preference-storage/local-preference.service';
+import {
+  IPreferenceStorage,
+  PREFERENCE_STORAGE
+} from '../../../../services/preference-storage/preference-storage.interface';
+
+interface IGridRegistration {
+  name: string;
+  options: GridOptions;
+  columnsStateChanged$: Subject<any>;
+  eventListener: Function;
+}
+
+interface ISaveRequest {
+  gridName: string;
+  columnState: ColumnState[];
+}
+
+const GridMonitorEvents = ['gridColumnsChanged', 'displayedColumnsChanged', 'columnResized', 'columnEverythingChanged'];
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AgColumnPreferencesService implements OnDestroy {
+  private _savePreferences = new Subject<ISaveRequest>();
+  private _watches: IGridRegistration[] = [];
+  private _storage: IPreferenceStorage;
+  private _storageKey = (gridName: string) => `${gridName}_ColumnPreference`;
+
+  constructor(@Inject(PREFERENCE_STORAGE) @Optional() private storage: IPreferenceStorage, defaultStorage: LocalPreferenceService) {
+    this._storage = storage || defaultStorage;
+
+    // Note: Aligned grids will each try to save it's preferences when a column state changes.
+    // Note: We only want to save one of them.
+    this._savePreferences
+      .pipe(
+        groupBy(request => request.gridName),
+        mergeMap(group =>
+          group.pipe(
+            throttleTime(1000),
+            switchMap(request => this._storage.set(this._storageKey(request.gridName), request.columnState))
+          )
+        )
+      )
+      .subscribe();
+  }
+
+  registerWatch(gridName: string, gridOptions: GridOptions): void {
+    if (!gridOptions.api) {
+      throw Error(`Grid ${gridName} is not ready yet.`);
+    }
+
+    const columnsStateChanged$ = new Subject();
+
+    const listener = () => columnsStateChanged$.next();
+
+    GridMonitorEvents.forEach(event => gridOptions.api.addEventListener(event, listener));
+
+    columnsStateChanged$
+      .pipe(
+        // Note: In case multiple columns change at the same time.
+        debounceTime(100),
+        // Note: gridOptions may already by uninitializing
+        filter(() => !!gridOptions.columnApi),
+        tap(() => this._savePreferences.next({ gridName, columnState: gridOptions.columnApi.getColumnState() }))
+      )
+      .subscribe();
+
+    this._watches.push({
+      name: gridName,
+      options: gridOptions,
+      columnsStateChanged$,
+      eventListener: listener
+    });
+  }
+
+  unregisterWatch(gridName: string): void {
+    const reg = this._watches.find(s => s.name === gridName);
+
+    if (!reg) {
+      return;
+    }
+
+    reg.columnsStateChanged$.complete();
+
+    GridMonitorEvents.forEach(event => {
+      // Note: When ag-Grid unloads the api props are set to null.
+      if (reg.options.api) {
+        reg.options.api.removeEventListener(event, reg.eventListener);
+      }
+    });
+
+    _.remove(this._watches, reg);
+  }
+
+  restoreToGrid(gridName: string, options: GridOptions): Observable<any> {
+    return this._storage.get<ColumnState[]>(this._storageKey(gridName)).pipe(
+      filter(p => !!p),
+      map(columnsState => {
+        if (!Array.isArray(columnsState) || columnsState.length === 0) {
+          this._storage.remove(this._storageKey(gridName));
+
+          throw Error('Invalid grid state json.');
+        }
+
+        const allColumnsSet = new Set<string>(options.columnApi.getAllColumns().map(column => column.getColId()));
+
+        // Note: Restore only existing columns.
+        const columns = columnsState.filter(columnState => allColumnsSet.has(columnState.colId));
+
+        if (columns.length === 0) {
+          throw Error('Preferences contains no valid columns.');
+        }
+
+        return columns;
+      }),
+      tap((columns: ColumnState[]) => {
+        // Note: We don't want to show a grid with no columns.
+        if (columns && columns.length > 0 && columns.some(c => !c.hide)) {
+          options.columnApi.setColumnState(columns);
+        }
+      })
+    );
+  }
+
+  restore(gridName: string): Observable<any> {
+    const watch = this._watches.find(s => s.name === gridName);
+
+    if (!watch || !watch.options.api) {
+      return EMPTY;
+    }
+    return this.restoreToGrid(gridName, watch.options);
+  }
+
+  ngOnDestroy(): void {
+    this._savePreferences.complete();
+  }
+}
