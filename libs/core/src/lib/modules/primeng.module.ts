@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastrModule } from 'ngx-toastr';
 import {
   AccordionModule,
   AutoCompleteModule,
@@ -9,7 +8,6 @@ import {
   CalendarModule,
   CardModule,
   CarouselModule,
-  ChartModule,
   CheckboxModule,
   ChipsModule,
   CodeHighlighterModule,
@@ -37,7 +35,6 @@ import {
   MessagesModule,
   MultiSelectModule,
   OrderListModule,
-  OrganizationChartModule,
   OverlayPanelModule,
   PaginatorModule,
   PanelMenuModule,
@@ -79,7 +76,6 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     CalendarModule,
     CardModule,
     CarouselModule,
-    ChartModule,
     CheckboxModule,
     ChipsModule,
     CodeHighlighterModule,
@@ -108,7 +104,6 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     MessagesModule,
     MultiSelectModule,
     OrderListModule,
-    OrganizationChartModule,
     OverlayPanelModule,
     PaginatorModule,
     PanelModule,
@@ -146,7 +141,6 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     CalendarModule,
     CardModule,
     CarouselModule,
-    ChartModule,
     CheckboxModule,
     ChipsModule,
     CodeHighlighterModule,
@@ -175,7 +169,6 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     MessagesModule,
     MultiSelectModule,
     OrderListModule,
-    OrganizationChartModule,
     OverlayPanelModule,
     PaginatorModule,
     PanelModule,
@@ -206,4 +199,5 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     VirtualScrollerModule
   ]
 })
-export class PrimeNGModule {}
+export class PrimeNGModule {
+}
