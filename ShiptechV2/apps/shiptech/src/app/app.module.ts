@@ -23,6 +23,8 @@ import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcru
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdalInterceptor } from 'adal-angular-wrapper';
 import { TokenInterceptor } from '../../../../libs/core/src/lib/interceptors/token-interceptor.service';
+import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
+import { environment } from '../environments/environment.prod';
 
 
 @NgModule({
@@ -44,10 +46,10 @@ import { TokenInterceptor } from '../../../../libs/core/src/lib/interceptors/tok
     DefaultModule,
     SharedPackagesModule,
     PrimeNGModule,
-    AuthenticationModule.forRoot()
+    AuthenticationModule.forRoot(),
+    LoggingModule.forRoot({developmentMode: environment.production})
   ],
   providers: [
-    AppConfig,
     {
       provide: APP_INITIALIZER,
       useFactory: bootstrap,

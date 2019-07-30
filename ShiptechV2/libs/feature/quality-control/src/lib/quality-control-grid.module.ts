@@ -5,7 +5,7 @@ import { AgGridModule } from 'ag-grid-angular';
 @NgModule({
   imports: [
     DefaultModule,
-    AgGridModule
+    AgGridModule.withComponents([])
   ],
   exports: [AgGridModule]
 })

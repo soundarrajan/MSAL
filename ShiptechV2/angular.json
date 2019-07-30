@@ -42,7 +42,9 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
-              "node_modules/bootstrap/dist/css/bootstrap-grid.css"
+              "node_modules/bootstrap/dist/css/bootstrap-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-theme-balham.css"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
