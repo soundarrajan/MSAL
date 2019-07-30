@@ -21,6 +21,7 @@ import { BlankComponent } from './components/blank/blank.component';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
 import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.module';
+import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-bar.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcru
     SidebarComponent,
     AppSubMenuComponent,
     TopbarComponent,
-    BlankComponent
+    BlankComponent,
+    WonderBarComponent
   ],
   imports: [
     BrowserModule,
