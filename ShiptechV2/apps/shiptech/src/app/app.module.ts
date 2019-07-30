@@ -18,7 +18,6 @@ import {
 } from '@shiptech/core';
 import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.service';
 import { BlankComponent } from './components/blank/blank.component';
-import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
 import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcrumbs/breadcrumbs.module';
@@ -31,8 +30,7 @@ import { BreadcrumbsModule } from '../../../../libs/core/src/lib/shared/breadcru
     SidebarComponent,
     AppSubMenuComponent,
     TopbarComponent,
-    BlankComponent,
-    BreadcrumbComponent
+    BlankComponent
   ],
   imports: [
     BrowserModule,
