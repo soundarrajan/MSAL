@@ -1354,7 +1354,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             $('.contextAction').click(function () {
                 index = $(this).attr('data-index');
                 contextAction(object[index]);
-                removePopups()
+                removePopups();
             })
             $('.contextActionContractPlanning').click(function () {
                 index = $(this).attr('data-index');
@@ -1391,6 +1391,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
                 localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
                 // $rootScope.activeBreadcrumbFilters = [];
+                $('.contextmenu a.close').click();
                 window.open("/#/contract-planning/", "_blank");
             };
         };
@@ -1399,6 +1400,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
             localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
             // $rootScope.activeBreadcrumbFilters = [];
+            $('.contextmenu a.close').click();
             window.open("/#/contract-planning/", "_blank");
         }
 
