@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { concatMap } from 'rxjs/operators';
-import { Observable, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import {
   EXPORTFILETYPEEXTENSION,
   IApiUrlsLegacyConfig,
@@ -29,12 +27,12 @@ import {
   IvalidationStopTypeIdsLegacyConfig,
   IViewTypesLegacyConfig
 } from './legacy-config.interfaces';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { IAppConfig } from './app-config.interface';
-import { EMPTY$ } from '../utils/rxjs-operators';
-import { AuthenticationService } from '../authentication/authentication.service';
 
 
+@Injectable({
+  providedIn: 'root'
+})
 export class AppConfig implements ILegacyConfig, IAppConfig {
   public auth: IAuthLegacyConfig;
   API: IApiUrlsLegacyConfig;
@@ -66,55 +64,3 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
   public loaded$ = new ReplaySubject<IAppConfig>(1);
 }
 
-//TODO: refactor and cleanup all of this.
-@Injectable({
-  providedIn: 'root'
-})
-export class BootstrapService {
-  public appConfig = new AppConfig();
-
-  constructor(private authService: AuthenticationService, private http: HttpClient) {
-  }
-
-  initApp(): Observable<any> {
-    return this.loadAppConfigAsync().pipe(
-      concatMap(config => {
-        this.appConfig = config;
-
-        LicenseManager.setLicenseKey(config.agGridLicense);
-
-        this.authService.init(config.auth);
-        this.authService.handleWindowCallback();
-
-        if (!this.authService.userInfo.authenticated) {
-          this.authService.login();
-
-          return new Observable<ILegacyConfig>(() => {
-            // Note: Intentionally left blank, this obs should never complete
-          });
-        }
-
-        this.appConfig.loaded$ = this.setupLoadedSubject(this.appConfig);
-
-        return EMPTY$;
-      }));
-  }
-
-  private setupLoadedSubject(value?: AppConfig): ReplaySubject<IAppConfig> {
-    const subject = new ReplaySubject<IAppConfig>(1);
-    if (value) {
-      subject.next(value);
-    }
-    return subject;
-  }
-
-  private loadAppConfigAsync(): Observable<AppConfig> {
-    // TODO: Remove hardcoded path to settings
-    return this.http
-      .get<AppConfig>('/assets/config/settings.runtime.json');
-  }
-}
-
-export function bootstrap(bootstrapService: BootstrapService): () => Promise<any> {
-  return () => bootstrapService.initApp().toPromise();
-}

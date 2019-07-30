@@ -3,7 +3,7 @@ import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory, LoggerSettings, RootLo
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Logger } from '../logging/logger';
 import { first, tap } from 'rxjs/operators';
-import { AppConfig, BootstrapService } from '../config/app-config.service';
+import { AppConfig } from '../config/app-config.service';
 import { JL } from 'jsnlog';
 import * as jsonCycle from 'json-cycle';
 import { CorrelationIdHttpInterceptor } from '../interceptors/correlation-id-http-interceptor.service';
@@ -45,7 +45,7 @@ export function LoggerSettingsFactory(settings: ILoggerSettings): Object {
   ]
 })
 export class LoggingModule {
-  constructor(loggerFactory: LoggerFactory, {appConfig}: BootstrapService, @Inject(LOGGER_SETTINGS) settings: ILoggerSettings) {
+  constructor(loggerFactory: LoggerFactory, appConfig: AppConfig, @Inject(LOGGER_SETTINGS) settings: ILoggerSettings) {
     appConfig.loaded$
       .pipe(
         tap(config => loggerFactory.init({ ...settings, serverSideUrl: config.loggingApi })),

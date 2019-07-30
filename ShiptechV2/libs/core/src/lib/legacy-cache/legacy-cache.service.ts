@@ -30,8 +30,7 @@ const NonLookupTables = [nameof<LegacyLookupsDatabase>('lookupVersions').toStrin
   providedIn: 'root'
 })
 export class LookupsCacheService {
-
-  constructor(private appConfig: AppConfig, private db: LegacyLookupsDatabase, private http: HttpClient) {
+  constructor(private db: LegacyLookupsDatabase, private http: HttpClient, private appConfig: AppConfig) {
     //TODO: AppConfig might come uninitialized yet.
   }
 
