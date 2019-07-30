@@ -28,7 +28,7 @@ export function appContextFactory(): AppContext {
     ToastrService
   ]
 })
-export class AppCoreModule {
+export class AppContextModule {
   constructor(private toastr: ToastrService) {
     copyToClipboardCtrlAltE()
       .pipe(tap(() => toastr.info('Tracking Id has been copied to clipboard')))

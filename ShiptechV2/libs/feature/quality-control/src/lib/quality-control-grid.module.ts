@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
-import { DefaultModule } from '@shiptech/core';
 import { AgGridModule } from 'ag-grid-angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
-    DefaultModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   exports: [AgGridModule]
 })
