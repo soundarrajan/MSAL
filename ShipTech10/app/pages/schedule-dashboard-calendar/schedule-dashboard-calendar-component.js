@@ -1390,16 +1390,16 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             function contextActionContractPlanning(voyageStop) {
                 $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
                 localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
-                $rootScope.activeBreadcrumbFilters = [];
-                window.location.href = "/#/contract-planning/";
+                // $rootScope.activeBreadcrumbFilters = [];
+                window.open("/#/contract-planning/", "_blank");
             };
         };
 
         ctrl.addVoyageToContractPlanning = function(voyageStop) {
             $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
             localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
-            $rootScope.activeBreadcrumbFilters = [];
-            window.location.href = "/#/contract-planning/";
+            // $rootScope.activeBreadcrumbFilters = [];
+            window.open("/#/contract-planning/", "_blank");
         }
 
 		ctrl.confirmCancelBunkerStrategy = function(bunkerPlan, vsVal) {
