@@ -1,11 +1,9 @@
 import { Inject, InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
 import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory, LoggerSettings, RootLogger } from '../logging/logger-factory.service';
-// import { NGXS_PLUGINS } from '@ngxs/store';
-import { NgxsAppLoggingPlugin } from '../logging/ngxs-app-logging.plugin';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Logger } from '../logging/logger';
 import { first, tap } from 'rxjs/operators';
-import { AppConfig } from '../config/app-config.service';
+import { AppConfig, BootstrapService } from '../config/app-config.service';
 import { JL } from 'jsnlog';
 import * as jsonCycle from 'json-cycle';
 import { CorrelationIdHttpInterceptor } from '../interceptors/correlation-id-http-interceptor.service';
@@ -34,11 +32,6 @@ export function LoggerSettingsFactory(settings: ILoggerSettings): Object {
       provide: Logger,
       useValue: RootLogger
     },
-    // {
-    //   provide: NGXS_PLUGINS,
-    //   useClass: NgxsAppLoggingPlugin,
-    //   multi: true
-    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CorrelationIdHttpInterceptor,
@@ -52,8 +45,8 @@ export function LoggerSettingsFactory(settings: ILoggerSettings): Object {
   ]
 })
 export class LoggingModule {
-  constructor(loggerFactory: LoggerFactory, private appConfig: AppConfig, @Inject(LOGGER_SETTINGS) settings: ILoggerSettings) {
-    this.appConfig.loaded$
+  constructor(loggerFactory: LoggerFactory, {appConfig}: BootstrapService, @Inject(LOGGER_SETTINGS) settings: ILoggerSettings) {
+    appConfig.loaded$
       .pipe(
         tap(config => loggerFactory.init({ ...settings, serverSideUrl: config.loggingApi })),
         first()

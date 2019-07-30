@@ -34,7 +34,7 @@ import { IAppConfig } from './app-config.interface';
 import { EMPTY$ } from '../utils/rxjs-operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 
-@Injectable()
+
 export class AppConfig implements ILegacyConfig, IAppConfig {
   public auth: IAuthLegacyConfig;
   API: IApiUrlsLegacyConfig;
@@ -63,7 +63,7 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
 
   public agGridLicense: string;
   public loggingApi: string;
-  public loaded$: ReplaySubject<IAppConfig>;
+  public loaded$ = new ReplaySubject<IAppConfig>(1);
 }
 
 //TODO: refactor and cleanup all of this.
@@ -71,7 +71,7 @@ export class AppConfig implements ILegacyConfig, IAppConfig {
   providedIn: 'root'
 })
 export class BootstrapService {
-  private appConfig: AppConfig;
+  public appConfig = new AppConfig();
 
   constructor(private authService: AuthenticationService, private http: HttpClient) {
   }
