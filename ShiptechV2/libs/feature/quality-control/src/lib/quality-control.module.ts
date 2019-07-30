@@ -5,17 +5,28 @@ import { MainQualityControlComponent } from './views/main-quality-control/main-q
 import { QualityControlGridModule } from './quality-control-grid.module';
 import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
+import { PROCUREMENT_API_SERVICE, ProcurementApiService } from './services/api/procurement.api.service';
+import { ProcurementService } from './services/procurement.service';
+import { AuthenticationModule } from '@shiptech/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([{path: '', component: MainQualityControlComponent}]),
+    RouterModule.forChild([{ path: '', component: MainQualityControlComponent }]),
     QualityControlGridModule,
-    LoggingModule
+    LoggingModule,
+    AuthenticationModule.forFeature()
   ],
   declarations: [MainQualityControlComponent],
   providers: [
-    ModuleLoggerFactory
+    ModuleLoggerFactory,
+    {
+      provide: PROCUREMENT_API_SERVICE,
+      useClass: ProcurementApiService
+      // useClass: environment.production ? ProcurementApiService : QuantityControlMockApiService
+    },
+    ProcurementService
   ]
 })
-export class QualityControlModule {}
+export class QualityControlModule {
+}

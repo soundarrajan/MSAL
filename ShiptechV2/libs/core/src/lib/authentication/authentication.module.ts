@@ -32,6 +32,19 @@ export class AuthenticationModule {
       ]
     };
   }
+
+  static forFeature(): ModuleWithProviders {
+    return {
+      ngModule: AuthenticationModule,
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: TokenInterceptor,
+          multi: true
+        }
+      ]
+    };
+  }
 }
 
 
