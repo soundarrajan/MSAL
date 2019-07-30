@@ -44,16 +44,14 @@ export class BootstrapService {
 
   private loadAppConfig(): Observable<IAppConfig> {
     // TODO: Remove hardcoded path to settings
-    // TODO: use dynamic settings json from v1
-    return this.http.get<IAppConfig>('/assets/config/settings.runtime.json')
-      .pipe(
-        tap(config => Object.assign(this.appConfig, config))
-      );
+    const settingsUrl = '/assets/config/settings.runtime.json';
+
+    return this.http.get<IAppConfig>(settingsUrl).pipe(tap(config => Object.assign(this.appConfig, config)));
   }
 
   private setupAuthentication(): Observable<any> {
 
-    this.authService.init();
+    this.authService.init(this.appConfig.auth);
 
     if (this.authService.isAuthenticated) {
       return EMPTY$;
