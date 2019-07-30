@@ -30,24 +30,22 @@ const NonLookupTables = [nameof<LegacyLookupsDatabase>('lookupVersions').toStrin
   providedIn: 'root'
 })
 export class LookupsCacheService {
-
   constructor(private appConfig: AppConfig, private db: LegacyLookupsDatabase, private http: HttpClient) {
-    //TODO: AppConfig might come uninitialized yet.
   }
 
   private async loadInternal(): Promise<any> {
+    // TODO: Implement proper logging here
+
     await this.db.open();
 
     const lookupTableNames = this.db.tables.filter(t => !NonLookupTables.includes(t.name)).map(t => t.name);
-
+    // Note: Local LookupVersions may be "dirty", as in, there may be tables that are not relevant anymore, e.g deleted from schema
     const localLookupVersions = await this.db.lookupVersions.toArray();
 
-    const listsHashResponse = (await this.http.post<IHashListsLegacyResponse>(
+    const serverLookupVersions = (await this.http.post<IHashListsLegacyResponse>(
         `${this.appConfig.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`,
         {}).toPromise()
-    ).selectListTimestamps;
-
-    const serverLookupVersions = listsHashResponse
+    ).selectListTimestamps
     // Note: The server returns versions of lookups we're not interested in, e.g used in v1
       .filter(listHash => lookupTableNames.some(lookupName => lookupName.toUpperCase() === listHash.name.toUpperCase()))
       // Note: server returns lookup names with uppercase first letter.
@@ -125,10 +123,10 @@ export class LookupsCacheService {
   }
 
   public load(): Observable<any> {
+    //TODO: What happens if loading cache fails? Handle failure anyway.
+    //TODO: We should probably delete database and retry a couple of time then go to error screen
     return fromPromise(this.loadInternal());
   }
-
-
 }
 
 
