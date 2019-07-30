@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppSubMenuComponent } from './components/navigation/sidebar/menu-items/menu-items.component';
 import { AppRoutingModule } from './app-routing.module';
 import {
-  AppConfig,
   AuthenticationModule,
   BootstrapService,
   CoreModule,
@@ -20,9 +19,6 @@ import {
 import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.service';
 import { BlankComponent } from './components/blank/blank.component';
 import { BreadcrumbComponent } from './components/navigation/breadcrumb/breadcrumb.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AdalInterceptor } from 'adal-angular-wrapper';
-import { TokenInterceptor } from '../../../../libs/core/src/lib/interceptors/token-interceptor.service';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
 
@@ -47,7 +43,7 @@ import { environment } from '../environments/environment.prod';
     SharedPackagesModule,
     PrimeNGModule,
     AuthenticationModule.forRoot(),
-    LoggingModule.forRoot({developmentMode: environment.production})
+    LoggingModule.forRoot({ developmentMode: environment.production })
   ],
   providers: [
     {
