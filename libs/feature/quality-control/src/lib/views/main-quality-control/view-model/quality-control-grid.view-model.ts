@@ -10,7 +10,7 @@ import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/sh
 export class QualityControlGridViewModel extends BaseGridViewModel {
 
   gridOptions: GridOptions = {
-    groupHeaderHeight: 75,
+    groupHeaderHeight: 20,
     headerHeight: 56,
     rowHeight: 35,
 
@@ -29,6 +29,7 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     enableServerSideFilter: false,
     enableBrowserTooltips: true,
     singleClickEdit: true,
+    getRowNodeId: () => Math.random().toString()
   };
 
   selectCol: ColDef = {

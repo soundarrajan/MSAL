@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -9,7 +10,7 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthenticationService) {
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!this.authService.isInitialized) {
       return next.handle(req);
     }

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QualityControlGridViewModel } from './view-model/quality-control-grid.view-model';
+import { ProcurementService } from '../../services/procurement.service';
+import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'shiptech-main-quality-control',
@@ -9,7 +12,10 @@ import { QualityControlGridViewModel } from './view-model/quality-control-grid.v
 })
 export class MainQualityControlComponent implements OnInit {
 
-  constructor(private quantityControlGridViewModel: QualityControlGridViewModel) {
+  private rowData$: Observable<IProcurementRequestDto[]>;
+
+  constructor(private quantityControlGridViewModel: QualityControlGridViewModel, private procurementService: ProcurementService) {
+    this.rowData$ = this.procurementService.getAllProcurementRequests();
   }
 
   ngOnInit() {
