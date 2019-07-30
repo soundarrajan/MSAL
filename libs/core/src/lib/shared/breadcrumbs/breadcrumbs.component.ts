@@ -9,7 +9,7 @@ import { MenuItem } from 'primeng/primeng';
 @Component({
     selector: "shiptech-breadcrumbs",
     template: `
-        <p-breadcrumb [model]="breadcrumbs" [home]="{icon: 'pi pi-home'}" (itemClick)="display($event)"></p-breadcrumb>
+        <p-breadcrumb [model]="breadcrumbs" [home]="{icon: 'pi pi-home'}"></p-breadcrumb>
     `,
     encapsulation: ViewEncapsulation.None
 })

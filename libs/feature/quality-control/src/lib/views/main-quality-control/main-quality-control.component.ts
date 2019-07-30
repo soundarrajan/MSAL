@@ -12,9 +12,9 @@ import { Observable } from 'rxjs';
 })
 export class MainQualityControlComponent implements OnInit {
 
-  private rowData$: Observable<IProcurementRequestDto[]>;
+  public rowData$: Observable<IProcurementRequestDto[]>;
 
-  constructor(private quantityControlGridViewModel: QualityControlGridViewModel, private procurementService: ProcurementService) {
+  constructor(public quantityControlGridViewModel: QualityControlGridViewModel, private procurementService: ProcurementService) {
     this.rowData$ = this.procurementService.getAllProcurementRequests();
   }
 
