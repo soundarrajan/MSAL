@@ -1,4 +1,4 @@
-<div class="w-100">
+<div class="w-100 px-3 py-4" style="background: white;">
   <ag-grid-angular
     appAgGridFilterPresets
     appAgGridFirstColumnLocked
@@ -7,10 +7,8 @@
     [rowData]="rowData$ | async"
     groupId="quantityControl.main"
     id="quantityControlGrid"
-    style="height:500px"
     class="ag-theme-balham"
-    [gridOptions]="quantityControlGridViewModel.gridOptions"
-  >
+    [gridOptions]="quantityControlGridViewModel.gridOptions">
   </ag-grid-angular>
 </div>
 
