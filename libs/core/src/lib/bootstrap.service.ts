@@ -1,16 +1,17 @@
 //TODO: refactor and cleanup all of this.
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
-import { Observable, ReplaySubject } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { concatMap, map, tap } from 'rxjs/operators';
 import { LicenseManager } from 'ag-grid-enterprise';
-import { AppConfig } from './config/app-config.service';
-import { IAppConfig } from './config/app-config.interface';
+import { AppConfig, IAppConfig } from './config/app-config';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
 import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
+import { ILegacyAppConfig } from './config/legacy-app-config';
+import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory } from './logging/logger-factory.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,9 @@ export class BootstrapService {
               private adal: AdalService,
               private http: HttpClient,
               private authService: AuthenticationService,
-              private legacyLookupsDatabase: LegacyLookupsDatabase
+              private legacyLookupsDatabase: LegacyLookupsDatabase,
+              private loggerFactory: LoggerFactory,
+              @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {
   }
 
@@ -31,11 +34,16 @@ export class BootstrapService {
 
     // Note: Order is very important here.
     return this.loadAppConfig().pipe(
+      tap(() => this.setupLogging()),
       concatMap(() => this.setupAuthentication()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
       tap(() => this.setupAgGrid())
     );
+  }
+
+  private setupLogging(): void {
+    this.loggerFactory.init({ ...this.loggerSettings, serverSideUrl: this.appConfig.loggingApi })
   }
 
   private setupAgGrid(): void {
@@ -46,14 +54,23 @@ export class BootstrapService {
   private loadAppConfig(): Observable<IAppConfig> {
     // TODO: Remove hardcoded path to settings
     // TODO: Load both settings file, v1 and v2, merge them and also replicate same logic of loading settings based on domain
-    const settingsUrl = '/v2/assets/config/settings.runtime.json';
+    const runtimeSettingsUrl = 'assets/config/settings.runtime.json';
+    const legacySettingsUrl = '/config/defaultConfig.json';
 
-    return this.http.get<IAppConfig>(settingsUrl).pipe(tap(config => Object.assign(this.appConfig, config)));
+    return forkJoin(
+      this.http.get<ILegacyAppConfig>(legacySettingsUrl),
+      this.http.get<IAppConfig>(runtimeSettingsUrl)
+    ).pipe(map(([legacyConfig, appConfig]) => {
+      Object.assign(this.appConfig, appConfig);
+      this.appConfig.v1 = legacyConfig;
+
+      return this.appConfig;
+    }));
   }
 
   private setupAuthentication(): Observable<any> {
 
-    this.authService.init(this.appConfig.auth);
+    this.authService.init(this.appConfig.v1.auth);
 
     if (this.authService.isAuthenticated) {
       return EMPTY$;
