@@ -299,30 +299,30 @@ export interface IEmailTransactionLegacyConfig {
   CONTRACT_PLANNING: string;
 }
 
-export interface ILegacyConfig {
+// tslint:disable-next-line:no-empty-interface
+export interface ILegacyAppConfig {
   auth: IAuthLegacyConfig;
-  tenantConfigs: ITenantLegacyConfig;
-  STATE: IStateLegacyConfig;
-  VIEW_TYPES: IViewTypesLegacyConfig;
   API: IApiUrlsLegacyConfig;
-  SCREEN_LAYOUTS: IScreenLayoutsLegacyConfig;
-  TIMESCALE: ITimescaleLegacyConfig;
-  CUSTOM_EVENTS: ICustomEventsLegacyConfig;
-  LOOKUP_TYPE: ILookupTypeLegacyConfig;
-  LOOKUP_MAP: ILookupMapLegacyConfig;
-  SCREEN_ACTIONS: IScreenActionsLegacyConfig;
-  IDS: IIDSLegacyConfig;
-  VALIDATION_MESSAGES: IValidationMessagesLegacyConfig;
-  ORDER_COMMANDS: IOrderCommandsLegacyConfig;
-  STATUS: IStatusLegacyConfig;
-  COST_TYPE_IDS: ICostTypeIdsLegacyConfig;
   COMPONENT_TYPE_IDS: IComponentTypeIdsLegacyConfig;
-  SELLER_SORT_ORDER: ISellerSortOrderLegacyConfig;
-  PRODUCT_STATUS_IDS: IProductStatusIdsLegacyConfig;
-  EXPORT_FILETYPE: IExportFileTypeLegacyConfig;
-  VALIDATION_STOP_TYPE_IDS: IvalidationStopTypeIdsLegacyConfig;
-  EXPORT_FILETYPE_EXTENSION: EXPORTFILETYPEEXTENSION;
-  PACKAGES_CONFIGURATION: IPackagesConfigurationLegacyConfig;
+  COST_TYPE_IDS: ICostTypeIdsLegacyConfig;
+  CUSTOM_EVENTS: ICustomEventsLegacyConfig;
   EMAIL_TRANSACTION: IEmailTransactionLegacyConfig;
-
-  }
+  EXPORT_FILETYPE: IExportFileTypeLegacyConfig;
+  EXPORT_FILETYPE_EXTENSION: EXPORTFILETYPEEXTENSION;
+  IDS: IIDSLegacyConfig;
+  LOOKUP_MAP: ILookupMapLegacyConfig;
+  LOOKUP_TYPE: ILookupTypeLegacyConfig;
+  ORDER_COMMANDS: IOrderCommandsLegacyConfig;
+  PACKAGES_CONFIGURATION: IPackagesConfigurationLegacyConfig;
+  PRODUCT_STATUS_IDS: IProductStatusIdsLegacyConfig;
+  SCREEN_ACTIONS: IScreenActionsLegacyConfig;
+  SCREEN_LAYOUTS: IScreenLayoutsLegacyConfig;
+  SELLER_SORT_ORDER: ISellerSortOrderLegacyConfig;
+  STATE: IStateLegacyConfig;
+  STATUS: IStatusLegacyConfig;
+  TIMESCALE: ITimescaleLegacyConfig;
+  VALIDATION_MESSAGES: IValidationMessagesLegacyConfig;
+  VALIDATION_STOP_TYPE_IDS: IvalidationStopTypeIdsLegacyConfig;
+  VIEW_TYPES: IViewTypesLegacyConfig;
+  tenantConfigs: ITenantLegacyConfig;
+}

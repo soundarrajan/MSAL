@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '../config/app-config.service';
 import { nameof } from '../utils/type-definitions';
 import { ILookupDto } from '../lookups/lookup-dto.interface';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { LegacyLookupsDatabase } from './legacy-lookups-database.service';
+import { AppConfig } from '../config/app-config';
 
 interface ILegacyListStatus {
   name: string;
@@ -43,7 +43,7 @@ export class LookupsCacheService {
     const localLookupVersions = await this.db.lookupVersions.toArray();
 
     const serverLookupVersions = (await this.http.post<IHashListsLegacyResponse>(
-        `${this.appConfig.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`,
+        `${this.appConfig.v1.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`,
         {}).toPromise()
     ).selectListTimestamps
     // Note: The server returns versions of lookups we're not interested in, e.g used in v1
@@ -77,7 +77,7 @@ export class LookupsCacheService {
       return;
     }
 
-    const lookupsResponse = await this.http.post<IStaticListLegacy[]>(`${this.appConfig.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`,
+    const lookupsResponse = await this.http.post<IStaticListLegacy[]>(`${this.appConfig.v1.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`,
       { Payload: lookupsToUpdate.map(this.mapFromTableName) }).toPromise();
 
     // Note: Due to a bug?! the backend returns more lists than actually requested.

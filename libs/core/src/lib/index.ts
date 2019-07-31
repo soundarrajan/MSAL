@@ -4,11 +4,11 @@
 
 export * from "./app-context";
 export * from "./core.module";
-export * from "./authentication/auth.config";
 export * from "./authentication/authentication-context";
 export * from "./authentication/authentication.module";
 export * from "./authentication/authentication.service";
-export * from "./config/app-config.service";
+export * from "./config/app-config";
+export * from "./config/legacy-app-config";
 export * from "./enums/known-modules-routes.enum";
 export * from "./guards/authentication.guard";
 export * from "./modules/app-context.module";
@@ -25,5 +25,4 @@ export * from "./utils/decorators/api-call-settings";
 export * from "./utils/decorators/api-call.decorator";
 export * from "./utils/decorators/method-name.decorator";
 export * from "./utils/decorators/observable-exception.decorator";
-export { AppConfig } from './config/app-config.service';
-export { BootstrapService } from './bootstrap.service';
+export * from "./bootstrap.service";
