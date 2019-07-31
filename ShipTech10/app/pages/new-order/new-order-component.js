@@ -2653,8 +2653,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                 angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType; 
                 ctrl.data.products[idx].requiredFields = [];
-                ctrl.setPhysicalSupplier(ctrl.data.products[idx]);
-				// ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
+				ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
 				if (ctrl.procurementSettings.order.specGroupFlowFromContract.name == "Yes") {
 					ctrl.data.products[idx].specGroup = selection.specGroup;
 				}
