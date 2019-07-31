@@ -1138,8 +1138,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.data.seller.name = seller.name;
             ctrl.data.seller.code = seller.code;
             ctrl.data.seller.id = seller.id;
-            ctrl.setPhysicalSupplier();
             ctrl.getAllOrderContractOptions();
+            ctrl.setPhysicalSupplier();
         };
 
         ctrl.selectAgent = function (sellerId, type) {
@@ -1264,8 +1264,22 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     if (ctrl.data) {
                         if (ctrl.data.products) {
                             $.each(ctrl.data.products, function (prodK, prodV) {
-                                prodV.physicalSupplier = angular.copy(ctrl.data.seller);
-                            })
+                                var prodId = _.get(prodV, 'product.id');
+
+                                var productHasContracts = false;
+
+                                if (ctrl.orderContractOptions && ctrl.orderContractOptions[prodId] && ctrl.orderContractOptions[prodId].length > 0) {
+                                    $.each(ctrl.orderContractOptions[prodId], function(k, v) {
+                                        if (v.id !== -1) {
+                                            productHasContracts = true;
+                                        }
+                                    });
+                                }
+
+                                if (!productHasContracts) {
+                                    prodV.physicalSupplier = angular.copy(ctrl.data.seller);
+                                }
+                            });
                         }
                     }
                 }
