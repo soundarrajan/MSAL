@@ -1,17 +1,10 @@
 <div class="rowsNumberWrapper" fxLayout="row">
   <span class="widget-title">Show</span>
-  <div class="rowsNumberDropdown">
+    <p-dropdown
+      [options]="formattedOptions"
+      [ngModel]="selectedOption"
+      (onChange)="emitSelectionChange($event.value)">
+    </p-dropdown>
 
-    <select [value]="selectedOption" (change)="emitSelectionChange($event.target.value)">
-      <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-    </select>
-<!--    <mat-form-field>-->
-<!--      <mat-select class="standard-line" [value]="selectedOption" (selectionChange)="emitSelectionChange($event.value)">-->
-<!--        <mat-option *ngFor="let option of options" [value]="option">-->
-<!--          {{ option }}-->
-<!--        </mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-  </div>
   <span class="widget-title" style="margin-left:5px">Rows</span>
 </div>
