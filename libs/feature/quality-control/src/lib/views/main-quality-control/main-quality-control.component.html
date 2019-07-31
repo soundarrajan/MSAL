@@ -1,4 +1,6 @@
 <div class="w-100 px-3 py-4" style="background: white;">
+  <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)" [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
+  </app-page-size-selector>
   <ag-grid-angular
     appAgGridFilterPresets
     appAgGridFirstColumnLocked
@@ -8,7 +10,27 @@
     groupId="quantityControl.main"
     id="quantityControlGrid"
     class="ag-theme-balham"
-    [gridOptions]="quantityControlGridViewModel.gridOptions">
+    [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
+
+  <div class="row mt-2">
+    <div class="col-md-3">
+      Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}} to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
+    </div>
+    <div class="col-md-7"></div>
+    <div class="col-md-2">
+      Page
+      <app-ag-paging style="width: 150px;"
+        [pagerLeftArrowIcon]="'fa fa-chevron-left'"
+        [pagerRightArrowIcon]="'fa fa-chevron-right'"
+        [count]="gridViewModel.totalItems"
+        [page]="gridViewModel.page"
+        [size]="gridViewModel.pageSize"
+        [useInputAsPageSelect]="true"
+        (change)="onPageChange($event.page)">
+      </app-ag-paging>
+      of {{gridViewModel.totalItems}}
+    </div>
+  </div>
 </div>
 
