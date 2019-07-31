@@ -231,7 +231,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             // $scope.forms.additionalCostsForm[inputName].$setValidity(inputName, true);
         }
 
-        $scope.$watchGroup([/*'$ctrl.data.eta',*/ '$ctrl.data.deliveryDate'], function() {
+        $scope.$watchGroup(['$ctrl.data.orderDate', '$ctrl.data.deliveryDate'], function() {
         	if (typeof(ctrl.data) != "undefined") {
 	        	if (typeof(ctrl.data.products) != "undefined") {
 	        		setTimeout(function(){
@@ -279,8 +279,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     ColumnName: "LocationId", 
                     Value: ctrl.data.location.id
                 },                {
-                    ColumnName: "EtaDate", 
-                    Value: ctrl.data.eta ? ctrl.data.eta.split("T")[0] + "T00:00:00+00:00" : null
+                    ColumnName: "OrderDate", 
+                    Value: ctrl.data.orderDate ? ctrl.data.orderDate.split("T")[0] + "T00:00:00+00:00" : null
                 },                
                 {
                     ColumnName: "DeliveryDate", 
