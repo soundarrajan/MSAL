@@ -45,7 +45,8 @@ export class BootstrapService {
 
   private loadAppConfig(): Observable<IAppConfig> {
     // TODO: Remove hardcoded path to settings
-    const settingsUrl = 'assets/config/settings.runtime.json';
+    // TODO: Load both settings file, v1 and v2, merge them and also replicate same logic of loading settings based on domain
+    const settingsUrl = '/v2/assets/config/settings.runtime.json';
 
     return this.http.get<IAppConfig>(settingsUrl).pipe(tap(config => Object.assign(this.appConfig, config)));
   }
