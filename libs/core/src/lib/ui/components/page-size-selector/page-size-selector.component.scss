@@ -1,11 +1,3 @@
-.mat-select-arrow-wrapper .mat-select-arrow {
-  color: #2fa3f0 !important;
-}
-
-.rowsNumberWrapper {
-  display: flex;
-}
-
 .rowsNumberDropdown {
   text-align: center;
   width: 70px;
@@ -22,14 +14,4 @@
   margin-right: 5px;
   font-size: 14px;
   color: #828282;
-}
-
-:host /deep/ {
-  .mat-form-field-infix {
-    padding: 0 !important;
-    border: 0;
-  }
-  .mat-form-field-underline {
-    background-color: #74cdea !important;
-  }
 }

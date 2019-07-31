@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SelectItem } from 'primeng/api';
 
 export interface IPageSizeOption {
   size: number;
@@ -15,13 +16,15 @@ export class PageSizeSelectorComponent implements OnInit {
   @Input() selectedOption: number;
   @Output() selectedOptionChange = new EventEmitter();
 
+  get formattedOptions():SelectItem[] {
+    return (this.options || []).map(option => ({label: option.toString(), value: option}))
+  }
   constructor() {}
 
   ngOnInit(): void {}
 
   emitSelectionChange(selected: any): void {
-
-    this.selectedOptionChange.emit(parseInt(selected, 10));
+    this.selectedOptionChange.emit(selected);
   }
 
   compareFn(optionOne: IPageSizeOption, optionTwo: IPageSizeOption): boolean {
