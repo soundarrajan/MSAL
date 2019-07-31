@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AdalService } from 'adal-angular-wrapper';
-import { AuthConfig } from './auth.config';
 import { AuthenticationContext } from './authentication-context';
 import { AuthenticationService } from './authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -17,7 +16,6 @@ export class AuthenticationModule {
     return {
       ngModule: AuthenticationModule,
       providers: [
-        AuthConfig,
         AdalService,
         AuthenticationService,
         {
