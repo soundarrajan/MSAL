@@ -15,14 +15,14 @@ export class ProcurementService {
 
   constructor(@Inject(PROCUREMENT_API_SERVICE) private api: IProcurementApiService) { }
 
-  getAllProcurementRequests(pagination: IShiptechPaginationModel): Observable<IProcurementRequestsResponse> {
+  getAllProcurementRequests(content: Partial<IShiptechProcurementRequestsDto>): Observable<IProcurementRequestsResponse> {
     const payload: IShiptechProcurementRequestsDto = {
       filters: [],
       order: undefined,
       pageFilters: {},
-      pagination,
+      pagination: content.pagination,
       searchText: undefined,
-      SortList: []
+      SortList: content.SortList
     }
     return this.api.getAllProcurementRequests({payload});
   }

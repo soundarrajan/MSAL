@@ -3,9 +3,10 @@ import { AgColumnPreferencesService } from '../../../../../../../core/src/lib/ui
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { QuantityControlColumnsLabels } from './quantity-control.columns';
+import { ProcurementRequestColumnsLabels } from './quantity-control.columns';
 import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/ui/components/ag-grid/type.definition';
 import { ProcurementService } from '../../../services/procurement.service';
+import { ShiptechSortsModel, ShiptechSortParamtersEnum } from '../../../services/models/procurement-requests.dto';
 
 @Injectable()
 export class QualityControlGridViewModel extends BaseGridViewModel {
@@ -23,7 +24,6 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     deltaRowDataMode: true,
     suppressPaginationPanel: false,
     suppressColumnVirtualisation: true,
-    suppressMultiSort: true,
     rowSelection: RowSelection.Single,
     rowDragManaged: true,
     suppressRowClickSelection: true,
@@ -31,7 +31,10 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     enableServerSideFilter: true,
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: () => Math.random().toString()
+    getRowNodeId: () => Math.random().toString(),
+    defaultColDef: {
+      sortable: true
+    }
   };
 
   selectCol: ColDef = {
@@ -55,253 +58,225 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-border-green'
   };
   requestNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.RequestName,
+    headerName: ProcurementRequestColumnsLabels.RequestName,
     field: 'requestName',
-    headerName: 'Request ID',
-    sortable: false,
+    colId: 'Request ID',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   requestGroupIdCol: ColDef = {
-    colId: QuantityControlColumnsLabels.RequestGroupId,
+    headerName: ProcurementRequestColumnsLabels.RequestGroupId,
     field: 'requestGroupId',
-    headerName: 'Group ID',
-    sortable: false,
+    colId: 'Group ID',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   requestDateCol: ColDef = {
-    colId: QuantityControlColumnsLabels.RequestDate,
+    headerName: ProcurementRequestColumnsLabels.RequestDate,
     field: 'requestDate',
-    headerName: 'Date',
-    sortable: false,
+    colId: 'Date',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   serviceNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.ServiceName,
+    headerName: ProcurementRequestColumnsLabels.ServiceName,
     field: 'serviceName',
-    headerName: 'Service',
-    sortable: false,
+    colId: 'Service',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   buyerNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.BuyerName,
+    headerName: ProcurementRequestColumnsLabels.BuyerName,
     field: 'buyerName',
-    headerName: 'Buyer',
-    sortable: false,
+    colId: 'Buyer',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   vesselNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.VesselName,
+    headerName: ProcurementRequestColumnsLabels.VesselName,
     field: 'vesselName',
-    headerName: 'Vessel',
-    sortable: false,
+    colId: 'vesselname',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   imoCol: ColDef = {
-    colId: QuantityControlColumnsLabels.Imo,
+    headerName: ProcurementRequestColumnsLabels.Imo,
     field: 'imo',
-    headerName: 'IMO',
-    sortable: false,
+    colId: 'IMO',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   etaCol: ColDef = {
-    colId: QuantityControlColumnsLabels.Eta,
+    headerName: ProcurementRequestColumnsLabels.Eta,
     field: 'eta',
-    headerName: 'ETA',
-    sortable: false,
+    colId: 'ETA',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   locationNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.LocationName,
+    headerName: ProcurementRequestColumnsLabels.LocationName,
     field: 'locationName',
-    headerName: 'Location',
-    sortable: false,
+    colId: 'Location',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   requestStatusCol: ColDef = {
-    colId: QuantityControlColumnsLabels.RequestStatus,
+    headerName: ProcurementRequestColumnsLabels.RequestStatus,
     field: 'requestStatus',
-    headerName: 'Request Status',
-    sortable: false,
+    colId: 'Request Status',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   productNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.ProductName,
+    headerName: ProcurementRequestColumnsLabels.ProductName,
     field: 'productName',
-    headerName: 'Product',
-    sortable: false,
+    colId: 'Product',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   productTypeCol: ColDef = {
-    colId: QuantityControlColumnsLabels.ProductType,
+    headerName: ProcurementRequestColumnsLabels.ProductType,
     field: 'productType.name',
-    headerName: 'Product Type',
-    sortable: false,
+    colId: 'Product Type',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   productStatusCol: ColDef = {
-    colId: QuantityControlColumnsLabels.ProductStatus,
+    headerName: ProcurementRequestColumnsLabels.ProductStatus,
     field: 'productStatus.displayName',
-    headerName: 'Product Status',
-    sortable: false,
+    colId: 'Product Status',
     resizable: true,
     hide: false,
     lockPosition: false
   };
   agentNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.AgentName,
+    headerName: ProcurementRequestColumnsLabels.AgentName,
     field: 'agentName',
-    headerName: 'Agent Name',
-    sortable: false,
+    colId: 'Agent Name',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   createdOnCol: ColDef = {
-    colId: QuantityControlColumnsLabels.CreatedOn,
+    headerName: ProcurementRequestColumnsLabels.CreatedOn,
     field: 'createdOn',
-    headerName: 'Created On',
-    sortable: false,
+    colId: 'Created On',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   createdByNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.CreatedByName,
+    headerName: ProcurementRequestColumnsLabels.CreatedByName,
     field: 'createdByName',
-    headerName: 'Created By',
-    sortable: false,
+    colId: 'Created By',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   deliveryOptionNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.DeliveryOptionName,
+    headerName: ProcurementRequestColumnsLabels.DeliveryOptionName,
     field: 'deliveryOptionName',
-    headerName: 'Delivery Option',
-    sortable: false,
+    colId: 'Delivery Option',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   commentsCol: ColDef = {
-    colId: QuantityControlColumnsLabels.Comments,
+    headerName: ProcurementRequestColumnsLabels.Comments,
     field: 'comments',
-    headerName: 'Comments',
-    sortable: false,
+    colId: 'Comments',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   lastModifiedOnCol: ColDef = {
-    colId: QuantityControlColumnsLabels.LastModifiedOn,
+    headerName: ProcurementRequestColumnsLabels.LastModifiedOn,
     field: 'lastModifiedOn',
-    headerName: 'Last Modified On',
-    sortable: false,
+    colId: 'Last Modified On',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   lastModifiedByNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.LastModifiedByName,
+    headerName: ProcurementRequestColumnsLabels.LastModifiedByName,
     field: 'lastModifiedByName',
-    headerName: 'Last Modified By',
-    sortable: false,
+    colId: 'Last Modified By',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   agreementTypeNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.AgreementTypeName,
+    headerName: ProcurementRequestColumnsLabels.AgreementTypeName,
     field: 'agreementTypeName',
-    headerName: 'Agreement Type',
-    sortable: false,
+    colId: 'Agreement Type',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   etbCol: ColDef = {
-    colId: QuantityControlColumnsLabels.Etb,
+    headerName: ProcurementRequestColumnsLabels.Etb,
     field: 'etb',
-    headerName: 'ETB',
-    sortable: false,
+    colId: 'ETB',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   etdCol: ColDef = {
-    colId: QuantityControlColumnsLabels.Etd,
+    headerName: ProcurementRequestColumnsLabels.Etd,
     field: 'etd',
-    headerName: 'ETD',
-    sortable: false,
+    colId: 'ETD',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   maxQuantityCol: ColDef = {
-    colId: QuantityControlColumnsLabels.MaxQuantity,
+    headerName: ProcurementRequestColumnsLabels.MaxQuantity,
     field: 'maxQuantity',
-    headerName: 'Maximum Quantity',
-    sortable: false,
+    colId: 'Maximum Quantity',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   minQuantityCol: ColDef = {
-    colId: QuantityControlColumnsLabels.MinQuantity,
+    headerName: ProcurementRequestColumnsLabels.MinQuantity,
     field: 'minQuantity',
-    headerName: 'Minimum Quantity',
-    sortable: false,
+    colId: 'Minimum Quantity',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   uomNameCol: ColDef = {
-    colId: QuantityControlColumnsLabels.UomName,
+    headerName: ProcurementRequestColumnsLabels.UomName,
     field: 'uomName',
-    headerName: 'UOM',
-    sortable: false,
+    colId: 'UOM',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   robOnArrivalCol: ColDef = {
-    colId: QuantityControlColumnsLabels.RobOnArrival,
+    headerName: ProcurementRequestColumnsLabels.RobOnArrival,
     field: 'robOnArrival',
-    headerName: 'Rob on Arrival',
-    sortable: false,
+    colId: 'Rob on Arrival',
     resizable: true,
     hide: true,
     lockPosition: false
   };
   roundVoyageConsumptionCol: ColDef = {
-    colId: QuantityControlColumnsLabels.RoundVoyageConsumption,
+    headerName: ProcurementRequestColumnsLabels.RoundVoyageConsumption,
     field: 'roundVoyageConsumption',
-    headerName: 'Round Voyage Consumption',
-    sortable: false,
+    colId: 'Round Voyage Consumption',
     resizable: true,
     hide: true,
     lockPosition: false
@@ -352,7 +327,20 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.procurementService.getAllProcurementRequests({take: params.request.endRow - params.request.startRow, skip: params.request.startRow})
+    const currentSorts = this.gridApi.getSortModel();
+    const pagination = {
+      take: params.request.endRow - params.request.startRow,
+      skip: params.request.startRow
+    }
+
+    const sorts: ShiptechSortsModel[] = currentSorts.map((s, i) => ({
+      columnValue: this.gridApi.getColumnDef(s.colId).field.toLowerCase(),
+      isComputedColumn: false,
+      sortIndex: i,
+      sortParameter: ShiptechSortParamtersEnum[s.sort]
+    }));
+
+    this.procurementService.getAllProcurementRequests({pagination, SortList: { SortList: sorts}})
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),
         () => params.failCallback());

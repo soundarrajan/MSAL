@@ -1,4 +1,4 @@
-export enum QuantityControlColumnsLabels {
+export enum ProcurementRequestColumnsLabels {
   RequestName = 'Request ID',
   RequestGroupId = 'Group ID',
   RequestDate = 'Date',

@@ -4,7 +4,21 @@ export interface IShiptechProcurementRequestsDto {
   pageFilters: Object;
   pagination: IShiptechPaginationModel,
   searchText: string;
-  SortList: Object[];
+  SortList: {
+    SortList?: ShiptechSortsModel[];
+  }
+}
+
+export interface ShiptechSortsModel {
+  columnValue: string;
+  sortIndex: number;
+  sortParameter: ShiptechSortParamtersEnum;
+  isComputedColumn?: boolean;
+}
+
+export enum ShiptechSortParamtersEnum {
+  asc = 1,
+  desc = 2
 }
 
 export interface IShiptechPaginationModel {
