@@ -39,12 +39,13 @@ export class BootstrapService {
   }
 
   private setupAgGrid(): void {
+    //TODO: Update to latest ag-grid
     LicenseManager.setLicenseKey(this.appConfig.agGridLicense);
   }
 
   private loadAppConfig(): Observable<IAppConfig> {
     // TODO: Remove hardcoded path to settings
-    const settingsUrl = '/assets/config/settings.runtime.json';
+    const settingsUrl = 'assets/config/settings.runtime.json';
 
     return this.http.get<IAppConfig>(settingsUrl).pipe(tap(config => Object.assign(this.appConfig, config)));
   }
