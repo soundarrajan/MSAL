@@ -14,10 +14,10 @@ import { BlankComponent } from './components/blank/blank.component';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
 import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.module';
-import { WonderBarComponent } from './components/navigation/wonder-bar/wonder-bar.component';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { WonderBarComponent } from './components/wonder-bar/wonder-bar.component';
 
 
 @NgModule({

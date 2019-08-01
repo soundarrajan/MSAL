@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { QualityControlGridViewModel } from './view-model/quality-control-grid.view-model';
-import { ProcurementService } from '../../services/procurement.service';
+import { ProcurementRequestsGridViewModel } from './view-model/procurement-requests-grid.view-model';
 import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
 import { Observable } from 'rxjs';
 
@@ -8,14 +7,11 @@ import { Observable } from 'rxjs';
   selector: 'shiptech-main-quality-control',
   templateUrl: './main-quality-control.component.html',
   styleUrls: ['./main-quality-control.component.scss'],
-  providers: [QualityControlGridViewModel]
+  providers: [ProcurementRequestsGridViewModel]
 })
 export class MainQualityControlComponent implements OnInit {
 
-  public rowData$: Observable<IProcurementRequestDto[]>;
-
-  constructor(public gridViewModel: QualityControlGridViewModel, private procurementService: ProcurementService) {
-    // this.rowData$ = this.procurementService.getAllProcurementRequests();
+  constructor(public gridViewModel: ProcurementRequestsGridViewModel) {
   }
 
   onPageChange(page: number): void {

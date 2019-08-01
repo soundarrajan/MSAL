@@ -1,8 +1,8 @@
-import { IProcurementRequestDto, IShiptechProcurementRequestsDto } from '../../models/procurement-requests.dto';
+import { IProcurementRequestDto, IProcurementOrdersRequest } from '../../models/procurement-requests.dto';
 import { IBaseShiptechRequest, IBaseShiptechResponse } from './request-response.shiptech.model';
 
 export interface IProcurementRequestsRequest extends IBaseShiptechRequest {
-  payload: IShiptechProcurementRequestsDto;
+  payload: IProcurementOrdersRequest;
 }
 
 export interface IProcurementRequestsResponse extends IBaseShiptechResponse<IProcurementRequestDto> {}
