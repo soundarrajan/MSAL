@@ -164,7 +164,7 @@
             .page-header.navbar .top-menu .navbar-nav>li.dropdown>.dropdown-toggle.user-menu {
                 display: inline-block;
                 border: 1px solid #364150;
-                border: radiu: 50%;
+                border-radius: 50%;
                 border-radius: 50% !important;
                 padding: 4px;
             }
@@ -1404,6 +1404,37 @@
 
             .page-quick-sidebar .right-menu-title i {
                 font-size: 1.5em;
+            }
+
+            .page-quick-sidebar-item {
+                padding-right: 3px;
+                position: sticky;
+                top: 0;
+                height: 80vh;
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
+
+             /* Width */
+            .page-quick-sidebar-item::-webkit-scrollbar {
+                 width: 5px;
+            }
+
+              /* Track */
+            .page-quick-sidebar-item::-webkit-scrollbar-track {
+                 box-shadow: inset 0 0 2px grey; 
+                 border-radius: 5px;
+            }
+
+             /* Handle */
+            .page-quick-sidebar-item::-webkit-scrollbar-thumb {
+                background: #f1f1f1; 
+                border-radius: 10px;
+            }       
+
+              /* Handle on hover */
+            .page-quick-sidebar-item::-webkit-scrollbar-thumb:hover {
+                background: #C0C0C0; 
             }
 
             .page-quick-sidebar .right-menu-content .input-group {
@@ -2890,7 +2921,7 @@ Uncomment to see border around all .col-*
             }
 
             .right-menu-content .btn {
-                padding: 6px!important
+                padding: 5px!important
             }
 
             .datetimepicker.dropdown-menu {
