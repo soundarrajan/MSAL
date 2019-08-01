@@ -3,14 +3,18 @@ import { AgColumnPreferencesService } from '../../../../../../../core/src/lib/ui
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { ProcurementRequestColumnsLabels } from './quantity-control.columns';
+import { ProcurementRequestColumnsLabels } from './procurement-requests.columns';
 import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/ui/components/ag-grid/type.definition';
 import { ProcurementService } from '../../../services/procurement.service';
-import { ShiptechSortsModel, ShiptechSortParamtersEnum } from '../../../services/models/procurement-requests.dto';
+import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
+import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
+import { AgTemplateRendererComponent } from 'libs/core/src/lib/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { getShiptechFormatPagination } from '../../../core/mappers/shiptech-grid-paging';
 
 @Injectable()
-export class QualityControlGridViewModel extends BaseGridViewModel {
+export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
 
+  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 56,
@@ -21,19 +25,21 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
 
     animateRows: true,
 
-    deltaRowDataMode: true,
+    deltaRowDataMode: false,
     suppressPaginationPanel: false,
     suppressColumnVirtualisation: true,
     rowSelection: RowSelection.Single,
     rowDragManaged: true,
     suppressRowClickSelection: true,
 
-    enableServerSideFilter: true,
+    multiSortKey: 'ctrl',
+
     enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: () => Math.random().toString(),
     defaultColDef: {
-      sortable: true
+      sortable: true,
+      filter: 'agTextColumnFilter'
     }
   };
 
@@ -63,7 +69,8 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     colId: 'Request ID',
     resizable: true,
     hide: false,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   requestGroupIdCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.RequestGroupId,
@@ -71,11 +78,13 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     colId: 'Group ID',
     resizable: true,
     hide: false,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   requestDateCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.RequestDate,
     field: 'requestDate',
+    filter: 'agDateColumnFilter',
     colId: 'Date',
     resizable: true,
     hide: false,
@@ -288,7 +297,7 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     private procurementService: ProcurementService
   ) {
-    super('quality-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QualityControlGridViewModel.name));
+    super('quality-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProcurementRequestsGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 
@@ -326,23 +335,19 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     ];
   }
 
+  public onSearch(value: string): void {
+    this.searchText = value;
+    this.gridApi.purgeServerSideCache();
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const currentSorts = this.gridApi.getSortModel();
-    const pagination = {
-      take: params.request.endRow - params.request.startRow,
-      skip: params.request.startRow
-    }
-
-    const sorts: ShiptechSortsModel[] = currentSorts.map((s, i) => ({
-      columnValue: this.gridApi.getColumnDef(s.colId).field.toLowerCase(),
-      isComputedColumn: false,
-      sortIndex: i,
-      sortParameter: ShiptechSortParamtersEnum[s.sort]
-    }));
-
-    this.procurementService.getAllProcurementRequests({pagination, SortList: { SortList: sorts}})
-      .subscribe(
-        response => params.successCallback(response.payload, response.matchedCount),
-        () => params.failCallback());
+    this.procurementService.getAllProcurementRequests({
+      pagination: getShiptechFormatPagination(params),
+      sorts: getShiptechFormatSorts(params),
+      filters: getShiptechFormatFilters(params),
+      searchText: this.searchText
+    }).subscribe(
+      response => params.successCallback(response.payload, response.matchedCount),
+      () => params.failCallback());
   }
 }

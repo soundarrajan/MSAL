@@ -1,29 +1,40 @@
 import { Inject, Injectable } from '@angular/core';
 import { PROCUREMENT_API_SERVICE } from './api/procurement.api.service';
 import { IProcurementApiService } from './api/procurement.api.service.interface';
-import {
-  IProcurementRequestDto,
-  IShiptechPaginationModel,
-  IShiptechProcurementRequestsDto
-} from './models/procurement-requests.dto';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { IProcurementOrdersRequest } from './models/procurement-requests.dto';
+import { defer, Observable } from 'rxjs';
 import { IProcurementRequestsResponse } from './api/request-response/procurement-requests.request-response';
+import { IGetProcurementOrders } from './models/get-procurement-orders.interface';
 
 @Injectable()
 export class ProcurementService {
 
-  constructor(@Inject(PROCUREMENT_API_SERVICE) private api: IProcurementApiService) { }
+  constructor(@Inject(PROCUREMENT_API_SERVICE) private api: IProcurementApiService) {
+  }
 
-  getAllProcurementRequests(content: Partial<IShiptechProcurementRequestsDto>): Observable<IProcurementRequestsResponse> {
-    const payload: IShiptechProcurementRequestsDto = {
-      filters: [],
-      order: undefined,
-      pageFilters: {},
+  getAllProcurementRequests(content: IGetProcurementOrders): Observable<IProcurementRequestsResponse> {
+    const payload: IProcurementOrdersRequest = {
       pagination: content.pagination,
-      searchText: undefined,
-      SortList: content.SortList
+      SortList: {
+        SortList: content.sorts
+      }
+    };
+
+    if(content.filters && content.filters.length) {
+      payload.pageFilters = {
+        Filters: content.filters
+      }
     }
-    return this.api.getAllProcurementRequests({payload});
+
+    if(content.sorts && content.filters.length) {
+      payload.SortList = {
+        SortList: content.sorts
+      }
+    }
+
+    if(content.searchText) {
+      payload.searchText = content.searchText
+    }
+    return defer(() => this.api.getAllProcurementRequests({ payload }));
   }
 }
