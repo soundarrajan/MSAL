@@ -17,7 +17,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
   public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
-    headerHeight: 56,
+    headerHeight: 30,
     rowHeight: 35,
 
     rowModelType: RowModelType.ServerSide,
@@ -39,12 +39,13 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     getRowNodeId: () => Math.random().toString(),
     defaultColDef: {
       sortable: true,
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      width: 150
     }
   };
 
   selectCol: ColDef = {
-    width: 75,
+    width: 50,
     checkboxSelection: true,
     editable: false,
     filter: false,
@@ -62,6 +63,15 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockVisible: true,
     rowDrag: true,
     cellClass: 'cell-border-green'
+  };
+
+  editCol: ColDef = {
+    colId: 'Edit',
+    width: 50,
+    resizable: true,
+    hide: false,
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   requestNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.RequestName,
@@ -306,6 +316,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ColDef[] {
     return [
       this.selectCol,
+      this.editCol,
       this.requestNameCol,
       this.requestGroupIdCol,
       this.requestDateCol,
