@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Toast, ToastPackage, ToastrService } from 'ngx-toastr';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AppContext } from '../../app-context';
+import { AppContext } from '../../app-context/app-context';
 
 // NOTE: This selector must be as it is below otherwise toastr component won't accept it
 @Component({
