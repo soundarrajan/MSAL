@@ -1,0 +1,10 @@
+<div class="rowsNumberWrapper" fxLayout="row">
+  <span class="widget-title">Show</span>
+    <p-dropdown
+      [options]="formattedOptions"
+      [ngModel]="selectedOption"
+      (onChange)="emitSelectionChange($event.value)">
+    </p-dropdown>
+
+  <span class="widget-title" style="margin-left:5px">Rows</span>
+</div>
