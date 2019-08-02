@@ -1,7 +1,7 @@
 /**
  * Invoice Controller
  */
-APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', '$controller', '$filter', 'uiGridConstants', function(API, $scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel, $controller, $filter, uiGridConstants) {
+APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', '$controller', '$filter', 'uiGridConstants', '$sce', function(API, $scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel, $controller, $filter, uiGridConstants, $sce) {
     var vm = this;
     var guid = '';
     if ($state.params.path) {
@@ -1399,6 +1399,13 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         vm.trustAsHtml = function(data) {
             return $sce.trustAsHtml(data);
         };
+        
+        vm.trustAsHtmlField = function(data) {
+            if (data && _.has($scope, 'formValues.' + data.Unique_ID)) {
+                return $sce.trustAsHtml(_.get($scope, 'formValues.' + data.Unique_ID).replace(/\n/g, "<br/>"));
+            }
+        };
+        
         vm.getAdditionalCostsComponentTypes = function(callback) {
             if (!$scope.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCosts) {

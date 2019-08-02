@@ -712,7 +712,7 @@
                                                             <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" ng-model="$ctrl.data.comments" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"></textarea>
+                                                            <textarea class="col-md-12 form-control" maxlength="500" ng-model="$ctrl.data.comments" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>                                                                                                                              
@@ -816,7 +816,7 @@
 		                                                </label>
 		                                                <div class="input-group form_input">
 
-		                                                    <textarea class="col-md-12 form-control" ng-model="$ctrl.data.customNonMandatoryAttribute1" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"></textarea>
+		                                                    <textarea class="col-md-12 form-control" maxlength="500" ng-model="$ctrl.data.customNonMandatoryAttribute1" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"></>
 
 		                                                </div>
 		                                            </div>

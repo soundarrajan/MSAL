@@ -5551,9 +5551,17 @@ APP_MASTERS.controller("Controller_Master", [
         vm.getContractConfiguration = function() {
             console.log("getting contract config");
         };
+
         vm.trustAsHtml = function(data) {
             return $sce.trustAsHtml(data);
         };
+        
+        vm.trustAsHtmlField = function(data) {
+            if (data && _.has($scope, 'formValues.' + data.Unique_ID)) {
+                return $sce.trustAsHtml(_.get($scope, 'formValues.' + data.Unique_ID));
+            }
+        };
+
         $scope.doEntityActionMaster = function(type, url, method, absolute, new_tab) {
             data = [type, url, method, absolute, new_tab];
             $rootScope.$broadcast("generalAction", data);

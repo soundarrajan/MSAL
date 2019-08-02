@@ -13,7 +13,7 @@
             <textarea class="form-control" rows="2" id="{{ field.Name }}" dynamic-model="'formValues.' + field.Unique_ID "  ng-required='field.Required' ng-disabled="field.Disabled" dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}"></textarea>
         </span>
         <span ng-if="field.Richtext && field.htmlDisplay">
-	        <span ng-bind-html="CM.trustAsHtml(formValues[field.Unique_ID])" class="richTextHtmlDisplay"></span>
+	        <span ng-bind-html="CM.trustAsHtmlField(field)" class="richTextHtmlDisplay"></span>
             <!-- <textarea class="form-control" rows="2" id="{{ field.Name }}" dynamic-model="'formValues.' + field.Unique_ID "  ng-required='field.Required' ng-disabled="field.Disabled" dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}"></textarea> -->
         </span>
     </div>

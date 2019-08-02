@@ -3966,9 +3966,10 @@ td[aria-describedby="flat_delivery_list_orderNo"] {
     background: #fff !important;
     display: block;
     padding: 15px;
-    height: 250px;
+    height: 150px;
     overflow: auto;
     border: 1px solid #c2cad8;
+    resize: vertical;
 }
 
 /* Inatech UI changes */

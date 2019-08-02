@@ -2985,6 +2985,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "sellerQuantity",
                         displayName: "Seller quantity",
                         enableCellEdit: false,
+                        ChangeAction: "grid.appScope.fVal().checkClaimType()",
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:"+vm.quantity                        
                     },
@@ -2992,6 +2993,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "buyerQuantity",
                         displayName: "Buyer quantity",
                         enableCellEdit: false,
+                        ChangeAction: "grid.appScope.fVal().checkClaimType()",
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:"+vm.quantity                        
                     },
@@ -3000,7 +3002,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                         displayName: "UOM",
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.dropdown,
+                        ChangeAction: "grid.appScope.fVal().checkClaimType()",
                         cellObject: {
+	                        changeEvent: "grid.appScope.fVal().checkClaimType()",
                             Name: "Uom",
                             Type: "dropdown",
                             masterSource: "Uom",
@@ -3388,6 +3392,10 @@ APP_MASTERS.controller("Controller_Datatables", [
         $scope.selectedRowIds = [];
         $scope.selectRowsByType = function(row) {};
         $scope.addClaimData = function(obj, spec, objKey) {
+        	if (!$scope.formValues.orderDetails.product) {
+        		toastr.error("Please select a product first");
+        		return;
+        	}
             spec = angular.fromJson(spec);
             id = spec.specParameter.id;
     		if (typeof($scope.formValues[objKey]) == 'undefined') {
@@ -3417,7 +3425,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                     id: 0
                 });
             }
-
+        	if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+        		$scope.formValues.claimDetails.estimatedSettlementAmount = null;
+        	}
             subTypeObjects = ['quantitySubtypes','densitySubtypes','qualitySubtypes','complianceSubtypes']
             $.each(subTypeObjects, function(stk,stv){
             	if (stv != objKey) {

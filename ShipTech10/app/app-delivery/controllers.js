@@ -1,7 +1,7 @@
 /**
  * Delivery Controller
  */
-APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Service', 'Factory_Delivery', '$state', '$location', '$q', '$compile', '$filter', 'Factory_Master', '$listsCache', 'statusColors', '$http', 'API', 'screenLoader', function($scope, $rootScope, $Api_Service, Factory_Delivery, $state, $location, $q, $compile, $filter, Factory_Master, $listsCache, statusColors, $http, API, screenLoader) {
+APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Service', 'Factory_Delivery', '$state', '$location', '$q', '$compile', '$filter', 'Factory_Master', '$listsCache', 'statusColors', '$http', 'API', 'screenLoader', '$timeout', function($scope, $rootScope, $Api_Service, Factory_Delivery, $state, $location, $q, $compile, $filter, Factory_Master, $listsCache, statusColors, $http, API, screenLoader, $timeout) {
     var vm = this;
     var guid = '';
     vm.master_id = $state.params.screen_id;
@@ -1033,29 +1033,30 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
 
 	$scope.selectAllParamsToRaiseClaim = function(claimTypeKey, checked) {
 		console.log(claimTypeKey);
-		if (checked) {
-	    	$.each($scope.CM.availableClaimTypes, function(typeK, typeV){
-	    		if (typeK != claimTypeKey) {
-	    			typeV.isTypeSelected = false
-	    		}
-	    		$.each(typeV.specParams, function(specK,specV) {
-					specV.isSelected = false;
-					specV.isDisabled = true;
-	    			if (typeK == claimTypeKey) {
-						specV.isDisabled = false;
-	    				specV.isSelected = true;
-	    			}
-	    		})
-	    	})
-		} else {
-	    	$.each($scope.CM.availableClaimTypes, function(typeK, typeV){
-	    		$.each(typeV.specParams, function(specK,specV) {
-					specV.isDisabled = false;
-					specV.isSelected = false;
-	    		})
-	    	})
-		}
-    	$scope.$apply();
+        $timeout(function() {
+            if (checked) {
+                $.each($scope.CM.availableClaimTypes, function(typeK, typeV){
+                    if (typeK != claimTypeKey) {
+                        typeV.isTypeSelected = false
+                    }
+                    $.each(typeV.specParams, function(specK,specV) {
+                        specV.isSelected = false;
+                        specV.isDisabled = true;
+                        if (typeK == claimTypeKey) {
+                            specV.isDisabled = false;
+                            specV.isSelected = true;
+                        }
+                    })
+                })
+            } else {
+                $.each($scope.CM.availableClaimTypes, function(typeK, typeV){
+                    $.each(typeV.specParams, function(specK,specV) {
+                        specV.isDisabled = false;
+                        specV.isSelected = false;
+                    })
+                })
+            }
+        })
 	}    
 
     $scope.addSpecParamsToClaim = function(event) {

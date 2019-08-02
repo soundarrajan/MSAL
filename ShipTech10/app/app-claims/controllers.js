@@ -15,7 +15,9 @@ APP_CLAIMS.controller("Controller_Claims", [
     "$listsCache",
     "$tenantSettings",
     "screenLoader",
-    function($scope, $rootScope, $Api_Service, Factory_Claims, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $tenantSettings, screenLoader) {
+    "$http",
+    "API",
+    function($scope, $rootScope, $Api_Service, Factory_Claims, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $tenantSettings, screenLoader, $http, API) {
         var vm = this;
         var guid = "";
         vm.screen_id = "claims";
@@ -32,17 +34,19 @@ APP_CLAIMS.controller("Controller_Claims", [
         });
         $rootScope.$on("formValues", function(event, data) {
             $scope.formValues = data;
-            if ($scope.formValues.claimDetails.status.name != 'New') {
-                if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
-                    $.each($scope.formFields['Order Details'].children, function(k, v) {
-                        if (v.Name == 'DeliveryDate') {
-                            v.Disabled = true;
-                        }
-                    });
-                }
-                if ($scope.formFields.deliveryDate) {
-                    $scope.formFields.deliveryDate.Disabled = true;
-                }
+            if ($scope.formValues.claimDetails) {
+	            if ($scope.formValues.claimDetails.status.name != 'New') {
+	                if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
+	                    $.each($scope.formFields['Order Details'].children, function(k, v) {
+	                        if (v.Name == 'DeliveryDate') {
+	                            v.Disabled = true;
+	                        }
+	                    });
+	                }
+	                if ($scope.formFields.deliveryDate) {
+	                    $scope.formFields.deliveryDate.Disabled = true;
+	                }
+	            }
             }
         });
         $rootScope.$on("editInstance", function(value) {
@@ -189,18 +193,25 @@ APP_CLAIMS.controller("Controller_Claims", [
                 // $scope.formValues.qualitySubtypes = [];
                 // $scope.formValues.quantitySubtypes = [];
                 
-                if (type == "Debunker" && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$rootScope.EstimatedSettlementAmountManualChange)) {
+                if (type == "Debunker" && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual)) {
                     if (!$scope.formValues.claimDebunkerDetails || typeof $scope.formValues.claimDebunkerDetails == "undefined") {
                         $scope.formValues.claimDebunkerDetails = {};
                     }
                     $scope.formValues.claimDetails.estimatedSettlementAmount = $scope.formValues.claimDebunkerDetails.debunkerAmount - $scope.formValues.claimDebunkerDetails.resaleAmount;
-                } else if (type == "Quantity" && !$scope.formValues.claimDetails.estimatedSettlementAmount && $scope.formValues.quantitySubtypes) {
+                } else if (type == "Quantity" && /*!$scope.formValues.claimDetails.estimatedSettlementAmount &&*/ $scope.formValues.quantitySubtypes) {
                     if (!$scope.formValues.quantitySubtypes) $scope.formValues.quantitySubtypes = [];
                     if ($scope.formValues.quantitySubtypes.length > 0) {
+                    	$timeout(function(){
+		                	$scope.formValues.claimType.quantityShortageUom = $scope.formValues.quantitySubtypes[0].quantityUom;
+		                	$("[name='claimType.quantityShortage Option']").val($scope.formValues.quantitySubtypes[0].quantityUom.id)
+                    	})
+                    }
+                    if ($scope.formValues.quantitySubtypes.length > 0 && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
 	                    $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[0].sellerQuantity - $scope.formValues.quantitySubtypes[0].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
                     }
                 }
             }
+            $scope.getQuantityShortage();
             $rootScope.EstimatedSettlementAmountManualChange = false;
         };
         vm.formFieldSearch = function(formFields, Unique_ID) {
@@ -317,7 +328,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.labResult");
                     if (field) vm.getOptions(field);
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
-                    $scope.options.Product = {};
+                    $scope.options.Product = [];
                     deliveryDateFromDelivery = _.find($scope.options['deliveryNumber'], {id:$scope.formValues.orderDetails.deliveryNo.id}).payload.deliveryDate; 
 
                     if (deliveryDateFromDelivery) {
@@ -411,7 +422,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                 $scope.refreshSelect();
             }
             if (name != "EstimatedSettlementAmount") {
-                $scope.checkClaimType();
+                // $scope.checkClaimType();
             } else {
                 $rootScope.EstimatedSettlementAmountManualChange = true;
             }
@@ -474,7 +485,32 @@ APP_CLAIMS.controller("Controller_Claims", [
         }
         $scope.setQuantitySub = function() {
             $scope.IsQuantitySubtype = $("#quantity_Parameter option:checked").data("opt");
+            $scope.formValues.claimType.quantityShortage = null;
+            $scope.formValues.claimType.quantityShortageUom = null;
+          //   $timeout(function(){
+	        	// if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+	        	// 	$scope.formValues.claimDetails.estimatedSettlementAmount = null;
+	        	// }
+          //   },500)
         };
+        $scope.$watchGroup(["formValues.claimDetails.estimatedSettlementAmount"], function() {
+        	if ($("#EstimatedSettlementAmountCurrency").length > 0) {
+	        	if (!$("#EstimatedSettlementAmountCurrency").hasClass("ng-pristine")) {
+	        		if ($scope.formValues.claimDetails) {
+		        		$scope.formValues.claimDetails.isEstimatedSettlementAmountManual = true;
+	        		}
+	        	}
+        	}
+        });
+        $scope.$watchGroup(["formValues.claimDetails.estimatedSettlementAmountCurrency"], function() {
+    		if ($scope.formValues.claimDetails) {
+	    		if ($scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
+	        		$scope.formValues.claimDetails.actualSettlementAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+	        		$scope.formValues.claimDetails.compromisedAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+	        		$scope.formValues.claimDetails.noClaimAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+	    		}
+    		}
+        });
         $scope.checkSubtype = function() {
             if (vm.entity_id > 0) {
                 $scope.$watchGroup("formValues", function() {
@@ -788,6 +824,8 @@ APP_CLAIMS.controller("Controller_Claims", [
             }
             if (fval.densitySubtypes[rowIdx].bdnDensity == "") { fval.densitySubtypes[rowIdx].bdnDensity = null}
             if (fval.densitySubtypes[rowIdx].labDensity == "") { fval.densitySubtypes[rowIdx].labDensity = null}
+            quantityShortageScope = angular.element($("[name='claimType.quantityShortage']")).scope();	
+        	quantityShortageScope.getQuantityShortage();
         }
 
         $scope.clearTestValueNull = function(rowIdx, fval) {
@@ -804,6 +842,97 @@ APP_CLAIMS.controller("Controller_Claims", [
         }    
 
     
+		$scope.getQuantityShortage = function() {
+			if (typeof($scope.formValues.orderDetails) == "undefined") {
+				return
+			}
+			if (typeof($scope.formValues.orderDetails.product) == "undefined") {
+				return
+			}
+			if ($scope.formValues.claimType) {
+				$scope.formValues.claimType.quantityShortage = null;
+			}
+
+			isQuantitySubtype = false;
+
+			productId = $scope.formValues.orderDetails.product.id;
+			isDensitySubtype = false;
+			specParameterUomConversionFactor = null;
+			BDNQuantity = null;
+			BDNQuantityUom = null;
+			sellerQuantity = null;
+			buyerQuantity = null;
+			quantityUom = null;
+			densityDifference = null;
+			specParameterId = null;
+
+			if ($scope.formValues.quantitySubtypes) {
+				if ($scope.formValues.quantitySubtypes.length > 0) {
+					sellerQuantity = $scope.formValues.quantitySubtypes[0].sellerQuantity;
+					buyerQuantity = $scope.formValues.quantitySubtypes[0].buyerQuantity;
+					quantityUom = $scope.formValues.quantitySubtypes[0].quantityUom
+					isQuantitySubtype = true;
+				}
+			}
+			if ($scope.formValues.densitySubtypes) {
+				if ($scope.formValues.densitySubtypes.length == 1) {
+					isDensitySubtype = true;
+				} else {
+					if (!isQuantitySubtype) {
+						return;
+					}
+				}
+			}
+        	if (isDensitySubtype && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+        		$scope.formValues.claimDetails.estimatedSettlementAmount = null;
+        	}
+			if (isDensitySubtype) {
+				BDNQuantityUom = $scope.formValues.densitySubtypes[0].bdnQuantityUom;
+				BDNQuantity = $scope.formValues.densitySubtypes[0].bdnQuantity;
+				specParameterUomConversionFactor = $scope.formValues.densitySubtypes[0].specParameterUomConversionFactor;
+				densityDifference = $scope.formValues.densitySubtypes[0].densityDifference;
+				if ($scope.formValues.densitySubtypes[0].specParameter) {
+					specParameterId = $scope.formValues.densitySubtypes[0].specParameter.id;
+				}
+				$scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[0].bdnQuantityUom;
+			}
+
+			payload = {
+				"Payload": {
+					productId : productId,
+					isDensitySubtype : isDensitySubtype,
+					// specParameterUomConversionFactor : specParameterUomConversionFactor,
+					BdnQuantity : BDNQuantity,
+					BdnQuantityUom : BDNQuantityUom,
+					densityDifference : densityDifference,
+					sellerQuantity : sellerQuantity,
+					buyerQuantity : buyerQuantity,
+					quantityUom : quantityUom,
+					specParameterId : specParameterId
+				}
+			}
+            $http.post(API.BASE_URL_DATA_CLAIMS + '/api/claims/getQuantityShortage', payload).then(function successCallback(response) {
+            	console.log(response);
+            	if (response.data.payload != 'null') {
+	            	$scope.formValues.claimType.quantityShortage = response.data.payload;
+	            	if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+	            		$scope.formValues.claimDetails.estimatedSettlementAmount = response.data.payload * $scope.formValues.orderDetails.orderPrice;
+		                if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
+		                  $.each($scope.options.SettlementType, function(k, v) {
+		                    if(v.name === 'Receive') {
+		                      $scope.formValues.claimDetails.settlementType = v;
+		                      $scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
+		                      toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
+		                    }
+		                  });
+		                }	            		
+	            	}
+            	}
+                // calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
+            });
+
+		}
+
 
         function convertDecimalSeparatorStringToNumber(number) {
         	numberToReturn = number;
