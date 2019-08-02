@@ -6,10 +6,8 @@ import { UIModule } from './ui/ui.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { USER_SETTINGS_API_SERVICE, UserSettingsApiService } from './services/user-settings/user-settings-api.service';
-import { environment } from '@shiptech/environment';
 import { UserSettingsApiServiceMock } from './services/user-settings/user-settings-api.service.mock';
 import { LocalPreferenceService } from './services/preference-storage/local-preference.service';
-import { getDefaultStorage, PREFERENCE_STORAGE } from './services/preference-storage/preference-storage.interface';
 
 // TODO: Define the purpose of Core Module. We should definitely remove UIModule from here and use it where necessary otherwise we risk not being able to lazy load modules
 @NgModule({
