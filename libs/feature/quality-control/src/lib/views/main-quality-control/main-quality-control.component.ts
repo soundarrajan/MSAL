@@ -14,8 +14,16 @@ export class MainQualityControlComponent implements OnInit {
 
   public rowData$: Observable<IProcurementRequestDto[]>;
 
-  constructor(public quantityControlGridViewModel: QualityControlGridViewModel, private procurementService: ProcurementService) {
-    this.rowData$ = this.procurementService.getAllProcurementRequests();
+  constructor(public gridViewModel: QualityControlGridViewModel, private procurementService: ProcurementService) {
+    // this.rowData$ = this.procurementService.getAllProcurementRequests();
+  }
+
+  onPageChange(page: number): void {
+    this.gridViewModel.page = page;
+  }
+
+  onPageSizeChange(pageSize: number): void {
+    this.gridViewModel.pageSize = pageSize;
   }
 
   ngOnInit(): void {

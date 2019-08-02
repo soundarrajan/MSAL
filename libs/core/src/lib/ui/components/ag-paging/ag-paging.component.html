@@ -1,0 +1,20 @@
+<ul class="pager">
+  <li [class.disabled]="!canPrevious()">
+    <a role="button" aria-label="go to previous page" href="javascript:void(0)" (click)="prevPage()">
+      <i class="{{ pagerLeftArrowIcon }}"></i>
+    </a>
+  </li>
+  <input *ngIf="useInputAsPageSelect" [formControl]="formControl" style="width: 50px" type="number" [value]="page" (change)="selectPage($event.target.value)">
+  <ng-container *ngIf="!useInputAsPageSelect">
+    <li role="button" [attr.aria-label]="'page ' + pg.number" class="pages" *ngFor="let pg of pages" [class.active]="pg.number === page">
+      <a href="javascript:void(0)" (click)="selectPage(pg.number)">
+        {{ pg.text }}
+      </a>
+    </li>
+  </ng-container>
+  <li [class.disabled]="!canNext()">
+    <a role="button" aria-label="go to next page" href="javascript:void(0)" (click)="nextPage()">
+      <i class="{{ pagerRightArrowIcon }}"></i>
+    </a>
+  </li>
+</ul>

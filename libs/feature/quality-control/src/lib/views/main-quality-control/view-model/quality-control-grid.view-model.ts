@@ -2,9 +2,10 @@ import { BaseGridViewModel } from '../../../../../../../core/src/lib/ui/componen
 import { AgColumnPreferencesService } from '../../../../../../../core/src/lib/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { QuantityControlColumnsLabels } from './quantity-control.columns';
 import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/ui/components/ag-grid/type.definition';
+import { ProcurementService } from '../../../services/procurement.service';
 
 @Injectable()
 export class QualityControlGridViewModel extends BaseGridViewModel {
@@ -14,19 +15,20 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
     headerHeight: 56,
     rowHeight: 35,
 
-    rowModelType: RowModelType.ClientSide,
-    pagination: false,
+    rowModelType: RowModelType.ServerSide,
+    pagination: true,
 
     animateRows: true,
 
     deltaRowDataMode: true,
+    suppressPaginationPanel: false,
     suppressColumnVirtualisation: true,
     suppressMultiSort: true,
     rowSelection: RowSelection.Single,
     rowDragManaged: true,
     suppressRowClickSelection: true,
 
-    enableServerSideFilter: false,
+    enableServerSideFilter: true,
     enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: () => Math.random().toString()
@@ -308,7 +310,8 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
-    loggerFactory: ModuleLoggerFactory
+    loggerFactory: ModuleLoggerFactory,
+    private procurementService: ProcurementService
   ) {
     super('quality-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QualityControlGridViewModel.name));
     this.initOptions(this.gridOptions);
@@ -346,5 +349,12 @@ export class QualityControlGridViewModel extends BaseGridViewModel {
       this.robOnArrivalCol,
       this.roundVoyageConsumptionCol
     ];
+  }
+
+  public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.procurementService.getAllProcurementRequests({take: params.request.endRow - params.request.startRow, skip: params.request.startRow})
+      .subscribe(
+        response => params.successCallback(response.payload, response.matchedCount),
+        () => params.failCallback());
   }
 }

@@ -8,6 +8,7 @@ import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { PROCUREMENT_API_SERVICE, ProcurementApiService } from './services/api/procurement.api.service';
 import { ProcurementService } from './services/procurement.service';
 import { AuthenticationModule } from '@shiptech/core';
+import { AgPagingComponent } from '../../../../core/src/lib/ui/components/ag-paging/ag-paging.component';
 
 @NgModule({
   imports: [
