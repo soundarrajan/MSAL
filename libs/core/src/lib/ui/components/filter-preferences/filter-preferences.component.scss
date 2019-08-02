@@ -1,0 +1,13 @@
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+::ng-deep {
+  .toast-info {
+    background-color: #323232 !important;
+  }
+
+  .mat-standard-chip:focus::after {
+    opacity: 0 !important;
+  }
+}

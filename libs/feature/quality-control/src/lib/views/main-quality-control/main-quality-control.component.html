@@ -1,12 +1,34 @@
 <div class="w-100 px-3 py-4" style="background: white;">
-  <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)" [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
-  </app-page-size-selector>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
+      <app-filter-preferences
+        id="qualityControlModule"
+        appAgGridFilterPresets
+        groupId="quantityControl.main"
+        screenId="Main"
+      ></app-filter-preferences>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-md-6">
+      <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)" [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
+      </app-page-size-selector>
+    </div>
+    <div class="col-md-6">
+      <shiptech-search-box [placeholder]="'Search something'" AgGridExternalSearch gridId="quantityControlGrid" style="float: right"></shiptech-search-box>
+    </div>
+  </div>
+
   <ag-grid-angular
     appAgGridFilterPresets
     appAgGridFirstColumnLocked
     appAgGridSizeToFit
     appDeselectFiltredRows
-    [rowData]="rowData$ | async"
+    AgGridExternalSearch
+    [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
     groupId="quantityControl.main"
     id="quantityControlGrid"
     class="ag-theme-balham"
@@ -19,6 +41,7 @@
     </div>
     <div class="col-md-7"></div>
     <div class="col-md-2">
+      <div style="float:right">
       Page
       <app-ag-paging style="width: 150px;"
         [pagerLeftArrowIcon]="'fa fa-chevron-left'"
@@ -31,6 +54,33 @@
       </app-ag-paging>
       of {{gridViewModel.totalItems}}
     </div>
+    </div>
   </div>
 </div>
 
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestNameCol]" let-value="value" let-data="data">
+  <ng-container>
+    <a href="{{'/#/edit-request/448' + value}}">{{value}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestGroupIdCol]" let-value="value" let-data="data">
+  <ng-container>
+    <a href="{{'/#/group-of-requests/' + value}}">{{value}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.editCol]" let-value="value" let-data="data">
+  <ng-container>
+    <a href="#"><i class="fa fa-pencil"></i></a>
+  </ng-container>
+</ng-template>
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestStatusCol, gridViewModel.productStatusCol]" let-value="value" let-data="data">
+  <ng-container>
+    <div class="requestStatus">
+      <div [ngClass]="value">{{value}}</div>
+    </div>
+  </ng-container>
+</ng-template>

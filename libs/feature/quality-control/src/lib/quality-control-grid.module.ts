@@ -2,22 +2,23 @@ import { NgModule } from '@angular/core';
 import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AgPagingComponent } from '../../../../core/src/lib/ui/components/ag-paging/ag-paging.component';
 import { CommonModule } from '@angular/common';
-import { PageSizeSelectorComponent } from '../../../../core/src/lib/ui/components/page-size-selector/page-size-selector.component';
 import { PrimeNGModule } from '@shiptech/core';
+import { AgTemplateRendererComponent } from '../../../../core/src/lib/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { AgTemplateRendererDirective } from '../../../../core/src/lib/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.directive';
+import { AgGridComponentsModule } from '../../../../core/src/lib/ui/components/ag-grid/ag-grid-components.module';
 
 @NgModule({
-  declarations: [AgPagingComponent, PageSizeSelectorComponent],
   imports: [
     CommonModule,
-    AgGridModule.withComponents([]),
+    AgGridComponentsModule,
+    AgGridModule.withComponents([AgTemplateRendererComponent, AgTemplateRendererDirective]),
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     PrimeNGModule
   ],
-  exports: [AgGridModule, AgPagingComponent, PageSizeSelectorComponent]
+  exports: [AgGridModule, AgGridComponentsModule]
 })
 export class QualityControlGridModule {
 }
