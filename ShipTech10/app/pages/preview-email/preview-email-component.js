@@ -19,7 +19,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
     "payloadDataModel",
     "screenLoader",
     "$listsCache",
-    function($window, $rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, EMAIL_TRANSACTION, STATE, emailModel, newRequestModel, orderModel, groupOfRequestsModel, $sce, $tenantSettings, payloadDataModel, screenLoader, $listsCache) {
+    "$http",
+    "API",
+    "Factory_Master",
+    function($window, $rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, EMAIL_TRANSACTION, STATE, emailModel, newRequestModel, orderModel, groupOfRequestsModel, $sce, $tenantSettings, payloadDataModel, screenLoader, $listsCache, $http, API, Factory_Master) {
         var ctrl = this;
         ctrl.state = $state;
         ctrl.STATE = STATE;
@@ -42,6 +45,88 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         }
         ctrl.shownEmailNr = 3;
 
+        ctrl.getAvailableDocumentAttachments = function(entityId, transaction){
+            var referenceNo = entityId;
+            var transactionTypeId = _.find(ctrl.lists["TransactionType"], function(el){
+                return el.name == transaction;
+            }).id;
+            payload = {
+                "PageFilters": {
+                    "Filters": []
+                },
+                "SortList": {
+                    "SortList": []
+                },
+                "Filters": [
+                {
+                    "ColumnName": "ReferenceNo",
+                    "Value": referenceNo
+                },
+                {
+                    "ColumnName": "TransactionTypeId",
+                    "Value": transactionTypeId
+                }
+                ],
+                "SearchText": null,
+                "Pagination": {
+                    "Skip": 0,
+                    "Take": 9999
+                }
+            }
+            $http.post(API.BASE_URL_DATA_MASTERS + "/api/masters/documentupload/list", {
+                "Payload": payload
+            }).then(function successCallback(response) {
+                ctrl.availableDocumentAttachmentsList = response.data.payload;
+                $.each($rootScope.availableDocumentAttachmentsList, function(k,v) {
+                    v.isIncludedInMail = true;
+                }); 
+           });
+        };
+
+        $scope.addToAttachments = function(el) {
+            if (!el) {
+                toastr.error("Please select a document");
+                return;
+            }
+            var isInList = _.find(ctrl.email.attachmentsList, function(v){
+                return v.id == el.id;
+            });
+            if (isInList && isInList.isIncludedInMail) {
+                toastr.error("Attachment already added");
+            } else {
+                el.isIncludedInMail = true;
+                if (!ctrl.email.attachmentsList) {
+                    ctrl.email.attachmentsList = [];
+                }
+                ctrl.email.attachmentsList.push(el);
+            }
+        };
+
+        $scope.downloadDocument = function(rowId, docName) {
+            Factory_Master.get_document_file(
+                {
+                    Payload: rowId
+                },
+                function(file, mime) {
+                    if (file.data) {
+                        var blob = new Blob([file.data], {
+                            type: mime
+                        });
+                        var a = document.createElement("a");
+                        a.style = "display: none";
+                        document.body.appendChild(a);
+                        //Create a DOMString representing the blob and point the link element towards it
+                        var url = window.URL.createObjectURL(blob);
+                        a.href = url;
+                        a.download = docName;
+                        //programatically click the link to trigger the download
+                        a.click();
+                        //release the reference to the file by revoking the Object URL
+                        window.URL.revokeObjectURL(url);
+                    }
+                }
+            );
+        };
 
         ctrl.$onInit = function(){
             // debugger;
@@ -109,12 +194,14 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                             v.displayName = v.name;
                         }
                     });
+                    ctrl.getAvailableDocumentAttachments(ctrl.data.orderId, "Order");
                 });
             }
             return emailModel.getTemplates(ctrl.emailTransactionTypeId).then(function(data) {
                 ctrl.templateList = data.payload;
                 switch (ctrl.transaction) {
                     case EMAIL_TRANSACTION.REQUEST:
+                        ctrl.getAvailableDocumentAttachments(ctrl.data.requestId, "Request");
                         break;
                     case EMAIL_TRANSACTION.GROUP_OF_REQUESTS:
                         var id = ctrl.data.Requirements[0].RequestId;
@@ -147,6 +234,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         if (templateFilter.length > 0) {
                             ctrl.template = templateFilter[0];
                         }
+                        ctrl.getAvailableDocumentAttachments(ctrl.data.groupId, "Offer");
                         break;
                     case EMAIL_TRANSACTION.REQUOTE:
                         ctrl.template = ctrl.templateList[0];
@@ -507,7 +595,6 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         };
 
         ctrl.saveAndSend = function(action){
-            screenLoader.showLoader();
             ctrl.saveComments(action, false).then(function () {
                 if (action != "sendRFQ") {
                     // ctrl.sendEmail(true);

@@ -212,6 +212,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group form-group-sm">
+                                <label class="col-md-1 control-label">
+                                    Attachments
+                                </label>
+                                <div class="col-md-11">
+                                    <span>
+                                        <span class="input-group pull-left form_input" style="margin-bottom: 5px;margin-right: 30px; width: 300px">
+                                            <input ng-model="availableDocumentAttachments" uib-typeahead="item as item.name for item in $$ctrl.availableDocumentAttachmentsList"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-on-select="addToAttachments(availableDocumentAttachments); availableDocumentAttachments=''" typeahead-wait-ms="300" id="availableDocumentAttachments" data-uniqueid="availableDocumentAttachments" autocomplete="off" style="margin-bottom: 0px;"/>
+                                            <!-- <span class="input-group-addon" ng-click="addToAttachments(availableDocumentAttachments); availableDocumentAttachments='';">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </span> -->
+                                            <span class="input-group-addon"  ng-click="triggerModal('general', 'group_of_requests_entity_documents', 'documents' , 'availableDocumentAttachments');" >
+                                                <i class="fa fa-search"></i>
+                                            </span>                                
+                                        </span>
+                                    </span>
+                                    <span ng-repeat="(key, attachment) in $$ctrl.email.attachmentsList track by $index" ng-hide="attachment.isIncludedInMail == false" class="email-tag pull-left">
+                                        <a ng-click="downloadDocument(attachment.id, attachment.name)">
+                                            {{ attachment.name }}
+                                        </a>
+                                        <i class="fa fa-remove font-red-thunderbird" ng-click="attachment.isIncludedInMail = false"></i>
+                                    </span>
+                                </div>
+                            </div>
                             <!-- cc others -->
                             <!-- <span ng-if="$$ctrl.email.ccOthers" ng-init="$$ctrl.ccEmailOthers = $$ctrl.email.ccOthers"></span> -->
                             <div class="form-group form-group-sm st-email-input"  ng-if="$$ctrl.tenantSetting.allowEmailEdit">

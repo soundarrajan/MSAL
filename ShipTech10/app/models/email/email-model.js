@@ -60,6 +60,7 @@ angular.module('shiptech.models').factory('emailModel', ['emailResource', 'paylo
                 "isDeleted": false,
                 "subject": extraFields.subject,
                 "Content": extraFields.content,
+                "attachmentsList": extraFields.attachmentsList,
                 "To": extraFields.to,
                 "Cc": extraFields.cc,
                 "ToOthers": toOthers,
