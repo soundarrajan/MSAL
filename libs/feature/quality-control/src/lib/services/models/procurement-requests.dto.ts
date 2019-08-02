@@ -28,10 +28,11 @@ export enum ShiptechSortParamtersEnum {
 export interface IShiptechFilter {
   ColumnType: string;
   ConditionValue: string;
-  FilterOperator: number;
+  FilterOperator?: number;
   Values: string[];
   columnValue: string;
   isComputedColumn: boolean
+  dateType?: string;
 }
 
 export enum ShiptechConditionValues {
@@ -40,7 +41,9 @@ export enum ShiptechConditionValues {
   equals = '=',
   notEqual = '!=',
   startsWith = 'LIKE1',
-  endsWith = 'LIKE2'
+  endsWith = 'LIKE2',
+  greaterThan = '>',
+  lessThan = '<'
 }
 
 export interface IShiptechPagination {
