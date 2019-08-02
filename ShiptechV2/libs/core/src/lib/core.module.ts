@@ -31,7 +31,7 @@ import { getDefaultStorage, PREFERENCE_STORAGE } from './services/preference-sto
   providers: [
     {
       provide: USER_SETTINGS_API_SERVICE,
-      useClass: environment.production ? UserSettingsApiService : UserSettingsApiServiceMock
+      useClass:  UserSettingsApiService // TODO: refactor into proper service and serviceApi the mock will use localStorage // environment.production ? UserSettingsApiService : UserSettingsApiServiceMock
     },
     UserSettingsApiService,
     UserSettingsApiServiceMock,
