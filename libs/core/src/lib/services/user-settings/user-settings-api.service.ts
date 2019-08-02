@@ -20,6 +20,7 @@ import { Cacheable } from 'ngx-cacheable';
 import { ApiError } from '../../error-handling/api/api-error';
 import { AppError } from '../../error-handling/app-error';
 import { AppConfig } from '../../config/app-config';
+import { LoggingInterceptorHeader } from '../../interceptors/logging-http-interceptor.service';
 
 export namespace UserSettingsApiPaths {
   export const get = (key: string) => `api/user-settings/${key}`;
@@ -55,7 +56,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   @ObservableException()
   save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.save(request.key)}`;
-    return this.http.put<IUpsertUserSettingResponse>(requestUrl, { Payload: request}).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
+    return this.http.post<IUpsertUserSettingResponse>(requestUrl, { Payload: request }).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
   }
 
   @ObservableException()
@@ -71,7 +72,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   }
 
   get<T>(key: string): Observable<T> {
-    return this.getByKey({ key }).pipe(map(response => <T>response.value[key]));
+    return this.getByKey({ key }).pipe(map(response => response.value));
   }
 
   remove(key: string): Observable<any> {
@@ -104,7 +105,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
 
   @ObservableException()
   protected getSettings(requestUrl: string): Observable<IUserSettingResponse> {
-    return this.apiCachedRequest(requestUrl);
+    return this.getSettingsCached(requestUrl);
   }
 
   @ObservableException()
@@ -127,8 +128,15 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
     slidingExpiration: true,
     maxCacheCount: 100
   })
-  protected apiCachedRequest(url: string): Observable<IUserSettingResponse> {
-    return this.http.get<IUserSettingResponse>(url).pipe(switchMap(response => (!response || !response.value ? throwError(ApiError.LookupsItemsPropertyMissing(response)) : of(response))));
+  protected getSettingsCached(url: string): Observable<IUserSettingResponse> {
+    return this.http.get<IUserSettingResponse>(url, { observe: 'response', headers: { [LoggingInterceptorHeader]: '404'}  }).pipe(
+      switchMap(response => {
+        return response.status === 404
+          ? of(undefined)
+          : !response.body || !response.body.value
+            ? throwError(ApiError.LookupsItemsPropertyMissing(response))
+            : of(response.body);
+      }));
   }
 }
 
