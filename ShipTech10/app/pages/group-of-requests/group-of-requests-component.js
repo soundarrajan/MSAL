@@ -3142,7 +3142,8 @@ ctrl.setProductData = function(data, loc) {
                 Requirements: ctrl.requirements,
                 QuoteByTimeZoneId: ctrl.quoteByTimezone.id,
                 QuoteByCurrencyId: ctrl.quoteByCurrency.id,
-                Comments: null
+                Comments: null,
+                RequestGroupId: ctrl.groupId
             };
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.revokeRFQ(rfq_data).then(
