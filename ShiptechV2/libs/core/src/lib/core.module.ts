@@ -35,12 +35,7 @@ import { getDefaultStorage, PREFERENCE_STORAGE } from './services/preference-sto
     },
     UserSettingsApiService,
     UserSettingsApiServiceMock,
-    LocalPreferenceService,
-    {
-      provide: PREFERENCE_STORAGE,
-      useFactory: getDefaultStorage,
-      deps: [USER_SETTINGS_API_SERVICE]
-    }
+    LocalPreferenceService
     ]
 })
 export class CoreModule {
