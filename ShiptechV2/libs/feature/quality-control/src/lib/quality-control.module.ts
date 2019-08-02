@@ -11,6 +11,7 @@ import { AuthenticationModule } from '@shiptech/core';
 import { AgPagingComponent } from '../../../../core/src/lib/ui/components/ag-paging/ag-paging.component';
 import { SearchBoxModule } from '../../../../core/src/lib/ui/components/search-box/search-box.module';
 import { UIModule } from '../../../../core/src/lib/ui/ui.module';
+import { FilterPresetsModule } from '../../../../core/src/lib/ui/components/filter-preferences/filter-presets.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { UIModule } from '../../../../core/src/lib/ui/ui.module';
     LoggingModule,
     AuthenticationModule.forFeature(),
     SearchBoxModule,
-    UIModule
+    UIModule,
+    FilterPresetsModule
   ],
   declarations: [MainQualityControlComponent],
   providers: [
