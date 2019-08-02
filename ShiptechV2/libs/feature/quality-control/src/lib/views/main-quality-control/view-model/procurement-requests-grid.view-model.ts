@@ -140,11 +140,12 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
   };
   requestStatusCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.RequestStatus,
-    field: 'requestStatus',
+    field: 'requestStatus.name',
     colId: 'Request Status',
     resizable: true,
     hide: false,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   productNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.ProductName,
@@ -168,7 +169,8 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     colId: 'Product Status',
     resizable: true,
     hide: false,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   agentNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.AgentName,
