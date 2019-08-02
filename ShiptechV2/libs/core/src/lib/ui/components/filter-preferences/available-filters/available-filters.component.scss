@@ -1,0 +1,26 @@
+.chip-look-alike {
+  border-radius: 16px;
+  height: 32px;
+  margin: 4px;
+  display: inline-flex;
+}
+
+.chip-icon {
+  margin-top: 4px;
+  margin-left: 15px;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-ellipsis {
+  padding: 0 10px;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}

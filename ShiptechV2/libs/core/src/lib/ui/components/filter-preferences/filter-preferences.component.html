@@ -1,0 +1,46 @@
+<!--Main Component Body-->
+<mat-chip-list>
+  <ng-container *ngFor="let filter of filterPresets">
+    <mat-chip *ngIf="filter.isPinned" [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']" (click)="applyFilter(filter.id)" [matTooltip]="filter.name">
+      <!-- NOTE: Add track by -->
+      <div class="truncate-f85 text-center">{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}</div>
+      <div matSuffix class="chip-circle" [ngStyle]="{ pointerEvents: filter.isClear ? 'none' : 'auto' }" z (click)="setPinned(filter.id)" [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'">
+        <i id="pin" class="fas fa-thumbtack aggrid-rotate-45"></i>
+      </div>
+    </mat-chip>
+  </ng-container>
+  <mat-chip class="icon-chip text-center" matTooltip="Expand Filters" [matTooltipShowDelay]="500" *ngIf="hasActiveFilterPresets" (click)="openAvailablePresetsDialog()">
+    <div class="mx-auto d-block">
+      <div class="more-white"></div>
+    </div>
+  </mat-chip>
+</mat-chip-list>
+
+<mat-progress-spinner *ngIf="isLoading" class="mt-2" [mode]="'indeterminate'" [diameter]="20"> </mat-progress-spinner>
+
+<!--Create New Filter Dialog Body -->
+<ng-template #createPreset>
+  <div id="saveFilterPrefsPopup">
+    <h2 mat-dialog-title>
+      Name Your Preference
+      <mat-icon matSuffix id="dialogCloseButton" class="float-right" (click)="presetsDialog.close()">close </mat-icon>
+    </h2>
+    <hr />
+    <mat-dialog-content>
+      <div>Preference Name</div>
+      <mat-form-field appearance="outline">
+        <input id="name" required name="preferenceName" [formControl]="preferenceNameFormControl" matInput placeholder="Preference Name" />
+        <mat-error *ngIf="preferenceNameFormControl.touched && preferenceNameFormControl.errors?.required">
+          Enter Filter Name
+        </mat-error>
+        <mat-error *ngIf="preferenceNameFormControl.errors?.pattern">
+          Special characters are not allowed other than underscore.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions class="float-right">
+      <button mat-button [mat-dialog-close]="true">CANCEL</button>
+      <button mat-button class="blue-button" style="width: 150px" (click)="createNewFilter()">SAVE</button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>

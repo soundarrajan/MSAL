@@ -1,13 +1,57 @@
-export interface IShiptechProcurementRequestsDto {
-  filters: unknown[];
-  order: unknown;
-  pageFilters: Object;
-  pagination: IShiptechPaginationModel,
-  searchText: string;
-  SortList: Object[];
+export interface IProcurementOrdersRequest {
+  filters?: unknown[];
+  order?: unknown;
+  pageFilters?: {
+    Filters?: IShiptechFilter[];
+  };
+  pagination: IShiptechPagination,
+  searchText?: string;
+  SortList?: {
+    SortList?: IShiptechSorts[];
+  }
 }
 
-export interface IShiptechPaginationModel {
+export interface IShiptechSorts {
+  columnValue: string;
+  sortIndex: number;
+  sortParameter: ShiptechSortParamtersEnum;
+  isComputedColumn?: boolean;
+}
+
+
+export enum ShiptechSortParamtersEnum {
+  asc = 1,
+  desc = 2
+}
+
+
+export interface IShiptechFilter {
+  ColumnType: string;
+  ConditionValue: string;
+  FilterOperator?: number;
+  Values: string[];
+  columnValue: string;
+  isComputedColumn: boolean
+}
+
+export interface IShiptechDateFilter extends IShiptechFilter {
+  dateType: string;
+}
+
+export interface IShiptechTextFilter extends IShiptechFilter {}
+
+export enum ShiptechConditionValues {
+  contains = 'LIKE',
+  notContains = 'NOT LIKE',
+  equals = '=',
+  notEqual = '!=',
+  startsWith = 'LIKE1',
+  endsWith = 'LIKE2',
+  greaterThan = '>',
+  lessThan = '<'
+}
+
+export interface IShiptechPagination {
   skip: number;
   take: number;
 }
