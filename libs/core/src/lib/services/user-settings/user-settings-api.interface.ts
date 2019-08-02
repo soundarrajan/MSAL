@@ -7,14 +7,11 @@ import {
   IUpsertUserSettingRequest,
   IUpsertUserSettingResponse,
   IUserSettingByKeyRequest,
-  IUserSettingResponse,
-  IUserSettingsRequest
+  IUserSettingResponse
 } from './request-response';
 
 export interface IUserSettingsApiService {
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse>;
-
-  getList(request: IUserSettingsRequest): Observable<IUserSettingResponse>;
 
   save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse>;
 
