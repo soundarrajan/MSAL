@@ -1,6 +1,6 @@
 import { fromEvent, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { AppContext } from '../app-context';
+import { AppContext } from '../app-context/app-context';
 
 export function copyIntoClipoard(value: any): void {
   const selBox = document.createElement('textarea');

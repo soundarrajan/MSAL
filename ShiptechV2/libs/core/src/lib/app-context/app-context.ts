@@ -1,5 +1,5 @@
 import { Md5 } from 'ts-md5';
-import { AuthenticationContext } from './authentication/authentication-context';
+import { AuthenticationContext } from '../authentication/authentication-context';
 import { InjectionToken } from '@angular/core';
 
 export class AppContext {
