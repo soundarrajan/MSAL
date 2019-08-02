@@ -55,7 +55,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   @ObservableException()
   save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.save(request.key)}`;
-    return this.http.put<IUpsertUserSettingResponse>(requestUrl, request).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
+    return this.http.put<IUpsertUserSettingResponse>(requestUrl, { Payload: request}).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
   }
 
   @ObservableException()
