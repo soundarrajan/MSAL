@@ -59,8 +59,23 @@
 </div>
 
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestNameCol, gridViewModel.requestGroupIdCol]" let-value="value" let-data="data">
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestNameCol]" let-value="value" let-data="data">
   <ng-container>
-    <a href="#">{{value}}</a>
+    <a href="/#/edit-request/448">{{value}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestGroupIdCol]" let-value="value" let-data="data">
+  <ng-container>
+    <a href="/#/group-of-requests/345">{{value}}</a>
+  </ng-container>
+</ng-template>
+
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestStatusCol, gridViewModel.productStatusCol]" let-value="value" let-data="data">
+  <ng-container>
+    <div class="requestStatus">
+      <div [ngClass]="value">{{value}}</div>
+    </div>
   </ng-container>
 </ng-template>

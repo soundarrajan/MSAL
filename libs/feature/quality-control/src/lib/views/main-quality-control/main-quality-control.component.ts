@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ProcurementRequestsGridViewModel } from './view-model/procurement-requests-grid.view-model';
-import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'shiptech-main-quality-control',

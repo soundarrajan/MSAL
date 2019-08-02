@@ -32,8 +32,13 @@ export interface IShiptechFilter {
   Values: string[];
   columnValue: string;
   isComputedColumn: boolean
-  dateType?: string;
 }
+
+export interface IShiptechDateFilter extends IShiptechFilter {
+  dateType: string;
+}
+
+export interface IShiptechTextFilter extends IShiptechFilter {}
 
 export enum ShiptechConditionValues {
   contains = 'LIKE',
