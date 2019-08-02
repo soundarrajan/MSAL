@@ -61,16 +61,21 @@
 
 <ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestNameCol]" let-value="value" let-data="data">
   <ng-container>
-    <a href="/#/edit-request/448">{{value}}</a>
+    <a href="{{'/#/edit-request/448' + value}}">{{value}}</a>
   </ng-container>
 </ng-template>
 
 <ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestGroupIdCol]" let-value="value" let-data="data">
   <ng-container>
-    <a href="/#/group-of-requests/345">{{value}}</a>
+    <a href="{{'/#/group-of-requests/' + value}}">{{value}}</a>
   </ng-container>
 </ng-template>
 
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.editCol]" let-value="value" let-data="data">
+  <ng-container>
+    <a href="#"><i class="fa fa-pencil"></i></a>
+  </ng-container>
+</ng-template>
 
 <ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestStatusCol, gridViewModel.productStatusCol]" let-value="value" let-data="data">
   <ng-container>
