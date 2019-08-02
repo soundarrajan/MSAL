@@ -13,7 +13,7 @@ export function sessionIdFactory(appContext: AppContext): string {
 export function appContextFactory(): AppContext {
   return AppContext.instance;
 }
-
+// TODO: Shouldn't this be forRoot, so there is only one instance even for lazy loaded? Find out other places where forRoot might be needed.
 @NgModule({
   providers: [
     {
