@@ -16,6 +16,7 @@
 		        </thead>
 		        <tbody>
 		            <tr ng-repeat="(key, value) in formValues.email" ng-if="value.isDeleted != true" ng-mouseover="initEmailTemplateTypeahead(key, value)" class="ng-scope">
+						<td ng-init="emailLoaded()" hidden></td>
 						<td class="padding">{{value.transactionType.name}}</td>
 						<td class="padding">{{value.process}}</td>
 						<td class="">
@@ -27,12 +28,6 @@
 		                        <input ng-model="value.template" uib-typeahead="item as item.name for item in options['EmailTemplate_'+key] | filter:{name:$viewValue}"
 		                            class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
 		                            typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}" autocomplete="off" />
-		                        <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_currencylist', 'Currency', 'formValues.general.tenantFormats.currency');"
-		                            ng-init="modal = false">
-		                            <a   class=" btn default">
-		                                <i class="fa fa-search"></i>
-		                            </a>
-		                        </span> -->
 
 								<span class="input-group-addon ng-scope" ng-click="triggerModal('general',
 								 'admin_templates',

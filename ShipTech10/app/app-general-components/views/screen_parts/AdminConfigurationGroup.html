@@ -17,7 +17,7 @@
             </a>
         </li>
         <li role="presentation">
-            <a href="#email" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 4">
+            <a href="#email" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = showEmailLoader();">
                 {{ 'Email' | translate }}
             </a>
         </li>
@@ -1459,10 +1459,10 @@
                 </div>
             </div>
             <div class="col-sm-12">
-               <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationEmail.html'"></span>
+               <span ng-if="loadedEmail" ng-include="'app-general-components/views/screen_parts/AdminConfigurationEmail.html'"></span>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane " id="delivery" ng-if="config_tab == 5">
+        <div role="tabpanel" class="tab-pane " id="delivery" ng-show="config_tab == 5">
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">
@@ -1474,7 +1474,7 @@
                 <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationDelivery.html'"></span>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane " id="invoice" ng-if="config_tab == 6">
+        <div role="tabpanel" class="tab-pane " id="invoice" ng-show="config_tab == 6">
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">
@@ -1486,7 +1486,7 @@
                 <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationInvoice.html'"></span>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane " id="contract" ng-if="config_tab == 7">
+        <div role="tabpanel" class="tab-pane " id="contract" ng-show="config_tab == 7">
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">
@@ -1510,7 +1510,7 @@
                 <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationFTP.html'"></span>
             </div>
         </div>
-	    <div role="tabpanel" class="tab-pane " id="reports" ng-if="config_tab == 9">
+	    <div role="tabpanel" class="tab-pane " id="reports" ng-show="config_tab == 9">
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">

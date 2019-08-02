@@ -1,7 +1,7 @@
 /**
  * Admin Controller
  */
-APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service', '$listsCache', 'Factory_Admin', '$state', '$location', 'Factory_Master', 'screenLoader', function($rootScope, $scope, $Api_Service, $listsCache, Factory_Admin, $state, $location, Factory_Master, screenLoader) {
+APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service', '$listsCache', 'Factory_Admin', '$state', '$location', 'Factory_Master', 'screenLoader', '$timeout', function($rootScope, $scope, $Api_Service, $listsCache, Factory_Admin, $state, $location, Factory_Master, screenLoader, $timeout) {
     var vm = this;
     vm.admin_id = $state.params.admin_id;
     vm.reset_data = {};
@@ -845,6 +845,18 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
         $scope.setPageTitle();
     });
 
+    $scope.showEmailLoader = function(){
+    	if (typeof($scope.loadedEmail) == "undefined") {
+	    	$('.screen-loader').show();
+    	}
+		setTimeout(function(){
+			$scope.loadedEmail = true;
+		},100)
+		$timeout(function(){
+			$('.screen-loader').hide();
+		},300)
+		return 4;
+    }
 
 
 
