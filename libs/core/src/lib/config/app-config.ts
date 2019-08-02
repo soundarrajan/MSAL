@@ -8,6 +8,7 @@ export class AppConfig implements IAppConfig {
   v1: ILegacyAppConfig;
   agGridLicense: string;
   loggingApi: string;
+  userSettingsApiUrl: string;
 }
 
 // tslint:disable-next-line:no-empty-interface
