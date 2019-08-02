@@ -13,7 +13,6 @@ import {
 } from '../../../services/user-settings/user-settings-api.service';
 import { UserSettingsApiServiceMock } from '../../../services/user-settings/user-settings-api.service.mock';
 import { PresetsMenuDropdownComponent } from './presets-menu-dropdown/presets-menu-dropdown.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -34,11 +33,6 @@ export function getDefaultStorage(defaultStorage: any): any {
   ],
   providers: [
     AgGridFilterPresetsService,
-    // TOOD: Need to find a better way to provide preference storage
-    {
-      provide: USER_SETTINGS_API_SERVICE,
-      useClass: UserSettingsApiServiceMock
-    },
     UserSettingsApiService,
     UserSettingsApiServiceMock,
     {
