@@ -94,6 +94,14 @@ class ShiptechInvoice {
     var countButtons = 0;
     var endidx = -1;
 
+    this.tools.log("InsertCosts start");
+
+    if(!costs)
+    {
+      this.tools.log("no costs to insert");
+      return;
+    }
+
     while(i < 100)
     {
       if (await this.tools.page.$("#grid_invoiceCostDetails_remRow_" + i) != null) 
@@ -129,7 +137,7 @@ class ShiptechInvoice {
               throw new Error("Cannot find cost from order " + costs[i].nameId);
 
             await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + idx, costs[i].quantity);
-            await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + idx, costs[i].unitPrice);  
+            await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + idx, costs[i].invoiceRate);  
             if(costs[i].type == "Percent")
                 await this.tools.setText("#grid_invoiceCostDetails_invoiceAmount_" + idx, costs[i].amount);
         }
@@ -137,7 +145,7 @@ class ShiptechInvoice {
         {
           var typeCostName = costs[i].name;
           if(!typeCostName)
-            typeCostName = commonTestData[costs[i].nameId];
+            typeCostName = commonTestData.additionalCostType[costs[i].nameId];
           if(!typeCostName)
             throw new Error("Cannot find type for additional cost for invoice");          
 
@@ -151,7 +159,7 @@ class ShiptechInvoice {
             await this.tools.selectBySelector("#grid_invoiceCostDetails_product_" + (i+endidx), "All", false, false);
           else
           {
-            var prodName = commonTestData.products.find(p => p.id === costs[i].applicableForId).name;
+            var prodName = commonTestData.products[costs[i].applicableForId]            
             if(!prodName || prodName.length <= 0)
               throw new Error('Cannot find additional cost product ' + prodName + " " + costs[i].applicableForId);
 
@@ -159,13 +167,15 @@ class ShiptechInvoice {
           }
                   
           await this.tools.setText("#grid_invoiceCostDetails_invoiceQuantity_" + (i+endidx), costs[i].quantity);
-          await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + endidx), costs[i].unitPrice);
+          await this.tools.setText("#grid_invoiceCostDetails_invoiceRate_" + (i + endidx), costs[i].invoiceRate);
           await this.tools.selectBySelector("#grid_invoiceCostDetails_Currency__invoiceRateCurrency_" + (i + endidx), "MT");
 
           if(costs[i].type == "Percent")
               await this.tools.setText("#grid_invoiceCostDetails_invoiceAmount_" + (i + endidx), costs[i].amount);
        }
       }
+
+      this.tools.log("InsertCosts end");
   }
 
 
@@ -182,13 +192,7 @@ class ShiptechInvoice {
     if(cost.applicableFor == "All")
       prodName = "All";
     else
-    {
-      var commonDataCost = commonTestData.products.find(p => p.id == cost.applicableForId);
-      if(commonDataCost == null)
-        throw new Error('Cannot find common data for ' + cost.applicableForId);
-
-      prodName = commonDataCost.name;
-    }
+      prodName = commonTestData.products[cost.applicableForId];
 
     if(!prodName || prodName.length <= 0)
       throw new Error('Cannot find additional cost product ' + cost.applicableForId);
@@ -257,8 +261,7 @@ class ShiptechInvoice {
 
     if(testCase.action != "final" && testCase.provisionalData && testCase.provisionalData.costs)
       await this.insertCosts(testCase.provisionalData.costs, commonTestData);
-
-    if((testCase.action == "final" || testCase.action == "provisionalThenFinal") && testCase.finalData && testCase.finalData.costs)
+    else if((testCase.action == "final" || testCase.action == "provisionalThenFinal") && testCase.finalData && testCase.finalData.costs)
       await this.insertCosts(testCase.finalData.costs, commonTestData);
 
     if(testCase.action == "final" && testCase.finalData && testCase.finalData.products)
@@ -443,6 +446,7 @@ async readInvoiceNumber()
     await this.tools.selectBySelector("#CurrencyInvoiceRateCurrency", commonTestData.defaultCurrency);
 
     await this.insertProducts(testCase.finalData.products);
+    await this.insertCosts(testCase.finalData.costs, commonTestData);
     
     await this.tools.clickOnItemByText('#header_action_save', 'Save');
     await this.tools.waitForLoader();      
@@ -503,6 +507,9 @@ async readInvoiceNumber()
       await this.tools.setText("#grid_invoiceProductDetails_invoiceQuantity_" + i, testCase.finalData.products[i].quantity);
       await this.tools.setText("#grid_invoiceProductDetails_invoiceRate_" + i, testCase.finalData.products[i].rate);
     }
+
+    if(testCase.finalData.costs)
+      await this.insertCosts(testCase.finalData.costs, commonTestData);
 
     await this.tools.clickOnItemByText('#header_action_save', 'Save');
     await this.tools.waitForLoader();      

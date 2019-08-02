@@ -46,7 +46,9 @@ node TestRunner ./TestCases/Scenario_38.json ./TestCases/connection.atest.json
 node TestRunner ./TestCases/Scenario_39.json ./TestCases/connection.atest.json
 node TestRunner ./TestCases/Scenario_40.json ./TestCases/connection.atest.json
 node TestRunner ./TestCases/Scenario_41.json ./TestCases/connection.atest.json
-
-
+node TestRunner ./TestCases/Scenario_42.json ./TestCases/connection.atest.json
+node TestRunner ./TestCases/Scenario_43.json ./TestCases/connection.atest.json
+node TestRunner ./TestCases/Scenario_44.json ./TestCases/connection.atest.json
+node TestRunner ./TestCases/Scenario_45.json ./TestCases/connection.atest.json
 node TestRunner ./TestCases/SendEmail.json ./TestCases/connection.atest.json
 shutdown.exe /s /t 00

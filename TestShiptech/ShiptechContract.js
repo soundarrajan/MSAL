@@ -53,8 +53,13 @@ class ShiptechContract {
 
 
   
-  async ContractNew(testCase)
-  {    
+
+  async ContractNew(testCase, commonTestData)
+  {   
+    var seller; 
+    var product;
+    var port;
+
     testCase.result = true;
     console.log("Loading New Contract");    
     await this.tools.waitForLoader();
@@ -77,11 +82,62 @@ class ShiptechContract {
     else
       console.log("FAIL!");
 
-    await this.tools.closeCurrentPage();
+    if (testCase.sellerId) {
+      seller = commonTestData.sellers[testCase.sellerId];
+      if (!seller)
+          throw new Error("Cannot generate Seller");
+    }
+
+    if (testCase.productId) {
+      product = commonTestData.products[testCase.productId];
+      if (!product)
+          throw new Error("Cannot generate product");
+    }
+
+    if (testCase.portId) {
+      port = commonTestData.ports[testCase.portId];
+      if (!port)
+          throw new Error("Cannot generate port");
+    }
+
+    if (testCase.StartDate)
+     testCase.StartDate = await this.shiptech.getFutureDate(testCase.StartDate, false);
+
+    if (testCase.EndDate)
+      testCase.EndDate = await this.shiptech.getFutureDate(testCase.EndDate, false);
+    
+    await this.tools.setText("#name", testCase.name);
+    await this.shiptech.selectWithText("input[name=\"Seller\"]", seller);
+    await this.tools.selectBySelector("#AgreementTypeAgreementType", testCase.AgreementType);
+    await this.tools.setText("#StartDate_dateinput", testCase.StartDate);
+    await this.tools.setText("#EndDate_dateinput", testCase.EndDate);
+    await this.tools.selectFirstOptionBySelector("#CompanyCompany");
+    await this.tools.selectFirstOptionBySelector("#primaryContact");
+    await this.tools.click("span[ng-click=\"CC.addProductToContract()\"]");
+    await this.shiptech.selectWithText("#Product_1_Main_Product", product);
+    await this.shiptech.selectWithText("#Product_1_Location", port);
+    await this.tools.setText("#grid_contractualQuantity_Min_0", testCase.min);
+    await this.tools.setText("#grid_contractualQuantity_Max_0", testCase.max);
+    await this.tools.setText("input[name=\"Product_1_Price\"]", testCase.price);
+    await this.tools.setText("input[name=\"Product_1_MTM_Price\"]", testCase.mtmprice);
+    
+    await this.tools.click("#header_action_save");
+    var labelStatus = await this.tools.getText("span[id='entity-status-1']");
+    labelStatus = labelStatus.replace(/[^0-9a-zA-Z]/gi, '');
+    labelStatus = labelStatus.trim();
+    if(labelStatus != testCase.StatusAfterSave)
+      throw new Error("Invalid contract status after save " + labelStatus + " expected: " + testCase.StatusAfterSave);
+
+
+    await this.tools.click("#header_action_confirm");
+    var labelStatus = await this.tools.getText("span[id='entity-status-1']");
+    labelStatus = labelStatus.replace(/[^0-9a-zA-Z]/gi, '');
+    labelStatus = labelStatus.trim();
+    if(labelStatus != testCase.StatusAfterConfirm)
+      throw new Error("Invalid contract status after confirm " + labelStatus + " expected: " + testCase.StatusAfterConfirm);
   
+    await this.tools.closeCurrentPage();
   }
-
-
 }
 
 

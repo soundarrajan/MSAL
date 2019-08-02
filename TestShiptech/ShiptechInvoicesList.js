@@ -62,11 +62,15 @@ class ShiptechInvoicesList {
      // testCase.url = "invoices/deliveries";
      // testCase.pageTitle = "Transactions to be Invoiced List";      
 
+      await this.shiptech.SelectListFilter('orderproductid', testCase.orderId, "Invoice filter");
+
+      /*
       await this.tools.clickOnItemWait("a[data-sortcol='orderproductid']");
       await this.tools.setText("#rule_0_condition", testCase.orderId);
       await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
       await this.tools.waitFor(2000);
       await this.tools.waitForLoader("Invoice filter");        
+      */
 
       // await this.tools.click("#flat_invoices_app_invoice_list_order.name");
       // await this.tools.setText("#filter0_Text", commonTestData.orderId);

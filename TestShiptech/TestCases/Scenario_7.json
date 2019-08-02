@@ -4,8 +4,14 @@
     "starturl": "new-order",
     "headless": false,
     "testData" : {      
-      "additionalCostType" : {"typeId" : "PercentTypeName1", "type" : "Flat"},
-      "products":["product1Name"]
+      "additionalCostType" : [{"typeId" : "PercentTypeName1", "type" : "Flat"}],
+      "products":["product1Name"],
+      "surveyors": ["surveyor1"],
+      "serviceCodes": ["serviceCode1"],
+      "ports": ["port1"],
+      "sellers": ["seller1"],
+      "companies": ["company1"],
+      "physicalSuppliers": ["physicalSupplier1"]
     },
     "testCases": [
       {
@@ -13,11 +19,17 @@
         "input": {"products":["product1Name"]},
         "output": {"orderId": "order1Id"},        
         "eta": 2,
+        "serviceCodeId": "serviceCode1",
+        "portId": "port1",
+        "paymentCompanyId": "company1",        
+        "sellerId": "seller1",
+        "physicalSupplierId": "physicalSupplier1",
         "products": [
           {
             "id": "product1Name",
             "quantity": 1500,
-            "unitPrice": 379
+            "unitPrice": 379,
+            "coin": "USD"
           }
         ]
       },
@@ -27,6 +39,8 @@
         "bdnDate": 1,
         "buyerQuantity": "Bdn Quantity",
         "sellerQuantity": "Bdn Quantity",  
+        "verifyDelivery": true,
+        "completeDelivery": true,
         "products": [
           {
             "id": "product1Name",

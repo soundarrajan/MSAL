@@ -27,7 +27,10 @@ class ShiptechTestDataGen {
             return;
 
         if (testDataRequired.additionalCostType) {
-            commonTestData[testDataRequired.additionalCostType.typeId] = await this.getCostType(testDataRequired.additionalCostType.type);
+            commonTestData.additionalCostType = [];
+            for (var i = 0; i < testDataRequired.additionalCostType.length; i++) {
+                commonTestData.additionalCostType[testDataRequired.additionalCostType[i].typeId] = await this.getCostType(testDataRequired.additionalCostType[i].type);
+            }
         }
 
 
@@ -37,6 +40,15 @@ class ShiptechTestDataGen {
 
             for (var i = 0; i < testDataRequired.claimTypes.length; i++) {
                 commonTestData.claimTypes[testDataRequired.claimTypes[i]] = await this.getClaimType();
+            }
+        }
+
+
+        if (testDataRequired.physicalSuppliers) {
+            commonTestData.physicalSuppliers = [];
+
+            for (var i = 0; i < testDataRequired.physicalSuppliers.length; i++) {
+                commonTestData.physicalSuppliers[testDataRequired.physicalSuppliers[i]] = await this.getRandomCouterparty("Supplier");
             }
         }
 
@@ -102,9 +114,31 @@ class ShiptechTestDataGen {
                 commonTestData.companies[testDataRequired.companies[i]] = await this.getRandomCompany();
         }
 
+        if (testDataRequired.sellers) {
+            commonTestData.sellers = [];
+            for (var i = 0; i < testDataRequired.sellers.length; i++) 
+                commonTestData.sellers[testDataRequired.sellers[i]] = await this.getRandomCouterparty("Seller");
+        }
+
+        if (testDataRequired.counterpartiesLab) {
+            commonTestData.counterpartiesLab = [];
+            for (var i = 0; i < testDataRequired.counterpartiesLab.length; i++) 
+                commonTestData.counterpartiesLab[testDataRequired.counterpartiesLab[i]] = await this.getRandomCouterparty("Lab");
+        }
+
+        if (testDataRequired.surveyors) {
+            commonTestData.surveyors = [];
+            for (var i = 0; i < testDataRequired.surveyors.length; i++) 
+                commonTestData.surveyors[testDataRequired.surveyors[i]] = await this.getRandomCouterparty("Surveyor");
+        }
+
+
         commonTestData.defaultCurrency = await this.getDefaultCurrency();
 
     }
+
+
+
 
 
 
@@ -380,6 +414,34 @@ class ShiptechTestDataGen {
 
     }
 
+
+
+    
+
+
+    
+
+    async getRandomCouterparty(counterpartyType) {
+        if (!this.tools.dbConfig)
+            throw new Error("Not connected to database");
+        var db = new Db(this.tools.dbConfig);
+
+       // var sql = "SELECT TOP (20) [Name] FROM [" + this.tools.dbConfig.database + "].[master].[Counterparties] WHERE [IsDeleted]=0";
+        var sql = "select TOP (20) counterparty.Name from master.Counterparties counterparty inner join master.CounterpartyCounterpartyTypes cct " +
+            " on counterparty.id = cct.CounterpartyId and counterparty.IsDeleted = 0 " +
+            " inner join enums.CounterpartyTypes ct on ct.id = cct.CounterpartyTypeId and ct.IsDeleted = 0 " + 
+            " where ct.InternalName = '" + counterpartyType + "'";
+
+        var records = await db.read(sql);
+        if (records.length <= 0)
+            throw new Error("Cannot find any counterparty type '" + counterpartyType + "'");
+
+        //choose a random record
+        var idx = Math.floor(Math.random() * records.length);
+
+        return records[idx].Name;
+
+    }
 
 
 

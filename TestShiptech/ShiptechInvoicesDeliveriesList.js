@@ -122,11 +122,11 @@ class ShiptechInvoicesDeliveriesList {
     {      
       for (var i=0; i<productData.costs.length; i++)
       {
-        if(!productData.costs[i].nameId)
+        if(!productData.costs[i].nameId && !productData.costs[i].name)
            throw new Error("Cost name was not generated, invalid testcase.");
 
-        if(commonTestData[productData.costs[i].nameId])
-          productData.costs[i].name = commonTestData[productData.costs[i].nameId];
+        if(productData.costs[i].nameId && !productData.costs[i].name)
+          productData.costs[i].name = commonTestData.additionalCostType[productData.costs[i].nameId];
 
         //doesn't work because I can't identify corectly the costs
         //for example BARGING may appear multiple times

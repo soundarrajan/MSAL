@@ -1,0 +1,27 @@
+{
+    "testTitle": "Contract - 42",
+    "starturl": "contracts/contract/edit",
+    "headless": false,    
+    "testData": {
+        "sellers": ["seller1"],
+        "products":["product1Name"],
+        "ports": ["port1"]
+    },
+    "testCases": [{
+        "keyname": "newContract",
+        "name": "New Contract 42",
+        "sellerId": "seller1",
+        "AgreementType": "Contract",
+        "StartDate": -1,
+        "EndDate": 100,
+        "productId": "product1Name",
+        "portId": "port1",
+        "min": "10",
+        "max": "10",
+        "price": 100,
+        "mtmprice": 100,
+        "StatusAfterSave": "Draft",
+        "StatusAfterConfirm": "Confirmed"
+    }]
+}
+

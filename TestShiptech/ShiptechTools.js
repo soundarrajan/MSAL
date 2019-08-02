@@ -142,6 +142,16 @@ async selectWithText(selector, valueToSelect, checkSelection = true){
 
 
 
+async SelectListFilter(dataSortcol, condition, performanceLabel = "")
+{
+  await this.tools.clickOnItemWait("a[data-sortcol='" + dataSortcol + "']");
+  await this.tools.selectBySelector("#rule_0_condition", 'Contains');  
+  await this.tools.setText("#filter0_Text", condition);
+  await this.tools.clickOnItemByText("button[ng-click='applyFilters(columnFilters[column], true, true);hidePopover()']", 'Filter');
+  await this.tools.waitFor(2000);
+  await this.tools.waitForLoader(performanceLabel);
+}
+
 
 
 //inserts product name based on id
@@ -151,13 +161,7 @@ findProducts(products, commonTestData)
     throw new Error("Cannot find products");
     
   for(var i=0; i<products.length; i++)
-    {     
-      if(!products[i].name && products[i].id)      
-        products[i].name = commonTestData.products.find(p => p.id == products[i].id).name;
-
-      if(!products[i].name)
-        throw new Error("Cannot find product name");     
-    }
+      products[i].name = commonTestData.products[products[i].id];
 }
 
 
@@ -216,6 +220,47 @@ async getRandomProducts(count)
   return products;
 }
 */
+
+
+
+async testExistingConversion(coin)
+{
+  if(!this.tools.dbConfig)
+    throw  new Error("Not connected to database");
+  var db = new Db(this.tools.dbConfig);
+
+
+  var sql = "SELECT [Id] FROM [master].[Currencies] WHERE [Code]='" + coin + "'";
+  var records = await db.read(sql);
+  if(!records || records.length <= 0)
+    return false;
+
+  var id = records[0].Id;
+
+  sql = "Select Top 1 [CurrencyId] From [admin].[TenantConfigurations]";
+  records = await db.read(sql);
+  if(!records || records.length <= 0)
+    return false;
+
+  var baseCurrency = records[0].CurrencyId;
+
+  sql = "select Top 1 * " +
+  "       from master.ExchangeRates er " +
+  "       join master.ExchangeRateDetails erd " +
+  "         on erd.ExchangeRateId = er.Id " +
+  "       where er.BaseCurrencyId = " + baseCurrency + 
+  "         and erd.Date <= GetDate() " +
+  "         and erd.CurrencyId = " + id;
+
+  records = await db.read(sql);
+
+  if(!records || records.length <= 0)
+    return false;
+    
+  return true;
+
+}
+
 
 
 
@@ -427,6 +472,19 @@ async selectFirstItem(textToSelectInAttr, attributeName, index)
 
 
 
+async getInvoiceApprovalStatus()
+{
+  var db = new Db(this.tools.dbConfig);
+  
+  var sql = "SELECT [IsNeedForSubmitForApproval] FROM [" + this.tools.dbConfig.database + "].[admin].[TenantConfigurations]";
+
+  var records = await db.read(sql);
+  if(records.length <= 0)
+    throw  new Error("Cannot find the current TenantConfigurations");
+    
+  return records[0].IsNeedForSubmitForApproval;
+}
+
 async getDateFormat()
 {
   var db = new Db(this.tools.dbConfig);
@@ -625,7 +683,7 @@ async sendEmail()
   var subject = "Shiptech Auto Test";  
   var logfile = fs.readFileSync("log.txt", 'utf8');
   var errorIdxs = this.tools.getIndicesOf("Backend error", logfile, true);
-  var message = "Automated tests coverage: 35.3% (UI actions)";
+  var message = "Automated tests coverage: 36.8% (UI actions)";
 
   testResults = "<p>" + message + "</p>" + endOfLine + "<p>" + this.tools.connection.baseurl +  "</p>" + testResults;
   

@@ -4,8 +4,14 @@
     "starturl": "new-order",    
     "headless": false,
     "testData" : {      
-      "additionalCostType" : {"typeId" : "PercentTypeName1", "type" : "Flat"},
-      "products":["product1Name"]
+      "additionalCostType" : [{"typeId" : "PercentTypeName1", "type" : "Flat"}],
+      "products":["product1Name"],
+      "surveyors": ["surveyor1"],
+      "serviceCodes": ["serviceCode1"],
+      "ports": ["port1"],
+      "sellers": ["seller1"],
+      "companies": ["company1"],
+      "physicalSuppliers": ["physicalSupplier1"]
     },
     "testCases": [
       {
@@ -13,11 +19,17 @@
         "input": {"products":["product1Name"]},
         "output": {"orderId": "order1Id"},        
         "eta": 2,
+        "serviceCodeId": "serviceCode1",
+        "portId": "port1",
+        "paymentCompanyId": "company1",        
+        "sellerId": "seller1",
+        "physicalSupplierId": "physicalSupplier1",
         "products": [
           {
             "id": "product1Name",
             "quantity": 1500,
-            "unitPrice": 379
+            "unitPrice": 379,
+            "coin": "USD"
           }
         ],
         "costs": [
@@ -26,6 +38,7 @@
             "type": "Flat",            
             "unitPrice": 12000,
             "applicableFor": "All"
+            
           }
         ]
       },
@@ -35,6 +48,8 @@
         "bdnDate": 1,
         "buyerQuantity": "Bdn Quantity",
         "sellerQuantity": "Bdn Quantity",  
+        "verifyDelivery": true,
+        "completeDelivery": true,
         "products": [
           {
             "id": "product1Name",
@@ -59,7 +74,8 @@
                 {
                   "id": "product1Name",
                   "quantity": 1499,
-                  "rate": 380
+                  "rate": 380,
+                  "coin": "USD"
                 }
               ],
               "costs": [
@@ -68,7 +84,7 @@
                   "type": "Flat",            
                   "applicableFor": "All",
                   "quantity": 1499,
-                  "unitPrice": 11125,
+                  "invoiceRate": 11125,
                   "fromOrder": true
                 }
               ]
@@ -111,7 +127,18 @@
               {
                 "id": "product1Name",
                 "quantity": 1499,
-                "rate": 373.6484
+                "rate": 373.6484,
+                "coin": "USD"
+              }
+            ],
+            "costs": [
+              {
+                "nameId": "PercentTypeName1",
+                "type": "Flat",            
+                "applicableFor": "All",
+                "quantity": 1499,
+                "invoiceRate": 11125,
+                "fromOrder": true
               }
             ]
           }

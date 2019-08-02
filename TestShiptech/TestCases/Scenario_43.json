@@ -1,0 +1,55 @@
+{
+    "testTitle": "Deliveries to be verified - Scenario 43",
+    "headless": false,
+    "starturl": "new-order",    
+    "testData" : {      
+      "products":["product1Name"],
+      "ports": ["port1"],
+      "sellers": ["seller1"],
+      "serviceCodes": ["serviceCode1"],
+      "companies": ["company1"]
+    },
+    "testCases": [
+      {
+        "keyname": "order",
+        "input": {"products":["product1Name"]},
+        "output": {"orderId": "order1Id"},
+        "eta": 2,
+        "portId": "port1",
+        "sellerId": "seller1",
+        "paymentCompanyId": "company1",
+        "serviceCodeId": "serviceCode1",
+        "products": [
+          {
+            "id": "product1Name",
+            "quantity": 1500,
+            "unitPrice": 379,
+            "coin": "USD"
+          }
+        ]
+      },
+      {
+        "keyname": "delivery",        
+        "input": {"orderId":"order1Id"},
+        "bdnDate": 1,
+        "buyerQuantity": "Bdn Quantity",
+        "sellerQuantity": "Bdn Quantity",  
+        "verifyDelivery": false,
+        "completeDelivery": false,
+        "products": [
+          {
+            "id": "product1Name",
+            "quantity": 1500
+          }
+        ]
+      },
+      {
+        "keyname": "verifyDelivery",
+        "input": {"orderId":"order1Id"}        
+      }
+  ]
+}
+
+
+
+  

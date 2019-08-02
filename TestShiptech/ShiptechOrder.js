@@ -28,31 +28,47 @@ class ShiptechOrder {
         testCase.url = "new-order";
         if(!testCase.pageTitle)
           testCase.pageTitle = "New Order";
+
+        
+        for(var i=0; i<testCase.products.length; i++)
+        {
+          if(!testCase.products[i].coin)
+            throw new Error("Coin is not defined in test case");
+
+          if(!(await this.shiptech.testExistingConversion(testCase.products[i].coin)))
+            throw new Error("No conversion exists from " + testCase.products[i].coin);
+        }
           
         if(!testCase.vesselName)
         {
           testCase.vesselName = await this.shiptech.getRandomVessel();
           commonTestData.vesselName = testCase.vesselName;
         }
+        
         if(!testCase.carrier)
         {
           testCase.carrier = await this.shiptech.getRandomCompany();
           commonTestData.carrier = testCase.carrier;
         }
-        if(!testCase.port)
-        {
-          testCase.port =  await  this.shiptech.getRandomPort();
-          commonTestData.port = testCase.port;
-        }
+
+        if(testCase.serviceCodeId)        
+          testCase.serviceCode = commonTestData.serviceCodes[testCase.serviceCodeId];          
+
+        if(testCase.physicalSupplierId)
+          testCase.physicalSupplier = commonTestData.physicalSuppliers[testCase.physicalSupplierId];          
+
+        if(testCase.portId)        
+          testCase.port = commonTestData.ports[testCase.portId];        
           
-        if(!testCase.seller)
+        if(testCase.sellerId)
         {
-          testCase.seller = await this.shiptech.getRandomSeller();
+          testCase.seller = commonTestData.sellers[testCase.sellerId];
           commonTestData.seller = testCase.seller;
         }
-        if(!testCase.paymentCompany)
+
+        if(testCase.paymentCompanyId)
         {
-          testCase.paymentCompany = await this.shiptech.getRandomCompany();
+          testCase.paymentCompany = commonTestData.companies[testCase.paymentCompanyId];
           commonTestData.paymentCompany = testCase.paymentCompany;
         }
                         
@@ -85,12 +101,15 @@ class ShiptechOrder {
           this.shiptech.page = page;
           //*/
                 
-        await this.shiptech.selectWithText("input[name='Vessel']", testCase.vesselName);
+        await this.shiptech.selectWithText("input[id='id_Vessel']", testCase.vesselName);
         await this.shiptech.selectWithText("input[id='id_carrierCompany']", testCase.carrier);
         await this.tools.setText('input[id="eta_dateinput"]', testCase.eta);
-        await this.shiptech.selectWithText("input[name='locationName']", testCase.port, false);
-        await this.shiptech.selectWithText("input[name='Seller']", testCase.seller);
-        await this.shiptech.selectWithText("input[name='paymentCompany']", testCase.paymentCompany);
+        await this.shiptech.selectWithText("input[id='id_locationName']", testCase.port, false);
+        await this.shiptech.selectWithText("input[id='id_Seller']", testCase.seller);
+        await this.shiptech.selectWithText("input[id='id_paymentCompany']", testCase.paymentCompany);
+        await this.shiptech.selectWithText("input[id='id_ServiceCode']", testCase.serviceCode);        
+        
+        
  
         //ensure the number of products
         var countbuttons = 0;
@@ -114,10 +133,11 @@ class ShiptechOrder {
         var last = testCase.products.length - 1;
         for(var i=0; i<testCase.products.length; i++)
         {                    
-          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[last].name, true);          
+          await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[last].name, true);
         }
       
 
+        
         for(var i=0; i<testCase.products.length; i++)
         {                    
           await this.shiptech.selectWithText('input[name="Product '+ i +'"]', testCase.products[i].name, true);
@@ -127,9 +147,15 @@ class ShiptechOrder {
             await this.tools.setText('input[name="minQuantity"]', testCase.products[i].quantity, i);
             await this.tools.setText('input[name="maxQuantity"]', testCase.products[i].quantity, i);
             await this.tools.setText('input[name="confirmedQuantity"]', testCase.products[i].quantity, i);
+            var existingPhysicalSupplier = await this.tools.getTextValue("input[id='product_supplier_" + i + "']");
+            if(!existingPhysicalSupplier || existingPhysicalSupplier.length <= 0)
+              await this.shiptech.selectWithText("input[name='physicalSupplier']", testCase.physicalSupplier);
           }
           if(testCase.products[i].unitPrice)
             await this.tools.setText('input[name="price"]', testCase.products[i].unitPrice, i);
+
+          await this.tools.selectBySelector('select[id="product_currency_' + i + '"]', testCase.products[i].coin);
+          
         }
       
 
@@ -152,15 +178,17 @@ class ShiptechOrder {
           countbuttons = await this.tools.countElements('span', '$ctrl.deleteAdditionalCost(additionalCost)', "attr", 'ng-click');
           limit--;
 
-        }while((countbuttons != testCase.costs.length && limit > 0  && countbuttons > 1));
+        }while(countbuttons != testCase.costs.length && limit > 0);// && countbuttons > 1
         
         for(var i=0; i<testCase.costs.length; i++)
         { 
           var typeCostName = testCase.costs[i].name;
           if(!typeCostName)
-            typeCostName = commonTestData[testCase.costs[i].nameId];
+            typeCostName = commonTestData.additionalCostType[testCase.costs[i].nameId];
           if(!typeCostName)
-            throw new Error("Cannot find type for additional cost");
+            throw new Error("Cannot find name for additional cost");
+
+          testCase.costs[i].name = typeCostName;
 
           await this.tools.selectBySelector("#additional_cost_additional_cost_" + i, typeCostName);
           
@@ -170,7 +198,7 @@ class ShiptechOrder {
             await this.tools.selectBySelector("#ApplicableFor_" + i, "All", false, false);
           else
           {
-            var prodName = commonTestData.products.find(p => p.id === testCase.costs[i].applicableForId).name;
+            var prodName = testCase.products.find(p => p.id === testCase.costs[i].applicableForId).name;
             if(!prodName || prodName.length <= 0)
               throw new Error('Cannot find additional cost product ' + testCase.costs[i].applicableForId);
             await this.tools.selectBySelector("#ApplicableFor_" + i, prodName, false, false);
@@ -180,10 +208,10 @@ class ShiptechOrder {
         
         await this.tools.clickOnItemByText('a.btn', 'Save');
         await this.tools.waitForLoader("Save Order");
-        if(!this.tools.isElementVisible("#entity-status-1", 2000))
+        if(!this.tools.isElementVisible("span[id='entity-status-1']", 2000))
           throw new Error("Order status is missing, check if the order can be saved.");
 
-        var labelStatus = await this.tools.getText("#entity-status-1");
+        var labelStatus = await this.tools.getText("span[id='entity-status-1']");
         this.tools.log("Order status is " + labelStatus.trim());
         if(!labelStatus.includes("Stemmed"))
         {
@@ -215,7 +243,7 @@ class ShiptechOrder {
         await this.tools.waitForLoader("Confirm order");
                 
 
-        labelStatus = await this.tools.getText("#entity-status-1");
+        labelStatus = await this.tools.getText("span[id='entity-status-1']");
         this.tools.log("Order status is " + labelStatus.trim());
 
         if(testCase.output && testCase.output.orderId)

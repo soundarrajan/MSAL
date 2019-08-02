@@ -47,7 +47,10 @@ const ShiptechMasterUom = require('./ShiptechMasterUom.js');
 const ShiptechMasterVessel = require('./ShiptechMasterVessel.js');
 const ShiptechMasterVesselType = require('./ShiptechMasterVesselType.js');
 const ShiptechRequest = require('./ShiptechRequest.js');
-
+const ShiptechContract = require('./ShiptechContract.js');
+const ShiptechDeliveryToVerify = require('./ShiptechDeliveryToVerify.js');
+const ShiptechLabsNew = require('./ShiptechLabsNew.js');
+const ShiptechClaimsNew = require('./ShiptechClaimsNew.js');
 
 
 
@@ -160,9 +163,13 @@ async function executeTest() {
         var shiptechMasterVessel = new ShiptechMasterVessel(tools, shiptech);
         var shiptechMasterVesselType = new ShiptechMasterVesselType(tools, shiptech);
         var shiptechRequest = new ShiptechRequest(tools, shiptech);
+        var shiptechContract = new ShiptechContract(tools, shiptech);
+        var shiptechDeliveryToVerify = new ShiptechDeliveryToVerify(tools, shiptech);
+        var shiptechLabsNew = new ShiptechLabsNew(tools, shiptech);
+        var shiptechClaimsNew = new ShiptechClaimsNew(tools, shiptech);
+                
         
-
-
+        
 
 
         var shiptechDataGen = new ShiptechTestDataGen(tools, shiptech);
@@ -210,8 +217,16 @@ async function executeTest() {
             var hasPassed = true;
 
             
-
-            if (currentTestCase.keyname == "newRequest") {
+            
+            if(currentTestCase.keyname == "newClaim"){
+                await shiptechClaimsNew.ClaimsNew(currentTestCase, commonTestData);
+            } else if(currentTestCase.keyname == "newLab"){
+                await shiptechLabsNew.LabsNew(currentTestCase, commonTestData);
+            } else if(currentTestCase.keyname == "verifyDelivery"){
+                await shiptechDeliveryToVerify.DeliveryToVerify(currentTestCase, commonTestData);
+            } else if (currentTestCase.keyname == "newContract") {
+                await shiptechContract.ContractNew(currentTestCase, commonTestData);
+            } else if (currentTestCase.keyname == "newRequest") {
                 await shiptechRequest.CreateRequest(currentTestCase, commonTestData);
             } else if (currentTestCase.keyname == "newVesselType") {
                 await shiptechMasterVesselType.NewVesselType(currentTestCase, commonTestData);
@@ -304,6 +319,7 @@ async function executeTest() {
                 await shiptechCompleteView.CompleteView(currentTestCase, commonTestData);
 
 
+
             if (!currentTestCase.result)
                 hasPassed = false;
 
@@ -346,6 +362,10 @@ async function validateTestCase(testCase) {
 
     if (!testCase.headless)
         testCase.headless = false;
+
+    var invoiceApprovalStatus = await shiptech.getInvoiceApprovalStatus();
+    if(invoiceApprovalStatus)
+        throw new Error("Cannot run on a system with [IsNeedForSubmitForApproval] set. Please clear this flag and try again.");
 
     for (var i = 0; i < testCase.testCases.length; i++) {
 

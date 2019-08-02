@@ -1,0 +1,50 @@
+{
+    "testTitle": "Create Claim - Scenario 45",
+    "headless": false,
+    "starturl": "new-order",    
+    "testData" : {      
+      "products":["product1Name"],
+      "counterpartiesLab": ["counterparty1"],
+      "companies": ["company1"],
+      "surveyors": ["surveyor1"],
+      "serviceCodes": ["serviceCode1"],
+      "ports": ["port1"],
+      "sellers": ["seller1"]
+    },
+    "testCases": [
+      {
+        "keyname": "order",
+        "input": {"products":["product1Name"]},
+        "output": {"orderId": "order1Id"},
+        "eta": 2,
+        "serviceCodeId": "serviceCode1",
+        "portId": "port1",
+        "paymentCompanyId": "company1",
+        "sellerId": "seller1",
+        "products": [
+          {
+            "id": "product1Name",
+            "quantity": 1500,
+            "unitPrice": 379,
+            "coin": "USD"
+          }
+        ]
+      },
+      {
+        "keyname": "newClaim",
+        "input": {"orderId":"order1Id"},
+        "productId": "product1Name",
+        "claimType": "Quantity",        
+        "claimSubType": "Quantity",        
+        "estimatedSettlementAmount": "100",
+        "settlementDate": 1,
+        "actualSettlementAmount": 100,
+        "StatusAfterSave" : "New",
+        "StatusAfterComplete" : "Completed"
+      }
+  ]
+}
+
+
+
+  

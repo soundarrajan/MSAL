@@ -4,8 +4,14 @@
     "starturl": "new-order",    
     "headless": false,
     "testData" : {
-        "additionalCostType" : {"typeId" : "PercentTypeName1", "type" : "Percent"},        
-        "products":["product1Name", "product2Name"]
+        "additionalCostType" : [{"typeId" : "PercentTypeName1", "type" : "Percent"}, {"typeId" : "FlatTypeName1", "type" : "Flat"}],
+        "products":["product1Name", "product2Name"],
+        "surveyors": ["surveyor1"],
+        "serviceCodes": ["serviceCode1"],
+        "ports": ["port1"],
+        "sellers": ["seller1"],
+        "companies": ["company1"],
+        "physicalSuppliers": ["physicalSupplier1"]
     },
     "testCases": [
       {
@@ -13,16 +19,23 @@
         "input": {"products":["product1Name", "product2Name"]},
         "output": {"orderId": "order1Id"},
         "eta": 2,
+        "serviceCodeId": "serviceCode1",
+        "portId": "port1",
+        "paymentCompanyId": "company1",        
+        "sellerId": "seller1",
+        "physicalSupplierId": "physicalSupplier1",
         "products": [
           {
             "id": "product1Name",
             "quantity": 500,
-            "unitPrice": 600
+            "unitPrice": 600,
+            "coin": "USD"
           },
           {
             "id": "product2Name",
             "quantity": 200,
-            "unitPrice": 400
+            "unitPrice": 400,
+            "coin": "USD"
           }
         ],
        "costs": [
@@ -31,7 +44,7 @@
             "type": "Flat",            
             "applicableFor": "All",
             "quantity": 700,
-            "unitPrice": 200                  
+            "invoiceRate": 200                  
           },
           {
             "nameId": "FlatTypeName1",
@@ -39,7 +52,7 @@
             "applicableForId": "product1Name",
             "id": "product1Name",
             "quantity": 500,
-            "unitPrice": 0.2
+            "invoiceRate": 0.2
           },
           {            
             "nameId": "PercentTypeName1",
@@ -70,11 +83,13 @@
         "rows": [ 
           {
             "Order Product Amount": "300000",
-            "Total Invoice Product Amount": "0"
+            "Total Invoice Product Amount": "0",
+            "Order Amount": "380540"
           },
           {
             "Order Product Amount": "80000",
-            "Total Invoice Product Amount": "0"
+            "Total Invoice Product Amount": "0",
+            "Order Amount": "380540"
           }  
         ]
       },
@@ -84,6 +99,8 @@
         "bdnDate": 1,
         "buyerQuantity": "Bdn Quantity",
         "sellerQuantity": "Bdn Quantity",  
+        "verifyDelivery": true,
+        "completeDelivery": true,
         "products": [
           {
             "id": "product1Name",
@@ -149,7 +166,7 @@
               "type": "Flat",            
               "applicableFor": "All",
               "quantity": 690,
-              "unitPrice": 200,
+              "invoiceRate": 200,
               "fromOrder": true
             },
             {
@@ -192,7 +209,7 @@
                   "type": "Flat",            
                   "applicableFor": "All",
                   "quantity": 690,
-                  "unitPrice": 200,
+                  "invoiceRate": 200,
                   "fromOrder": true
                 },
                 {
@@ -201,10 +218,10 @@
                   "applicableForId": "product1Name",
                   "id": "product1Name",
                   "quantity": 495,
-                  "unitPrice": 0.2,
+                  "invoiceRate": 0.2,
                   "fromOrder": true
                 },
-                {              
+                {
                   "nameId": "PercentTypeName1",
                   "type": "Percent",
                   "applicableForId": "product2Name",
@@ -239,11 +256,13 @@
       "rows": [ 
         {
           "Order Product Amount": "297000",
-          "Total Invoice Product Amount": "297000"
+          "Total Invoice Product Amount": "297242",
+          "Invoice Product Amount": "297000"
         },
         {
           "Order Product Amount": "78000",
-          "Total Invoice Product Amount": "78000"
+          "Total Invoice Product Amount": "78290",
+          "Invoice Product Amount": "78000"
         }    
       ]
     }

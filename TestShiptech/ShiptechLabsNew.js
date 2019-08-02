@@ -23,9 +23,20 @@ class ShiptechLabsNew {
 
 
 
-  async LabsNew(testCase)
+  async LabsNew(testCase, commonTestData)
   {    
     testCase.result = true;
+
+    if(!testCase.input.orderId)
+      throw new Error("orderId not defined in input parameters");
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      testCase.orderId = commonTestData[testCase.input.orderId];
+
+    if(!testCase.orderId || testCase.orderId.length <= 0)
+      throw new Error("OrderId missing from parameters in DeliveryNew().");
+
+    var productName = commonTestData.products[testCase.productId];
 
     this.tools.log("Loading Labs New");
     await this.tools.waitForLoader();
@@ -33,21 +44,42 @@ class ShiptechLabsNew {
     this.tools.log("Open side menu");  
     await this.tools.waitFor('div.page-sidebar.navbar-collapse.collapse.ng-scope');  
         
-    var result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Labs');    
-    result = await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/labs/labresult/edit/')\"] > span", 'New lab result');
+    await this.tools.clickOnItemByText("li.nav-item > a.nav-link > span", 'Labs');    
+    await this.tools.clickOnItemByText("li.nav-item > a.nav-link[ng-click=\"openInNewTab('url','/labs/labresult/edit/')\"] > span", 'New lab result');
     var page = await this.tools.getPage("New Labs Result", true);
     this.shiptech.page = page;
 
     var labelTitle = await this.tools.getText("p[class='navbar-text ng-binding']");
     labelTitle = labelTitle.trim();
     this.tools.log("Current screen is " + labelTitle);
-    if(labelTitle.includes("Labs Entity Edit"))
-      this.tools.log("SUCCES!");
-    else
-      this.tools.log("FAIL!");
+    if(!labelTitle.includes("Labs Entity Edit"))
+      throw new Error("Invalid page title '" + labelTitle + "' should have been '" + labelTitle + "'");
+
+    await this.shiptech.selectWithText("#OrderOrderID", testCase.orderId);
+
+    var surveyor = commonTestData.surveyors[testCase.surveyorId];
+    await this.shiptech.selectWithText("#SurveyorSurveyor", surveyor);    
+    await this.tools.selectFirstOptionBySelector("#LabResultTestTypeTestType");
+
+    var labCounterparty = commonTestData.counterpartiesLab[testCase.counterparty];
+    await this.shiptech.selectWithText("#Counterpartycounterparty", labCounterparty);
+    await this.tools.selectBySelector("#ProductProduct", productName);
+
+    var company = commonTestData.companies[testCase.companyId];
+    await this.shiptech.selectWithText("#CompanyCompany", company);
+    await this.tools.setText("#SurveyedHours", testCase.SurveyedHours);
+    
+    await this.tools.click("#header_action_save");
+    await this.tools.waitForLoader("Create Lab");
+
+    var labelStatus = await this.tools.getText("span[id='entity-status-2']");
+    labelStatus = labelStatus.trim();
+    this.tools.log("Lab status is " + labelStatus.trim());   
+     
+    if(!labelStatus.includes(testCase.StatusAfterSave))
+      throw new Error("Lab status is not " + testCase.StatusAfterSave);
 
     await this.tools.closeCurrentPage();
-    
   
   }
 

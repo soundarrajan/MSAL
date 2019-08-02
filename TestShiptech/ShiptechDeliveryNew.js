@@ -96,12 +96,17 @@ class ShiptechDeliveryNew {
 
     await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
     await this.tools.waitForLoader("Save Delivery");
-    await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Verify Delivery');
-    await this.tools.waitForLoader("Verify Delivery");
-    if(testCase.completeDelivery)
+
+    if(testCase.verifyDelivery)
     {
-      await this.tools.clickBySelector("#completed");
-      await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
+      await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Verify Delivery');
+      await this.tools.waitForLoader("Verify Delivery");
+      
+      if(testCase.completeDelivery)
+      {
+        await this.tools.clickBySelector("#completed");
+        await this.tools.clickOnItemByText('a.btn.btn-default.btn-outline', 'Save');
+      }
     }
     
     await this.tools.waitFor(5000);
