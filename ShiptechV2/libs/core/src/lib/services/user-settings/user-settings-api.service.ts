@@ -10,37 +10,37 @@ import {
   IUpsertUserSettingRequest,
   IUpsertUserSettingResponse,
   IUserSettingByKeyRequest,
-  IUserSettingResponse,
-  IUserSettingsRequest
+  IUserSettingResponse
 } from './request-response';
 import { fromEvent, Observable, of, Subject, throwError } from 'rxjs';
 import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
-import { toQueryString } from '../../utils/QueryString';
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
 import { catchError, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Cacheable } from 'ngx-cacheable';
 import { ApiError } from '../../error-handling/api/api-error';
 import { AppError } from '../../error-handling/app-error';
-import { AppConfig } from '@shiptech/core';
+import { AppConfig } from '../../config/app-config';
 
 export namespace UserSettingsApiPaths {
-  export const userSettingByKey = (key: string) => `api/${key}`;
-  export const userSettingList = (keys: string[]) => `api/list?${toQueryString({ keys }, { indices: false })}`;
-  export const upsertUserSetting = () => `api/save`;
-  export const deleteUserSetting = (key: string) => `api/delete/${key}`;
-  export const purgeUserSettings = () => `api/purge`;
+  export const get = (key: string) => `api/user-settings/${key}`;
+  export const save = (key: string) => `api/user-settings/${key}`;
+  export const $delete = (key: string) => `api/user-settings/${key}`;
+  export const purge = () => `api/user-settings`;
 }
 
 // @dynamic
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 // noinspection JSUnusedGlobalSymbols
 export class UserSettingsApiService implements IUserSettingsApiService, IPreferenceStorage, OnDestroy {
   private _destroy$ = new Subject();
 
   @ApiCallUrl()
-  protected _apiUrl = this.appConfig.userSettingsApiUrl;
+  protected _apiUrl = this.appConfig.userSettingsApi;
 
   constructor(private appConfig: AppConfig, private http: HttpClient) {
+    // TODO: Remove from here, create a UserSettingService
     fromEvent(window, 'keydown')
       .pipe(takeUntil(this._destroy$))
       .subscribe((event: KeyboardEvent) => this.onKeyPress(event));
@@ -48,41 +48,30 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
 
   @ObservableException()
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.userSettingByKey(request.key)}`;
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.get(request.key)}`;
     return this.getSettings(requestUrl).pipe(catchError(() => throwError(AppError.FailedToLoadUserSettings)));
   }
 
   @ObservableException()
-  getList(request: IUserSettingsRequest): Observable<IUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.userSettingList(request.keys)}`;
-    return this.getSettings(requestUrl);
-  }
-
-  @ObservableException()
   save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.upsertUserSetting()}`;
-    return this.http.post<IUpsertUserSettingResponse>(requestUrl, request).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.save(request.key)}`;
+    return this.http.put<IUpsertUserSettingResponse>(requestUrl, { Payload: request}).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
   }
 
   @ObservableException()
   delete(request: IDeleteUserSettingRequest): Observable<IDeleteUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.deleteUserSetting(request.key)}`;
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.$delete(request.key)}`;
     return this.http.delete<IDeleteUserSettingResponse>(requestUrl);
   }
 
   @ObservableException()
   purge(request: IPurgeUserSettingsRequest): Observable<IPurgeUserSettingsResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.purgeUserSettings()}`;
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.purge()}`;
     return this.http.delete<IPurgeUserSettingsResponse>(requestUrl).pipe(catchError(() => throwError(AppError.FailedToPurgeUserSettings)));
   }
 
   get<T>(key: string): Observable<T> {
     return this.getByKey({ key }).pipe(map(response => <T>response.value[key]));
-  }
-
-  // NOTE: this need further testing
-  getMultiple<T>(keys: string[]): Observable<T[]> {
-    return this.getList({ keys }).pipe(map(response => <T[]>response.value));
   }
 
   remove(key: string): Observable<any> {
@@ -97,6 +86,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
     return this.save({ key, value: typeof value === 'string' ? value : JSON.stringify(value) });
   }
 
+  // TODO: Remove from here, create a UserSettingService
   onKeyPress(event: KeyboardEvent): void {
     if (event.ctrlKey && event.altKey && event.shiftKey && event.code === 'KeyR') {
       if (confirm('Are you sure you want to clear all user settings?')) {
@@ -114,7 +104,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
 
   @ObservableException()
   protected getSettings(requestUrl: string): Observable<IUserSettingResponse> {
-    return this.apiCachedRequest(requestUrl, false);
+    return this.apiCachedRequest(requestUrl);
   }
 
   @ObservableException()
@@ -137,7 +127,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
     slidingExpiration: true,
     maxCacheCount: 100
   })
-  protected apiCachedRequest(url: string, _byPassCache: boolean): Observable<IUserSettingResponse> {
+  protected apiCachedRequest(url: string): Observable<IUserSettingResponse> {
     return this.http.get<IUserSettingResponse>(url).pipe(switchMap(response => (!response || !response.value ? throwError(ApiError.LookupsItemsPropertyMissing(response)) : of(response))));
   }
 }

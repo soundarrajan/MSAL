@@ -14,7 +14,6 @@ import {
 import { IUserSettingsApiService } from './user-settings-api.interface';
 import { UserSettingsApiService } from './user-settings-api.service';
 import { ApiCall, ApiCallForwardTo } from '../../utils/decorators/api-call.decorator';
-import { mockFilterPresets, mockFilterPresetsList } from './presets-mock';
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
 import { map } from 'rxjs/operators';
 
@@ -42,12 +41,12 @@ export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPre
 
   @ApiCall()
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
-    return of(mockFilterPresets(request.key, 'grid'));
+    return of();
   }
 
   @ApiCall()
   getList(request: IUserSettingsRequest): Observable<IUserSettingResponse> {
-    return of(mockFilterPresetsList(5));
+    return of();
   }
 
   @ApiCall()
