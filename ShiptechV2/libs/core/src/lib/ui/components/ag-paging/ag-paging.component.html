@@ -4,7 +4,10 @@
       <i class="{{ pagerLeftArrowIcon }}"></i>
     </a>
   </li>
-  <input *ngIf="useInputAsPageSelect" [formControl]="formControl" style="width: 50px" type="number" [value]="page" (change)="selectPage($event.target.value)">
+  <p-spinner *ngIf="useInputAsPageSelect"
+             [formControl]="formControl"
+             min="0"></p-spinner>
+
   <ng-container *ngIf="!useInputAsPageSelect">
     <li role="button" [attr.aria-label]="'page ' + pg.number" class="pages" *ngFor="let pg of pages" [class.active]="pg.number === page">
       <a href="javascript:void(0)" (click)="selectPage(pg.number)">
