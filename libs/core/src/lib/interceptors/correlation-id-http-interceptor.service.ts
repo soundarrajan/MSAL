@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AppContext } from '../app-context';
+import { AppContext } from '../app-context/app-context';
 
 @Injectable()
 export class CorrelationIdHttpInterceptor implements HttpInterceptor {

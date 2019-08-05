@@ -2,7 +2,7 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { JL } from 'jsnlog';
 import { ReplaySubject } from 'rxjs';
 import { ILogger, Logger } from './logger';
-import { AppContext } from '../app-context';
+import { AppContext } from '../app-context/app-context';
 import { LazyAjaxAppender } from './appenders/lazy-ajax.appender';
 import { KnownHeadersEnum } from './known-headers.enum';
 import { StructuredConsoleAppender } from './appenders/structured-console.appender';

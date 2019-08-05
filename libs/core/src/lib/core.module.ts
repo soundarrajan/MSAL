@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppContextModule } from './modules/app-context.module';
+import { AppContextModule } from './app-context/app-context.module';
 import { ToastrModule } from 'ngx-toastr';
 import { UIModule } from './ui/ui.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { USER_SETTINGS_API_SERVICE, UserSettingsApiService } from './services/user-settings/user-settings-api.service';
-import { UserSettingsApiServiceMock } from './services/user-settings/user-settings-api.service.mock';
-import { LocalPreferenceService } from './services/preference-storage/local-preference.service';
+import { AppServicesModule } from './services/app-services.module';
 
 // TODO: Define the purpose of Core Module. We should definitely remove UIModule from here and use it where necessary otherwise we risk not being able to lazy load modules
 @NgModule({
   imports: [
     CommonModule,
     AppContextModule,
+    AppServicesModule.forRoot(),
     ToastrModule.forRoot(),
     UIModule,
     FormsModule,
@@ -26,15 +25,7 @@ import { LocalPreferenceService } from './services/preference-storage/local-pref
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [
-    {
-      provide: USER_SETTINGS_API_SERVICE,
-      useClass:  UserSettingsApiService // TODO: refactor into proper service and serviceApi the mock will use localStorage // environment.production ? UserSettingsApiService : UserSettingsApiServiceMock
-    },
-    UserSettingsApiService,
-    UserSettingsApiServiceMock,
-    LocalPreferenceService
-    ]
+  providers: []
 })
 export class CoreModule {
 }
