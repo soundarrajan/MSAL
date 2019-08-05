@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { AppContext, SESSION_ID } from '../app-context';
+import { AppContext, SESSION_ID } from './app-context';
 import { tap } from 'rxjs/operators';
 import { copyToClipboardCtrlAltE } from '../utils/clipboard.utils';
 import { ToastrService } from 'ngx-toastr';

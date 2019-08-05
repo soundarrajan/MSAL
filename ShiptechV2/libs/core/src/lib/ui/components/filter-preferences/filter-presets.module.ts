@@ -6,12 +6,6 @@ import { AgGridFilterPresetsDirective } from './ag-grid-filter-presets.directive
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 import { CommonModule } from '@angular/common';
-import { PREFERENCE_STORAGE } from '../../../services/preference-storage/preference-storage.interface';
-import {
-  USER_SETTINGS_API_SERVICE,
-  UserSettingsApiService
-} from '../../../services/user-settings/user-settings-api.service';
-import { UserSettingsApiServiceMock } from '../../../services/user-settings/user-settings-api.service.mock';
 import { PresetsMenuDropdownComponent } from './presets-menu-dropdown/presets-menu-dropdown.component';
 
 export function getDefaultStorage(defaultStorage: any): any {
@@ -32,14 +26,7 @@ export function getDefaultStorage(defaultStorage: any): any {
     PresetsMenuDropdownComponent
   ],
   providers: [
-    AgGridFilterPresetsService,
-    UserSettingsApiService,
-    UserSettingsApiServiceMock,
-    {
-      provide: PREFERENCE_STORAGE,
-      useFactory: getDefaultStorage,
-      deps: [USER_SETTINGS_API_SERVICE]
-    }
+    AgGridFilterPresetsService
   ],
   exports: [
     FilterPreferencesComponent,

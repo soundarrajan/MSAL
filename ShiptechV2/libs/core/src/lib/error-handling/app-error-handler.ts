@@ -3,7 +3,7 @@ import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { AppError, IAppError } from './app-error';
 import { AppErrorHandlingStrategy } from './app-error-handling-strategy';
 import { ApiError } from './api/api-error';
-import { AppContext } from '../app-context';
+import { AppContext } from '../app-context/app-context';
 import { ToastrLogComponent } from './toastr-log/toastr-log.component';
 import { Logger } from '../logging/logger';
 import { ILoggerSettings, LOGGER_SETTINGS, RootLogger } from '../logging/logger-factory.service';

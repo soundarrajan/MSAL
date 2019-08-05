@@ -17,7 +17,9 @@ import { ApiCall, ApiCallForwardTo } from '../../utils/decorators/api-call.decor
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
 import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPreferenceStorage {
   @ApiCallForwardTo() realService: UserSettingsApiService;
 
