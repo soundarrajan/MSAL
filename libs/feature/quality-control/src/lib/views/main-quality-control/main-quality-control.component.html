@@ -36,11 +36,10 @@
   </ag-grid-angular>
 
   <div class="row mt-2">
-    <div class="col-md-3">
+    <div class="col-md-6">
       Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}} to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
     </div>
-    <div class="col-md-7"></div>
-    <div class="col-md-2">
+    <div class="col-md-6">
       <div style="float:right">
       Page
       <app-ag-paging style="width: 150px;"
