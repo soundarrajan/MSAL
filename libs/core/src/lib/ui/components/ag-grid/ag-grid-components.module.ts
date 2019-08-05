@@ -6,13 +6,15 @@ import { AgPagingComponent } from '../ag-paging/ag-paging.component';
 import { PageSizeSelectorComponent } from '../page-size-selector/page-size-selector.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgPagingModule } from '../ag-paging/ag-paging.module';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AgPagingModule
+    AgPagingModule,
+    ListboxModule
   ],
   declarations: [
     AgTemplateRendererComponent,

@@ -14,11 +14,15 @@
 
   <div class="row mb-2">
     <div class="col-md-6">
-      <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)" [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
+      <app-page-size-selector
+        (selectedOptionChange)="onPageSizeChange($event)"
+        [options]="gridViewModel.pageSizeOptions"
+        [selectedOption]="gridViewModel.pageSize">
       </app-page-size-selector>
     </div>
     <div class="col-md-6">
-      <shiptech-search-box [placeholder]="'Search something'" AgGridExternalSearch gridId="quantityControlGrid" style="float: right"></shiptech-search-box>
+      <shiptech-search-box [placeholder]="'Search something'" AgGridExternalSearch gridId="quantityControlGrid"
+                           style="float: right"></shiptech-search-box>
     </div>
   </div>
 
@@ -37,21 +41,22 @@
 
   <div class="row mt-2">
     <div class="col-md-6">
-      Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}} to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
+      Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}}
+      to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
     </div>
     <div class="col-md-6">
       <div style="float:right">
-      Page
-      <app-ag-paging style="width: 150px;"
-        [pagerLeftArrowIcon]="'fa fa-chevron-left'"
-        [pagerRightArrowIcon]="'fa fa-chevron-right'"
-        [count]="gridViewModel.totalItems"
-        [page]="gridViewModel.page"
-        [size]="gridViewModel.pageSize"
-        (change)="onPageChange($event.page)">
-      </app-ag-paging>
-      of {{gridViewModel.totalItems / gridViewModel.pageSize}}
-    </div>
+        Page
+        <app-ag-paging style="width: 150px;"
+                       [pagerLeftArrowIcon]="'fa fa-chevron-left'"
+                       [pagerRightArrowIcon]="'fa fa-chevron-right'"
+                       [count]="gridViewModel.totalItems"
+                       [page]="gridViewModel.page"
+                       [size]="gridViewModel.pageSize"
+                       (change)="onPageChange($event.page)">
+        </app-ag-paging>
+        of {{gridViewModel.totalItems / gridViewModel.pageSize}}
+      </div>
     </div>
   </div>
 </div>
@@ -75,7 +80,8 @@
   </ng-container>
 </ng-template>
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestStatusCol, gridViewModel.productStatusCol]" let-value="value" let-data="data">
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestStatusCol, gridViewModel.productStatusCol]"
+             let-value="value" let-data="data">
   <ng-container>
     <div class="requestStatus">
       <div [ngClass]="value">{{value}}</div>

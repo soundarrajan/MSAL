@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgPagingComponent } from '../ag-paging/ag-paging.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/primeng';
+import { DropdownModule, SpinnerModule } from 'primeng/primeng';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DropdownModule
+    DropdownModule,
+    SpinnerModule
   ],
   declarations: [
     AgPagingComponent
