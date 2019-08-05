@@ -33,6 +33,9 @@ export function getDefaultStorage(defaultStorage: any): any {
     AvailableFiltersComponent,
     AgGridFilterPresetsDirective,
     PresetsMenuDropdownComponent
+  ],
+  entryComponents: [
+    AvailableFiltersComponent
   ]
 })
 export class FilterPresetsModule {
