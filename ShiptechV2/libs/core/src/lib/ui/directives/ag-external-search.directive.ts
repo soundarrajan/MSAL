@@ -30,7 +30,6 @@ export class AgGridExternalSearchDirective implements OnDestroy {
   }
 
   processSearchBoxEvents(): void {
-    console.log('Search box id', this.gridId);
     this.searchBox.valueChanged.pipe(
       tap(value => postal.publish({
         channel: PostalChannelsEnum.Search,
@@ -41,15 +40,10 @@ export class AgGridExternalSearchDirective implements OnDestroy {
   }
 
   processAgGridEvents(): void {
-    console.log('Grid id', this.elementId);
     postal.subscribe({
       channel: PostalChannelsEnum.Search,
       topic: this.elementId,
-      callback: data => {
-        console.log('Data from grid', data, this.agGrid);
-        this.onSearch(data);
-        // this.agGrid.api.purgeServerSideCache();
-      }
+      callback: data => this.onSearch(data)
     })
   }
 
