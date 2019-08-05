@@ -2574,12 +2574,23 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
         	ctrl.data.products.push(newProduct);
         }
-		ctrl.deleteProduct = function(product) {
+		ctrl.deleteProduct = function(product) { 
             if(product.id) {
                 var forms_validation = validateForms();
-                if (forms_validation !== null) {
-                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                    return false;
+                filteredFormValidation = []; /*Should exclude validation for Suveyor, Agent, Physical Supplier*/
+                if (forms_validation) {
+	                $.each(forms_validation, function(k,v){
+	                	if (["Surveyor","agentCounterparty"].indexOf(v) == -1) {
+	                		filteredFormValidation.push(v);
+	                	}
+	                })
+
+                }
+                if (filteredFormValidation !== null) {
+                	if (filteredFormValidation.length > 0) {
+	                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + filteredFormValidation.join(", "));
+	                    return false;
+                	}
                 }
             }
 			countOfCancelledProducts = 0;
