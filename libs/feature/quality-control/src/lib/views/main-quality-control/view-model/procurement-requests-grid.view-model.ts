@@ -17,7 +17,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
   public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
-    headerHeight: 30,
+    headerHeight: 40,
     rowHeight: 35,
 
     rowModelType: RowModelType.ServerSide,
