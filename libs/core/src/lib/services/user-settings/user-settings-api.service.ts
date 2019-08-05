@@ -16,7 +16,6 @@ import { fromEvent, Observable, of, Subject, throwError } from 'rxjs';
 import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
 import { catchError, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
-import { Cacheable } from 'ngx-cacheable';
 import { ApiError } from '../../error-handling/api/api-error';
 import { AppError } from '../../error-handling/app-error';
 import { AppConfig } from '../../config/app-config';
@@ -35,10 +34,9 @@ export namespace UserSettingsApiPaths {
 })
 // noinspection JSUnusedGlobalSymbols
 export class UserSettingsApiService implements IUserSettingsApiService, IPreferenceStorage, OnDestroy {
-  private _destroy$ = new Subject();
-
   @ApiCallUrl()
   protected _apiUrl = this.appConfig.userSettingsApi;
+  private _destroy$ = new Subject();
 
   constructor(private appConfig: AppConfig, private http: HttpClient) {
     // TODO: Remove from here, create a UserSettingService
@@ -50,7 +48,10 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   @ObservableException()
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.get(request.key)}`;
-    return this.getSettings(requestUrl).pipe(catchError(() => throwError(AppError.FailedToLoadUserSettings)));
+    return this.getSettingsCached(requestUrl).pipe(catchError((e) => {
+        return throwError(AppError.FailedToLoadUserSettings);
+      }
+    ));
   }
 
   @ObservableException()
@@ -104,38 +105,38 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   }
 
   @ObservableException()
-  protected getSettings(requestUrl: string): Observable<IUserSettingResponse> {
-    return this.getSettingsCached(requestUrl);
-  }
-
-  @ObservableException()
-  @Cacheable({
-    cacheResolver: (oldParameters: any[], newParameters: any[]) => {
-      // Note: old url and new may refer to different path, since this is a shared method.
-      const oldUrl = oldParameters[0];
-      const newUrl = newParameters[0];
-
-      // Note: For the same url decide if we should use the cache or not.
-      // Note: If second parameter _byPassCache is set to true, make a fresh request
-      const byPassCache = newParameters && newParameters.length > 1 && newParameters[1] === true;
-      // noinspection UnnecessaryLocalVariableJS
-      const useFromCache = oldUrl === newUrl && !byPassCache;
-
-      return useFromCache;
-    },
-    shouldCacheDecider: (response: IUserSettingResponse) => response && !!response.value,
-    maxAge: 1000 * 60 * 5, // in ms, cache for 5 minutes,
-    slidingExpiration: true,
-    maxCacheCount: 100
-  })
+  // @Cacheable({
+  //   cacheResolver: (oldParameters: any[], newParameters: any[]) => {
+  //     // Note: old url and new may refer to different path, since this is a shared method.
+  //     const oldUrl = oldParameters[0];
+  //     const newUrl = newParameters[0];
+  //
+  //     // Note: For the same url decide if we should use the cache or not.
+  //     // Note: If second parameter _byPassCache is set to true, make a fresh request
+  //     const byPassCache = newParameters && newParameters.length > 1 && newParameters[1] === true;
+  //     // noinspection UnnecessaryLocalVariableJS
+  //     const useFromCache = oldUrl === newUrl && !byPassCache;
+  //
+  //     return useFromCache;
+  //   },
+  //   shouldCacheDecider: (response: IUserSettingResponse) => response && !!response.value,
+  //   maxAge: 1000 * 60 * 5, // in ms, cache for 5 minutes,
+  //   slidingExpiration: true,
+  //   maxCacheCount: 100
+  // })
   protected getSettingsCached(url: string): Observable<IUserSettingResponse> {
-    return this.http.get<IUserSettingResponse>(url, { observe: 'response', headers: { [LoggingInterceptorHeader]: '404'}  }).pipe(
+    return this.http.get<IUserSettingResponse>(url, {
+      observe: 'response',
+      headers: { [LoggingInterceptorHeader]: '404' }
+    }).pipe(
+      catchError(response =>
+        // Note: 404 is a valid response, the key is missing in the user settings.
+        response.status === 404 ? of(response) : throwError(response)),
       switchMap(response => {
-        return response.status === 404
-          ? of(undefined)
-          : !response.body || !response.body.value
-            ? throwError(ApiError.LookupsItemsPropertyMissing(response))
-            : of(response.body);
+        return !response.body || !response.body.value
+          // Note: We need to map a 404 status code to the <IUserSettingResponse> { value: any } format.
+          ? of({ value: undefined })
+          : of(response.body);
       }));
   }
 }
