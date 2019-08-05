@@ -48,10 +48,9 @@
         [count]="gridViewModel.totalItems"
         [page]="gridViewModel.page"
         [size]="gridViewModel.pageSize"
-        [useInputAsPageSelect]="true"
         (change)="onPageChange($event.page)">
       </app-ag-paging>
-      of {{gridViewModel.totalItems}}
+      of {{gridViewModel.totalItems / gridViewModel.pageSize}}
     </div>
     </div>
   </div>

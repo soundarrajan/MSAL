@@ -20,6 +20,10 @@ export class MainQualityControlComponent implements OnInit {
     this.gridViewModel.pageSize = pageSize;
   }
 
+  getPage(): number {
+    return this.gridViewModel.page;
+  }
+
   ngOnInit(): void {
   }
 

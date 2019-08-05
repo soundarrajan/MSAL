@@ -79,7 +79,7 @@
                 border-right: 4px solid transparent;
 
                 &.active-menuitem {
-                    border-left-color: $primaryColor;
+                    border-left-color: $accentColor;
                 }
             }
 
@@ -247,7 +247,7 @@
                             span {
                                 color: $menuitemTextHoverColor;
                             }
-    
+
                             i {
                                 color: $menuitemIconHoverColor;
                             }
@@ -270,14 +270,14 @@
                         .layout-menuitem-icon, .layout-submenu-toggler {
                             color: $menuitemIconColor;
                         }
-    
+
                         &:hover {
                             background-color: $menuitemHoverBgColor;
 
                             .layout-menuitem-text {
                                 color: $menuitemTextHoverColor;
                             }
-    
+
                             .layout-menuitem-icon, .layout-submenu-toggler {
                                 color: $menuitemIconHoverColor;
                             }
@@ -298,11 +298,11 @@
                             .layout-menuitem-text {
                                 color: $primaryColor;
                             }
-    
+
                             .layout-menuitem-icon, .layout-submenu-toggler {
                                 color: $primaryColor;
                             }
-                        } 
+                        }
                     }
 
                     > a {
@@ -364,7 +364,7 @@
                             span {
                                 color: $darkMenuitemTextHoverColor;
                             }
-    
+
                             i {
                                 color: $darkMenuitemIconHoverColor;
                             }
@@ -373,7 +373,7 @@
                 }
             }
 
-            .layout-menu {   
+            .layout-menu {
                 ul {
                     background-color: $darkMenuBgColor;
                 }
@@ -387,14 +387,14 @@
                         .layout-menuitem-icon, .layout-submenu-toggler {
                             color: $darkMenuitemIconColor;
                         }
-    
+
                         &:hover {
                             background-color: $darkMenuitemHoverBgColor;
 
                             .layout-menuitem-text {
                                 color: $darkMenuitemTextHoverColor;
                             }
-    
+
                             .layout-menuitem-icon, .layout-submenu-toggler {
                                 color: $darkMenuitemIconHoverColor;
                             }
@@ -415,11 +415,11 @@
                             .layout-menuitem-text {
                                 color: $primaryColor;
                             }
-    
+
                             .layout-menuitem-icon, .layout-submenu-toggler {
                                 color: $primaryColor;
                             }
-                        } 
+                        }
                     }
 
                     > a {
@@ -456,7 +456,7 @@
                 left: 0;
                 @include transition(left $transitionDuration);
             }
-    
+
             .layout-main {
                 margin-left: $sideBarWidth;
                 @include transition(margin-left $transitionDuration);
@@ -466,12 +466,12 @@
                 margin-left: $sideBarWidth;
                 @include transition(margin-left $transitionDuration);
             }
-    
+
             &.layout-static-inactive {
                 .layout-menu-container {
                     left: -288px;
                 }
-    
+
                 .layout-main {
                     margin-left: 0;
                 }
@@ -487,7 +487,7 @@
                 }
             }
         }
-    
+
         &.layout-overlay {
             .layout-menu-container {
                 width: 288px;
@@ -495,14 +495,14 @@
                 @include shadow(0 0px 10px 0 rgba(0, 0, 0, 0.16));
                 @include transition(left $transitionDuration);
             }
-    
+
             &.layout-overlay-active {
                 .layout-menu-container {
                     left: 0;
                 }
             }
         }
-    
+
         &.layout-slim {
             .layout-topbar {
                 .layout-topbar-logo {
@@ -562,11 +562,11 @@
                         }
                     }
                 }
-                
+
                 .layout-menu {
                     > li {
                         position: relative;
-    
+
                         > a {
                             display: block;
                             text-align: center;
@@ -576,7 +576,7 @@
                                 font-size: 18px;
                                 margin-right: 0;
                             }
-    
+
                             .layout-menuitem-text {
                                 display: none;
                             }
@@ -584,12 +584,12 @@
                             &:hover + .layout-menu-tooltip {
                                 display: block;
                             }
-    
+
                             .layout-submenu-toggler {
                                 display: none;
                             }
                         }
-    
+
                         > ul {
                             position: absolute;
                             top: 0;
@@ -615,7 +615,7 @@
                         left: 57px;
                         top: 5px;
                         line-height: 1;
-                        
+
                         .layout-menu-tooltip-text {
                             padding: 6px 8px;
                             font-weight: 700;
@@ -626,7 +626,7 @@
                             white-space: nowrap;
                             text-align: center;
                         }
-                        
+
                         .layout-menu-tooltip-arrow {
                             position: absolute;
                             width: 0;
@@ -642,7 +642,7 @@
                     }
                 }
             }
-    
+
             .layout-main {
                 margin-left: 57px;
             }
@@ -651,12 +651,12 @@
                 margin-left: 57px;
             }
         }
-    
+
         &.layout-horizontal {
             .layout-topbar {
                 position: static;
 
-                .layout-topbar-logo { 
+                .layout-topbar-logo {
                     margin: 10px 0 0 5em;
                 }
             }
@@ -671,18 +671,18 @@
                     background-color: transparent;
                     border-radius: 0;
                     border: none;
-        
+
                     .ui-scrollpanel-bar {
                         background-color: #aaaaaa;
                         opacity: 0.3;
                         filter: alpha(opacity=30);
                     }
-        
+
                     .ui-scrollpanel-hidden {
                         display: block;
                         visibility: hidden;
                     }
-        
+
                     .menu-scroll-content {
                         width: 268px;
                         padding-right: 18px;
@@ -692,11 +692,11 @@
                         padding: 0;
                     }
                 }
-                
+
                 .layout-menu {
                     margin: 0;
                     padding: 0;
-    
+
                     > li {
                         display: inline-block;
                         width: auto;
@@ -704,7 +704,7 @@
                         position: relative;
                         border-left: 0 none;
                         border-right: 0 none;
-  
+
                         > a {
                             height: 2.5em;
                             padding: .6em 1em;
@@ -713,7 +713,7 @@
                                 color: $menuitemIconColor;
                                 margin-right: .5em;
                             }
-        
+
                             .layout-submenu-toggler {
                                 position: static;
                                 margin-left: .5em;
@@ -721,7 +721,7 @@
                                 margin-top: 0;
                             }
                         }
-    
+
                         > ul {
                             top: 2.5em;
                             left: 0;
@@ -747,12 +747,12 @@
                     }
                 }
             }
-    
+
             .layout-main {
                 padding-top: 0;
             }
-        }    
-    
+        }
+
         &.layout-horizontal, &.layout-slim {
             .layout-topbar {
                 .layout-menu-button {
@@ -764,9 +764,9 @@
                     margin-left: 40px;
                 }
             }
-            
+
             .layout-menu-container {
-                 
+
                 .ui-scrollpanel {
                     .ui-scrollpanel-wrapper {
                         overflow: visible;
@@ -796,27 +796,27 @@
                             a {
                                 padding-left: 16px;
                             }
-    
+
                             li {
                                 a {
                                     padding-left: 32px;
                                 }
-    
+
                                 li {
                                     a {
                                         padding-left: 48px;
                                     }
-    
+
                                     li {
                                         a {
                                             padding-left: 64px;
                                         }
-    
+
                                         li {
                                             a {
                                                 padding-left: 80px;
                                             }
-    
+
                                             li {
                                                 a {
                                                     padding-left: 96px;
