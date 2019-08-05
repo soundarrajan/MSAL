@@ -25,6 +25,7 @@
               placeholder="{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}"
             />
           </div>
+
           <div matSuffix *ngIf="!isEditing" class="chip-circle chip-icon" [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'" (click)="setPinned(filter.id)">
             <i *ngIf="filter.isPinned" class="fas fa-thumbtack aggrid-rotate-45"></i>
           </div>
