@@ -849,6 +849,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         });
         $scope.hidePopover = function() { 
         	$("custom-popover").remove();
+            $(".bootstrap-datetimepicker-widget").remove();
             $("*:not([tooltip])").tooltip("destroy");
             $("[tooltip][data-original-title]").tooltip({
                 container: "body",
