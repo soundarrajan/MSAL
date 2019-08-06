@@ -12,6 +12,7 @@ angular.module('shiptech.components')
 
 
                 ctrl.requestIds = changes.args.currentValue.selectedRequestIds;
+                ctrl.allRequests = changes.args.currentValue.allRequests;
                 ctrl.groupId =  changes.args.currentValue.groupId;           
             };
 
@@ -20,6 +21,20 @@ angular.module('shiptech.components')
             		return false;
             	}
             	groupOfRequestsModel.delinkRequests(ctrl.requestIds, ctrl.groupId).then(function() {
+					allRequestsLength = 0;
+            		biggestRequest = 0;
+					$.each(ctrl.allRequests, function(index, value) {
+						if (typeof(value) != "undefined" ) {
+							allRequestsLength++;
+	            			if (index > biggestRequest) {
+	            				biggestRequest = index;
+	            			}
+						}
+					}); 	            		
+	            	if (ctrl.requestIds.length == allRequestsLength) {
+	            		location.href = "/#/edit-request/" + biggestRequest;
+	            		return;
+	            	}
             		$state.reload();
             		return;
             		ctrl.onDelink({requestIds : ctrl.requestIds});

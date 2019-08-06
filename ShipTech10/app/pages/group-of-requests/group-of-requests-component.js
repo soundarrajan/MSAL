@@ -2098,6 +2098,7 @@ ctrl.setProductData = function(data, loc) {
             });
             ctrl.delinkIds = {
                 selectedRequestIds: selectedRequestIds,
+                allRequests: ctrl.requestCheckboxes,
                 groupId: groupId
             };
             // groupOfRequestsModel.delinkRequests(selectedRequestIds, ctrl.groupId).then(function() {
