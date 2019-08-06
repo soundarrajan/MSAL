@@ -98,7 +98,8 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     colId: 'Date',
     resizable: true,
     hide: false,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   serviceNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.ServiceName,
@@ -136,9 +137,11 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.Eta,
     field: 'eta',
     colId: 'ETA',
+    type: 'date',
     resizable: true,
     hide: false,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   locationNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.LocationName,
@@ -194,9 +197,11 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.CreatedOn,
     field: 'createdOn',
     colId: 'Created On',
+    type: 'date',
     resizable: true,
     hide: true,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   createdByNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.CreatedByName,
@@ -226,9 +231,11 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.LastModifiedOn,
     field: 'lastModifiedOn',
     colId: 'Last Modified On',
+    type: 'date',
     resizable: true,
     hide: true,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   lastModifiedByNameCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.LastModifiedByName,
@@ -252,7 +259,8 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     colId: 'ETB',
     resizable: true,
     hide: true,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   etdCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.Etd,
@@ -260,7 +268,8 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     colId: 'ETD',
     resizable: true,
     hide: true,
-    lockPosition: false
+    lockPosition: false,
+    cellRendererFramework: AgTemplateRendererComponent
   };
   maxQuantityCol: ColDef = {
     headerName: ProcurementRequestColumnsLabels.MaxQuantity,
