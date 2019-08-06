@@ -48,10 +48,19 @@ $red: red;
 
 
 .active-chip {
-  background-color: #9e9d9d!important;
+  background-color: #9e9d9d !important;
+
+  .chip-circle {
+    border: 1px solid $darker;
+
+    i {
+      color: $darker !important;
+      font-size: 0.7rem;
+    }
+  }
 }
 
 .mat-chip.mat-standard-chip {
   background-color: #c6c6c6;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, .87);
 }

@@ -10,7 +10,7 @@ import { nameof } from '../../../index';
 import { AgGridEventsEnum } from './ag-grid.events';
 import { AppError } from '../../../error-handling/app-error';
 
-export const PageSizeOptions = [25, 50, 100, 500];
+export const PageSizeOptions = [25, 50, 75, 100];
 export const DefaultPageSize = 25;
 export const colGroupMarginClass = 'col-group-border';
 
