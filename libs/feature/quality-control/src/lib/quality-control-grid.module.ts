@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { PrimeNGModule } from '@shiptech/core';
-import { AgTemplateRendererComponent } from '../../../../core/src/lib/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
-import { AgTemplateRendererDirective } from '../../../../core/src/lib/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.directive';
-import { AgGridComponentsModule } from '../../../../core/src/lib/ui/components/ag-grid/ag-grid-components.module';
+import { AgTemplateRendererDirective } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.directive';
+import { AgGridComponentsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-components.module';
+import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 
 @NgModule({
   imports: [
