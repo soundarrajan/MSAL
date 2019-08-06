@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ProcurementRequestsGridViewModel } from './view-model/procurement-requests-grid.view-model';
 
 @Component({
   selector: 'shiptech-main-quality-control',
   templateUrl: './main-quality-control.component.html',
   styleUrls: ['./main-quality-control.component.scss'],
-  providers: [ProcurementRequestsGridViewModel]
+  providers: [ProcurementRequestsGridViewModel],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainQualityControlComponent implements OnInit {
 

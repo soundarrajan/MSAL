@@ -54,7 +54,7 @@ export class AgPagingComponent implements AfterViewInit {
     return Math.max(count || 0, 1);
   }
 
-  @Output() change: EventEmitter<any> = new EventEmitter();
+  @Output() pageChange: EventEmitter<any> = new EventEmitter();
 
   _count: number = 0;
   _page: number = 1;
@@ -80,9 +80,10 @@ export class AgPagingComponent implements AfterViewInit {
 
   selectPage(page: number): void {
     if (page > 0 && page <= this.totalPages && page !== this.page) {
+      //TODO: Remove useInputAsPageSelect feature. This is called twice because of it
       this.page = page;
 
-      this.change.emit({
+      this.pageChange.emit({
         page
       });
     }
@@ -121,6 +122,7 @@ export class AgPagingComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
     if(this.useInputAsPageSelect) {
       this.formControl.valueChanges.pipe(
         distinctUntilChanged(),

@@ -27,7 +27,7 @@
   </div>
 
   <ag-grid-angular
-    appAgGridFilterPresets
+
     appAgGridFirstColumnLocked
     appAgGridSizeToFit
     appDeselectFiltredRows
@@ -53,7 +53,8 @@
                        [count]="gridViewModel.totalItems"
                        [page]="gridViewModel.page"
                        [size]="gridViewModel.pageSize"
-                       (change)="onPageChange($event.page)">
+                       [useInputAsPageSelect]="true"
+                       (pageChange)="onPageChange($event.page)">
         </app-ag-paging>
         of {{gridViewModel.totalItems / gridViewModel.pageSize}}
       </div>
