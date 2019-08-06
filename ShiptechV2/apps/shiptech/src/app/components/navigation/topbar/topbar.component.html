@@ -1,6 +1,6 @@
 <div class="layout-topbar">
 
-  <a routerLink="/" class="layout-topbar-logo">
+  <a routerLink="/" class="layout-topbar-logo" style="margin-top:3px;">
     <img id="topbar-logo" src="http://mail.24software.ro:8160/img/logo.png">
   </a>
 
@@ -13,8 +13,11 @@
   </span>
 
   <div style="float:right;padding: 5px;">
-    <span>{{authService.userInfo.userName}}</span>
-    <button pButton *ngIf="authService.userInfo.authenticated" (click)="authService.logOut()" type="button" class="ui-button-danger" label="Log out"></button>
+
+
+    <span class="mr-2">{{authService.userInfo.userName}}</span>
+    <button pButton *ngIf="authService.userInfo.authenticated" (click)="authService.logout()" type="button"
+            class="ui-button-danger" label="Log out"></button>
   </div>
 
 </div>

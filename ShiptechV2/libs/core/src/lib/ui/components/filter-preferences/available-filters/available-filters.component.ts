@@ -10,8 +10,7 @@ import { FilterPreferenceViewModel } from '../../../../services/user-settings/fi
   // tslint:disable-next-line:component-selector
   selector: 'app-available-filters',
   templateUrl: './available-filters.component.html',
-  styleUrls: ['./available-filters.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./available-filters.component.scss']
 })
 export class AvailableFiltersComponent implements OnInit, OnDestroy {
   _destroy$: Subject<any> = new Subject();

@@ -1,17 +1,16 @@
-<div class="w-100 px-3 py-4" style="background: white;">
-
-  <div class="row mb-3">
-    <div class="col-md-12 d-flex">
-      <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
-      <app-filter-preferences
-        id="qualityControlModule"
-        appAgGridFilterPresets
-        groupId="quantityControlmain"
-        screenId="Main"
-      ></app-filter-preferences>
-    </div>
+<shiptech-wunderbar>
+  <div class="col-md-12 d-flex" style="margin: 5px 0;">
+    <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
+    <app-filter-preferences
+      id="qualityControlModule"
+      appAgGridFilterPresets
+      groupId="quantityControlmain"
+      screenId="Main"
+    ></app-filter-preferences>
   </div>
+</shiptech-wunderbar>
 
+<div class="w-100 px-3 py-4" style="background: white;">
   <div class="row mb-2">
     <div class="col-md-6">
       <app-page-size-selector
@@ -86,5 +85,20 @@
     <div class="requestStatus">
       <div [ngClass]="value">{{value}}</div>
     </div>
+  </ng-container>
+</ng-template>
+
+<ng-template appTemplateRenderer
+             [columnDef]="[
+               gridViewModel.requestDateCol,
+               gridViewModel.etaCol,
+               gridViewModel.createdOnCol,
+               gridViewModel.lastModifiedOnCol,
+               gridViewModel.etbCol,
+               gridViewModel.etdCol
+             ]"
+             let-value="value" let-data="data">
+  <ng-container>
+    {{value | date: 'short'}}
   </ng-container>
 </ng-template>
