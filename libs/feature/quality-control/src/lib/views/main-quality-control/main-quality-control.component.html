@@ -76,7 +76,7 @@
 
 <ng-template appTemplateRenderer [columnDef]="[gridViewModel.editCol]" let-value="value" let-data="data">
   <ng-container>
-    <a href="{{'/#/edit-request/' + data.requestId}}" target="_blank"><i class="fas fa-pencil-alt"></i></a>
+    <a href="{{'/#/edit-request/' + data?.requestId}}" target="_blank"><i class="fas fa-pencil-alt"></i></a>
   </ng-container>
 </ng-template>
 
