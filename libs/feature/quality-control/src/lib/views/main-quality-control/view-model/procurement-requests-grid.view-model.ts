@@ -1,10 +1,10 @@
-import { BaseGridViewModel } from '../../../../../../../core/src/lib/ui/components/ag-grid/base.grid-view-model';
-import { AgColumnPreferencesService } from '../../../../../../../core/src/lib/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
+import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
+import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { ProcurementRequestColumnsLabels } from './procurement-requests.columns';
-import { RowModelType, RowSelection } from '../../../../../../../core/src/lib/ui/components/ag-grid/type.definition';
+import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ProcurementService } from '../../../services/procurement.service';
 import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
@@ -137,7 +137,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.Eta,
     field: 'eta',
     colId: 'ETA',
-    type: 'date',
+    filter: 'agDateColumnFilter',
     resizable: true,
     hide: false,
     lockPosition: false,
@@ -197,7 +197,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.CreatedOn,
     field: 'createdOn',
     colId: 'Created On',
-    type: 'date',
+    filter: 'agDateColumnFilter',
     resizable: true,
     hide: true,
     lockPosition: false,
@@ -231,7 +231,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.LastModifiedOn,
     field: 'lastModifiedOn',
     colId: 'Last Modified On',
-    type: 'date',
+    filter: 'agDateColumnFilter',
     resizable: true,
     hide: true,
     lockPosition: false,
