@@ -17,8 +17,6 @@ import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/b
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { WonderBarComponent } from './components/wonder-bar/wonder-bar.component';
-import { FilterPresetsModule } from '../../../../libs/core/src/lib/ui/components/filter-preferences/filter-presets.module';
 
 
 @NgModule({
@@ -29,7 +27,6 @@ import { FilterPresetsModule } from '../../../../libs/core/src/lib/ui/components
     AppSubMenuComponent,
     TopbarComponent,
     BlankComponent,
-    WonderBarComponent,
     AccessDeniedComponent
   ],
   imports: [

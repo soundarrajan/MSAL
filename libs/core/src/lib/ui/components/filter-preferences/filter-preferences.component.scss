@@ -11,7 +11,9 @@
     opacity: 0 !important;
   }
 }
-$dark: black;
+
+$dark: #8f8f8f;
+$darker: #757575;
 $white: white;
 $red: red;
 
@@ -27,12 +29,24 @@ $red: red;
   font-size: 0.7rem;
   cursor: pointer;
   text-align: center;
+
   .fa-thumbtack {
     color: $dark;
     font-size: 0.7rem;
   }
+
   .fa-times {
     color: $red;
     font-size: 0.85rem;
   }
+
+  i {
+    color: $darker;
+    font-size: 0.7rem;
+  }
+}
+
+
+.active-chip {
+  background-color: #b0afaf;
 }
