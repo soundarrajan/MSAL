@@ -1,7 +1,7 @@
 import { IServerSideGetRowsParams } from 'ag-grid-community';
 import {
   IShiptechDateFilter,
-  IShiptechFilter,
+  IShiptechFilter, IShiptechNumberFilter,
   IShiptechTextFilter,
   ShiptechConditionValues
 } from '../../services/models/procurement-requests.dto';
@@ -35,6 +35,17 @@ function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRow
       ...result,
       dateType: 'server',
       Values: [(<AgGridDateFilter>filter).dateFrom.toString()]
+    };
+  }
+
+  if (filter.filterType === knownFilterTypes.Number) {
+    const numberFilter = <AgGridNumberFilter>filter;
+
+    result = <IShiptechNumberFilter>{
+      ...result,
+      // TODO: Temporary workaround to avoid backend crash on number value
+      ColumnType: 'Quantity',
+      Values: numberFilter.filterTo ? [numberFilter.filter, numberFilter.filterTo] : [numberFilter.filter]
     };
   }
 
@@ -80,9 +91,16 @@ export interface AgGridTextFilter extends AgGridFilter {
   filter: string;
 }
 
+export interface AgGridNumberFilter extends AgGridFilter {
+  filter: number;
+  filterTo?: number;
+}
+
 export enum knownFilterTypes {
   Text = 'text',
-  Date = 'date'
+  Date = 'date',
+  Number = 'number'
+
 }
 
 export enum ShiptechGridFilterOperators {

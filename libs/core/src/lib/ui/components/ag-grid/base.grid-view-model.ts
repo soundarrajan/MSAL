@@ -244,7 +244,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
             // Note: Set the source as the final operation otherwise with each column state update or pagination, will call server side source multiple times
             this.gridApi.hideOverlay();
 
-          //  this.setupServerSideDatasource();
+           this.setupServerSideDatasource();
           })
         )
         .subscribe();

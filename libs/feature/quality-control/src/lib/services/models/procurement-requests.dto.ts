@@ -29,7 +29,7 @@ export interface IShiptechFilter {
   ColumnType: string;
   ConditionValue: string;
   FilterOperator?: number;
-  Values: string[];
+  Values: any[];
   columnValue: string;
   isComputedColumn: boolean
 }
@@ -38,7 +38,13 @@ export interface IShiptechDateFilter extends IShiptechFilter {
   dateType: string;
 }
 
-export interface IShiptechTextFilter extends IShiptechFilter {}
+export interface IShiptechTextFilter extends IShiptechFilter {
+  Values: string[];
+}
+
+export interface IShiptechNumberFilter extends IShiptechFilter {
+  Values: number[];
+}
 
 export enum ShiptechConditionValues {
   isBlank = 'IS BLANK',
@@ -50,7 +56,11 @@ export enum ShiptechConditionValues {
   startsWith = 'LIKE1',
   endsWith = 'LIKE2',
   greaterThan = '>',
-  lessThan = '<'
+  greaterThanOrEqual = '>=',
+  lessThan = '<',
+  lessThanOrEqual = '<=',
+  inRange = 'between'
+
 }
 
 export interface IShiptechPagination {

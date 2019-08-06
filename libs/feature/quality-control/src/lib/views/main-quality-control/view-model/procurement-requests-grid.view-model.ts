@@ -69,6 +69,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     resizable: false,
+    suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent
   };
   actionCol: ColDef = {
@@ -81,6 +82,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     suppressMenu: true,
     suppressAutoSize: true,
     suppressSizeToFit: true,
+    suppressToolPanel: true,
     sortable: false,
     filter: false,
     resizable: false,
@@ -288,6 +290,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.MaxQuantity,
     field: 'maxQuantity',
     colId: 'Maximum Quantity',
+    filter: 'agNumberColumnFilter',
     resizable: true,
     hide: true,
     lockPosition: false
@@ -296,6 +299,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     headerName: ProcurementRequestColumnsLabels.MinQuantity,
     field: 'minQuantity',
     colId: 'Minimum Quantity',
+    filter: 'agNumberColumnFilter',
     resizable: true,
     hide: true,
     lockPosition: false
