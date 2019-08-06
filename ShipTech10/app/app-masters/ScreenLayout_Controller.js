@@ -1028,8 +1028,12 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
             });
         };
 
-        $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter) {
+        $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
+        	if (!clc) {
+        		return;
+        	}
             tpl = "";
+
             if (template == "formula") {
                 $scope.modal = {
                     clc: "masters_formulalist",
@@ -1073,6 +1077,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                         return;
                     }
                 }
+
                 $scope.modal = {
                     clc: clc,
                     app: clcs[0],
@@ -1082,6 +1087,65 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                     field_name: field_name
                 };
 
+                if (clc == "PreRequest") {
+                    $scope.modal.app = "procurement";
+                    $scope.modal.screen = "request_entity_documents";
+                    $scope.modal.clc = "entity_documents";
+        	    	var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+			    		return el.name == "Request";
+			    	}).id;
+			    	$scope.modal.filters = [
+			    		{
+			    			"ColumnName": "ReferenceNo",
+			    			"Value": _.get(ctrlData, 'requestId')
+			    		},
+			    		{
+			    			"ColumnName": "TransactionTypeId",
+			    			"Value": transactionTypeId
+			    		}
+		    		]
+		    		$scope.filters = $scope.modal.filters;
+                }
+
+                if (clc == "Order") {
+                    $scope.modal.app = "procurement";
+                    $scope.modal.screen = "order_entity_documents";
+                    $scope.modal.clc = "entity_documents";
+        	    	var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+			    		return el.name == "Order";
+			    	}).id;
+			    	$scope.modal.filters = [
+			    		{
+			    			"ColumnName": "ReferenceNo",
+			    			"Value": _.get(ctrlData, 'orderId')
+			    		},
+			    		{
+			    			"ColumnName": "TransactionTypeId",
+			    			"Value": transactionTypeId
+			    		}
+		    		]
+		    		$scope.filters = $scope.modal.filters;
+                }
+
+                if (clc == "group_of_requests_entity_documents") {
+                    $scope.modal.app = "procurement";
+                    $scope.modal.screen = "request_entity_documents";
+                    $scope.modal.clc = "entity_documents";
+        	    	var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+			    		return el.name == "Offer";
+			    	}).id;
+			    	$scope.modal.filters = [
+			    		{
+			    			"ColumnName": "ReferenceNo",
+			    			"Value": _.get($state, 'params.groupId')
+			    		},
+			    		{
+			    			"ColumnName": "TransactionTypeId",
+			    			"Value": transactionTypeId
+			    		}
+		    		]
+		    		$scope.filters = $scope.modal.filters;
+                }
 
                 if (clc == "claims_entity_documents") {
                     $scope.modal.app = "claims";
@@ -1091,6 +1155,12 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 
                 if (clc == "contracts_entity_documents") {
                     $scope.modal.app = "contracts";
+                    $scope.modal.screen = "entity_documents";
+                    $scope.modal.clc = "entity_documents";
+                }
+
+                if (clc == "labs_entity_documents") {
+                    $scope.modal.app = "labs";
                     $scope.modal.screen = "entity_documents";
                     $scope.modal.clc = "entity_documents";
                 }

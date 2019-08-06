@@ -17,7 +17,7 @@ angular.module('shiptech.models').factory('emailModel', ['emailResource', 'paylo
         }
 
         function saveComments(emailData, comment, template, extraFields) {
-            if (typeof comment === "undefined" && comment === null) {
+            if (typeof comment === "undefined" || comment === null ) {
                 return false;
             }
             var toOthers = null;
@@ -149,6 +149,7 @@ angular.module('shiptech.models').factory('emailModel', ['emailResource', 'paylo
                 "businessId": emailData.businessId,
                 "secondBusinessId": emailData.secondBusinessId,
                 "thirdBusinessId": emailData.thirdBusinessId,
+                "attachmentsList": emailData.attachmentsList,
                 "businessIds": emailData.businessIds ? formArray(emailData.businessIds) : [],
             };
             request_data = payloadDataModel.create(payload);

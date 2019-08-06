@@ -22,7 +22,9 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
     "$http",
     "API",
     "Factory_Master",
-    function($window, $rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, EMAIL_TRANSACTION, STATE, emailModel, newRequestModel, orderModel, groupOfRequestsModel, $sce, $tenantSettings, payloadDataModel, screenLoader, $listsCache, $http, API, Factory_Master) {
+    "$uibModal",
+    "$templateCache",
+    function($window, $rootScope, $scope, $element, $attrs, $timeout, $state, $stateParams, $filter, EMAIL_TRANSACTION, STATE, emailModel, newRequestModel, orderModel, groupOfRequestsModel, $sce, $tenantSettings, payloadDataModel, screenLoader, $listsCache, $http, API, Factory_Master, $uibModal, $templateCache) {
         var ctrl = this;
         ctrl.state = $state;
         ctrl.STATE = STATE;
@@ -31,6 +33,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         ctrl.data = $stateParams.data;
         ctrl.lists = $listsCache;
         ctrl.transaction = $stateParams.transaction;
+        $scope.transaction = $stateParams.transaction;
         ctrl.multipleRequests = $stateParams.multipleRequests;
         ctrl.template = {
             id: 0,
@@ -286,6 +289,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             });
         };
 
+        $scope.$on("selectDocumentAttachment", function (e, a) {
+            a.isIncludedInMail = true;
+            $scope.addToAttachments(a);
+        });
+
         ctrl.loadTemplateList().then(function() {
             // Get the default template data.
             if (ctrl.defaultTemplate) {
@@ -540,6 +548,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             //switch to prevstate to create correct payload fo save
             if (action == "discard") {
             	ctrl.buttonsDisabled = true;
+                emailData.attachmentsList = _.get(ctrl, 'email.attachmentsList');
                 emailModel.discardPreview(emailData, ctrl.template).then(function() {
                     $state.defaultTemplate = ctrl.template;
                     $state.reload();

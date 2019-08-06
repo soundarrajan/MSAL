@@ -4172,14 +4172,20 @@ APP_MASTERS.controller("Controller_Master", [
                 $scope.selected_value = angular.copy(rowData);
             } else if(element.screen == "contractlist" && vm.app_id == "default") {
                 $scope.selected_value = angular.copy(rowData);
-            } else if(element.screen == "entity_documents" && element.source == "availableDocumentAttachments") {
-            	$timeout(function(){
-            		rowData.isIncludedInMail = true;
-	                $scope.addToAttachments(rowData);
-            	})
-				$scope.prettyCloseModal();
-				$("*").tooltip("destroy");
-				return;
+            } else if(element.clc == "entity_documents" && element.source == "availableDocumentAttachments") {
+                if (element.screen == 'entity_documents') {
+                    $timeout(function() {
+                        rowData.isIncludedInMail = true;
+                        $scope.addToAttachments(rowData);
+                    });
+                } else {
+                    $timeout(function(){
+                        $rootScope.$broadcast("selectDocumentAttachment", rowData);
+                    });
+                }
+                $scope.prettyCloseModal();
+                $("*").tooltip("destroy");
+                return;
             } else {
                 $.each(rowData, function(key, val) {
                     if (key == "id" || key == "name" || key == "code" || key == "displayName") {
@@ -4259,6 +4265,7 @@ APP_MASTERS.controller("Controller_Master", [
             $("*").tooltip("destroy");
             $scope.triggerChangeFields(field_name, elements[1]);
         };
+
         $scope.assignObjValue = function(obj, keyPath, value) {
             lastKeyIndex = keyPath.length - 1;
             for (var i = 0; i < lastKeyIndex; ++i) {

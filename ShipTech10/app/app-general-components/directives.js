@@ -204,7 +204,8 @@ window.increment = 0;
                                         generic: generic_layout
                                         //clc_id: Elements.scope[table_id].selector.split("'")[1]
                                     },
-                                    function(callback) {
+                                    function(cb) {
+                                        callback = angular.copy(cb);
                                         if (callback && callback.clc) {
                                             callback.id = null;
                                             if (scope.source) {

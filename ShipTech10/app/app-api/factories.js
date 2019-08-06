@@ -4247,10 +4247,15 @@ APP_API.factory("$Api_Service", [
                                     next_key = paths[i + 1];
                                     jsonDATA = jsonDATA[key];
                                 }
-                                jsonDATA = {
-                                    clc: jsonDATA[paths[lastKeyIndex]]
-                                };
-                            
+                                if (!jsonDATA.colModel) {
+                                    jsonDATA = {
+                                        clc: jsonDATA[paths[lastKeyIndex]]
+                                    };
+                                } else {
+                                    jsonDATA = {
+                                        clc: jsonDATA
+                                    };
+                                }
                             }else{
                                 // jsonDATA = jsonDATA.layout;
                             }
@@ -5127,16 +5132,18 @@ APP_API.factory("$Api_Service", [
                         if (appPath.match(/masters/)) transactionTypeId = 8;
                         if (appPath.match(/contracts/)) transactionTypeId = 9;
                         // {end} filters
-                        apiJSON.Payload.Filters = [
-                            {
-                                ColumnName: "ReferenceNo",
-                                Value: $state.params.entity_id
-                            }, // a.k.a. businessId (entity_id)
-                            {
-                                ColumnName: "TransactionTypeId",
-                                Value: transactionTypeId
-                            }
-                        ];
+                        if (!_.has(apiJSON, 'Payload.Filters') || _.get(apiJSON, 'Payload.Filters').length === 0) {
+                            apiJSON.Payload.Filters = [
+                                {
+                                    ColumnName: "ReferenceNo",
+                                    Value: $state.params.entity_id
+                                }, // a.k.a. businessId (entity_id)
+                                {
+                                    ColumnName: "TransactionTypeId",
+                                    Value: transactionTypeId
+                                }
+                            ];
+                        }
               
                         // document type master
                         if ($state.params.requestId) {
