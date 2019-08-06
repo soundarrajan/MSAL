@@ -41,6 +41,8 @@ export interface IShiptechDateFilter extends IShiptechFilter {
 export interface IShiptechTextFilter extends IShiptechFilter {}
 
 export enum ShiptechConditionValues {
+  isBlank = 'IS BLANK',
+  isNotBlank = 'IS NOT NULL',
   contains = 'LIKE',
   notContains = 'NOT LIKE',
   equals = '=',

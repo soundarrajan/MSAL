@@ -11,6 +11,7 @@ import { AuthenticationModule } from '@shiptech/core';
 import { SearchBoxModule } from '../../../../core/src/lib/ui/components/search-box/search-box.module';
 import { UIModule } from '../../../../core/src/lib/ui/ui.module';
 import { FilterPresetsModule } from '../../../../core/src/lib/ui/components/filter-preferences/filter-presets.module';
+import { WunderBarComponent } from '../../../../core/src/lib/ui/components/wonder-bar/wunder-bar.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,10 @@ import { FilterPresetsModule } from '../../../../core/src/lib/ui/components/filt
     UIModule,
     FilterPresetsModule
   ],
-  declarations: [MainQualityControlComponent],
+  declarations: [
+    MainQualityControlComponent,
+    WunderBarComponent
+  ],
   providers: [
     ModuleLoggerFactory,
     {
