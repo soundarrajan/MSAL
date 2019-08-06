@@ -15,8 +15,7 @@ import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-gri
     AgGridModule.withComponents([AgTemplateRendererComponent, AgTemplateRendererDirective]),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    PrimeNGModule
+    HttpClientModule
   ],
   exports: [AgGridModule, AgGridComponentsModule]
 })

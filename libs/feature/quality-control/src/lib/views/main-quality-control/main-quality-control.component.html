@@ -76,7 +76,13 @@
 
 <ng-template appTemplateRenderer [columnDef]="[gridViewModel.editCol]" let-value="value" let-data="data">
   <ng-container>
-    <a href="#"><i class="fa fa-pencil"></i></a>
+    <a href="#"><i class="fas fa-pencil"></i></a>
+  </ng-container>
+</ng-template>
+
+<ng-template appTemplateRenderer [columnDef]="[gridViewModel.actionCol]" let-value="value" let-data="data">
+  <ng-container>
+    <button pButton type="button" label="Proceed"  (click)="showModal(data)" class="ui-button-secondary ui-button-raised"></button>
   </ng-container>
 </ng-template>
 
@@ -102,4 +108,9 @@
   <ng-container>
     {{value | date: 'short'}}
   </ng-container>
+</ng-template>
+
+
+<ng-template let-data #popup>
+  {{data | json}}
 </ng-template>

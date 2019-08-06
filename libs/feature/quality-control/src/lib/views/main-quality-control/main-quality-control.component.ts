@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ProcurementRequestsGridViewModel } from './view-model/procurement-requests-grid.view-model';
+import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
+import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
 
 @Component({
   selector: 'shiptech-main-quality-control',
@@ -10,7 +12,9 @@ import { ProcurementRequestsGridViewModel } from './view-model/procurement-reque
 })
 export class MainQualityControlComponent implements OnInit {
 
-  constructor(public gridViewModel: ProcurementRequestsGridViewModel) {
+  @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
+
+  constructor(public gridViewModel: ProcurementRequestsGridViewModel, private messageBox: MessageBoxService) {
   }
 
   onPageChange(page: number): void {
@@ -21,8 +25,8 @@ export class MainQualityControlComponent implements OnInit {
     this.gridViewModel.pageSize = pageSize;
   }
 
-  getPage(): number {
-    return this.gridViewModel.page;
+  showModal(data: IProcurementRequestDto): void {
+    this.messageBox.displayDialog({data, width: '500px', height: '600px'}, this.popupTemplate);
   }
 
   ngOnInit(): void {
