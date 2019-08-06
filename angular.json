@@ -40,7 +40,8 @@
                 "glob": "**/*",
                 "input": "./v1/config",
                 "output": "./config"
-              }
+              },
+              "apps/shiptech/src/web.config"
             ],
             "styles": [
               "apps/shiptech/src/styles.scss",
