@@ -61,16 +61,29 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     suppressPaste: true,
     lockPosition: true,
     lockVisible: true,
-    rowDrag: true,
     cellClass: 'cell-border-green'
   };
 
   editCol: ColDef = {
     colId: 'Edit',
     width: 50,
-    resizable: true,
     hide: false,
-    lockPosition: false,
+    resizable: false,
+    cellRendererFramework: AgTemplateRendererComponent
+  };
+  actionCol: ColDef = {
+    colId: 'Edit',
+    width: 100,
+    hide: false,
+    lockPosition: true,
+    suppressMovable: true,
+    suppressNavigable: true,
+    suppressMenu: true,
+    suppressAutoSize: true,
+    suppressSizeToFit: true,
+    sortable: false,
+    filter: false,
+    resizable: false,
     cellRendererFramework: AgTemplateRendererComponent
   };
   requestNameCol: ColDef = {
@@ -353,7 +366,8 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
       this.minQuantityCol,
       this.uomNameCol,
       this.robOnArrivalCol,
-      this.roundVoyageConsumptionCol
+      this.roundVoyageConsumptionCol,
+      this.actionCol
     ];
   }
 

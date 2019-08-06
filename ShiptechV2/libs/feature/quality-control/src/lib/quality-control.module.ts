@@ -7,11 +7,12 @@ import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { PROCUREMENT_API_SERVICE, ProcurementApiService } from './services/api/procurement.api.service';
 import { ProcurementService } from './services/procurement.service';
-import { AuthenticationModule } from '@shiptech/core';
+import { AuthenticationModule, PrimeNGModule } from '@shiptech/core';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
 import { UIModule } from '@shiptech/core/ui/ui.module';
+import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 
 @NgModule({
   imports: [
@@ -22,7 +23,9 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
     AuthenticationModule.forFeature(),
     SearchBoxModule,
     UIModule,
-    FilterPresetsModule
+    FilterPresetsModule,
+    PrimeNGModule,
+    MessageBoxModule
   ],
   declarations: [
     MainQualityControlComponent,
