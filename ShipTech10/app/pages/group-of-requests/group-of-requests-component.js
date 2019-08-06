@@ -3148,13 +3148,20 @@ ctrl.setProductData = function(data, loc) {
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.revokeRFQ(rfq_data).then(
                 function (data) {
+                	if (data.payload) {
+	                	if (data.payload.redirectToRequest) {
+	                		lastRequestId = rfq_data.Requirements[0].RequestId;
+	                		location.href = "/#/edit-request/"+lastRequestId;
+	                		return;
+	                	}
+                	}
                     ctrl.buttonsDisabled = false;
-                    ctrl.initScreen();
+                    ctrl.initScreenAfterSendOrSkipRfq();
                     return false;
                 },
                 function () {
                     ctrl.buttonsDisabled = false;
-                    ctrl.initScreen();
+                    ctrl.initScreenAfterSendOrSkipRfq();
                     return false;
                 }
             ).finally(
@@ -3433,7 +3440,17 @@ ctrl.setProductData = function(data, loc) {
                     selectedRequestIds.push(key);
                 }
             });
-            if (ctrl.requests && selectedRequestIds.length == ctrl.requests.length) return false;
+            if (ctrl.requests && selectedRequestIds.length == ctrl.requests.length) {
+	        	var delinkableRequests = 0;
+	        	$.each(ctrl.requests, function(rk,rv){
+	        		if (["Validated", "Reopened"].indexOf(rv.requestStatus.name) != -1) {
+		            	delinkableRequests++;
+	        		}
+	        	})
+	        	if (delinkableRequests != selectedRequestIds.length) {
+	            	return false;
+	        	}
+            }
             for (var i = 0; i < selectedRequestIds.length; i++) {
                 if (ctrl.requestCheckboxes[selectedRequestIds[i]]) {
                     for (var j = 0; j < ctrl.requests.length; j++) {
