@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { debounceTime, filter, groupBy, map, mergeMap, switchMap, tap, throttleTime } from 'rxjs/operators';
+import { debounceTime, filter, groupBy, mergeMap, switchMap, tap, throttleTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { ColumnState } from 'ag-grid-community/src/ts/columnController/columnController';
 import { LocalPreferenceService } from '../../../../services/preference-storage/local-preference.service';
@@ -17,18 +17,25 @@ interface IGridRegistration {
   eventListener: Function;
 }
 
-interface ISaveRequest {
-  gridName: string;
-  columnState: ColumnState[];
+interface IAgGridSortModel {
+  colId: string,
+  sort: string
 }
 
-const GridMonitorEvents = ['gridColumnsChanged', 'displayedColumnsChanged', 'columnResized', 'columnEverythingChanged'];
+
+interface IGridPreferences {
+  gridName: string;
+  columnState: ColumnState[];
+  sortState: IAgGridSortModel[];
+}
+
+const GridMonitorEvents = ['gridColumnsChanged', 'displayedColumnsChanged', 'columnResized', 'columnEverythingChanged', 'sortChanged'];
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgColumnPreferencesService implements OnDestroy {
-  private _savePreferences = new Subject<ISaveRequest>();
+  private _savePreferences = new Subject<IGridPreferences>();
   private _watches: IGridRegistration[] = [];
   private _storage: IPreferenceStorage;
   private _storageKey = (gridName: string) => `${gridName}_ColumnPreference`;
@@ -44,7 +51,7 @@ export class AgColumnPreferencesService implements OnDestroy {
         mergeMap(group =>
           group.pipe(
             throttleTime(1000),
-            switchMap(request => this._storage.set(this._storageKey(request.gridName), request.columnState))
+            switchMap(request => this._storage.set(this._storageKey(request.gridName), request))
           )
         )
       )
@@ -68,7 +75,11 @@ export class AgColumnPreferencesService implements OnDestroy {
         debounceTime(100),
         // Note: gridOptions may already by uninitializing
         filter(() => !!gridOptions.columnApi),
-        tap(() => this._savePreferences.next({ gridName, columnState: gridOptions.columnApi.getColumnState() }))
+        tap(() => this._savePreferences.next({
+          gridName,
+          columnState: gridOptions.columnApi.getColumnState(),
+          sortState: gridOptions.api.getSortModel()
+        }))
       )
       .subscribe();
 
@@ -100,9 +111,12 @@ export class AgColumnPreferencesService implements OnDestroy {
   }
 
   restoreToGrid(gridName: string, options: GridOptions): Observable<any> {
-    return this._storage.get<ColumnState[]>(this._storageKey(gridName)).pipe(
+    return this._storage.get<IGridPreferences>(this._storageKey(gridName)).pipe(
       filter(p => !!p),
-      map(columnsState => {
+      tap(preferences => {
+        const columnsState = preferences.columnState;
+        const sortState = preferences.sortState;
+
         if (!Array.isArray(columnsState) || columnsState.length === 0) {
           this._storage.remove(this._storageKey(gridName));
 
@@ -118,13 +132,15 @@ export class AgColumnPreferencesService implements OnDestroy {
           throw Error('Preferences contains no valid columns.');
         }
 
-        return columns;
-      }),
-      tap((columns: ColumnState[]) => {
-        // Note: We don't want to show a grid with no columns.
         if (columns && columns.length > 0 && columns.some(c => !c.hide)) {
           options.columnApi.setColumnState(columns);
         }
+
+        // Note: Restore Sort
+        // Note: Restore sort only existing columns.
+        const sortModels = sortState.filter(sortModel => allColumnsSet.has(sortModel.colId));
+
+        options.api.setSortModel(sortModels);
       })
     );
   }
