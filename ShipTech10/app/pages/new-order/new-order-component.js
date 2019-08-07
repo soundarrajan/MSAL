@@ -342,6 +342,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
 
+            $.each(ctrl.data.products, function(k, v) {
+                var physSup = _.filter(ctrl.lists.Supplier, ['id', v.physicalSupplier.id])[0];
+
+                if (physSup) {
+                    v.physicalSupplier = physSup;
+                }
+            });
+
             if (typeof ctrl.data.comments != "undefined") {
             	if (ctrl.data.comments) {
 		            ctrl.data.comments = ctrl.data.comments.replace(/<br\s?\/?>/g,"\n");
@@ -1092,7 +1100,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             })
             newProduct.quantityUom = {};
             newProduct.currency = ctrl.currency;
-            // newProduct.physicalSupplier = angular.copy(ctrl.data.seller);
+            // newProduct.fsicalSupplier = angular.copy(ctrl.data.seller);
             ctrl.setPhysicalSupplier(newProduct);
             newProduct.additionalCosts = [];
             addFirstAdditionalCost();
