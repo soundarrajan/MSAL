@@ -80,7 +80,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 "Payload": payload
             }).then(function successCallback(response) {
                 ctrl.availableDocumentAttachmentsList = response.data.payload;
-                $.each($rootScope.availableDocumentAttachmentsList, function(k,v) {
+                $.each(ctrl.availableDocumentAttachmentsList, function(k,v) {
                     v.isIncludedInMail = true;
                 }); 
            });
@@ -548,7 +548,28 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             //switch to prevstate to create correct payload fo save
             if (action == "discard") {
             	ctrl.buttonsDisabled = true;
-                emailData.attachmentsList = _.get(ctrl, 'email.attachmentsList');
+                var validAttachments = [];
+                var attachmentList = angular.copy(ctrl.email.attachmentsList);
+                var availableAttachmentList = angular.copy(ctrl.availableDocumentAttachmentsList);
+
+                $.each(availableAttachmentList, function(k, v) {
+                    if (v.isIncludedInMail === false || v.isIncludedInMail === true) {
+                        var elm = angular.copy(v);
+                        var found = false;
+                        $.each(attachmentList, function(k1, v1) {
+                            if (v1.id === v.id) {
+                                found = true;
+                                elm.isIncludedInMail = true;
+                            }
+                        });
+                        if (!found) {
+                            elm.isIncludedInMail = false;
+                        }
+                        validAttachments.push(elm);
+                    }
+                });
+
+                emailData.attachmentsList = validAttachments;
                 emailModel.discardPreview(emailData, ctrl.template).then(function() {
                     $state.defaultTemplate = ctrl.template;
                     $state.reload();
