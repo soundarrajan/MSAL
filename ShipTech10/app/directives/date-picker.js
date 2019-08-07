@@ -251,11 +251,11 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                 $(element).datetimepicker(datePickerOptions).on('dp.show', function (e) {
                     setTimeout(function () {
-                    	if ($(".bootstrap-datetimepicker-widget").length > 0) {
-	                        if ($(".bootstrap-datetimepicker-widget").offset().left > $(window).width() - 250) {
-	                            $(".bootstrap-datetimepicker-widget").css("transform", "translateX(-30%)")
-	                        }
-                    	}
+                        if ($(".bootstrap-datetimepicker-widget").length > 0) {
+                            if ($(".bootstrap-datetimepicker-widget").offset().left > $(window).width() - 250) {
+                                $(".bootstrap-datetimepicker-widget").css("transform", "translateX(-30%)")
+                            }
+                        }
                     })
                 });
 
@@ -334,8 +334,26 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                             $('#' + dateInputId + '_time').remove();
                     }
                     if ($(e.target).closest('.new-date-picker-input').length === 0 && $(e.target).parent().find("input[new-date-picker]").length == 0) {
-                        $('.bootstrap-datetimepicker-widget').remove();
+                        $timeout(function() {
+                            if ($('#datetimepicker').data("DateTimePicker")) {
+                                $('#datetimepicker').data("DateTimePicker").destroy();
+                            }
+                            $('.bootstrap-datetimepicker-widget').remove();
+                        });
                     }                    
+                });
+
+                $(window).resize(function(e) {
+                    $('.bootstrap-datetimepicker-widget').remove();
+                    if ($('#datetimepicker').data("DateTimePicker")) {
+                        $('#datetimepicker').data("DateTimePicker").destroy();
+                    }
+                    $timeout(function() {
+                        $('.bootstrap-datetimepicker-widget').remove();
+                        if ($('#datetimepicker').data("DateTimePicker")) {
+                            $('#datetimepicker').data("DateTimePicker").destroy();
+                        }
+                    });
                 });
 
                 $('#' + dateInputId).on('dp.change', function(e) {
