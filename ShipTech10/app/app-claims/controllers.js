@@ -203,7 +203,9 @@ APP_CLAIMS.controller("Controller_Claims", [
                     if ($scope.formValues.quantitySubtypes.length > 0) {
                     	$timeout(function(){
 		                	$scope.formValues.claimType.quantityShortageUom = $scope.formValues.quantitySubtypes[0].quantityUom;
-		                	$("[name='claimType.quantityShortage Option']").val($scope.formValues.quantitySubtypes[0].quantityUom.id)
+                            if($scope.formValues.quantitySubtypes[0].quantityUom != null) {
+                                 $("[name='claimType.quantityShortage Option']").val($scope.formValues.quantitySubtypes[0].quantityUom.id);
+                            }
                     	})
                     }
                     if ($scope.formValues.quantitySubtypes.length > 0 && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
@@ -872,10 +874,13 @@ APP_CLAIMS.controller("Controller_Claims", [
 					buyerQuantity = $scope.formValues.quantitySubtypes[0].buyerQuantity;
 					quantityUom = $scope.formValues.quantitySubtypes[0].quantityUom
 					isQuantitySubtype = true;
+                    $scope.formValues.densitySubtypes = [];
+
 				}
 			}
 			if ($scope.formValues.densitySubtypes) {
 				if ($scope.formValues.densitySubtypes.length == 1) {
+                    $scope.formValues.quantitySubtypes = [];
 					isDensitySubtype = true;
 				} else {
 					if (!isQuantitySubtype) {
