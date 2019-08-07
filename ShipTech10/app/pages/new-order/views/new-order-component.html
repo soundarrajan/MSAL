@@ -1021,7 +1021,7 @@
                                                 typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
                                                 typeahead-append-to-body="true"
                                                 typeahead-editable="false" ng-required="$ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id && product.status.id != $ctrl.STATUS['Cancelled'].id"
-                                                ng-model="product.physicalSupplier.name" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                ng-model="product.physicalSupplier" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                 ng-mouseover="$ctrl.setSellerDialogType($ctrl.productColumns.physicalSupplier.name, product.physicalSupplier)"
                                                 id="product_supplier_{{ $index }}"
                                             />

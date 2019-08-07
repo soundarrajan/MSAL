@@ -2922,6 +2922,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         }
 
         ctrl.openPreviewEmail = function(data){
+
+            $.each(ctrl.data.products, function(k, v) {
+                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) {
+                    data.data.missingPhysicalSupplier = true;
+                }
+            });
            
             localStorage.setItem('previewEmailData', JSON.stringify(data));
             var url = $state.href(STATE.PREVIEW_EMAIL);
