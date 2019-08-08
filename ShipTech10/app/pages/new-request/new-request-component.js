@@ -581,6 +581,16 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     // ctrl.initMask(); // reinit mask for date inputs
                     return false;
                 }
+                var invalidDates = [];
+                $('.new-date-picker').each(function(key, value) {
+                    if ($(this).hasClass('invalid')) {
+                        invalidDates.push($(this).attr('name').split('_')[1].toUpperCase());
+                    }
+                });
+                if (invalidDates.length > 0) {
+                    toastr.error('Please check the date fields: ' + invalidDates.join(', '));
+                    return false;
+                }
                 ctrl.buttonsDisabled = true;
                 //remove empty products
                 for (var i = ctrl.request.locations.length - 1; i >= 0; i--) {
@@ -2356,12 +2366,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             $timeout(function() {
                 function toggleInvalid(elm, action) {
                     if (action === 'add') {
-                        // elm.parent().addClass('datepicker-container-invalid');
-                        elm.addClass('invalid');
+                        $('#' + elm + '_dateinput').parent().find('input').addClass('invalid');
+                        $('#' + elm + '_dateinput').addClass('invalid');
                     }
                     if (action === 'remove') {
-                        // elm.parent().removeClass('datepicker-container-invalid');
-                        elm.removeClass('invalid');
+                        $('#' + elm + '_dateinput').parent().find('input').removeClass('invalid');
+                        $('#' + elm + '_dateinput').removeClass('invalid');
                     }
                 }
 
@@ -2369,28 +2379,28 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
                 if (moment.utc(ctrl.request.locations[locationIdx].etb).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
                     toastr.error("ETA must be lower or equal to ETB.");
-                    toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'add');
+                    toggleInvalid(locationIdx + '_etb', 'add');
                     hasError = true;
                 } else {
                     if (ctrl.request.locations[locationIdx].etb) {
-                        toggleInvalid($('#' + locationIdx + '_etb_dateinput'), 'remove');
+                        toggleInvalid(locationIdx + '_etb', 'remove');
                     }
                 }
                 if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
                     toastr.error("ETA must be lower or equal to ETD.");
-                    toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'add');
+                    toggleInvalid(locationIdx + '_etd', 'add');
                     hasError = true;
                 } else {
                     if (ctrl.request.locations[locationIdx].etd) {
-                        toggleInvalid($('#' + locationIdx + '_etd_dateinput'), 'remove');
+                        toggleInvalid(locationIdx + '_etd', 'remove');
                     }
                 }
 
                 if (hasError) {
-                    toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'add');
+                    toggleInvalid(locationIdx + '_eta', 'add');
                 } else {
                     if (ctrl.request.locations[locationIdx].eta) {
-                        toggleInvalid($('#' + locationIdx + '_eta_dateinput'), 'remove');
+                        toggleInvalid(locationIdx + '_eta', 'remove');
                     }
                 }
             });
