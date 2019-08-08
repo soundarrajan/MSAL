@@ -1208,7 +1208,7 @@
                                         </a>
                                         <div class="input-group" ng-init="$ctrl.getOrderContractOptions(product)">
                                             <input name="{{ $ctrl.productColumns.contract.name }}" class="typeahead form-control"
-                                                uib-typeahead="contract as contract.searchString for contract in $ctrl.orderContractOptions[product.product.id] | filter:$viewValue | limitTo:5"
+                                                uib-typeahead="contract.contract.name for contract in $ctrl.orderContractOptions[product.product.id] | filter:$viewValue | limitTo:5"
                                                 typeahead-on-select="selectProductContract($ctrl.productContractSelecting, $item)"
                                                 typeahead-editable="false" 
                                                 typeahead-append-to-body="true"
