@@ -1484,6 +1484,27 @@ ctrl.setProductData = function(data, loc) {
 				                	if (activeSellerFromResponse.length > 0) {
 				                		activeSellerFromResponse = activeSellerFromResponse[0]
 				                	}	                            	
+
+                                    $.each(ctrl.requests, function (reqK, reqV) {
+                                        $.each(reqV.locations, function (locK, locV) {
+                                            if (locV.id == currentRequirement.RequestLocationId) {
+                                                $.each(locV.products, function (prodK, prodV) {
+                                                    var foundSeller = _.find(prodV.sellers, function(o) { return o.randUniquePkg === currentRequirement.randUniquePkg; });
+                                                    if (foundSeller) {
+                                                        fakeSellerObj = foundSeller;
+                                                        return;
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+
+                                    if (fakeSellerObj) {
+                                        fakeSellerObj.id = activeSellerFromResponse.id;
+                                        fakeSellerObj.selected = activeSellerFromResponse.selected;  
+                                    }
+
+                                    /*
 						        	fakeSellerObj = {
 						        		"id": activeSellerFromResponse.id,
 						        		"randUniquePkg" : currentRequirement.randUniquePkg,
@@ -1491,10 +1512,12 @@ ctrl.setProductData = function(data, loc) {
 						        		"offers" : [],
 						        		"rfq" : {},
 						        		"packageType" : "individual",
-						        		"sellerCounterparty" : {
-						        			"id" : activeSellerFromResponse.requestSellerId
-						        		}
-						        	}
+                                        "sellerCounterparty" : _.find(angular.copy(ctrl.sellers), function(o) { return o.counterpartyId === activeSellerFromResponse.requestSellerId })
+                                    };
+                                    fakeSellerObj.sellerCounterparty.id = activeSellerFromResponse.requestSellerId;
+                                    fakeSellerObj.sellerCounterparty.name = fakeSellerObj.sellerCounterparty.counterpartyName;
+                                    */
+
 	                                foundSeller = false;
 	                                if (prodV.sellers.length > 0) {
 	                                    $.each(prodV.sellers, function (selK, selV) {
