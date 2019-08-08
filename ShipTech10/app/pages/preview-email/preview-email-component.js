@@ -443,7 +443,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 case EMAIL_TRANSACTION.ORDER:
                     if (ctrl.data.defaultCancellationEmail) {
 	                    ctrl.template = ctrl.data.defaultCancellationEmail;
-	                    ctrl.data.defaultCancellationEmail - null;
+	                    ctrl.data.defaultCancellationEmail = null;
                     }
                     screenLoader.showLoader();
                     if (ctrl.template.id === 0) {
