@@ -309,6 +309,38 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             });
         }
 
+        function previewOrderToBeDeliveredMail(emailData, template) {
+            var templateId = 0;
+            var templateName = null;
+            if (typeof template != "undefined" && template !== null) {
+                templateId = template.id;
+                templateName = template.name;
+            }
+            var payload = {
+                'OrderId': emailData.orderId,
+                'OrderProductsList': emailData.orderProductIds
+            };
+            request_data = payloadDataModel.create(payload);
+            return orderResource.previewOrderToBeDeliveredMail(request_data).
+            $promise.
+            then(function(data) {
+                return data;
+            });
+        }
+
+        function sendOrderToBeDeliveredMail(orderId, orderProductIds) {
+            var payload = {
+                'OrderId': orderId,
+                'OrderProductsList': orderProductIds
+            };
+            request_data = payloadDataModel.create(payload);
+            return orderResource.sendOrderToBeDeliveredMail(request_data).
+            $promise.
+            then(function(data) {
+                return data;
+            });
+        }
+
         function getOrderConfirmationEmailTemplate(emailData, template) {
             var templateId = 0;
             var templateName = null;
@@ -391,6 +423,8 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             createWithContract: createWithContract,
             cancelOrderProduct : cancelOrderProduct,
             getOrderEmailTemplate: getOrderEmailTemplate,
+            previewOrderToBeDeliveredMail: previewOrderToBeDeliveredMail,
+            sendOrderToBeDeliveredMail: sendOrderToBeDeliveredMail,
             getOrderListForRequest : getOrderListForRequest,
             mailPreviewConfirmToSeller: mailPreviewConfirmToSeller,
             getManualCancellationEmail : getManualCancellationEmail,

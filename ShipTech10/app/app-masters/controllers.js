@@ -29,7 +29,10 @@ APP_MASTERS.controller("Controller_Master", [
     "statusColors",
     "screenLoader",
     "$parse",
-    function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse) {
+    "EMAIL_TRANSACTION",
+    "STATE",
+    "orderModel",
+    function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse, EMAIL_TRANSACTION, STATE, orderModel) {
        
     	// extendScreenLayout(window.masterCTRL, this, statusColors);
 
@@ -7453,6 +7456,48 @@ APP_MASTERS.controller("Controller_Master", [
 		{
 		    // $(".tooltip").tooltip("hide");
 		});
+
+        $scope.previewOrderToBeDeliveredMail = function() {
+            if (!$rootScope.selectDeliveryRows || $rootScope.selectDeliveryRows.length === 0) {
+                toastr.error('Please select a delivery');
+                return;
+            }
+
+            var orderId = _.get($rootScope.selectDeliveryRows[0], 'order.id');
+            var orderProductIds = _.map($rootScope.selectDeliveryRows, 'orderProductId');
+
+            if (orderId && orderProductIds) {
+                var previewEmailData = {
+                    data: {
+                        orderId: orderId,
+                        orderProductIds: orderProductIds
+                    },
+                    transaction: "OrderNoBDNToVesselEmail"
+                }
+    
+                localStorage.setItem('previewEmailData', JSON.stringify(previewEmailData));
+    
+                var url = $state.href(STATE.PREVIEW_EMAIL);
+
+                $location.path(url.replace("#",""));
+            }
+        };
+
+        $scope.sendOrderToBeDeliveredMail = function() {
+            if (!$rootScope.selectDeliveryRows || $rootScope.selectDeliveryRows.length === 0) {
+                toastr.error('Please select a delivery');
+                return;
+            }
+
+            var orderId = _.get($rootScope.selectDeliveryRows[0], 'order.id');
+            var orderProductIds = _.map($rootScope.selectDeliveryRows, 'orderProductId');
+
+            if (orderId && orderProductIds) {
+                orderModel.sendOrderToBeDeliveredMail(orderId, orderProductIds).then(function() {
+                    toastr.success('Operation completed successfully');
+                });
+            }
+        };
 
     }
 ]);

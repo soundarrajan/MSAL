@@ -200,6 +200,24 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     ctrl.getAvailableDocumentAttachments(ctrl.data.orderId, "Order");
                 });
             }
+            if (ctrl.transaction === "OrderNoBDNToVesselEmail") {
+                return new Promise(function(resolve, reject) {
+                    orderModel.previewOrderToBeDeliveredMail(ctrl.data, ctrl.template).then(function(data) {
+                        ctrl.email = data.payload;
+                        ctrl.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
+                        if (ctrl.email.comment) {
+                            if (!ctrl.email.comment.emailTemplate) return;
+                            ctrl.templateList = [ctrl.email.comment.emailTemplate];
+                            ctrl.template = ctrl.email.comment.emailTemplate;
+                        }
+                    }, function(){
+                        ctrl.template = null;
+                        ctrl.data = {};
+                        ctrl.email = {};
+                    });
+                    resolve(true);
+                });
+            }
             return emailModel.getTemplates(ctrl.emailTransactionTypeId).then(function(data) {
                 ctrl.templateList = data.payload;
                 switch (ctrl.transaction) {
@@ -519,6 +537,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         businessId: ctrl.data.rfqId
                     };
                     break;
+                case "OrderNoBDNToVesselEmail":
                 case EMAIL_TRANSACTION.ORDER:
                     emailData = {
                         businessId: ctrl.data.orderId
@@ -653,6 +672,18 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             if (ctrl.email.to == null) {
                 toastr.error("Please check the recipient field!");
                 return false;
+            }
+
+            if (ctrl.transaction == 'OrderNoBDNToVesselEmail') {
+                var orderId = ctrl.data.orderId;
+                var orderProductIds = ctrl.data.orderProductIds;
+
+                if (orderId && orderProductIds) {
+                    orderModel.sendOrderToBeDeliveredMail(orderId, orderProductIds).then(function() {
+                        // toastr.success('Operation completed successfully');
+                    });
+                } 
+                return;
             }
 
             // console.log(email);
