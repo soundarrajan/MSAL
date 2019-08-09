@@ -16,7 +16,8 @@ APP_MASTERS.controller("Controller_Datatables", [
     "$tenantSettings",
     "$listsCache",
     "$filter",
-    function($scope, $rootScope, $Api_Service, Factory_Labs, $state, $location, $q, $compile, $timeout, $templateCache, Factory_Master, $tenantSettings, $listsCache, $filter) {
+    "$uibModal",
+    function($scope, $rootScope, $Api_Service, Factory_Labs, $state, $location, $q, $compile, $timeout, $templateCache, Factory_Master, $tenantSettings, $listsCache, $filter, $uibModal) {
         var vm = this;
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split(".")[0];
@@ -1317,12 +1318,14 @@ APP_MASTERS.controller("Controller_Datatables", [
                 columnDefs: [
                     {
                         name: "code",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Voyage Code",
                         // cellTemplate: '<div class="ui-grid-cell-contents">{{grid.appScope.fVal().formValues.voyages[0].code}}</div>'
                     },
                     {
                         name: "port.code",
+                        width: 110,
                         enableCellEdit: false,
                         displayName: "Port Code"
                     },
@@ -1343,18 +1346,21 @@ APP_MASTERS.controller("Controller_Datatables", [
                     },
                     {
                         name: "eta",
+                        width: 180,
                         enableCellEdit: false,
                         displayName: "ETA",
                         cellTemplate: $scope.dataTableTemplates.dateDisplay
                     },
                     {
                         name: "etb",
+                        width: 180,
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
                         displayName: "ETB"
                     },
                     {
                         name: "etd",
+                        width: 180,
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
                         displayName: "ETD"
@@ -1363,6 +1369,34 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "remarks",
                         enableCellEdit: false,
                         displayName: "Remarks"
+                    },
+                    {
+                        name: "speed",
+                        enableCellEdit: false,
+                        displayName: "Speed"
+                    },
+                    {
+                        name: "speed",
+                        enableCellEdit: false,
+                        displayName: "Speed"
+                    },
+                    {
+                        name: "distanceStandard",
+                        enableCellEdit: false,
+                        displayName: "Distance (Standard) in Nautical Miles"
+                    },
+                    {
+                        name: "distanceECA",
+                        enableCellEdit: false,
+                        displayName: "Distance (ECA) in Nautical Miles"
+                    },
+                    {
+                        name: "id",
+                        enableCellEdit: false,
+                        width: 50,
+                        cellTemplate: '<div class="ui-grid-cell-contents"><span style="cursor: pointer;" ng-click="grid.appScope. showVesselVoyageDetails(grid.appScope.fVal().formValues.flattenedVoyages[grid.appScope.rowIdx(row)].id)"><i class="fa fa-2x fa-plus-circle" style="color: #364150;"></i></span></div>',
+                        displayName: ""
+
                     }
                 ]
             },
@@ -3692,5 +3726,21 @@ APP_MASTERS.controller("Controller_Datatables", [
 
         	// alert('hey, myVar has changed!');
         });
+
+        $scope.showVesselVoyageDetails = function(vesselVoyageDetailId) {
+            Factory_Master.getVesselVoyageBunkeringDetails(vesselVoyageDetailId, function(response) {
+                if (response) {
+                    $scope.vesselVoyageDetails = response.payload;
+                    tpl = $templateCache.get('app-masters/views/vessel_voyage_details.html');
+                    $scope.modalInstance = $uibModal.open({
+                        template: tpl,
+                        appendTo: angular.element(document.getElementsByClassName("page-container")),
+                        windowTopClass: 'fullWidthModal',
+                        // windowClass: 'limited-max-height',
+                        scope: $scope
+                    });
+                }
+            })
+        }
     }
 ]);

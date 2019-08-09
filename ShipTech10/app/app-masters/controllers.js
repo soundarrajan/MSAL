@@ -6637,6 +6637,7 @@ APP_MASTERS.controller("Controller_Master", [
 			$.each($scope.formValues.voyages, function(vk,vv){
 				$.each(vv.voyageDetails, function(vdk,vdv){
 					voyageDetailRow = {
+                        id : vdv.id,
 						code : vv.code,
 						port : vdv.port,
 						portFunction : vdv.portFunction,
@@ -6645,6 +6646,9 @@ APP_MASTERS.controller("Controller_Master", [
 						etb : vdv.etb,
 						etd : vdv.etd,
 						remarks : vdv.remarks,
+                        speed: vdv.speed,
+                        distanceStandard: vdv.distanceStandard,
+                        distanceECA: vdv.distanceECA,
 					}
 					$scope.formValues.flattenedVoyages.push(voyageDetailRow)
 				})

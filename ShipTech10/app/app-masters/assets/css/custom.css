@@ -1007,8 +1007,28 @@ div#tabs_navigation {
     min-width: 220px;
     max-width: 220px;
 }*/
+#grid_voyages {
+    height: 300px;
+}
 
- .ui-grid-cell-contents {
+#tab_8 > div.col-md-12.portlet.light {
+    height: 470px;
+}
+
+#grid_voyages > div.ui-grid-contents-wrapper > div.ui-grid-render-container > div > div > div > div > div.ui-grid-header-cell-wrapper > div.ui-grid-header-cell-row > div.ui-grid-header-cell > div > div.ui-grid-cell-contents {
+    word-wrap: break-word;
+    overflow: visible;
+    height: 65px;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.ui-grid-cell-contents {
     padding: 10px 10px 9.5px;
 }
  .parent-header-category.ng-binding.ng-scope {
