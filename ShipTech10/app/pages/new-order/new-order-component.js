@@ -1581,6 +1581,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 // ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
             }
             if (command == 'confirmToLab') {
+				if ($scope.hasMissingSpecGroup()) {
+	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+	        		return;
+				}
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
         		if (minProductType) {
         			minProductTypeId = minProductType.productType.productTypeGroup.id;
@@ -1610,6 +1614,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }
             if (command == 'confirmToSurveyor') {
+				if ($scope.hasMissingSpecGroup()) {
+	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+	        		return;
+				}            	
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
         		if (minProductType) {
         			minProductTypeId = minProductType.productType.productTypeGroup.id;
@@ -1637,6 +1645,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }                        
             if (command == 'confirmToSeller') {
+				if ($scope.hasMissingSpecGroup()) {
+	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+	        		return;
+				}             	
             	// if (ctrl.procurementSettings.order.needConfirmationSellerEmail.name == 'HardStop') {
             		isContractOrder = false;
             		$.each(ctrl.data.products, function(k,v){
@@ -1698,6 +1710,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	// }
             }
             if (command == 'confirmToAll') {
+				if ($scope.hasMissingSpecGroup()) {
+	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+	        		return;
+				}            	
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
         		if (minProductType) {
         			minProductTypeId = minProductType.productType.productTypeGroup.id;
@@ -1743,11 +1759,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }        
             currentCommand = command;
+
+            if (command != "cancel" && command != "RejectOrder") {
+				if ($scope.hasMissingSpecGroup()) {
+	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+	        		return;
+				}
+            }
+
             if (command != "cancel") {
                 ctrl.buttonsDisabled = true;
-            	if (currentCommand == "cancel") {
-                    return;
-            	}
                 orderModel.sendOrderCommand(command, orderId).
                     then(function (response) {
 
@@ -1763,6 +1784,21 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     });
             }
         };
+
+        $scope.hasMissingSpecGroup = function() {
+        	var hasMissingSpecGroup = false;
+        	var productsWithoutSpec = []
+        	$.each(ctrl.data.products, function(k,v){
+        		if (!v.specGroup) {
+					hasMissingSpecGroup = true;
+					productsWithoutSpec.push(v.tempProduct.name);
+        		} 
+        	})
+        	if (hasMissingSpecGroup) {
+        		return productsWithoutSpec.join(",");
+        	}        	
+    		return false;
+        }
         //send a command to server and reload the order from the received response
         ctrl.sendOrderCommandReload = function (command, orderId) {
             ctrl.buttonsDisabled = true;
@@ -1830,6 +1866,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
                 return false;
             }
+			if ($scope.hasMissingSpecGroup()) {
+        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+        		return;
+			}            
 
             //checkf for invalid additional cost unit price
             var invalidAddCost = $('.additional_cost_invalid');
