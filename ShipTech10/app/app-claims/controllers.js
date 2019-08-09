@@ -946,10 +946,10 @@ APP_CLAIMS.controller("Controller_Claims", [
                 BDNQuantity = $scope.formValues.densitySubtypes[density.index].bdnQuantity;
                 specParameterUomConversionFactor = $scope.formValues.densitySubtypes[density.index].specParameterUomConversionFactor;
                 densityDifference = $scope.formValues.densitySubtypes[density.index].densityDifference;
-                if ($scope.formValues.densitySubtypes[quantity.index].specParameter) {
+                if ($scope.formValues.densitySubtypes[density.index].specParameter) {
                     specParameterId = $scope.formValues.densitySubtypes[density.index].specParameter.id;
                 }
-                $scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[quantity.index].bdnQuantityUom;
+                $scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[density.index].bdnQuantityUom;
             }
 
             payload = {
