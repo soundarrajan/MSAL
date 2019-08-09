@@ -5132,7 +5132,14 @@ APP_API.factory("$Api_Service", [
                         if (appPath.match(/masters/)) transactionTypeId = 8;
                         if (appPath.match(/contracts/)) transactionTypeId = 9;
                         // {end} filters
-                        if (!_.has(apiJSON, 'Payload.Filters') || _.get(apiJSON, 'Payload.Filters').length === 0) {
+                        if (
+                        	!_.has(apiJSON, 'Payload.Filters') || 
+                        	_.get(apiJSON, 'Payload.Filters').length === 0 ||
+                        	appPath.match(/contracts/) ||
+                        	appPath.match(/labs/) ||
+                        	appPath.match(/claims/) ||
+                        	appPath.match(/masters/)
+                        	) {
                             apiJSON.Payload.Filters = [
                                 {
                                     ColumnName: "ReferenceNo",
