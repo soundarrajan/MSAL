@@ -2403,6 +2403,50 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         toggleInvalid(locationIdx + '_eta', 'remove');
                     }
                 }
+
+                hasError = false;
+
+                if (ctrl.request.locations[locationIdx].recentEta) {
+                    if (moment.utc(ctrl.request.locations[locationIdx].etb).isBefore(moment.utc(ctrl.request.locations[locationIdx].recentEta))) {
+                        toastr.error("Updated ETA must be lower or equal to ETB.");
+                        toggleInvalid(locationIdx + '_etb', 'add');
+                        hasError = true;
+                    } else {
+                        if (ctrl.request.locations[locationIdx].etb) {
+                            toggleInvalid(locationIdx + '_etb', 'remove');
+                        }
+                    }
+                    if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].recentEta))) {
+                        toastr.error("Updated ETA must be lower or equal to ETD.");
+                        toggleInvalid(locationIdx + '_etd', 'add');
+                        hasError = true;
+                    } else {
+                        if (ctrl.request.locations[locationIdx].etd) {
+                            toggleInvalid(locationIdx + '_etd', 'remove');
+                        }
+                    }
+                }
+
+                if (hasError) {
+                    toggleInvalid(locationIdx + '_recentEta', 'add');
+                } else {
+                    if (ctrl.request.locations[locationIdx].eta) {
+                        toggleInvalid(locationIdx + '_recentEta', 'remove');
+                    }
+                }
+
+                if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].etb))) {
+                    toastr.error("ETB must be lower or equal to ETD.");
+                    toggleInvalid(locationIdx + '_etd', 'add');
+                    toggleInvalid(locationIdx + '_etb', 'add');
+                    hasError = true;
+                } else {
+                    if (ctrl.request.locations[locationIdx].etd) {
+                        toggleInvalid(locationIdx + '_etd', 'remove');
+                        toggleInvalid(locationIdx + '_etb', 'remove');
+                    }
+                }
+
             });
         };
 
