@@ -1318,7 +1318,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                 columnDefs: [
                     {
                         name: "code",
-                        width: 130,
+                        width: 150,
                         enableCellEdit: false,
                         displayName: "Voyage Code",
                         // cellTemplate: '<div class="ui-grid-cell-contents">{{grid.appScope.fVal().formValues.voyages[0].code}}</div>'
@@ -1331,16 +1331,19 @@ APP_MASTERS.controller("Controller_Datatables", [
                     },
                     {
                         name: "portFunction",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Port Function"
                     },                    
                     {
                         name: "port.name",
+                        width: 150,
                         enableCellEdit: false,
                         displayName: "Port Name"
                     },
                     {
                         name: "country.name",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Country"
                     },
@@ -1367,26 +1370,31 @@ APP_MASTERS.controller("Controller_Datatables", [
                     },
                     {
                         name: "remarks",
+                        width: 150,
                         enableCellEdit: false,
                         displayName: "Remarks"
                     },
                     {
                         name: "speed",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Speed"
                     },
                     {
                         name: "speed",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Speed"
                     },
                     {
                         name: "distanceStandard",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Distance (Standard) in Nautical Miles"
                     },
                     {
                         name: "distanceECA",
+                        width: 130,
                         enableCellEdit: false,
                         displayName: "Distance (ECA) in Nautical Miles"
                     },

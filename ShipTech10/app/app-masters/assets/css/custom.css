@@ -1017,7 +1017,7 @@ div#tabs_navigation {
 
 #grid_voyages > div.ui-grid-contents-wrapper > div.ui-grid-render-container > div > div > div > div > div.ui-grid-header-cell-wrapper > div.ui-grid-header-cell-row > div.ui-grid-header-cell > div > div.ui-grid-cell-contents {
     word-wrap: break-word;
-    overflow: visible;
+    overflow: hidden;
     height: 65px;
     text-overflow: clip;
     white-space: normal;
