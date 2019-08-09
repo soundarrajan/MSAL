@@ -671,6 +671,7 @@
                                                                 ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                                 ng-model="$ctrl.request.locations[locationIdx].recentEta" 
                                                                 ng-disabled="$ctrl.disableAllFields"
+                                                                ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
                                                                 name="{{ locationIdx }}_recentEta"
                                                                 id="{{ locationIdx }}_recentEta"
                                                                 new-date-picker
