@@ -35,18 +35,18 @@ APP_CLAIMS.controller("Controller_Claims", [
         $rootScope.$on("formValues", function(event, data) {
             $scope.formValues = data;
             if ($scope.formValues.claimDetails) {
-	            if ($scope.formValues.claimDetails.status.name != 'New') {
-	                if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
-	                    $.each($scope.formFields['Order Details'].children, function(k, v) {
-	                        if (v.Name == 'DeliveryDate') {
-	                            v.Disabled = true;
-	                        }
-	                    });
-	                }
-	                if ($scope.formFields.deliveryDate) {
-	                    $scope.formFields.deliveryDate.Disabled = true;
-	                }
-	            }
+                if ($scope.formValues.claimDetails.status.name != 'New') {
+                    if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
+                        $.each($scope.formFields['Order Details'].children, function(k, v) {
+                            if (v.Name == 'DeliveryDate') {
+                                v.Disabled = true;
+                            }
+                        });
+                    }
+                    if ($scope.formFields.deliveryDate) {
+                        $scope.formFields.deliveryDate.Disabled = true;
+                    }
+                }
             }
         });
         $rootScope.$on("editInstance", function(value) {
@@ -172,6 +172,39 @@ APP_CLAIMS.controller("Controller_Claims", [
                 });
             }
         };
+        function getIndexAndCount(object) {
+            var index = false;
+            var lengthFalse = 0;
+            var countIsFalse = 0;
+            if (typeof(object) != "undefined") {
+                if (object.length > 0) {
+                    object.forEach(function(obj, key) {
+                        if (obj.isDeleted !== true) {
+                            lengthFalse += 1;
+                            if (index == false) {
+                                index = key;
+                            }
+
+                        } else if(obj.isDeleted === false) {
+                            countIsFalse += 1;
+                        }
+
+                    });
+                }
+            }
+
+            if (index == false) {
+                index = 0;
+            }
+
+            return {
+                index: index,
+                lengthFalse: lengthFalse,
+                countIsFalse: countIsFalse
+
+            };
+
+        }
         $scope.checkClaimType = function() {
             $("#ActualSettlementAmount").attr("disabled", "disabled");
             $("#CompromisedAmount").attr("disabled", "disabled");
@@ -202,35 +235,18 @@ APP_CLAIMS.controller("Controller_Claims", [
                     return;
                 } else if (type == "Quantity" && /*!$scope.formValues.claimDetails.estimatedSettlementAmount &&*/ $scope.formValues.quantitySubtypes) {
                     if (!$scope.formValues.quantitySubtypes) $scope.formValues.quantitySubtypes = [];
-                    indexGlobal = 0;
-                    countFalse = 0;
+                    var object = getIndexAndCount($scope.formValues.quantitySubtypes);
                     if ($scope.formValues.quantitySubtypes.length > 0) {
-                    	$timeout(function(){
-                            index = false;
-                            $scope.formValues.quantitySubtypes.forEach(function(obj, key) {
-                                if (obj.isDeleted !== true) {
-                                    countFalse += 1;
-                                    if (index == false) {
-                                        index = key;
-                                    }
-
-                                }
-                            });
-
-                            if (index == false) {
-                                index = 0;
+                        $timeout(function(){
+                            $scope.formValues.claimType.quantityShortageUom = $scope.formValues.quantitySubtypes[object.index].quantityUom;
+                            if($scope.formValues.quantitySubtypes[object.index].quantityUom != null) {
+                               $("[name='claimType.quantityShortage Option']").val($scope.formValues.quantitySubtypes[object.index].quantityUom.id);
                             }
-                            indexGlobal = index;
-
-                            $scope.formValues.claimType.quantityShortageUom = $scope.formValues.quantitySubtypes[index].quantityUom;
-                            if($scope.formValues.quantitySubtypes[index].quantityUom != null) {
-                               $("[name='claimType.quantityShortage Option']").val($scope.formValues.quantitySubtypes[index].quantityUom.id);
-                            }
-                    	})
+                        })
                     }
 
-                    if (countFalse && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-                            $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[indexGlobal].sellerQuantity - $scope.formValues.quantitySubtypes[indexGlobal].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
+                    if (object.lengthFalse && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+                            $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[object.index].sellerQuantity - $scope.formValues.quantitySubtypes[object.index].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
 
                     }
                 } 
@@ -297,10 +313,10 @@ APP_CLAIMS.controller("Controller_Claims", [
                         }
                         if (response.deliveryDate) {
                             $timeout(function(){
-	                            if (!$scope.formValues.deliveryDate || !$scope.formValues.orderDetails.deliveryNo) {
-		                            $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
-	                            }
-	                            $scope.formValues.deliveryDate = response.deliveryDate;
+                                if (!$scope.formValues.deliveryDate || !$scope.formValues.orderDetails.deliveryNo) {
+                                    $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
+                                }
+                                $scope.formValues.deliveryDate = response.deliveryDate;
                             })
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
@@ -327,9 +343,9 @@ APP_CLAIMS.controller("Controller_Claims", [
                             }
                         }
                         //retrigger de dropdowns delivery, labs, products
-						if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
-						    $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
-						}
+                        if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
+                            $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
+                        }
                         var field = new Object();
                         field = vm.formFieldSearch($scope.formFields, "orderDetails.deliveryNo");
                         if (field) vm.getOptions(field);
@@ -368,7 +384,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     delete field;
                 } else {
                     $timeout(function(){
-	                    $scope.formValues.deliveryDate = $scope.formValues.deliveryDate;
+                        $scope.formValues.deliveryDate = $scope.formValues.deliveryDate;
                     })
                 }
             }
@@ -490,20 +506,20 @@ APP_CLAIMS.controller("Controller_Claims", [
             }
         };
         $scope.calculateAvailableSubtypesLength = function(){
-        	if (typeof(availableSubtypesLength) == 'undefined') {
-	        	availableSubtypesLength = {};
-        	}
+            if (typeof(availableSubtypesLength) == 'undefined') {
+                availableSubtypesLength = {};
+            }
 
             subTypeObjects = ['quantitySubtypes','densitySubtypes','qualitySubtypes','complianceSubtypes']
             $.each(subTypeObjects, function(stk,stv){
-        		availableSubtypesLength[stv] = 0;
-        		if ($scope.formValues[stv]) {
-		            for (var i = $scope.formValues[stv].length - 1; i >= 0; i--) {
-		            	if (!$scope.formValues[stv][i].isDeleted) {
-		            		availableSubtypesLength[stv] +=1 
-		            	}
-		            }            
-        		} 
+                availableSubtypesLength[stv] = 0;
+                if ($scope.formValues[stv]) {
+                    for (var i = $scope.formValues[stv].length - 1; i >= 0; i--) {
+                        if (!$scope.formValues[stv][i].isDeleted) {
+                            availableSubtypesLength[stv] +=1 
+                        }
+                    }            
+                } 
             })
             return availableSubtypesLength;
         }
@@ -512,28 +528,28 @@ APP_CLAIMS.controller("Controller_Claims", [
             $scope.formValues.claimType.quantityShortage = null;
             $scope.formValues.claimType.quantityShortageUom = null;
           //   $timeout(function(){
-	        	// if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-	        	// 	$scope.formValues.claimDetails.estimatedSettlementAmount = null;
-	        	// }
+                // if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+                //  $scope.formValues.claimDetails.estimatedSettlementAmount = null;
+                // }
           //   },500)
         };
         $scope.$watchGroup(["formValues.claimDetails.estimatedSettlementAmount"], function() {
-        	if ($("#EstimatedSettlementAmountCurrency").length > 0) {
-	        	if (!$("#EstimatedSettlementAmountCurrency").hasClass("ng-pristine")) {
-	        		if ($scope.formValues.claimDetails) {
-		        		$scope.formValues.claimDetails.isEstimatedSettlementAmountManual = true;
-	        		}
-	        	}
-        	}
+            if ($("#EstimatedSettlementAmountCurrency").length > 0) {
+                if (!$("#EstimatedSettlementAmountCurrency").hasClass("ng-pristine")) {
+                    if ($scope.formValues.claimDetails) {
+                        $scope.formValues.claimDetails.isEstimatedSettlementAmountManual = true;
+                    }
+                }
+            }
         });
         $scope.$watchGroup(["formValues.claimDetails.estimatedSettlementAmountCurrency"], function() {
-    		if ($scope.formValues.claimDetails) {
-	    		if ($scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
-	        		$scope.formValues.claimDetails.actualSettlementAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
-	        		$scope.formValues.claimDetails.compromisedAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
-	        		$scope.formValues.claimDetails.noClaimAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
-	    		}
-    		}
+            if ($scope.formValues.claimDetails) {
+                if ($scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
+                    $scope.formValues.claimDetails.actualSettlementAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+                    $scope.formValues.claimDetails.compromisedAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+                    $scope.formValues.claimDetails.noClaimAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+                }
+            }
         });
         $scope.checkSubtype = function() {
             if (vm.entity_id > 0) {
@@ -848,199 +864,151 @@ APP_CLAIMS.controller("Controller_Claims", [
             }
             if (fval.densitySubtypes[rowIdx].bdnDensity == "") { fval.densitySubtypes[rowIdx].bdnDensity = null}
             if (fval.densitySubtypes[rowIdx].labDensity == "") { fval.densitySubtypes[rowIdx].labDensity = null}
-            quantityShortageScope = angular.element($("[name='claimType.quantityShortage']")).scope();	
-        	quantityShortageScope.getQuantityShortage();
+            quantityShortageScope = angular.element($("[name='claimType.quantityShortage']")).scope();  
+            quantityShortageScope.getQuantityShortage();
         }
 
         $scope.clearTestValueNull = function(rowIdx, fval) {
             if (fval.qualitySubtypes[rowIdx]) {
-            	if (fval.qualitySubtypes[rowIdx].testValue == "") {
-            		fval.qualitySubtypes[rowIdx].testValue = null;
-            	}
+                if (fval.qualitySubtypes[rowIdx].testValue == "") {
+                    fval.qualitySubtypes[rowIdx].testValue = null;
+                }
             }
             if (fval.complianceSubtypes[rowIdx]) {
-            	if (fval.complianceSubtypes[rowIdx].testValue == "") {
-            		fval.complianceSubtypes[rowIdx].testValue = null;
-            	}
-            }            	
+                if (fval.complianceSubtypes[rowIdx].testValue == "") {
+                    fval.complianceSubtypes[rowIdx].testValue = null;
+                }
+            }               
         }    
 
     
-		$scope.getQuantityShortage = function() {
-			if (typeof($scope.formValues.orderDetails) == "undefined") {
-				return
-			}
-			if (typeof($scope.formValues.orderDetails.product) == "undefined") {
-				return
-			}
-			if ($scope.formValues.claimType) {
-				$scope.formValues.claimType.quantityShortage = null;
-			}
-
-			isQuantitySubtype = false;
-
-			productId = $scope.formValues.orderDetails.product.id;
-			isDensitySubtype = false;
-			specParameterUomConversionFactor = null;
-			BDNQuantity = null;
-			BDNQuantityUom = null;
-			sellerQuantity = null;
-			buyerQuantity = null;
-			quantityUom = null;
-			densityDifference = null;
-			specParameterId = null;
-
-            countIsNotDeletedQuantity = 0;
-            if (typeof($scope.formValues.quantitySubtypes) != "undefined") {
-                if ($scope.formValues.quantitySubtypes.length > 0) {
-                    $scope.formValues.quantitySubtypes.forEach(function(obj){
-                        if (obj.isDeleted === false) {
-                            countIsNotDeletedQuantity += 1;
-                        }
-                    });
-                }
+        $scope.getQuantityShortage = function() {
+            if (typeof($scope.formValues.orderDetails) == "undefined") {
+                return
+            }
+            if (typeof($scope.formValues.orderDetails.product) == "undefined") {
+                return
+            }
+            if ($scope.formValues.claimType) {
+                $scope.formValues.claimType.quantityShortage = null;
             }
 
-            countIsNotDeletedDensity = 0;
-            if (typeof($scope.formValues.densitySubtypes) != "undefined") {
-                if ($scope.formValues.densitySubtypes.length > 0) {
-                    $scope.formValues.densitySubtypes.forEach(function(obj) {
-                        if (obj.isDeleted === false) {
-                            countIsNotDeletedDensity += 1;
-                        }
-                    });
-                }
-            } 
+            isQuantitySubtype = false;
 
-            indexQuantity = false;
-            lengthIsNotDeletedQuantity = 0;
-            $scope.formValues.quantitySubtypes.forEach(function(obj, key) {
-                if (obj.isDeleted !== true) {
-                    lengthIsNotDeletedQuantity += 1;
-                    if (indexQuantity == false) {
-                        indexQuantity = key;
-                    }
-                }
-            });
+            productId = $scope.formValues.orderDetails.product.id;
+            isDensitySubtype = false;
+            specParameterUomConversionFactor = null;
+            BDNQuantity = null;
+            BDNQuantityUom = null;
+            sellerQuantity = null;
+            buyerQuantity = null;
+            quantityUom = null;
+            densityDifference = null;
+            specParameterId = null;
 
-            if (indexQuantity == false) {
-                indexQuantity = 0;
-            }
+            var quantity = getIndexAndCount($scope.formValues.quantitySubtypes);
+            var density = getIndexAndCount($scope.formValues.densitySubtypes);
 
-			if ($scope.formValues.quantitySubtypes) {
-                if (lengthIsNotDeletedQuantity) {
-                    sellerQuantity = $scope.formValues.quantitySubtypes[indexQuantity].sellerQuantity;
-                    buyerQuantity = $scope.formValues.quantitySubtypes[indexQuantity].buyerQuantity;
-                    quantityUom = $scope.formValues.quantitySubtypes[indexQuantity].quantityUom;
+            if ($scope.formValues.quantitySubtypes) {
+                if (quantity.lengthFalse) {
+                    sellerQuantity = $scope.formValues.quantitySubtypes[quantity.index].sellerQuantity;
+                    buyerQuantity = $scope.formValues.quantitySubtypes[quantity.index].buyerQuantity;
+                    quantityUom = $scope.formValues.quantitySubtypes[quantity.index].quantityUom;
                     isQuantitySubtype = true;
-                    if (countIsNotDeletedQuantity) {
+                    if (quantity.countIsFalse) {
                         $scope.formValues.densitySubtypes = [];
                     }
 
                 }
 
-				
-			}
-            indexDensity = false;
-            lenghIsNotDeletedDensity = 0;
-            $scope.formValues.densitySubtypes.forEach(function(obj, key) {
-                if (obj.isDeleted !== true) {
-                    lenghIsNotDeletedDensity += 1;
-                    if (indexDensity == false) {
-                        indexDensity = key;
-                    }
-                }
-            });
-
-            if (indexDensity == false) {
-                indexDensity = 0;
+                
             }
 
-
-			if ($scope.formValues.densitySubtypes) {
-				if (lenghIsNotDeletedDensity == 1) {
-					isDensitySubtype = true;
-                    if (countIsNotDeletedDensity) {
+            if ($scope.formValues.densitySubtypes) {
+                if (density.lengthFalse == 1) {
+                    isDensitySubtype = true;
+                    if (density.countIsFalse) {
                         $scope.formValues.quantitySubtypes = [];
                     }
-				} else {
-					if (!isQuantitySubtype) {
-						return;
-					}
-				}
-			}
+                    
+                } else {
+                    if (!isQuantitySubtype) {
+                        return;
+                    }
+                }
+            }
 
-        	if (isDensitySubtype && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-        		$scope.formValues.claimDetails.estimatedSettlementAmount = null;
-        	}
-			if (isDensitySubtype) {
-				BDNQuantityUom = $scope.formValues.densitySubtypes[indexDensity].bdnQuantityUom;
-				BDNQuantity = $scope.formValues.densitySubtypes[indexDensity].bdnQuantity;
-				specParameterUomConversionFactor = $scope.formValues.densitySubtypes[indexDensity].specParameterUomConversionFactor;
-				densityDifference = $scope.formValues.densitySubtypes[indexDensity].densityDifference;
-				if ($scope.formValues.densitySubtypes[indexQuantity].specParameter) {
-					specParameterId = $scope.formValues.densitySubtypes[indexDensity].specParameter.id;
-				}
-				$scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[indexQuantity].bdnQuantityUom;
-			}
+            if (isDensitySubtype && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+                $scope.formValues.claimDetails.estimatedSettlementAmount = null;
+            }
+            if (isDensitySubtype) {
+                BDNQuantityUom = $scope.formValues.densitySubtypes[density.index].bdnQuantityUom;
+                BDNQuantity = $scope.formValues.densitySubtypes[density.index].bdnQuantity;
+                specParameterUomConversionFactor = $scope.formValues.densitySubtypes[density.index].specParameterUomConversionFactor;
+                densityDifference = $scope.formValues.densitySubtypes[density.index].densityDifference;
+                if ($scope.formValues.densitySubtypes[quantity.index].specParameter) {
+                    specParameterId = $scope.formValues.densitySubtypes[density.index].specParameter.id;
+                }
+                $scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[quantity.index].bdnQuantityUom;
+            }
 
-			payload = {
-				"Payload": {
-					productId : productId,
-					isDensitySubtype : isDensitySubtype,
-					// specParameterUomConversionFactor : specParameterUomConversionFactor,
-					BdnQuantity : BDNQuantity,
-					BdnQuantityUom : BDNQuantityUom,
-					densityDifference : densityDifference,
-					sellerQuantity : sellerQuantity,
-					buyerQuantity : buyerQuantity,
-					quantityUom : quantityUom,
-					specParameterId : specParameterId
-				}
-			}
+            payload = {
+                "Payload": {
+                    productId : productId,
+                    isDensitySubtype : isDensitySubtype,
+                    // specParameterUomConversionFactor : specParameterUomConversionFactor,
+                    BdnQuantity : BDNQuantity,
+                    BdnQuantityUom : BDNQuantityUom,
+                    densityDifference : densityDifference,
+                    sellerQuantity : sellerQuantity,
+                    buyerQuantity : buyerQuantity,
+                    quantityUom : quantityUom,
+                    specParameterId : specParameterId
+                }
+            }
             $http.post(API.BASE_URL_DATA_CLAIMS + '/api/claims/getQuantityShortage', payload).then(function successCallback(response) {
-            	console.log(response);
-            	if (response.data.payload != 'null') {
-	            	$scope.formValues.claimType.quantityShortage = response.data.payload;
-	            	if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-	            		$scope.formValues.claimDetails.estimatedSettlementAmount = response.data.payload * $scope.formValues.orderDetails.orderPrice;
-		                if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
-		                  $.each($scope.options.SettlementType, function(k, v) {
-		                    if(v.name === 'Receive') {
-		                      $scope.formValues.claimDetails.settlementType = v;
-		                      $scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
-		                      toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
-		                    }
-		                  });
-		                }	            		
-	            	}
-            	}
+                console.log(response);
+                if (response.data.payload != 'null') {
+                    $scope.formValues.claimType.quantityShortage = response.data.payload;
+                    if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+                        $scope.formValues.claimDetails.estimatedSettlementAmount = response.data.payload * $scope.formValues.orderDetails.orderPrice;
+                        if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
+                          $.each($scope.options.SettlementType, function(k, v) {
+                            if(v.name === 'Receive') {
+                              $scope.formValues.claimDetails.settlementType = v;
+                              $scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
+                              toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
+                            }
+                          });
+                        }                       
+                    }
+                }
                 // calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
             });
 
-		}
+        }
 
 
         function convertDecimalSeparatorStringToNumber(number) {
-        	numberToReturn = number;
-        	if (typeof(number) == "string") {
-	        	if (number.indexOf(",") != -1 && number.indexOf(".") != -1) {
-	        		if (number.indexOf(",") > number.indexOf(".")) {
-	        			decimalSeparator = ",";
-	        			thousandsSeparator = ".";
-	        		} else {
-	        			thousandsSeparator = ",";
-	        			decimalSeparator = ".";
-	        		}
-		        	numberToReturn = parseFloat( parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '')) + parseFloat("0."+number.split(decimalSeparator)[1]) );
-	        	} else {
-	        		numberToReturn = parseFloat(number);
-	        	}
-        	}
-        	if (isNaN(numberToReturn)) {
-        		numberToReturn = 0;
-        	}
-        	return parseFloat(numberToReturn);
+            numberToReturn = number;
+            if (typeof(number) == "string") {
+                if (number.indexOf(",") != -1 && number.indexOf(".") != -1) {
+                    if (number.indexOf(",") > number.indexOf(".")) {
+                        decimalSeparator = ",";
+                        thousandsSeparator = ".";
+                    } else {
+                        thousandsSeparator = ",";
+                        decimalSeparator = ".";
+                    }
+                    numberToReturn = parseFloat( parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '')) + parseFloat("0."+number.split(decimalSeparator)[1]) );
+                } else {
+                    numberToReturn = parseFloat(number);
+                }
+            }
+            if (isNaN(numberToReturn)) {
+                numberToReturn = 0;
+            }
+            return parseFloat(numberToReturn);
         }
 
         $scope.setPageTitle = function(claim, vessel){
