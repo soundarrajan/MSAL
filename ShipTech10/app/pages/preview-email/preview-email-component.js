@@ -645,8 +645,12 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 
         ctrl.saveAndSend = function(action){
             if (ctrl.data.missingPhysicalSupplier) {
-                toastr.error('Physical supplier is mandatory');
-                return;
+            	if (ctrl.template) {
+	            	if (ctrl.template.name.toLowerCase().indexOf("cancel") == -1) {
+		                toastr.error('Physical supplier is mandatory');
+		                return;
+	            	}
+            	}
             }
             ctrl.saveComments(action, false).then(function () {
                 if (action != "sendRFQ") {
