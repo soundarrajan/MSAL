@@ -1,0 +1,39 @@
+<div id="modal_close_bar">
+    <button type="button" class="close" ng-click="modalInstance.close()" aria-hidden="true"></button>
+</div>
+
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption-subject">
+            <span class="caption-subject">
+            	Vessel voyage details
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body ">
+		<div class="custom-hardcoded-table ng-scope" style="max-height: 500px;">
+		    <table class="table-body" width="100%">
+		        <thead>
+		            <tr>
+		            	<td class="padding">Fuel type</td>
+		            	<td class="padding">Supply quantity</td>
+		            	<td class="padding">Supply UOM</td>
+		            	<td class="padding">Supply Strategy</td>
+		            	<td class="padding">ROB IN (at EOSP)</td>
+		            	<td class="padding">ROB OUT (at SOSP)</td>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr ng-repeat="(key, value) in vesselVoyageDetails" class="ng-scope">
+						<td class="padding"> {{ value.productType }} </td>
+						<td class="padding"> {{ value.supplyQuantity }} </td>
+						<td class="padding"> {{ value.supplyUom.name }} </td>
+						<td class="padding"> {{ value.supplyStrategy ? "Yes" : "No" }} </td>
+						<td class="padding"> {{ value.robIn }} </td>
+						<td class="padding"> {{ value.robOut }} </td>
+		            </tr>		            
+		        </tbody>
+		    </table>
+		</div>
+    </div>
+</div>
