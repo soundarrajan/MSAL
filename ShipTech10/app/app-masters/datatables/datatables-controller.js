@@ -3730,6 +3730,10 @@ APP_MASTERS.controller("Controller_Datatables", [
         $scope.showVesselVoyageDetails = function(vesselVoyageDetailId) {
             Factory_Master.getVesselVoyageBunkeringDetails(vesselVoyageDetailId, function(response) {
                 if (response) {
+                    if (!response.payload || response.payload.length === 0) {
+                        toastr.error('There are no vessel voyage details available');
+                        return;
+                    }
                     $scope.vesselVoyageDetails = response.payload;
                     tpl = $templateCache.get('app-masters/views/vessel_voyage_details.html');
                     $scope.modalInstance = $uibModal.open({
