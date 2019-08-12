@@ -7515,5 +7515,19 @@ APP_MASTERS.controller("Controller_Master", [
             return array;
         }
         vm.EmailTypeNoAutomatic = emailNoAutomaticType();
+
+        vm.enabledEmailToVessel = function () {
+            enabledEmailToVessel = true;
+            if (typeof($rootScope.adminConfiguration) != "undefined") {
+                $rootScope.adminConfiguration.email.forEach(function(obj) {
+                    if (obj.process == "Order No BDN To Vessel Email") {
+                        if (obj.emailType.name == "None") {
+                            enabledEmailToVessel = false;
+                        }
+                    } 
+                });
+            }
+            return enabledEmailToVessel;
+        }
     }
 ]);
