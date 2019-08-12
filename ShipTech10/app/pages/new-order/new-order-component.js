@@ -349,6 +349,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 }
             });
            
+            ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty;
+            ctrl.data.missingAgent = !ctrl.data.agentCounterparty;
 
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
 
@@ -2342,6 +2344,13 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
         ctrl.showSpecGroupModal = false;
         ctrl.confirmOrder = function (checkSpecGroup) {
+            $("form").addClass("submitted");
+            var forms_validation = validateForms(),
+                payload = {};
+            if (forms_validation !== null) {
+                toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                return false;
+            }
           
 			if ($scope.checkProductsHaveSameProductType() == false) {
 	        	ctrl.buttonsDisabled = false;
@@ -2988,6 +2997,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         }
 
         ctrl.openPreviewEmail = function(data) {
+            data.data.missingSurveyor = ctrl.data.missingSurveyor;
+            data.data.missingAgent = ctrl.data.missingAgent;
             data.data.missingPhysicalSupplier = ctrl.data.missingPhysicalSupplier;
             data.data.missingSpecGroup = ctrl.data.missingSpecGroup;
 

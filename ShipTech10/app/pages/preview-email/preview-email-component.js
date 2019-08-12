@@ -351,6 +351,22 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             // screenLoader.hideLoader();
         }
         ctrl.loadTemplate = function(template, oldTemplate) {
+
+            if (ctrl.data.missingSurveyor || ctrl.data.missingAgent) {
+                if (template) {
+                    if (template.name.toLowerCase().indexOf("surveyor") != -1) {
+                        if (ctrl.data.missingSurveyor) {
+                            toastr.error('Surveyor is mandatory');
+                        }
+                        if (ctrl.data.missingAgent) {
+                            toastr.error('Agent is mandatory');
+                        }
+                        ctrl.template = null;
+                        return;
+                    }
+                }
+            }
+
             var payload;
             ctrl.template = template;
 
@@ -646,11 +662,19 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         ctrl.saveAndSend = function(action){
             if (ctrl.data.missingPhysicalSupplier) {
             	if (ctrl.template) {
-	            	if (ctrl.template.name.toLowerCase().indexOf("confirm") != -1) {
+	            	if (ctrl.template.name.toLowerCase().indexOf("confirm") !== -1) {
 		                toastr.error('Physical supplier is mandatory');
 		                return;
 	            	}
             	}
+            }
+            if (ctrl.data.missingSpecGroup) {
+                if (ctrl.template) {
+                    if (ctrl.template.name.toLowerCase().indexOf("confirm") !== -1) {
+                        toastr.error('Spec group is mandatory');
+                        return;
+                    }
+                }
             }
             ctrl.saveComments(action, false).then(function () {
                 if (action != "sendRFQ") {
@@ -659,7 +683,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 }
 
             });
-        }
+        };
         
         ctrl.sendEmail = function(remainOnSamePage) {
         	$.each(ctrl.templateList, function(k,v){
@@ -668,7 +692,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         			ctrl.email.comment.emailTemplate.name = v.name;
         			ctrl.email.comment.emailTemplate.internalName = v.internalName;
         		}
-        	})
+        	});
             if (ctrl.email === null) {
                 return false;
             }

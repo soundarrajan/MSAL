@@ -869,12 +869,12 @@ APP_CLAIMS.controller("Controller_Claims", [
         }
 
         $scope.clearTestValueNull = function(rowIdx, fval) {
-            if (fval.qualitySubtypes[rowIdx]) {
+            if (fval.qualitySubtypes && fval.qualitySubtypes[rowIdx]) {
                 if (fval.qualitySubtypes[rowIdx].testValue == "") {
                     fval.qualitySubtypes[rowIdx].testValue = null;
                 }
             }
-            if (fval.complianceSubtypes[rowIdx]) {
+            if (fval.complianceSubtypes && fval.complianceSubtypes[rowIdx]) {
                 if (fval.complianceSubtypes[rowIdx].testValue == "") {
                     fval.complianceSubtypes[rowIdx].testValue = null;
                 }
