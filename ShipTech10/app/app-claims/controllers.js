@@ -230,7 +230,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                         $scope.formValues.claimDebunkerDetails = {};
                     }
                     $scope.formValues.claimDetails.estimatedSettlementAmount = $scope.formValues.claimDebunkerDetails.debunkerAmount - $scope.formValues.claimDebunkerDetails.resaleAmount;
-                } else  if(type != "Quantity") {
+                } else  if(type != "Quantity" && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
                     $scope.formValues.claimDetails.estimatedSettlementAmount = null;
                     return;
                 } else if (type == "Quantity" && /*!$scope.formValues.claimDetails.estimatedSettlementAmount &&*/ $scope.formValues.quantitySubtypes) {
