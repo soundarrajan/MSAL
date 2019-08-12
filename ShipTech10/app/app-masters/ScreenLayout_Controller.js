@@ -623,6 +623,8 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $scope.formValues.summary.availableQuantity = $scope.formValues.summary.contractedQuantity;
                                         $scope.formValues.summary.copiedContract = true;
                                         $scope.formValues.createdBy = null;
+                                        $scope.formValues.lastModifiedBy = null;
+                                        $scope.formValues.lastModifiedOn = null;
                                         toastr.info($filter("translate")("Formula and MTM Formula was reset for all products"));
                                     }
                                     if (vm.app_id == "admin" && vm.screen_id == "users") {
