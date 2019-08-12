@@ -187,6 +187,10 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
 
                     element = document.getElementById(dateInputId);
 
+                    if (!element) {
+                        return;
+                    }
+
                     inputPattern = currentFormat;
                     // inputPattern = "`DD/`MM/`YYYY";
 
