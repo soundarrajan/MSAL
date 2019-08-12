@@ -69,12 +69,12 @@
                     <span data-ng-repeat="(key, action) in actions.primary">
                         <span ng-if="action.html_element == 'deliveryList'">
                             <span ng-controller="Controller_Master as CM">
-                                <a class="btn" ng-click="sendOrderToBeDeliveredMail()" style="min-width: 0;">
+                                <a class="btn" ng-click="previewOrderToBeDeliveredMail()" style="min-width: 0;">
                                     <span class="icon" style="font-size: 2em; margin: 0;">
                                         <i class="glyphicon glyphicon-envelope"></i>
                                     </span>
                                 </a>
-                                <a class="btn btn-default btn-outline" ng-click="previewOrderToBeDeliveredMail()">
+                                <a class="btn btn-default btn-outline" ng-click="sendOrderToBeDeliveredMail()">
                                     Email To Vessel
                                 </a>
                                 <a ng-disabled="value.disabled" class="btn btn-default btn-outline orange" data-group="extern" ng-click="createDeliveryFromDeliveryList()">
