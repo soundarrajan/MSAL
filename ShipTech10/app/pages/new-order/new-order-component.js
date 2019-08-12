@@ -340,6 +340,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         function loadData(data) {
             ctrl.data = data.payload;
 
+            $.each(ctrl.data.products, function(k, v) {
+                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) {
+                    ctrl.data.missingPhysicalSupplier = true;
+                }
+                if (!v.specGroup || !_.get(v, 'specGroup.id')) {
+                    ctrl.data.missingSpecGroup = true;
+                }
+            });
+           
+
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
 
             $.each(ctrl.data.products, function(k, v) {
@@ -2969,14 +2979,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             return false;
         }
 
-        ctrl.openPreviewEmail = function(data){
+        ctrl.openPreviewEmail = function(data) {
+            data.data.missingPhysicalSupplier = ctrl.data.missingPhysicalSupplier;
+            data.data.missingSpecGroup = ctrl.data.missingSpecGroup;
 
-            $.each(ctrl.data.products, function(k, v) {
-                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) {
-                    data.data.missingPhysicalSupplier = true;
-                }
-            });
-           
             localStorage.setItem('previewEmailData', JSON.stringify(data));
             var url = $state.href(STATE.PREVIEW_EMAIL);
             // $window.open(url, '_blank');
