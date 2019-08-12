@@ -2658,6 +2658,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 	                    return false;
                 	}
                 }
+	            var invalidMinMaxConf = [];
+	            if (product.minQuantity == 0 || product.minQuantity == null) {invalidMinMaxConf.push("Min Quantity")}
+	            if (product.maxQuantity == 0 || product.maxQuantity == null) {invalidMinMaxConf.push("Max Quantity")}
+	            if (product.confirmedQuantity == 0 || product.confirmedQuantity == null) {invalidMinMaxConf.push("Confirmed Quantity")}
+	            if (invalidMinMaxConf.length > 0) {
+	            	toastr.error("Please make sure that " + invalidMinMaxConf.join(", ") + " is not empty or 0");
+	            	return;
+	            }
             }
 			countOfCancelledProducts = 0;
 			var currentProduct = product	
