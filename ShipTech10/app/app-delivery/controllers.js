@@ -1,7 +1,7 @@
 /**
  * Delivery Controller
  */
-APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Service', 'Factory_Delivery', '$state', '$location', '$q', '$compile', '$filter', 'Factory_Master', '$listsCache', 'statusColors', '$http', 'API', 'screenLoader', '$timeout', function($scope, $rootScope, $Api_Service, Factory_Delivery, $state, $location, $q, $compile, $filter, Factory_Master, $listsCache, statusColors, $http, API, screenLoader, $timeout) {
+APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Service', 'Factory_Delivery', '$state', '$location', '$q', '$compile', '$filter', 'Factory_Master', '$listsCache', 'statusColors', '$http', 'API', 'screenLoader', '$timeout', '$templateCache', '$uibModal', function($scope, $rootScope, $Api_Service, Factory_Delivery, $state, $location, $q, $compile, $filter, Factory_Master, $listsCache, statusColors, $http, API, screenLoader, $timeout, $templateCache, $uibModal) {
     var vm = this;
     var guid = '';
     vm.master_id = $state.params.screen_id;
@@ -1849,6 +1849,27 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             $scope.triggerModal('splitDeliveryModal');
         }
     }
+
+    $scope.triggerModal = function(template) {
+        tpl = "";
+
+        if (template === "raiseClaimType") {
+            tpl = $templateCache.get("app-general-components/views/modal_raiseClaimType.html");
+        } else if (template === "splitDeliveryModal") {
+            tpl = $templateCache.get("app-general-components/views/modal_splitDelivery.html");
+        }
+        if (template === "splitDeliveryModal" || template === "raiseClaimType") {
+            $scope.modalInstance = $uibModal.open({
+                template: tpl,
+                size: "full",
+                appendTo: angular.element(document.getElementsByClassName("page-container")),
+                windowTopClass: "fullWidthModal smallModal",
+                scope: $scope //passed current scope to the modal
+            });
+            return;
+        }
+    };
+
     $scope.getTimeBetweenDates = function(start, end) {
         if (!start) return;
         if (!end) return;
