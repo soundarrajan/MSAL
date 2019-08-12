@@ -1543,6 +1543,26 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     return tpl;
                 };                
+                var edit_request_link_from_schedule_table = function(cellValue, options, rowObject) {
+                    cellValue == null ? (cellValue = "") : "";
+                    tpl = " ";
+                    if (rowObject.requestId) {
+                        var tpl = '  <a  href="#/edit-request/' + rowObject.requestId + '" target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none" >' + cellValue + "</span></a>";
+                    } else if (rowObject.voyageDetail){
+                        if(rowObject.voyageDetail.request){
+                            if (rowObject.voyageDetail.request.id) {
+                                var tpl = '  <a  href="#/edit-request/' + rowObject.voyageDetail.request.id + '" target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none" >' + cellValue + "</span></a>";
+                            }
+                        }else{
+                            var tpl = '  <a  href="#/new-request/' + rowObject.voyageDetail.id + '" target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none" >' + cellValue + "</span></a>";
+                        }
+                    } else {
+                        var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
+                    }
+
+           
+                    return tpl;
+                };
                 var edit_request_link_from_delivery = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     tpl = " ";
