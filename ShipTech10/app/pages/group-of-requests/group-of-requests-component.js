@@ -5260,7 +5260,9 @@ ctrl.setProductData = function(data, loc) {
                         if (productOffer.energyParameterValues.tco) {
                             totalAmount += productOffer.energyParameterValues.tco;
                         } else {
-                            foundNoValidTco = true;
+	                    	if (ctrl.isEnergyCalculationRequired) {
+	                            foundNoValidTco = true;
+	                    	}
                         }
                     } else {
                         if (productOffer.totalAmount || productOffer.hasNoQuote) {
