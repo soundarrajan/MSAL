@@ -21,17 +21,13 @@ angular.module('shiptech.components')
             		return false;
             	}
             	groupOfRequestsModel.delinkRequests(ctrl.requestIds, ctrl.groupId).then(function() {
-					allRequestsLength = 0;
             		biggestRequest = 0;
 					$.each(ctrl.allRequests, function(index, value) {
-						if (typeof(value) != "undefined" ) {
-							allRequestsLength++;
-	            			if (index > biggestRequest) {
-	            				biggestRequest = index;
-	            			}
-						}
+            			if (value.id > biggestRequest) {
+            				biggestRequest = value.id;
+            			}
 					}); 	            		
-	            	if (ctrl.requestIds.length == allRequestsLength) {
+	            	if (ctrl.requestIds.length == ctrl.allRequests.length) {
 	            		location.href = "/#/edit-request/" + biggestRequest;
 	            		return;
 	            	}

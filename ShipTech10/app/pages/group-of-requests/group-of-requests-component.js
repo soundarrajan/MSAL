@@ -2121,7 +2121,7 @@ ctrl.setProductData = function(data, loc) {
             });
             ctrl.delinkIds = {
                 selectedRequestIds: selectedRequestIds,
-                allRequests: ctrl.requestCheckboxes,
+                allRequests: ctrl.requests,
                 groupId: groupId
             };
             // groupOfRequestsModel.delinkRequests(selectedRequestIds, ctrl.groupId).then(function() {
@@ -3467,7 +3467,7 @@ ctrl.setProductData = function(data, loc) {
             if (ctrl.requests && selectedRequestIds.length == ctrl.requests.length) {
 	        	var delinkableRequests = 0;
 	        	$.each(ctrl.requests, function(rk,rv){
-	        		if (["Validated", "Reopened"].indexOf(rv.requestStatus.name) != -1) {
+	        		if (["Validated", "Reopened", "ReOpen"].indexOf(rv.requestStatus.name) != -1) {
 		            	delinkableRequests++;
 	        		}
 	        	})
