@@ -7463,7 +7463,7 @@ APP_MASTERS.controller("Controller_Master", [
 
         $scope.previewOrderToBeDeliveredMail = function() {
             if (!$rootScope.selectDeliveryRows || $rootScope.selectDeliveryRows.length === 0) {
-                toastr.error('Please select a delivery');
+                toastr.error('Please select at least an order product');
                 return;
             }
 
@@ -7489,7 +7489,7 @@ APP_MASTERS.controller("Controller_Master", [
 
         $scope.sendOrderToBeDeliveredMail = function() {
             if (!$rootScope.selectDeliveryRows || $rootScope.selectDeliveryRows.length === 0) {
-                toastr.error('Please select a delivery');
+                toastr.error('Please select at least an order product');
                 return;
             }
 
