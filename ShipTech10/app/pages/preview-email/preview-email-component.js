@@ -352,15 +352,18 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         }
         ctrl.loadTemplate = function(template, oldTemplate) {
 
-            if (ctrl.data.missingSurveyor || ctrl.data.missingAgent) {
+            // if (ctrl.data.missingSurveyor || ctrl.data.missingAgent) {
+            if (ctrl.data.missingSurveyor) {
                 if (template) {
-                    if (template.name.toLowerCase().indexOf("surveyor") != -1) {
+                    if (template.name.toLowerCase().indexOf("surveyor") !== -1) {
                         if (ctrl.data.missingSurveyor) {
                             toastr.error('Surveyor is mandatory');
                         }
+                        /*
                         if (ctrl.data.missingAgent) {
                             toastr.error('Agent is mandatory');
                         }
+                        */
                         ctrl.template = null;
                         return;
                     }
