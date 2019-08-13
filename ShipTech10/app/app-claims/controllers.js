@@ -879,7 +879,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     fval.complianceSubtypes[rowIdx].testValue = null;
                 }
             }               
-        }    
+        } 
 
     
         $scope.getQuantityShortage = function() {

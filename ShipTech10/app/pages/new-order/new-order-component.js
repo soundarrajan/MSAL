@@ -1801,7 +1801,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         	var hasMissingSpecGroup = false;
         	var productsWithoutSpec = []
         	$.each(ctrl.data.products, function(k,v){
-        		if (!v.specGroup) {
+        		if (!v.specGroup && v.status.name != "Cancelled") {
 					hasMissingSpecGroup = true;
 					productsWithoutSpec.push(v.tempProduct.name);
         		} 
