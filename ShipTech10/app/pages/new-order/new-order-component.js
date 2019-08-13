@@ -1560,7 +1560,26 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.updateModelProperty = function (model, property, value) {
             model[property] = value;
         };
-        ctrl.sendOrderCommand = function (command, orderId) {
+        ctrl.sendOrderCommand = function (command, orderId) { 
+            if (command === 'submitForApproval' || command === 'approve') {
+            	var aggregatedErrorMessages = [];
+                var forms_validation = validateForms(),
+                    payload = {};
+                if (forms_validation !== null) {
+                	aggregatedErrorMessages.push(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                    // toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                    // return false;
+                }
+            	if ($scope.hasMissingSpecGroup()) {
+					aggregatedErrorMessages.push("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+				}
+				if (aggregatedErrorMessages.length > 0) {
+					$.each(aggregatedErrorMessages, function(k,message){
+						toastr.error(message);
+					})
+					return;
+				}    
+            }
             if (command == 'cancel' && !ctrl.comfirmCancelOrder) {
 				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
