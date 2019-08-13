@@ -1561,6 +1561,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             model[property] = value;
         };
         ctrl.sendOrderCommand = function (command, orderId) {
+            if (command === 'submitForApproval' || command === 'approve') {
+                var forms_validation = validateForms(),
+                    payload = {};
+                if (forms_validation !== null) {
+                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                    return false;
+                }
+            }
             if (command == 'cancel' && !ctrl.comfirmCancelOrder) {
 				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
