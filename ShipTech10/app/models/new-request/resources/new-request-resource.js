@@ -190,6 +190,12 @@ angular.module('shiptech.models').factory('newRequestResource', ['$resource', 'r
             params: {
                 verb: 'requeststatuseslist'
             }
+        },        
+        'getBunkerPlansForVesselVoyageDetailId': {
+            method: 'POST',
+            params: {
+                verb: 'getBunkerPlansForVesselVoyageDetailId'
+            }
         },
         'questionnaireStatus': {
             method: 'POST',

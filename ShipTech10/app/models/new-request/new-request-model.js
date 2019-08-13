@@ -328,6 +328,13 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             return newRequestResource.questionnaireStatus(request_data).$promise.then(function(data) {
                 return data;
             });
+        }        
+
+        function getBunkerPlansForVesselVoyageDetailId(data){
+            request_data = payloadDataModel.create(data);
+            return newRequestResource.getBunkerPlansForVesselVoyageDetailId(request_data).$promise.then(function(data) {
+                return data;
+            });
         }
 
 
@@ -356,6 +363,7 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             canBeCancelled: canBeCancelled,
             omitOffer: omitOffer,
             getRequestStatusesOrdered: getRequestStatusesOrdered,
+            getBunkerPlansForVesselVoyageDetailId: getBunkerPlansForVesselVoyageDetailId,
             questionnaireStatus: questionnaireStatus
         };
     }

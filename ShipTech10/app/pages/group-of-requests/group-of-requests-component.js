@@ -5261,7 +5261,7 @@ ctrl.setProductData = function(data, loc) {
                             totalAmount += productOffer.energyParameterValues.tco;
                         } else {
 	                    	if (ctrl.isEnergyCalculationRequired) {
-	                            foundNoValidTco = true;
+	                            foundNoValidTco = true; 
 	                    	}
                         }
                     } else {
