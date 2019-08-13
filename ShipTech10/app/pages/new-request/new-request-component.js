@@ -568,6 +568,31 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             );
         };
 
+        ctrl.validateMinMaxQuantity = function (min, max) {
+            if(typeof min == "string") min = parseFloat(min);
+            if(typeof max == "string") max = parseFloat(max);
+            response = {
+                minQuantity: min,
+                maxQuantity: max
+            };
+            if (isNaN(min)) {
+                min = null;
+            }
+            if (isNaN(max)) {
+                max = null;
+            }
+            if (min && min > max) {
+                response.maxQuantity = null;
+            }
+            if (max && min > max) {
+                response.minQuantity = null;
+            }
+            if (min && max && min > max) {
+                toastr.warning("Min Quantity can't be greater than Max Quantity");
+            }
+            return response;
+        };
+
         ctrl.saveRequest = function() {
            
             ctrl.isRequiredMinMax();

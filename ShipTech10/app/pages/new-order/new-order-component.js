@@ -2604,6 +2604,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 minQuantity: min,
                 maxQuantity: max
             };
+            if (isNaN(min)) {
+                min = null;
+            }
+            if (isNaN(max)) {
+                max = null;
+            }
             if (min && min > max) {
                 response.maxQuantity = null;
             }
