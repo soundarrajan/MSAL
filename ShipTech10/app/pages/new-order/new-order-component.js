@@ -1561,14 +1561,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             model[property] = value;
         };
         ctrl.sendOrderCommand = function (command, orderId) {
-            if (command === 'submitForApproval' || command === 'approve') {
-                var forms_validation = validateForms(),
-                    payload = {};
-                if (forms_validation !== null) {
-                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                    return false;
-                }
-            }
             if (command == 'cancel' && !ctrl.comfirmCancelOrder) {
 				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
@@ -1809,10 +1801,17 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         	var hasMissingSpecGroup = false;
         	var productsWithoutSpec = []
         	$.each(ctrl.data.products, function(k,v){
-        		if (!v.specGroup && v.status.name != "Cancelled") {
-					hasMissingSpecGroup = true;
-					productsWithoutSpec.push(v.tempProduct.name);
-        		} 
+        		if (!v.specGroup) {
+        			if (typeof(v.productStatus) != "undefined") {
+	        			if (v.productStatus.name != "Cancelled") {
+							hasMissingSpecGroup = true;
+							productsWithoutSpec.push(v.tempProduct.name);
+	        			}
+        			} else {
+						hasMissingSpecGroup = true;
+						productsWithoutSpec.push(v.tempProduct.name);
+        			}
+        		}  
         	})
         	if (hasMissingSpecGroup) {
         		return productsWithoutSpec.join(",");
@@ -1880,22 +1879,27 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         };
         ctrl.saveOrder = function () {
             $("form").addClass("submitted");
+            var aggregatedErrorMessages = [];
             var forms_validation = validateForms(),
                 payload = {};
             if (forms_validation !== null) {
-                toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                return false;
+            	aggregatedErrorMessages.push(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                // toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                // return false;
             }
 			if ($scope.hasMissingSpecGroup()) {
-        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
-        		return;
+				aggregatedErrorMessages.push("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+        		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+        		// return;
 			}            
 
             //checkf for invalid additional cost unit price
             var invalidAddCost = $('.additional_cost_invalid');
             if (invalidAddCost.length > 0) {
-                toastr.error('Additional cost Unit Price cannot be negative.');
-                return;
+				aggregatedErrorMessages.push('Additional cost Unit Price cannot be negative.');
+
+                // toastr.error('Additional cost Unit Price cannot be negative.');
+                // return;
             }
 
             // check for min max and confimed quantities 
@@ -1951,8 +1955,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
 
             if(errorMsg != ""){
-                toastr.error(errorMsg);
-                return;
+            	aggregatedErrorMessages.push(errorMsg);
+                // toastr.error(errorMsg);
+                // return;
             }
 
             //check products agreement type + pricing type
@@ -1970,7 +1975,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
  */
 
 
-            ctrl.buttonsDisabled = true;
+            // ctrl.buttonsDisabled = true;
             removeNullAdditionalCosts();
             /*
              * Due to FK exception in backend when sending empty objects instead of null, must
@@ -1980,10 +1985,17 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
              if ($scope.checkProductsHaveSameProductType() == false) {
 	        	ctrl.buttonsDisabled = false;
-             	toastr.error("Order can contain only products with same group.");
-             	return;
+	        	aggregatedErrorMessages.push("Order can contain only products with same group.");
+             	// toastr.error("Order can contain only products with same group.");
+             	// return;
              }
 
+             if (aggregatedErrorMessages.length > 0) {
+             	$.each(aggregatedErrorMessages, function(k,message){
+	             	toastr.error(message);
+             	})
+             	return;
+             }
 
             angular.copy(ctrl.data, payload);
             if ($.isEmptyObject(payload.broker) || !payload.broker.name) {
@@ -2353,18 +2365,50 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.showSpecGroupModal = false;
         ctrl.confirmOrder = function (checkSpecGroup) {
             $("form").addClass("submitted");
+			var errorMsg = "";
+            aggregatedErrorMessages = [];
             var forms_validation = validateForms(),
                 payload = {};
             if (forms_validation !== null) {
-                toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                return false;
+            	aggregatedErrorMessages.push(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                // toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                // return false;
             }
           
 			if ($scope.checkProductsHaveSameProductType() == false) {
-	        	ctrl.buttonsDisabled = false;
-				toastr.error("Order can contain only products with same group.");
-				return;
+	        	// ctrl.buttonsDisabled = false;
+            	aggregatedErrorMessages.push("Order can contain only products with same group.");
+				// toastr.error("Order can contain only products with same group.");
+				// return;
 			}
+			if ($scope.hasMissingSpecGroup()) {
+				aggregatedErrorMessages.push("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+        		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+        		// return;
+			} 			
+    		hasAdditionalCostError = false;
+            $.each(ctrl.data.products, function(pk,pv){
+            	if (pv.status) {
+	            	if (pv.status.name == "Cancelled" && pv.additionalCosts.length > 0) {
+	            		$.each(pv.additionalCosts, function(ack,acv){
+	            			if (acv.additionalCost) {
+	            				if (!acv.isDeleted) {
+				            		hasAdditionalCostError = true;
+	            				}
+	            			}
+	            		})
+	             	}
+            	}
+            })	
+            if (hasAdditionalCostError) {
+            	errorMsg += "You have additional costs that have applicable for set on cancelled products \n"
+            }
+
+            if(errorMsg != ""){
+            	aggregatedErrorMessages.push(errorMsg);
+                // toastr.error(errorMsg);
+                // return;
+            }
 
             ctrl.showSpecGroupModal = false;
             if (ctrl.isAgentFreeText) {
@@ -2373,6 +2417,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 //     return;
                 // }
                 ctrl.data.agentCounterparty = null;
+            }
+            if (aggregatedErrorMessages.length > 0) {
+            	$.each(aggregatedErrorMessages, function(k,message){
+            		toastr.error(message)
+            	})
+            	return;
             }
             if (checkSpecGroup) {
                 console.log(ctrl.data);
@@ -2412,8 +2462,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     var forms_validation = validateForms(),
                         payload = {};
                     if (forms_validation !== null) {
-                        toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                        return false;
+                    	aggregatedErrorMessages.push(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                        // toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
+                        // return false;
                     }
                     // ctrl.buttonsDisabled = true;
                     removeNullAdditionalCosts();
@@ -2444,7 +2495,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     }
                     // END Save Order before confirming validation
 
-
+                    if (aggregatedErrorMessages.length > 0) {
+                    	$.each(aggregatedErrorMessages, function(k,message){
+                    		toastr.error(message)
+                    	})
+                    	return;
+                    }
 
                     ctrl.sendOrderConfirmation(payload);
 
@@ -2604,12 +2660,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 minQuantity: min,
                 maxQuantity: max
             };
-            if (isNaN(min)) {
-                min = null;
-            }
-            if (isNaN(max)) {
-                max = null;
-            }
             if (min && min > max) {
                 response.maxQuantity = null;
             }
