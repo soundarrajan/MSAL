@@ -774,9 +774,16 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 		                QuoteByCurrencyId: null,
 		                Comments: null
 		            };
-		            groupOfRequestsModel.revokeRFQ(rfq_data).then(
-						window.history.back()
-		            )
+		            groupOfRequestsModel.revokeRFQ(rfq_data).then(function(data) {
+                        if (data.payload) {
+                            if (data.payload.redirectToRequest) {
+                                lastRequestId = rfq_data.Requirements[0].RequestId;
+                                location.href = "/#/edit-request/"+lastRequestId;
+                                return;
+                            }
+                        }
+                        window.history.back();
+                    });
 		            return;
 	            }
 

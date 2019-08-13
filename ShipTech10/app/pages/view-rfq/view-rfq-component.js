@@ -204,6 +204,13 @@ angular.module('shiptech.pages')
                 ctrl.buttonsDisabled = true;
                 
                 groupOfRequestsModel.revokeRFQ(rfq_data).then(function(data){
+                    if (data.payload) {
+                        if (data.payload.redirectToRequest) {
+                            lastRequestId = rfq_data.Requirements[0].RequestId;
+                            location.href = "/#/edit-request/"+lastRequestId;
+                            return;
+                        }
+                    }
                     ctrl.buttonsDisabled = false;
                     ctrl.init();
                 }, function() {
