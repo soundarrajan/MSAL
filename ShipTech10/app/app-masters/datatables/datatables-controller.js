@@ -3035,7 +3035,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "buyerQuantity",
                         displayName: "Buyer quantity",
                         enableCellEdit: false,
-                        ChangeAction: "grid.appScope.fVal().checkClaimType()",
+                        // ChangeAction: "grid.appScope.fVal().checkClaimType()",
+                        BlurAction: "grid.appScope.fVal().checkClaimType()",
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:"+vm.quantity                        
                     },
@@ -3044,7 +3045,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         displayName: "UOM",
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.dropdown,
-                        ChangeAction: "grid.appScope.fVal().checkClaimType()",
+                        // ChangeAction: "grid.appScope.fVal().checkClaimType()",
+                        BlurAction: "grid.appScope.fVal().checkClaimType()",
                         cellObject: {
 	                        changeEvent: "grid.appScope.fVal().checkClaimType()",
                             Name: "Uom",
