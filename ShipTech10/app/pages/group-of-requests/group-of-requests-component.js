@@ -2407,7 +2407,8 @@ ctrl.setProductData = function(data, loc) {
                             randUniquePkg: seller.randUniquePkg,
                             isClonedSeller: seller.isCloned,
                             currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
-                            vesselETA: theLocation.eta
+                            vesselETA: theLocation.eta,
+                            productAllowZeroPricing: product.allowZeroPricing
                         };
                         if (product.pricingType) {
                             req.PricingTypeId = product.pricingType.id;
@@ -2580,7 +2581,8 @@ ctrl.setProductData = function(data, loc) {
                     randUniquePkg: seller.randUniquePkg,
                     isClonedSeller: seller.isCloned,
                     currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
-                    vesselETA: theLocation.eta
+                    vesselETA: theLocation.eta,
+                    productAllowZeroPricing: product.allowZeroPricing
                 };
                 if (product.pricingType) {
                     req.PricingTypeId = product.pricingType.id;
@@ -3033,9 +3035,27 @@ ctrl.setProductData = function(data, loc) {
             return vesselIds.length;
         };
         ctrl.setConfirmationOffers = function () {
+            var productErrors = [];
+            _.each(ctrl.requirements, function(value, key) {
+                if((!value.productHasPrice && value.ProductTypeId === 8) || (!value.productHasPrice && value.productAllowZeroPricing == false)) {
+                    productErrors.push("Please enter a price greater than 0 for selected products");
+                }
+            });
+
             if (_.uniqBy(ctrl.requirements, 'QuotedProductGroupId').length != 1) {
-	        	toastr.error("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
-		    	return false;
+	        	productErrors.push("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
+            }
+
+
+            if (ctrl.isOfferReviewMandatory && !ctrl.isReviewed) {
+                productErrors.push("Your tenant configuration require that Group should be Reviewed before confirming an Offer");
+            }
+
+            if (productErrors.length > 0) {
+                _.each(productErrors, function(value, key) {
+                    toastr.error(value);
+                });
+                return false;
             }
 
             ctrl.confirmationProductOffers = {
@@ -3048,11 +3068,6 @@ ctrl.setProductData = function(data, loc) {
                 fullGroupData: ctrl.requests
             };
 
-
-            if (ctrl.isOfferReviewMandatory && !ctrl.isReviewed) {
-                toastr.error("Your tenant configuration require that Group should be Reviewed before confirming an Offer");
-                return false;
-            }
             $bladeEntity.open("confirmOffer");
         };
         ctrl.canSendRFQ = function () {
