@@ -1079,7 +1079,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             product = {
                 product: null,
                 currency: ctrl.currency,
-                productStatus: null,
+                // productStatus: null,
+                status: null,
                 workflowId: null,
                 specGroup: null,
                 specGroups: [],
@@ -1821,11 +1822,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         	var productsWithoutSpec = []
         	$.each(ctrl.data.products, function(k,v){
         		if (!v.specGroup) {
-        			if (typeof(v.productStatus) != "undefined") {
-	        			if (v.productStatus.name != "Cancelled") {
+        			if (typeof(v.status) != "undefined") {
+        				if (v.status) {
+		        			if (v.status.name != "Cancelled") {
+								hasMissingSpecGroup = true;
+								productsWithoutSpec.push(v.tempProduct.name);
+		        			}
+        				} else {
 							hasMissingSpecGroup = true;
 							productsWithoutSpec.push(v.tempProduct.name);
-	        			}
+        				}
         			} else {
 						hasMissingSpecGroup = true;
 						productsWithoutSpec.push(v.tempProduct.name);
