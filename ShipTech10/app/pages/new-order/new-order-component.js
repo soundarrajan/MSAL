@@ -1838,9 +1838,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         			}
         		}  
         	})
+        	ctrl.hasMissingSpecGroup = hasMissingSpecGroup;     	
         	if (hasMissingSpecGroup) {
         		return productsWithoutSpec.join(",");
-        	}        	
+        	}  
     		return false;
         }
         //send a command to server and reload the order from the received response

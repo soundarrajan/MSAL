@@ -252,7 +252,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     // inline: true,
                     widgetParent: $('.page-container')
                 };
-
+				$('#' + dateInputId).addClass('ng-invalid-required ng-touched');
                 $(element).datetimepicker(datePickerOptions).on('dp.show', function (e) {
                     setTimeout(function () {
                         if ($(".bootstrap-datetimepicker-widget").length > 0) {
@@ -396,6 +396,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         maskTyping = false;
                         mask.value = moment.utc(value).format(currentFormat);
                         $(element).removeClass('invalid');
+                        $('#' + dateInputId).removeClass('ng-invalid-required ng-touched');
                         try {
                             ngModel.$setValidity('required', true);
                         } catch (TypeError) {
@@ -430,6 +431,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     if (showError) {
                         if (!attrs['required'] && !mask.value) {
                             $(element).removeClass('invalid');
+                            $('#' + dateInputId).removeClass('ng-invalid-required ng-touched');
                             try {
                                 ngModel.$setValidity('required', true);
                             } catch (TypeError) {
@@ -484,6 +486,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                                         mask.value = newMaskVal;
                                     }
                                     $(element).removeClass('invalid');
+                                    $('#' + dateInputId).removeClass('ng-invalid-required ng-touched');
                                     try {
                                         ngModel.$setValidity('required', true);
                                     } catch (TypeError) {
@@ -494,12 +497,17 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                         } else {
                             if (!attrs['required'] && !mask.value) {
                                 $(element).removeClass('invalid');
+                                $('#' + dateInputId).removeClass('ng-invalid-required ng-touched');
                                 try {
                                     ngModel.$setValidity('required', true);
                                 } catch (TypeError) {
                                     console.log('Failed to set date-picker validity');
                                 }
                                 reset();
+                            }
+                            if ((attrs['required'] && !mask.value) || (attrs['required'] && mask.value == "")) {
+								$(element).addClass('invalid');
+								$('#' + dateInputId).addClass('ng-invalid-required ng-touched');
                             }
                         }
                     }

@@ -51,19 +51,19 @@
 							<input type="text" class="form-control" ng-model="value.replyTo">
 						</td>
 						<td class="">
-							<div ng-controller="Controller_Master as CM">
+							<!-- <div ng-controller="Controller_Master as CM"> -->
 								<multiselect ng-model="value.toEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
-							</div>
+							<!-- </div> -->
 						</td>
 						<td class="">
-							<div ng-controller="Controller_Master as CM">
+							<!-- <div ng-controller="Controller_Master as CM"> -->
 								<multiselect ng-model="value.ccEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
-							</div>							
+							<!-- </div>							 -->
 						</td>						
 						<td class="">
-							<div ng-controller="Controller_Master as CM">
+							<!-- <div ng-controller="Controller_Master as CM"> -->
 								<multiselect ng-model="value.attachmentDocumentTypes" ng-disabled="!value.isEmailAttachmentRequired" options="CM.listsCache['DocumentType']" id-prop="id" display-prop="name" show-search="true"></multiselect>
-							</div>								
+							<!-- </div>								 -->
 						</td>
 						<td class="">
 							<label class="mt-checkbox">

@@ -509,6 +509,7 @@
                                                                 id="eta"
                                                                 new-date-picker
                                                                 picker-type="dynamic"
+                                                                ng-required="true"
                                                                 class="form-control date-mask new-date-picker"> 
                                                         </div>
                                                     </div>
@@ -1001,7 +1002,7 @@
                                         </div>
                                     </td>
                                     <td style="max-width: initial; min-width: 200px;">
-                                        <select ng-options="specGroup as specGroup.name for specGroup in product.specGroups track by specGroup.id" ng-model="product.specGroup"
+                                        <select ng-class="{'border-red-thunderbird' : ($ctrl.hasMissingSpecGroup && product.status.name != 'Cancelled' && !product.specGroup)}" ng-options="specGroup as specGroup.name for specGroup in product.specGroups track by specGroup.id" ng-model="product.specGroup"
                                             class="form-control pull-left" style="width: calc(100% - 20px);" ng-disabled="$ctrl.disabledProduct[product.id]"
                                             id="product_specGroup_{{ $index }}"></select>
                                         <a ng-controller="Controller_Master" ng-click="modalSpecGroupEdit(product, NAV.orderId, 'order', $ctrl.data)" class="pull-left"
