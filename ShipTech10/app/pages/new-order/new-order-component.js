@@ -1704,8 +1704,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             			defaultTemplate = _.filter(foundEmailTemplates, function(email) {
 						    return email.process.indexOf("Contract") == -1;
 						});
-		            	if (ctrl.confirmToSellerManual) {
-			                var data = {
+		            	if (ctrl.confirmToSellerManual) { 
+			                var data = { 
 			                    orderId: ctrl.orderId,
 		                        defaultTemplate : defaultTemplate[0].template,
 		                        canSendConfirmToSeller : !ctrl.ConfirmToSellerDisabled,

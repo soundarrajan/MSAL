@@ -1171,8 +1171,9 @@ window.increment = 0;
                                                 (colId != "flat_schedule_dashboard_table_voyageDetail_request_requestDetail_contractMaxQuantity")){
                                                 //min - max quantity columns should not have sorting
                                                 if($(this).hasClass('ui-sortable-handle')){
+                                                    helperCoulmnTitle = $rootScope.currentColumnRoute + " : " + col;
                                                     $(this)
-                                                    .append('<a class="colMenu" title=' + col + " data-column=" + col + " data-table=" + table_id + ' data-sortCol="' + sortCol + '"><i class="fa fa-caret-down"></i></a>');
+                                                    .append('<a class="colMenu" title="' + helperCoulmnTitle + '" data-column="' + col + '" data-table="' + table_id + ' data-sortCol="' + sortCol + '"><i class="fa fa-caret-down"></i></a>');
                                                 }
                                             }
 
@@ -1209,10 +1210,10 @@ window.increment = 0;
     
                                             //console.log(col,sortCol);
 
-
+											helperCoulmnTitle = $rootScope.currentColumnRoute + " : " + col;
                                             $(this)
                                                 .parent()
-                                                .append('<a class="colMenu" title=' + col + " data-column=" + col + " data-table=" + table_id + ' data-sortCol="' + sortCol.toLowerCase() + '"><i class="fa fa-caret-down"></i></a>');
+                                                .append('<a class="colMenu" title="' + helperCoulmnTitle + '" data-column="' + col + '" data-table="' + table_id + ' data-sortCol="' + sortCol.toLowerCase() + '"><i class="fa fa-caret-down"></i></a>');
                                             // .append('<input type="checkbox">');
                                             // }
     

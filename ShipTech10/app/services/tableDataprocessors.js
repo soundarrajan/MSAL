@@ -205,6 +205,7 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
                     currentColumns.push(value);
                 }
             });
+            $rootScope.currentColumnRoute = currentList;
             $.each(currentColumns, function(cck,ccv){
             	ccvColumnValue = angular.copy(ccv.columnValue);
             	ccvColumnValue = ccvColumnValue.replace(/_/g, '.');

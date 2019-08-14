@@ -931,7 +931,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         if (!ctrl.data.canSendConfirm) return false; 
                     }
                     if (ctrl.email.comment.emailTemplate.name.indexOf("ConfirmationToSeller") != -1 ) {
-                        if (!ctrl.data.canSendConfirmToSeller) return false; 
+                        if (!ctrl.data.canSendConfirmToSeller) return false;  
                     }
                     if (ctrl.email.comment.emailTemplate.name.indexOf("ConfirmationToVessel") != -1) {
                         if (!ctrl.data.canSendConfirmToVessel) return false; 
