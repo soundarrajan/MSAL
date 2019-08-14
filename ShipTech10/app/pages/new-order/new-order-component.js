@@ -349,8 +349,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 }
             });
            
-            ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty;
-            ctrl.data.missingAgent = !ctrl.data.agentCounterparty;
+            ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty && ctrl.isAgentMandatory;
+            ctrl.data.missingAgent = !ctrl.data.agentCounterparty && ctrl.isSurveyorMandatory;
 
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
 
@@ -1564,16 +1564,19 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.sendOrderCommand = function (command, orderId) { 
             if (command === 'submitForApproval' || command === 'approve') {
             	var aggregatedErrorMessages = [];
-                var forms_validation = validateForms(),
-                    payload = {};
-                if (forms_validation !== null) {
-                	aggregatedErrorMessages.push(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                    // toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(", "));
-                    // return false;
-                }
-            	if ($scope.hasMissingSpecGroup()) {
-					aggregatedErrorMessages.push("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
+
+            	if (ctrl.data.missingSpecGroup) {
+					aggregatedErrorMessages.push("Spec group is mandatory");
 				}
+                if (ctrl.data.missingPhysicalSupplier) {
+                    aggregatedErrorMessages.push("Physical supplier is mandatory");
+                }
+                if (ctrl.data.missingSurveyor) {
+                    aggregatedErrorMessages.push("Surveyor counterparty is mandatory");
+                }
+                if (ctrl.data.missingAgent) {
+                    aggregatedErrorMessages.push("Agent counterparty is mandatory");
+                }
 				if (aggregatedErrorMessages.length > 0) {
 					$.each(aggregatedErrorMessages, function(k,message){
 						toastr.error(message);
@@ -1613,10 +1616,25 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 // ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
             }
             if (command == 'confirmToLab') {
-				if ($scope.hasMissingSpecGroup()) {
-	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
-	        		return;
-				}
+                var aggregatedErrorMessages = [];
+                if (ctrl.data.missingSpecGroup) {
+                    aggregatedErrorMessages.push("Spec group is mandatory");
+                }
+                if (ctrl.data.missingPhysicalSupplier) {
+                    aggregatedErrorMessages.push("Physical supplier is mandatory");
+                }
+                if (ctrl.data.missingSurveyor) {
+                    aggregatedErrorMessages.push("Surveyor counterparty is mandatory");
+                }
+                if (ctrl.data.missingAgent) {
+                    aggregatedErrorMessages.push("Agent counterparty is mandatory");
+                }
+                if (aggregatedErrorMessages.length > 0) {
+                    $.each(aggregatedErrorMessages, function(k,message){
+                        toastr.error(message);
+                    })
+                    return;
+                }    
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
         		if (minProductType) {
         			minProductTypeId = minProductType.productType.productTypeGroup.id;
@@ -1646,10 +1664,25 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }
             if (command == 'confirmToSurveyor') {
-				if ($scope.hasMissingSpecGroup()) {
-	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
-	        		return;
-				}            	
+                var aggregatedErrorMessages = [];
+                if (ctrl.data.missingSpecGroup) {
+                    aggregatedErrorMessages.push("Spec group is mandatory");
+                }
+                if (ctrl.data.missingPhysicalSupplier) {
+                    aggregatedErrorMessages.push("Physical supplier is mandatory");
+                }
+                if (ctrl.data.missingSurveyor) {
+                    aggregatedErrorMessages.push("Surveyor counterparty is mandatory");
+                }
+                if (ctrl.data.missingAgent) {
+                    aggregatedErrorMessages.push("Agent counterparty is mandatory");
+                }
+                if (aggregatedErrorMessages.length > 0) {
+                    $.each(aggregatedErrorMessages, function(k,message){
+                        toastr.error(message);
+                    })
+                    return;
+                } 
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
         		if (minProductType) {
         			minProductTypeId = minProductType.productType.productTypeGroup.id;
@@ -1677,10 +1710,25 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }                        
             if (command == 'confirmToSeller') {
-				if ($scope.hasMissingSpecGroup()) {
-	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
-	        		return;
-				}             	
+                var aggregatedErrorMessages = [];
+                if (ctrl.data.missingSpecGroup) {
+                    aggregatedErrorMessages.push("Spec group is mandatory");
+                }
+                if (ctrl.data.missingPhysicalSupplier) {
+                    aggregatedErrorMessages.push("Physical supplier is mandatory");
+                }
+                if (ctrl.data.missingSurveyor) {
+                    aggregatedErrorMessages.push("Surveyor counterparty is mandatory");
+                }
+                if (ctrl.data.missingAgent) {
+                    aggregatedErrorMessages.push("Agent counterparty is mandatory");
+                }
+                if (aggregatedErrorMessages.length > 0) {
+                    $.each(aggregatedErrorMessages, function(k,message){
+                        toastr.error(message);
+                    })
+                    return;
+                }          	
             	// if (ctrl.procurementSettings.order.needConfirmationSellerEmail.name == 'HardStop') {
             		isContractOrder = false;
             		$.each(ctrl.data.products, function(k,v){
@@ -1742,10 +1790,25 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	// }
             }
             if (command == 'confirmToAll') {
-				if ($scope.hasMissingSpecGroup()) {
-	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
-	        		return;
-				}            	
+                var aggregatedErrorMessages = [];
+                if (ctrl.data.missingSpecGroup) {
+                    aggregatedErrorMessages.push("Spec group is mandatory");
+                }
+                if (ctrl.data.missingPhysicalSupplier) {
+                    aggregatedErrorMessages.push("Physical supplier is mandatory");
+                }
+                if (ctrl.data.missingSurveyor) {
+                    aggregatedErrorMessages.push("Surveyor counterparty is mandatory");
+                }
+                if (ctrl.data.missingAgent) {
+                    aggregatedErrorMessages.push("Agent counterparty is mandatory");
+                }
+                if (aggregatedErrorMessages.length > 0) {
+                    $.each(aggregatedErrorMessages, function(k,message){
+                        toastr.error(message);
+                    })
+                    return;
+                }     	
         		minProductType = _.minBy(ctrl.data.products, function(o) { return o.productType.productTypeGroup.id; })
         		if (minProductType) {
         			minProductTypeId = minProductType.productType.productTypeGroup.id;
@@ -1791,13 +1854,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	}
             }        
             currentCommand = command;
-
-            if (command != "cancel" && command != "RejectOrder") {
-				if ($scope.hasMissingSpecGroup()) {
-	        		toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
-	        		return;
-				}
-            }
 
             if (command != "cancel") {
                 ctrl.buttonsDisabled = true;
