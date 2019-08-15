@@ -3037,9 +3037,10 @@ ctrl.setProductData = function(data, loc) {
         ctrl.setConfirmationOffers = function () {
             var productErrors = [];
             _.each(ctrl.requirements, function(value, key) {
-                if((!value.productHasPrice && value.ProductTypeId === 8) || (!value.productHasPrice && value.productAllowZeroPricing == false)) {
-                    productErrors.push("Please enter a price greater than 0 for selected products");
+                if(!value.productHasPrice && !value.productAllowZeroPricing) {
+                    productErrors.push("Please enter a price greater than 0 for the selected products");
                 }
+                return;
             });
 
             if (_.uniqBy(ctrl.requirements, 'QuotedProductGroupId').length != 1) {
@@ -3345,27 +3346,17 @@ ctrl.setProductData = function(data, loc) {
 	                ctrl.createSellerRequirements(seller, locations);
                 }
             }
-            ctrl.rfqScreenToDisplayIsMail = false;
+                ctrl.rfqScreenToDisplayIsMail = false;
 
-            // for (var i = 0; i < ctrl.requirements.length; i++) {
-            //     var req = ctrl.requirements[i];
-            //         if (req.UniqueLocationSellerPhysical.indexOf(seller.randUnique) != -1) {
-            //             rowRequirements.push(req);
-            //             if (!req.productHasRFQ) {
-            //                 ctrl.rfqScreenToDisplayIsMail = true;
-            //             }
-            //         }
-            // }
-
-            for (var i = 0; i < ctrl.requirements.length; i++) {
-                var req = ctrl.requirements[i];
-                if (req.randUniquePkg.indexOf(seller.randUniquePkg) != -1) {
-                    rowRequirements.push(req);
-                    if (!req.productHasRFQ) {
-                        ctrl.rfqScreenToDisplayIsMail = true;
+                for (var i = 0; i < ctrl.requirements.length; i++) {
+                    var req = ctrl.requirements[i];
+                    if (req.randUniquePkg.indexOf(seller.randUniquePkg) != -1) {
+                        rowRequirements.push(req);
+                        if (!req.productHasRFQ) {
+                            ctrl.rfqScreenToDisplayIsMail = true;
+                        }
                     }
                 }
-            }            
 
             // Remove SludgeProducts From emailPreview payload
             requirementsFilteredWithoutSludgeProduct = []
@@ -3415,7 +3406,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.blade.activeWidget = "email";
                 ctrl.blade.widgetType = "counterparty";
                 // if (!ctrl.rfqScreenToDisplayIsMail) {
-                //     ctrl.setBladeCounterpartyActiveSeller();
+                     // ctrl.setBladeCounterpartyActiveSeller();
                 // }
                 $bladeEntity.open("groupOfRequestBlade");
                 ctrl.bladeOpened = true;
@@ -3807,6 +3798,7 @@ ctrl.setProductData = function(data, loc) {
         }
         ctrl.changeBladeCounterparty = function (seller, theLocation) {
             // ctrl.dataLoaded = true;
+
         	ctrl.changeBladeWidgetFunction = null;
         	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
@@ -4100,11 +4092,7 @@ ctrl.setProductData = function(data, loc) {
                 return false;
             }
             $scope.tempRequestOfferId = requestOfferId;
-            if((priceValue < 1 && productSample.productTypeId != 8 && productSample.allowZeroPricing == false)){
-                toastr.error("Please enter a price greater than 0");
-                // return false;
-            }
-            if (isNaN(priceValue) || priceValue == '') {
+            if (isNaN(priceValue) || priceValue == '' || (priceValue < 1 && productSample.allowZeroPricing == false)) {
                 $.each(ctrl.requests, function (reqK, reqV) {
                     $.each(reqV.locations, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
@@ -4120,6 +4108,7 @@ ctrl.setProductData = function(data, loc) {
                         });
                     });
                 });
+                toastr.error("Please enter a price greater than 0");
                 return false;
             }
             payloadLocation = null;
