@@ -1562,6 +1562,17 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.updateModelProperty = function (model, property, value) {
             model[property] = value;
         };
+
+        ctrl.canSendConfirmToSellerForPreview = function() {
+            return ctrl.data.id && !ctrl.data.buttonsDisabled && ctrl.data.seller.name &&
+                  (ctrl.hasAction(ctrl.SCREEN_ACTIONS.CONFIRM) || ctrl.data.status.name == 'Confirmed');
+        }
+
+        ctrl.canSendConfirmToVesselForPreview = function() {
+            return ctrl.data.id && !ctrl.data.buttonsDisabled && ctrl.data.vessel.name &&
+                  (ctrl.hasAction(ctrl.SCREEN_ACTIONS.CONFIRM) || ctrl.data.status.name == 'Confirmed');
+        }
+
         ctrl.sendOrderCommand = function (command, orderId) { 
             if (command === 'submitForApproval' || command === 'approve') {
             	var aggregatedErrorMessages = [];
@@ -1700,8 +1711,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 			                var data = { 
 			                    orderId: ctrl.orderId,
 		                        defaultTemplate : defaultTemplate[0].template,
-		                        canSendConfirmToSeller : !ctrl.ConfirmToSellerDisabled,
-		                        canSendConfirmToVessel : !ctrl.ConfirmToVesselDisabled,
+		                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
+		                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
 		                        command: command
 		                    };
 		                    var previewEmailData = {
@@ -1719,8 +1730,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 			                var data = {
 			                    orderId: ctrl.orderId,
 		                        defaultTemplate : defaultTemplate[0].template,
-		                        canSendConfirmToSeller : !ctrl.ConfirmToSellerDisabled,
-		                        canSendConfirmToVessel : !ctrl.ConfirmToVesselDisabled,
+		                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
+		                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
 		                        command: command
 		                    };
 		                    var previewEmailData = {
@@ -1766,8 +1777,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 	                var data = {
 	                    orderId: ctrl.orderId,
                         defaultTemplate : defaultTemplate[0].template,
-                        canSendConfirmToVessel : !ctrl.data.ConfirmToVesselDisabled,
-                        canSendConfirmToSeller : !ctrl.data.ConfirmToSellerDisabled,
+                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
+                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
                         command: command
                     };
                     var previewEmailData = {
@@ -1864,8 +1875,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 var data = {
                     orderId: ctrl.orderId,
                     canSend: canSend,
-                    canSendConfirmToSeller : !ctrl.ConfirmToSellerDisabled,
-                    canSendConfirmToVessel : !ctrl.data.ConfirmToVesselDisabled,                    
+                    canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
+                    canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),            
                     canSendConfirm : ctrl.hasAction(ctrl.SCREEN_ACTIONS.CONFIRM)
                 };
 
