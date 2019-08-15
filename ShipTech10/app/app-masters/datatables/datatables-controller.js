@@ -2034,7 +2034,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             Name: "SystemInstrument",
                             Type: "lookup",
                             masterSource: "SystemInstrument",
-                            clc_id: "masters_systeminstrumentlist"
+                            clc_id: "masters_systeminstrument"
                         }
                     },
                     {
@@ -2057,7 +2057,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             Name: "SystemInstrument",
                             Type: "lookup",
                             masterSource: "SystemInstrument",
-                            clc_id: "masters_systeminstrumentlist"
+                            clc_id: "masters_systeminstrument"
                         }
                     },
                     {
@@ -2080,7 +2080,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             Name: "SystemInstrument",
                             Type: "lookup",
                             masterSource: "SystemInstrument",
-                            clc_id: "masters_systeminstrumentlist"
+                            clc_id: "masters_systeminstrument"
                         }
                     },
                     {
@@ -2386,7 +2386,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                             Name: "SystemInstrument",
                             Type: "lookup",
                             masterSource: "SystemInstrument",
-                            clc_id: "masters_systeminstrumentlist"
+                            clc_id: "masters_systeminstrument"
                         },
                         category: "1"
                     },
