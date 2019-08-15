@@ -356,16 +356,16 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 if (template.name.toLowerCase().indexOf("surveyor") !== -1) {
                     if (ctrl.data.missingSurveyor) {
                         toastr.error('Surveyor is mandatory');
+                        ctrl.template = null;
+                        return;
                     }
-                    ctrl.template = null;
-                    return;
                 }
                 if (template.name.toLowerCase().indexOf("lab") !== -1) {
                     if (ctrl.data.missingLab) {
                         toastr.error('Lab is mandatory');
+                        ctrl.template = null;
+                        return;
                     }
-                    ctrl.template = null;
-                    return;
                 }
             }
 
