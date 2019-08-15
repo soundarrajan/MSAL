@@ -1825,6 +1825,22 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         	}  
     		return false;
         }
+
+        $scope.hasMissingPhysicalSupplier = function() {
+            var hasMissingPhysicalSupplier = false;
+            var productsWithoutPhysicalSupplier = []
+            $.each(ctrl.data.products, function(k, v) {
+                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) {
+                    hasMissingPhysicalSupplier = true;
+                    productsWithoutPhysicalSupplier.push(v.product.name);
+                }
+            });
+            if (hasMissingPhysicalSupplier) {
+                return productsWithoutPhysicalSupplier.join(', ');
+            }
+            return false;
+        }
+
         //send a command to server and reload the order from the received response
         ctrl.sendOrderCommandReload = function (command, orderId) {
             ctrl.buttonsDisabled = true;
@@ -1899,6 +1915,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
         		// return;
 			}            
+            if ($scope.hasMissingPhysicalSupplier()) {
+                aggregatedErrorMessages.push("Please select a Physical Supplier for : " + $scope.hasMissingPhysicalSupplier());
+            }            
 
             //checkf for invalid additional cost unit price
             var invalidAddCost = $('.additional_cost_invalid');
@@ -2393,6 +2412,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
         		// return;
 			} 			
+            if ($scope.hasMissingPhysicalSupplier()) {
+                aggregatedErrorMessages.push("Please select a Physical Supplier for : " + $scope.hasMissingPhysicalSupplier());
+            }   
     		hasAdditionalCostError = false;
             $.each(ctrl.data.products, function(pk,pv){
             	if (pv.status) {
