@@ -349,24 +349,23 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 ctrl.ccEmailOthers = "";
             }
             // screenLoader.hideLoader();
-        }
-        ctrl.loadTemplate = function(template, oldTemplate) {
+        };
 
-            // if (ctrl.data.missingSurveyor || ctrl.data.missingAgent) {
-            if (ctrl.data.missingSurveyor) {
-                if (template) {
-                    if (template.name.toLowerCase().indexOf("surveyor") !== -1) {
-                        if (ctrl.data.missingSurveyor) {
-                            toastr.error('Surveyor is mandatory');
-                        }
-                        /*
-                        if (ctrl.data.missingAgent) {
-                            toastr.error('Agent is mandatory');
-                        }
-                        */
-                        ctrl.template = null;
-                        return;
+        ctrl.loadTemplate = function(template, oldTemplate) {
+            if (template) {
+                if (template.name.toLowerCase().indexOf("surveyor") !== -1) {
+                    if (ctrl.data.missingSurveyor) {
+                        toastr.error('Surveyor is mandatory');
                     }
+                    ctrl.template = null;
+                    return;
+                }
+                if (template.name.toLowerCase().indexOf("lab") !== -1) {
+                    if (ctrl.data.missingLab) {
+                        toastr.error('Lab is mandatory');
+                    }
+                    ctrl.template = null;
+                    return;
                 }
             }
 
@@ -662,23 +661,26 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             }
         };
 
-        ctrl.saveAndSend = function(action){
-            if (ctrl.data.missingPhysicalSupplier) {
-            	if (ctrl.template) {
-	            	if (ctrl.template.name.toLowerCase().indexOf("confirm") !== -1) {
-		                toastr.error('Physical supplier is mandatory');
-		                return;
-	            	}
-            	}
-            }
-            if (ctrl.data.missingSpecGroup) {
-                if (ctrl.template) {
-                    if (ctrl.template.name.toLowerCase().indexOf("confirm") !== -1) {
-                        toastr.error('Spec group is mandatory');
-                        return;
+        ctrl.saveAndSend = function(action) {
+            var errors = [];
+            if (ctrl.template) {
+                if (ctrl.template.name.toLowerCase().indexOf("confirm") !== -1) {
+                    if (ctrl.data.missingPhysicalSupplier) {
+                        errors.push('Physical supplier is mandatory');
+                    }
+                    if (ctrl.data.missingSpecGroup) {
+                        errors.push('Spec group is mandatory');
                     }
                 }
             }
+
+            if (errors.length > 0) {
+                _.each(errors, function(value, key) {
+                    toastr.error(value);
+                });
+                return;
+            }
+
             ctrl.saveComments(action, false).then(function () {
                 if (action != "sendRFQ") {
                     // ctrl.sendEmail(true);
