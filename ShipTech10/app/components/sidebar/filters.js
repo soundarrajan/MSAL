@@ -858,6 +858,14 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
         $scope.columnSort = function(table, column, order, sortColumn, columnObj) {
 
+            if (!column || column === 'undefined') {
+                column = _.get(columnObj, 'column.columnValue');
+            }
+
+            if (!sortColumn) {
+                sortColumn = _.get(columnObj, 'column.columnValue');
+            }
+
             $.each($rootScope.sortList, function(k, v) {
                 if (v.columnValue == '[open]') {
                     v.columnValue = 'open';
