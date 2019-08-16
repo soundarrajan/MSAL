@@ -1926,9 +1926,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
         		// return;
 			}            
-            if ($scope.hasMissingPhysicalSupplier()) {
-                aggregatedErrorMessages.push("Please select a Physical Supplier for : " + $scope.hasMissingPhysicalSupplier());
-            }            
 
             //checkf for invalid additional cost unit price
             var invalidAddCost = $('.additional_cost_invalid');
@@ -2423,9 +2420,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
         		// return;
 			} 			
-            if ($scope.hasMissingPhysicalSupplier()) {
-                aggregatedErrorMessages.push("Please select a Physical Supplier for : " + $scope.hasMissingPhysicalSupplier());
-            }   
     		hasAdditionalCostError = false;
             $.each(ctrl.data.products, function(pk,pv){
             	if (pv.status) {
