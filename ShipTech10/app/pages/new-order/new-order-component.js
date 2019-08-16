@@ -347,7 +347,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             });
            
             ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty && ctrl.isSurveyorMandatory;
-            ctrl.data.missingAgent = !ctrl.data.agentCounterparty && ctrl.isAgentMandatory;
+            ctrl.data.missingAgent = ctrl.isAgentMandatory && (ctrl.isAgentFreeText ? !ctrl.data.agentCounterpartyFreeText : !ctrl.data.agentCounterparty);
             ctrl.data.missingLab = !ctrl.data.lab;
 
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
