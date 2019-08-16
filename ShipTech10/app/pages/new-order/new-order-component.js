@@ -341,7 +341,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.data = data.payload;
 
             $.each(ctrl.data.products, function(k, v) {
-                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) {
+                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id') || _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
                 }
                 if (!v.specGroup || !_.get(v, 'specGroup.id')) {
