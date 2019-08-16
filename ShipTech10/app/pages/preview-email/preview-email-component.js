@@ -714,6 +714,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 if (orderId && orderProductIds) {
                     orderModel.sendOrderToBeDeliveredMail(orderId, orderProductIds).then(function() {
                         // toastr.success('Operation completed successfully');
+                        window.location.href = "#/delivery/ordersdelivery";
                     });
                 } 
                 return;
