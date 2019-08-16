@@ -333,18 +333,15 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             });
         }
 
-
-
-
         //set all data mappings
         function loadData(data) {
             ctrl.data = data.payload;
 
             $.each(ctrl.data.products, function(k, v) {
-                if (!v.physicalSupplier || !_.get(v, 'physicalSupplier.id') || _.get(v, 'status.name') !== 'Cancelled') {
+                if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
                 }
-                if (!v.specGroup || !_.get(v, 'specGroup.id')) {
+                if ((!v.specGroup || !_.get(v, 'specGroup.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingSpecGroup = true;
                 }
             });
