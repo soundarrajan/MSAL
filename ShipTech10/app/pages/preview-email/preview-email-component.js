@@ -352,7 +352,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         };
 
         ctrl.loadTemplate = function(template, oldTemplate) {
-            if (template) {
+            if (template && template.name) {
                 if (template.name.toLowerCase().indexOf("surveyor") !== -1) {
                     if (ctrl.data.missingSurveyor) {
                         toastr.error('Surveyor is mandatory');

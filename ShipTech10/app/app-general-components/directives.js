@@ -1211,9 +1211,10 @@ window.increment = 0;
                                             //console.log(col,sortCol);
 
 											helperCoulmnTitle = $rootScope.currentColumnRoute + " : " + col;
+                                            var toAppend = '<a class="colMenu" title="' + helperCoulmnTitle + '" data-column="' + col + '" data-table="' + table_id + '"><i class="fa fa-caret-down"></i></a>';
                                             $(this)
                                                 .parent()
-                                                .append('<a class="colMenu" title="' + helperCoulmnTitle + '" data-column="' + col + '" data-table="' + table_id + ' data-sortCol="' + sortCol.toLowerCase() + '"><i class="fa fa-caret-down"></i></a>');
+                                                .append($(toAppend).attr("data-sortCol", sortCol.toLowerCase()));
                                             // .append('<input type="checkbox">');
                                             // }
     
