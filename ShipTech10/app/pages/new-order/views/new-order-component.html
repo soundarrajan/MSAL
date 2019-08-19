@@ -594,7 +594,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group" ng-if="!$ctrl.isAgentFreeText">
-                                                            <input name="{{ $ctrl.portFields.agentCounterparty.caption | translate }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
+                                                            <input name="Agent" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
                                                                 uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | filter:$viewValue | limitTo:5"
                                                                 typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)" ng-model="$ctrl.data.agentCounterparty.name"
                                                                 typeahead-append-to-body="true"

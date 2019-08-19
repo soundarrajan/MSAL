@@ -2762,7 +2762,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 filteredFormValidation = []; /*Should exclude validation for Suveyor, Agent, Physical Supplier*/
                 if (forms_validation) {
 	                $.each(forms_validation, function(k,v){
-	                	if (["Surveyor","agentCounterparty", "Agent", "physicalSupplier"].indexOf(v) == -1) {
+	                	if (["Surveyor","Agent", "Agent", "physicalSupplier"].indexOf(v) == -1 && v[0].indexOf("Physical Supplier") == -1) {
 	                		filteredFormValidation.push(v);
 	                	}
 	                })
