@@ -1850,7 +1850,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         }
     }
 
-    $scope.triggerModal = function(template) {
+    $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
         tpl = "";
 
         if (template === "raiseClaimType") {
@@ -1868,6 +1868,27 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             });
             return;
         }
+        if (template == 'general') {
+        	if (typeof clc != "undefined") {
+                clcs = clc.split("_");
+            } 
+        	tpl = $templateCache.get("app-general-components/views/modal_general_lookup.html");
+        	$scope.modal = {
+                clc: clc,
+                app: clcs[0],
+                screen: clcs[1],
+                name: name,
+                source: id,
+                field_name: field_name
+            };
+        }
+        $scope.modalInstance = $uibModal.open({
+            template: tpl,
+            size: "full",
+            appendTo: angular.element(document.getElementsByClassName("page-container")),
+            windowTopClass: "fullWidthModal",
+            scope: $scope //passed current scope to the modal
+        });        
     };
 
     $scope.getTimeBetweenDates = function(start, end) {
