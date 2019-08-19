@@ -508,6 +508,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     newRequestModel.getContractPlanningEmailTemplate(ctrl.data).then(function(data) {
                         ctrl.email = data.payload;
                         ctrl.template = data.payload.comment.emailTemplate;
+                        ctrl.templateList.forEach(function(object) {
+                            if (object.id == ctrl.template.id){
+                                ctrl.template = object;
+                            } 
+                        });
                         ctrl.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
                         ctrl.initOthers();
                         // ctrl.data = null
@@ -955,6 +960,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 .children("input.typeahead")
                 .focus();
         };
+
         ctrl.validateEmails = function(string, key) {
 
             if (!string || string.length == 0){
@@ -991,6 +997,16 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     }
                 }
             }
+        };
+
+         ctrl.saveAndSendButtonLabel = function() {
+            saveAndSendButtonLabel = "Save and Send";
+            if (["ContractPlanningEmailTemplate", "ContractPlanningUpdateEmailTemplate"].indexOf(ctrl.template.name) != -1) {
+                saveAndSendButtonLabel = "Send Email";
+            }
+
+            return saveAndSendButtonLabel;
+
         };
     }
 ]);

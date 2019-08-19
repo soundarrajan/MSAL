@@ -6388,7 +6388,7 @@ APP_MASTERS.controller("Controller_Master", [
             return _.findIndex(arr, function(o) { return o.name == string; });
         };
         $scope.sendClaimPreviewEmail = function() {
-        	$scope.saveClaimEmail(true, function(resp){
+        	//$scope.saveClaimEmail(true, function(resp){
 	            var toString = [],
 	                ccString = [],
 	                toOthersString = [],
@@ -6479,7 +6479,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                    }
 	                }
 	            });
-			})
+			//})
 
             // Factory_Master.save_email_contract(saveData, function(response) {
             //     if (response) {

@@ -192,7 +192,7 @@
                         <span ng-if="!action.html_element">
                             <span data-ng-if="!action.extern ">
                                 <a data-ng-if="action.special" id="general_action_{{ $index }}" class="btn btn-default orange btn-outline" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute)">
-                                    {{ action.label }}
+                                {{ action.label }}
                                 </a>
                                 <a data-ng-if="!action.special && action.type != 'button-group' && action.type != 'back'" id="general_action_{{ $index }}" class="btn btn-default btn-default" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute, action.new_tab)">
                                     {{ action.label }}

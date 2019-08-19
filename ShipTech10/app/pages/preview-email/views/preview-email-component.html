@@ -60,8 +60,8 @@
                     Save
                 </a>
                 <a class="btn btn-sm btn-default" ng-click="$ctrl.saveAndSend()" ng-class="{'disabled' : (!$ctrl.canSend() || $ctrl.buttonsDisabled) }">
-                    Save and Send
-                 </a>
+                     {{$ctrl.saveAndSendButtonLabel()}}
+                </a>
                 <a class="btn btn-sm btn-default disabled">
                     &hellip;
                 </a>
@@ -206,8 +206,8 @@
                 Save
             </a>
             <a class="btn btn-sm btn-default" ng-click="$ctrl.saveAndSend()" ng-class="{'disabled' : (!$ctrl.canSend() || $ctrl.buttonsDisabled) }">
-                Save and Send
-             </a>
+                     {{$ctrl.saveAndSendButtonLabel()}}
+                </a>
             <a class="btn btn-sm btn-default disabled">
                 &hellip;
             </a>
