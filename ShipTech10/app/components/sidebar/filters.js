@@ -28,14 +28,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.createAndUpdateFilterConfig($scope.selectedConfig.id, $scope.selectedConfig.name, $rootScope.rawFilters, $scope.selectedConfig.isDefault, true);
             }
             $rootScope.clc_loaded = false;
-            // console.log(1)
-            // $timeout(function () {
-            /*
             setTimeout(function(){
+                $rootScope.lastLoadedListPayload = null;
 	            $state.reload();
-            })
-            */
-            // }, 1000);
+            });
         });
 
         ctrl.hideSidebar = function() {

@@ -7505,12 +7505,14 @@ APP_MASTERS.controller("Controller_Master", [
 
         function emailNoAutomaticType() {
             var array = [];
-            vm.listsCache.EmailType.forEach(function(obj) {
-                if (obj.name != "Automatic") {
-                    array.push(obj);
-                }
+            if (vm.listsCache.EmailType) {
+                vm.listsCache.EmailType.forEach(function(obj) {
+                    if (obj.name != "Automatic") {
+                        array.push(obj);
+                    }
 
-            });
+                });
+            }
 
             return array;
         }
