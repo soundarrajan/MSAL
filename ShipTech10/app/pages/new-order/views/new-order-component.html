@@ -610,7 +610,7 @@
 
                                                         </div>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group" ng-if="$ctrl.isAgentFreeText">
-                                                            <input name="{{ $ctrl.portFields.agentCounterparty.caption | translate }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
+                                                            <input name="Agent" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
                                                                 ng-model="$ctrl.data.agentCounterpartyFreeText" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" ng-required="$ctrl.isAgentMandatory"
                                                             />
                                                         </div>

@@ -2762,8 +2762,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 filteredFormValidation = []; /*Should exclude validation for Suveyor, Agent, Physical Supplier*/
                 if (forms_validation) {
 	                $.each(forms_validation, function(k,v){
-	                	if (["Surveyor","Agent", "Agent", "physicalSupplier"].indexOf(v) == -1 && v[0].indexOf("Physical Supplier") == -1) {
-	                		filteredFormValidation.push(v);
+	                	if (v.length > 0) {
+	                		$.each(v, function(k2,v2){
+			                	if (["Surveyor","Agent", "Agent", "physicalSupplier"].indexOf(v2) == -1 && v2.indexOf("Physical Supplier") == -1) {
+			                		filteredFormValidation.push(v2);
+			                	}	                			
+	                		})
+	                	} else {
+		                	if (["Surveyor","Agent", "Agent", "physicalSupplier"].indexOf(v) == -1 && v.indexOf("Physical Supplier") == -1) {
+		                		filteredFormValidation.push(v);
+		                	}
 	                	}
 	                })
 
