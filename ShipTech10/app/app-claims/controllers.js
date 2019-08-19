@@ -246,7 +246,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     }
 
                     if (object.lengthFalse && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-                            $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[object.index].sellerQuantity - $scope.formValues.quantitySubtypes[object.index].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
+                            // $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[object.index].sellerQuantity - $scope.formValues.quantitySubtypes[object.index].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
 
                     }
                 } 
@@ -971,13 +971,16 @@ APP_CLAIMS.controller("Controller_Claims", [
                 if (response.data.payload != 'null') {
                     $scope.formValues.claimType.quantityShortage = response.data.payload;
                     if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-                        $scope.formValues.claimDetails.estimatedSettlementAmount = response.data.payload * $scope.formValues.orderDetails.orderPrice;
+                    	var newEstimatedSettlementAmount = response.data.payload * $scope.formValues.orderDetails.orderPrice;
+						if (newEstimatedSettlementAmount * -1 !=  $scope.formValues.claimDetails.estimatedSettlementAmount) {
+	                        $scope.formValues.claimDetails.estimatedSettlementAmount = newEstimatedSettlementAmount;
+						}
                         if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
                           $.each($scope.options.SettlementType, function(k, v) {
-                            if(v.name === 'Receive') {
-                              $scope.formValues.claimDetails.settlementType = v;
-                              $scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
-                              toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
+	                            if(v.name === 'Receive') {
+								$scope.formValues.claimDetails.settlementType = v;
+									$scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
+									toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
                             }
                           });
                         }                       

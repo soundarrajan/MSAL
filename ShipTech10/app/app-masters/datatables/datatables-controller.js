@@ -3027,7 +3027,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "sellerQuantity",
                         displayName: "Seller quantity",
                         enableCellEdit: false,
-                        ChangeAction: "grid.appScope.fVal().checkClaimType()",
+                        // ChangeAction: "grid.appScope.fVal().checkClaimType()",
+                        BlurAction: "grid.appScope.fVal().checkClaimType()",
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:"+vm.quantity                        
                     },
