@@ -543,13 +543,21 @@ window.increment = 0;
 		                           	CLC.tableParams.rows = $('[data-entries-select]').val();
 	                           }
                            }
-                            $Api_Service.entity.list(
-                                {
-                                    app: attrs.app,
-                                    screen: attrs.screen,
-                                    clc_id: attrs.id,
-                                    params: CLC.tableParams
-                                },
+
+                            var listPayload = {
+                                app: attrs.app,
+                                screen: attrs.screen,
+                                clc_id: attrs.id,
+                                params: CLC.tableParams
+                            };
+
+                            if (JSON.stringify(listPayload) === $rootScope.lastLoadedListPayload) {
+                                return;
+                            }
+
+                            $rootScope.lastLoadedListPayload = JSON.stringify(listPayload);
+
+                            $Api_Service.entity.list(listPayload,
                                 function(callback) {
                                     if (callback) {
                                         if(table_id === "flat_email_log_list") {
@@ -709,7 +717,7 @@ window.increment = 0;
                                             console.log(data);
                                             CLC.tableParams.PageFilters = data;
                                             initAfterLoad(params);
-                                        }else{
+                                        }else {
                                             initAfterLoad(params);
                                         }
                                     } else {
@@ -718,7 +726,6 @@ window.increment = 0;
                                 });
                             } else {
                                 initAfterLoad(params);
-
                             }
                         };
 
