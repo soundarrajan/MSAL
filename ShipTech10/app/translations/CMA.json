@@ -256,6 +256,7 @@
     },
     "NEW_ORDER": {
       "VESSEL": "Vessel",
+	  "EMAIL_COMMENTS" : "Email Comments",      
       "VESSEL_IMO_NO": "IMO",
       "SERVICE_CODE": "Service Code",
       "OPERATOR_CODE": "Operator Code",
