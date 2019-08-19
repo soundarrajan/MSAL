@@ -387,6 +387,12 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     if(ctrl.template.id == 0) {
                     	return;
                     }                    
+                    if (ctrl.template.name === 'Questionnaire - Redelivery') {
+                        ctrl.template.name = 'Redelivery';
+                    }
+                    if (ctrl.template.name === 'Questionnaire - Standard') {
+                        ctrl.template.name = 'Standard';
+                    }
                     newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId).then(function(data) {
                         ctrl.email = data.payload;
 
