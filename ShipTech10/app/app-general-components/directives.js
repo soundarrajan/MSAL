@@ -551,7 +551,7 @@ window.increment = 0;
                                 params: CLC.tableParams
                             };
 
-                            if (JSON.stringify(listPayload) === $rootScope.lastLoadedListPayload) {
+                            if ((JSON.stringify(listPayload) === $rootScope.lastLoadedListPayload) && !Elements.scope[attrs.id].modal) {
                                 return;
                             }
 
