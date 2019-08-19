@@ -2152,8 +2152,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             var pageValid = true;
             var forms = $scope.forms;
             var index, nonInputInvalidFields, form;
+            var aggregatedErrorMessages = [];
             if (!forms.vesselDetailsForm.$valid) {
-                return getInvalidFields(forms.vesselDetailsForm);
+            	aggregatedErrorMessages.push(getInvalidFields(forms.vesselDetailsForm));
+                // return getInvalidFields(forms.vesselDetailsForm);
             }
             // if (!forms.portsForm.$valid) {
             //     return getInvalidFields(forms.portsForm);
@@ -2162,18 +2164,28 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             //     return getInvalidFields(forms.sellerDetailsForm);
             // }
             if (!forms.productsForm.$valid) {
-                return getInvalidFields(forms.productsForm);
+            	aggregatedErrorMessages.push(getInvalidFields(forms.productsForm));
+                // return getInvalidFields(forms.productsForm);
             }
             // if (!forms.additionalCostsForm.$valid) {
             //     return getInvalidFields(forms.additionalCostsForm);
             // }
             nonInputInvalidFields = validateAdditionalCostsNonInputs();
             if (nonInputInvalidFields !== null) {
-                return nonInputInvalidFields;
+            	aggregatedErrorMessages.push(nonInputInvalidFields);
+                // return nonInputInvalidFields;
             }
             nonInputInvalidFields = validateProductNonInputs();
             if (nonInputInvalidFields !== null) {
-                return nonInputInvalidFields;
+            	aggregatedErrorMessages.push(nonInputInvalidFields);
+                // return nonInputInvalidFields;
+            }
+            // var mergedErrorMessages = {};
+            // $.each(aggregatedErrorMessages, function(k,v){
+	           //  mergedErrorMessages = _.merge(aggregatedErrorMessages, v)
+            // })
+            if (aggregatedErrorMessages.length > 0) {
+            	return aggregatedErrorMessages;
             }
             return null;
         }

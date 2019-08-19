@@ -610,7 +610,7 @@
 
                                                         </div>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group" ng-if="$ctrl.isAgentFreeText">
-                                                            <input name="{{ $ctrl.portFields.agentCounterparty.name }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
+                                                            <input name="{{ $ctrl.portFields.agentCounterparty.caption | translate }}" id="id_{{ $ctrl.portFields.agentCounterparty.name }}" class="typeahead form-control"
                                                                 ng-model="$ctrl.data.agentCounterpartyFreeText" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" ng-required="$ctrl.isAgentMandatory"
                                                             />
                                                         </div>
@@ -1017,12 +1017,14 @@
                                     </td>
                                     <td style="max-width: 250px;min-width: 180px">
                                         <div class="input-group">
-                                            <input name="{{ $ctrl.productColumns.physicalSupplier.name }}" class="typeahead form-control"
+                                            <input name="Product {{$index+1}} Physical Supplier" class="typeahead form-control"
                                                 uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | filter:$viewValue | limitTo:5"
                                                 typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
                                                 typeahead-append-to-body="true"
-                                                typeahead-editable="false" ng-required="$ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id && product.status.id != $ctrl.STATUS['Cancelled'].id"
-                                                ng-model="product.physicalSupplier" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                typeahead-editable="false" 
+                                                ng-required="$ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id && product.status.id != $ctrl.STATUS['Cancelled'].id"
+                                                ng-model="product.physicalSupplier" 
+                                                ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                 ng-mouseover="$ctrl.setSellerDialogType($ctrl.productColumns.physicalSupplier.name, product.physicalSupplier)"
                                                 id="product_supplier_{{ $index }}"
                                             />
