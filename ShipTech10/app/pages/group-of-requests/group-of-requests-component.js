@@ -4085,14 +4085,21 @@ ctrl.setProductData = function(data, loc) {
             // ctrl.mySelection.concat(obj)
         };
         ctrl.checkIfPriceChanged = function (value) {
-            ctrl.checkedIfPriceChanged = value;
+            ctrl.checkedIfPriceChanged = Math.floor(Number(value));
         };
+
         ctrl.savePriceChange = function (priceValue, requestOfferId, seller, locations, productSample) {
-            if (ctrl.checkedIfPriceChanged == priceValue) {
+            if (ctrl.checkedIfPriceChanged === priceValue) {
                 return false;
             }
             $scope.tempRequestOfferId = requestOfferId;
-            if (isNaN(priceValue) || priceValue == '' || (priceValue < 1 && productSample.allowZeroPricing == false)) {
+
+
+            priceValue = Math.floor(Number(priceValue));
+            var priceIsInteger = _.isInteger(priceValue);
+
+            if (!((priceIsInteger && priceValue > 0) || (priceIsInteger && productSample.allowZeroPricing && priceValue === 0))) {
+                // Reset price to previous value
                 $.each(ctrl.requests, function (reqK, reqV) {
                     $.each(reqV.locations, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
@@ -4108,9 +4115,14 @@ ctrl.setProductData = function(data, loc) {
                         });
                     });
                 });
-                toastr.error("Please enter a price greater than 0");
+                if (productSample.allowZeroPricing) {
+                    toastr.error("Please enter a valid price");
+                } else {
+                    toastr.error("Please enter a price greater than 0");
+                }
                 return false;
             }
+
             payloadLocation = null;
             curentOfferRequestId = productSample.requestId;
             $.each(ctrl.requests, function(reqK,reqV){
@@ -4119,8 +4131,6 @@ ctrl.setProductData = function(data, loc) {
             	}
             })
 
-
-
             ctrl.priceInputsDisabled = true;
             toastr.info("Please wait while prices are updating");
             priceData = {
@@ -4128,7 +4138,6 @@ ctrl.setProductData = function(data, loc) {
                 "Price": priceValue,
                 "Locations" : payloadLocation
             };
-        
 
             groupOfRequestsModel.updatePrice(priceData).then(
                

@@ -2170,6 +2170,23 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                 return false;
             }
         }
+
+        ctrl.checkPrice = function(oldVal, newVal, product, giveError) {
+            newVal = Math.floor(Number(newVal));
+            if ((_.isInteger(newVal) && newVal > 0) || (_.isInteger(newVal) && product.allowZeroPricing && newVal === 0)) {
+                return false;
+            } else {
+                if (giveError) {
+                    if (product.allowZeroPricing) {
+                        toastr.error("Please enter a valid price");
+                    } else {
+                        toastr.error("Please enter a price greater than 0");
+                    }
+                } 
+                return oldVal ? oldVal : 1;
+            }
+        }
+
         ctrl.updateIncoterm = function(incoterm, location, seller, request) {
             // requestOfferIds = ctrl.returnLocationReqOffIds(location, seller.randUniquePkg);
             requestOfferIds = [];
