@@ -61,6 +61,7 @@ window.increment = 0;
                     $rootScope.rawFilters = [];
                     scope.$on("$stateChangeSuccess", function () {
 	                    CLC.tableParams.PageFilters = {};
+						$rootScope.lastLoadedListPayload = null;
                         console.log("stateChangeSuccess");
                     });
                     checkProcurement = -1;
@@ -1104,8 +1105,10 @@ window.increment = 0;
                                                       }
                                                   }
                                                   if (table_id == "flat_email_log_list") {
-                                                      actions = '<a href="/#/masters/emaillogs/edit/' + rowObject.id + '" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>';
-                                                      return actions;
+                                                  	index = parseFloat(options.rowId) - 1;
+													rowObject = Elements.settings[table_id].source.datastr[index];
+													actions = '<a href="/#/masters/emaillogs/edit/' + rowObject.id + '" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>';
+													return actions;
                                                   }
                                                   if (v.data_attributes) {
                                                       cellAttrs = '<a ng-disabled ="!' + eval(v.disabled) + '"' + v.data_attributes + " ng-click=\"CLC.dataAction('" + v.action + "', '" + encodeURIComponent(JSON.stringify(rowObject)) + '\')" class=" ' + v.class + '">' + v.label + "</a>";
