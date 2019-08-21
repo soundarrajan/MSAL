@@ -2702,10 +2702,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     Value: $state.params.entity_id
                 }
             ];
+
             if (Object.keys(Elements.settings).length > 0) {
 	            $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_payload_filter(Filter);
             }
-            $rootScope.clc_loaded = false;
+            // $rootScope.clc_loaded = false;
             // setTimeout(function(){
 	           //  $rootScope.clc_loaded = true;
             // },200)
