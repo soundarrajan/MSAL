@@ -1229,13 +1229,25 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             var payload = compileOffers();
             
             allProductsAreNoQuote = true;
+
+            var productsWithInvalidPrice = [];
+
             $.each(payload.individuals, function(k, offer){
 	            $.each(offer.products, function(pk, product){
 	            	if (!product.sellers["0"].offers["0"].hasNoQuote) {
 			            allProductsAreNoQuote = false;
 	            	} 
+                    var price = Math.floor(Number(product.sellers[0].offers[0].price));
+                    if (!((_.isInteger(price) && price > 0) || (_.isInteger(price) && product.allowZeroPricing && price === 0))) {
+                        productsWithInvalidPrice.push(product.product.name);
+                    }
 	            })
             })
+
+            if (productsWithInvalidPrice.length > 0) {
+                toastr.error('Please enter a valid price for the following products: ' + productsWithInvalidPrice.join(', '));
+                return;
+            }
  			
  			if (ctrl.token) {
 				$rootScope.currentSellerCardHasSupplier = true; 				
@@ -1250,7 +1262,6 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 				toastr.error("Please add a physical supplier for the offer before continuing");
 				return;
 			}
-
 
             /*VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
             noQuoteProductsAndCostsByRequest = [];
@@ -2183,7 +2194,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                         toastr.error("Please enter a price greater than 0");
                     }
                 } 
-                return oldVal ? oldVal : 1;
+                return oldVal ? oldVal : '';
             }
         }
 
