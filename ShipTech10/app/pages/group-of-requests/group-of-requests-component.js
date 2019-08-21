@@ -2393,6 +2393,7 @@ ctrl.setProductData = function(data, loc) {
                             OrderFields: null,
                             RequestProductId: product.id,
                             ProductTypeId: product.productTypeId,
+                            productStatus: product.productStatus,
                             ProductTypeGroupId: product.productTypeGroupId,
                             QuotedProductGroupId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.quotedProductGroupId : null,
                             PhysicalSupplierCounterpartyId: physicalSupplier.id,
@@ -2567,6 +2568,7 @@ ctrl.setProductData = function(data, loc) {
                     OrderFields: null,
                     RequestProductId: product.id,
                     ProductTypeId: product.productTypeId,
+                    productStatus: product.productStatus,
                     ProductTypeGroupId: product.productTypeGroupId,
 					QuotedProductGroupId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.quotedProductGroupId : null,                    
                     PhysicalSupplierCounterpartyId: physicalSupplier.id,
@@ -3219,13 +3221,11 @@ ctrl.setProductData = function(data, loc) {
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.amendRFQ(rfq_data).then(
                 function (data) {
-                    ctrl.buttonsDisabled = false;
-                },
-                function () {
-                    ctrl.buttonsDisabled = false;
+                    ctrl.initScreenAfterSendOrSkipRfq();
                 }
             ).finally(
                 function(){
+                	ctrl.initScreenAfterSendOrSkipRfq();
                 }
             );
 
@@ -3374,7 +3374,6 @@ ctrl.setProductData = function(data, loc) {
             if (hasSimpleProduct && hasSludgeProduct) {
 	            rowRequirements = requirementsFilteredWithoutSludgeProduct
             }
-
             if (rowRequirements.length > 0) {
                 var rfq_data = {
                     Requirements: rowRequirements,
@@ -3401,6 +3400,8 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.blade.counterpartyActiveSeller = seller;
                 theLocation = locations[0];
                 ctrl.blade.counterpartyActiveLocation = theLocation;
+	            $rootScope.bladeFilteredRfq = ctrl.blade.counterpartyActiveSeller;
+	            $rootScope.bladeFilteredRfq.locationData = ctrl.blade.counterpartyActiveLocation;
                 ctrl.blade.colLayout = "double";
                 setTimeout(function () { });
                 ctrl.blade.activeWidget = "email";
@@ -3421,6 +3422,8 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.blade.counterpartyActiveSeller = seller;
             	theLocation = locations[0];
                 ctrl.blade.counterpartyActiveLocation = theLocation;
+	            $rootScope.bladeFilteredRfq = ctrl.blade.counterpartyActiveSeller;
+	            $rootScope.bladeFilteredRfq.locationData = ctrl.blade.counterpartyActiveLocation;                
                 ctrl.blade.colLayout = "double";            	
                 ctrl.blade.activeWidget = "email";
                 ctrl.blade.widgetType = "counterparty";
@@ -5521,6 +5524,20 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.compareLines[k].droppable = true;
             });
         };
+
+        ctrl.canAmendRFQ = function() {
+            var requirement;
+            var isCorrect = true;
+            for (var i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
+                requirement = ctrl.requirementRequestProductIds[i];
+                if (typeof requirement.requestOfferId == "undefined" || requirement.requestOfferId === null) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+            return isCorrect;
+        };
+
         ctrl.canDrag = function (elem) {
             if (!ctrl.draggableProducts) {
                 return true;

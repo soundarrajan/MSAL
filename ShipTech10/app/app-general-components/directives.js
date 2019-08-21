@@ -1054,31 +1054,31 @@ window.increment = 0;
                                         formatter: v.formatter
                                             ? CLC.get_formatter(v.formatter)
                                             : function(cellvalue, options, rowObject) {
-                                                  var actions = "";
-                                                  var rowID = 0;
+                                            	var actions = "";
+                                            	var rowID = 0;
 
-                                            
-                                                  if (typeof v.idSrc != "undefined") {
-                                                      if(v.idSrc == "voyageDetail.request.id"){
-                                                          if(rowObject.voyageDetail){
-                                                              if(rowObject.voyageDetail.request){
-                                                                rowID = rowObject.voyageDetail.request.id;
-                                                                return '<a href="/#/edit-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
-                                                              }else{
-                                                                rowID = rowObject.voyageDetail.id;
-                                                                return '<a href="/#/new-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
-                                                              }
-                                                          }
-                                                      }else if (typeof rowObject[v.idSrc] == "object") {
-                                                          rowID = rowObject[v.idSrc].id;
-                                                      } else {
-                                                          rowID = rowObject[v.idSrc];
-                                                          if (!rowID && v.altId) return '<a href="/#/new-request/' + rowObject[v.altId] + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
-                                                          if (!rowID && !v.altId) return "";
-                                                      }
-                                                  } else {
-                                                      if (rowObject.id) {
-                                                          rowID = rowObject.id;
+
+                                            	if (typeof v.idSrc != "undefined") {
+                                            		if(v.idSrc == "voyageDetail.request.id"){
+                                            			if(rowObject.voyageDetail){
+                                            				if(rowObject.voyageDetail.request){
+                                            					rowID = rowObject.voyageDetail.request.id;
+                                            					return '<a href="/#/edit-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
+                                            				}else{
+                                            					rowID = rowObject.voyageDetail.id;
+                                            					return '<a href="/#/new-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
+                                            				}
+                                            			}
+                                            		}else if (typeof rowObject[v.idSrc] == "object") {
+                                            			rowID = rowObject[v.idSrc].id;
+                                            		} else {
+                                            			rowID = rowObject[v.idSrc];
+                                            			if (!rowID && v.altId) return '<a href="/#/new-request/' + rowObject[v.altId] + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
+                                            			if (!rowID && !v.altId) return "";
+                                            		}
+                                            	} else {
+                                            		if (rowObject.id) {
+                                            			rowID = rowObject.id;
                                                           // console.log('idSRC: default (id)');
                                                       }
                                                   }
@@ -1086,24 +1086,24 @@ window.increment = 0;
                                                   var i = options.colModel.action_index;
                                                   rowId = "";
                                                   if (typeof rowObject[v.url] !== "undefined") {
-                                                      if (rowObject[v.url]) {
-                                                          rowId = rowObject[v.url].id;
-                                                      }
+                                                  	if (rowObject[v.url]) {
+                                                  		rowId = rowObject[v.url].id;
+                                                  	}
                                                   }
                                                   if (table_id == "flat_invoices_app_invoice_list") {
-                                                      if (rowObject.isClaimSybtype) {
-                                                          actions = '<a href="/#/invoices/claims/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
-                                                          return actions;
-                                                      }
-                                                      if (typeof rowObject.invoiceType != "undefined" && rowObject.invoiceType) {
-                                                          if (rowObject.invoiceType.name == "CreditNote" || rowObject.invoiceType.name == "DebitNote") {
-                                                              actions = '<a href="/#/invoices/claims/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
-                                                              return actions;
-                                                          } else {
-                                                              actions = '<a href="/#/invoices/invoice/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
-                                                              return actions;
-                                                          }
-                                                      }
+                                                  	if (rowObject.isClaimSybtype) {
+                                                  		actions = '<a href="/#/invoices/claims/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
+                                                  		return actions;
+                                                  	}
+                                                  	if (typeof rowObject.invoiceType != "undefined" && rowObject.invoiceType) {
+                                                  		if (rowObject.invoiceType.name == "CreditNote" || rowObject.invoiceType.name == "DebitNote") {
+                                                  			actions = '<a href="/#/invoices/claims/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
+                                                  			return actions;
+                                                  		} else {
+                                                  			actions = '<a href="/#/invoices/invoice/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
+                                                  			return actions;
+                                                  		}
+                                                  	}
                                                   }
                                                   if (table_id == "flat_email_log_list") {
                                                   	index = parseFloat(options.rowId) - 1;
@@ -1112,9 +1112,9 @@ window.increment = 0;
 													return actions;
                                                   }
                                                   if (v.data_attributes) {
-                                                      cellAttrs = '<a ng-disabled ="!' + eval(v.disabled) + '"' + v.data_attributes + " ng-click=\"CLC.dataAction('" + v.action + "', '" + encodeURIComponent(JSON.stringify(rowObject)) + '\')" class=" ' + v.class + '">' + v.label + "</a>";
+                                                  	cellAttrs = '<a ng-disabled ="!' + eval(v.disabled) + '"' + v.data_attributes + " ng-click=\"CLC.dataAction('" + v.action + "', '" + encodeURIComponent(JSON.stringify(rowObject)) + '\')" class=" ' + v.class + '">' + v.label + "</a>";
                                                   } else {
-                                                      cellAttrs = '<span title="' + v.label + '" class="jqgrid-ng-action ' + v.class + '" ng-click="CLC.do_entity_action(\'' + v.class + "', '" + rowID + "', '" + rowId + "', null, '" + checkProcurement + "')\">" + v.label + "</span>";
+                                                  	cellAttrs = '<span title="' + v.label + '" class="jqgrid-ng-action ' + v.class + '" ng-click="CLC.do_entity_action(\'' + v.class + "', '" + rowID + "', '" + rowId + "', null, '" + checkProcurement + "')\">" + v.label + "</span>";
                                                   }
                                                   actions = cellAttrs;
                                                   return actions;

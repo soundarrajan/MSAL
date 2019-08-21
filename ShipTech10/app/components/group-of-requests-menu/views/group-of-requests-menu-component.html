@@ -57,7 +57,7 @@
 							&hellip;
 						</a>
 						<ul class="dropdown-menu st-extra-buttons" role="menu">
-							<li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.AMENDRFQ)&&$ctrl.requirementsAreCorrectForRevokeAmend()">
+							<li ng-show="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.AMENDRFQ) && $ctrl.canAmendRFQ()">
 								<a ng-click="$ctrl.amendRFQ()">
 									Amend RFQ
 								</a>

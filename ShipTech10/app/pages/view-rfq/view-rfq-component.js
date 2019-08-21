@@ -175,9 +175,11 @@ angular.module('shiptech.pages')
                 groupOfRequestsModel.amendRFQ(rfq_data).then(function(data){
                     ctrl.buttonsDisabled = false;
                     ctrl.init();
+                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 }, function() {
                     ctrl.buttonsDisabled = false;
                     ctrl.init();
+                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 });
             };
 
@@ -213,9 +215,11 @@ angular.module('shiptech.pages')
                     }
                     ctrl.buttonsDisabled = false;
                     ctrl.init();
+                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 }, function() {
                     ctrl.buttonsDisabled = false;
                     ctrl.init();
+                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 });
             };
 
@@ -252,24 +256,16 @@ angular.module('shiptech.pages')
             };
 
             ctrl.canAmendRFQ = function() {
-                var canAmend = false;
-
-                for (var i = 0; i < ctrl.requirements.length; i++) {
-                    // ctrl.STATUS['Amended'].id
-                    if (ctrl.requirements[i].productStatus) {
-	                    if (ctrl.requirements[i].productStatus.id == 17) {
-	                        canAmend = true;
-	                    } else {
-	                        canAmend = false;
-	                        break;
-	                    }
-                    } else {
-                        canAmend = false;
-                        break;
-                    }
-                }
-
-                return canAmend;
+	            var requirement;
+	            var isCorrect = true;
+	            // for (var i = 0; i < ctrl.requirements.length; i++) {
+	            //     requirement = ctrl.requirements[i];
+	            //     if (typeof requirement.requestOfferId == "undefined" || requirement.requestOfferId === null) {
+	            //         isCorrect = false;
+	            //         break;
+	            //     }
+	            // }
+	            return isCorrect;
             };
 
             ctrl.canRevokeRFQ = function() {

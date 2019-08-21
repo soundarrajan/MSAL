@@ -791,7 +791,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 		                QuoteByCurrencyId: null,
 		                Comments: null
 		            };
-		            groupOfRequestsModel.revokeRFQ(rfq_data).then(function(data) {
+		            groupOfRequestsModel.revokeAndSend(rfq_data).then(function(data) {
                         if (data.payload) {
                             if (data.payload.redirectToRequest) {
                                 lastRequestId = rfq_data.Requirements[0].RequestId;
@@ -806,7 +806,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 
 	            if (ctrl.data.rfqRequirements && ctrl.email.comment.emailTemplate.name == 'MultipleRfqAmendRFQEmailTemplate') {
 		            var rfq_data = ctrl.data.rfqRequirements;
-		            groupOfRequestsModel.amendRFQ(rfq_data).then(
+		            // if (!ctrl.canAmendRFQ(ctrl.data.rfqRequirements)) {
+		            // 	toastr.error("You cannot Amend RFQ for the selected product");
+		            // 	return;
+		            // }
+		            groupOfRequestsModel.amendAndSend(rfq_data).then(
 						window.history.back()
 		            )
 		            return;
@@ -882,6 +886,21 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             }
 
         };
+
+
+        ctrl.canAmendRFQ = function(requirements) {
+            var requirement;
+            var isCorrect = true;
+            for (var i = 0; i < requirements.length; i++) {
+                requirement = requirements[i];
+                if (typeof requirement.requestOfferId == "undefined" || requirement.requestOfferId === null) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+            return isCorrect;
+        };
+
         ctrl.addEmail = function(email, list, constructor) {
             if (!email) {
                 return;
