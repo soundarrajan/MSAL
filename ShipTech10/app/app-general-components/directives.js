@@ -97,6 +97,7 @@ window.increment = 0;
                     checkGenericLayout = _.findIndex(generic_layout, function(s){
                         return s == scope.id;
                     });
+                    // checkGenericLayout = -1;
 
                     scope.initialLayout = {};
 
@@ -694,7 +695,7 @@ window.increment = 0;
                                             // layout: scope.initialLayout
                                         };
                                         $rootScope.$broadcast("tableLoaded", triggePayload);
-
+                                        $rootScope.lastLoadedListPayload = null;
                                         $('select[name="asc_jqgrid__entries-entries"]').val(oldTableParams.rows);
                                         
                                         $rootScope.getGlobalFilters().then(function(data) {
