@@ -143,6 +143,42 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             return ret;
         }
 
+        ctrl.serviceTooltip = function(from, serviceLocationIndex) {
+            if (from === 'Vessel' && !_.get(ctrl, 'request.vesselDetails.service.name')) {
+                return;
+            }
+            if (from === 'Port' && !_.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.name')) {
+                return;
+            }
+            var amountPrecision = _.get(ctrl, 'numberPrecision.amountPrecision') ? _.get(ctrl, 'numberPrecision.amountPrecision') : 0;
+            var ret = '';
+            if (_.get(ctrl, 'request.vesselDetails.hsfoValue')) {
+                ret += 'HFSO : ';
+                ret += String(parseFloat(ctrl.request.vesselDetails.hsfoValue).toFixed(amountPrecision));
+                if (_.get(ctrl, 'request.vesselDetails.hsfoUom.name')) {
+                    ret += ' ' +  _.get(ctrl, 'request.vesselDetails.hsfoUom.name'); 
+                }
+                ret += '<br>';
+            }
+            if (_.get(ctrl, 'request.vesselDetails.dmaValue')) {
+                ret += 'MGO : ';
+                ret += String(parseFloat(ctrl.request.vesselDetails.dmaValue).toFixed(amountPrecision));
+                if (_.get(ctrl, 'request.vesselDetails.dmaUom.name')) {
+                    ret += ' ' +  _.get(ctrl, 'request.vesselDetails.dmaUom.name'); 
+                }
+                ret += '<br>';
+            }
+            if (_.get(ctrl, 'request.vesselDetails.lsfoValue')) {
+                ret += 'ULSFO : ';
+                ret += String(parseFloat(ctrl.request.vesselDetails.lsfoValue).toFixed(amountPrecision));
+                if (_.get(ctrl, 'request.vesselDetails.lsfoUom.name')) {
+                    ret += ' ' +  _.get(ctrl, 'request.vesselDetails.lsfoUom.name'); 
+                }
+                ret += '<br>';
+            }
+            return ret;
+        };
+
         ctrl.$onInit = function() {
             screenLoader.showLoader();
             ctrl.checkedProducts = [];
@@ -1440,6 +1476,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         if (typeof ctrl.request.id == "undefined" || ctrl.request.id == 0) {
                             ctrl.request.vesselDetails.service.name = vessel.defaultService ? vessel.defaultService.name : ctrl.request.vesselDetails.service.name;
                             ctrl.request.vesselDetails.service.id = vessel.defaultService ? vessel.defaultService.id : ctrl.request.vesselDetails.service.id;
+                            ctrl.request.vesselDetails.hsfoValue = vessel.defaultService.hsfoValue;
+                            ctrl.request.vesselDetails.dmaValue = vessel.defaultService.dmaValue;
+                            ctrl.request.vesselDetails.lsfoValue = vessel.defaultService.lsfoValue;
+                            ctrl.request.vesselDetails.hsfoUom = vessel.defaultService.hsfoUom;
+                            ctrl.request.vesselDetails.dmaUom = vessel.defaultService.dmaUom;
+                            ctrl.request.vesselDetails.lsfoUom = vessel.defaultService.lsfoUom;
                             ctrl.selectService(ctrl.request.vesselDetails.service.id);
                         }
                     }
@@ -2008,6 +2050,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 }
                 ctrl.request.vesselDetails.service.name = service.name;
                 ctrl.request.vesselDetails.service.id = service.id;
+                ctrl.request.vesselDetails.hsfoValue = service.hsfoValue;
+                ctrl.request.vesselDetails.dmaValue = service.dmaValue;
+                ctrl.request.vesselDetails.lsfoValue = service.lsfoValue;
+                ctrl.request.vesselDetails.hsfoUom = service.hsfoUom;
+                ctrl.request.vesselDetails.dmaUom = service.dmaUom;
+                ctrl.request.vesselDetails.lsfoUom = service.lsfoUom;
                 if (service.contacts) {
                     $timeout(function() {
                         ctrl.lists.contacts = [];
