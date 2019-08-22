@@ -11,10 +11,24 @@ angular.module("shiptech.components").controller("FiltersController", [
     "$listsCache",
     "$tenantSettings",
     'CUSTOM_EVENTS',
-    function($q, $rootScope, $scope, $state, $stateParams, $filtersData, $timeout, filterConfigurationModel, $compile, $listsCache, $tenantSettings, CUSTOM_EVENTS) {
+    'tenantService',
+    function($q, $rootScope, $scope, $state, $stateParams, $filtersData, $timeout, filterConfigurationModel, $compile, $listsCache, $tenantSettings, CUSTOM_EVENTS, tenantService) {
         $scope.filtersData = $filtersData;
         $scope.listsCache = $listsCache;
         $scope.tenantSettings = $tenantSettings;
+		tenantService.procurementSettings.then(function(settings) {
+			ctrl.procurementSettings = settings.payload;
+			if ($scope.currentList == "schedule-dashboard-calendar" && ctrl.procurementSettings.request.deliveryWindowDisplay.id == 2) {
+				if ($scope.currentColumns) {
+					for (var i = $scope.currentColumns.length - 1; i >= 0; i--) {
+						if ($scope.currentColumns[i].columnValue == "VoyageDetail_DeliveryFrom" || $scope.currentColumns[i].columnValue == "VoyageDetail_DeliveryTo") {
+							$scope.currentColumns.splice(i,1)
+						}
+					}
+				}
+			}
+		});
+
         console.log("init");
         $scope.noDefault = null;
         ctrl = this;
@@ -551,6 +565,13 @@ angular.module("shiptech.components").controller("FiltersController", [
                     }
 					value.columnName = value.columnName.replace("Company", $scope.tenantSettings.companyDisplayName.name);
 					value.columnName = value.columnName.replace("Service", $scope.tenantSettings.serviceDisplayName.name);
+					if (value.columnRoute == "schedule-dashboard-calendar" && (value.columnValue == "VoyageDetail_DeliveryFrom" || value.columnValue == "VoyageDetail_DeliveryTo")  ) {
+						if (ctrl.procurementSettings) {
+							if (ctrl.procurementSettings.request.deliveryWindowDisplay.id == 2) {
+								return;
+							}
+						}
+					}
                     $scope.currentColumns.push(value);
                    // $rootScope.rawFilters[value.columnName] = value;
                     $rootScope.CheckForFilters++;

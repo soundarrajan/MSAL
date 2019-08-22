@@ -737,8 +737,11 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 v = vessels[key];
                 for (var i = 0; i < v.voyage.length; i ++)
                 {
-
-                    dataJSON.vessels[v.voyage[i]].voyageDetail.eta_intts = parseInt(moment(dataJSON.vessels[v.voyage[i]].voyageDetail.eta, 'YYYY-MM-DDThh:mm:ssZ').utc().format("X"));
+                	if (dataJSON.vessels[v.voyage[i]].voyageDetail.deliveryFrom) {
+	                    dataJSON.vessels[v.voyage[i]].voyageDetail.eta_intts = parseInt(moment(dataJSON.vessels[v.voyage[i]].voyageDetail.deliveryFrom, 'YYYY-MM-DDThh:mm:ssZ').utc().format("X"));
+                	} else {
+	                    dataJSON.vessels[v.voyage[i]].voyageDetail.eta_intts = parseInt(moment(dataJSON.vessels[v.voyage[i]].voyageDetail.eta, 'YYYY-MM-DDThh:mm:ssZ').utc().format("X"));
+                	}
                     //v.voyageDetail[i].eta_intts = parseInt(moment(v.voyageDetail[i].eta, 'YYYY-MM-DDThh:mm:ssZ').utc().format("X"));
                 }                
                 // sort all voyage detail databased on timestamp;
