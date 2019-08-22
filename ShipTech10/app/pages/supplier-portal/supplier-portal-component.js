@@ -1234,11 +1234,12 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 
             $.each(payload.individuals, function(k, offer){
 	            $.each(offer.products, function(pk, product){
-	            	if (!product.sellers["0"].offers["0"].hasNoQuote) {
+                    var hasNoQuote = product.sellers["0"].offers["0"].hasNoQuote;
+                    var price = Math.floor(Number(product.sellers[0].offers[0].price));
+	            	if (!hasNoQuote) {
 			            allProductsAreNoQuote = false;
 	            	} 
-                    var price = Math.floor(Number(product.sellers[0].offers[0].price));
-                    if (!((_.isInteger(price) && price > 0) || (_.isInteger(price) && product.allowZeroPricing && price === 0))) {
+                    if (!hasNoQuote && !((_.isInteger(price) && price > 0) || (_.isInteger(price) && product.allowZeroPricing && price === 0))) {
                         productsWithInvalidPrice.push(product.product.name);
                     }
 	            })
