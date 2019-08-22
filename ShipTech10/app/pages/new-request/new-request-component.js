@@ -144,35 +144,52 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         }
 
         ctrl.serviceTooltip = function(from, serviceLocationIndex) {
-            if (from === 'Vessel' && !_.get(ctrl, 'request.vesselDetails.service.name')) {
-                return;
-            }
-            if (from === 'Port' && !_.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.name')) {
+            var hsfoValue;
+            var dmaValue;
+            var lsfoValue;
+            var hsfoUom;
+            var dmaUom;
+            var lsfoUom;
+            if (from === 'Vessel' && _.get(ctrl, 'request.vesselDetails.service.name')) {
+                hsfoValue = _.get(ctrl, 'request.vesselDetails.service.hsfoValue');
+                dmaValue = _.get(ctrl, 'request.vesselDetails.service.dmaValue');
+                lsfoValue = _.get(ctrl, 'request.vesselDetails.service.lsfoValue');
+                hsfoUom = _.get(ctrl, 'request.vesselDetails.service.hsfoUom');
+                dmaUom = _.get(ctrl, 'request.vesselDetails.service.dmaUom');
+                lsfoUom = _.get(ctrl, 'request.vesselDetails.service.lsfoUom');
+            } else if (from === 'Port' && _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.name')) {
+                hsfoValue = _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.hsfoValue');
+                dmaValue = _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.dmaValue');
+                lsfoValue = _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.lsfoValue');
+                hsfoUom = _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.hsfoUom');
+                dmaUom = _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.dmaUom');
+                lsfoUom = _.get(ctrl, 'request.locations[' + serviceLocationIndex + '].service.lsfoUom');
+            } else {
                 return;
             }
             var amountPrecision = _.get(ctrl, 'numberPrecision.amountPrecision') ? _.get(ctrl, 'numberPrecision.amountPrecision') : 0;
             var ret = '';
-            if (_.get(ctrl, 'request.vesselDetails.hsfoValue')) {
+            if (hsfoValue) {
                 ret += 'HFSO : ';
-                ret += String(parseFloat(ctrl.request.vesselDetails.hsfoValue).toFixed(amountPrecision));
-                if (_.get(ctrl, 'request.vesselDetails.hsfoUom.name')) {
-                    ret += ' ' +  _.get(ctrl, 'request.vesselDetails.hsfoUom.name'); 
+                ret += String(parseFloat(hsfoValue).toFixed(amountPrecision));
+                if (hsfoUom) {
+                    ret += ' ' + hsfoUom.name; 
                 }
                 ret += '<br>';
             }
-            if (_.get(ctrl, 'request.vesselDetails.dmaValue')) {
+            if (dmaValue) {
                 ret += 'MGO : ';
-                ret += String(parseFloat(ctrl.request.vesselDetails.dmaValue).toFixed(amountPrecision));
-                if (_.get(ctrl, 'request.vesselDetails.dmaUom.name')) {
-                    ret += ' ' +  _.get(ctrl, 'request.vesselDetails.dmaUom.name'); 
+                ret += String(parseFloat(dmaValue).toFixed(amountPrecision));
+                if (dmaUom) {
+                    ret += ' ' + dmaUom.name; 
                 }
                 ret += '<br>';
             }
-            if (_.get(ctrl, 'request.vesselDetails.lsfoValue')) {
+            if (lsfoValue) {
                 ret += 'ULSFO : ';
-                ret += String(parseFloat(ctrl.request.vesselDetails.lsfoValue).toFixed(amountPrecision));
-                if (_.get(ctrl, 'request.vesselDetails.lsfoUom.name')) {
-                    ret += ' ' +  _.get(ctrl, 'request.vesselDetails.lsfoUom.name'); 
+                ret += String(parseFloat(lsfoValue).toFixed(amountPrecision));
+                if (lsfoUom) {
+                    ret += ' ' +  lsfoUom.name; 
                 }
                 ret += '<br>';
             }
@@ -1476,12 +1493,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         if (typeof ctrl.request.id == "undefined" || ctrl.request.id == 0) {
                             ctrl.request.vesselDetails.service.name = vessel.defaultService ? vessel.defaultService.name : ctrl.request.vesselDetails.service.name;
                             ctrl.request.vesselDetails.service.id = vessel.defaultService ? vessel.defaultService.id : ctrl.request.vesselDetails.service.id;
-                            ctrl.request.vesselDetails.hsfoValue = vessel.defaultService.hsfoValue;
-                            ctrl.request.vesselDetails.dmaValue = vessel.defaultService.dmaValue;
-                            ctrl.request.vesselDetails.lsfoValue = vessel.defaultService.lsfoValue;
-                            ctrl.request.vesselDetails.hsfoUom = vessel.defaultService.hsfoUom;
-                            ctrl.request.vesselDetails.dmaUom = vessel.defaultService.dmaUom;
-                            ctrl.request.vesselDetails.lsfoUom = vessel.defaultService.lsfoUom;
+                            ctrl.request.vesselDetails.service = vessel.defaultService ? vessel.defaultService : ctrl.request.vesselDetails.service;
                             ctrl.selectService(ctrl.request.vesselDetails.service.id);
                         }
                     }
@@ -1569,6 +1581,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 }
                 ctrl.request.locations[locationIndex].service.name = service.name;
                 ctrl.request.locations[locationIndex].service.id = service.id;
+                ctrl.request.locations[locationIndex].service = service;
                 if (service.contacts) {
                     ctrl.request.locations[locationIndex].service.contacts = [];
                     ctrl.request.locations[locationIndex].service.contactEmails = [];
@@ -2050,12 +2063,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 }
                 ctrl.request.vesselDetails.service.name = service.name;
                 ctrl.request.vesselDetails.service.id = service.id;
-                ctrl.request.vesselDetails.hsfoValue = service.hsfoValue;
-                ctrl.request.vesselDetails.dmaValue = service.dmaValue;
-                ctrl.request.vesselDetails.lsfoValue = service.lsfoValue;
-                ctrl.request.vesselDetails.hsfoUom = service.hsfoUom;
-                ctrl.request.vesselDetails.dmaUom = service.dmaUom;
-                ctrl.request.vesselDetails.lsfoUom = service.lsfoUom;
+                ctrl.request.vesselDetails.service = service;
                 if (service.contacts) {
                     $timeout(function() {
                         ctrl.lists.contacts = [];
