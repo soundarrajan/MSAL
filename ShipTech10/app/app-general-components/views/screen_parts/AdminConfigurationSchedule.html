@@ -82,6 +82,19 @@
         </div>
     </div>
 </div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="productTypeInSchedule" class="simpleLookupLabel">
+           {{ CM.app_id + '.DISPLAY_SCHEDULE_BASED_ON' | translate }}
+            <span class="orange-txt">
+                *
+            </span>
+        </label>
+        <div class="input-group form_input form_input_displayScheduleBasedOn">
+            <select class="form-control bs-select changeIT" name="displayScheduleBasedOn" id="displayScheduleBasedOn" ng-required="true" ng-options="item as item.name for item in CM.listsCache.ScheduleDisplayEvent track by item.id" ng-model="formValues.schedule.displayScheduleBasedOn"></select>
+        </div>
+    </div>
+</div>
 
 <div class="col-sm-12" >
         <div class="custom-hardcoded-table admin">
