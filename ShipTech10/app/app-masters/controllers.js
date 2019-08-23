@@ -348,6 +348,7 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             });
         };
+      
         // vm.get_master_structure = function(screenChild) {
         //     screenLoader.showLoader();
         //     $scope.getAdminConfiguration();
@@ -2252,41 +2253,12 @@ APP_MASTERS.controller("Controller_Master", [
         vm.setPageTitle = function(title) {
             $state.params.title = title;
         };
+
         $scope.triggerChangeFields = function(name, id) {
             $rootScope.formDataFields = $scope.formValues;
             fields = ["OrderID", "labResultID", "deliveryNumber", "Product"];
             company_id = $("#companylistCompany").val();
             market_id = $("#MarketInstrumentMarketInstrument").val();
-
-            if (vm.app_id === 'masters' && vm.screen_id === 'service') {
-                if (name === 'HSFOwithUOM') {
-                    if ($scope.formValues.hsfoValue) {
-                        if (!$scope.formValues.hsfoUom) {
-                            $scope.formValues.hsfoUom = $scope.getDefaultUom();
-                        }
-                    } else {
-                        $scope.formValues.hsfoUom = null;
-                    }
-                }
-                if (name === 'DMAwithUOM') {
-                    if ($scope.formValues.dmaValue) {
-                        if (!$scope.formValues.dmaUom) {
-                            $scope.formValues.dmaUom = $scope.getDefaultUom();
-                        }
-                    } else {
-                        $scope.formValues.dmaUom = null;
-                    }
-                }
-                if (name === 'LSFOwithUOM') {
-                    if ($scope.formValues.lsfoValue) {
-                        if (!$scope.formValues.lsfoUom) {
-                            $scope.formValues.lsfoUom = $scope.getDefaultUom();
-                        }
-                    } else {
-                        $scope.formValues.lsfoUom = null;
-                    }
-                }
-            }
 
             if (typeof $scope.triggerChangeFieldsAppSpecific == "function") {
                 $scope.triggerChangeFieldsAppSpecific(name, id);
@@ -3780,6 +3752,19 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.$watch("formValues", function(data) {
             $rootScope.formValues = data;
+	    	if (vm.entity_id == "") {
+	          	if (vm.app_id === 'masters' && vm.screen_id === 'service') {
+	          		if (!$scope.formValues.hsfoUom) {
+		                $scope.formValues.hsfoUom = $scope.tenantSetting.tenantFormats.uom;
+	          		}
+	          		if (!$scope.formValues.dmaUom) {
+		                $scope.formValues.dmaUom = $scope.tenantSetting.tenantFormats.uom;
+	          		}
+	          		if (!$scope.formValues.lsfoUom) {
+		                $scope.formValues.lsfoUom = $scope.tenantSetting.tenantFormats.uom;
+	          		}
+	            }
+	    	}              
         });
         $rootScope.droppedDoc = null;
         $scope.dropDocument = function(file) {

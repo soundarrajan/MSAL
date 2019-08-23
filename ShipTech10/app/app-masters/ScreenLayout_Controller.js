@@ -535,8 +535,12 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
         			$scope.formValues.portType = {id: 1};
         			$scope.formValues.displayPortInMap = true;
         		}
+	          	if (vm.app_id === 'masters' && vm.screen_id === 'service') {
+	                $scope.formValues.hsfoUom = $scope.tenantSetting.tenantFormats.uom;
+	                $scope.formValues.dmaUom = $scope.tenantSetting.tenantFormats.uom;
+	                $scope.formValues.lsfoUom = $scope.tenantSetting.tenantFormats.uom;
+	            }
         	}
-
 
             if (vm.entity_id == "0") {
             } else {
@@ -863,7 +867,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
         
             console.log('get_master_structure',$state);
         
-          
+
             //load default screen and app
             var app_id = vm.app_id;
             var screen_id = vm.screen_id;
