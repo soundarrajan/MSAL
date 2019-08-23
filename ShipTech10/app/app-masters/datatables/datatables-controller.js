@@ -940,34 +940,34 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellAction: "grid.appScope.calcQualityClaimType(row,null,rowRenderIndex)",
                         cellCondition: "grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)].noAction || !grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)].claimTypes",
                         cellConditionType: "ng-disabled",
-                        width: 40
+                        width: 60
                     },
                     {
                         name: "specParameter",
                         displayName: "Order Spec Parameter",
                         cellTemplate: $scope.dataTableTemplates.link,
                         cellLink: "#/masters/specparameter/edit/",
-                        width: 220
+                        minWidth: 220
                     },
                     {
                         name: "uom",
                         displayName: "UOM",
-                        width: 140
+                        minWidth: 140
                     },
                     {
                         name: "min",
                         displayName: "Min",
-                        width: 140
+                        minWidth: 140
                     },
                     {
                         name: "max",
                         displayName: "Max",
-                        width: 140
+                        minWidth: 140
                     },
                     {
                         name: "offerSpecParameter",
                         displayName: "Offer Spec Parameter",
-                        width: 140,
+                        minWidth: 140,
                         cellTemplate: $scope.dataTableTemplates.readonlyNumber,
                         decimalNumbers: vm.quantity
                     },
@@ -977,7 +977,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:3",
                         ChangeAction : "calculatePassedFailedInLab(grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)])",
-                        width: 110,
+                        minWidth: 110,
 						cellCondition: "grid.appScope.fVal().formValues.status.name == 'Verified'",
 						cellConditionType: "ng-disabled",    
                         cellObject: {
@@ -992,25 +992,25 @@ APP_MASTERS.controller("Controller_Datatables", [
 						cellCondition: "grid.appScope.fVal().formValues.status.name == 'Verified'",
 						cellConditionType: "ng-disabled", 
                         isLabResultTooltip: true,
-                        width: 110
+                        minWidth: 110
                     },
                     {
                         name: "qualityMatch",
                         displayName: "Passed/Failed",
                         cellTemplate: $scope.dataTableTemplates.colorCodedStatus,
-                        width: 150,
+                        minWidth: 150,
                         template: 1
                     },
                     {
                         name: "claimsRaised",
                         displayName: "Claim",
                         cellTemplate: $scope.dataTableTemplates.claimsRaisedStatus,
-                        width: 90
+                        minWidth: 90
                     },
                     {
                         name: "noAction",
                         displayName: "No Action",
-                        width: 90,
+                        width: 120,
                         cellTemplate: $scope.dataTableTemplates.checkbox
                     }
                 ]

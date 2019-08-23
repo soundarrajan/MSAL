@@ -84,12 +84,6 @@
                                 <div ng-if="parents.name == 'General Information' && CM.screen_id == 'labresult'" style="float: right;  margin-top: 10px;">
                                     <!-- <span ng-include="'app-general-components/views/screen_parts/result.html'"></span> -->
                                 </div>
-                                <div ng-if="parents.id == '3rdPartyCommunication' && CM.screen_id == 'labresult' && CM.entity_id > 0" style="float: right;  margin-top: 10px;">
-                                	{{state.params.status.name}}
-                                    <a ng-disabled="formValues.reconMatch.name == 'Passed' " class="btn btn-sm font-grey-cascade" ng-href="/#/labs/labresult/emailpreview/{{CM.entity_id}}">
-                                        <i class="glyphicon glyphicon-envelope st-larger-glyph"></i>
-                                    </a>
-                                </div>
                             </div>
                             <div class="portlet-title" ng-if="parents.name == 'General' && CM.screen_id == 'treasuryreport' && CM.app_id == 'invoices'">
                                 <div class="tools">
@@ -287,6 +281,9 @@
                                             </span>
                                             <span ng-switch-when="claimTextCounterparty">
                                                 <span ng-include="'app-general-components/views/controls/claimTextCounterparty.html'"></span>
+                                            </span>
+                                            <span ng-switch-when="sellerLabs">
+                                                <span ng-include="'app-general-components/views/controls/sellerLabs.html'"></span>
                                             </span>
                                             <span ng-switch-when="3rdPartyCommunication">
                                                 <span ng-include="'app-general-components/views/controls/3rdPartyCommunication.html'"></span>

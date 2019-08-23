@@ -4012,10 +4012,6 @@ Uncomment to see border around all .col-*
             .dataTables_scrollBody #schedule_calendar_table th:nth-of-type(n+4) {
                 display: none;
             }
-
-            .fe_entity.edit_form_fields_SealNumber_labs {
-                clear: left;
-            }
 			
             .form_input_Vessel input[disabled="disabled"] {
                 cursor: default;
