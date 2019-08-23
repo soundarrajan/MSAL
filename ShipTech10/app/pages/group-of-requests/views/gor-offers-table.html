@@ -225,12 +225,13 @@
                     TOTAL
                 </th>
                 <th width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 150px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
-                    <form class="form-inline" style="width: calc(100% - 20px); display: flex; align-items: center; height: 35px;">
+                    <form class="form-inline" style="width: calc(100% - 20px); display: flex; align-items: center; height: 35px;justify-content: space-between;">
                         <div class="form-group-sm">
                             
                             <label class="control-label font-dark" ><b ng-click="$ctrl.goToOrderForProduct(product)" ng-class="{'productHasOrderLink' : $ctrl.checkIfProductHasOrder(product)}">{{product.product.name}}</b></label>
                         </div>
                        
+                        <a href="" style="margin-right: 10px;font-size: 20px;" ng-click="$ctrl.openGeneralWidgetBlade('energyCalculation')"><i class="fa fa-tint font-dark"></i></a>
                     </form>
                 </th>
     
@@ -239,10 +240,10 @@
                         <!-- {{$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] ? 'max-width:100px; width:100px;' : ''}} -->
                         <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
-                            <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">CCAI</div>
-                            <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Computed Price</div>
-                            <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Specific Energy</div>
-                            <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price/Spec Energy</div>
+                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">CCAI</div> -->
+                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Computed Price</div> -->
+                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Specific Energy</div> -->
+                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price/Spec Energy</div> -->
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price Diff</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">TCO</div>
                             <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
@@ -374,10 +375,10 @@
     
                 <th ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600; border-top: none">
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]">
-                        <div style="width:100px" class="energy-content-cell"><span style="opacity:0">CCAI</span></div>
-                        <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Computed Price</span></div>
-                        <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Specific Energy</span></div>
-                        <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div>
+                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">CCAI</span></div> -->
+                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Computed Price</span></div> -->
+                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Specific Energy</span></div> -->
+                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div> -->
                         <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div>
                         <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div>
                         <div style="width:50px" class="energy-content-cell icon text-center"></div>
@@ -913,18 +914,18 @@
     
                 <td ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" ng-attr-style="padding: 0px !important; {{!productOffer.id && !seller.isCloned && seller.packageId ? 'opacity: 0.5' : '';}};"  >
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+pkey]">
-                        <div style="width:100px" class="energy-content-cell">
+                        <!-- <div style="width:100px" class="energy-content-cell">
                             {{productOffer.energyParameterValues.ccai == 'NaN' || !productOffer.energyParameterValues.ccai ? '-' : (productOffer.energyParameterValues.ccai | number : $ctrl.numberPrecision.amountPrecision )}}
-                        </div>
-                        <div style="width:100px" class="energy-content-cell computedPrice">
+                        </div> -->
+                        <!-- <div style="width:100px" class="energy-content-cell computedPrice">
                             {{productOffer.energyParameterValues.computedPrice ? (productOffer.energyParameterValues.computedPrice | number : $ctrl.numberPrecision.amountPrecision ) : "-"}}
-                        </div>
-                        <div style="width:100px" class="energy-content-cell specificEnergy">
+                        </div> -->
+                        <!-- <div style="width:100px" class="energy-content-cell specificEnergy">
                             {{productOffer.energyParameterValues.specificEnergy ? (productOffer.energyParameterValues.specificEnergy | number : $ctrl.numberPrecision.amountPrecision ) : "-"}}
-                        </div>
-                        <div style="width:100px" class="energy-content-cell pricePerSpecificEnergy">
+                        </div> -->
+                        <!-- <div style="width:100px" class="energy-content-cell pricePerSpecificEnergy">
                             {{productOffer.energyParameterValues.pricePerSpecificEnergy ? ( productOffer.energyParameterValues.pricePerSpecificEnergy | number : $ctrl.numberPrecision.amountPrecision) : '-'}}
-                        </div>
+                        </div> -->
                         <div style="width:100px" class="energy-content-cell priceGap">
                             {{productOffer.energyParameterValues.priceGap ? ( productOffer.energyParameterValues.priceGap  | number : $ctrl.numberPrecision.amountPrecision ): '-'}}
                         </div>

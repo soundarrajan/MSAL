@@ -61,6 +61,7 @@
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='generalRfq' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='generalRfq' ; $ctrl.blade.colLayout = 'single'" ><span class="bg-dark font-white">&nbsp;RFQs&nbsp;</span></i> RFQs</li>
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='comments' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='comments' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-comments "></i> COMMENTS</li>
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='linkUnlink' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='linkUnlink' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-link "></i> LINK/UNLINK</li>
+						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='energyCalculation' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='energyCalculation' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-link "></i> ENERGY CALCULATION</li>
 					</ul>
 				</div>
 			</div>
@@ -111,6 +112,9 @@
 		</span>
 		<span ng-if="$ctrl.blade.activeWidget == 'linkUnlink'">
 			<span data-ng-include="'components/blade/templates/gor-linkUnlink-widget.html'"></span>
+		</span>
+		<span ng-if="$ctrl.blade.activeWidget == 'energyCalculation'">
+			<general-energy-calculation></general-energy-calculation>	
 		</span>
 	</div>
 </div>
