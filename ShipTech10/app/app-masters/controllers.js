@@ -2257,6 +2257,37 @@ APP_MASTERS.controller("Controller_Master", [
             fields = ["OrderID", "labResultID", "deliveryNumber", "Product"];
             company_id = $("#companylistCompany").val();
             market_id = $("#MarketInstrumentMarketInstrument").val();
+
+            if (vm.app_id === 'masters' && vm.screen_id === 'service') {
+                if (name === 'HSFOwithUOM') {
+                    if ($scope.formValues.hsfoValue) {
+                        if (!$scope.formValues.hsfoUom) {
+                            $scope.formValues.hsfoUom = $scope.getDefaultUom();
+                        }
+                    } else {
+                        $scope.formValues.hsfoUom = null;
+                    }
+                }
+                if (name === 'DMAwithUOM') {
+                    if ($scope.formValues.dmaValue) {
+                        if (!$scope.formValues.dmaUom) {
+                            $scope.formValues.dmaUom = $scope.getDefaultUom();
+                        }
+                    } else {
+                        $scope.formValues.dmaUom = null;
+                    }
+                }
+                if (name === 'LSFOwithUOM') {
+                    if ($scope.formValues.lsfoValue) {
+                        if (!$scope.formValues.lsfoUom) {
+                            $scope.formValues.lsfoUom = $scope.getDefaultUom();
+                        }
+                    } else {
+                        $scope.formValues.lsfoUom = null;
+                    }
+                }
+            }
+
             if (typeof $scope.triggerChangeFieldsAppSpecific == "function") {
                 $scope.triggerChangeFieldsAppSpecific(name, id);
             }
@@ -5887,8 +5918,19 @@ APP_MASTERS.controller("Controller_Master", [
         //  })
         $scope.$on("formValues", function() {
             // vm.initRobSectionUOM();
-            if(vm.screen_id == 'additionalcost') {
+            if (vm.screen_id == 'additionalcost') {
                 $scope.triggerChangeFields('CostType', 'costType');
+            }
+            if (vm.screen_id == 'service') {
+                if (!$scope.formValues.dmaUom) {
+                    $scope.formValues.dmaUom = $scope.getDefaultUom();
+                }
+                if (!$scope.formValues.hsfoUom) {
+                    $scope.formValues.hsfoUom = $scope.getDefaultUom();
+                }
+                if (!$scope.formValues.lsfoUom) {
+                    $scope.formValues.lsfoUom = $scope.getDefaultUom();
+                }
             }
         });
         vm.initRobSectionUOM = function() {

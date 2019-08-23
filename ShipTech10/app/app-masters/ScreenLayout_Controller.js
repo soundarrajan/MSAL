@@ -855,7 +855,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
         };
 
         vm.get_master_structure = function(screenChild) {
-            screenLoader.showLoader();
             $scope.getAdminConfiguration();
             if (window.location.href.indexOf('structure') != -1) {
                 vm.get_master_elements(screenChild);
@@ -1011,7 +1010,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                 });
             }
         };
-
 
         $scope.checkIfTab = function() {
             $scope.$watch("formFields", function() {
@@ -1405,8 +1403,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                 scope: $scope //passed current scope to the modal
             });
         };
-
-        
     }
 
 ]);
