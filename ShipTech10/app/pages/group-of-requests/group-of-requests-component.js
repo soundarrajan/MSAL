@@ -3160,8 +3160,11 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.updateSpecParemeters = function (params) {
             groupOfRequestsModel.updateEnergySpecValues(params).then(function (data) {
+            	ctrl.initScreenAfterSendOrSkipRfq();
+            	$(".blade-column.main-content-column .ng-dirty").removeClass("ng-dirty");
+            	ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
             	ctrl.confirmedBladeNavigation = true;
-                $("body").css("overflow-y", "visible");
+                // $("body").css("overflow-y", "visible");
                 // $rootScope.$broadcast("bladeDataChanged", true);
                 // $state.reload();
                 //update CCAI & net specific energy
