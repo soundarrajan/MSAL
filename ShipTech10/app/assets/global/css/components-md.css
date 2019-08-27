@@ -7013,7 +7013,9 @@ Portlets
 /* Side bordered portlet */
 .portlet.bordered > .portlet-title {
   border-bottom: 0; }
-
+.portlet-comment {
+  margin-bottom: 0;
+}
 /* Solid colored portlet */
 .portlet.solid {
   padding: 0 10px 10px 10px;

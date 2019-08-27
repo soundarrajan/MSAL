@@ -354,7 +354,7 @@ form.submitted input.ng-invalid, form.submitted select.ng-invalid, form.submitte
     float: left;
     padding-right: 3px;
     /*  overflow: hidden;
-    text-overflow: ellipsis;
+text-overflow: ellipsis;
     white-space: nowrap;*/
 }
 

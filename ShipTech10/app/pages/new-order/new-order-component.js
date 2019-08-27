@@ -80,6 +80,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         });
         ctrl.captureConfirmedQuantity = {};
         tenantService.procurementSettings.then(function (settings) {
+            console.log(settings);
             ctrl.procurementSettings = settings.payload;
             ctrl.isAgentFreeText = settings.payload.request.agentDisplay.id == 2 ? true : false;
             ctrl.isDeliveryWindow = settings.payload.request.deliveryWindowDisplay.id == 1 ? true : false;
@@ -93,6 +94,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.isAgentMandatory = settings.payload.order.isOrderAgentMandatory;
             ctrl.isSurveyorMandatory = settings.payload.order.isOrderSurveyorMandatory;
             ctrl.useOrderPhysicalSupplierFlow = _.get(settings, 'payload.order.useOrderPhysicalSupplierFlow.name') === 'Yes';
+            ctrl.reasonCancelOrderVisibility = settings.payload.order.reasonCancelOrderVisibility.id;
+            ctrl.isCommentsCancellation = setting.payload.request.agentDisplay.id == 2 ? true : false;
         });
         ctrl.$onInit = function () {
             uiApiModel.get(SCREEN_LAYOUTS.NEW_ORDER).then(function (data) {
@@ -380,6 +383,11 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             	if (ctrl.data.customNonMandatoryAttribute11) {
 		            ctrl.data.customNonMandatoryAttribute11 = ctrl.data.customNonMandatoryAttribute11.replace(/<br\s?\/?>/g,"\n");
             	}
+            }
+            if (typeof ctrl.data.customNonMandatoryAttribute12 != "undefined") {
+                if (ctrl.data.customNonMandatoryAttribute12) {
+                    ctrl.data.customNonMandatoryAttribute12 = ctrl.data.customNonMandatoryAttribute12.replace(/<br\s?\/?>/g,"\n");
+                }
             }
 
             ctrl.fixedCurrency = ctrl.data.products[0].requestProductId && !ctrl.data.contract;
@@ -1570,7 +1578,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                   (ctrl.hasAction(ctrl.SCREEN_ACTIONS.CONFIRM) || ctrl.data.status.name == 'Confirmed');
         }
 
-        ctrl.sendOrderCommand = function (command, orderId) { 
+        ctrl.sendOrderCommand = function (command, orderId) {
             if (command === 'submitForApproval' || command === 'approve') {
             	var aggregatedErrorMessages = [];
 
@@ -1597,8 +1605,32 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
 					if (modalresponse) {
+                        if (typeof(ctrl.cancelReason) != "undefined") {
+                            var orderCancelReasonOption = {
+                                    id: ctrl.cancelReason.cancelReason.id,
+                                    name: ctrl.cancelReason.cancelReason.name,
+                                    internalName: null,
+                                    displayName: ctrl.cancelReason.cancelReason.displayName,
+                                    code: null,
+                                    colectionName: null,
+                                    customNonMandatoryAttribute1: null,
+                                    isDeleted: false,
+                                    modulePathUrl: null,
+                                    clientIpAddress: null,
+                                    userAction: null
+                                    };
+                            if (typeof(ctrl.data.cancelOrderComments) != "undefined") {
+                                ctrl.data.cancelOrderComments = ctrl.cancelReason.cancelReason.name + '\n' + ctrl.data.cancelOrderComments; 
+                            } else {
+                                ctrl.data.cancelOrderComments = ctrl.cancelReason.cancelReason.name;
+                            }
 
-						orderModel.sendOrderCommand(command, orderId).
+                        } else {
+                            orderCancelReasonOption = null;
+                        }
+                       
+                        var object = {id: orderId, cancelOrderComments: ctrl.data.cancelOrderComments, orderCancelReasonOption: orderCancelReasonOption};
+						orderModel.sendOrderCommand(command, object).
 	                    then(function (response) {
 							ctrl.comfirmCancelOrder = true;
 							ctrl.sendOrderCommand("cancel", ctrl.orderId)
@@ -2860,6 +2892,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				ctrl.confirmedModal = true
 				return callback($scope.confirmModalAdditionalData);
 			})
+            
         }
         
         
@@ -3148,6 +3181,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     }
                 },1);   
             }
+        ctrl.deleteOrder = function() {
+            console.log("IAOSNHEHSEFIOJOI");
+        }
+
 
     }
 ]);

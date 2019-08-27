@@ -1238,6 +1238,20 @@
                         </div>
                     </div>
                 </div>
+
+               <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "captureReasonToCancelTheOrder", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="captureReasonToCancelTheOrder" class="simpleLookupLabel" style="max-height: initial;">
+                            Capture Reason to cancel the order
+                        </label>
+                        <div class="input-group form_input form_input_captureReasonToCancelTheOrder">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.captureReasonToCancelTheOrder track by item.id"
+                                ng-required="true" id="captureReasonToCancelTheOrder" ng-model="formValues.procurement.order.captureReasonToCancelTheOrder"></select>
+                        </div>
+                    </div>
+                </div>
+
+               
             </div>
 
             <div class="row">

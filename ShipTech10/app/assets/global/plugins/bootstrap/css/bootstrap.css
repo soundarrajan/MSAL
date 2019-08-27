@@ -2829,6 +2829,10 @@ a.btn.disabled,
 fieldset[disabled] a.btn {
   pointer-events: none; }
 
+.btn-comment{
+  padding: 8px 50px;
+}
+
 .btn-default {
   color: #333;
   background-color: #fff;
@@ -5053,6 +5057,11 @@ button.list-group-item-danger {
     cursor: pointer;
     opacity: 0.5;
     filter: alpha(opacity=50); }
+/*.comment {
+  float: none;
+  position: absolute;
+  margin-right: 20px;
+}*/
 
 button.close {
   padding: 0;
@@ -5149,6 +5158,12 @@ button.close {
   padding: 15px;
   text-align: right;
   border-top: 1px solid #e5e5e5; }
+
+.modal-footer-comment {
+  /*padding: 15px;*/
+  text-align: right;
+
+}
   .modal-footer:before, .modal-footer:after {
     content: " ";
     display: table; }

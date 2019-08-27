@@ -89,7 +89,7 @@
                             <ul class="dropdown-menu st-extra-buttons" role="menu">
                                 <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CANCELORDER)">
                                     <a ng-if="$ctrl.data.id && $ctrl.data.status.id !== $ctrl.STATUS['Cancelled'].id" ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CANCEL, $ctrl.data.id)">
-                                        Cancel
+                                            Cancel
                                     </a>
                                 </li>
                                 <li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.REJECTORDER)">
@@ -869,6 +869,22 @@
 										            </div>
 										        </div>
 											</div>
+                                            <div ng-if="$ctrl.portFields.comments.visible && $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id && $ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes'" class="row">
+                                                <div  class="col-md-4 col-sm-12" style="float:right">
+                                                    <div class="form-group row">
+                                                        <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label">
+                                                             <!-- Comment -->
+                                                            <!-- {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}} -->
+                                                            <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+                                                            Cancellation Comments
+                                                        </label>
+                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
+                                                            <textarea class="col-md-12 form-control" maxlength="1000" ng-model="$ctrl.data.cancelOrderComments"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
 
 	                                    </div>
 
@@ -1670,22 +1686,70 @@
     <order-email-dialog class="modal fade in" id="confirm" aria-hidden="true" data-width="30%" message-type="$ctrl.messageType"
         on-confirm="$ctrl.sendOrderConfirmation()"></order-email-dialog>
 </div>
-
-
-<div class="orderConfirmModal confirmModal1 fade bs-modal hide" tabindex="-1" style="transform: translateY(90px);" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
-			</div>
-			<div class="modal-body">
-				{{$ctrl.confirmModalData.message}} 
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-				<button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
-			</div>
-		</div>
-	</div>
+<div ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes' " class="orderConfirmModal confirmModal1 modal fade in" role="dialog" id="selectContract" aria-hidden="true" data-width="40%" aria-labelledby="mySmallModalLabel" >
+    <div role="document">
+        <div class="portlet portlet-comment light">
+            <div class="portlet-title">
+                <button type="button" class="close comment" data-dismiss="modal" aria-hidden="true"></button>
+                <div class="col-md-6 caption-subject">CANCEL ORDER</div>
+            </div>
+            <div class="portlet-body">
+                <form>
+                    <div class="row" style="padding-left: 27px;">
+                         <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label cancelled" style="width: 200px; float: left; color: black; font-weight: bold;">
+                                    Reason for cancelling order
+                                 <span class="orange-txt" style="color: orange; position: absolute;  font-size: 9px;  margin-left: 3px;">
+                                     *
+                                 </span>
+                        </label>
+                        <select ng-init="$ctrl.cancelReason.cancelReason = $ctrl.lists.OrderCancelReasonOption[2]" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style="width: 73.5%; height: 35px;"
+                                            ng-model="$ctrl.cancelReason.cancelReason" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" name="cancelReason" id="cancel_reason_cancel_reason_{{ $index }}">
+                                
+                        </select>
+                    </div>
+                     <div class="row" style="padding-left: 27px; margin-top: 20px;">
+                        <div ng-if="$ctrl.portFields.comments.visible" class="col-md-4 col-sm-12" style="float: left">
+                            <div class="form-group row">
+                                <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label cancelled" style="width: 125px; float: left; padding-right: 3px; color: black; font-weight: bold;">
+                                     <!-- Comment -->
+                                    <!-- {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}} -->
+                                    <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+                                    Comments
+                                </label>
+                                <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
+                                    <input  type="text" ng-model="$ctrl.data.cancelOrderComments" style="width: 413.7%; margin-left: 74px; padding: 0 0  115px; ">
+                                     </input>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                 </form>
+            </div>
+            <div class="modal-footer-comment">
+                <button type="button" class="btn btn-comment btn-default noAction" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-comment btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<div ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'No'"  class="orderConfirmModal confirmModal1 fade bs-modal hide" tabindex="-1" style="transform: translateY(90px);" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                {{$ctrl.confirmModalData.message}} 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

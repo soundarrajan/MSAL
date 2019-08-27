@@ -187,12 +187,14 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
          *   mapped in the orderResource.
          * @param {integer} orderId - The ID of the order.
          */
-        function sendOrderCommand(command, orderId) {
-            var request_data = payloadDataModel.create(orderId);
+        function sendOrderCommand(command, objectCancelOrder) {
+            var request_data = payloadDataModel.create(objectCancelOrder);
             if (['cancel','reject','approve','submitForApproval'].indexOf(command) != -1) {
             	request_data = {
             		"Payload" : {
-            			"id" : parseFloat(orderId)
+                        "id" : parseFloat(objectCancelOrder.id),
+                        "cancelOrderComments" : objectCancelOrder.cancelOrderComments,
+                        "orderCancelReasonOption" : objectCancelOrder.orderCancelReasonOption
             		}
             	}
             }
