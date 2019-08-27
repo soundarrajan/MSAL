@@ -906,6 +906,51 @@ APP_MASTERS.controller("Controller_Master", [
                 if (!$scope.formValues.defaultSpecGroup) {
                     toastr.warning("Please create a Spec Group for the product in the Spec Group master and then select a default Spec Group");
                 }
+                var newEnergyFormulaProducts = [];
+                var energyFormulaSpecific = {
+                    product: {
+                        id: Number(vm.entity_id),
+                    },
+                    energyFormula: {
+                        id: _.get($scope, 'formValues.energyFormulaSpecific.id')
+                    },
+                    energyFormulaTypeName: 'SpecificEnergyCalculation'
+                };
+
+                var energyFormulaSpecificId = 0;
+
+                _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                    if (value.energyFormulaTypeName === 'SpecificEnergyCalculation') {
+                        energyFormulaSpecificId = value.id;
+                    }
+                });
+
+                energyFormulaSpecific.id = energyFormulaSpecificId;
+
+                newEnergyFormulaProducts.push(energyFormulaSpecific);
+
+                var energyFormulaCCAI = {
+                    product: {
+                        id: Number(vm.entity_id),
+                    },
+                    energyFormula: {
+                        id: _.get($scope, 'formValues.energyFormulaCCAI.id')
+                    },
+                    energyFormulaTypeName: 'CCAI'
+                };
+
+                var energyFormulaCCAIId = 0;
+
+                _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                    if (value.energyFormulaTypeName === 'CCAI') {
+                        energyFormulaCCAId = value.id;
+                    }
+                });
+
+                energyFormulaCCAI.id = energyFormulaCCAIId;
+                newEnergyFormulaProducts.push(energyFormulaCCAI);
+
+                $scope.formValues.energyFormulaProducts = newEnergyFormulaProducts;
             }
             if (vm.app_id == "contracts" && vm.screen_id == "contract") {
                 //chech for product location to be obj
@@ -5926,6 +5971,18 @@ APP_MASTERS.controller("Controller_Master", [
                     $scope.formValues.lsfoUom = $scope.getDefaultUom();
                 }
             }
+            if (vm.screen_id == 'product') {
+                _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                    if (value.energyFormulaTypeName === 'SpecificEnergyCalculation') {
+                        $scope.formValues.energyFormulaSpecific = value.energyFormula;
+                        $scope.formValues.energyFormulaDescriptionSpecific = value.energyFormula.displayName;
+                    }
+                    if (value.energyFormulaTypeName === 'CCAI') {
+                        $scope.formValues.energyFormulaCCAI = value.energyFormula;
+                        $scope.formValues.energyFormulaDescriptionCCAI = value.energyFormula.displayName;
+                    }
+                });
+            }
         });
         vm.initRobSectionUOM = function() {
             if (typeof $scope.formValues != "undefined") {
@@ -7568,16 +7625,19 @@ APP_MASTERS.controller("Controller_Master", [
             return enabledEmailToVessel;
         }
 
-        vm.productEnergyFormulaChanged = function(key, value) {
+        vm.productEnergyFormulaChanged = function(type, name) {
             var description = '';
-            _.each($listsCache[value.energyFormulaTypeName], function(v, k) {
-                if (v.name === value.energyFormula.name) {
+            _.each($listsCache[type], function(v, k) {
+                if (v.name === name) {
                     description = v.description;
                     return;
                 }
             });
-            if ($scope.formValues.energyFormulaProducts[key].energyFormula) {
-                $scope.formValues.energyFormulaProducts[key].energyFormula.displayName = description;
+            if (type === 'SpecificEnergyCalculation') {
+                $scope.formValues.energyFormulaDescriptionSpecific = description;
+            }
+            if (type === 'CCAI') {
+                $scope.formValues.energyFormulaDescriptionCCAI = description;
             }
         }
     }
