@@ -83,11 +83,11 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
                 var jsOptions = {
                     withCredentials: false
                 };
-                $.connection.hub.start(jsOptions).done(function() {
-                    console.log("tenantId:" + $scope.initSignalRData.tenantId);
-                    console.log("userId:" + $scope.initSignalRData.userId);
-                    jobHub.server.subscribe($scope.initSignalRData.tenantId, $scope.initSignalRData.userId);
-                });
+                // $.connection.hub.start(jsOptions).done(function() {
+                //     console.log("tenantId:" + $scope.initSignalRData.tenantId);
+                //     console.log("userId:" + $scope.initSignalRData.userId);
+                //     jobHub.server.subscribe($scope.initSignalRData.tenantId, $scope.initSignalRData.userId);
+                // });
             }
         })
     }

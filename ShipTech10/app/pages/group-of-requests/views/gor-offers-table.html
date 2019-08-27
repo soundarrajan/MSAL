@@ -159,7 +159,7 @@
                                 <option value="{{$ctrl.SELLER_SORT_ORDER.ALPHABET}}">Alphabet</option>
                             </select>
                             <div class="input-group">
-                                <input  ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | filter:$viewValue | limitTo:5" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false">
+                                <input  ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | filter:$viewValue | limitTo:5" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false" >
                                 <!-- <span class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled'}}" data-toggle="modal" href="#sellers" ng-click="$ctrl.setLookupInput(null)">
                                     <i class="fa fa-search"></i>
                                 </span> -->
@@ -408,7 +408,7 @@
                         <div class="form-group-sm" style="display: flex; align-items: center;">
                             <span>Counterparty &nbsp;&nbsp;</span>
                             <div class="input-group">
-                                <input ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | filter:$viewValue | limitTo:5" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location)" typeahead-editable="false">
+                                <input ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | filter:$viewValue | limitTo:5" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location)" typeahead-editable="false" >
                                 <!-- <span class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled' }}"  data-toggle="modal" href="#sellers" ng-click="$ctrl.setLookupInput(location); $ctrl.supplierPlace = 'gorSeller'">
                                     <i class="fa fa-search"></i>
                                 </span> -->
