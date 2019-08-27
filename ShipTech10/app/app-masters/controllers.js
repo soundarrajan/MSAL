@@ -7569,8 +7569,15 @@ APP_MASTERS.controller("Controller_Master", [
         }
 
         vm.productEnergyFormulaChanged = function(key, value) {
+            var description = '';
+            _.each($listsCache[value.energyFormulaTypeName], function(v, k) {
+                if (v.name === value.energyFormula.name) {
+                    description = v.description;
+                    return;
+                }
+            });
             if ($scope.formValues.energyFormulaProducts[key].energyFormula) {
-                // $scope.formValues.energyFormulaProducts[key].energyFormula.description = $listsCache[value.energyFormulaTypeName][value.energyFormula.name].description;
+                $scope.formValues.energyFormulaProducts[key].energyFormula.displayName = description;
             }
         }
     }
