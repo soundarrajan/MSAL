@@ -83,7 +83,7 @@
                             Confirm
                         </a>
                         <div class="btn-group">
-                            <a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false" ng-class="{'disabled' : $ctrl.extraButtons() || $ctrl.buttonsDisabled}">
+                            <a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false">
                                 &hellip;
                             </a>
                             <ul class="dropdown-menu st-extra-buttons" role="menu">
@@ -879,7 +879,7 @@
                                                             Cancellation Comments
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" maxlength="1000" ng-model="$ctrl.data.cancelOrderComments"></textarea>
+                                                            <textarea  readonly class="col-md-12 form-control" maxlength="1000" ng-model="$ctrl.data.cancelOrderComments"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1648,7 +1648,7 @@
                     Confirm
                 </a>
                 <div class="btn-group">
-                    <a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false" ng-class="{'disabled' : $ctrl.extraButtons() || $ctrl.buttonsDisabled}">
+                    <a class="btn btn-default dropdown-toggle st-show-buttons" data-toggle="dropdown" aria-expanded="false">
                         &hellip;
                     </a>
                     <ul class="dropdown-menu st-extra-buttons" role="menu">
@@ -1686,23 +1686,23 @@
     <order-email-dialog class="modal fade in" id="confirm" aria-hidden="true" data-width="30%" message-type="$ctrl.messageType"
         on-confirm="$ctrl.sendOrderConfirmation()"></order-email-dialog>
 </div>
-<div ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes' " class="orderConfirmModal confirmModal1 modal fade in" role="dialog" id="selectContract" aria-hidden="true" data-width="40%" aria-labelledby="mySmallModalLabel" >
+<div ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes' " class="orderConfirmModal confirmModal1 modal fade in" role="dialog" id="selectContract" aria-hidden="true" data-width="45%" aria-labelledby="mySmallModalLabel" >
     <div role="document">
         <div class="portlet portlet-comment light">
             <div class="portlet-title">
-                <button type="button" class="close comment" data-dismiss="modal" aria-hidden="true"></button>
+                <button type="button" class="close comment" data-dismiss="modal" aria-hidden="true" style="margin-right: 10.5px;"></button>
                 <div class="col-md-6 caption-subject">CANCEL ORDER</div>
             </div>
             <div class="portlet-body">
                 <form>
-                    <div class="row" style="padding-left: 27px;">
-                         <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label cancelled" style="width: 200px; float: left; color: black; font-weight: bold;">
+                    <div class="row" style="padding-left: 26px;">
+                         <label for="{{ $ctrl.portFields.comments.name }}" class="{{ $ctrl.portFields.comments.name }}_label cancelled" style="width: 189.8px; float: left; color: black; font-weight: bold;">
                                     Reason for cancelling order
-                                 <span class="orange-txt" style="color: orange; position: absolute;  font-size: 9px;  margin-left: 3px;">
+                                <!--  <span class="orange-txt" style="color: orange; position: absolute;  font-size: 9px;  margin-left: 3px;">
                                      *
-                                 </span>
+                                 </span> -->
                         </label>
-                        <select ng-init="$ctrl.cancelReason.cancelReason = $ctrl.lists.OrderCancelReasonOption[2]" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style="width: 73.5%; height: 35px;"
+                        <select ng-init="$ctrl.cancelReason.cancelReason = $ctrl.lists.OrderCancelReasonOption[2]" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style=" margin-left: 12.5px; width: 72.2%; height: 35px;"
                                             ng-model="$ctrl.cancelReason.cancelReason" ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" name="cancelReason" id="cancel_reason_cancel_reason_{{ $index }}">
                                 
                         </select>
@@ -1717,15 +1717,15 @@
                                     Comments
                                 </label>
                                 <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                    <input  type="text" ng-model="$ctrl.data.cancelOrderComments" style="width: 413.7%; margin-left: 74px; padding: 0 0  115px; ">
-                                     </input>
+                                    <textarea  ng-model="$ctrl.data.cancelOrderComments" style="width: 401.5%; margin-left: 76.3px; padding: 0 0  115px; ">
+                                     </textarea>
                                 </div>
                             </div>
                         </div>
                      </div>
                  </form>
             </div>
-            <div class="modal-footer-comment">
+            <div class="modal-footer-comment" style="margin-right: 11.1px;" >
                 <button type="button" class="btn btn-comment btn-default noAction" data-dismiss="modal">No</button>
                 <button type="button" class="btn btn-comment btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
             </div>

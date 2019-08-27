@@ -1606,20 +1606,8 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 					console.log(modalresponse)
 					if (modalresponse) {
                         if (typeof(ctrl.cancelReason) != "undefined") {
-                            var orderCancelReasonOption = {
-                                    id: ctrl.cancelReason.cancelReason.id,
-                                    name: ctrl.cancelReason.cancelReason.name,
-                                    internalName: null,
-                                    displayName: ctrl.cancelReason.cancelReason.displayName,
-                                    code: null,
-                                    colectionName: null,
-                                    customNonMandatoryAttribute1: null,
-                                    isDeleted: false,
-                                    modulePathUrl: null,
-                                    clientIpAddress: null,
-                                    userAction: null
-                                    };
-                            if (typeof(ctrl.data.cancelOrderComments) != "undefined") {
+                            var orderCancelReasonOption = ctrl.cancelReason.cancelReason;
+                            if (typeof(ctrl.data.cancelOrderComments) != "undefined" && ctrl.data.cancelOrderComments != null) {
                                 ctrl.data.cancelOrderComments = ctrl.cancelReason.cancelReason.name + '\n' + ctrl.data.cancelOrderComments; 
                             } else {
                                 ctrl.data.cancelOrderComments = ctrl.cancelReason.cancelReason.name;
@@ -1822,7 +1810,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
             if (command != "cancel") {
                 ctrl.buttonsDisabled = true;
-                orderModel.sendOrderCommand(command, orderId).
+                payload = {
+                    "id" : orderId
+                }
+                orderModel.sendOrderCommand(command, payload).
                     then(function (response) {
 
                         ctrl.buttonsDisabled = false;
