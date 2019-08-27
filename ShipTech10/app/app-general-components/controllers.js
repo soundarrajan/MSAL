@@ -580,7 +580,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         });
                         break;
                     }
-                    $scope.showSweetConfirm("Controller_Configurable_List_Control", "The alert is not saved, are you sure you want to close it?", "deleteDocumentFromList("+id+")");
+                    $scope.showSweetConfirm("Controller_Configurable_List_Control", "Are you sure you want to delete the document ?", "deleteDocumentFromList("+id+")");
                     break;
                 case "insert":
                     console.log("insert new row");
@@ -601,6 +601,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 // var confirm = window.confirm('Delete File "' + Payload.name + '"?');
                 if (confirm) {
                     if (callback) {
+                    	toastr.remove();
                         toastr.success("Delete done");
                         $('[id*="documents_list"]').trigger("reloadGrid");
                     } else {

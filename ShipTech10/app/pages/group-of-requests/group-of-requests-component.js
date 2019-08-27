@@ -5336,7 +5336,7 @@ ctrl.setProductData = function(data, loc) {
                     requestGroupId: ctrl.groupId,
                     locationId: theLocation.location.id,
                     sellerCounterpartyId: seller.sellerCounterparty.id,
-                    physicalSupplierId: seller.randUnique.split("-")[1],
+                    physicalSupplierId: seller.randUnique.split("-")[1] == "null" ? null : seller.randUnique.split("-")[1],
                     requestLocationIds: requestLocationIds.join(",")
                 }
             };
