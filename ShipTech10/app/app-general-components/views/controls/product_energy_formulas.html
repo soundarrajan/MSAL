@@ -1,0 +1,24 @@
+<div
+    class="form-group row"
+    ng-repeat="(key, value) in formValues.energyFormulaProducts"
+    style="display: flex; justify-content: center; align-items: center;">
+    <div>
+        <label style="width: 200px;"> {{ value.energyFormulaTypeName }} </label>
+    </div>
+    <div class="form_input" style="width: 350px;">
+        <select
+            ng-model="formValues.energyFormulaProducts[key].energyFormula"
+            name="energy_formula_{{$index}}"
+            id="energy_formula_{{ $index }}"
+            class="form-control"
+            ng-options="item as (item.displayName ? item.displayName : item.name) disable when item.disabled for item in CM.listsCache[value.energyFormulaTypeName] track by item.id"
+            ng-disabled="!formValues.isEnergyCalculationRequired"
+            ng-change="CM.productEnergyFormulaChanged(key, value)"></select>
+    </div>
+    <div>
+        <label style="width: 140px; text-align: center;"> Formula Preview </label>
+    </div>
+    <div class="form_input">
+        <input type="text" class="form-control" ng-model="formValues.energyFormulaProducts[key].energyFormula.description" name="energy_formula_description_{{ $index }}" id="energy_formula_description_{{ $index }}" disabled>
+    </div>
+</div>   

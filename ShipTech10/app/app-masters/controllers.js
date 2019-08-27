@@ -7567,5 +7567,11 @@ APP_MASTERS.controller("Controller_Master", [
             }
             return enabledEmailToVessel;
         }
+
+        vm.productEnergyFormulaChanged = function(key, value) {
+            if ($scope.formValues.energyFormulaProducts[key].energyFormula) {
+                // $scope.formValues.energyFormulaProducts[key].energyFormula.description = $listsCache[value.energyFormulaTypeName][value.energyFormula.name].description;
+            }
+        }
     }
 ]);
