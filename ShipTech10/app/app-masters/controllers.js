@@ -943,7 +943,7 @@ APP_MASTERS.controller("Controller_Master", [
 
                 _.each($scope.formValues.energyFormulaProducts, function(value, key) {
                     if (value.energyFormulaTypeName === 'CCAI') {
-                        energyFormulaCCAId = value.id;
+                        energyFormulaCCAIId = value.id;
                     }
                 });
 
