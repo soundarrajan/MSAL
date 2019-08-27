@@ -2848,13 +2848,6 @@ APP_MASTERS.controller("Controller_Master", [
                         toastr.error("Field is already added.");
                     }
                     hideTheChildren();
-                    $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
-                        $(this).attr("tooltip", "");
-                        $(this).attr("data-original-title", $(v).text());
-                        $(v)
-                            .tooltip("show")
-                            .tooltip("hide");
-                    });
                 });
                 $(elt).on("itemRemoved", function(event) {
                     var idToRemove = event.item.value;
@@ -2870,6 +2863,7 @@ APP_MASTERS.controller("Controller_Master", [
                 });
 
                 function hideTheChildren() {
+                	$scope.initBoostrapTagsInputTooltip();
                     currentTags = elt.next(".bootstrap-tagsinput").children(".label");
                     currentTags.removeAttr("big-child");
                     currentTags.show();
@@ -3011,6 +3005,7 @@ APP_MASTERS.controller("Controller_Master", [
                                     text: itemToAdd.name
                                 });
                             } else {
+                            	$('.toast').remove();
                                 toastr.error("This is main company");
                             }
                         }
@@ -3085,6 +3080,7 @@ APP_MASTERS.controller("Controller_Master", [
             hideTheChildren();
 
             function hideTheChildren() {
+            	$scope.initBoostrapTagsInputTooltip();
                 currentTags = elt.next(".bootstrap-tagsinput").children(".label");
                 currentTags.removeAttr("big-child");
                 currentTags.show();
@@ -3125,6 +3121,7 @@ APP_MASTERS.controller("Controller_Master", [
             }
             var childExpanded = false;
             $("body").on("click", ".bootstrap-tagsinput .hideTagsChild", function() {
+            	$scope.initBoostrapTagsInputTooltip() 
                 if (childExpanded == true) {
                     $(this)
                         .parent(".bootstrap-tagsinput")
@@ -3232,6 +3229,9 @@ APP_MASTERS.controller("Controller_Master", [
                 toastr.error("Field is already added!");
             } else {
                 $scope.formValues[model].push(data);
+                setTimeout(function(){
+					$scope.initBoostrapTagsInputTooltip();           	
+                })
             }
         };
         vm.initDropZone = function(id) {
@@ -3369,6 +3369,15 @@ APP_MASTERS.controller("Controller_Master", [
                 Active: true
             };
         };
+        $scope.initBoostrapTagsInputTooltip = function(){
+			$(".bootstrap-tagsinput .tag").each(function(k, v) {
+				if ($(v).is(":visible") && !$(v).hasClass("tooltip") ) {
+                    $(this).attr("tooltip", "");
+                    $(this).attr("data-original-title", $(v).text());
+                    $(v).tooltip();
+				}
+            })  
+        }
         $scope.addElement = function(ele, idx) {
             $scope.current_field.Active = false;
             var returnKey = [];
