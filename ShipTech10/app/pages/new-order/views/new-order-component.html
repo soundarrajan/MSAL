@@ -1712,7 +1712,7 @@
                                      *
                                  </span> -->
                         </label>
-                        <select ng-init="!$ctrl.data.orderCancelReasonOption ? ($ctrl.cancelReason.cancelReason = $ctrl.lists.OrderCancelReasonOption[0]) : ($ctrl.cancelReason.cancelReason = $ctrl.data.orderCancelReasonOption)" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style=" margin-left: 12.5px; width: 435px; height: 35px;"
+                        <select  ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style=" margin-left: 12.5px; width: 435px; height: 35px;"
                                             ng-model="$ctrl.cancelReason.cancelReason" name="cancelReason" id="cancel_reason_cancel_reason_{{ $index }}">
           
                         </select>

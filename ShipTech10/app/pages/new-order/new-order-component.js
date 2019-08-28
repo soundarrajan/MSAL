@@ -1594,6 +1594,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				}    
             }
             if (command == 'updateCancelOrderReason') {
+                if (!ctrl.cancelReason) {
+                    ctrl.cancelReason = {};
+                }
+                if (!ctrl.data.orderCancelReasonOption) {
+                    ctrl.cancelReason.cancelReason = $filter("filter")(ctrl.lists.OrderCancelReasonOption, {name: 'Others'})[0];
+                } else {
+                    ctrl.cancelReason.cancelReason = ctrl.data.orderCancelReasonOption;
+                }
                 $scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
                     if (modalresponse) {
                         if (typeof(ctrl.cancelReason) != "undefined") {
@@ -1618,6 +1626,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 return;
             }
             if (command == 'cancel' && !ctrl.comfirmCancelOrder) {
+                if (!ctrl.cancelReason) {
+                    ctrl.cancelReason = {};
+                }
+                if (!ctrl.data.orderCancelReasonOption) {
+                    ctrl.cancelReason.cancelReason = $filter("filter")(ctrl.lists.OrderCancelReasonOption, {name: 'Others'})[0];
+                } else {
+                    ctrl.cancelReason.cancelReason = ctrl.data.orderCancelReasonOption;
+                }
 				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
 					if (modalresponse) {
