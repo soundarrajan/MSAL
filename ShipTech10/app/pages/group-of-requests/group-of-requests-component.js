@@ -61,8 +61,6 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             ctrl.quoteByCurrency = settings.payload.tenantFormats.currency;
             ctrl.quoteByTimezone = settings.payload.tenantFormats.timeZone;
             ctrl.numberPrecision = settings.payload.defaultValues;
-            ctrl.includeAverageSurveyorCharge = settings.payload.defaultValues.includeAverageSurveyorCharge;
-            ctrl.averageSurveyorCost = settings.payload.defaultValues.averageSurveyorCost;
             ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
             ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
             ctrl.tenantFormats = settings.payload.tenantFormats;
@@ -70,6 +68,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         });
         tenantService.procurementSettings.then(function (settings) {
             ctrl.isEnergyCalculationRequired = settings.payload.energyConfiguration.isEnergyCalculationRequired;
+            ctrl.includeAverageSurveyorCharge = settings.payload.energyConfiguration.includeAverageSurveyorCharge;
+            ctrl.averageSurveyorCost = settings.payload.energyConfiguration.averageSurveyorCost;
             ctrl.needSupplierQuote = settings.payload.offer.needSupplierQuoteValidityDateExpiry;
             ctrl.isSkipRfqAllowed = settings.payload.offer.isSkipRfqAllowed;
             ctrl.allowAddNewContact = settings.payload.request.allowAddNewContact;
