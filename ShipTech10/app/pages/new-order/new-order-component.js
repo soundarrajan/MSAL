@@ -1598,12 +1598,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     if (modalresponse) {
                         if (typeof(ctrl.cancelReason) != "undefined") {
                             var orderCancelReasonOption = ctrl.cancelReason.cancelReason;
-                            // console.log(orderCancelReasonOption);
-                            //         // if (typeof(ctrl.data.cancelOrderComments) != "undefined" && ctrl.data.cancelOrderComments != null) {
-                            //         //     ctrl.data.cancelOrderComments = ctrl.cancelReason.cancelReason.name + '\n' + ctrl.data.cancelOrderComments; 
-                            //         // } else {
-                            //         //     ctrl.data.cancelOrderComments = ctrl.cancelReason.cancelReason.name;
-                            //         // }
 
                         } else {
                             orderCancelReasonOption = null;
@@ -1611,7 +1605,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                         var object = {id: orderId, cancelOrderComments: ctrl.data.cancelOrderComments, orderCancelReasonOption: orderCancelReasonOption};
                         orderModel.updateCancelOrderReason(object).
                         then(function (response) {
-                            ctrl.comfirmCancelOrder = true;
                             ctrl.comfirmCancelOrder = true;
                             $scope.prettyCloseModal();             
                         }).catch(function (error) {
@@ -1635,7 +1628,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                             orderCancelReasonOption = null;
                         }
                         var object = {id: orderId, cancelOrderComments: ctrl.data.cancelOrderComments, orderCancelReasonOption: orderCancelReasonOption};
-
                         orderModel.sendOrderCommand(command, object).
 	                    then(function (response) {
 							ctrl.comfirmCancelOrder = true;
@@ -1849,7 +1841,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     });
             }
         };
-
         $scope.hasMissingSpecGroup = function() {
         	var hasMissingSpecGroup = false;
         	var productsWithoutSpec = []
@@ -2898,6 +2889,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 			}
 			ctrl.confirmedModal = false
 			$(".confirmAction").on("click", function(){
+
 				if (ctrl.confirmedModal) {
 					return
 				}

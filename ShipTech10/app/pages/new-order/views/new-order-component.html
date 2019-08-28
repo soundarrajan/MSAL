@@ -1712,13 +1712,9 @@
                                      *
                                  </span> -->
                         </label>
-                        <select ng-if="!$ctrl.data.orderCancelReasonOption" ng-init="$ctrl.cancelReason.cancelReason = $ctrl.lists.OrderCancelReasonOption[2]" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style=" margin-left: 12.5px; width: 435px; height: 35px;"
+                        <select ng-init="!$ctrl.data.orderCancelReasonOption ? ($ctrl.cancelReason.cancelReason = $ctrl.lists.OrderCancelReasonOption[0]) : ($ctrl.cancelReason.cancelReason = $ctrl.data.orderCancelReasonOption)" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style=" margin-left: 12.5px; width: 435px; height: 35px;"
                                             ng-model="$ctrl.cancelReason.cancelReason" name="cancelReason" id="cancel_reason_cancel_reason_{{ $index }}">
           
-                        </select>
-                         <select ng-if="$ctrl.data.orderCancelReasonOption" ng-init="$ctrl.cancelReason.cancelReason = $ctrl.data.orderCancelReasonOption" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"  style=" margin-left: 12.5px; width: 435px; height: 35px;"
-                                            ng-model="$ctrl.cancelReason.cancelReason" name="cancelReason" id="cancel_reason_cancel_reason_{{ $index }}">
-                                
                         </select>
                     </div>
                      <div class="row" style="padding-left: 27px; margin-top: 20px;">
@@ -1740,12 +1736,12 @@
                  </form>
             </div>
             <div ng-if="$ctrl.data.status.id !== $ctrl.STATUS['Cancelled'].id" class="modal-footer-comment" style="margin-right: 11.1px;" >
-                <button type="button" class="btn btn-comment btn-default noAction" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-comment btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn  btn-default noAction" data-dismiss="modal">No</button>
+                <button type="button" class="btn  btn-default  btn-outline orange confirmAction" ng-disabled="!$ctrl.cancelReason.cancelReason" data-dismiss="modal">Yes</button>
             </div>
             <div ng-if="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" class="modal-footer-comment" style="margin-right: 11.1px;" >
-                <button type="button" class="btn btn-comment btn-default  btn-outline orange confirmAction" data-dismiss="modal">Save</button>
-                <button type="button" class="btn btn-comment btn-default noAction" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn  btn-default  btn-outline orange confirmAction" ng-disabled="!$ctrl.cancelReason.cancelReason" data-dismiss="modal">Save</button>
+                <button type="button" class="btn  btn-default noAction" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
