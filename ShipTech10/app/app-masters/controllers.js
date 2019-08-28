@@ -907,48 +907,53 @@ APP_MASTERS.controller("Controller_Master", [
                     toastr.warning("Please create a Spec Group for the product in the Spec Group master and then select a default Spec Group");
                 }
                 var newEnergyFormulaProducts = [];
-                var energyFormulaSpecific = {
-                    product: {
-                        id: Number(vm.entity_id),
-                    },
-                    energyFormula: {
-                        id: _.get($scope, 'formValues.energyFormulaSpecific.id')
-                    },
-                    energyFormulaTypeName: 'SpecificEnergyCalculation'
-                };
+                if ($scope.formValues.isEnergyCalculationRequired) {
+                    if (_.get($scope, 'formValues.energyFormulaSpecific.id')) {
+                        var energyFormulaSpecific = {
+                            product: {
+                                id: Number(vm.entity_id),
+                            },
+                            energyFormula: {
+                                id: _.get($scope, 'formValues.energyFormulaSpecific.id')
+                            },
+                            energyFormulaTypeName: 'SpecificEnergyCalculation'
+                        };
 
-                var energyFormulaSpecificId = 0;
+                        var energyFormulaSpecificId = 0;
 
-                _.each($scope.formValues.energyFormulaProducts, function(value, key) {
-                    if (value.energyFormulaTypeName === 'SpecificEnergyCalculation') {
-                        energyFormulaSpecificId = value.id;
+                        _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                            if (value.energyFormulaTypeName === 'SpecificEnergyCalculation') {
+                                energyFormulaSpecificId = value.id;
+                            }
+                        });
+
+                        energyFormulaSpecific.id = energyFormulaSpecificId;
+                        newEnergyFormulaProducts.push(energyFormulaSpecific);
                     }
-                });
 
-                energyFormulaSpecific.id = energyFormulaSpecificId;
+                    if (_.get($scope, 'formValues.energyFormulaCCAI.id')) {
+                        var energyFormulaCCAI = {
+                            product: {
+                                id: Number(vm.entity_id),
+                            },
+                            energyFormula: {
+                                id: _.get($scope, 'formValues.energyFormulaCCAI.id')
+                            },
+                            energyFormulaTypeName: 'CCAI'
+                        };
 
-                newEnergyFormulaProducts.push(energyFormulaSpecific);
+                        var energyFormulaCCAIId = 0;
 
-                var energyFormulaCCAI = {
-                    product: {
-                        id: Number(vm.entity_id),
-                    },
-                    energyFormula: {
-                        id: _.get($scope, 'formValues.energyFormulaCCAI.id')
-                    },
-                    energyFormulaTypeName: 'CCAI'
-                };
+                        _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                            if (value.energyFormulaTypeName === 'CCAI') {
+                                energyFormulaCCAIId = value.id;
+                            }
+                        });
 
-                var energyFormulaCCAIId = 0;
-
-                _.each($scope.formValues.energyFormulaProducts, function(value, key) {
-                    if (value.energyFormulaTypeName === 'CCAI') {
-                        energyFormulaCCAIId = value.id;
+                        energyFormulaCCAI.id = energyFormulaCCAIId;
+                        newEnergyFormulaProducts.push(energyFormulaCCAI);
                     }
-                });
-
-                energyFormulaCCAI.id = energyFormulaCCAIId;
-                newEnergyFormulaProducts.push(energyFormulaCCAI);
+                }
 
                 $scope.formValues.energyFormulaProducts = newEnergyFormulaProducts;
             }
