@@ -169,27 +169,39 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             }
             var amountPrecision = _.get(ctrl, 'numberPrecision.amountPrecision') ? _.get(ctrl, 'numberPrecision.amountPrecision') : 0;
             var ret = '';
-            if (hsfoValue) {
-                ret += 'HFSO : ';
-                ret += String(parseFloat(hsfoValue).toFixed(amountPrecision));
-                if (hsfoUom) {
-                    ret += ' ' + hsfoUom.name; 
+            if (typeof(hsfoValue) != 'undefined' ) {
+                ret += 'HSFO : ';
+                if (hsfoValue) {
+	                ret += String(parseFloat(hsfoValue).toFixed(amountPrecision));
+	                if (hsfoUom) {
+	                    ret += ' ' + hsfoUom.name; 
+	                }
+                } else {
+                	ret += " - ";
                 }
                 ret += '<br>';
             }
-            if (dmaValue) {
+            if (typeof(dmaValue) != 'undefined') {
                 ret += 'MGO : ';
-                ret += String(parseFloat(dmaValue).toFixed(amountPrecision));
-                if (dmaUom) {
-                    ret += ' ' + dmaUom.name; 
+                if (dmaValue) {
+	                ret += String(parseFloat(dmaValue).toFixed(amountPrecision));
+	                if (dmaUom) {
+	                    ret += ' ' + dmaUom.name; 
+	                }
+                } else {
+                	ret += " - ";
                 }
                 ret += '<br>';
             }
-            if (lsfoValue) {
+            if (typeof(lsfoValue) != 'undefined') {
                 ret += 'ULSFO : ';
-                ret += String(parseFloat(lsfoValue).toFixed(amountPrecision));
-                if (lsfoUom) {
-                    ret += ' ' +  lsfoUom.name; 
+                if (lsfoValue) {
+	                ret += String(parseFloat(lsfoValue).toFixed(amountPrecision));
+	                if (lsfoUom) {
+	                    ret += ' ' +  lsfoUom.name; 
+	                }
+                } else {
+                	ret += " - ";
                 }
                 ret += '<br>';
             }
