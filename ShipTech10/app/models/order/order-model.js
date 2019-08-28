@@ -202,6 +202,13 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             });
         }
 
+        function updateCancelOrderReason(params) {
+            var request_data = payloadDataModel.create(params);
+            return orderResource.updateCancelOrderReason(request_data).$promise.then(function(data) {
+                return data;
+            });
+        }        
+
         function mailPreviewConfirmToSeller(data) {
             var payload = payloadDataModel.create(data);
             return orderResource.mailPreviewConfirmToSeller(payload).$promise.then(function(data) {
@@ -422,6 +429,7 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             getFormulaDetails : getFormulaDetails,
             createWithContract: createWithContract,
             cancelOrderProduct : cancelOrderProduct,
+            updateCancelOrderReason : updateCancelOrderReason,
             getOrderEmailTemplate: getOrderEmailTemplate,
             previewOrderToBeDeliveredMail: previewOrderToBeDeliveredMail,
             sendOrderToBeDeliveredMail: sendOrderToBeDeliveredMail,
