@@ -1837,6 +1837,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 payload = {
                     "id" : orderId
                 }
+                if (command == "confirm") {
+                	payload = orderId;
+                }
                 orderModel.sendOrderCommand(command, payload).
                     then(function (response) {
 
