@@ -641,11 +641,22 @@
                 <div class="col-md-4">
                     <div class="form-group row">
                         <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.POPULATE_REQUEST_COMMENTS_TO' | translate }}
+                            Request to Negotiation
                         </label>
                         <div class="input-group form_input form_input_agentDisplay">
                             <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.CommentSection track by item.id"
-                                id="PopulateRequestCommentsTo" ng-model="formValues.procurement.request.populateRequestCommentsTo"></select>
+                                id="requestToNegotiation" ng-model="formValues.procurement.request.populateNegotiationCommentsTo"></select>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
+                            Negotiation To Order
+                        </label>
+                        <div class="input-group form_input form_input_agentDisplay">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.CommentSection track by item.id"
+                                id="negotiationToOrder" ng-model="formValues.procurement.request.populateOrderCommentsFrom"></select>
                         </div>
                     </div>
                 </div>  

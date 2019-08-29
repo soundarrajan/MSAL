@@ -843,15 +843,9 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
     }
 
     $scope.setConfirmContract = function(value) {
-        // console.log("IOANA");
-        // console.log($scope.emailTemplates);
         var object = $filter("filter")($scope.emailTemplates, {name: 'ContractConfirmationEmailTemplate'})[0];
-        console.log(object);
         $scope.CM.ContractEmailTemplate = object;
-        //console.log($scope.CM.ContractEmailTemplate);
         $scope.changeContractEmailTemplate(object);
-
-
     }
 
 
