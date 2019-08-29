@@ -48,7 +48,7 @@
                 <!-- End collapsed request tab -->
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + ($ctrl.counterpartyDetailsIsExpanded ? 2 : 1) }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important">
+                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important">
                     <!-- {{request.newProductCount}} -->
                     <span ng-if="$index == 0" class="font-white text-uppercase" style="font-weight: initial;font-size: 16px;padding: 5px 5px;display: block;">
                         Negotiation Details
@@ -131,7 +131,7 @@
                 <!-- End collapsed request tab -->
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + ($ctrl.counterpartyDetailsIsExpanded ? 2 : 1 ) }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
+                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
                     <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;color: #000;box-shadow: 0px 0px 8px 1px #3641504f; padding: 0 5px; font-size:16px;">
                         <label style="height: 100%;padding: 0;margin: 0;position: relative;float: left;display: flex;justify-content: center;align-items: center;" class="control-label"><b>{{request.name}} - {{request.vesselDetails.vessel.name}}</b></label>
                     </form>
@@ -214,10 +214,9 @@
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="left-border border-selected-left" style="background: #f1f5f8; width: 20px;">
                     <!-- Actions -->
                 </th>
-                <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
-                <!-- <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="background: #f1f5f8;"> -->
+                <!-- <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
                     Validity
-                </th>
+                </th> -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="display: none">
                     Incoterm
                 </th>
@@ -345,7 +344,7 @@
     
                 <!-- Expanded request tab -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border no-top-border border-selected-left"></th>
-                <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left"></th>
+                <!-- <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left"></th> -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" style="display: none">incoterm</th>
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" ></th>
                 <th ng-repeat-start="productTop in requestProducts" class="negotiationProductTh" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="no-top-border">
@@ -448,7 +447,7 @@
                     </div>
                 </td>
                 <!-- End collapsed request tab -->
-                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border border-selected-left" colspan="{{$ctrl.counterpartyDetailsIsExpanded ? 3 : 2}}" style="min-width: 145px; max-width: 175px;" >
+                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border border-selected-left" colspan="{{$ctrl.counterpartyDetailsIsExpanded ? 2 : 2}}" style="min-width: 145px; max-width: 175px;" >
                     <div ng-repeat="individualLocation in location" ng-if="individualLocation.requestId === requestProducts[0].requestId" class="form-group-sm form-inline" style="box-shadow: 0px 0px 8px 1px #3641504f;padding:5px;border: 1px solid #d1d8dd;">
                         <label class="control-label"><strong> ETA: </strong></label>
                         <span class="hidden">
@@ -812,12 +811,12 @@
                         </i> -->
                     </span>&nbsp;&nbsp;
                 </td>
-                <td ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="border-selected-left">
-                <!-- <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left"> -->
+                <!-- <td ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="border-selected-left">
+                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left">
                     <span ng-init="validity = $ctrl.calculateMinValidity(seller, requestProducts, location)"></span>
-                  <!--   {{validity}} -->
+                  {{validity}}
                     <span ng-init="count = $ctrl.countdown(validity)">{{$ctrl.validityArray[count].displayString}}</span>
-                </td>
+                </td> -->
                 <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left" style="display: none">
                     <!-- ??Terms?? -->
                     <!-- <span ng-init="term = $ctrl.getOfferPaymentTerm(seller)">{{term.name}}</span> -->
