@@ -1036,8 +1036,8 @@
                                             class="form-control" ng-disabled="$ctrl.disabledProduct[product.id]"
                                             id="product_delOption_{{ $index }}"></select>
                                     </td>
-                                    <td style="max-width: 250px;min-width: 180px">
-                                        <div class="input-group">
+                                    <td style="max-width: 300px;min-width: 300px">
+                                        <div class="input-group" style="width: 100%">
                                             <input name="Product {{$index+1}} ({{product.tempProduct.name}}) Physical Supplier" class="typeahead form-control"
                                                 uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | filter:$viewValue | limitTo:5"
                                                 typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
