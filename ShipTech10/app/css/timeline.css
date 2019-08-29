@@ -4,9 +4,6 @@
 }
 
 .vis-inner {
-	/* width: 100%; */
-	/* min-height: 100%; */
-	/* height: 100%; */
 	padding: 0 !important;
 	display: table !important;
 }
@@ -19,13 +16,12 @@
 }
 
 .vis-custom-group-column { 
-	width: 100px;
+	width: 120px;
 	/* height: 100%; */
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #bfbfbf;
-    font-size: 0.8em;
     text-align: center;
     padding: 5px;
     text-overflow: ellipsis;
@@ -46,7 +42,7 @@
 }
 
 .vis-item {
-	min-height: 35px;
+	/* height: 20px; */
 }
 
 .vis-item-content {
@@ -84,4 +80,14 @@ schedule-dashboard-timeline .vis-inner {
 
 schedule-dashboard-timeline .vis-item.vis-selected {
 	box-shadow: 0px 0px 0px 3px #ffc200;
+}
+
+.vis-voyage-content {
+	color: darkslateblue;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.vis-voyage-content-sap {
+    box-shadow: 0px 2px 0px 0px #000 inset, 0px 3px 0px 0px #fff inset, 0px 5px 0px 0px #000 inset;
 }
