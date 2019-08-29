@@ -411,7 +411,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                 for (var i = 0; i < ctrl.request.locations[j].products.length; i++) {
                                 	ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7);
                                     if (ctrl.request.locations[j].products[i].product) {
-                                    	ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
+                                    	// ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                         listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
                                         });
@@ -420,6 +420,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                         });
                                     }
                                 }
+                                ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
+                                _.each(ctrl.request.locations[j].products, function(value, key) {
+                                    value.product.name = String(key + 1) + ' - ' + value.product.name;
+                                });
                             }
                             newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then(function(buyer) {
                                 ctrl.buyer = buyer.payload;
@@ -1972,7 +1976,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 					                    v.specGroup = server_data2.data.payload[0];
 			                		}
 			                	})
-								ctrl.request.locations[locIdx].products = $filter('orderBy')(ctrl.request.locations[locIdx].products, 'productType.name');
+								// ctrl.request.locations[locIdx].products = $filter('orderBy')(ctrl.request.locations[locIdx].products, 'productType.name');
 			                });
                 		}
                 	})
