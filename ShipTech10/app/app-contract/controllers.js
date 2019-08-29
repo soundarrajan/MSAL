@@ -1,7 +1,7 @@
 /**
  * Contract Management Controller
  */
-APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Service', '$listsCache', 'Factory_Contract', '$state', '$location', '$q', '$compile', 'Factory_Master', '$timeout', '$templateCache', '$uibModal', '$tenantSettings', 'statusColors', 'screenLoader', 'tenantService', function($scope, $rootScope, $Api_Service, $listsCache, Factory_Contract, $state, $location, $q, $compile, Factory_Master, $timeout, $templateCache, $uibModal, $tenantSettings, statusColors, screenLoader, tenantService) {
+APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Service', '$listsCache', 'Factory_Contract', '$state', '$filter', '$location', '$q', '$compile', 'Factory_Master', '$timeout', '$templateCache', '$uibModal', '$tenantSettings', 'statusColors', 'screenLoader', 'tenantService', function($scope, $rootScope, $Api_Service, $listsCache, Factory_Contract, $state, $filter, $location, $q, $compile, Factory_Master, $timeout, $templateCache, $uibModal, $tenantSettings, statusColors, screenLoader, tenantService) {
     var vm = this;
     // console.log('Controller_Contract',vm);
     var guid = '';
@@ -840,6 +840,18 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope', '$rootScope', '$Api_Se
                 }
             }
         })
+    }
+
+    $scope.setConfirmContract = function(value) {
+        // console.log("IOANA");
+        // console.log($scope.emailTemplates);
+        var object = $filter("filter")($scope.emailTemplates, {name: 'ContractConfirmationEmailTemplate'})[0];
+        console.log(object);
+        $scope.CM.ContractEmailTemplate = object;
+        //console.log($scope.CM.ContractEmailTemplate);
+        $scope.changeContractEmailTemplate(object);
+
+
     }
 
 

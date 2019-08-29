@@ -149,8 +149,8 @@
                             <div class="input-group form_input">
                                 <span ng-controller="Controller_Master as CM">
                                     <span ng-init="getEmailTransactionType('ContractChanges');">
-                                        <span ng-if="emailTemplates" ng-init="CM.ContractEmailTemplate=emailTemplates[0]">
-                                            <span ng-init="changeContractEmailTemplate(CM.ContractEmailTemplate);"></span>
+                                        <span ng-if="emailTemplates">
+                                            <span ng-init="setConfirmContract(CM.ContractEmailTemplate);"></span>
                                             <select style="height: 31px;" ng-model="CM.ContractEmailTemplate" ng-change="changeContractEmailTemplate(CM.ContractEmailTemplate);" class="form-control bs-select changeIT" ng-options="item as item.displayName for item in emailTemplates track by item.id">
                                             </span>
                                         </select>

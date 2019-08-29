@@ -1613,6 +1613,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                         var object = {id: orderId, cancelOrderComments: ctrl.data.cancelOrderComments, orderCancelReasonOption: orderCancelReasonOption};
                         orderModel.updateCancelOrderReason(object).
                         then(function (response) {
+                            ctrl.data.orderCancelReasonOption = ctrl.cancelReason.cancelReason;
                             ctrl.comfirmCancelOrder = true;
                             $scope.prettyCloseModal();             
                         }).catch(function (error) {
