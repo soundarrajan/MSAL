@@ -7645,5 +7645,20 @@ APP_MASTERS.controller("Controller_Master", [
                 $scope.formValues.energyFormulaDescriptionCCAI = description;
             }
         }
+
+        vm.isCounterpartyContactAddressRequired = function(addressIndex) {
+            var address;
+            if (_.has($scope, 'formValues.contacts')) {
+                address = $scope.formValues.contacts[addressIndex].address;
+            }
+            if (address) {
+                for (var key in address) {
+                    if (address[key] !== null && address[key] !== "" && typeof(address[key]) !== 'undefined')
+                        return true;
+                }
+                return false;
+            }
+            return false;
+        }
     }
 ]);
