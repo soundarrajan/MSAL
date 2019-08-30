@@ -2216,26 +2216,32 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.sendCanBeCanceledRequest = function(payload, dataReasonCancel) {
             $scope.prettyCloseModal();
             newRequestModel.canBeCancelled(payload).then(function(data) {
-                if (data.payload) {
-                    ctrl.showCanBeCancelledRequestConfirm(data.payload);
-                    // newRequestModel.cancelRequest({
-                    //     "id": ctrl.request.id
-                    // }).then(function (responseData) {
-                    //     ctrl.buttonsDisabled = false;
-                    //     $state.reload();
-                    // }, function () {
-                    //     ctrl.buttonsDisabled = false;
-                    // });
+                if ($state.params.status.name == 'Inquired' || $state.params.status.name == 'Quoted') {
+                    ctrl.sendCancelRequestAction();
                     ctrl.buttonsDisabled = false;
+
                 } else {
-                    // newRequestModel.cancelRequest({
-                    //     "id": ctrl.request.id
-                    // }).then(function (responseData) {
-                    //     ctrl.buttonsDisabled = false;
-                    //     $state.reload();
-                    // }, function () {
-                    //     ctrl.buttonsDisabled = false;
-                    // });
+                    if (data.payload) {
+                        ctrl.showCanBeCancelledRequestConfirm(data.payload);
+                        // newRequestModel.cancelRequest({
+                        //     "id": ctrl.request.id
+                        // }).then(function (responseData) {
+                        //     ctrl.buttonsDisabled = false;
+                        //     $state.reload();
+                        // }, function () {
+                        //     ctrl.buttonsDisabled = false;
+                        // });
+                        ctrl.buttonsDisabled = false;
+                    } else {
+                        // newRequestModel.cancelRequest({
+                        //     "id": ctrl.request.id
+                        // }).then(function (responseData) {
+                        //     ctrl.buttonsDisabled = false;
+                        //     $state.reload();
+                        // }, function () {
+                        //     ctrl.buttonsDisabled = false;
+                        // });
+                    }
                 }
             });
         };
@@ -2323,7 +2329,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     }
                 ]
             };
+        
             ctrl.sendCanBeCanceledRequest(canBeCancelledPayload);
+            
             // newRequestModel.canBeCancelled(canBeCancelledPayload).then(function(data) {
             //     if (data.payload) {
             //         $scope.confirmationOfCancelation = confirm(data.payload);
