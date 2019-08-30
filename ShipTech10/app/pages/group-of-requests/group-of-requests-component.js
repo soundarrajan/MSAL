@@ -3861,7 +3861,7 @@ ctrl.setProductData = function(data, loc) {
                 });
             }
         };
-        ctrl.openGeneralWidgetBlade = function (widget) {
+        ctrl.openGeneralWidgetBlade = function (widget, product) {
             ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
             ctrl.blade.widgetType = "general";
             ctrl.blade.colLayout = "single";
@@ -3869,10 +3869,31 @@ ctrl.setProductData = function(data, loc) {
             $bladeEntity.open("groupOfRequestBlade");
             ctrl.bladeOpened = true;
             ctrl.dataLoaded = true;
+            if (widget == "energyCalculation") {
+            	ctrl.initEnergyCalculation(product);
+            }
             if (widget == 'comments') {
                 $rootScope.overrideCloseNavigation = true;
             }
         };
+        ctrl.initEnergyCalculation = function(product){
+			requestId = product.requestId;
+			productId = product.product.id;
+			requestProductIds = [];
+            $.each(ctrl.requests, function (reqK, reqV) {
+            	if (requestId == reqV.id) {
+	                $.each(reqV.locations, function (locK, locV) {
+	                	currentLocation = locV;
+	                    $.each(locV.products, function (prodK, prodV) {
+	                        if (productId == prodV.product.id) {
+                        		requestProductIds.push(prodV.id);
+	                        }
+	                    });
+	                });
+            	}
+            });
+			console.log(requestProductIds);
+        }
         ctrl.groupSellersInLocations = function () {
             groupedLocationsIds = [];
             groupedLocations = [];

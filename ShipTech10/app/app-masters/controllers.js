@@ -995,6 +995,16 @@ APP_MASTERS.controller("Controller_Master", [
             if (vm.app_id == "admin" && vm.screen_id == "configuration") {
                 //chech for product location to be obj
                 $.each($scope.formValues.email, function(key, val) {
+                	if (typeof(val.toEmailsConfiguration) == "string") {
+                		val.toEmailsConfiguration = val.toEmailsConfiguration.split(",")
+                	}
+					if (typeof(val.ccEmailsConfiguration) == "string") {
+						val.ccEmailsConfiguration = val.ccEmailsConfiguration.split(",")
+					}
+					if (typeof(val.attachmentDocumentTypes) == "string") {
+						val.attachmentDocumentTypes = val.attachmentDocumentTypes.split(",")
+					}
+
 	                toEmailsConfigurationSimplified = []
 	                ccEmailsConfigurationSimplified = []
 	                attachmentDocumentTypesSimplified = []
