@@ -967,7 +967,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "offerSpecParameter",
                         displayName: "Offer Spec Parameter",
-                        minWidth: 140,
+                        minWidth: 180,
                         cellTemplate: $scope.dataTableTemplates.readonlyNumber,
                         decimalNumbers: vm.quantity
                     },
