@@ -29,6 +29,7 @@ return $resource(API.BASE_URL_DATA_PROCUREMENT + '/api/procurement/rfq/:verb/:ac
         'include': { method:'POST', params: {verb:'include'}, interceptor: resourceInterceptor},
         'delink': { method:'POST', params:{verb:'delink'}, interceptor: resourceInterceptor},
         'getOfferDetails': { method:'POST', params: {verb:'getOfferDetails'}},
+        'getEnergyBladeContentByProduct': { method:'POST', params: {verb:'getEnergyBladeContentByProduct'}},
         'getNewOfferDetails': { method:'POST', params: {verb:'getNewOfferDetails'}},
         'updateOfferDetails': { method:'POST', params:{verb:'updateOfferDetails'}, interceptor: resourceInterceptor},
         'updateGroup': { method:'POST', params:{verb:'updateGroup'}, interceptor: resourceInterceptor},

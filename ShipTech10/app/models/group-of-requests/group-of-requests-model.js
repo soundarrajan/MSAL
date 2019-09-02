@@ -181,6 +181,12 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
                 return data;
             });
         }
+        function getEnergyBladeContentByProduct(payload) {
+            var request_data = payloadDataModel.create(payload);
+            return groupOfRequestsResource.getEnergyBladeContentByProduct(request_data).$promise.then(function(data) {
+                return data;
+            });
+        }        
         /**
          * Send rfq requirements
          * @return {Promise} A promise.
@@ -600,6 +606,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             getRfqEmailTemplate: getRfqEmailTemplate,
             getRfqRequoteEmailTemplate: getRfqRequoteEmailTemplate,
             getViewRfqEmailTemplate: getViewRfqEmailTemplate,
+            getEnergyBladeContentByProduct: getEnergyBladeContentByProduct,
             duplicateSeller: duplicateSeller,
             saveBuyerQuote: saveBuyerQuote,
             updateEnergySpecValues: updateEnergySpecValues,

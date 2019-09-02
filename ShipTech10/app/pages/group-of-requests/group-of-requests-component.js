@@ -3893,6 +3893,13 @@ ctrl.setProductData = function(data, loc) {
             	}
             });
 			console.log(requestProductIds);
+			payload = {
+				"requestGroupId":ctrl.groupId,
+				"requestProductIds":requestProductIds.join(",")
+			}
+			groupOfRequestsModel.getEnergyBladeContentByProduct(payload).then(function (data) {
+				console.log(data);
+            });			
         }
         ctrl.groupSellersInLocations = function () {
             groupedLocationsIds = [];

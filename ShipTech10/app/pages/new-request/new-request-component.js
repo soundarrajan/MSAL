@@ -1506,7 +1506,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.request.vesselDetails.service = {};
                         }
 
-                        if (typeof ctrl.request.id == "undefined" || ctrl.request.id == 0) {
+                        if (typeof ctrl.request.id == "undefined" || ctrl.request.id == 0 || !ctrl.request.id) {
                             ctrl.request.vesselDetails.service.name = vessel.defaultService ? vessel.defaultService.name : ctrl.request.vesselDetails.service.name;
                             ctrl.request.vesselDetails.service.id = vessel.defaultService ? vessel.defaultService.id : ctrl.request.vesselDetails.service.id;
                             ctrl.request.vesselDetails.service = vessel.defaultService ? vessel.defaultService : ctrl.request.vesselDetails.service;
