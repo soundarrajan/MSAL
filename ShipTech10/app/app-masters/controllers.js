@@ -1061,6 +1061,8 @@ APP_MASTERS.controller("Controller_Master", [
 	            if (vm.app_id == "claims" && vm.screen_id == "claims") {
 	                var type = $scope.filterFromData.claimType.claimType.name;
 	                if (type != "Debunker") {
+                        console.log("Ioana");
+                        console.log($scope.filterFromData.claimDebunkerDetails);
 	                	$scope.filterFromData.claimDebunkerDetails = null;
 	                }
 	            }

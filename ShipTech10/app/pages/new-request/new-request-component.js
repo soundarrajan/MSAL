@@ -2329,9 +2329,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     }
                 ]
             };
-            console.log(ctrl.requestTenantSettings);
-            console.log(ctrl.requestTenantSettings.captureReasonToCancelRequest);
-            console.log(ctrl.requestTenantSettings.captureReasonToCancelRequest.id);
+        
             ctrl.sendCanBeCanceledRequest(canBeCancelledPayload);
             
             // newRequestModel.canBeCancelled(canBeCancelledPayload).then(function(data) {

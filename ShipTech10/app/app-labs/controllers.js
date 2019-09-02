@@ -305,10 +305,10 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 };
                 console.log(data);
                 console.log($scope.formValues);
-                // if (!data.productId) return;
                 if ((vm.changed > 0 && vm.entity_id > 0) || (vm.changed >= 0 && vm.entity_id < 1)) {
                     vm.getDataTable('spec', data, 'labTestResults');
                 }
+
             }, 100);
             vm.changed++;
             vm.setPhysicalSupplier();
