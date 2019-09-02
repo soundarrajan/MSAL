@@ -3331,21 +3331,21 @@ Uncomment to see border around all .col-*
                 border-right: none;
             }
 
+            #grid_sealNumber > div.ui-grid-contents-wrapper > div.ui-grid-render-container > div.ui-grid-viewport {
+                height: auto !important;
+                overflow: hidden !important;
+            }
+
             #grid_sealNumber {
-                height: 300px!important
+                height: auto !important;
             }
 
             #grid_sealNumber .ui-grid-cell {
-                height: 50px!important
+                height: 110px!important;
             }
 
             #grid_sealNumber .ui-grid-cell .double-cells:first-child {
-                /*height: 38px!important;*/
-                border-bottom: 1px solid #e7ecf1
-            }
-
-            #grid_sealNumber .ui-grid-row:first-child .ui-grid-cell, #grid_sealNumber .ui-grid-row:nth-child(2) .ui-grid-cell {
-                height: 100px!important
+                border-bottom: 1px solid #e7ecf1;
             }
 
             .cells_2 {
