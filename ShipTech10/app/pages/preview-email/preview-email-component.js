@@ -388,7 +388,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     	return;
                     }                    
                     if (ctrl.template.name === 'Questionnaire - Redelivery') {
-                        ctrl.template.name = 'Redelivery';
+                        ctrl.template.name = 'Redelivery'; 
                     }
                     if (ctrl.template.name === 'Questionnaire - Standard') {
                         ctrl.template.name = 'Standard';
@@ -862,7 +862,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 });
             }*/ else {
 	            emailModel.sendEmail(ctrl.email, ctrl.template).then(function() {
-					if(ctrl.template && ctrl.template.name === 'Questionnaire - Standard' || ctrl.template.name === 'Questionnaire - Redelivery') {
+					if(ctrl.template && ctrl.template.name === 'Questionnaire - Standard' || 
+						ctrl.template.name === 'Questionnaire - Redelivery' || 
+						ctrl.template.name === 'Redelivery' ||
+						ctrl.template.name === 'Standard' 
+						) {
 						payload = ctrl.data.requestId
 						newRequestModel.questionnaireStatus(payload).then(function(){
                             $window.history.back();
