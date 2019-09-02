@@ -24,7 +24,7 @@ $.jgrid.extend({
                 $(this).jqGrid("Ascensys.init");
                 $(this).jqGrid.Ascensys.loaded = true;
             } else {
-                if ($("." + Cfg.class.container).length == 0) {
+                if ($(this).parents("clc-table-list").find("." + Cfg.class.container).length == 0) {
                     $(this).jqGrid("Ascensys.init"); // again :)
                 }
             }
