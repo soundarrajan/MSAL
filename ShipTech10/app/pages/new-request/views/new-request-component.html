@@ -65,7 +65,10 @@
                     <!-- <li ng-if="$ctrl.canValidate()> 0">
                     </li> -->
                     <li ng-if="$ctrl.canCancel() > 0">
-                        <a ng-click="$ctrl.showCancelRequestConfirm()">
+                        <a ng-if="$ctrl.requestTenantSettings.captureReasonToCancelRequest.id == 1" ng-click="$ctrl.cancelRequest()">
+                            Cancel
+                        </a>
+                        <a ng-if="$ctrl.requestTenantSettings.captureReasonToCancelRequest.id == 2" ng-click="$ctrl.showCancelRequestConfirm()">
                             Cancel
                         </a>
                     </li>
@@ -1072,7 +1075,10 @@
                         <!-- <li ng-if="$ctrl.canValidate()> 0">
                         </li> -->
                         <li ng-if="$ctrl.canCancel() > 0">
-                            <a ng-click="$ctrl.showCancelRequestConfirm()">
+                            <a ng-if="$ctrl.requestTenantSettings.captureReasonToCancelRequest.id == 1" ng-click="$ctrl.cancelRequest()">
+                                Cancel
+                            </a>
+                            <a ng-if="$ctrl.requestTenantSettings.captureReasonToCancelRequest.id == 2" ng-click="$ctrl.showCancelRequestConfirm()">
                                 Cancel
                             </a>
                         </li>

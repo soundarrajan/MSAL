@@ -2216,33 +2216,33 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.sendCanBeCanceledRequest = function(payload, dataReasonCancel) {
             $scope.prettyCloseModal();
             newRequestModel.canBeCancelled(payload).then(function(data) {
-                if (ctrl.requestTenantSettings.captureReasonToCancelRequest.id == 1 && ($state.params.status.name == 'Inquired' || $state.params.status.name == 'Quoted') ) {
+                    console.log(data.payload);
                     ctrl.sendCancelRequestAction();
                     ctrl.buttonsDisabled = false;
 
-                } else {
-                    if (data.payload) {
-                        ctrl.showCanBeCancelledRequestConfirm(data.payload);
-                        // newRequestModel.cancelRequest({
-                        //     "id": ctrl.request.id
-                        // }).then(function (responseData) {
-                        //     ctrl.buttonsDisabled = false;
-                        //     $state.reload();
-                        // }, function () {
-                        //     ctrl.buttonsDisabled = false;
-                        // });
-                        ctrl.buttonsDisabled = false;
-                    } else {
-                        // newRequestModel.cancelRequest({
-                        //     "id": ctrl.request.id
-                        // }).then(function (responseData) {
-                        //     ctrl.buttonsDisabled = false;
-                        //     $state.reload();
-                        // }, function () {
-                        //     ctrl.buttonsDisabled = false;
-                        // });
-                    }
-            }
+            //     
+            //         if (data.payload) {
+            //             ctrl.showCanBeCancelledRequestConfirm(data.payload);
+            //             // newRequestModel.cancelRequest({
+            //             //     "id": ctrl.request.id
+            //             // }).then(function (responseData) {
+            //             //     ctrl.buttonsDisabled = false;
+            //             //     $state.reload();
+            //             // }, function () {
+            //             //     ctrl.buttonsDisabled = false;
+            //             // });
+            //             ctrl.buttonsDisabled = false;
+            //         } else {
+            //             // newRequestModel.cancelRequest({
+            //             //     "id": ctrl.request.id
+            //             // }).then(function (responseData) {
+            //             //     ctrl.buttonsDisabled = false;
+            //             //     $state.reload();
+            //             // }, function () {
+            //             //     ctrl.buttonsDisabled = false;
+            //             // });
+            //         }
+            // 
             });
         };
 
@@ -2261,6 +2261,11 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     windowTopClass: "fullWidthModal autoWidthModal",
                     scope: $scope
                 });
+                if ($state.params.status.name == 'Inquired' || $state.params.status.name == 'PartiallyInquired' ||  $state.params.status.name == 'Quoted' || $state.params.status.name == 'PartiallyQuoted') {
+                    ctrl.textValue = "Are you sure you want to cancel this request?(The Request belongs to a Group and this Group will be deleted)";
+                } else if ($state.params.status.name == 'Created' || $state.params.status.name == 'Planned' || $state.params.status.name == 'Validated' || $state.params.status.name == 'Questionnaire') {
+                            ctrl.textValue = "Are you sure you want to cancel this request?";
+                }
             } else {
                 canBeCancelledPayload = {
                     Filters: [
