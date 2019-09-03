@@ -5539,7 +5539,13 @@ angular.module('ui.grid')
   Grid.prototype.getViewportWidth = function getViewportWidth() {
     var self = this;
 
-    var viewPortWidth = this.gridWidth;
+      var viewPortWidth = this.gridWidth;
+
+
+    if(!angular.isNumber(this.gridWidth)) {
+        correctedPortWidthPercent = this.gridWidth.endsWith('%') ? parseInt(this.gridWidth) : 100;
+        viewPortWidth = (correctedPortWidthPercent * this.canvasWidth) / 100;
+    }
 
     //if (typeof(this.verticalScrollbarWidth) !== 'undefined' && this.verticalScrollbarWidth !== undefined && this.verticalScrollbarWidth > 0) {
     //  viewPortWidth = viewPortWidth - this.verticalScrollbarWidth;
