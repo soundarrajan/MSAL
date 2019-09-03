@@ -1203,8 +1203,7 @@ window.increment = 0;
                                                 .attr("id")
                                                 .replace("jqgh_" + table_id + "_", "")
                                                 .replace(/\./g, "0")
-    
-                                                .replace("0", "_")
+                                                .replace(/0/g, "_")
                                                 .replace(/ /g, "");
                                             var col = _
                                                 .startCase(
