@@ -88,12 +88,12 @@
                     <div class="custom-form-group">
                         <label for="contactAddress" class = "{{ field.Unique_ID }}_label">
                             {{ CM.app_id + '.CONTACT_ADDRESS' | translate }}
-                            <span ng-if="CM.isCounterpartyContactAddressRequired($index)" class="orange-txt ng-scope">
+                            <span ng-if="false" class="orange-txt ng-scope">
                                 *
                             </span>
                         </label>
                         <div class="form_input form_input_{{ field.Unique_ID }}">
-                            <input type="text" class="form-control" id="contactAddress" ng-model="formValues.contacts[$index].address.addressLine1" ng-required="CM.isCounterpartyContactAddressRequired($index)"/>
+                            <input type="text" class="form-control" id="contactAddress" ng-model="formValues.contacts[$index].address.addressLine1" ng-required="false"/>
                             <input type="text" class="form-control" id="contactAddress2" ng-model="formValues.contacts[$index].address.addressLine2"/>
                         </div>
                     </div>
@@ -122,12 +122,12 @@
                     <div class="custom-form-group">
                         <label for="country" class = "{{ field.Unique_ID }}_label">
                             {{ CM.app_id + '.COUNTRY' | translate }}
-                            <span ng-if="CM.isCounterpartyContactAddressRequired($index)" class="orange-txt ng-scope">
+                            <span ng-if="false" class="orange-txt ng-scope">
                                 *
                             </span>
                         </label>
                         <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''"  >
-                            <input  uib-typeahead="item as item.name for item in options.Country | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_country{{ $index }}" ng-required="CM.isCounterpartyContactAddressRequired($index)" name="contact_country{{ $index }}" class="form-control select2 changeIT" ng-model="formValues.contacts[$index].address.country"  autocomplete="off"/>
+                            <input  uib-typeahead="item as item.name for item in options.Country | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_country{{ $index }}" ng-required="false" name="contact_country{{ $index }}" class="form-control select2 changeIT" ng-model="formValues.contacts[$index].address.country"  autocomplete="off"/>
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_countrylist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.address.country');">
                                 <a   class=" btn default">
                                     <i class="fa fa-search"></i>

@@ -7658,6 +7658,7 @@ APP_MASTERS.controller("Controller_Master", [
             }
         }
 
+        // NOT USED AS OF 03.09.2019 - WORK ITEM 14069
         vm.isCounterpartyContactAddressRequired = function(addressIndex) {
             var address;
             if (_.has($scope, 'formValues.contacts')) {
