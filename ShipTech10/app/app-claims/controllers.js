@@ -205,6 +205,8 @@ APP_CLAIMS.controller("Controller_Claims", [
             };
 
         }
+
+
         $scope.checkClaimType = function() {
             $("#ActualSettlementAmount").attr("disabled", "disabled");
             $("#CompromisedAmount").attr("disabled", "disabled");
@@ -551,6 +553,19 @@ APP_CLAIMS.controller("Controller_Claims", [
                 }
             }
         });
+        $scope.$watchGroup(["formValues.claimType.claimType"], function() {
+        	if (typeof($scope.formValues.claimType) != 'undefined') {
+        		if ($scope.formValues.claimType.claimType.name == "Debunker") {
+        			if (!$scope.formValues.claimType.claimType.displayName) {
+        				$scope.formValues.claimType.claimType.displayName = $scope.formValues.claimType.claimType.name;
+        			}
+        			if ($scope.options) {
+			        	$scope.options["ClaimType"].push($scope.formValues.claimType.claimType);
+        			}
+		        	$(".group_debunkerDetails").show();
+        		}
+        	}
+        });        
         $scope.checkSubtype = function() {
             if (vm.entity_id > 0) {
                 $scope.$watchGroup("formValues", function() {
