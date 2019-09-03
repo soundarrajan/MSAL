@@ -796,7 +796,7 @@ window.increment = 0;
                                 placement: "auto"
                             });
                         };
-                        if (Elements.settings[table_id].source.radioselect == true) {
+                        if (Elements.settings[table_id].source.radioselect == true || table_id == "flat_invoices_app_deliveries_list") {
                             Elements.settings[table_id].source.onSelectRow = function(rowid, status, e) {
                                 var allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
                                 if (typeof scope.selected == "undefined") {
