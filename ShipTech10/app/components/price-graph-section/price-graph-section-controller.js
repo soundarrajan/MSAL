@@ -1,5 +1,5 @@
-angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state', 'STATE', 'VisDataSet', 'groupOfRequestsModel', '$listsCache', 'screenLoader', '$tenantSettings',
-    function($scope, $state, STATE, VisDataSet, groupOfRequestsModel, $listsCache, screenLoader, $tenantSettings) {
+angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state', 'STATE', 'groupOfRequestsModel', '$listsCache', 'screenLoader', '$tenantSettings',
+    function($scope, $state, STATE, groupOfRequestsModel, $listsCache, screenLoader, $tenantSettings) {
         $scope.state = $state;
         $scope.STATE = STATE;
         $scope.logs = {};
@@ -129,16 +129,13 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
                         }
                         items.push(item)
                     });
-                    groups = VisDataSet(groups);
-                    items = VisDataSet(items);
+                    groups = new vis.DataSet(groups);
+                    items = new vis.DataSet(items);
                     ctrl.data = {
                         groups: groups,
                         items: items
                     };
-                    ctrl.options = angular.extend(options)
-                    setTimeout(function(){
-		            	screenLoader.hideLoader()
-                    },1000)
+                    ctrl.options = angular.extend(options);
                 } else {
                     toastr.error('Price Timeline isn`t available for current selection')
                 }

@@ -345,6 +345,7 @@ angular
         "shiptech.templates",
         "shiptech.components",
         "shiptech.pages",
+        "ngVis",
     ])
     .controller("appCtrl", [
         "$scope",
