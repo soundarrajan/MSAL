@@ -3,6 +3,7 @@
  */
 APP_CLAIMS.controller("Controller_Claims", [
     "$scope",
+    "$filter",
     "$rootScope",
     "$Api_Service",
     "Factory_Claims",
@@ -17,13 +18,14 @@ APP_CLAIMS.controller("Controller_Claims", [
     "screenLoader",
     "$http",
     "API",
-    function($scope, $rootScope, $Api_Service, Factory_Claims, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $tenantSettings, screenLoader, $http, API) {
+    function($scope, $filter, $rootScope, $Api_Service, Factory_Claims, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $tenantSettings, screenLoader, $http, API) {
         var vm = this;
         var guid = "";
         vm.screen_id = "claims";
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split(".")[0];
         }
+        vm.listsCache = $listsCache;
         vm.entity_id = $state.params.entity_id;
         $scope.addedFields = new Object();
         $scope.tenantCurrency = $tenantSettings.tenantFormats.currency;
@@ -565,7 +567,15 @@ APP_CLAIMS.controller("Controller_Claims", [
 		        	$(".group_debunkerDetails").show();
         		}
         	}
-        });        
+        });      
+        $scope.disabledCreateDebunker = function() {
+            var object = $filter("filter")(vm.listsCache.ClaimType, {name: 'Debunker'})[0];
+            if (typeof(object) != "undefined") {
+                return false;
+            } else {
+                return true;
+            }
+        }  
         $scope.checkSubtype = function() {
             if (vm.entity_id > 0) {
                 $scope.$watchGroup("formValues", function() {
@@ -579,6 +589,11 @@ APP_CLAIMS.controller("Controller_Claims", [
             }
         };
         $scope.createDebunker = function() {
+            console.log("Ioana");
+            console.log(vm.listsCache.ClaimType);
+            var object = $filter("filter")(vm.listsCache.ClaimType, {name: 'Debunker'})[0];
+            console.log(object);
+           // console.log($rootScope.lists.ClaimType);
             screenLoader.showLoader();
             Factory_Master.createDebunker(vm.entity_id, function(response) {
                 if (response) {
