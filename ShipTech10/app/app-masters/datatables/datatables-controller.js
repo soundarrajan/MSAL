@@ -947,27 +947,27 @@ APP_MASTERS.controller("Controller_Datatables", [
                         displayName: "Order Spec Parameter",
                         cellTemplate: $scope.dataTableTemplates.link,
                         cellLink: "#/masters/specparameter/edit/",
-                        minWidth: 220
+                        width: 300 
                     },
                     {
                         name: "uom",
                         displayName: "UOM",
-                        minWidth: 140
+                        width: 300
                     },
                     {
                         name: "min",
                         displayName: "Min",
-                        minWidth: 140
+                        width: 150
                     },
                     {
                         name: "max",
                         displayName: "Max",
-                        minWidth: 140
+                        width: 150
                     },
                     {
                         name: "offerSpecParameter",
                         displayName: "Offer Spec Parameter",
-                        minWidth: 180,
+                        width: 220,
                         cellTemplate: $scope.dataTableTemplates.readonlyNumber,
                         decimalNumbers: vm.quantity
                     },
@@ -977,7 +977,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:3",
                         ChangeAction : "calculatePassedFailedInLab(grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)])",
-                        minWidth: 110,
+                        width: 150,
 						cellCondition: "grid.appScope.fVal().formValues.status.name == 'Verified'",
 						cellConditionType: "ng-disabled",    
                         cellObject: {
@@ -992,20 +992,20 @@ APP_MASTERS.controller("Controller_Datatables", [
 						cellCondition: "grid.appScope.fVal().formValues.status.name == 'Verified'",
 						cellConditionType: "ng-disabled", 
                         isLabResultTooltip: true,
-                        minWidth: 110
+                        width: 150
                     },
                     {
                         name: "qualityMatch",
                         displayName: "Passed/Failed",
                         cellTemplate: $scope.dataTableTemplates.colorCodedStatus,
-                        minWidth: 150,
+                        width: 150,
                         template: 1
                     },
                     {
                         name: "claimsRaised",
                         displayName: "Claim",
                         cellTemplate: $scope.dataTableTemplates.claimsRaisedStatus,
-                        minWidth: 90
+                        width: 90
                     },
                     {
                         name: "noAction",
