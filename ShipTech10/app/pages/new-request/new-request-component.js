@@ -2216,7 +2216,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.sendCanBeCanceledRequest = function(payload, dataReasonCancel) {
             $scope.prettyCloseModal();
             newRequestModel.canBeCancelled(payload).then(function(data) {
-                    console.log(data.payload);
                     ctrl.sendCancelRequestAction();
                     ctrl.buttonsDisabled = false;
 

@@ -2054,7 +2054,7 @@
             /* Group of Requests Table */
 
             .st-group-of-requests-table-container {
-                overflow-x: auto;
+                overflow-x: visible;
                 min-height: 300px;
             }
 
@@ -4348,13 +4348,16 @@ a[disabled]{
 .groupOfRequestTableTooltip {
     display: block !important;
     position: absolute;
-    top: -100%;
+    top: -7px;
     left: 50%;
     background: #364150;
     color: #fff;
     padding: 5px 10px;
     font-size: 16px !important;
-    transform: translate(-50%, -50%);
+    z-index: 9999;
+    text-align: left;
+    white-space: initial;
+    transform: translate(-50%, -100%);
 }
 
 table#new_order_products td {
