@@ -11,7 +11,7 @@
             <div  class=" text-left row form-wizard" id="formBuilderContent">
                 <div class="col-md-12  hidden" ng-if=" type =='tabs' " id="tabs_navigation">
                     <ul class="nav nav-tabs bg-white mb0" ng-class="CM.app_id == 'alerts' ? 'steps nav-justified' : ''">
-                        <li class="shiptech_tabs" data-ng-repeat="title in formFields" ng-class="$index == 0 ? 'active in ' : ''" ng-if="title.isTab">
+                        <li class="shiptech_tabs" data-ng-repeat="title in formFields" ng-hide="visible_sections.indexOf(title.id) < 0" ng-class="$index == 0 ? 'active in ' : ''" ng-if="title.isTab">
                             <a href="#tab_{{ $index }}" data-toggle="tab"  ng-class="CM.app_id == 'alerts' ? 'step' : ''" ng-click="tab_content =  $index ">
                                 <span class="number" ng-if="CM.app_id == 'alerts'">
                                     {{ $index + 1 }}
@@ -25,7 +25,7 @@
                     </ul>
                 </div>
                 <div  ng-class="type == 'tabs' ? 'tab-content grp_unit' : ''">
-                    <div class=" group_{{ parents.id.replace(' ','_') }} " ng-hide="visible_sections.indexOf(parents.id) < 0 " data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
+                    <div class=" group_{{ parents.id.replace(' ','_') }} " ng-hide="visible_sections.indexOf(parents.id) < 0" data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
                         <div class="col-md-12 portlet light ">
                             <div class="portlet-title" ng-if="parents.name != 'General' && CM.screen_id != 'formula' && CM.app_id != 'alerts'" ng-controller="Controller_Delivery as CD">
                                 <div class="tools">
