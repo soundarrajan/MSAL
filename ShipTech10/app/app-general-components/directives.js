@@ -1963,7 +1963,11 @@ window.increment = 0;
                             if (parseInt(ctrl.$modelValue) == 0) return null;
                             return parseInt(ctrl.$modelValue);
                         }
-                        return $filter(filter)(ctrl.$modelValue, fraction);
+                        returnData = null;
+                        if (ctrl.$modelValue) {
+	                        returnData = $filter(filter)(ctrl.$modelValue, fraction); 
+                        }
+                        return returnData;
                         elem.unbind();
                     });
                     ctrl.$parsers.unshift(function(viewValue) {

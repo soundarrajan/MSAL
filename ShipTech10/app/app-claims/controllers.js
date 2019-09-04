@@ -275,15 +275,15 @@ APP_CLAIMS.controller("Controller_Claims", [
         };
         $scope.triggerChangeFieldsAppSpecific = function(name, id) {
             console.log($rootScope.createDebunkerFromClaim);
-            if (!$rootScope.createDebunkerFromClaim && vm.entity_id < 1) {
-                $.each($listsCache.ClaimType, function(k, v) {
-                    if (typeof v != "undefined") {
-                        if (v.name == "Debunker") {
-                            $listsCache.ClaimType.splice(k, 1);
-                        }
-                    }
-                });
-            }
+            // if (!$rootScope.createDebunkerFromClaim && vm.entity_id < 1) {
+            //     $.each($listsCache.ClaimType, function(k, v) {
+            //         if (typeof v != "undefined") {
+            //             if (v.name == "Debunker") {
+            //                 $listsCache.ClaimType.splice(k, 1);
+            //             }
+            //         }
+            //     });
+            // }
             if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
               if(name == 'EstimatedSettlementAmount') {
                 if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
