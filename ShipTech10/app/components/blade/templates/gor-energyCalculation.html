@@ -4,23 +4,63 @@
 <div class="portlet light">
 	<div class="portlet-title">
 	    <span class="caption-subject pull-left">
-	       Energy Calculation
+	       Energy Calculation - {{$ctrl.energyCalculationBladeData.product.name}}
 	    </span>
-		<a class="btn btn-default orange pull-right" data-toggle="modal" href="#delink" ng-click="$ctrl.setDelinkIds()" ng-class="{'disabled' : !$ctrl.canDelinkRequests() || $ctrl.noRequestsSelected()}">Save</a>
+		<a class="btn btn-default orange pull-right" ng-click="$ctrl.updateEnergySpecValuesByProduct()">Save</a>
     </div>
 	<div class="row">
 		<div class="col-sm-12">
-			Content HERE
+	        <div ng-repeat="location in $ctrl.energyCalculationBladeData.data track by $index">
+				<div class="portlet-title">
+				    <span class="caption-subject pull-left">
+						{{location.location.name}}
+				    </span>
+			    </div>        	
+				<div class="clearfix"></div>
+				<div class="custom-hardcoded-table ng-scope" style="max-height: 500px;">
+				    <table class="table-body" width="100%">
+				        <thead>
+				            <tr>
+				            	<td width="50px" class="padding bold">Counterparty</td>
+				            	<td width="50px" class="padding bold">Physical Supplier</td>
+				            	<td style="max-width: 60px" class="padding bold">Price</td>
+				            	<td style="max-width: 60px" class="padding bold">Viscosity</td>
+				            	<td style="max-width: 60px" class="padding bold">Sulphur</td>
+				            	<td style="max-width: 60px" class="padding bold">Density</td>
+				            	<td style="max-width: 60px" class="padding bold">Ash</td>
+				            	<td style="max-width: 60px" class="padding bold">Water</td>
+				            	<td width="50px" class="padding bold">CCAI</td>
+				            	<td width="50px" class="padding bold">Net Spec<br>Energy Offered</td>
+				            	<td width="50px" class="padding bold">Net Spec Energy<br>Dlvd (6 month avg.)</td>
+				            	<td width="50px" class="padding bold">$ Diff based on<br> Specific Energy</td>
+				            	<td width="50px" class="padding bold">Price Difference</td>
+				            	<td width="50px" class="padding bold">Total Computed<br>Price</td>
+				            </tr>
+				        </thead>
+				        <tbody>
+				            <tr ng-repeat="counterparty in location.counterparties" ng-class="{'bg-green-jungle': counterparty.isMinPrice}">
+				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.seller.displayName ? counterparty.seller.displayName : counterparty.seller.name}}" readonly ng-model="counterparty.seller.name"></td><!--  Counterparty -->
+				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.physicalSupplier.displayName ? counterparty.physicalSupplier.displayName : counterparty.physicalSupplier.name}}" readonly ng-model="counterparty.physicalSupplier.name"></td><!--  Physical Supplier -->
+				            	<td width="50px"><input type="number" class="form-control" type="text" ng-model="counterparty.energyParameterValues.pricePerSpecificEnergy" ng-change="$ctrl.priceChanged()"></td><!--  Price -->
+				            	<td width="50px"><input type="number" class="form-control" type="text" ng-model="counterparty.energyParameterValues.viscosity.specValue"></td><!--  Viscosity -->
+				            	<td width="50px"><input type="number" class="form-control" type="text" ng-model="counterparty.energyParameterValues.sulphur.specValue"></td><!--  Sulphur -->
+				            	<td width="50px"><input type="number" class="form-control" type="text" ng-model="counterparty.energyParameterValues.density.specValue"></td><!--  Density -->
+				            	<td width="50px"><input type="number" class="form-control" type="text" ng-model="counterparty.energyParameterValues.ash.specValue"></td><!--  Ash -->
+				            	<td width="50px"><input type="number" class="form-control" type="text" ng-model="counterparty.energyParameterValues.water.specValue"></td><!--  Water -->
+				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.ccai" readonly></td><!--  CCAI -->
+				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.specificEnergy" readonly></td><!--  Net Spec<br>Energy Offered -->
+				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.specificEnergy6Months" readonly></td><!--  Net Spec Energy<br>Dlvd (6 month avg.) -->
+				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.diffBasedOnSpecificEnergy" readonly></td><!--  $ Diff based on<br> Specific Energy -->
+				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.priceGap" readonly></td><!--  Price Difference -->
+				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.computedPrice" readonly></td><!--  Total Computed<br>Price -->
+				            </tr>		            
+				        </tbody>
+				    </table>
+				</div>			
+	       		<hr>
+	        </div>
 		</div>
-        <!-- <div ng-repeat="request in $ctrl.selectedRequests track by $index" 
-        ng-show="!$ctrl.isRequestTabExpanded($index) || !request.isDeleted" class=" col-sm-3 request-tab-collapsed left-border border-selected-left border-selected-top">
-            <form class="form-inline">
-                <label class="control-label">{{request.name}} - {{request.vesselDetails.vessel.name}}</label>
-                <label class="mt-checkbox pull-left">
-                    <input type="checkbox" ng-model="$ctrl.requestCheckboxes[request.id]"/>      
-                    <span></span>
-                </label>
-            </form>
-        </div> -->
+		<!-- {{$ctrl.energyCalculationBladeData}} -->
+
 	</div>
 </div>

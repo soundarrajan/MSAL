@@ -3879,6 +3879,7 @@ ctrl.setProductData = function(data, loc) {
         ctrl.initEnergyCalculation = function(product){
 			requestId = product.requestId;
 			productId = product.product.id;
+			currentProduct = product;
 			requestProductIds = [];
             $.each(ctrl.requests, function (reqK, reqV) {
             	if (requestId == reqV.id) {
@@ -3897,8 +3898,14 @@ ctrl.setProductData = function(data, loc) {
 				"requestGroupId":ctrl.groupId,
 				"requestProductIds":requestProductIds.join(",")
 			}
+			ctrl.energyCalculationBladeData = null;
 			groupOfRequestsModel.getEnergyBladeContentByProduct(payload).then(function (data) {
-				console.log(data);
+				if (data) {
+					ctrl.energyCalculationBladeData = {
+						"data" : data.payload,
+						"product":  currentProduct.product
+					};
+				}
             });			
         }
         ctrl.groupSellersInLocations = function () {

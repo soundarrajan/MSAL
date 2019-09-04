@@ -114,7 +114,7 @@
 			<span data-ng-include="'components/blade/templates/gor-linkUnlink-widget.html'"></span>
 		</span>
 		<span ng-if="$ctrl.blade.activeWidget == 'energyCalculation'">
-			<general-energy-calculation></general-energy-calculation>	
+			<general-energy-calculation ng-if="$ctrl.energyCalculationBladeData" energy-calculation-blade-data="$ctrl.energyCalculationBladeData"></general-energy-calculation>	
 		</span>
 	</div>
 </div>
