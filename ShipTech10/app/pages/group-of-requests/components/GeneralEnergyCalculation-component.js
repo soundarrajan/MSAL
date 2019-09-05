@@ -81,7 +81,9 @@ angular.module('shiptech.components')
 
                 groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
                 	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
-
+                		ctrl.normalizeOffSpecParamsMinMax();
+                		ctrl.computeDiffBasedOnSpecificEnergy();
+                		ctrl.computeMinPricePerLocations();
                 	})
                 	console.log(data);	
                 });
