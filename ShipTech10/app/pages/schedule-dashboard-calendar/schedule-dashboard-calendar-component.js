@@ -808,6 +808,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                            };
 	                            if (portDetails.request.id > 0) {
 	                                portDetails.request.id = portDetails.request.id;
+                                    event.voyageDetail.request.requestDetail.requestName = event.voyageDetail.request.requestName;
                                     requestDetail.push(event.voyageDetail.request.requestDetail);
 	                            }
                                 
@@ -1239,8 +1240,8 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             if (voyageStop.request && voyageStop.request.id != 0) {
             	voyageStop.request.requestDetail = _.uniqBy(voyageStop.request.requestDetail, 'Id');
                 $.each(voyageStop.request.requestDetail, function (k, row) {
-                    row_requestName = voyageStop.request.requestName || '-';
-                    row_vesselName = voyageStop.request.vesselName || '-';
+                    row_requestName = voyageStop.voyageDetail.request.requestDetail[k].requestName || '-';
+                    row_vesselName = voyageStop.voyageDetail.request.vesselName || '-';
                     row_location = row.location || '-';
                     row_fuelOilOfRequest = row.fuelOilOfRequest || '-';
                     row_uom = row.uom || '-';
