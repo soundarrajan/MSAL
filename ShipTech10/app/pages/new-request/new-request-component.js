@@ -242,7 +242,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.request = angular.copy($stateParams.copyFrom);
                             ctrl.request.requestCompleted = false;// fields enabled at copy, send this to be
                             ctrl.request.hasBestContract = false;
-                            ctrl.request = traverseObject(ctrl.request, nullifyId);
+                            ctrl.request = traverseObject(ctrl.request, nullifyId); 
                             ctrl.request.requestStatus = null;
                             ctrl.request.requestDate = new Date().toJSON();
                             setTimeout(function() {
@@ -499,10 +499,17 @@ angular.module("shiptech.pages").controller("NewRequestController", [
          * @parma {Object} - The source object.
          * @param {Object} - The object with its id property nullified.
          */
-        function nullifyId(obj) {
+        function nullifyId(obj, property) {
             if (!isNullifiableObject(obj) || !obj.hasOwnProperty("id")) {
                 return obj;
             }
+            if (!isNullifiableObject(obj)) {
+	            console.log(property);
+            }
+            // if (property == "service") {
+            // 	console.log("service", obj.id);
+            //     return obj;
+            // }
             obj.id = null;
             return obj;
         }
@@ -525,9 +532,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
          */
         function traverseObject(obj, callback) {
             for (var property in obj) {
+            	if (property == "service") {
+            		continue;
+            	}
                 if (obj.hasOwnProperty(property)) {
                     if (typeof obj[property] === "object") {
-                        obj = callback(obj);
+                        obj = callback(obj, property);
                         traverseObject(obj[property], callback);
                     } else {
                         // console.log(property + "   " + obj[property]);
