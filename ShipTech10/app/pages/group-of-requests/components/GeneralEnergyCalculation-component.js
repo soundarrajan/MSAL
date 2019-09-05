@@ -15,17 +15,22 @@ angular.module('shiptech.components')
 				
 				payload = ctrl.energyCalculationBladePayload.payload	  
 				ctrl.energyCalculationBladeData = {
-					"product":  ctrl.energyCalculationBladePayload.currentProduct
+					"product":  ctrl.energyCalculationBladePayload.currentProduct.product
 				};
-				ctrl.getEnergyBladeContentByProduct(payload)
+				ctrl.getEnergyBladeContentByProduct(payload, function(){
+					ctrl.computeDiffBasedOnSpecificEnergy();  
+					ctrl.normalizeOffSpecParamsMinMax();    
+				})
 				
 			}
 
-			ctrl.getEnergyBladeContentByProduct = function(payload) {
+			ctrl.getEnergyBladeContentByProduct = function(payload, callback) {
 				groupOfRequestsModel.getEnergyBladeContentByProduct(payload).then(function (data) {
 					if (data) {
 						ctrl.energyCalculationBladeData.data = data.payload;
-						ctrl.computeDiffBasedOnSpecificEnergy();      
+						if (callback) {
+							callback();
+						}
 					}
 	            });					
 			}
@@ -57,18 +62,56 @@ angular.module('shiptech.components')
 
 			}
 
+			ctrl.normalizeOffSpecParamsMinMax = function() {
+				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
+					$.each(loc.counterparties, function(k2, counterparty){
+						counterparty.minMaxSpecs = {
+							"viscosity" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Viscosity @ 50 degC";}),
+							"sulphur" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Sulphur content";}),
+							"density" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Density @ 15 degC";}),
+							"ash" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Ash content";}),
+							"water" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Water content";})
+						}					
+					})
+				})
+				console.log(ctrl.energyCalculationBladeData.data);
+			}
+
 			ctrl.updateEnergySpecValuesByProduct = function() {
 
                 groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
-                	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload)
+                	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
+
+                	})
                 	console.log(data);	
                 });
 
+			}
+
+			ctrl.checkIfIsOffspec = function(value, specParam) {
+				var min = specParam.min;
+				var max = specParam.max;
+				if (min && max) {
+					if (value > max || value < min) {
+						return true
+					}
+				}
+				if (min) {
+					if (value < min) {
+						return true
+					}
+				}
+				if (max) {
+					if (value < max) {
+						return true
+					}
+				}				
+				return false
 			}	
 
 			ctrl.priceChanged = function() {
 				ctrl.computeDiffBasedOnSpecificEnergy();
-				ctrl.computeMinPricePerLocations()
+				ctrl.computeMinPricePerLocations();
 			}
 
 		}
