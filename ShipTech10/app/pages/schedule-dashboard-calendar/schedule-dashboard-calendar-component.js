@@ -1388,6 +1388,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                             absolute: false
                         });
                 }
+                $('.contextmenu a.close').click();
                 window.open(href, '_blank');
             };
             function contextActionContractPlanning(voyageStop) {
