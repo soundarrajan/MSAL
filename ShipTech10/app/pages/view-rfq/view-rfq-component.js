@@ -174,11 +174,11 @@ angular.module('shiptech.pages')
 
                 groupOfRequestsModel.amendRFQ(rfq_data).then(function(data){
                     ctrl.buttonsDisabled = false;
-                    ctrl.init();
+                    $state.reload();
                     $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 }, function() {
                     ctrl.buttonsDisabled = false;
-                    ctrl.init();
+                    $state.reload();
                     $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 });
             };
@@ -214,11 +214,11 @@ angular.module('shiptech.pages')
                         }
                     }
                     ctrl.buttonsDisabled = false;
-                    ctrl.init();
+                    $state.reload();
                     $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 }, function() {
                     ctrl.buttonsDisabled = false;
-                    ctrl.init();
+                    $state.reload();
                     $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 });
             };

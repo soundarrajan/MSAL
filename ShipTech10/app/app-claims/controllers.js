@@ -589,11 +589,6 @@ APP_CLAIMS.controller("Controller_Claims", [
             }
         };
         $scope.createDebunker = function() {
-            console.log("Ioana");
-            console.log(vm.listsCache.ClaimType);
-            var object = $filter("filter")(vm.listsCache.ClaimType, {name: 'Debunker'})[0];
-            console.log(object);
-           // console.log($rootScope.lists.ClaimType);
             screenLoader.showLoader();
             Factory_Master.createDebunker(vm.entity_id, function(response) {
                 if (response) {
