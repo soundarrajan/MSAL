@@ -167,12 +167,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             } else {
                 return;
             }
-            var amountPrecision = _.get(ctrl, 'numberPrecision.amountPrecision') ? _.get(ctrl, 'numberPrecision.amountPrecision') : 0;
+            var quantityPrecision = _.get(ctrl, 'numberPrecision.quantityPrecision') ? _.get(ctrl, 'numberPrecision.quantityPrecision') : 0;
             var ret = '';
             if (typeof(hsfoValue) != 'undefined' ) {
                 ret += 'HSFO : ';
                 if (hsfoValue) {
-	                ret += String(parseFloat(hsfoValue).toFixed(amountPrecision));
+	                ret += String(parseFloat(hsfoValue).toFixed(quantityPrecision));
 	                if (hsfoUom) {
 	                    ret += ' ' + hsfoUom.name; 
 	                }
@@ -184,7 +184,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (typeof(dmaValue) != 'undefined') {
                 ret += 'MGO : ';
                 if (dmaValue) {
-	                ret += String(parseFloat(dmaValue).toFixed(amountPrecision));
+	                ret += String(parseFloat(dmaValue).toFixed(quantityPrecision));
 	                if (dmaUom) {
 	                    ret += ' ' + dmaUom.name; 
 	                }
@@ -196,7 +196,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (typeof(lsfoValue) != 'undefined') {
                 ret += 'ULSFO : ';
                 if (lsfoValue) {
-	                ret += String(parseFloat(lsfoValue).toFixed(amountPrecision));
+	                ret += String(parseFloat(lsfoValue).toFixed(quantityPrecision));
 	                if (lsfoUom) {
 	                    ret += ' ' +  lsfoUom.name; 
 	                }
