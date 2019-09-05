@@ -808,9 +808,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                            };
 	                            if (portDetails.request.id > 0) {
 	                                portDetails.request.id = portDetails.request.id;
+                                    requestDetail.push(event.voyageDetail.request.requestDetail);
 	                            }
                                 
-                                requestDetail.push(event.voyageDetail.request.requestDetail);
                                 if (event.voyageDetail.bunkerPlan) {
 	                                event.voyageDetail.bunkerPlan.hasStrategy = angular.copy(event.voyageDetail.hasStrategy);
 	                                event.voyageDetail.bunkerPlan.portCode = angular.copy(event.voyageDetail.locationCode);
