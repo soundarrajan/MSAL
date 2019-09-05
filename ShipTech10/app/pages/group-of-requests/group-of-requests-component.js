@@ -3898,15 +3898,15 @@ ctrl.setProductData = function(data, loc) {
 				"requestGroupId":ctrl.groupId,
 				"requestProductIds":requestProductIds.join(",")
 			}
-			ctrl.energyCalculationBladeData = null;
-			groupOfRequestsModel.getEnergyBladeContentByProduct(payload).then(function (data) {
-				if (data) {
-					ctrl.energyCalculationBladeData = {
-						"data" : data.payload,
-						"product":  currentProduct.product
-					};
-				}
-            });			
+			initData = {
+				"payload" : payload,
+				"currentProduct" : currentProduct
+			}
+			ctrl.energyCalculationBladePayload = null;
+			setTimeout(function(){
+				ctrl.energyCalculationBladePayload = initData;
+			})
+		
         }
         ctrl.groupSellersInLocations = function () {
             groupedLocationsIds = [];

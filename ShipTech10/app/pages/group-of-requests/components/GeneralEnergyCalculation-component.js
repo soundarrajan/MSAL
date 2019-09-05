@@ -1,13 +1,33 @@
 angular.module('shiptech.components')
-    .controller('GeneralEnergyCalculation', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state',  
-        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state) {
+    .controller('GeneralEnergyCalculation', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService',  
+        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService) {
+
 	        var ctrl = this;
-			$scope.$watch('ctrl.energyCalculationBladeData', function(newValue, oldValue) {
-			});
 		
+	        tenantService.tenantSettings.then(function (settings) {
+	            ctrl.numberPrecision = settings.payload.defaultValues;
+	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
+	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
+	        });
+
 			ctrl.$onInit = function() {
-				console.log(ctrl.energyCalculationBladeData);	  
-				ctrl.computeDiffBasedOnSpecificEnergy();      
+				console.log(ctrl.energyCalculationBladePayload);
+				
+				payload = ctrl.energyCalculationBladePayload.payload	  
+				ctrl.energyCalculationBladeData = {
+					"product":  ctrl.energyCalculationBladePayload.currentProduct
+				};
+				ctrl.getEnergyBladeContentByProduct(payload)
+				
+			}
+
+			ctrl.getEnergyBladeContentByProduct = function(payload) {
+				groupOfRequestsModel.getEnergyBladeContentByProduct(payload).then(function (data) {
+					if (data) {
+						ctrl.energyCalculationBladeData.data = data.payload;
+						ctrl.computeDiffBasedOnSpecificEnergy();      
+					}
+	            });					
 			}
 
 			ctrl.computeDiffBasedOnSpecificEnergy = function() {
@@ -37,6 +57,15 @@ angular.module('shiptech.components')
 
 			}
 
+			ctrl.updateEnergySpecValuesByProduct = function() {
+
+                groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
+                	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload)
+                	console.log(data);	
+                });
+
+			}	
+
 			ctrl.priceChanged = function() {
 				ctrl.computeDiffBasedOnSpecificEnergy();
 				ctrl.computeMinPricePerLocations()
@@ -52,6 +81,7 @@ angular.module('shiptech.components').component('generalEnergyCalculation', {
     bindings: {
         args: '<', 
     	energyCalculationBladeData : '<',
+    	energyCalculationBladePayload : '<',
         onDelink: '&'
     }
 });

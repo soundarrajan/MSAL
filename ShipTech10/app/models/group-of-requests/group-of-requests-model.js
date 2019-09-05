@@ -563,6 +563,13 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             return groupOfRequestsResource.checkSellerRow(request_data).$promise.then(function(data) {
                 return data;
             });
+        }         
+
+        function updateEnergySpecValuesByProduct(data) {
+            var payload = payloadDataModel.create(data);
+            return groupOfRequestsResource.updateEnergySpecValuesByProduct(payload).$promise.then(function(data) {
+                return data;
+            });
         }                
 
         function saveSupplierCard(data) {
@@ -623,6 +630,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             addSeller: addSeller,
             deleteSeller: deleteSeller,
             checkSellerRow: checkSellerRow,
+            updateEnergySpecValuesByProduct: updateEnergySpecValuesByProduct,
             addPhysicalSupplierInCard: addPhysicalSupplierInCard,
             getPriceTimeline: getPriceTimeline,
         };
