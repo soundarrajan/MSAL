@@ -32,10 +32,11 @@ angular.module('shiptech.components')
         	} 
         	if (changes.deleteDataParams.currentValue && ctrl.entityToDelete == 'request') {
         		ctrl.deleteDataParams = changes.deleteDataParams.currentValue;
-        		if ($state.params.status.name == 'Inquired' || $state.params.status.name == 'PartiallyInquired' ||  $state.params.status.name == 'Quoted' || $state.params.status.name == 'PartiallyQuoted') {
+                var list = ['Inquired', 'PartiallyInquired', 'Quoted', 'PartiallyQuoted', 'Amended'];
+        		if (list.indexOf($state.params.status.name) != -1) {
                     ctrl.confirmText = "Are you sure you want to cancel this request?(The Request belongs to a Group and this Group will be deleted)";
-                } else if ($state.params.status.name == 'Created' || $state.params.status.name == 'Planned' || $state.params.status.name == 'Validated' || $state.params.status.name == 'Questionnaire') {
-                             ctrl.confirmText = "Are you sure you want to cancel this request?";
+                } else {
+                        ctrl.confirmText = "Are you sure you want to cancel this request?";
                 }
         		ctrl.openModal();
         	} 

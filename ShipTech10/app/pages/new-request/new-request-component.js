@@ -172,36 +172,36 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (typeof(hsfoValue) != 'undefined' ) {
                 ret += 'HSFO : ';
                 if (hsfoValue) {
-	                ret += String(parseFloat(hsfoValue).toFixed(quantityPrecision));
-	                if (hsfoUom) {
-	                    ret += ' ' + hsfoUom.name; 
-	                }
+                    ret += String(parseFloat(hsfoValue).toFixed(quantityPrecision));
+                    if (hsfoUom) {
+                        ret += ' ' + hsfoUom.name; 
+                    }
                 } else {
-                	ret += " - ";
+                    ret += " - ";
                 }
                 ret += '<br>';
             }
             if (typeof(dmaValue) != 'undefined') {
                 ret += 'MGO : ';
                 if (dmaValue) {
-	                ret += String(parseFloat(dmaValue).toFixed(quantityPrecision));
-	                if (dmaUom) {
-	                    ret += ' ' + dmaUom.name; 
-	                }
+                    ret += String(parseFloat(dmaValue).toFixed(quantityPrecision));
+                    if (dmaUom) {
+                        ret += ' ' + dmaUom.name; 
+                    }
                 } else {
-                	ret += " - ";
+                    ret += " - ";
                 }
                 ret += '<br>';
             }
             if (typeof(lsfoValue) != 'undefined') {
                 ret += 'ULSFO : ';
                 if (lsfoValue) {
-	                ret += String(parseFloat(lsfoValue).toFixed(quantityPrecision));
-	                if (lsfoUom) {
-	                    ret += ' ' +  lsfoUom.name; 
-	                }
+                    ret += String(parseFloat(lsfoValue).toFixed(quantityPrecision));
+                    if (lsfoUom) {
+                        ret += ' ' +  lsfoUom.name; 
+                    }
                 } else {
-                	ret += " - ";
+                    ret += " - ";
                 }
                 ret += '<br>';
             }
@@ -242,7 +242,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.request = angular.copy($stateParams.copyFrom);
                             ctrl.request.requestCompleted = false;// fields enabled at copy, send this to be
                             ctrl.request.hasBestContract = false;
-                            ctrl.request = traverseObject(ctrl.request, nullifyId); 
+                            ctrl.request = traverseObject(ctrl.request, nullifyId);
                             ctrl.request.requestStatus = null;
                             ctrl.request.requestDate = new Date().toJSON();
                             setTimeout(function() {
@@ -504,10 +504,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 return obj;
             }
             if (!isNullifiableObject(obj)) {
-	            console.log(property);
+                console.log(property);
             }
             // if (property == "service") {
-            // 	console.log("service", obj.id);
+            //  console.log("service", obj.id);
             //     return obj;
             // }
             obj.id = null;
@@ -532,9 +532,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
          */
         function traverseObject(obj, callback) {
             for (var property in obj) {
-            	if (property == "service") {
-            		continue;
-            	}
+                if (property == "service") {
+                    continue;
+                }
                 if (obj.hasOwnProperty(property)) {
                     if (typeof obj[property] === "object") {
                         obj = callback(obj, property);
@@ -2270,10 +2270,11 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     windowTopClass: "fullWidthModal autoWidthModal",
                     scope: $scope
                 });
-                if ($state.params.status.name == 'Inquired' || $state.params.status.name == 'PartiallyInquired' ||  $state.params.status.name == 'Quoted' || $state.params.status.name == 'PartiallyQuoted') {
+                var list = ['Inquired', 'PartiallyInquired', 'Quoted', 'PartiallyQuoted', 'Amended'];
+                if (list.indexOf($state.params.status.name) != -1) {
                     ctrl.textValue = "Are you sure you want to cancel this request?(The Request belongs to a Group and this Group will be deleted)";
-                } else if ($state.params.status.name == 'Created' || $state.params.status.name == 'Planned' || $state.params.status.name == 'Validated' || $state.params.status.name == 'Questionnaire') {
-                            ctrl.textValue = "Are you sure you want to cancel this request?";
+                } else {
+                        ctrl.textValue = "Are you sure you want to cancel this request?";
                 }
             } else {
                 canBeCancelledPayload = {
