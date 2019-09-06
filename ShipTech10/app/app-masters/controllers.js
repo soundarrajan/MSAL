@@ -908,6 +908,7 @@ APP_MASTERS.controller("Controller_Master", [
                 }
                 var newEnergyFormulaProducts = [];
                 if ($scope.formValues.isEnergyCalculationRequired) {
+                    var missingFormula = false;
                     if (_.get($scope, 'formValues.energyFormulaSpecific.id')) {
                         var energyFormulaSpecific = {
                             product: {
@@ -929,6 +930,9 @@ APP_MASTERS.controller("Controller_Master", [
 
                         energyFormulaSpecific.id = energyFormulaSpecificId;
                         newEnergyFormulaProducts.push(energyFormulaSpecific);
+                    } else {
+                        toastr.error('Please select the Specific Energy Calculation Formula');
+                        missingFormula = true;
                     }
 
                     if (_.get($scope, 'formValues.energyFormulaCCAI.id')) {
@@ -952,6 +956,12 @@ APP_MASTERS.controller("Controller_Master", [
 
                         energyFormulaCCAI.id = energyFormulaCCAIId;
                         newEnergyFormulaProducts.push(energyFormulaCCAI);
+                    } else {
+                        toastr.error('Please select the CCAI Formula');
+                        missingFormula = true;
+                    }
+                    if (missingFormula) {
+                        return;
                     }
                 }
 
