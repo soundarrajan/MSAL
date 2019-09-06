@@ -39,7 +39,7 @@
     </table>
     </div>
     <span ng-if="!CM.relatedLabs || CM.relatedLabs.length == 0">
-	    <div ui-grid="gridOptions['related_labs']"  id="grid_related_labs"  ui-grid-auto-resize  class="dataGrid" ng-init="gridOptions.source = '$scope.formValues.orderRelatedLabResults'; "  >
+	    <div ui-grid="gridOptions['related_labs']"  id="grid_related_labs"  ui-grid-auto-resize ng-init="gridOptions.source = '$scope.formValues.orderRelatedLabResults'; "  >
         <div class="clearfix"></div>
 	    </div>
     </span>

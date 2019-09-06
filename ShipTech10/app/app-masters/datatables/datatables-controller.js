@@ -927,8 +927,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                 data: "formValues.labTestResults",
                 enableSorting: false,
                 rowHeight: 40,
-                excessRows: 0,
-                autoHeight: true,
+                excessRows: 999,
                 rowEditWaitInterval: -1, //Important for skipping the promise
                 columnDefs: [
                     {
@@ -940,34 +939,28 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellAction: "grid.appScope.calcQualityClaimType(row,null,rowRenderIndex)",
                         cellCondition: "grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)].noAction || !grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)].claimTypes",
                         cellConditionType: "ng-disabled",
-                        width: 60
                     },
                     {
                         name: "specParameter",
                         displayName: "Order Spec Parameter",
                         cellTemplate: $scope.dataTableTemplates.link,
                         cellLink: "#/masters/specparameter/edit/",
-                        width: 300 
                     },
                     {
                         name: "uom",
                         displayName: "UOM",
-                        width: 300
                     },
                     {
                         name: "min",
                         displayName: "Min",
-                        width: 150
                     },
                     {
                         name: "max",
                         displayName: "Max",
-                        width: 150
                     },
                     {
                         name: "offerSpecParameter",
                         displayName: "Offer Spec Parameter",
-                        width: 220,
                         cellTemplate: $scope.dataTableTemplates.readonlyNumber,
                         decimalNumbers: vm.quantity
                     },
@@ -977,7 +970,6 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellTemplate: $scope.dataTableTemplates.text,
                         format: "number:3",
                         ChangeAction : "calculatePassedFailedInLab(grid.appScope.fVal().formValues.labTestResults[grid.appScope.rowIdx(row)])",
-                        width: 150,
 						cellCondition: "grid.appScope.fVal().formValues.status.name == 'Verified'",
 						cellConditionType: "ng-disabled",    
                         cellObject: {
@@ -992,28 +984,30 @@ APP_MASTERS.controller("Controller_Datatables", [
 						cellCondition: "grid.appScope.fVal().formValues.status.name == 'Verified'",
 						cellConditionType: "ng-disabled", 
                         isLabResultTooltip: true,
-                        width: 150
                     },
                     {
                         name: "qualityMatch",
                         displayName: "Passed/Failed",
                         cellTemplate: $scope.dataTableTemplates.colorCodedStatus,
-                        width: 150,
                         template: 1
                     },
                     {
                         name: "claimsRaised",
                         displayName: "Claim",
                         cellTemplate: $scope.dataTableTemplates.claimsRaisedStatus,
-                        width: 90
                     },
                     {
                         name: "noAction",
                         displayName: "No Action",
-                        width: 120,
                         cellTemplate: $scope.dataTableTemplates.checkbox
                     }
-                ]
+                ],
+                onRegisterApi: function(api) {
+                    $('.group_labTestResults').hide();
+                    $timeout(function() {
+                        $('.group_labTestResults').show();
+                    });
+                }
             },
             adminConfigurationEmail: {
                 data: "formValues.email",
@@ -3375,7 +3369,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                 multiSelect: false,
                 noUnselect: true,
                 rowHeight: 40,
-                excessRows: 999,
+                excessRows: 0,
                 rowEditWaitInterval: -1, //Important for skipping the promise
                 columnDefs: [
                     {
@@ -3420,6 +3414,10 @@ APP_MASTERS.controller("Controller_Datatables", [
                     }
                 ],
                 onRegisterApi: function(api) {
+                    $timeout(function() {
+                        var height = Math.max(api.grid.rows.length * 60, 80);
+                        $('#grid_related_labs').css('height', height + 'px');
+                    })
                     // setTimeout(function() {
                     //     api.core.handleWindowResize();
                     //     if (angular.equals($scope.formValues, {})) {

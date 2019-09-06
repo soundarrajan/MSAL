@@ -904,7 +904,7 @@ span.variance {
 }
 
 #grid_labTestResults {
-    height: 420px
+    height: 300px;
 }
 
 .form-group.delivery_result {
@@ -1022,7 +1022,7 @@ div#tabs_navigation {
     text-overflow: clip;
     white-space: normal;
     padding: 1px;
-    display: flex;
+display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
