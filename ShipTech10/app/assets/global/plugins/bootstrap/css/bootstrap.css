@@ -2035,7 +2035,6 @@ th {
   display: block;
   width: 100%;
   max-width: 100%;
-  overflow-x: auto;
   margin-bottom: 20px; }
   .table > thead > tr > th,
   .table > thead > tr > td,

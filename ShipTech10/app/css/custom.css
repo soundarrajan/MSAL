@@ -3153,6 +3153,7 @@ Uncomment to see border around all .col-*
 
             .table {
                 border-collapse: collapse;
+                overflow-x: auto;
             }
 
             .table td {
@@ -4355,6 +4356,7 @@ a[disabled]{
     padding: 5px 10px;
     font-size: 16px !important;
     z-index: 9999;
+    width: 400px;
     text-align: left;
     white-space: initial;
     transform: translate(-50%, -100%);

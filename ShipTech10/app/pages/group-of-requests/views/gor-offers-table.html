@@ -654,12 +654,12 @@
                 </td>
                 <td class="text-center" style="max-width: 65px">
                     <!-- tooltip tooltiptrigger="hover" data-placement="top" data-original-title="{{seller.isNotInterested == true ? seller.notInterestedComments : ''}}" -->
-                    <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true" ng-mouseout="tooltip['seller.id'] = false">
+                    <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true; $ctrl.scroll(true)" ng-mouseout="tooltip['seller.id'] = false; $ctrl.scroll(false)">
                         <i class="fa fa-ban" style="position: absolute;left: -2px;font-size: 29px;top: 3px; opacity:0.9" ng-if="seller.isNotInterested == true"></i>
                         <i class="fa fa-user"></i>
                         <sup style="left: -5px"><i class="fa fa-commenting-o"></i></sup>
-	                    <span class="groupOfRequestTableTooltip"  style="width: 400px;" ng-show="tooltip['seller.id'] && seller.isNotInterested">
-                                {{seller.notInterestedComments}}
+	                    <span class="groupOfRequestTableTooltip"  ng-show="tooltip['seller.id'] && seller.isNotInterested && $ctrl.scroll(tooltip['seller.id'])">
+                             {{seller.notInterestedComments}}
                         </span>
                     </span>
                     <a ng-click="$ctrl.viewEditCounterpartyBlade(seller.sellerCounterparty.id, location, seller)" >
@@ -699,7 +699,7 @@
                     </div> 
 
                     <div ng-mouseover="generalSellerCommenttooltip['seller.id'] = true" ng-mouseout="generalSellerCommenttooltip['seller.id'] = false" tooltip-trigger="click" data-original-title="{{seller.generalSellerComment}}" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; height: 100%;overflow:visible;">
-                    	<span style="max-width: 100%; overflow: hidden;">{{seller.generalSellerComment}}</span>
+                    	<span style="max-width: 100%; overflow: hidden; display: block;">{{seller.generalSellerComment}}</span>
 						<span class="groupOfRequestTableTooltip" ng-show="generalSellerCommenttooltip['seller.id'] && seller.generalSellerComment">{{seller.generalSellerComment}}</span>
                     </div>
                     <div ng-mouseover="portSellerStatustooltip['seller.id'] = true" ng-mouseout="portSellerStatustooltip['seller.id'] = false" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; height: 100%;overflow:visible;">
@@ -800,7 +800,7 @@
                         </a>
 
 
-						<span class="groupOfRequestTableTooltip" ng-show="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]"  style="width: 400px;" >{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}</span>
+						<span class="groupOfRequestTableTooltip" ng-show="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]">{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}</span>
     <!-- {{tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]}} -->
                         <a ng-click="$ctrl.viewSupplierCardBlade(seller, location, requestProducts); $ctrl.supplierCardActiveRequestId = requestProducts[0].requestId" ng-show="$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)" class="font-dark" ng-mouseover="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = true" ng-mouseout="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = false" data-original-title="{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}">
                             <b>

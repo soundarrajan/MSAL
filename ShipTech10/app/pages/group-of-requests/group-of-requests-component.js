@@ -6975,8 +6975,17 @@ ctrl.setProductData = function(data, loc) {
             }
         	return false;
 			
-		}		
+		}
 
+        ctrl.scroll = function(value) {
+           if (value == true) {
+                $('.table').css('overflow-x', 'initial');
+                return true;
+           } else {
+                $('.table').css('overflow-x', 'auto');
+                return false;
+           }
+        }	
 
     }
 ]);
