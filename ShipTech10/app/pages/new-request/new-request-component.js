@@ -404,26 +404,29 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                     ctrl.initContractTable();
                                 }
                             );
+                            $scope.productTypesLoadedPerLocation = {
+                            	totalProducts : 0,
+                            	loadedProducts : 0
+                            };
                             for (var j = 0; j < ctrl.request.locations.length; j++) {
                                 if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
                                     if (!ctrl.request.locations[j].recentEta) ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
                                 }
+	                            $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (var i = 0; i < ctrl.request.locations[j].products.length; i++) {
                                 	ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7);
                                     if (ctrl.request.locations[j].products[i].product) {
                                     	// ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                         listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
+                                        	$scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         });
                                         listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
                                         });
                                     }
                                 }
-                            ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
-                            _.each(ctrl.request.locations[j].products, function(value, key) {
-                                value.product.name = String(key + 1) + ' - ' + value.product.name;
-                            });
+
                             }
                             newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then(function(buyer) {
                                 ctrl.buyer = buyer.payload;
@@ -460,6 +463,21 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     }
                 );
         };
+
+        $scope.$watch('productTypesLoadedPerLocation.loadedProducts', function(obj) {
+        	if (obj) {
+	        	console.log(obj, $scope.productTypesLoadedPerLocation.totalProducts);
+	        	if (obj == $scope.productTypesLoadedPerLocation.totalProducts) {
+	        		for (var j = 0; j < ctrl.request.locations.length; j++) {
+			            ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
+			            _.each(ctrl.request.locations[j].products, function(value, key) {
+			                value.product.name = String(key + 1) + ' - ' + value.product.name;
+			            });        	
+					}
+	        	}
+        	}
+        })
+
         ctrl.getCurrentProductsCurrentIds = function() {
             ctrl.productsContractIds = [];
             addedProductRequestIds = [];
