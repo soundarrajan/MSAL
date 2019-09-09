@@ -1541,6 +1541,11 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         $(document).on("click", "body > .morePortsPopup .close", function () {
             $("body > .morePortsPopup").remove();
         })
+        $(document).on("click", "body", function(obj){
+            if ( !($(obj.target).hasClass("contextmenu") || $(obj.target).parents(".contextmenu").length > 0 ) ) {
+                $('.contextmenu a.close').click();
+            }
+        })
         ctrl.checkIfIsWeekend = function (date) {
             theDate = new Date(date);
             day = theDate.getDay();
