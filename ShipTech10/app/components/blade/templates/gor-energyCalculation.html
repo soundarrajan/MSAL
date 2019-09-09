@@ -41,38 +41,56 @@
 				            <tr ng-repeat="counterparty in location.counterparties" ng-class="{'bg-green-jungle': counterparty.isMinPrice}">
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.seller.displayName ? counterparty.seller.displayName : counterparty.seller.name}}" readonly ng-model="counterparty.seller.name"></td><!--  Counterparty -->
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.physicalSupplier.displayName ? counterparty.physicalSupplier.displayName : counterparty.physicalSupplier.name}}" readonly ng-model="counterparty.physicalSupplier.name"></td><!--  Physical Supplier -->
-				            	<td width="50px"><input type="number" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.energyParameterValues.pricePerSpecificEnergy" ng-change="$ctrl.priceChanged()"></td><!--  Price -->
+				            	<td width="50px">
+				            		<input ng-class="{'border-red' : (!location.allowZeroPricing && (counterparty.price <= 0) )}" type="number" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.price" ng-change="$ctrl.priceChanged()"></td><!--  Price -->
 				            	<td width="50px">
 				            		<input type="number" class="form-control" 
 				            		type="text" 
+				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.viscosity.specValue, counterparty.minMaxSpecs.viscosity)}" 
 				            		ng-model="counterparty.energyParameterValues.viscosity.specValue"></td><!--  Viscosity -->
 				            	<td width="50px">
 				            		<input type="number" class="form-control" 
 				            		type="text" 
+				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.sulphur.specValue, counterparty.minMaxSpecs.sulphur)}" 
 				            		ng-model="counterparty.energyParameterValues.sulphur.specValue"></td><!--  Sulphur -->
 				            	<td width="50px">
 				            		<input type="number" class="form-control" 
 				            		type="text" 
+				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.density.specValue, counterparty.minMaxSpecs.density)}" 
 				            		ng-model="counterparty.energyParameterValues.density.specValue"></td><!--  Density -->
 				            	<td width="50px">
 				            		<input type="number" class="form-control" 
 				            		type="text" 
+				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.ash.specValue, counterparty.minMaxSpecs.ash)}" 
 				            		ng-model="counterparty.energyParameterValues.ash.specValue"></td><!--  Ash -->
 				            	<td width="50px">
 				            		<input type="number" class="form-control" 
 				            		type="text" 
+				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.water.specValue, counterparty.minMaxSpecs.water)}" 
 				            		ng-model="counterparty.energyParameterValues.water.specValue"></td><!--  Water -->
-				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.ccai" readonly></td><!--  CCAI -->
-				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.specificEnergy" readonly></td><!--  Net Spec<br>Energy Offered -->
-				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.specificEnergy6Months" readonly></td><!--  Net Spec Energy<br>Dlvd (6 month avg.) -->
-				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.diffBasedOnSpecificEnergy" readonly></td><!--  $ Diff based on<br> Specific Energy -->
-				            	<td><input class="form-control" ng-model="counterparty.energyParameterValues.priceGap" readonly></td><!--  Price Difference -->
-				            	<td><input class="form-control" format="number:{{$ctrl.pricePrecision}}" ng-model="counterparty.energyParameterValues.computedPrice" readonly></td><!--  Total Computed<br>Price -->
+				            	<td>
+				            		<input class="form-control" format="number:{{$ctrl.quantityPrecision}}" ng-model="counterparty.energyParameterValues.ccai" readonly>
+				            	</td><!--  CCAI -->
+				            	<td>
+				            		<input class="form-control" format="number:{{$ctrl.quantityPrecision}}" ng-model="counterparty.energyParameterValues.specificEnergy" readonly>
+				            	</td><!--  Net Spec<br>Energy Offered -->
+				            	<td>
+				            		<input class="form-control" format="number:{{$ctrl.quantityPrecision}}" ng-model="counterparty.energyParameterValues.specificEnergy6Months" readonly>
+				            	</td><!--  Net Spec Energy<br>Dlvd (6 month avg.) -->
+				            	<td>
+				            		<input class="form-control" format="number:{{$ctrl.quantityPrecision}}" ng-model="counterparty.energyParameterValues.diffBasedOnSpecificEnergy" readonly>
+				            	</td><!--  $ Diff based on<br> Specific Energy -->
+				            	<td>
+				            		<input class="form-control" format="number:{{$ctrl.quantityPrecision}}" ng-model="counterparty.energyParameterValues.priceGap" readonly>
+				            	</td><!--  Price Difference -->
+				            	<td>
+				            		<input class="form-control"  format="number:{{$ctrl.pricePrecision}}" ng-model="counterparty.energyParameterValues.computedPrice" readonly>
+				            	</td><!--  Total Computed<br>Price -->
 				            </tr>		            
 				        </tbody>
 				    </table>

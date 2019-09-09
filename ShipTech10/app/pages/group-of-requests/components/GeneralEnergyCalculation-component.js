@@ -8,6 +8,7 @@ angular.module('shiptech.components')
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
 	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
+	            ctrl.quantityPrecision = settings.payload.defaultValues.quantityPrecision;
 	        });
 
 			ctrl.$onInit = function() {
@@ -19,7 +20,8 @@ angular.module('shiptech.components')
 				};
 				ctrl.getEnergyBladeContentByProduct(payload, function(){
 					ctrl.computeDiffBasedOnSpecificEnergy();  
-					ctrl.normalizeOffSpecParamsMinMax();    
+					ctrl.normalizeOffSpecParamsMinMax();   
+					ctrl.computeMinPricePerLocations(); 
 				})
 				
 			}
@@ -49,12 +51,15 @@ angular.module('shiptech.components')
 			ctrl.computeMinPricePerLocations = function() {
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
 					loc.minPriceCounterpartyIndex = _.minBy(loc.counterparties, function(el){
-						return el.energyParameterValues.pricePerSpecificEnergy;
+						return el.price;
 					})
+					if (!loc.minPriceCounterpartyIndex) {
+						return;
+					}
 					console.log(loc.minPriceCounterpartyIndex);
 					$.each(loc.counterparties, function(k2, counterparty){
 						counterparty.isMinPrice = false;
-						if (parseFloat(counterparty.energyParameterValues.pricePerSpecificEnergy) == parseFloat(loc.minPriceCounterpartyIndex.energyParameterValues.pricePerSpecificEnergy) ) {
+						if (parseFloat(counterparty.price) == parseFloat(loc.minPriceCounterpartyIndex.price) ) {
 							counterparty.isMinPrice = true;
 						}
 					})
@@ -66,11 +71,11 @@ angular.module('shiptech.components')
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
 					$.each(loc.counterparties, function(k2, counterparty){
 						counterparty.minMaxSpecs = {
-							"viscosity" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Viscosity @ 50 degC";}),
-							"sulphur" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Sulphur content";}),
-							"density" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Density @ 15 degC";}),
-							"ash" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Ash content";}),
-							"water" : _.find(counterparty.specParameters, function(obj){return obj.specParameter.name == "Water content";})
+							"viscosity" : _.find(counterparty.specParameters, function(obj){return obj.energyParameterName == "Viscosity";}),
+							"sulphur" : _.find(counterparty.specParameters, function(obj){return obj.energyParameterName == "Sulphur";}),
+							"density" : _.find(counterparty.specParameters, function(obj){return obj.energyParameterName == "Density";}),
+							"ash" : _.find(counterparty.specParameters, function(obj){return obj.energyParameterName == "Ash";}),
+							"water" : _.find(counterparty.specParameters, function(obj){return obj.energyParameterName == "Water";})
 						}					
 					})
 				})
@@ -78,6 +83,20 @@ angular.module('shiptech.components')
 			}
 
 			ctrl.updateEnergySpecValuesByProduct = function() {
+
+				hasInvalidPrice = false;
+				$.each(ctrl.energyCalculationBladeData.data, function(k,loc) {
+					var allowZeroPricing = loc.allowZeroPricing;
+					$.each(loc.counterparties, function(k2, counterparty){
+						if (!counterparty.price || (!allowZeroPricing && counterparty.price <= 0) ) {
+							hasInvalidPrice = true;
+						}
+					})
+				})
+				if (hasInvalidPrice) {
+					toastr.error("Please check price fields");
+					return;
+				}
 
                 groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
                 	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
@@ -91,6 +110,9 @@ angular.module('shiptech.components')
 			}
 
 			ctrl.checkIfIsOffspec = function(value, specParam) {
+				if (!specParam || !value) {
+					return false;
+				}
 				var min = specParam.min;
 				var max = specParam.max;
 				if (min && max) {
