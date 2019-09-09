@@ -1004,8 +1004,12 @@ APP_MASTERS.controller("Controller_Datatables", [
                 ],
                 onRegisterApi: function(api) {
                     $('.group_labTestResults').hide();
-                    $timeout(function() {
-                        $('.group_labTestResults').show();
+                    api.core.on.rowsRendered($scope, function() {
+                        api.core.handleWindowResize().then(function() {
+                            $timeout(function() {
+                                $('.group_labTestResults').show();
+                            }, 250);
+                        });
                     });
                 }
             },
