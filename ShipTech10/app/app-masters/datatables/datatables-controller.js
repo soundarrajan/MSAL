@@ -3418,21 +3418,13 @@ APP_MASTERS.controller("Controller_Datatables", [
                     }
                 ],
                 onRegisterApi: function(api) {
-                    $timeout(function() {
-                        var height = Math.max(api.grid.rows.length * 60, 80);
-                        $('#grid_related_labs').css('height', height + 'px');
-                    })
-                    // setTimeout(function() {
-                    //     api.core.handleWindowResize();
-                    //     if (angular.equals($scope.formValues, {})) {
-                    //         $scope.formValues = {
-                    //             orderRelatedLabResults: [{}]
-                    //         }
-                    //     }
-                    //     if (!$scope.formValues.orderRelatedLabResults) {
-                    //         $scope.formValues.orderRelatedLabResults = [{}]
-                    //     }
-                    // }, 10);
+                    $('#grid_related_labs').hide();
+                    api.core.on.rowsRendered($scope, function() {
+                        api.core.handleWindowResize().then(function() {
+                            var height = Math.min(Math.max(api.grid.rows.length * 60, 80), 220);
+                            $('#grid_related_labs').css('height', height + 'px').show();
+                        });
+                    });
                 }
             }
         };
