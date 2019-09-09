@@ -1,6 +1,6 @@
 angular.module('shiptech.components')
-    .controller('SixMonthHistory', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService',  
-        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService) {
+    .controller('SixMonthHistory', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings',  
+        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings) {
 
 	        var ctrl = this;
 		
@@ -9,6 +9,27 @@ angular.module('shiptech.components')
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
 	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
 	        });
+
+
+	        ctrl.formatDate = function(date) {
+    	        dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
+	            var hasDayOfWeek = false;
+                if (dateFormat.startsWith("DDD ")) {
+                    hasDayOfWeek = true
+                    dateFormat = dateFormat.split("DDD ")[1];
+                }
+		        window.tenantFormatsDateFormat = dateFormat;
+		        dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+
+
+		        if (date) {
+		        	if (hasDayOfWeek) {
+						return moment.utc(date).format("ddd") + " " + moment.utc(date).format(dateFormat) 
+		        	} else {
+			            return moment.utc(date).format(dateFormat);
+		        	}
+		        }
+	        } 
 
 			ctrl.$onInit = function() {
 				console.log(ctrl.sixMonthPayload);
@@ -22,11 +43,6 @@ angular.module('shiptech.components')
 					ctrl.sellerCounterpartyId = null;
 				}
 	            payload = {
-					// "UserId" : null,
-					// "SellerCounterpartyId" : ctrl.sellerCounterpartyId,
-					// "PhysicalSupplierCounterpartyId" : ctrl.physicalSupplierCounterpartyId,
-					// "RequestGroupId" : ctrl.requestGroupId,
-					// "LocationIds" : ctrl.locationIds,
 	                "Filters": [
 		                {
 		                	"ColumnName":"SellerCounterpartyId",
@@ -59,7 +75,7 @@ angular.module('shiptech.components')
 
 			ctrl.getSixMonthHistoryData = function(payload, callback) {
                 groupOfRequestsModel.energy6MonthHistory(payload).then(function (data) {
-                	console.log(data);	
+					ctrl.sixMonthsHistoryData = data.payload;
                 	if (callback) {
                 		callback();
                 	}

@@ -3484,7 +3484,8 @@ Uncomment to see border around all .col-*
             }
 
             .bladeEntity .blade-column.main-content-column {
-                min-height: 100vh;
+                /*min-height: 100vh;*/
+			    min-height: calc(100vh - 50px);                
             }
 
             new-request .hideInRequest {
