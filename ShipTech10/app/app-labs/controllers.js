@@ -437,6 +437,10 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         return false;
     }
     $scope.labsActions = function (action) {
+        if (action == 1) {
+        	$scope.verifyLab();
+        	return
+        }	
         var id = $scope.formValues.id;
         var status = $scope.formValues.status;
         Factory_Master.labsActions(vm.app_id, vm.screen_id, id, action, status, function (callback) {
@@ -453,6 +457,24 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
             }
         });
     }
+
+    $scope.verifyLab = function(){
+    	data = angular.copy($scope.formValues);
+        Factory_Master.verify_lab(data, function (callback) {
+            if (callback.status == true) {
+                $scope.loaded = true;
+                toastr.success(callback.message);
+                $state.reload();
+            } else {
+                if (callback) {
+                    if (callback.message) {
+                        toastr.error(callback.message);
+                    }
+                }
+            }
+        });    	
+    }
+
     $scope.selectUniqueClaim = function(labClaimTypeSelection){
     	$scope.labResults_claimId = labClaimTypeSelection.id;
     	$rootScope.selectedLabResults_claimId = labClaimTypeSelection.id;

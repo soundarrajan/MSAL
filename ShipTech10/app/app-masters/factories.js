@@ -475,6 +475,11 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 });
             }
         },
+        verify_lab: function(data, callback) {
+			$Api_Service.labs.verify_lab(data, function(result) {
+                callback(result);
+            });
+        },        
         create_master_entity: function(app, screen, fields, callback) {
             var data = {
                 app: app,

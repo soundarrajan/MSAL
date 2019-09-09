@@ -8077,7 +8077,36 @@ APP_API.factory("$Api_Service", [
                             console.log("Error invalid lab");
                         }
                     );
-                }
+                },
+                verify_lab: function(param, callback) {
+                    var url = API.BASE_URL_DATA_LABS + "/api/labs/verify";
+                    var apiJSON = {
+                        Payload: param
+                    };
+                    $http.post(url, apiJSON).then(
+                        function success(response) {
+                            if (response.status == 200) {
+                                var res = {};
+                                // res.data = response.data.payload;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                console.log("Error verify lab");
+                                var res = {};
+                                res.status = false;
+                                res.errorMessage = response.data.ErrorMessage;
+                                callback(res);
+                            }
+                        },
+                        function error(response) {
+                            var res = {};
+                            res.status = false;
+                            res.errorMessage = response.data.ErrorMessage;
+                            callback(res);
+                            console.log("Error verify lab");
+                        }
+                    );
+                }                
             },
             invoice: {
                 createfromdelivery: function(param, callback) {
