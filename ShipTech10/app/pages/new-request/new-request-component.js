@@ -465,7 +465,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
 
         $scope.$watch('productTypesLoadedPerLocation.loadedProducts', function(obj) {
-        	if (obj) {
+        	if (obj && !ctrl.request.id) {
 	        	console.log(obj, $scope.productTypesLoadedPerLocation.totalProducts);
 	        	if (obj == $scope.productTypesLoadedPerLocation.totalProducts) {
 	        		for (var j = 0; j < ctrl.request.locations.length; j++) {

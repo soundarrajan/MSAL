@@ -68,6 +68,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         });
         tenantService.procurementSettings.then(function (settings) {
             ctrl.isEnergyCalculationRequired = settings.payload.energyConfiguration.isEnergyCalculationRequired;
+            ctrl.sixMonthHistoryFor = settings.payload.energyConfiguration.sixMonthHistoryFor;
             ctrl.includeAverageSurveyorCharge = settings.payload.energyConfiguration.includeAverageSurveyorCharge;
             ctrl.averageSurveyorCost = settings.payload.energyConfiguration.averageSurveyorCost;
             ctrl.needSupplierQuote = settings.payload.offer.needSupplierQuoteValidityDateExpiry;
@@ -5440,6 +5441,15 @@ ctrl.setProductData = function(data, loc) {
                     requestLocationIds: requestLocationIds.join(",")
                 }
             };
+            ctrl.sixMonthPayload = false
+            setTimeout(function(){
+	            ctrl.sixMonthPayload = {
+	                requestGroupId: ctrl.groupId,
+	                locationIds: theLocation.location.id,
+	                sellerCounterpartyId: seller.sellerCounterparty.id,
+	                physicalSupplierCounterpartyId: seller.randUnique.split("-")[1]
+	            }
+            })
             $scope.tempProductOffer = productOffer;
             $scope.tempSellerData = seller;
             Factory_Master.getEnergyBlade(ctrl.initDataforCard, function (callback) {

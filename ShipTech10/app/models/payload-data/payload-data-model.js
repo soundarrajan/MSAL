@@ -4,15 +4,15 @@ angular.module('shiptech.models').factory('payloadDataModel', [function() {
         "IsValid": false,
         "TenantMongoDbUrl": null,
         "TenantId": null,
-        "UiFilters": {
-            "VesselId": null,
-            "ProductId": null,
-            "LocationId": null,
-            "StatusId": null,
-            "AgreementTypeId": null,
-            "BuyerId": null,
-            "ServiceId": null
-        },
+        // "UiFilters": {
+        //     "VesselId": null,
+        //     "ProductId": null,
+        //     "LocationId": null,
+        //     "StatusId": null,
+        //     "AgreementTypeId": null,
+        //     "BuyerId": null,
+        //     "ServiceId": null
+        // },
         "IsAuthorized": false
     };
 
