@@ -82,6 +82,18 @@ angular.module('shiptech.components')
                 });	            
 			}
 
+			jQuery(document).ready(function(){
+				$(".custom-hardcoded-table-wrapper .tablebody").on("scroll", function(){
+					hscrollOffset = $(this).offset().left - $(this).find("table").offset().left;
+					bodyOffset = $(this).find("table").offset().left;
+
+					console.log(hscrollOffset, bodyOffset);
+
+					$(".custom-hardcoded-table-wrapper .tableheader").scrollLeft(hscrollOffset)
+				})
+			})
+
+
 		}
 	]	
 );
