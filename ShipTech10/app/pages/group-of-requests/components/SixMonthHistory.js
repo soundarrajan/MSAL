@@ -23,11 +23,28 @@ angular.module('shiptech.components')
 				}
 	            payload = {
 					// "UserId" : null,
-					"SellerCounterpartyId" : ctrl.sellerCounterpartyId,
-					"PhysicalSupplierCounterpartyId" : ctrl.physicalSupplierCounterpartyId,
-					"RequestGroupId" : ctrl.requestGroupId,
-					"LocationIds" : ctrl.locationIds,
-	                "Filters": [],
+					// "SellerCounterpartyId" : ctrl.sellerCounterpartyId,
+					// "PhysicalSupplierCounterpartyId" : ctrl.physicalSupplierCounterpartyId,
+					// "RequestGroupId" : ctrl.requestGroupId,
+					// "LocationIds" : ctrl.locationIds,
+	                "Filters": [
+		                {
+		                	"ColumnName":"SellerCounterpartyId",
+		                	"Value":ctrl.sellerCounterpartyId
+		                },
+		                {
+		                	"ColumnName":"PhysicalSupplierCounterpartyId",
+		                	"Value":ctrl.physicalSupplierCounterpartyId
+		                },
+		                {
+		                	"ColumnName":"RequestGroupId",
+		                	"Value":ctrl.requestGroupId
+		                },
+		                {
+		                	"ColumnName":"LocationIds",
+		                	"Value":ctrl.locationIds
+		                }	                
+	                ],
 	                "Pagination": {
 	                    "Skip": 0,
 	                    "Take": 9999
