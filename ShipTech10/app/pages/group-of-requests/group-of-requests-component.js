@@ -3877,6 +3877,33 @@ ctrl.setProductData = function(data, loc) {
                 $rootScope.overrideCloseNavigation = true;
             }
         };
+
+        ctrl.checkIfCanInitEnergyCalculation = function(product) {
+			var canInitEnergyCalculation = false;
+
+			requestId = product.requestId;
+			productId = product.product.id;
+			currentProduct = product;
+			requestProductIds = [];
+            $.each(ctrl.requests, function (reqK, reqV) {
+            	if (requestId == reqV.id) {
+	                $.each(reqV.locations, function (locK, locV) {
+	                	currentLocation = locV;
+	                    $.each(locV.products, function (prodK, prodV) {
+	                        if (productId == prodV.product.id) {
+			                    $.each(prodV.sellers, function (sellerK, sellerV) {
+			                    	if (sellerV.offers.length > 0) {
+										canInitEnergyCalculation = true;
+			                    	}
+			                    });
+	                        }
+	                    });
+	                });
+            	}
+            });
+            return canInitEnergyCalculation;
+        }
+
         ctrl.initEnergyCalculation = function(product){
 			requestId = product.requestId;
 			productId = product.product.id;

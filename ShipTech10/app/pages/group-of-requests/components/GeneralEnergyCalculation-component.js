@@ -1,6 +1,6 @@
 angular.module('shiptech.components')
-    .controller('GeneralEnergyCalculation', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService',  
-        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService) {
+    .controller('GeneralEnergyCalculation', ['$scope', '$rootScope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService',  
+        function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService) {
 
 	        var ctrl = this;
 		
@@ -99,6 +99,7 @@ angular.module('shiptech.components')
 				}
 
                 groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
+            		$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);  
                 	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
                 		ctrl.normalizeOffSpecParamsMinMax();
                 		ctrl.computeDiffBasedOnSpecificEnergy();
