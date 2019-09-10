@@ -346,6 +346,7 @@ angular
         "shiptech.components",
         "shiptech.pages",
         "ngVis",
+        "ApplicationInsightsModule"
     ])
     .controller("appCtrl", [
         "$scope",
@@ -754,7 +755,8 @@ angular.element(document).ready(function() {
             .constant("VALIDATION_STOP_TYPE_IDS", appConfig.VALIDATION_STOP_TYPE_IDS)
             .constant("EXPORT_FILETYPE_EXTENSION", appConfig.EXPORT_FILETYPE_EXTENSION)
             .constant("PACKAGES_CONFIGURATION", appConfig.PACKAGES_CONFIGURATION)
-            .constant("EMAIL_TRANSACTION", appConfig.EMAIL_TRANSACTION);
+            .constant("EMAIL_TRANSACTION", appConfig.EMAIL_TRANSACTION)
+            .constant("INSTRUMENTATION_KEY", appConfig.INSTRUMENTATION_KEY);
         if (window.location.hash.indexOf("supplier-portal") > 0) {
             angular.module("shiptech").value("$tenantSettings", {});
             angular.module("shiptech").value("$listsCache", {});
@@ -784,3 +786,26 @@ angular.module('shiptech').factory('httpRequestInterceptor', function () {
 angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
   $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
+
+angular.module('shiptech').config(['$routeProvider', '$locationProvider', 'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY',
+    function ($routeProvider, $locationProvider, applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
+
+        applicationInsightsServiceProvider.configure(INSTRUMENTATION_KEY, {
+            appName: 'shiptech',
+            autoLogTracking:true,
+            autoPageViewTracking:true,
+            // We can pass a custom error ID if autoExceptionTracking:false and we manually call trackException as below
+            //applicationInsightsService.trackException(exception, cause, { errorTraceId: "SOME_RANDOM_ID" });
+            autoExceptionTracking:true,
+            // In case instrumentation key is not provided we just logging the tracking events in console
+            developerMode: !INSTRUMENTATION_KEY
+
+        });
+        $routeProvider
+            .when('/', {
+                templateUrl: 'index.html',
+                controller: 'appCtrl'
+            })
+
+    }
+]);

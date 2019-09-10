@@ -42,7 +42,6 @@ angular.module('shiptech').service('screenLoader', [
     }
 ]);
 
-
 angular.module("shiptech").config([
     "$httpProvider",
     function($httpProvider) {
@@ -65,15 +64,17 @@ angular.module("shiptech").config([
 			"api/invoice/updateTreasuryInfo",
 			"api/procurement/request/getQuantityAverage",
 			"api/procurement/request/getQuantityAndStrategy",
-			"api/claims/getQuantityShortage",
+			"api/claims/getQuantityShortage"
     	];
-
         $httpProvider.interceptors.push([
-            "$q",
-            function($q) {
+            "$q", 'applicationInsightsService', '$log',
+			function($q, applicationInsightsService, $log) {
                 return {
                     request: function name(request) {
                     	routeCall = request.url;
+						if(window.openedScreenLoaders <= 0 || typeof(window.openedScreenLoaders) == 'undefined') {
+							window.screenLoaderStartTime = Date.now();
+						}
                     	if (request.url.indexOf("/api/") != -1) {
 	                    	routeCall = 'api/' + request.url.split("/api/")[1];
                     	}
@@ -88,9 +89,10 @@ angular.module("shiptech").config([
 	                    	$('clc-table-list tbody').css("opacity", 0);
 	                    	if (typeof(window.openedScreenLoaders) == 'undefined') {
 	                    		window.openedScreenLoaders = 0;
-	                    	}	
+	                    	}
 	                    	window.openedScreenLoaders += 1;
                     	}
+						// applicationInsightsService.trackMetric('Requests in que on request', window.openedScreenLoaders, config);
                         return request;
                     },
                     response: function name(config) {
@@ -108,12 +110,14 @@ angular.module("shiptech").config([
 					                    	// console.log("screenLoader CLOSE:" + routeCall);
 					                    	$('.screen-loader').fadeOut(200);
 					                    	$('clc-table-list tbody').css("opacity", 1);
+											applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
 				                    	}
-			                    	},50)
+			                    	},50);
 		                    	}
 		                    	// console.log("response timeout:" + window.openedScreenLoaders);
 	                    	// console.log("***** response:" + window.openedScreenLoaders);
                     	}
+						// applicationInsightsService.trackMetric('Requests in que on response', window.openedScreenLoaders, config);
                     	// //console.log(config);
                         return config;
                     },
@@ -163,7 +167,9 @@ angular.module("shiptech").config([
 			                    	if (window.openedScreenLoaders <= 0) {
 										$('.screen-loader').fadeOut(200);
 										$('clc-table-list tbody').css("opacity", 1);
+										applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
 			                    	}
+									applicationInsightsService.trackTraceMessage('Page data loaded with an exception', config);
 								},50)
 	                    	}
 
@@ -174,6 +180,7 @@ angular.module("shiptech").config([
                     	}
                     	// console.log("***** response:" + window.openedScreenLoaders);
                     	// //console.log(config);
+						applicationInsightsService.trackException('Response error', config);
                         return false;
                     },                    
                 };
