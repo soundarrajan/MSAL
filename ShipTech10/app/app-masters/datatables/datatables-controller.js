@@ -1006,9 +1006,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                     $('.group_labTestResults').hide();
                     api.core.on.rowsRendered($scope, function() {
                         api.core.handleWindowResize().then(function() {
-                            $timeout(function() {
-                                $('.group_labTestResults').show();
-                            }, 250);
+                            var height = Math.min(Math.max(api.grid.rows.length * 60, 80), 400);
+                            $('#grid_labTestResults').css('height', height + 'px');
+                            $('.group_labTestResults').show();
                         });
                     });
                 }
@@ -2889,7 +2889,20 @@ APP_MASTERS.controller("Controller_Datatables", [
                         cellTemplate: $scope.dataTableTemplates.doubleRow,
                         custom_src: "labSealNumbers"
                     }
-                ]
+                ],
+                onRegisterApi: function(api) {
+                    api.core.on.rowsRendered($scope, function() {
+                        api.core.handleWindowResize().then(function() {
+                            $('#grid_sealNumber > div.ui-grid-contents-wrapper > div.ui-grid-render-container > div.ui-grid-viewport > div.ui-grid-canvas > .ui-grid-row').each(function(index, elm) {
+                                if ($(elm).find('input').length > 2) {
+                                    $(elm).addClass('double-cells');
+                                } else {
+                                    $(elm).addClass('single-cells');
+                                }
+                            });
+                        });
+                    });
+                }
             },
             specGroupParameters: {
                 data: "formValues.specGroupParameters",

@@ -3341,8 +3341,20 @@ Uncomment to see border around all .col-*
                 height: auto !important;
             }
 
-            #grid_sealNumber .ui-grid-cell {
-                height: 110px!important;
+            div.ui-grid-row.double-cells {
+                height: 110px !important;
+            }
+
+            div.ui-grid-row.double-cells > div > div.ui-grid-cell {
+                height: 110px !important;
+            }
+
+            div.ui-grid-row.single-cells {
+                height: 55px !important;
+            }
+
+            div.ui-grid-row.single-cells > div > div.ui-grid-cell {
+                height: 55px !important;
             }
 
             #grid_sealNumber .ui-grid-cell .double-cells:first-child {
@@ -3352,7 +3364,6 @@ Uncomment to see border around all .col-*
             .cells_2 {
                 height: 50px;
             }
-
             .ui-grid-cell-contents span.formatter[data-formatter-type="status"].amber, .jqgrid_component span.formatter[data-formatter-type="status"].amber {
                 background: #FFC200;
                 color: #FFFFFF;
