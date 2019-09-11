@@ -5590,6 +5590,9 @@ APP_MASTERS.controller("Controller_Master", [
         	} else {
         		$scope.confirmCloseBlade();		
         	}
+        	if ($rootScope.shouldRefreshGroup) {
+        		$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
+        	}
         };
         $scope.confirmCloseBlade = function(){
             $(".bladeEntity").removeClass("open");

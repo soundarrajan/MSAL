@@ -3,7 +3,8 @@ angular.module('shiptech.components')
         function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService) {
 
 	        var ctrl = this;
-		
+			$rootScope.shouldRefreshGroup = false;
+	        
 	        tenantService.tenantSettings.then(function (settings) {
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
@@ -98,7 +99,8 @@ angular.module('shiptech.components')
 				}
 
                 groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
-            		$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);  
+            		// $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);  
+            		$rootScope.shouldRefreshGroup = true;
                 	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
                 		ctrl.normalizeOffSpecParamsMinMax();
                 		ctrl.computeMinPricePerLocations();
