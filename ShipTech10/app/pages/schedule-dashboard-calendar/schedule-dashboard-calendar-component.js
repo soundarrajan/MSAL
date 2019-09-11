@@ -150,6 +150,12 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                                 case 'VoyageDetail_LocationName':
                                     payload[i]['displayName'] = 'Location';
                                     break;
+                                case 'VoyageDetail_DeliveryTo':
+                                    payload[i]['displayName'] = 'Delivery To';
+                                    break;
+                                case 'VoyageDetail_DeliveryFrom':
+                                    payload[i]['displayName'] = 'Delivery From';
+                                    break;                                                                        
                                 case 'CompanyName':
                                     payload[i]['displayName'] = 'Company'; 
                                     break;
