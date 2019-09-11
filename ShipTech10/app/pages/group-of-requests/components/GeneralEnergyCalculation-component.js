@@ -19,7 +19,6 @@ angular.module('shiptech.components')
 					"product":  ctrl.energyCalculationBladePayload.currentProduct.product
 				};
 				ctrl.getEnergyBladeContentByProduct(payload, function(){
-					ctrl.computeDiffBasedOnSpecificEnergy();  
 					ctrl.normalizeOffSpecParamsMinMax();   
 					ctrl.computeMinPricePerLocations(); 
 				})
@@ -102,7 +101,6 @@ angular.module('shiptech.components')
             		$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);  
                 	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
                 		ctrl.normalizeOffSpecParamsMinMax();
-                		ctrl.computeDiffBasedOnSpecificEnergy();
                 		ctrl.computeMinPricePerLocations();
                 	})
                 	console.log(data);	
@@ -135,7 +133,6 @@ angular.module('shiptech.components')
 			}	
 
 			ctrl.priceChanged = function() {
-				ctrl.computeDiffBasedOnSpecificEnergy();
 				ctrl.computeMinPricePerLocations();
 			}
 

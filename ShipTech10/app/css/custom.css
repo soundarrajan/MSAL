@@ -3153,7 +3153,7 @@ Uncomment to see border around all .col-*
 
             .table {
                 border-collapse: collapse;
-                overflow-x: auto;
+                /*overflow-x: auto;*/
             }
 
             .table td {

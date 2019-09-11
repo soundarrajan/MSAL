@@ -5,10 +5,10 @@
 {{$ctrl.requirements}}
 </pre> -->
 <!-- <pre>{{$ctrl.requests}}</pre> -->
-<div style="position: relative; zoom:0.75;" id="negotiation-table-fixed-container">
+<div style="position: relative; zoom:0.75; overflow: auto" id="negotiation-table-fixed-container">
 
 
-    <table id="group_of_requests_table" style="display: block;" class="table table-bordered table-hover table-striped table-condensed st-group-of-requests-table bg-white" ng-cloak>
+    <table id="group_of_requests_table" class="table table-bordered table-hover table-striped table-condensed st-group-of-requests-table bg-white" ng-cloak>
         <thead style="background: #fff;">
             
             <tr>
@@ -653,11 +653,11 @@
                 </td>
                 <td class="text-center" style="max-width: 65px">
                     <!-- tooltip tooltiptrigger="hover" data-placement="top" data-original-title="{{seller.isNotInterested == true ? seller.notInterestedComments : ''}}" -->
-                    <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true; $ctrl.scroll(true)" ng-mouseleave="tooltip['seller.id'] = false; $ctrl.scroll(false)">
+                    <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true; $ctrl.calculateTooltipPosition($event);" ng-mouseleave="tooltip['seller.id'] = false;">
                         <i class="fa fa-ban" style="position: absolute;left: -2px;font-size: 29px;top: 3px; opacity:0.9" ng-if="seller.isNotInterested == true"></i>
                         <i class="fa fa-user"></i>
                         <sup style="left: -5px"><i class="fa fa-commenting-o"></i></sup>
-	                    <span class="groupOfRequestTableTooltip"  ng-show="tooltip['seller.id'] && seller.isNotInterested && $ctrl.scroll(tooltip['seller.id'])">
+	                    <span class="groupOfRequestTableTooltip"  ng-show="tooltip['seller.id'] && seller.isNotInterested ">
                              {{seller.notInterestedComments}}
                         </span>
                     </span>
@@ -697,17 +697,17 @@
                       <span class="groupOfRequestTableTooltip" ng-show="generalSellerStatustooltip['seller.id'] && seller.generalSellerStatus">{{seller.generalSellerStatus}}</span>
                     </div> 
 
-                    <div ng-mouseover="generalSellerCommenttooltip['seller.id'] = true; $ctrl.scroll(true)" ng-mouseleave="generalSellerCommenttooltip['seller.id'] = false; $ctrl.scroll(false)" tooltip-trigger="click" data-original-title="{{seller.generalSellerComment}}" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%;overflow:visible;">
+                    <div ng-mouseover="generalSellerCommenttooltip['seller.id'] = true;" ng-mouseleave="generalSellerCommenttooltip['seller.id'] = false;" tooltip-trigger="click" data-original-title="{{seller.generalSellerComment}}" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%;overflow:visible;">
                     	<span style="max-width: 100%; overflow: hidden; display: block; text-overflow: ellipsis;">{{seller.generalSellerComment}}</span>
-						<span class="groupOfRequestTableTooltip" ng-show="generalSellerCommenttooltip['seller.id'] && seller.generalSellerComment && $ctrl.scroll(generalSellerCommenttooltip['seller.id'])">{{seller.generalSellerComment}}</span>
+						<span class="groupOfRequestTableTooltip" ng-show="generalSellerCommenttooltip['seller.id'] && seller.generalSellerComment">{{seller.generalSellerComment}}</span>
                     </div>
-                    <div ng-mouseover="portSellerStatustooltip['seller.id'] = true; $ctrl.scroll(true)" ng-mouseleave="portSellerStatustooltip['seller.id'] = false; $ctrl.scroll(false)" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; overflow:visible;">
+                    <div ng-mouseover="portSellerStatustooltip['seller.id'] = true;" ng-mouseleave="portSellerStatustooltip['seller.id'] = false;" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; overflow:visible;">
                     	<span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;">{{seller.portSellerStatus}}</span>
-						<span class="groupOfRequestTableTooltip" ng-show="portSellerStatustooltip['seller.id'] && seller.portSellerStatus && $ctrl.scroll(portSellerStatustooltip['seller.id'])">{{seller.portSellerStatus}}</span>
+						<span class="groupOfRequestTableTooltip" ng-show="portSellerStatustooltip['seller.id'] && seller.portSellerStatus">{{seller.portSellerStatus}}</span>
                     </div>
-                    <div ng-mouseover="portSellerCommenttooltip['seller.id'] = true; $ctrl.scroll(true)" ng-mouseleave="portSellerCommenttooltip['seller.id'] = false; $ctrl.scroll(false)" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; overflow:visible;">
+                    <div ng-mouseover="portSellerCommenttooltip['seller.id'] = true;" ng-mouseleave="portSellerCommenttooltip['seller.id'] = false;" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; overflow:visible;">
                     	<span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;">{{seller.portSellerComment}}</span>
-						<span class="groupOfRequestTableTooltip" ng-show="portSellerCommenttooltip['seller.id'] && seller.portSellerComment && $ctrl.scroll(portSellerCommenttooltip['seller.id'])">{{seller.portSellerComment}}</span>
+						<span class="groupOfRequestTableTooltip" ng-show="portSellerCommenttooltip['seller.id'] && seller.portSellerComment">{{seller.portSellerComment}}</span>
                     </div>                    
                     <!-- <div ng-mouseover="portSellerCommenttooltip['seller.id'] = true" ng-mouseout="portSellerCommenttooltip['seller.id'] = false" tooltip-trigger="click" data-original-title="{{seller.portSellerComment}}" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; height: 100%;overflow:visible; border-right: none">
                     	<span style="max-width: 100%; overflow: hidden;">{{seller.portSellerComment}}</span>

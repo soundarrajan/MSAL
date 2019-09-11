@@ -7014,15 +7014,20 @@ ctrl.setProductData = function(data, loc) {
 			
 		}
 
-        ctrl.scroll = function(value) {
-           if (value == true) {
-                $('.table').css('overflow-x', 'initial');
-                return true;
-           } else {
-                $('.table').css('overflow-x', 'auto');
-                return false;
-           }
-        }	
+		ctrl.calculateTooltipPosition = function(event) {
+			// var maxHeight = 175;
+			// console.log($(event.target).parents("td").find(".groupOfRequestTableTooltip"));
+		}
+
+        // ctrl.scroll = function(value) {
+        //    if (value == true) {
+        //         $('.table').css('overflow-x', 'initial');
+        //         return true;
+        //    } else {
+        //         $('.table').css('overflow-x', 'auto');
+        //         return false;
+        //    }
+        // }	
 
     }
 ]);
