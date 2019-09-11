@@ -5331,6 +5331,7 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.calculateTotalAmountForProductsPerRequestperSeller = function (requestProducts, currLocation, seller) {
             totalAmount = 0;
+            var hasAtLeastOneRfq = false;
             var foundNoValidTco = false;
             $.each(requestProducts, function (k, product) {
             	correctProduct = product.productLocations['L' + currLocation[0].uniqueLocationIdentifier];
@@ -5338,6 +5339,9 @@ ctrl.setProductData = function(data, loc) {
 	                var productOffer = ctrl.getSellerProductOfferOnLocationRewrite(correctProduct, currLocation, seller.sellerCounterparty.id, seller);
             	}
                 if (productOffer) {
+                	if (productOffer.id) {
+	                	hasAtLeastOneRfq = true;
+                	}
                     if (productOffer.energyParameterValues) {
                         if (productOffer.energyParameterValues.tco) {
                             totalAmount += productOffer.energyParameterValues.tco;
@@ -5359,7 +5363,7 @@ ctrl.setProductData = function(data, loc) {
                 	}
                 }
             });
-            if (ctrl.includeAverageSurveyorCharge) {
+            if (ctrl.includeAverageSurveyorCharge && hasAtLeastOneRfq) {
                 totalAmount += ctrl.averageSurveyorCost;
             }
             return foundNoValidTco ? -1 : totalAmount;
