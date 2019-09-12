@@ -203,13 +203,7 @@
                         </div>
                     </div>
                     <div id="neg_his" class="tab-pane fade">
-                       <!--  <h3>
-                            Menu 1
-                        </h3>
-                        <p>
-                            Some content in menu 1.
-                        </p> -->
-                        <six-months-history ng-if="$ctrl.sixMonthPayload" six-month-history-for="$ctrl.sixMonthHistoryFor"  six-month-payload="$ctrl.sixMonthPayload"></six-months-history>
+                        <six-months-history ng-if="$ctrl.sixMonthPayload" active-product="$ctrl.active_prod.products[0].product.id" six-month-history-for="$ctrl.sixMonthHistoryFor"  six-month-payload="$ctrl.sixMonthPayload"></six-months-history>
                     </div>
                     <div id="comm" class="tab-pane fade">
                         <h3>

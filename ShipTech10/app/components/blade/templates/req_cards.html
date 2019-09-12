@@ -25,11 +25,11 @@
                             {{ value.vessel.name }}
                         </b>
                         <p ng-if="$ctrl.req_cards == 'big' ">
-                        	Port : {{ value.location.name }}
+                        	<b>Port</b> : {{ value.location.name }}
                         	<br>
-                        	Seller : {{value.seller.name}} - {{value.physicalSupplier.name}}
+                        	<b>Seller</b> : {{value.seller.name}} - {{value.physicalSupplier.name}}
                         	<br>
-                        	Product: {{value.products[0].product.name}} -
+                        	<b>Product</b>: {{value.products[0].product.name}} -
                             <span ng-if="value.package">
                                 <!-- Package: {{value.package.id}} -->
 								Package	

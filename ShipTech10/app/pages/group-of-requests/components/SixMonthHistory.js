@@ -31,17 +31,9 @@ angular.module('shiptech.components')
 		        }
 	        } 
 
-			ctrl.$onInit = function() {
-				console.log(ctrl.sixMonthPayload);
-				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
-				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
-				ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
-				ctrl.locationIds = [ctrl.sixMonthPayload.locationIds].join();
-				if (ctrl.sixMonthHistoryFor.name == "Seller") {
-					ctrl.physicalSupplierCounterpartyId = null;
-				} else {
-					ctrl.sellerCounterpartyId = null;
-				}
+		    ctrl.$onChanges = function (changes) {
+		    	console.log(changes.activeProduct.currentValue);
+		    	ctrl.activeProduct = changes.activeProduct.currentValue;
 	            payload = {
 	                "Filters": [
 		                {
@@ -57,6 +49,10 @@ angular.module('shiptech.components')
 		                	"Value":ctrl.requestGroupId
 		                },
 		                {
+		                	"ColumnName":"ProductId",
+		                	"Value":ctrl.activeProduct
+		                },
+		                {
 		                	"ColumnName":"LocationIds",
 		                	"Value":ctrl.locationIds
 		                }	                
@@ -69,7 +65,53 @@ angular.module('shiptech.components')
 	            }				
 				ctrl.getSixMonthHistoryData(payload, function(response){
 					console.log(response)
-				})
+				})		    	
+		    };
+
+			ctrl.$onInit = function() {
+				console.log(ctrl.sixMonthPayload);
+				console.log(ctrl.activeProduct);
+				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
+				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
+				ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
+				ctrl.locationIds = [ctrl.sixMonthPayload.locationIds].join();
+				if (ctrl.sixMonthHistoryFor.name == "Seller") {
+					ctrl.physicalSupplierCounterpartyId = null;
+				} else {
+					ctrl.sellerCounterpartyId = null;
+				}
+	   //          payload = {
+	   //              "Filters": [
+		  //               {
+		  //               	"ColumnName":"SellerCounterpartyId",
+		  //               	"Value":ctrl.sellerCounterpartyId
+		  //               },
+		  //               {
+		  //               	"ColumnName":"PhysicalSupplierCounterpartyId",
+		  //               	"Value":ctrl.physicalSupplierCounterpartyId
+		  //               },
+		  //               {
+		  //               	"ColumnName":"RequestGroupId",
+		  //               	"Value":ctrl.requestGroupId
+		  //               },
+		  //               {
+		  //               	"ColumnName":"ProductId",
+		  //               	"Value":ctrl.activeProduct
+		  //               },
+		  //               {
+		  //               	"ColumnName":"LocationIds",
+		  //               	"Value":ctrl.locationIds
+		  //               }	                
+	   //              ],
+	   //              "Pagination": {
+	   //                  "Skip": 0,
+	   //                  "Take": 9999
+	   //              },
+	   //              "SearchText": null
+	   //          }				
+				// ctrl.getSixMonthHistoryData(payload, function(response){
+				// 	console.log(response)
+				// })
 				
 			}
 
@@ -102,6 +144,7 @@ angular.module('shiptech.components').component('sixMonthsHistory', {
     templateUrl: 'components/blade/templates/gor-smHistory.html',
     controller: 'SixMonthHistory',
     bindings: {
+    	activeProduct : '<',
     	sixMonthPayload : '<',
     	sixMonthHistoryFor : '<',
     }
