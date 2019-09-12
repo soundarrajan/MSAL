@@ -16,5 +16,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline orange" ng-click="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments, null, $event)">Save</button>
-	<button ng-controller="BladeController" type="button" class="btn btn-default" ng-click="closeBlade(); $ctrl.blade={}">Cancel</button>
+	<button ng-controller="BladeController" type="button" class="btn btn-default" ng-click="$ctrl.undoComments(); closeBlade(); $ctrl.blade={}">Cancel</button>
 </div>

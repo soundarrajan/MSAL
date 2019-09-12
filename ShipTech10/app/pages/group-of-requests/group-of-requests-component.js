@@ -40,6 +40,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         var ctrl = this;
         var groupId = $stateParams.groupId;
         var group = $stateParams.group;
+        var initialValueExternalComments = null;
+        var initialValueInternalComments = null;
         ctrl.groupId = $stateParams.groupId;
         $state.params.title = "Group of Requests";
         ctrl.req_cards = "big";
@@ -176,9 +178,11 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
                     	if (data.payload.internalComments) {
                             ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
+                            initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
                             ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
+                            initialValueExternalComments  = ctrl.externalComments;
                     	}
                         console.log(data.payload);
                         if (data.payload.quoteByCurrency !== null) {
@@ -256,9 +260,11 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
                     	if (data.payload.internalComments) {
                             ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
+                            initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
                             ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
+                            initialValueExternalComments = ctrl.externalComments;
                     	}
                         console.log(data.payload);
                         if (data.payload.quoteByCurrency !== null) {
@@ -3252,9 +3258,11 @@ ctrl.setProductData = function(data, loc) {
             ctrl.lastSavedQuoteByDateFrom = ctrl.quoteByDateFrom;
         	if (internalComments) {
 	        	internalComments = internalComments.replace(/(\r\n|\n)/g, "<br/>")
+                initialValueInternalComments = internalComments;
         	}
         	if (externalComments) {
 	        	externalComments = externalComments.replace(/(\r\n|\n)/g, "<br/>")
+                initialValueExternalComments = externalComments;
         	}
             groupOfRequestsModel.updateGroup(groupId, internalComments, externalComments, ctrl.quoteByDate, ctrl.quoteByTimezone, ctrl.quoteByCurrency, ctrl.quoteByDateFrom);
             $rootScope.overrideCloseNavigation = true;
@@ -7022,6 +7030,11 @@ ctrl.setProductData = function(data, loc) {
 			// var maxHeight = 175;
 			// console.log($(event.target).parents("td").find(".groupOfRequestTableTooltip"));
 		}
+        
+        ctrl.undoComments = function() {
+            ctrl.externalComments = initialValueExternalComments;
+            ctrl.internalComments = initialValueInternalComments;
+        }
 
         // ctrl.scroll = function(value) {
         //    if (value == true) {
