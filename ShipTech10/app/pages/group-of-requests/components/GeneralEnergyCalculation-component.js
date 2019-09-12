@@ -51,13 +51,14 @@ angular.module('shiptech.components')
 			ctrl.computeMinPricePerLocations = function() {
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
 					loc.minPriceCounterpartyIndex = _.minBy(loc.counterparties, function(el){
-						if (ctrl.energyCalculationBladeData.data[0].allowZeroPricing) {
-							return el.price;
-						} else {
-							if (el.price > 0) {
-								return el.price;
-							}
-						}
+						return el.energyParameterValues.totalComputedPrice
+						// if (ctrl.energyCalculationBladeData.data[0].allowZeroPricing) {
+						// 	return el.price;
+						// } else {
+						// 	if (el.price > 0) {
+						// 		return el.price;
+						// 	}
+						// }
 					})
 					// if (!loc.minPriceCounterpartyIndex) {
 					// 	return;
