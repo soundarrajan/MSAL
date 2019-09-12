@@ -222,6 +222,38 @@
             </div>
         </div>
     </div>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                     Auto-Complete Reconciliation
+                </label>
+                <div class="input-group form_input form_input_autoCompleteReconciliation" ng-init='options.Timezone ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"})'>
+                    <select name="autoCompleteReconciliation" class="form-control bs-select changeIT" ng-required="true" id="autoCompleteReconciliation" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.delivery.autoCompleteReconciliation"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    Ordered Qty tolerance
+                </label>
+                <input name="orderedQtyTolerance" class="input-group form_input form_input_orderedQtyTolerance form-control" type="number" ng-model="formValues.delivery.orderedQtyTolerance"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    UOM
+                </label>
+                <div class="input-group form_input form_input_orderedQtyUom" ng-init='options.Timezone ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'>
+                    <select name="orderedQtyUom" class="form-control bs-select changeIT" ng-required="true" id="orderedQtyUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.delivery.orderedQtyUom"></select>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="portlet">
         <div class="portlet-title">
