@@ -1,3 +1,34 @@
 <div data-ng-include="'components/schedule-content-menu/views/schedule-content-menu-component.html'" ng-controller="ScheduleContentMenuController"></div>
+<div ng-if="timelineLoaded && appFilters.length > 0" class="vis-timeline-filters-container">
+	Filter:  
+	<div class="filterCondition" ng-repeat="filter in appFilters" style="padding: 5px;">
+		<span style="margin-right: 5px;" ng-if="$index !== 0"> and </span>
+		{{ filter.displayName }}
+		
+		<span class="filterVal" ng-if="filter.ColumnType == 'Date' || filter.ColumnType == 'DateOnly'" ng-show="filter.conditionName.indexOf('blank') == -1"> 
+			{{ filter.conditionName }} 
+			{{ !filter.Values[1] ? $ctrl.convertDate(filter.Values[0]).split(" ")[0] : $ctrl.convertDate(filter.Values[0]).split(" ")[0] + " - " + $ctrl.convertDate(filter.Values[1]).split(" ")[0] }} 
+		</span>
+		<span class="filterVal" ng-if="filter.ColumnType == 'Date' || filter.ColumnType == 'DateOnly'" ng-show="filter.conditionName.indexOf('blank') != -1">
+			{{ filter.conditionName }} 
+		</span>
+
+		<span class="filterVal" ng-if="filter.ColumnType != 'Date' && filter.ColumnType != 'DateOnly'"> {{ filter.conditionName }} {{ !filter.Values[1] ? filter.Values[0] : filter.Values[0] + " - " + filter.Values[1] }} </span>
+	</div>
+</div>
+<div class="vis-timeline-timeselect-container" ng-if="timelineLoaded">
+	<span class="vis-timeline-timeselect">
+		<span class="btn btn-xs" ng-click="selectTimeFrame('backwards')">
+            <i class="fa fa-caret-left font-grey-salt"></i>
+        </span>
+		{{ startDateDisplay }} to {{ endDateDisplay }}
+		<span class="btn btn-xs" ng-click="selectTimeFrame('forwards')">
+            <i class="fa fa-caret-right font-grey-salt"></i>
+        </span>
+	</span>
+</div>
 <div class="schedule-dashboard-timeline"></div>
 <div id="timeline"></div>
+<div class="schedule-dashboard-timeline-footer" ng-if="timelineLoaded">
+	Showing 1 to {{ timelineItems }} of {{ timelineItems }} entries
+</div>

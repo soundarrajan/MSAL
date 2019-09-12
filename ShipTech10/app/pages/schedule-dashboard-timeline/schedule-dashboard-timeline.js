@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state',
-    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state) {
+angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout',
+    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout) {
 
         var ctrl = this;
         $scope.numberPrecision = $tenantSettings.defaultValues;
@@ -136,6 +136,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             for (var i = 0; i < vessels.length; i++) {
 
+                if (!vessels[i]) {
+                    continue;
+                }
+
                 if (typeof (ctrl.bunkerDetails[vessels[i].voyageDetail.id]) == "undefined") { ctrl.bunkerDetails[vessels[i].voyageDetail.id] = [] }
                 ctrl.bunkerDetails[vessels[i].voyageDetail.id].push(angular.copy(vessels[i].voyageDetail.bunkerPlan));
                 // Create voyage object
@@ -227,22 +231,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             };
         };
 
-        var buildTimeline = function(data) {
-
-            var timelineData = computeData(data);
-            var groups = new vis.DataSet(timelineData.groups);
-            var voyages = new vis.DataSet(timelineData.voyages);
-
-            var container = document.getElementById('timeline');
-
-            // Configuration for the Timeline
-            var options = {
+        var getTimelineOptions = function() {
+            return {
                 'verticalScroll': true,
                 // 'moveable': false,
                 // Disable red line
                 'showCurrentTime': false,
                 'stack': false,
-                'maxHeight': 685,
+                'maxHeight': Math.max(570, $(window).height() - 367),
                 'orientation': 'top',
                 'start': ctrl.startDate.format('YYYY-MM-DD'),
                 'end': ctrl.endDate.format('YYYY-MM-DD'),
@@ -262,12 +258,24 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return tpl;
                 },
             };
+        }
+
+        var buildTimeline = function(data) {
+
+            var timelineData = computeData(data);
+            var groups = new vis.DataSet(timelineData.groups);
+            var voyages = new vis.DataSet(timelineData.voyages);
+
+            var container = document.getElementById('timeline');
 
             // Create a Timeline
-            timeline = new vis.Timeline(container, null, options);  
+            timeline = new vis.Timeline(container, null, getTimelineOptions());  
             timeline.setGroups(groups);
             timeline.setItems(voyages);
 
+            $scope.timelineItems = groups.length;
+
+            setLayoutAfterTimelineLoad();
             $rootScope.clc_loaded = true;
         };
 
@@ -275,31 +283,79 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var timelineData = computeData(data);
             var groups = new vis.DataSet(timelineData.groups);
             var voyages = new vis.DataSet(timelineData.voyages);
+            timeline.setOptions(getTimelineOptions());
             timeline.setGroups(groups);
             timeline.setItems(voyages);
+            // $scope.$digest();
+            $timeout(function() {
+                $scope.timelineItems = groups.length;
+                setLayoutAfterTimelineLoad();
+            })
+        };
+
+        var setLayoutAfterTimelineLoad = function() {
+            // Add group columns header
+            $('#vis-custom-group-columns').remove();
+            var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns"><span class="vis-custom-group-column"> Service </span>';
+            if (scheduleOptions.displayBuyer) {
+                groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer </span>';
+            }
+            groupColumnsTitleElement += '<span class="vis-custom-group-column"> Vessel </span>';
+            if (scheduleOptions.displayCompany) {
+                groupColumnsTitleElement += '<span class="vis-custom-group-column last"> Company </span></div>';
+            }
+
+            $('.vis-timeline').first().prepend(groupColumnsTitleElement);
+            $('#vis-custom-group-columns').width($('.vis-left').width());
+            $('#vis-custom-group-columns').height($('.vis-time-axis.vis-foreground').height());
+            $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
+            $scope.timelineLoaded = true;
+        };
+
+        $scope.selectTimeFrame = function(direction) {
+            var daysDifference = ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter;
+
+            if (direction === 'backwards') {
+                ctrl.startDate = ctrl.startDate.subtract('days', daysDifference);
+                ctrl.endDate = ctrl.endDate.subtract('days', daysDifference);
+            }
+            if (direction === 'forwards') {
+                ctrl.startDate = ctrl.startDate.add('days', daysDifference);
+                ctrl.endDate = ctrl.endDate.add('days', daysDifference);
+            }
+
+            $scope.startDateDisplay = ctrl.startDate.format('DD-MM-YYYY');
+            $scope.endDateDisplay = ctrl.endDate.format('DD-MM-YYYY');
+
+            getData($scope.filtersAppliedPayload).then(function(response) {
+                updateTimeline(response);
+            });
         };
 
         async function getConfiguration() {
             return await new Promise(resolve => {
                 tenantService.scheduleDashboardConfiguration.then(function (settings) {
-                    this.scheduleDashboardConfiguration = settings.payload;
-                    if (this.scheduleDashboardConfiguration.scheduleBuyerDisplay) {
-                        if (this.scheduleDashboardConfiguration.scheduleBuyerDisplay.name == "No") {
+                    ctrl.scheduleDashboardConfiguration = settings.payload;
+                    if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay) {
+                        if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name == "No") {
                             scheduleOptions.displayBuyer = false;
                         }
                     }
-                    if (this.scheduleDashboardConfiguration.scheduleCompanyDisplay) {
-                        if (this.scheduleDashboardConfiguration.scheduleCompanyDisplay.name == "No") {
+                    if (ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay) {
+                        if (ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name == "No") {
                             scheduleOptions.displayCompany = false;
                         }
                     }
                     // Create startDate and endDate base on startsBefore and endsAfter
-                    ctrl.startDate = moment().add('days', -this.scheduleDashboardConfiguration.startsBefore);
-                    ctrl.endDate = moment().add('days', this.scheduleDashboardConfiguration.endsAfter + 1);
+                    ctrl.startDate = moment().add('days', -ctrl.scheduleDashboardConfiguration.startsBefore);
+                    ctrl.endDate = moment().add('days', ctrl.scheduleDashboardConfiguration.endsAfter + 1);
+                    $scope.startDateDisplay = ctrl.startDate.format('DD-MM-YYYY');
+                    $scope.endDateDisplay = ctrl.endDate.format('DD-MM-YYYY');
+    
                     //DEBUG
                     // ctrl.startDate = moment().add('days', -60);
                     // ctrl.endDate = moment().add('days', 60);
-                    resolve(this.scheduleDashboardConfiguration);
+                    resolve(ctrl.scheduleDashboardConfiguration);
                 });
             });
         };
@@ -582,19 +638,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
             voyageDetailId = $(this).attr("voyage-detail-id");
-            html = buildHoverPopoverMarkup(voyageDetailId);
-            $(this).attr("data-content", html);
-            $(this).popover({
-                container: 'body',
-                trigger: 'hover',
-                placement: 'auto bottom',
-                html: true,
-                template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
-            }).
-            on('show.bs.popover', function (event) {
-            });
-            $(this).popover('toggle');
-        })
+            if (voyageDetailId) {
+                html = buildHoverPopoverMarkup(voyageDetailId);
+                $(this).attr("data-content", html);
+                $(this).popover({
+                    container: 'body',
+                    trigger: 'hover',
+                    placement: 'auto bottom',
+                    html: true,
+                    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
+                }).
+                on('show.bs.popover', function (event) {
+                });
+                $(this).popover('toggle');
+            }
+        });
 
         var buildHoverPopoverMarkup = function(voyageDetailId) {
             var hasRequest = false;

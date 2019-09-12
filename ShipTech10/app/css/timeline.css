@@ -1,5 +1,5 @@
 .vis-timeline {
-	background: #f3f3f3;
+	background: #ffffff;
 	padding-bottom: 20px;
 }
 
@@ -38,7 +38,7 @@
 
 .vis-today {
 	background: #99cb82;
-	color: #f3f3f3 !important;
+	color: #ffffff !important;
 }
 
 .vis-item {
@@ -57,18 +57,22 @@
     top: 0px;
     right: 0px;
     background: gray;
-    color: #f3f3f3;
+    color: #ffffff;
 }
 
-.vis-saturday {
-	background: #d3d3d3;
+.vis-text.vis-minor.vis-monday,
+.vis-text.vis-minor.vis-tuesday,
+.vis-text.vis-minor.vis-wednesday,
+.vis-text.vis-minor.vis-thursday,
+.vis-text.vis-minor.vis-friday {
+	background: #f0f8ff;
+	color: #7ab0dc;
 }
 
+.vis-saturday,
 .vis-sunday {
 	background: #d3d3d3;
 }
-
-
 
 schedule-dashboard-timeline .vis-inner {
 	height: 100%;
@@ -90,4 +94,30 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 
 .vis-voyage-content-sap {
     box-shadow: 0px 2px 0px 0px #000 inset, 0px 3px 0px 0px #fff inset, 0px 5px 0px 0px #000 inset;
+}
+
+.vis-timeline-filters-container {
+	padding: 1em;
+	background: #ffffff;
+	border: 1px solid #bfbfbf;
+}
+
+.vis-timeline-timeselect-container {
+	padding: 1em;
+	background: #f0f8ff;
+	border: 1px solid #bfbfbf;
+	text-align: center;
+}
+
+.vis-timeline-timeselect {
+	font-weight: bold;
+	text-align: center;
+}
+
+.schedule-dashboard-timeline-footer {
+	padding: 0.2em;
+	background: #f0f8ff;
+	border: 1px solid #bfbfbf;
+	text-align: center;
+	margin-bottom: 1em;
 }
