@@ -7677,5 +7677,12 @@ APP_MASTERS.controller("Controller_Master", [
             }
             return false;
         }
+
+        $scope.modifyUom = function(obj) {
+            if (obj.name == "Percentage") {
+                $scope.formValues.delivery.orderedQtyUom = null;
+            }            
+
+        }
     }
 ]);
