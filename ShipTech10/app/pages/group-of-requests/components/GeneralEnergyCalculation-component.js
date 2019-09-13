@@ -62,7 +62,7 @@ angular.module('shiptech.components')
 					})
 					// if (!loc.minPriceCounterpartyIndex) {
 					// 	return;
-					// }
+					// }\
 					console.log(loc.minPriceCounterpartyIndex);
 					$.each(loc.counterparties, function(k2, counterparty){
 						counterparty.isMinPrice = false;
@@ -134,7 +134,7 @@ angular.module('shiptech.components')
 					}
 				}
 				if (max) {
-					if (value < max) {
+					if (value > max) {
 						return true
 					}
 				}				

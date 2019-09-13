@@ -4773,3 +4773,6 @@ input[id$="etd_dateinput"] {
 table.energyCalculationBlade tr.bg-green-jungle td{
 	opacity: 0.9;
 }
+table.energyCalculationBlade tr.border-green-jungle{
+	border: 2px solid;
+}
