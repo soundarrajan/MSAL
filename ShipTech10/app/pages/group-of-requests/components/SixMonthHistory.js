@@ -33,6 +33,17 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function (changes) {
 		    	console.log(changes.activeProduct.currentValue);
+				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
+				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
+				ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
+				ctrl.locationIds = [ctrl.sixMonthPayload.locationIds].join();
+				if (ctrl.sixMonthHistoryFor.name == "Seller") {
+					ctrl.physicalSupplierCounterpartyId = null;
+				} else {
+					if (ctrl.physicalSupplierCounterpartyId != 'null' && ctrl.physicalSupplierCounterpartyId) {
+						ctrl.sellerCounterpartyId = null;
+					}
+				}		    	
 		    	ctrl.activeProduct = changes.activeProduct.currentValue;
 	            payload = {
 	                "Filters": [
