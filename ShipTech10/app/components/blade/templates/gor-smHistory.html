@@ -6,6 +6,20 @@
                 <span>Fill</span>
             </a>
         </div>
+        <br>
+        <br>
+        <div class="col-sm-12" style="float: right;">
+        	<div class="form-group row" style="float: right;">
+	    		<label for="enSixMhReferenceDate">Reference Date</label>
+	        	<div class="input-group form_input date form_meridian_datetime" style="width: 360px">
+					<input ng-model="$ctrl.enSixMhReferenceDate" name="enSixMhReferenceDate" id="enSixMhReferenceDate" new-date-picker picker-type="date" class="form-control date-mask new-date-picker"> 
+	        	</div>
+	      		&nbsp;
+	            <a type="submit" style="float: right;" class="btn btn-default orange" ng-click="$ctrl.reassignEnergy6MonthReferenceDate()">
+	                <span>Update</span>
+	            </a>	        	
+        	</div>
+        </div>
     </div>
     <hr>
     <div style="max-width: 100%; margin-bottom: 30px;" class="col-sm-12 custom-hardcoded-table-wrapper">

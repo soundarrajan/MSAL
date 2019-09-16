@@ -576,6 +576,13 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             return groupOfRequestsResource.energy6MonthHistory(payload).$promise.then(function(data) {
                 return data;
             });
+        } 
+
+	    function reassignEnergy6MonthReferenceDate(data) {
+            var payload = payloadDataModel.create(data);
+            return groupOfRequestsResource.reassignEnergy6MonthReferenceDate(payload).$promise.then(function(data) {
+                return data;
+            });
         }                
 
         function saveSupplierCard(data) {
@@ -638,6 +645,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             deleteSeller: deleteSeller,
             checkSellerRow: checkSellerRow,
             updateEnergySpecValuesByProduct: updateEnergySpecValuesByProduct,
+            reassignEnergy6MonthReferenceDate: reassignEnergy6MonthReferenceDate,
             addPhysicalSupplierInCard: addPhysicalSupplierInCard,
             getPriceTimeline: getPriceTimeline,
         };

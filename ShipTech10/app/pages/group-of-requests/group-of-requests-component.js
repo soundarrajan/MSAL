@@ -191,6 +191,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         if (data.payload.quoteByTimeZone !== null) {
                             ctrl.setQuoteByTimezone(data.payload.quoteByTimeZone.id, data.payload.quoteByTimeZone.name);
                         }
+                        ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
                         ctrl.quoteByDate = data.payload.quoteByDate;
                         ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
                         if (ctrl.quoteByDateFrom == "" || ctrl.quoteByDateFrom == null) {
@@ -258,6 +259,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 
                 function getGroupInfo(groupId) {
                     groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
+                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate
                     	if (data.payload.internalComments) {
                             ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
                             initialValueInternalComments = ctrl.internalComments;
@@ -686,6 +688,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         ctrl.recompileDefaultSellerChecks();
 
 	                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
+	                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate
 	                    	if (data.payload.internalComments) {
 	                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
 	                    	}

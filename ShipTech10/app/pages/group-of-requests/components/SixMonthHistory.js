@@ -33,7 +33,9 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function (changes) {
 		    	console.log(changes.activeProduct.currentValue);
+				ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
 				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
+				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
 				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
 				ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
 				ctrl.locationIds = [ctrl.sixMonthPayload.locationIds].join();
@@ -82,6 +84,7 @@ angular.module('shiptech.components')
 			ctrl.$onInit = function() {
 				console.log(ctrl.sixMonthPayload);
 				console.log(ctrl.activeProduct);
+				ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
 				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
 				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
 				ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
@@ -91,38 +94,6 @@ angular.module('shiptech.components')
 				} else {
 					ctrl.sellerCounterpartyId = null;
 				}
-	   //          payload = {
-	   //              "Filters": [
-		  //               {
-		  //               	"ColumnName":"SellerCounterpartyId",
-		  //               	"Value":ctrl.sellerCounterpartyId
-		  //               },
-		  //               {
-		  //               	"ColumnName":"PhysicalSupplierCounterpartyId",
-		  //               	"Value":ctrl.physicalSupplierCounterpartyId
-		  //               },
-		  //               {
-		  //               	"ColumnName":"RequestGroupId",
-		  //               	"Value":ctrl.requestGroupId
-		  //               },
-		  //               {
-		  //               	"ColumnName":"ProductId",
-		  //               	"Value":ctrl.activeProduct
-		  //               },
-		  //               {
-		  //               	"ColumnName":"LocationIds",
-		  //               	"Value":ctrl.locationIds
-		  //               }	                
-	   //              ],
-	   //              "Pagination": {
-	   //                  "Skip": 0,
-	   //                  "Take": 9999
-	   //              },
-	   //              "SearchText": null
-	   //          }				
-				// ctrl.getSixMonthHistoryData(payload, function(response){
-				// 	console.log(response)
-				// })
 				
 			}
 
@@ -132,6 +103,29 @@ angular.module('shiptech.components')
                 	if (callback) {
                 		callback();
                 	}
+                });	            
+			}
+
+			ctrl.reassignEnergy6MonthReferenceDate = function() {
+				payload = {
+	                "Filters": [
+		                {
+		                	"ColumnName":"En6MHReferenceDate",
+		                	"Value":ctrl.enSixMhReferenceDate
+		                },
+		                {
+		                	"ColumnName":"RequestGroupId",
+		                	"Value":ctrl.requestGroupId
+		                }	                
+	                ],
+	                "Pagination": {
+	                    "Skip": 0,
+	                    "Take": 9999
+	                },
+	                "SearchText": null
+	            }					 
+                groupOfRequestsModel.reassignEnergy6MonthReferenceDate(payload).then(function (data) {
+                	console.log(data);
                 });	            
 			}
 
@@ -157,6 +151,7 @@ angular.module('shiptech.components').component('sixMonthsHistory', {
     bindings: {
     	activeProduct : '<',
     	sixMonthPayload : '<',
+    	enSixMhReferenceDate : '<',
     	sixMonthHistoryFor : '<',
     }
 });
