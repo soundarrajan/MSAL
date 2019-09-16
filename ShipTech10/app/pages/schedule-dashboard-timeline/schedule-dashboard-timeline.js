@@ -238,22 +238,47 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Disable red line
                 'showCurrentTime': false,
                 'stack': false,
-                'maxHeight': Math.max(570, $(window).height() - 367),
+                'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
                 'start': ctrl.startDate.format('YYYY-MM-DD'),
+                'min': ctrl.startDate.subtract('days', 7).format('YYYY-MM-DD'),
                 'end': ctrl.endDate.format('YYYY-MM-DD'),
+                'max': ctrl.endDate.add('days', 7).format('YYYY-MM-DD'),
                 // 3 days in milliseconds
                 'zoomMin': 259200000,
                 // 4 weeks in milliseconds
-                'zoomMax': 2419200000,
+                'zoomMax': 1814400000,
                 groupTemplate: function (group) {
-                    var tpl = `<div class="vis-custom-group"><span class="vis-custom-group-column" tooltip data-original-title="${group.serviceName}"> ${group.serviceName} </span>`;
-                    if (scheduleOptions.displayBuyer) {
-                        tpl += `<span class="vis-custom-group-column" tooltip data-original-title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}" > ${group.buyerName} </span>`;
+                    var serviceName = group.serviceName;
+                    var vesselName = group.vesselName;
+                    var buyerName = group.buyerName;
+                    var companyName = group.companyName;
+
+                    /*
+                    if (serviceName.length > 18) {
+                        serviceName = serviceName.substr(0, 13) + ' ... ';
                     }
-                    tpl += '<span class="vis-custom-group-column"> ' + group.vesselName + '</span>';
+
+                    if (vesselName.length > 18) {
+                        vesselName = vesselName.substr(0, 13) + ' ... ';
+                    }
+
+                    if (buyerName.length > 18) {
+                        buyerName = buyerName.substr(0, 13) + ' ... ';
+                    }
+
+                    if (companyName.length > 18) {
+                        companyName = companyName.substr(0, 13) + ' ... ';
+                    }
+                    */
+
+                    var tpl = `<div class="vis-custom-group"><span class="vis-custom-group-column" tooltip data-original-title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
+                    tpl += `<span class="vis-custom-group-column" tooltip data-original-title="${group.vesselName}"> <span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                    if (scheduleOptions.displayBuyer) {
+                        tpl += `<span class="vis-custom-group-column" tooltip data-original-title="${vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${buyerName} </span></span>`;
+                    }
                     if (scheduleOptions.displayCompany) {
-                        tpl += '<span class="vis-custom-group-column last"> ' + (group.companyName || '-') + '</span></div>';
+                        tpl += '<span class="vis-custom-group-column last"> <span class="vis-custom-group-column-content">' + (companyName || '-') + '</span></span></div>';
                     }
                     return tpl;
                 },
@@ -296,19 +321,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var setLayoutAfterTimelineLoad = function() {
             // Add group columns header
             $('#vis-custom-group-columns').remove();
-            var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns"><span class="vis-custom-group-column"> Service </span>';
-            if (scheduleOptions.displayBuyer) {
-                groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer </span>';
-            }
-            groupColumnsTitleElement += '<span class="vis-custom-group-column"> Vessel </span>';
-            if (scheduleOptions.displayCompany) {
-                groupColumnsTitleElement += '<span class="vis-custom-group-column last"> Company </span></div>';
-            }
+            if ($('.vis-left').width() > 0) {
+                var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns"><span class="vis-custom-group-column"> Service </span>';
+                groupColumnsTitleElement += '<span class="vis-custom-group-column"> Vessel </span>';
+                if (scheduleOptions.displayBuyer) {
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer </span>';
+                }
+                if (scheduleOptions.displayCompany) {
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column last"> Company </span></div>';
+                }
 
-            $('.vis-timeline').first().prepend(groupColumnsTitleElement);
-            $('#vis-custom-group-columns').width($('.vis-left').width());
-            $('#vis-custom-group-columns').height($('.vis-time-axis.vis-foreground').height());
-            $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
+                $('.vis-timeline').first().prepend(groupColumnsTitleElement);
+                $('#vis-custom-group-columns').width($('.vis-left').width());
+                $('#vis-custom-group-columns').height($('.vis-time-axis.vis-foreground').height());
+                $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
+            }
             $scope.timelineLoaded = true;
         };
 

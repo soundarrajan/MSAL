@@ -1,7 +1,7 @@
 angular.module('shiptech').service('statusColors', [
         function() { 
 
-            var defaultColor = '#ffc0cb';
+            var defaultColor = '#ffffff';
 
             var colorCodes = {
               "BunkerStrategy": "#eb9b65",
