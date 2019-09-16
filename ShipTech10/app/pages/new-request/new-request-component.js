@@ -428,6 +428,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                 }
 
                             }
+				            _.each(ctrl.request.locations[j].products, function(value, key) {
+				                value.product.name = String(key + 1) + ' - ' + value.product.name;
+				            });                             
                             newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then(function(buyer) {
                                 ctrl.buyer = buyer.payload;
                             });
@@ -1320,6 +1323,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         if (ctrl.selectedVessel.defaultLsfoProduct != null) {
                             ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo);
                         }
+
                         if (ctrl.selectedVessel.buyer !== null) {
                             locationObject.buyer = ctrl.buyer;
                         }
@@ -1348,6 +1352,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             });
                         }
                     }
+                    ctrl.request.locations[ctrl.request.locations.length - 1].products = _.orderBy(ctrl.request.locations[ctrl.request.locations.length - 1].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
+		            _.each(ctrl.request.locations[ctrl.request.locations.length - 1].products, function(value, key) {
+		                value.product.name = String(key + 1) + ' - ' + value.product.name;
+		            });    
                     deferred.resolve();
                 },
                 function() {
