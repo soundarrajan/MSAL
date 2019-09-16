@@ -661,7 +661,8 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $.each($scope.formValues.conditions, function(k,v){
 	                                        v.paymentTerm = null	
                                         })
-                                    }                                    
+                                    }
+				                    $("#header_action_verify").attr("disabled", "disabled");
                                     toastr.success("Entity copied");
                                     $scope.$emit("formValues", $scope.formValues);
                                 }
