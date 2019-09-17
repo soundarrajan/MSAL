@@ -426,11 +426,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                         });
                                     }
                                 }
-
+					            _.each(ctrl.request.locations[j].products, function(value, key) {
+					                value.product.name = String(key + 1) + ' - ' + value.product.name;
+					            });                             
                             }
-				            _.each(ctrl.request.locations[j].products, function(value, key) {
-				                value.product.name = String(key + 1) + ' - ' + value.product.name;
-				            });                             
                             newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then(function(buyer) {
                                 ctrl.buyer = buyer.payload;
                             });
