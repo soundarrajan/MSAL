@@ -65,6 +65,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             ctrl.numberPrecision = settings.payload.defaultValues;
             ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
             ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
+            ctrl.quantityPrecision = settings.payload.defaultValues.quantityPrecision;
             ctrl.tenantFormats = settings.payload.tenantFormats;
             //ctrl.needSupplierQuote = settings.payload.
         });

@@ -48,7 +48,8 @@
                                 Price/MT
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.computedPrice" ng-disabled="true"/>
+
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.pricePrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.computedPrice" ng-disabled="true"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.computedPriceUom" tooltip="elem" data-original-title="{{$ctrl.active_prod.products[0].energyParameterValues.computedPriceUom}}"/>
                                 </span>
@@ -64,7 +65,7 @@
 	                            {{$ctrl.active_prod.products[0].energyParameterValues.specificEnergy = $ctrl.fillMedianSixMonth}} 
                             </div>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.specificEnergy" ng-disabled="true"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.specificEnergy" ng-disabled="true"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.pricePerSpecificEnergyUom" tooltip="elem" data-original-title="{{$ctrl.active_prod.products[0].energyParameterValues.pricePerSpecificEnergyUom}}"/>
                                 </span>
@@ -79,7 +80,7 @@
                                 Viscosity
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.viscosity.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.viscosity.specParameterId)"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.viscosity.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.viscosity.specParameterId)"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled"  ng-model="$ctrl.active_prod.products[0].energyParameterValues.viscosity.uom"/>
                                 </span>
@@ -92,7 +93,7 @@
                                 Sulphur
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.sulphur.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.sulphur.specParameterId)"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.sulphur.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.sulphur.specParameterId)"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled"  ng-model="$ctrl.active_prod.products[0].energyParameterValues.sulphur.uom"/>
                                 </span>
@@ -105,7 +106,7 @@
                                 Density
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.density.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.density.specParameterId)"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.density.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.density.specParameterId)"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.density.uom"/>
                                 </span>
@@ -118,7 +119,7 @@
                                 Ash %
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ash.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.ash.specParameterId)"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ash.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.ash.specParameterId)"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ash.uom"/>
                                 </span>
@@ -131,7 +132,7 @@
                                 Water
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.water.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.water.specParameterId)"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.water.specValue" ng-disabled="$ctrl.hasParam($ctrl.active_prod.products[0].energyParameterValues.water.specParameterId)"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled"  ng-model="$ctrl.active_prod.products[0].energyParameterValues.water.uom"/>
                                 </span>
