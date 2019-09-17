@@ -49,18 +49,17 @@ angular.module('shiptech.components')
 			}
 
 			ctrl.computeMinPricePerLocations = function() {
-				minPriceFound = false;
+				allPrices = [];
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
 					$.each(loc.counterparties, function(k2, counterparty){
-						if (!minPriceFound || minPriceFound < counterparty.energyParameterValues.totalComputedPrice) {
-							minPriceFound = counterparty.energyParameterValues.totalComputedPrice;
-						}
+						allPrices.push(counterparty.energyParameterValues.totalComputedPrice);
 					})	
 				})	
+				minPriceFound = _.minBy(allPrices);
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
 					$.each(loc.counterparties, function(k2, counterparty){
 						counterparty.isMinPrice = false;
-						if (parseFloat(counterparty.price) == parseFloat(minPriceFound) ) {
+						if (parseFloat(counterparty.energyParameterValues.totalComputedPrice) == parseFloat(minPriceFound) ) {
 							counterparty.isMinPrice = true;
 						}
 					})
