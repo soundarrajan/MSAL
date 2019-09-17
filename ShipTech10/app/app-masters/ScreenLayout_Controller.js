@@ -654,6 +654,15 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $scope.triggerChangeFields("OrderID", "orderDetails.order");
                                     }
                                     if (vm.app_id == "labs" && vm.screen_id == "labresult") {
+                                    	if ($scope.formValues.status.name == 'Verified' || $scope.formValues.status.name == 'Off Spec') {
+                                    		vm.listsCache.LabResultStatus.forEach(function(obj, index) {
+                                    			if (obj.name == "New") {
+                                					$scope.formValues.orderRelatedLabResults[0].labStatus = obj;
+                                					$scope.formValues.status = obj;
+                                    			}
+                                    		});
+                             
+                                    	}
                                         vm.checkVerifiedDeliveryFromLabs("loadedData");
                                     }
                                     if (vm.app_id == "masters" && vm.screen_id == "paymentterm") {
