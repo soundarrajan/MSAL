@@ -654,15 +654,26 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $scope.triggerChangeFields("OrderID", "orderDetails.order");
                                     }
                                     if (vm.app_id == "labs" && vm.screen_id == "labresult") {
-                                    	if ($scope.formValues.status.name == 'Verified' || $scope.formValues.status.name == 'Off Spec') {
+                                    	if ($scope.formValues.status.name == "Verified" || $scope.formValues.status.name == "Off Spec") {
                                     		vm.listsCache.LabResultStatus.forEach(function(obj, index) {
                                     			if (obj.name == "New") {
                                 					$scope.formValues.orderRelatedLabResults[0].labStatus = obj;
                                 					$scope.formValues.status = obj;
                                     			}
                                     		});
-                             
-                                    	}
+                                    	}			             
+                                		$scope.formValues.labSealNumberInformation.forEach(function(object) {
+                                			object.labResult = null;
+                                			object.labSealNumbers.forEach(function(object1) {
+                                				object1.id  = 0;
+                                				object1.labSealNumberInformation = null;
+                                			});
+
+                                		});
+                                		$scope.formValues.labTestResults.forEach(function(object) {
+                                			object.labResult = null;
+                                		});
+                                	
                                         vm.checkVerifiedDeliveryFromLabs("loadedData");
                                     }
                                     if (vm.app_id == "masters" && vm.screen_id == "paymentterm") {
