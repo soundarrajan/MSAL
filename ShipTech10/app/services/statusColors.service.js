@@ -52,6 +52,7 @@ angular.module('shiptech').service('statusColors', [
               "No": "#ee4535",
               "Unmatched": "#ee4535",
               "Failed": "#ee4535",
+              "Pending": "#ffee00",
             };
 
             function getDefaultColor() {
