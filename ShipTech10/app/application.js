@@ -9,7 +9,8 @@ angular
         function($routeProvide, $httpProvider, adalProvider, $locationProvider) {
             $locationProvider.hashPrefix("");
             adalProvider.init(appConfig.auth, $httpProvider);
-        }
+        },
+
     ])
     .run([
         "$rootScope",
@@ -787,25 +788,14 @@ angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
   $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
 
-angular.module('shiptech').config(['$routeProvider', '$locationProvider', 'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY',
-    function ($routeProvider, $locationProvider, applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
-
-        applicationInsightsServiceProvider.configure(INSTRUMENTATION_KEY, {
-            appName: 'shiptech',
-            autoLogTracking:true,
-            autoPageViewTracking:true,
-            // We can pass a custom error ID if autoExceptionTracking:false and we manually call trackException as below
-            //applicationInsightsService.trackException(exception, cause, { errorTraceId: "SOME_RANDOM_ID" });
-            autoExceptionTracking:true,
-            // In case instrumentation key is not provided we just logging the tracking events in console
-            developerMode: !INSTRUMENTATION_KEY
-
+angular.module('shiptech').config([
+    'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY', function (applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
+        applicationInsightsServiceProvider.configure({
+            instrumentationKey: INSTRUMENTATION_KEY,
+            applicationName: 'shiptech',
+            autoLogTracking: true,
+            verboseLogging: true,
+            disableTelemetry: !INSTRUMENTATION_KEY
         });
-        $routeProvider
-            .when('/', {
-                templateUrl: 'index.html',
-                controller: 'appCtrl'
-            })
-
     }
 ]);
