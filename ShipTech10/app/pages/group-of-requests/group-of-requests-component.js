@@ -7054,5 +7054,8 @@ ctrl.setProductData = function(data, loc) {
 ]);
 angular.module("shiptech.pages").component("groupOfRequests", {
     templateUrl: "pages/group-of-requests/views/group-of-requests-component.html",
-    controller: "GroupOfRequestsController"
+    controller: "GroupOfRequestsController",
+    bindings : {
+    	fillMedianSixMonth : "<"
+    }
 });

@@ -3,7 +3,6 @@ angular.module('shiptech.components')
         function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings) {
 
 	        var ctrl = this;
-		
 	        tenantService.tenantSettings.then(function (settings) {
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
@@ -33,6 +32,9 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function (changes) {
 		    	console.log(changes.activeProduct.currentValue);
+				
+				ctrl.fillMedianSixMonth = null;
+
 				ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
 				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
 				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
@@ -135,6 +137,30 @@ angular.module('shiptech.components')
                 });	  
 			}
 
+			ctrl.calculate6MHistoryAverage = function() {
+				var count = 0;
+				var sum = 0;
+				var median = 0;
+				$.each(ctrl.sixMonthsHistoryData, function(k,v){
+					if (v.isSelected) {
+						sum += parseFloat(v.netSpecificEnergyValue);
+						count++;
+					}
+				})
+				median = sum / count;
+				ctrl.fillMedianSixMonth = median;
+				console.log(median);
+			}
+
+			$rootScope.$on("energySpecParametersUpdated", function(ev, val){
+				if (val) {
+					payload = ctrl.sixMonthsHistoryData;
+	                groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
+	                	console.log(data);
+	                });	            
+				}
+			})
+
 			jQuery(document).ready(function(){
 				$(".custom-hardcoded-table-wrapper .tablebody").on("scroll", function(){
 					hscrollOffset = $(this).offset().left - $(this).find("table").offset().left;
@@ -146,14 +172,6 @@ angular.module('shiptech.components')
 				})
 			})
 
-			$rootScope.$on("energySpecParametersUpdated", function(ev, val){
-				if (val) {
-					payload = ctrl.sixMonthsHistoryData;
-	                groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
-	                	console.log(data);
-	                });	            
-				}
-			})
 
 
 		}
@@ -168,5 +186,6 @@ angular.module('shiptech.components').component('sixMonthsHistory', {
     	sixMonthPayload : '<',
     	enSixMhReferenceDate : '<',
     	sixMonthHistoryFor : '<',
+    	fillMedianSixMonth : '=',
     }
 });
