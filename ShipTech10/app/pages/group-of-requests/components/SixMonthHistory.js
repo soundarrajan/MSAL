@@ -37,6 +37,10 @@ angular.module('shiptech.components')
 				
 				ctrl.fillMedianSixMonth = null;
 
+				defaultLocation = _.find(ctrl.listsCache.Location, function(o) { return o.id == ctrl.sixMonthPayload.locationIds; });
+				ctrl.selectedLocations = [defaultLocation];
+				
+
 				ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
 				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
 				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
