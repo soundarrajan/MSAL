@@ -1,15 +1,35 @@
 <div class="months_history">
 	
     <div class="row">
-        <div class="col-xs-4 pull-right text-right">
+    	<div class="col-sm-8">
+    		<div class="form-group row input-group pull-left">
+	    		<label>Location </label>
+    			<div class="input-group">
+		    		 <input name="sixMonthLocationSelector" id="sixMonthLocationSelector" uib-typeahead="location as location.name for location in $ctrl.listsCache.Location | filter:$viewValue | limitTo:5" typeahead-on-select="" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.sixMonthLocationSelector">
+					<span class="input-group-addon border-grey-silver" style="width: 35px !important;border: 1px solid;" ng-click="$ctrl.addLocationToHistory($ctrl.sixMonthLocationSelector)">
+						<i class="fa fa-plus"></i>
+					</span>
+    			</div>
+    		</div>
+    		<div class="bootstrap-tagsinput pull-left">
+                <span ng-repeat="location in $ctrl.selectedLocations" class="tag border border-grey-cascade label" data-original-title=" {{ location.name }}">
+                    <span ng-click="$ctrl.removeLocationFromHistory($index)" class="font-dark">
+                        <a class="fa fa-close font-red"></a>
+                        {{location.name }}
+                    </span>
+                </span>
+    		</div>
+    	</div>
+        <div class="col-xs-4 pull-right text-right" >
             <a type="submit" class="btn btn-default orange" ng-click="$ctrl.calculate6MHistoryAverage()">
                 <span>Fill</span>
             </a>
         </div>
-        <br>
-        <br>
-        <div class="col-sm-12">
-        	<div class="form-group row" style="float: left;">
+    </div>
+    <br>
+    <div class="row">
+	    <div class="col-sm-12">
+	    	<div class="form-group row" style="float: left;">
 	    		<label for="enSixMhReferenceDate">Reference Date</label>
 	        	<div class="input-group form_input date form_meridian_datetime" style="width: 360px">
 					<input ng-model="$ctrl.enSixMhReferenceDate" name="enSixMhReferenceDate" id="enSixMhReferenceDate" new-date-picker picker-type="date" class="form-control date-mask new-date-picker"> 
@@ -18,8 +38,8 @@
 	            <a type="submit" style="float: right;" class="btn btn-default orange" ng-click="$ctrl.reassignEnergy6MonthReferenceDate()">
 	                <span>Update</span>
 	            </a>	        	
-        	</div>
-        </div>
+	    	</div>
+	    </div>
     </div>
     <hr>
     <div style="max-width: 100%; margin-bottom: 30px;" class="col-sm-12 custom-hardcoded-table-wrapper">
@@ -38,7 +58,7 @@
 	            </thead>
 	        </table>
 	    </div>
-	    <div class="row custom-hardcoded-table tablebody"  style="height: 50vh;overflow-x: scroll;min-height: 250px;">
+		<div class="row custom-hardcoded-table tablebody"  style="height: {{$ctrl.computedTableHeight}};overflow-x: scroll;">
 	        <table id="params_history_table" width="100%" class="table-body">
 	            <!-- <thead>
 	                <tr>
@@ -54,7 +74,7 @@
 	                <tr ng-repeat="row in $ctrl.sixMonthsHistoryData">
 	                    <td style="max-width: 20px" width="20px" class="padding">
 					        <label class="mt-checkbox">
-					            <input type="checkbox"  name="Selection-{{$index}}" id="Selection-{{$index}}" ng-model="row.isSelected;"/>
+					            <input type="checkbox" ng-change="$ctrl.countSelectedItems()" name="Selection-{{$index}}" id="Selection-{{$index}}" ng-model="row.isSelected;"/>
 					            <span></span>
 					        </label>	                    	
 	                    </td> <!-- Select -->
@@ -66,6 +86,23 @@
 	                </tr>
 	            </tbody>
 	        </table>
+	    </div>
+	    <div class="row custom-hardcoded-table tableheader" style="overflow: hidden; margin-top: -20px;">
+	        <table id="params_history_table" class="table-body" width="100%">
+	            <thead>
+	                <tr>
+	                    <th colspan="6" class="padding bg-blue-dark font-white">
+	                    	<span>Average :</span>
+	                    	<span style="float: right;">{{$ctrl.average6monthSelected}}</span>
+	                	</th>
+	                </tr>
+	            </thead>
+	        </table>
+	    </div>	    
+	    <div>
+	    	<em>
+		    	{{$ctrl.selectedItems.count}} items selected out of {{$ctrl.selectedItems.total}}
+	    	</em>
 	    </div>
     </div>
 	<br><br>

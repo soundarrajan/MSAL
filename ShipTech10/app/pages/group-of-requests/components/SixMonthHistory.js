@@ -1,8 +1,10 @@
 angular.module('shiptech.components')
-    .controller('SixMonthHistory', ['$scope', '$rootScope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings',  
-        function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings) {
+    .controller('SixMonthHistory', ['$scope', '$rootScope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', '$listsCache', 
+        function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, $listsCache) {
 
 	        var ctrl = this;
+	        ctrl.listsCache = $listsCache;
+	        ctrl.selectedLocations = [];
 	        tenantService.tenantSettings.then(function (settings) {
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
@@ -49,7 +51,7 @@ angular.module('shiptech.components')
 					}
 				}		    	
 		    	ctrl.activeProduct = changes.activeProduct.currentValue;
-	            payload = {
+	            ctrl.sixMonthPayload = {
 	                "Filters": [
 		                {
 		                	"ColumnName":"SellerCounterpartyId",
@@ -78,8 +80,10 @@ angular.module('shiptech.components')
 	                },
 	                "SearchText": null
 	            }				
-				ctrl.getSixMonthHistoryData(payload, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayload, function(response){
 					console.log(response)
+					ctrl.computeTableHeight();
+					ctrl.countSelectedItems();
 				})		    	
 		    };
 
@@ -151,6 +155,79 @@ angular.module('shiptech.components')
 				ctrl.fillMedianSixMonth = median;
 				console.log(median);
 			}
+
+			ctrl.countSelectedItems = function() {
+				var count = 0;
+				var sum = 0;
+				var median = 0;				
+				$.each(ctrl.sixMonthsHistoryData, function(k,v){
+					if (v.isSelected) {
+						sum += parseFloat(v.netSpecificEnergyValue);
+						count++;
+					}
+				})
+				median = sum / count;
+				ctrl.selectedItems = {
+					"count": count,
+					"total" : ctrl.sixMonthsHistoryData.length
+				}
+				ctrl.average6monthSelected = median;
+			}
+
+			ctrl.computeTableHeight = function() {
+				var maxRowsToShow = 15; 
+				if (ctrl.sixMonthsHistoryData.length > maxRowsToShow) {
+					ctrl.computedTableHeight = parseFloat(maxRowsToShow * 40 + 20) + "px;"
+				} else {
+					ctrl.computedTableHeight = parseFloat(ctrl.sixMonthsHistoryData.length * 40 + 20) + "px;"
+				}
+			}
+
+			ctrl.addLocationToHistory = function(location) {
+				var locationAdded = false
+				locationAdded = _.find(ctrl.selectedLocations, function(o) { return o.id == location.id; });
+				ctrl.sixMonthLocationSelector = null;
+				if (locationAdded) {
+					toastr.error("Location already selected");
+					return;
+				} 
+				ctrl.selectedLocations.push(location);
+				var selectedLocationsIds = []
+				$.each(ctrl.selectedLocations, function(k,v){
+					selectedLocationsIds.push(v.id);
+				})
+				$.each(ctrl.sixMonthPayload.Filters, function(k,v){
+					if (v.ColumnName == "LocationIds") {
+						v.Value = selectedLocationsIds.join();
+					}
+				})
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayload, function(response){
+					console.log(response)
+					ctrl.computeTableHeight();
+					ctrl.countSelectedItems();
+				})
+			}
+			ctrl.removeLocationFromHistory = function(index) {
+				if (ctrl.selectedLocations.length == 1) {
+					toastr.error("At least one location should be selected");
+					return;
+				}
+				ctrl.selectedLocations.splice(index, 1);
+				var selectedLocationsIds = []
+				$.each(ctrl.selectedLocations, function(k,v){
+					selectedLocationsIds.push(v.id);
+				})
+				$.each(ctrl.sixMonthPayload.Filters, function(k,v){
+					if (v.ColumnName == "LocationIds") {
+						v.Value = selectedLocationsIds.join();
+					}
+				})
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayload, function(response){
+					console.log(response)
+					ctrl.computeTableHeight();
+					ctrl.countSelectedItems();
+				})
+			}			
 
 			$rootScope.$on("energySpecParametersUpdated", function(ev, val){
 				if (val) {
