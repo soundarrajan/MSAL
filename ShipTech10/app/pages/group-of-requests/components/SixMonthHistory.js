@@ -55,7 +55,7 @@ angular.module('shiptech.components')
 					}
 				}		    	
 		    	ctrl.activeProduct = changes.activeProduct.currentValue;
-	            ctrl.sixMonthPayload = {
+	            ctrl.sixMonthPayloadSent = {
 	                "Filters": [
 		                {
 		                	"ColumnName":"SellerCounterpartyId",
@@ -84,7 +84,7 @@ angular.module('shiptech.components')
 	                },
 	                "SearchText": null
 	            }				
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayload, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
@@ -200,12 +200,12 @@ angular.module('shiptech.components')
 				$.each(ctrl.selectedLocations, function(k,v){
 					selectedLocationsIds.push(v.id);
 				})
-				$.each(ctrl.sixMonthPayload.Filters, function(k,v){
+				$.each(ctrl.sixMonthPayloadSent.Filters, function(k,v){
 					if (v.ColumnName == "LocationIds") {
 						v.Value = selectedLocationsIds.join();
 					}
 				})
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayload, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
@@ -221,12 +221,12 @@ angular.module('shiptech.components')
 				$.each(ctrl.selectedLocations, function(k,v){
 					selectedLocationsIds.push(v.id);
 				})
-				$.each(ctrl.sixMonthPayload.Filters, function(k,v){
+				$.each(ctrl.sixMonthPayloadSent.Filters, function(k,v){
 					if (v.ColumnName == "LocationIds") {
 						v.Value = selectedLocationsIds.join();
 					}
 				})
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayload, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
