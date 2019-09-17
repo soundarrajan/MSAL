@@ -34,6 +34,7 @@ return $resource(API.BASE_URL_DATA_PROCUREMENT + '/api/procurement/rfq/:verb/:ac
         'getNewOfferDetails': { method:'POST', params: {verb:'getNewOfferDetails'}},
         'updateOfferDetails': { method:'POST', params:{verb:'updateOfferDetails'}, interceptor: resourceInterceptor},
         'updateGroup': { method:'POST', params:{verb:'updateGroup'}, interceptor: resourceInterceptor},
+        'updateEnergy6MonthHistory': { method:'POST', params:{verb:'updateEnergy6MonthHistory'}, interceptor: resourceInterceptor},
         'updateEnergySpecValuesByProduct': { method:'POST', params:{verb:'updateEnergySpecValuesByProduct'}, interceptor: resourceInterceptor},
         'duplicateSeller': { method:'POST', params:{verb:'copyRequirements'}, interceptor: resourceInterceptor},
         'saveBuyerQuote': { method:'POST', params:{verb:'saveBuyerQuote'}, interceptor: resourceInterceptor},

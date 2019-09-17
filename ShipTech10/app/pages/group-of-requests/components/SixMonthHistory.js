@@ -1,6 +1,6 @@
 angular.module('shiptech.components')
-    .controller('SixMonthHistory', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings',  
-        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings) {
+    .controller('SixMonthHistory', ['$scope', '$rootScope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings',  
+        function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings) {
 
 	        var ctrl = this;
 		
@@ -99,6 +99,12 @@ angular.module('shiptech.components')
 
 			ctrl.getSixMonthHistoryData = function(payload, callback) {
                 groupOfRequestsModel.energy6MonthHistory(payload).then(function (data) {
+					_.map(data.payload, function(el){
+						if (el.isSelected == null) {
+							el.isSelected = true;
+							return true;
+						}
+					});
 					ctrl.sixMonthsHistoryData = data.payload;
                 	if (callback) {
                 		callback();
@@ -126,7 +132,7 @@ angular.module('shiptech.components')
 	            }					 
                 groupOfRequestsModel.reassignEnergy6MonthReferenceDate(payload).then(function (data) {
                 	console.log(data);
-                });	            
+                });	  
 			}
 
 			jQuery(document).ready(function(){
@@ -138,6 +144,15 @@ angular.module('shiptech.components')
 
 					$(".custom-hardcoded-table-wrapper .tableheader").scrollLeft(hscrollOffset)
 				})
+			})
+
+			$rootScope.$on("energySpecParametersUpdated", function(ev, val){
+				if (val) {
+					payload = ctrl.sixMonthsHistoryData;
+	                groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
+	                	console.log(data);
+	                });	            
+				}
 			})
 
 

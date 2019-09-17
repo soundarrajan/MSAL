@@ -583,6 +583,12 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             return groupOfRequestsResource.reassignEnergy6MonthReferenceDate(payload).$promise.then(function(data) {
                 return data;
             });
+        }   	    
+        function updateEnergy6MonthHistory(data) {
+            var payload = payloadDataModel.create(data);
+            return groupOfRequestsResource.updateEnergy6MonthHistory(payload).$promise.then(function(data) {
+                return data;
+            });
         }                
 
         function saveSupplierCard(data) {
@@ -636,6 +642,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             updateContact: updateContact,
             updatePrice: updatePrice,
             updateIncoterm: updateIncoterm,
+            updateEnergy6MonthHistory: updateEnergy6MonthHistory,
             removeRequirements: removeRequirements,
             reviewGroup: reviewGroup,
             markCurrentSelection: markCurrentSelection,

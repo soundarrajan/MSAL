@@ -3171,6 +3171,7 @@ ctrl.setProductData = function(data, loc) {
         ctrl.updateSpecParemeters = function (params) {
             groupOfRequestsModel.updateEnergySpecValues(params).then(function (data) {
             	ctrl.initScreenAfterSendOrSkipRfq();
+            	$rootScope.$broadcast("energySpecParametersUpdated", true);
             	$(".blade-column.main-content-column .ng-dirty").removeClass("ng-dirty");
             	ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
             	ctrl.confirmedBladeNavigation = true;
