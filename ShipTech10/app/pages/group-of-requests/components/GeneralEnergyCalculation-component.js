@@ -49,24 +49,18 @@ angular.module('shiptech.components')
 			}
 
 			ctrl.computeMinPricePerLocations = function() {
+				minPriceFound = false;
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
-					loc.minPriceCounterpartyIndex = _.minBy(loc.counterparties, function(el){
-						return el.energyParameterValues.totalComputedPrice
-						// if (ctrl.energyCalculationBladeData.data[0].allowZeroPricing) {
-						// 	return el.price;
-						// } else {
-						// 	if (el.price > 0) {
-						// 		return el.price;
-						// 	}
-						// }
-					})
-					// if (!loc.minPriceCounterpartyIndex) {
-					// 	return;
-					// }\
-					console.log(loc.minPriceCounterpartyIndex);
+					$.each(loc.counterparties, function(k2, counterparty){
+						if (!minPriceFound || minPriceFound < counterparty.energyParameterValues.totalComputedPrice) {
+							minPriceFound = counterparty.energyParameterValues.totalComputedPrice;
+						}
+					})	
+				})	
+				$.each(ctrl.energyCalculationBladeData.data, function(k,loc){
 					$.each(loc.counterparties, function(k2, counterparty){
 						counterparty.isMinPrice = false;
-						if (parseFloat(counterparty.price) == parseFloat(loc.minPriceCounterpartyIndex.price) ) {
+						if (parseFloat(counterparty.price) == parseFloat(minPriceFound) ) {
 							counterparty.isMinPrice = true;
 						}
 					})
@@ -95,7 +89,7 @@ angular.module('shiptech.components')
 				$.each(ctrl.energyCalculationBladeData.data, function(k,loc) {
 					var allowZeroPricing = loc.allowZeroPricing;
 					$.each(loc.counterparties, function(k2, counterparty){
-						if (!counterparty.price || (!allowZeroPricing && counterparty.price <= 0) ) {
+						if (counterparty.price && (!allowZeroPricing && counterparty.price <= 0) ) {
 							hasInvalidPrice = true;
 						}
 					})
