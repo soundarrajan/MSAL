@@ -285,13 +285,15 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
             $state.params.title = lab + ' - ' + $scope.formValues.order.name + " - DEL " + del;
         }
         if (name == 'Product' && $scope.formValues.product) {
-        	filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
-        	if (filteredSpecGroup) {
-        		filteredSpecGroup = filteredSpecGroup.specGroup;
-        	}
-        	if (filteredSpecGroup) {
-	            $scope.formValues.specGroup = filteredSpecGroup.name;
-        	}
+            if (typeof($scope.temp) != "undefined") {
+                filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+                if (filteredSpecGroup) {
+                    filteredSpecGroup = filteredSpecGroup.specGroup;
+                }
+                if (filteredSpecGroup) {
+                    $scope.formValues.specGroup = filteredSpecGroup.name;
+                }
+            }
             vm.setorderProdId();
             if (typeof vm.changed == 'undefined') {
                 vm.changed = 0;
