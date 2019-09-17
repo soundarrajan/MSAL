@@ -1,7 +1,7 @@
 <div class="newStatusColoured contextmenu fade in" style="background-color: #fff"> 
-	<div class="popover-header" style="background-color:{{rightClickPopoverData.vsVal.style['background-color']}}">
+	<div class="popover-header" style="{{ rightClickPopoverData.vsVal.style }}">
 		<a href="#" class="close" aria-label="close"> &times; </a> 
-		<span>{{rightClickPopoverData.vsVal.request.vesselName}}</span>
+		<span>{{ rightClickPopoverData.vsVal.request.vesselName }}</span>
 	</div>
 	<div class="content">
 	
@@ -48,9 +48,7 @@
 		<a ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a>
 	</div>
 
-
 	<!-- {{rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId}} -->
-
 
 	</div>
 	<div class="hidden">
