@@ -164,6 +164,10 @@ angular.module('shiptech.components')
 				median = sum / count;
                 ctrl.onSixMonthsUpdate({results : false});
                 payload = ctrl.sixMonthsHistoryData;
+
+            	$.each($("#params_history_table .ng-dirty"), function(){
+            		$(this).removeClass("ng-dirty");
+            	})
                 groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
                 	ctrl.onSixMonthsUpdate({results : true});
 					ctrl.fillMedianSixMonth = true;
