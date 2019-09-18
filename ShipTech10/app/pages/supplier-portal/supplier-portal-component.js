@@ -676,7 +676,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                     fieldName = form.$error[errorName][i].$name;
                     if (fields.indexOf(fieldName) === -1) {
                         console.log(form)
-                        fields.push('<br><br>' + fieldName + ' from ' + type);
+                        fields.push('<br>' + fieldName + ' from ' + type);
                     }
                 }
             }
@@ -1235,13 +1235,16 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             $.each(payload.individuals, function(k, offer){
 	            $.each(offer.products, function(pk, product){
                     var hasNoQuote = product.sellers["0"].offers["0"].hasNoQuote;
-                    var price = Math.floor(Number(product.sellers[0].offers[0].price));
+                    var price = parseFloat(product.sellers[0].offers[0].price);
 	            	if (!hasNoQuote) {
 			            allProductsAreNoQuote = false;
 	            	} 
-                    if (!hasNoQuote && !((_.isInteger(price) && price > 0) || (_.isInteger(price) && product.allowZeroPricing && price === 0))) {
-                        productsWithInvalidPrice.push(product.product.name);
-                    }
+	            	if (!hasNoQuote) {
+	                    if (product.allowZeroPricing && price == 0) {
+	                        productsWithInvalidPrice.push(product.product.name); 
+	                    }
+
+	            	}
 	            })
             })
 
