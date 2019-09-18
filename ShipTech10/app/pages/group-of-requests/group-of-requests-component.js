@@ -3271,13 +3271,13 @@ ctrl.setProductData = function(data, loc) {
             }
             ctrl.lastSavedQuoteByDateFrom = ctrl.quoteByDateFrom;
         	if (internalComments) {
-	        	internalComments = internalComments.replace(/(\r\n|\n)/g, "<br/>")
-                initialValueInternalComments = internalComments;
+	        	internalComments = internalComments.replace(/(\r\n|\n)/g, "<br/>");
         	}
         	if (externalComments) {
-	        	externalComments = externalComments.replace(/(\r\n|\n)/g, "<br/>")
-                initialValueExternalComments = externalComments;
+	        	externalComments = externalComments.replace(/(\r\n|\n)/g, "<br/>");
         	}
+            initialValueInternalComments = internalComments;
+            initialValueExternalComments = externalComments;
             groupOfRequestsModel.updateGroup(groupId, internalComments, externalComments, ctrl.quoteByDate, ctrl.quoteByTimezone, ctrl.quoteByCurrency, ctrl.quoteByDateFrom);
             $rootScope.overrideCloseNavigation = true;
         };
@@ -7043,8 +7043,12 @@ ctrl.setProductData = function(data, loc) {
 		}
         
         ctrl.undoComments = function() {
-            ctrl.externalComments = initialValueExternalComments;
-            ctrl.internalComments = initialValueInternalComments;
+            if (initialValueExternalComments != null) {
+                 ctrl.externalComments = initialValueExternalComments.replace(/<br\s?\/?>/g,"\n");
+            }
+            if (initialValueInternalComments != null){
+                ctrl.internalComments = initialValueInternalComments.replace(/<br\s?\/?>/g,"\n");
+            }
         }
 
         // ctrl.scroll = function(value) {
