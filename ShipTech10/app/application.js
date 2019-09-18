@@ -9,8 +9,7 @@ angular
         function($routeProvide, $httpProvider, adalProvider, $locationProvider) {
             $locationProvider.hashPrefix("");
             adalProvider.init(appConfig.auth, $httpProvider);
-        },
-
+        }
     ])
     .run([
         "$rootScope",
@@ -369,19 +368,19 @@ angular
             });
 
             jQuery(document).ready(function(){
-				if (!window.tenantFormatsDateFormat) {
-					tenantService.tenantSettings.then(function(settings) {
-						window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
-					});
-				}
-				$(document).on("blur", ".formatted-date-input", function(){
-					currentEl = this;
-					setTimeout(function(){
-						// $(currentEl).attr("ng-invalid", "false");
-						dateFormat = angular.copy(window.tenantFormatsDateFormat);
-						dateFormat = dateFormat.replace(/y/g, "Y");
-						// console.log(window.tenantFormatsDateFormat);
-						invalidDate = false;
+                if (!window.tenantFormatsDateFormat) {
+                    tenantService.tenantSettings.then(function(settings) {
+                        window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
+                    });
+                }
+                $(document).on("blur", ".formatted-date-input", function(){
+                    currentEl = this;
+                    setTimeout(function(){
+                        // $(currentEl).attr("ng-invalid", "false");
+                        dateFormat = angular.copy(window.tenantFormatsDateFormat);
+                        dateFormat = dateFormat.replace(/y/g, "Y");
+                        // console.log(window.tenantFormatsDateFormat);
+                        invalidDate = false;
                         if (dateFormat) {
                             if ($(currentEl).hasClass("date-only")) {
                                 dateFormat = dateFormat.split(" ")[0];
@@ -399,24 +398,24 @@ angular
                                 $(currentEl).trigger("change");
                                 $(currentEl).val(oldInputVal);
                             }
-							// $(currentEl).attr("ng-invalid", "true");
-							if (!$(currentEl).attr("error-shown")) {
-								toastr.error("Please enter correct date format");
-								$(currentEl).attr("error-shown", "true");
-							}
-						} else {
-							$(currentEl).attr("ng-invalid", "false");
-						}
-						setTimeout(function(){
-							$(currentEl).removeAttr("error-shown");
-						},300)
-					})
-					// $(this).$valid;
-					// $compile($(this));
-				})
+                            // $(currentEl).attr("ng-invalid", "true");
+                            if (!$(currentEl).attr("error-shown")) {
+                                toastr.error("Please enter correct date format");
+                                $(currentEl).attr("error-shown", "true");
+                            }
+                        } else {
+                            $(currentEl).attr("ng-invalid", "false");
+                        }
+                        setTimeout(function(){
+                            $(currentEl).removeAttr("error-shown");
+                        },300)
+                    })
+                    // $(this).$valid;
+                    // $compile($(this));
+                })
 
-				$(document).on("focusin", "input, textarea", function () {$(this).select();});
-				
+                $(document).on("focusin", "input, textarea", function () {$(this).select();});
+
             })
 
             $scope.pagetitle = "";
@@ -452,9 +451,9 @@ angular
             pageTitleMap["Labs Edit"] = 'New Labs Result';
             pageTitleMap["Transactions to be invoiced List"] = 'Transactions to be Invoiced List';
             // pageTitleMap["Admin Screen Entity Edit"] = 'Transactions to be Invoiced List';
-          
+
             $scope.setPageTitle = function(title){
-   
+
                 if(pageTitleMap[title]){
                     $scope.pagetitle = pageTitleMap[title];
                 }else{
@@ -481,7 +480,7 @@ angular
                 if (!state) {
                     state = toState;
                 }
-                
+
                 $scope.pageClass = $scope.pagetitle.toLowerCase().replace(/[^0-9a-zA-Z]/g, "");
                 if (state != toState) {
                     // updateLists();
@@ -511,12 +510,12 @@ angular
                 }
             });
 
-               $scope.$on("$changePageTitle", function(event, pageData){
-           
-                    if(pageData.title){
-                        $scope.setPageTitle(pageData.title);
-                    }
-                })
+            $scope.$on("$changePageTitle", function(event, pageData){
+
+                if(pageData.title){
+                    $scope.setPageTitle(pageData.title);
+                }
+            })
             /*
             function updateLists() {
                 angular.module("shiptech").value("$listsCache", null);
@@ -633,7 +632,7 @@ angular.module("shiptech").controller("QuickSidebarController", [
         // });
         // console.log($state)
         $scope.state = $state;
-       
+
         $scope.$on("$stateChangeStart", function() {
             QuickSidebar.hide();
             $("*").tooltip("destroy");
@@ -678,13 +677,13 @@ angular.module("shiptech").controller("BladeController", [
 $bladeEntity = {
     close: function() {
 
-	        $(".bladeEntity").removeClass("open");
-	        $("body").css("overflow-y", "initial");
-	        setTimeout(function() {
-	            if (typeof $rootScope != "undefined") {
-	                $rootScope.bladeTemplateUrl = "";
-	            }
-	        }, 500);
+        $(".bladeEntity").removeClass("open");
+        $("body").css("overflow-y", "initial");
+        setTimeout(function() {
+            if (typeof $rootScope != "undefined") {
+                $rootScope.bladeTemplateUrl = "";
+            }
+        }, 500);
     },
     open: function(id) {
         if (id) {
@@ -775,45 +774,38 @@ angular.element(document).ready(function() {
 
 
 angular.module('shiptech').factory('httpRequestInterceptor', function () {
-  return {
-    request: function (config) {
+    return {
+        request: function (config) {
 
-      config.headers['X-Originating-Page'] = window.location.href;
+            config.headers['X-Originating-Page'] = window.location.href;
 
-      return config;
-    }
-  };
+            return config;
+        }
+    };
 })
-
-angular.module('shiptech').config([
-    'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY', function (applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
-        applicationInsightsServiceProvider.configure({
-            instrumentationKey: INSTRUMENTATION_KEY,
-            applicationName: 'shiptech',
-            autoLogTracking: true,
-            disableTelemetry: !INSTRUMENTATION_KEY,
-            disableCorrelationHeaders: false,
-            enableCorsCorrelation: true,
-            disableAjaxTracking: false
-        });
-    }
-]);
-
-angularAppInsights.factory('ApplicationInsightsInterceptor', ['applicationInsightsService', '$q',
-    function (applicationInsightsService, $q) {
-        return {
-            request: function (config) {
-                if (config) {
-                    config.headers = config.headers || {};
-                    config.headers['x-ms-request-root-id'] = applicationInsightsService.getStoredOperationId();
-                    config.headers['x-ms-request-id'] = applicationInsightsService.getUserId();
-                    return config;
-                }
-            }
-        };
-    }]);
-
 angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
-    $httpProvider.interceptors.push('ApplicationInsightsInterceptor');
 }])
+
+angular.module('shiptech').config(['$routeProvider', '$locationProvider', 'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY',
+    function ($routeProvider, $locationProvider, applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
+
+        applicationInsightsServiceProvider.configure(INSTRUMENTATION_KEY, {
+            appName: 'shiptech',
+            autoLogTracking:true,
+            autoPageViewTracking:true,
+            // We can pass a custom error ID if autoExceptionTracking:false and we manually call trackException as below
+            //applicationInsightsService.trackException(exception, cause, { errorTraceId: "SOME_RANDOM_ID" });
+            autoExceptionTracking:true,
+            // In case instrumentation key is not provided we just logging the tracking events in console
+            developerMode: !INSTRUMENTATION_KEY
+
+        });
+        $routeProvider
+            .when('/', {
+                templateUrl: 'index.html',
+                controller: 'appCtrl'
+            })
+
+    }
+]);
