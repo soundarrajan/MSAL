@@ -134,6 +134,15 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
         });
 
+
+		ctrl.onSixMonthsUpdate = function(results) {
+			if (results == true) {
+				$timeout(function(){
+					ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
+				})
+			}
+		}
+
         function checkAllCheckboxesDefault() {
         	$.each($(".checkAllOnLocation"), function(cbk, cbv){
         		checkAllLocationIdentifier = $(cbv).attr("checkAllUniqueLocationIdentifier");
@@ -5508,15 +5517,12 @@ ctrl.setProductData = function(data, loc) {
                     console.log($scope.tempProductOffer);
                     // debugger;
                     ctrl.active_prod = ctrl.sellerOffers[0];
-		            ctrl.sixMonthPayload = false
-		            setTimeout(function(){
-			            ctrl.sixMonthPayload = {
-			                requestGroupId: ctrl.groupId,
-			                locationIds: theLocation.location.id,
-			                sellerCounterpartyId: seller.sellerCounterparty.id,
-			                physicalSupplierCounterpartyId: seller.randUnique.split("-")[1]
-			            }
-		            })
+		            ctrl.sixMonthPayload = {
+		                requestGroupId: ctrl.groupId,
+		                locationIds: theLocation.location.id,
+		                sellerCounterpartyId: seller.sellerCounterparty.id,
+		                physicalSupplierCounterpartyId: seller.randUnique.split("-")[1]
+		            }
                     $.each(ctrl.sellerOffers, function (k, v) {
                         $.each(v.products, function (pk, pv) {
                             currentPackageId = null;
@@ -6967,7 +6973,7 @@ ctrl.setProductData = function(data, loc) {
 		});
 		$scope.$watch('ctrl.locations', function(newValue, oldValue) {
 			ctrl.groupLocationsByUniqueLocationIdentifier()
-		});		
+		});	
 		$scope.$watch('ctrl.requirements', function(newValue, oldValue) {
 		});
 

@@ -13,8 +13,8 @@
     		</div>
     		<div class="bootstrap-tagsinput pull-left">
                 <span ng-repeat="location in $ctrl.selectedLocations" class="tag border border-grey-cascade label" data-original-title=" {{ location.name }}">
-                    <span ng-click="$ctrl.removeLocationFromHistory($index)" class="font-dark">
-                        <a class="fa fa-close font-red"></a>
+                    <span class="font-dark">
+                        <a ng-click="$ctrl.removeLocationFromHistory($index)" class="fa fa-close font-red"></a>
                         {{location.name }}
                     </span>
                 </span>

@@ -54,7 +54,8 @@ angular.module('shiptech.components')
 						ctrl.sellerCounterpartyId = null;
 					}
 				}		    	
-		    	ctrl.activeProduct = changes.activeProduct.currentValue;
+		    	ctrl.activeProduct = changes.activeProduct.currentValue.product.id;
+		    	ctrl.activeProductRequestProductId = changes.activeProduct.currentValue.id;
 	            ctrl.sixMonthPayloadSent = {
 	                "Filters": [
 		                {
@@ -72,6 +73,10 @@ angular.module('shiptech.components')
 		                {
 		                	"ColumnName":"ProductId",
 		                	"Value":ctrl.activeProduct
+		                },
+		                {
+		                	"ColumnName":"RequestProductId",
+		                	"Value":ctrl.activeProductRequestProductId
 		                },
 		                {
 		                	"ColumnName":"LocationIds",
@@ -150,13 +155,19 @@ angular.module('shiptech.components')
 				var sum = 0;
 				var median = 0;
 				$.each(ctrl.sixMonthsHistoryData, function(k,v){
+					v.requestProductId = ctrl.activeProductRequestProductId;
 					if (v.isSelected) {
 						sum += parseFloat(v.netSpecificEnergyValue);
 						count++;
 					}
 				})
 				median = sum / count;
-				ctrl.fillMedianSixMonth = median;
+                ctrl.onSixMonthsUpdate({results : false});
+                groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
+                	ctrl.onSixMonthsUpdate({results : true});
+					ctrl.fillMedianSixMonth = true;
+                	console.log(data);
+                });					
 				console.log(median);
 			}
 
@@ -175,7 +186,11 @@ angular.module('shiptech.components')
 					"count": count,
 					"total" : ctrl.sixMonthsHistoryData.length
 				}
-				ctrl.average6monthSelected = median;
+
+				ctrl.average6monthSelected = parseFloat(median).toFixed(2);
+				if (isNaN(median)) {
+					ctrl.average6monthSelected = "-";
+				}
 			}
 
 			ctrl.computeTableHeight = function() {
@@ -233,14 +248,16 @@ angular.module('shiptech.components')
 				})
 			}			
 
-			$rootScope.$on("energySpecParametersUpdated", function(ev, val){
-				if (val) {
-					payload = ctrl.sixMonthsHistoryData;
-	                groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
-	                	console.log(data);
-	                });	            
-				}
-			})
+			// $rootScope.$on("energySpecParametersUpdated", function(ev, val){
+			// 	if (val && !ctrl.alreadyUpdatedEnergySpecParameters) {
+			// 		ctrl.alreadyUpdatedEnergySpecParameters = true;
+			// 		payload = ctrl.sixMonthsHistoryData;
+	  //               groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
+			// 			ctrl.alreadyUpdatedEnergySpecParameters = false;
+	  //               	console.log(data);
+	  //               });	            
+			// 	}
+			// })
 
 			jQuery(document).ready(function(){
 				$(".custom-hardcoded-table-wrapper .tablebody").on("scroll", function(){
@@ -267,6 +284,6 @@ angular.module('shiptech.components').component('sixMonthsHistory', {
     	sixMonthPayload : '<',
     	enSixMhReferenceDate : '<',
     	sixMonthHistoryFor : '<',
-    	fillMedianSixMonth : '=',
+    	onSixMonthsUpdate : '&',
     }
 });

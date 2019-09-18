@@ -207,7 +207,7 @@
                         </div>
                     </div>
                     <div id="neg_his" class="tab-pane fade">
-                        <six-months-history ng-if="$ctrl.sixMonthPayload" en-six-mh-reference-date="$ctrl.en6MHReferenceDate" active-product="$ctrl.active_prod.products[0].product.id" six-month-history-for="$ctrl.sixMonthHistoryFor"  six-month-payload="$ctrl.sixMonthPayload" fill-median-six-month="$ctrl.fillMedianSixMonth"></six-months-history>
+                        <six-months-history ng-if="$ctrl.sixMonthPayload" en-six-mh-reference-date="$ctrl.en6MHReferenceDate" active-product="$ctrl.active_prod.products[0]" six-month-history-for="$ctrl.sixMonthHistoryFor"  six-month-payload="$ctrl.sixMonthPayload" on-six-months-update="$ctrl.onSixMonthsUpdate(results)"></six-months-history>
                     </div>
                     <div id="comm" class="tab-pane fade">
                         <h3>
