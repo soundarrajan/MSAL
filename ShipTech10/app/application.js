@@ -794,8 +794,32 @@ angular.module('shiptech').config([
             instrumentationKey: INSTRUMENTATION_KEY,
             applicationName: 'shiptech',
             autoLogTracking: true,
-            verboseLogging: true,
-            disableTelemetry: !INSTRUMENTATION_KEY
+            disableTelemetry: !INSTRUMENTATION_KEY,
+            disableCorrelationHeaders: false,
+            enableCorsCorrelation: true,
+            disableAjaxTracking: false
         });
     }
 ]);
+
+angularAppInsights.config([
+    "$provide", "$httpProvider",
+    ($provide, $httpProvider) => {
+        if ($httpProvider && $httpProvider.interceptors) {
+            $httpProvider.interceptors.push('ApplicationInsightsInterceptor');
+        }
+    }
+]);
+
+angularAppInsights.factory('ApplicationInsightsInterceptor', ['applicationInsightsService', '$q', function (applicationInsightsService, $q) {
+    return {
+        request: function (config) {
+            if (config) {
+                config.headers = config.headers || {};
+                config.headers['x-ms-request-root-id'] = applicationInsightsService.getStoredOperationId();
+                config.headers['x-ms-request-id'] = applicationInsightsService.getUserId();
+                return config;
+            }
+        }
+    };
+}]);
