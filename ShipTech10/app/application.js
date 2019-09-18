@@ -786,6 +786,7 @@ angular.module('shiptech').factory('httpRequestInterceptor', function () {
 })
 angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
   $httpProvider.interceptors.push('httpRequestInterceptor');
+  $httpProvider.interceptors.push('ApplicationInsightsInterceptor');
 }])
 
 angular.module('shiptech').config([
@@ -802,16 +803,8 @@ angular.module('shiptech').config([
     }
 ]);
 
-angularAppInsights.config([
-    "$provide", "$httpProvider",
-    ($provide, $httpProvider) => {
-        if ($httpProvider && $httpProvider.interceptors) {
-            $httpProvider.interceptors.push('ApplicationInsightsInterceptor');
-        }
-    }
-]);
-
-angularAppInsights.factory('ApplicationInsightsInterceptor', ['applicationInsightsService', '$q', function (applicationInsightsService, $q) {
+angularAppInsights.factory('ApplicationInsightsInterceptor', ['applicationInsightsService', '$q',
+    function (applicationInsightsService, $q) {
     return {
         request: function (config) {
             if (config) {
