@@ -784,10 +784,6 @@ angular.module('shiptech').factory('httpRequestInterceptor', function () {
     }
   };
 })
-angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
-  $httpProvider.interceptors.push('httpRequestInterceptor');
-  $httpProvider.interceptors.push('ApplicationInsightsInterceptor');
-}])
 
 angular.module('shiptech').config([
     'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY', function (applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
@@ -805,14 +801,19 @@ angular.module('shiptech').config([
 
 angularAppInsights.factory('ApplicationInsightsInterceptor', ['applicationInsightsService', '$q',
     function (applicationInsightsService, $q) {
-    return {
-        request: function (config) {
-            if (config) {
-                config.headers = config.headers || {};
-                config.headers['x-ms-request-root-id'] = applicationInsightsService.getStoredOperationId();
-                config.headers['x-ms-request-id'] = applicationInsightsService.getUserId();
-                return config;
+        return {
+            request: function (config) {
+                if (config) {
+                    config.headers = config.headers || {};
+                    config.headers['x-ms-request-root-id'] = applicationInsightsService.getStoredOperationId();
+                    config.headers['x-ms-request-id'] = applicationInsightsService.getUserId();
+                    return config;
+                }
             }
-        }
-    };
-}]);
+        };
+    }]);
+
+angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('httpRequestInterceptor');
+    $httpProvider.interceptors.push('ApplicationInsightsInterceptor');
+}])
