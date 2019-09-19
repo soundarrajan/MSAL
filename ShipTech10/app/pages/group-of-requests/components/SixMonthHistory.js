@@ -115,12 +115,14 @@ angular.module('shiptech.components')
 
 			ctrl.getSixMonthHistoryData = function(payload, callback) {
                 groupOfRequestsModel.energy6MonthHistory(payload).then(function (data) {
-					_.map(data.payload, function(el){
-						if (el.isSelected == null) {
-							el.isSelected = true;
-							return true;
-						}
-					});
+					if (_.find(data.payload, function(el){ return el.isSelected == null } ).length == data.payload.length) {
+						_.map(data.payload, function(el){
+							if (el.isSelected == null) {
+								el.isSelected = true;
+								return true;
+							}
+						});
+					}
 					ctrl.sixMonthsHistoryData = data.payload;
                 	if (callback) {
                 		callback();
@@ -193,7 +195,7 @@ angular.module('shiptech.components')
 					"total" : ctrl.sixMonthsHistoryData.length
 				}
 
-				ctrl.average6monthSelected = parseFloat(median).toFixed(ctrl.quantityPrecision);
+				ctrl.average6monthSelected = parseFloat(median).toFixed(2);
 				if (isNaN(median)) {
 					ctrl.average6monthSelected = "-";
 				}
