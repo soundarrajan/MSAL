@@ -115,13 +115,21 @@ angular.module('shiptech.components')
 
 			ctrl.getSixMonthHistoryData = function(payload, callback) {
                 groupOfRequestsModel.energy6MonthHistory(payload).then(function (data) {
-					if (_.find(data.payload, function(el){ return el.isSelected == null } ).length == data.payload.length) {
-						_.map(data.payload, function(el){
-							if (el.isSelected == null) {
-								el.isSelected = true;
-								return true;
-							}
-						});
+					var nullSelections = 0;
+					$.each(data.payload, function(k,v){
+						if (v.isSelected == null) {
+							nullSelections++;
+						}
+					})
+					if (typeof(nullSelections) != "undefined") {
+						if (nullSelections == data.payload.length) {
+							_.map(data.payload, function(el){
+								if (el.isSelected == null) {
+									el.isSelected = true;
+									return true;
+								}
+							});
+						}
 					}
 					ctrl.sixMonthsHistoryData = data.payload;
                 	if (callback) {
