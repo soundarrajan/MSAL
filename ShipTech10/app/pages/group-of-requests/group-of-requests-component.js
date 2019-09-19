@@ -4186,10 +4186,10 @@ ctrl.setProductData = function(data, loc) {
             $scope.tempRequestOfferId = requestOfferId;
 
 
-            priceValue = Math.floor(Number(priceValue));
-            var priceIsInteger = _.isInteger(priceValue);
+            var intPriceValue = Math.floor(Number(priceValue));
+            var priceIsInteger = _.isInteger(intPriceValue);
 
-            if (!((priceIsInteger && priceValue > 0) || (priceIsInteger && productSample.allowZeroPricing && priceValue === 0))) {
+            if (!((priceIsInteger && intPriceValue > 0) || (priceIsInteger && productSample.allowZeroPricing && intPriceValue === 0))) {
                 // Reset price to previous value
                 $.each(ctrl.requests, function (reqK, reqV) {
                     $.each(reqV.locations, function (locK, locV) {
