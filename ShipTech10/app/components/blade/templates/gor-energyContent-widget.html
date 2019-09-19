@@ -35,7 +35,7 @@
                                 CCAI
                             </label>
                             <div class="input-group form_input">
-                                <input type="text"  class="form-control"  format="number:3" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ccai" ng-disabled="true"/>
+                                <input type="text"  class="form-control"  format="number:{{$ctrl.quantityPrecision}}" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ccai" ng-disabled="true"/>
                                 <span class="input-group-addon">
                                     <input type="text" disabled class="form-control uom-disabled" ng-model="$ctrl.active_prod.products[0].energyParameterValues.ccaiUom" tooltip="elem" data-original-title="{{$ctrl.active_prod.products[0].energyParameterValues.ccaiUom}}"/>
                                 </span>
