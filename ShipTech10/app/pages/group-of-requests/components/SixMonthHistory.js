@@ -9,6 +9,7 @@ angular.module('shiptech.components')
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
 	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
+	            ctrl.quantityPrecision = settings.payload.defaultValues.quantityPrecision;
 	        });
 
 
@@ -165,7 +166,7 @@ angular.module('shiptech.components')
                 ctrl.onSixMonthsUpdate({results : false});
                 payload = ctrl.sixMonthsHistoryData;
 
-            	$.each($("#params_history_table .ng-dirty"), function(){
+            	$.each($(".months_history .ng-dirty"), function(){
             		$(this).removeClass("ng-dirty");
             	})
                 groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
@@ -192,7 +193,7 @@ angular.module('shiptech.components')
 					"total" : ctrl.sixMonthsHistoryData.length
 				}
 
-				ctrl.average6monthSelected = parseFloat(median).toFixed(2);
+				ctrl.average6monthSelected = parseFloat(median).toFixed(ctrl.quantityPrecision);
 				if (isNaN(median)) {
 					ctrl.average6monthSelected = "-";
 				}

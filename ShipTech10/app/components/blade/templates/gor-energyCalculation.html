@@ -42,41 +42,37 @@
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.seller.displayName ? counterparty.seller.displayName : counterparty.seller.name}}" readonly ng-model="counterparty.seller.name"></td><!--  Counterparty -->
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.physicalSupplier.displayName ? counterparty.physicalSupplier.displayName : counterparty.physicalSupplier.name}}" readonly ng-model="counterparty.physicalSupplier.name"></td><!--  Physical Supplier -->
 				            	<td width="50px">
-				            		<input ng-class="{'border-red' : (!location.allowZeroPricing && (counterparty.price <= 0) && counterparty.price )}" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.price" ng-change="$ctrl.priceChanged()"></td><!--  Price -->
+				            		<input ng-disabled="counterparty.hasNoQuote || counterparty.requestProductStatus.name == 'Stemmed' " ng-class="{'border-red' : (!location.allowZeroPricing && (counterparty.price <= 0) && counterparty.price )}" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.price" ng-change="$ctrl.priceChanged()">
+				            	</td><!--  Price -->
 				            	<td width="50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.viscosity.specValue, counterparty.minMaxSpecs.viscosity)}" 
-				            		title="{{counterparty.minMaxSpecs.viscosity.min }} <> {{ counterparty.minMaxSpecs.viscosity.max}}"
 				            		ng-model="counterparty.energyParameterValues.viscosity.specValue"></td><!--  Viscosity -->
 				            	<td width="50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.sulphur.specValue, counterparty.minMaxSpecs.sulphur)}" 
-				            		title="{{counterparty.minMaxSpecs.sulphur.min }} <> {{ counterparty.minMaxSpecs.sulphur.max}}"
 				            		ng-model="counterparty.energyParameterValues.sulphur.specValue"></td><!--  Sulphur -->
 				            	<td width="50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.density.specValue, counterparty.minMaxSpecs.density)}" 
-				            		title="{{counterparty.minMaxSpecs.density.min }} <> {{ counterparty.minMaxSpecs.density.max}}"
 				            		ng-model="counterparty.energyParameterValues.density.specValue"></td><!--  Density -->
 				            	<td width="50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.ash.specValue, counterparty.minMaxSpecs.ash)}" 
-				            		title="{{counterparty.minMaxSpecs.ash.min }} <> {{ counterparty.minMaxSpecs.ash.max}}"
 				            		ng-model="counterparty.energyParameterValues.ash.specValue"></td><!--  Ash -->
 				            	<td width="50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.water.specValue, counterparty.minMaxSpecs.water)}" 
-				            		title="{{counterparty.minMaxSpecs.water.min }} <> {{ counterparty.minMaxSpecs.water.max}}"
 				            		ng-model="counterparty.energyParameterValues.water.specValue"></td><!--  Water -->
 				            	<td>
 				            		<input class="form-control" format="number:{{$ctrl.quantityPrecision}}" ng-model="counterparty.energyParameterValues.ccai" readonly>
