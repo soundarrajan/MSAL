@@ -7045,9 +7045,14 @@ ctrl.setProductData = function(data, loc) {
         ctrl.undoComments = function() {
             if (initialValueExternalComments != null) {
                  ctrl.externalComments = initialValueExternalComments.replace(/<br\s?\/?>/g,"\n");
+            } else {
+                ctrl.externalComments = "";
+
             }
             if (initialValueInternalComments != null){
                 ctrl.internalComments = initialValueInternalComments.replace(/<br\s?\/?>/g,"\n");
+            } else {
+                ctrl.internalComments = "";
             }
         }
 
