@@ -591,8 +591,9 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         if (val && angular.isArray(val)) {
                                             $.each(val, function(key1, val1) {
                                                 if (val && val1 && val1.hasOwnProperty("isDeleted")) {
-                                                    if (vm.app_id != "contracts" && vm.screen_id != "contract" &&
-                                                    	vm.app_id != "admin" && vm.screen_id != "users") {
+                                                	if (vm.app_id == "labs" && vm.screen_id == "labresult") {
+                                                		response[key][0].id = 0;
+                                                	} else if (vm.app_id != "contracts" && vm.screen_id != "contract" && vm.app_id != "admin" && vm.screen_id != "users") {
                                                         response[key][key1].id = 0;
                                                     }
                                                 }
@@ -653,7 +654,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $scope.formValues.deliveryDate = response.deliveryDate;
                                         $scope.triggerChangeFields("OrderID", "orderDetails.order");
                                     }
-                                    if (vm.app_id == "labs" && vm.screen_id == "labresult") {
+                                    if (vm.screen_id == "labresult") {
                                     	if ($scope.formValues.status.name == "Verified" || $scope.formValues.status.name == "Off Spec" || $scope.formValues.status.name == "In Spec") {
                                     		vm.listsCache.LabResultStatus.forEach(function(obj, index) {
                                     			if (obj.name == "New") {
@@ -680,7 +681,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         vm.checkVerifiedDeliveryFromLabs("loadedData");
                                         $.each($scope.formValues.conditions, function(k,v){
 	                                        v.paymentTerm = null	
-                                        })
+                                        }) 
                                     }
 				                    $("#header_action_verify").attr("disabled", "disabled");
                                     toastr.success("Entity copied");
