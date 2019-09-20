@@ -24,7 +24,9 @@
                   "PRODUCT_TYPE": "Product Type",
                   "COMMENT": "Comment",
                   "VESSELVOYAGEID": "Vessel voyage ID",
-                  "CONTRACTUALMINMAX": "Contractual min-max"
+                  "CONTRACTUALMINMAX": "Contractual min-max",
+                  "DELIVERY_FROM": "Delivery From",
+                  "DELIVERY_TO": "Delivery To"
             },
             "SCHEDULE_DASHBOARD_CALENDAR": {
                   "SERVICE": "Service",
