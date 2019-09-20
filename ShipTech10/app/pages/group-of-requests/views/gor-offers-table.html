@@ -244,9 +244,9 @@
                             <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price/Spec Energy</div> -->
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price Diff</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">TCO</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Total price</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Amount</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || true" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || true" style="width:100px" class="energy-content-cell">Total price</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || true" style="width:100px" class="energy-content-cell">Amount</div>
                         </div>
                     
                         <div>
@@ -938,7 +938,7 @@
                             </span>
                         </div> -->
                     </span>
-                    <span ng-show="$ctrl.priceExpanded['prod'+product.requestId+pkey]">
+                    <span ng-show="$ctrl.priceExpanded['prod'+product.requestId+pkey] || true">
                         <div style="width:100px;" class="energy-content-cell" ng-if="$ctrl.displayAdditionalCostColumn">
                             <!-- add cost -->
                             {{(productOffer !== null) ? (productOffer.additionalCostPerUnit * maxQuantity.qty | number : $ctrl.numberPrecision.amountPrecision) : "-" }}
