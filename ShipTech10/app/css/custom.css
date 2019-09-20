@@ -4776,3 +4776,14 @@ table.energyCalculationBlade tr.bg-green-jungle td{
 table.energyCalculationBlade tr.border-green-jungle{
 	border: 3px solid;
 }
+#grid_labTestResults, #grid_labTestResults .ui-grid-viewport {
+	height: auto !important;
+}
+#grid_labTestResults .ui-grid-viewport {
+    max-height: 500px;
+    /*margin-bottom: 75px;*/
+    border-bottom: 1px solid #e6eaec;
+}
+#grid_labTestResults .ui-grid-contents-wrapper{
+	overflow: hidden;	
+}
