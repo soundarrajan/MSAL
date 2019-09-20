@@ -920,7 +920,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         	}
             newProduct.product = product;
             newProduct.defaultProduct = angular.copy(product);
-            newProduct.specGroup = specGroup;
             newProduct.screenActions = [];
             newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
             cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
@@ -929,6 +928,11 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             }
             listsModel.getSpecGroupByProduct(product.id).then(function(server_data) {
                 newProduct.specGroups = server_data.data.payload;
+            	$.each(newProduct.specGroups, function(k,v){
+	            	if (v.id == specGroup.id) {
+			            newProduct.specGroup = specGroup;
+	            	}
+            	})
             });
         };
         ctrl.getProductTypeObjById = function(id) {
