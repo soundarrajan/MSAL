@@ -118,9 +118,14 @@ angular.module('shiptech.components')
 					if (!ignoreGetSavedLocations) {
 						if (response) {
 							$.each(payload.Filters, function(k,v){
-								if (v.ColumnName == "locationIds") {
+								if (v.ColumnName == "LocationIds") {
 									v.Value = response
 								}
+							})
+							ctrl.selectedLocations = [];
+							$.each(response.split(","), function(k,v){
+								locationObj = _.find(ctrl.listsCache.Location, function(o) { return o.id == v; });
+								ctrl.selectedLocations.push(locationObj);
 							})
 						}
 					}	
@@ -277,7 +282,7 @@ angular.module('shiptech.components')
 						v.Value = selectedLocationsIds.join();
 					}
 				})
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, false, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, true, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
