@@ -39,6 +39,7 @@ return $resource(API.BASE_URL_DATA_PROCUREMENT + '/api/procurement/rfq/:verb/:ac
         'duplicateSeller': { method:'POST', params:{verb:'copyRequirements'}, interceptor: resourceInterceptor},
         'saveBuyerQuote': { method:'POST', params:{verb:'saveBuyerQuote'}, interceptor: resourceInterceptor},
         'energy6MonthHistory': { method:'POST', params:{verb:'energy6MonthHistory'}, interceptor: resourceInterceptor},
+        'get6MHSavedLocationsByRequestProductId': { method:'POST', params:{verb:'get6MHSavedLocationsByRequestProductId'}, interceptor: resourceInterceptor},
         'updateEnergySpecValues': { method:'POST', params:{verb:'updateEnergySpecValues'}, interceptor: resourceInterceptor},
         'updatePhysicalSupplier': { method:'POST', params:{verb:'updatePhysicalSupplier'}, interceptor: resourceInterceptor},
         'updateBroker': { method:'POST', params:{verb:'updateBroker'}, interceptor: resourceInterceptor},

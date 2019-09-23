@@ -90,7 +90,7 @@ angular.module('shiptech.components')
 	                },
 	                "SearchText": null
 	            }				
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, false, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
@@ -113,27 +113,47 @@ angular.module('shiptech.components')
 				
 			}
 
-			ctrl.getSixMonthHistoryData = function(payload, callback) {
-                groupOfRequestsModel.energy6MonthHistory(payload).then(function (data) {
-					var nullSelections = 0;
-					$.each(data.payload, function(k,v){
-						if (v.isSelected == null) {
-							nullSelections++;
-						}
-					})
-					if (typeof(nullSelections) != "undefined") {
-						if (nullSelections == data.payload.length) {
-							_.map(data.payload, function(el){
-								if (el.isSelected == null) {
-									el.isSelected = true;
-									return true;
+			ctrl.getSixMonthHistoryData = function(payload, ignoreGetSavedLocations, callback) {
+				ctrl.get6MHSavedLocationsByRequestProductId(ctrl.activeProductRequestProductId, function(response) {
+					if (!ignoreGetSavedLocations) {
+						if (response) {
+							$.each(payload.Filters, function(k,v){
+								if (v.ColumnName == "locationIds") {
+									v.Value = response
 								}
-							});
+							})
 						}
-					}
-					ctrl.sixMonthsHistoryData = data.payload;
+					}	
+	                groupOfRequestsModel.energy6MonthHistory(payload).then(function (data) {
+						var nullSelections = 0;
+						$.each(data.payload, function(k,v){
+							if (v.isSelected == null) {
+								nullSelections++;
+							}
+						})
+						if (typeof(nullSelections) != "undefined") {
+							if (nullSelections == data.payload.length) {
+								_.map(data.payload, function(el){
+									if (el.isSelected == null) {
+										el.isSelected = true;
+										return true;
+									}
+								});
+							}
+						}
+						ctrl.sixMonthsHistoryData = data.payload;
+	                	if (callback) {
+	                		callback();
+	                	}
+	                });	            
+				})
+			}
+
+			ctrl.get6MHSavedLocationsByRequestProductId = function(requestProductId, callback) {
+                groupOfRequestsModel.get6MHSavedLocationsByRequestProductId(requestProductId).then(function (data) {
+                	console.log(data.payload);
                 	if (callback) {
-                		callback();
+                		callback(data.payload);
                 	}
                 });	            
 			}
@@ -236,7 +256,7 @@ angular.module('shiptech.components')
 						v.Value = selectedLocationsIds.join();
 					}
 				})
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, true, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
@@ -257,7 +277,7 @@ angular.module('shiptech.components')
 						v.Value = selectedLocationsIds.join();
 					}
 				})
-				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, function(response){
+				ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, false, function(response){
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();

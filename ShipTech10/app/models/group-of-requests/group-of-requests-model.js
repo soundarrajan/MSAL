@@ -576,6 +576,12 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             return groupOfRequestsResource.energy6MonthHistory(payload).$promise.then(function(data) {
                 return data;
             });
+        }         
+        function get6MHSavedLocationsByRequestProductId(data) {
+            var payload = payloadDataModel.create(data);
+            return groupOfRequestsResource.get6MHSavedLocationsByRequestProductId(payload).$promise.then(function(data) {
+                return data;
+            });
         } 
 
 	    function reassignEnergy6MonthReferenceDate(data) {
@@ -633,6 +639,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', ['groupOfReque
             getRfqEmailTemplate: getRfqEmailTemplate,
             getRfqRequoteEmailTemplate: getRfqRequoteEmailTemplate,
             getViewRfqEmailTemplate: getViewRfqEmailTemplate,
+            get6MHSavedLocationsByRequestProductId: get6MHSavedLocationsByRequestProductId,
             getEnergyBladeContentByProduct: getEnergyBladeContentByProduct,
             duplicateSeller: duplicateSeller,
             saveBuyerQuote: saveBuyerQuote,
