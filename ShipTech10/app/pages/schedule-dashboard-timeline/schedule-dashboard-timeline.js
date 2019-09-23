@@ -660,7 +660,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             });
                     } else {
                         href = $state.href(STATE.NEW_REQUEST, {
-                            voyageId: voyageStop.id
+                            voyageId: voyageStop.voyageDetail.id
                         }, {
                                 absolute: false
                             });
