@@ -3296,7 +3296,7 @@ ctrl.setProductData = function(data, loc) {
                     $.each(reqV.locations, function (locK, locV) {
                         $.each(locV.products, function (prodK, prodV) {
                             $.each(prodV.sellers, function (sellerK, sellerV) {
-                                if (sellerV.randUniquePkg == req.randUniquePkg && locV.location.id == req.LocationId && locV.id == req.RequestLocationId && req.RfqId != null) {
+                                if (sellerV.randUniquePkg == req.randUniquePkg && locV.location.id == req.LocationId && locV.id == req.RequestLocationId && req.RfqId != null && seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
                                     requoteRequirements.push(req);
                                 }
                             });
@@ -3761,7 +3761,7 @@ ctrl.setProductData = function(data, loc) {
         	}
         	ctrl.confirmedBladeNavigation = false;
 
-            ctrl.requirements = [];
+            // ctrl.requirements = [];
             if (theLocation.location) {
                 ctrl.blade.activeWidget = null;
                 uniqueLocationIdentifier = theLocation.uniqueLocationIdentifier;
@@ -3775,8 +3775,9 @@ ctrl.setProductData = function(data, loc) {
                 });
                 theLocation = locationsList;
             }
-            ctrl.createSellerRequirements(seller, theLocation);
+            // ctrl.createSellerRequirements(seller, theLocation);
 
+            /*
     		cannotSendRequote = false;
             $.each(ctrl.requirements, function(k,v){
             	if (!v.productHasPrice) {
@@ -3788,6 +3789,7 @@ ctrl.setProductData = function(data, loc) {
             	toastr.error("You cannot send requote for the selected seller because not all the offers have been quoted");
             	return;
             }
+            */
 
             ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
             if (typeof ctrl.blade == "undefined") {
@@ -3805,6 +3807,9 @@ ctrl.setProductData = function(data, loc) {
             ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
             // $rootScope.counterpartyData = callback;
             ctrl.requirementsToRequote = ctrl.getRequoteRequirements(seller, theLocation);
+
+
+
             $bladeEntity.open("groupOfRequestBlade");
             ctrl.bladeOpened = true;
             ctrl.dataLoaded = true;

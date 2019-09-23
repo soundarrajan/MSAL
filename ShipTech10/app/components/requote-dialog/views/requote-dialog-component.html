@@ -10,16 +10,13 @@
 	        <div class="col-md-4 row">
 	            <label class="control-label col-md-4">Quote By Date</label>
 
-				<span ng-init="$ctrl.initMask(true)"></span>
-
 				<div class="col-md-8">
-					<!-- <span ng-init="$ctrl.initMask(true)"></span> -->
 				    <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group ">
 				        <input class="form-control date-mask new-date-picker"
 				        type="text"
 				        ng-model="$ctrl.quoteByDate" 
 				        name="quoteByDate"
-				        id="quoteByDate"
+				        id="quoteByDateRequote"
                         new-date-picker
                         picker-type="dynamic">
 				    </div>
