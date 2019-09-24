@@ -4,9 +4,9 @@
 <!-- <div  ng-repeat="location in $ctrl.individuals | filter:{requestId:$ctrl.active_req} track by $index" ng-if="$ctrl.selectedLocationIds[location.location.id]" class="row"> -->
 
 
-<div  ng-repeat="(k,location) in $ctrl.individuals | filter:{request:{id:$ctrl.active_req}} track by $index" class="row">
+<div  ng-repeat="(k,location) in $ctrl.individuals track by $index" class="row">
 	 <!-- {{location}} -->
-    <div class="col-md-12">
+    <div class="col-md-12" ng-show="location.request.id == $ctrl.active_req">
         <!-- PRODUCT TABLE -->
         <div class="portlet light stretch-vertical grey_portlet">
             <div class="portlet-title">
