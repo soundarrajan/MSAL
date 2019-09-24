@@ -953,6 +953,15 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.getSpecGroups = function(product) {
             listsModel.getSpecGroupByProduct(product.product.id).then(function(server_data) {
                 product.specGroups = server_data.data.payload;
+                var isInList = false;
+            	$.each(product.specGroups, function(k,v){
+	            	if (v.id == product.specGroup.id) {
+		                isInList = true;
+	            	}
+            	})      
+            	if (!isInList) {
+		            product.specGroup = null;
+            	}      	
             });
         };
         ctrl.getProductType = function(product) {
