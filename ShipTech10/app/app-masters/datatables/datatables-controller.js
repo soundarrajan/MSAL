@@ -213,6 +213,28 @@ APP_MASTERS.controller("Controller_Datatables", [
                 excessRows: 999,
                 enableHorizontalScrollbar: 1,
                 rowEditWaitInterval: -1, //Important for skipping the promise
+                onRegisterApi: function(api) {
+                    var gridClass = '.grid'+ api.grid.id;
+                    var gridContainer = $(gridClass);
+                    var gridViewport = '';
+                    var maxRowsWithoutScroll = 8;
+
+                    setTimeout(() => {
+                        gridContainer.removeAttr("style");
+                        gridContainer.css('height', 'auto');
+
+                        gridViewport = gridContainer.find('.ui-grid-viewport');
+                        // Note: removing ng-style to avoid auto style calculation
+                        gridViewport.removeAttr("ng-style")
+                            .removeAttr('style')
+                            .css('overflow-y', 'hidden', 'important')
+                            .css('height', 'auto')
+                            // Note: using the min height of an row to avoid grid adhesion
+                            .css('min-height', api.grid.options.rowHeight + 'px')
+                            .css('padding', '5px 0')
+                            .css('max-height', (api.grid.options.rowHeight * maxRowsWithoutScroll) + 'px');
+                    }, 100)
+                },
                 columnDefs: [
                     {
                         name: "  ",
