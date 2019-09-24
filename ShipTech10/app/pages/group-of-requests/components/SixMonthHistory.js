@@ -35,6 +35,9 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function (changes) {
 		    	console.log(changes.activeProduct.currentValue);
+		    	if (changes.getGroupData) {
+		    		ctrl.getGroupData = changes.getGroupData.currentValue
+		    	}
 				
 				ctrl.fillMedianSixMonth = null;
 
@@ -45,15 +48,14 @@ angular.module('shiptech.components')
 				ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
 				ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
 				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
-				ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
 				ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
 				ctrl.locationIds = [ctrl.sixMonthPayload.locationIds].join();
 				if (ctrl.sixMonthHistoryFor.name == "Seller") {
 					ctrl.physicalSupplierCounterpartyId = null;
 				} else {
-					if (ctrl.physicalSupplierCounterpartyId != 'null' && ctrl.physicalSupplierCounterpartyId) {
+					// if (ctrl.physicalSupplierCounterpartyId != 'null' && ctrl.physicalSupplierCounterpartyId) {
 						ctrl.sellerCounterpartyId = null;
-					}
+					// }
 				}		    	
 		    	ctrl.activeProduct = changes.activeProduct.currentValue.product.id;
 		    	ctrl.activeProductRequestProductId = changes.activeProduct.currentValue.id;
@@ -289,16 +291,7 @@ angular.module('shiptech.components')
 				})
 			}			
 
-			// $rootScope.$on("energySpecParametersUpdated", function(ev, val){
-			// 	if (val && !ctrl.alreadyUpdatedEnergySpecParameters) {
-			// 		ctrl.alreadyUpdatedEnergySpecParameters = true;
-			// 		payload = ctrl.sixMonthsHistoryData;
-	  //               groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
-			// 			ctrl.alreadyUpdatedEnergySpecParameters = false;
-	  //               	console.log(data);
-	  //               });	            
-			// 	}
-			// })
+
 
 			jQuery(document).ready(function(){
 				$(".custom-hardcoded-table-wrapper .tablebody").on("scroll", function(){
@@ -325,6 +318,7 @@ angular.module('shiptech.components').component('sixMonthsHistory', {
     	sixMonthPayload : '<',
     	enSixMhReferenceDate : '<',
     	sixMonthHistoryFor : '<',
+    	getGroupData : '<',
     	onSixMonthsUpdate : '&',
     }
 });
