@@ -1234,7 +1234,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
          * @param {Integer} voyageStopDay - The voyageStop day.
          * @return {String} The HTML markup that makes the popover.
          */
-        ctrl.getPopoverMarkup = function (rowId, voyageStopId, voyageStopDay, voyageStop) {
+        ctrl.getPopoverMarkup = function (rowId, voyageStopId, voyageStopDay, voyageStop, obj) {
             if (!voyageStopId /*&& !voyageStop.request*/) {
                 return '';
             }
@@ -1243,23 +1243,27 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             }
             var popoverId = ctrl.makePopoverId(rowId, voyageStopId, voyageStopDay);
             html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
-            if (voyageStop.request && voyageStop.request.id != 0) {
+            if (voyageStop.request && voyageStop.request.requestDetail) {
             	voyageStop.request.requestDetail = _.uniqBy(voyageStop.request.requestDetail, 'Id');
-                $.each(voyageStop.request.requestDetail, function (k, row) {
-                    row_requestName = voyageStop.voyageDetail.request.requestDetail[k].requestName || '-';
-                    row_vesselName = voyageStop.voyageDetail.request.vesselName || '-';
-                    row_location = row.location || '-';
-                    row_fuelOilOfRequest = row.fuelOilOfRequest || '-';
-                    row_uom = row.uom || '-';
-                    row_fuelMinQuantity = $filter('number')(row.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
-                    row_fuelMaxQuantity = $filter('number')(row.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
-                    row_agreementType = row.agreementType || '-';
-                    row_statusCode = row.statusCode || '-';
-	                    html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td >' + row_location + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
-                    // if (row.fuelOilOfRequest) {
-                    // }
-                })
-	            html += '</tbody> </table>';
+                if (voyageStop.request.requestDetail && voyageStop.request.requestDetail.length > 0) {
+                    $.each(voyageStop.request.requestDetail, function (k, row) {
+                        row_requestName = voyageStop.voyageDetail.request.requestDetail[k].requestName || '-';
+                        row_vesselName = voyageStop.voyageDetail.request.vesselName || '-';
+                        row_location = row.location || '-';
+                        row_fuelOilOfRequest = row.fuelOilOfRequest || '-';
+                        row_uom = row.uom || '-';
+                        row_fuelMinQuantity = $filter('number')(row.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
+                        row_fuelMaxQuantity = $filter('number')(row.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
+                        row_agreementType = row.agreementType || '-';
+                        row_statusCode = row.statusCode || '-';
+                            html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td >' + row_location + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+                        // if (row.fuelOilOfRequest) {
+                        // }
+                    })
+                    html += '</tbody> </table>';
+                } else {
+                    html = '';
+                }
             } else {
                 html = '';
             }
