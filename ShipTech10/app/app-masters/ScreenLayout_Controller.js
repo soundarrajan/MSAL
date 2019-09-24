@@ -654,7 +654,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $scope.formValues.deliveryDate = response.deliveryDate;
                                         $scope.triggerChangeFields("OrderID", "orderDetails.order");
                                     }
-                                    if (vm.screen_id == "labresult") {
+                                    if (vm.app_id == "labs" && vm.screen_id == "labresult") {
                                     	if ($scope.formValues.status.name == "Verified" || $scope.formValues.status.name == "Off Spec" || $scope.formValues.status.name == "In Spec") {
                                     		vm.listsCache.LabResultStatus.forEach(function(obj, index) {
                                     			if (obj.name == "New") {
