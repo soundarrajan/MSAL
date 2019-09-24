@@ -56,7 +56,7 @@
                 <a class="btn btn-sm btn-default " ng-click="$ctrl.saveComments('discard')"  ng-class="{'disabled' : $ctrl.buttonsDisabled }">
                     Discard saved preview
                 </a>
-                <a class="btn btn-sm btn-outline orange" ng-disabled="$ctrl.template.name == 'OrderNoBDNToVesselEmail' " ng-click="$ctrl.saveComments(null, true)" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
+                <a class="btn btn-sm btn-outline orange" ng-disabled="$ctrl.template.name == 'OrderNoBDNToVesselEmail' || $ctrl.template.name == 'RequoteRFQEmailTemplate' " ng-click="$ctrl.saveComments(null, true)" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
                     Save
                 </a>
                 <a class="btn btn-sm btn-default" ng-click="$ctrl.saveAndSend()" ng-class="{'disabled' : (!$ctrl.canSend() || $ctrl.buttonsDisabled) }">
