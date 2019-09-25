@@ -34,6 +34,9 @@ angular.module('shiptech.components')
 	        } 
 
 		    ctrl.$onChanges = function (changes) {
+		    	if (!changes.activeProduct) {
+		    		return;
+		    	}
 		    	console.log(changes.activeProduct.currentValue);
 		    	if (changes.getGroupData) {
 		    		ctrl.getGroupData = changes.getGroupData.currentValue
@@ -100,6 +103,7 @@ angular.module('shiptech.components')
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
+					ctrl.onSixMonthsUpdate({results : ctrl.average6monthSelected});
 				})		    	
 		    };
 
@@ -211,7 +215,7 @@ angular.module('shiptech.components')
             		$(this).removeClass("ng-dirty");
             	})
                 groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
-                	ctrl.onSixMonthsUpdate({results : true});
+                	ctrl.onSixMonthsUpdate({results : ctrl.average6monthSelected});
 					ctrl.fillMedianSixMonth = true;
                 	console.log(data);
                 });					

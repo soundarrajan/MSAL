@@ -136,10 +136,16 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 
 
 		ctrl.onSixMonthsUpdate = function(results) {
-			if (results == true) {
-				$timeout(function(){
-					ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
-				})
+			if (results) {
+				if (results != "-") {
+					if (typeof(ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy) == "undefined") {
+						ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy = angular.copy(ctrl.active_prod.products[0].energyParameterValues.specificEnergy);
+					}
+					if (!ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy) {
+						ctrl.active_prod.products[0].energyParameterValues.specificEnergy = results;
+					}
+						// ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
+				}
 			}
 		}
 
