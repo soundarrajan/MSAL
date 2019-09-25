@@ -3185,6 +3185,7 @@ ctrl.setProductData = function(data, loc) {
             // $state.reload();
         };
         ctrl.updateSpecParemeters = function (params) {
+            $rootScope.shouldRefreshGroup = true;
             groupOfRequestsModel.updateEnergySpecValues(params).then(function (data) {
             	ctrl.initScreenAfterSendOrSkipRfq();
             	$rootScope.$broadcast("energySpecParametersUpdated", true);
@@ -5550,7 +5551,14 @@ ctrl.setProductData = function(data, loc) {
             });
         };
 	    $rootScope.$on("initScreenAfterSendOrSkipRfq", function (event, res) {
-			ctrl.initScreenAfterSendOrSkipRfq()
+			ctrl.initScreenAfterSendOrSkipRfq();
+            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
+                ctrl.bestTcoData = data.payload;
+                ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
+                ctrl.mySelection = data.payload.mySelection.quotations;
+                ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
+            });
+            $rootScope.shouldRefreshGroup = false;
 	    })    
         $rootScope.$on("supplierCardChangedData", function (event, supplierCardData) {
             console.log(supplierCardData);

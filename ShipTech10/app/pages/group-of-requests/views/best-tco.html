@@ -63,13 +63,14 @@
                                 <div class="row" ng-repeat="(reqK, reqV) in $ctrl.bestTotalTCOUniqueRequestsList">
                                     <div class="col-sm-10 no-padding">
                                         <span ng-repeat="(key, value) in $ctrl.bestTcoData.bestTotalTCO" ng-show="value.requestIdForGrouping == reqV">
+                                            <span ng-repeat="(key2, product) in value.products">
                                             <div class="col-sm-4 mb" ng-init="value.tco = value.tco " data-drag="{{ $ctrl.canDrag(value) }}" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}"  jqyoui-draggable="{  placeholder: 'keep',  onStart:'$ctrl.startCallback(value, $index)', onStop:'$ctrl.stopCallback'}" ng-model="value"   >
                                                 <div class="small-card bg-grey-steel blue-border">
                                                     <p>
                                                         <b>
                                                             TCO:
                                                         </b>
-                                                        {{ value.tco | number:3 }}
+                                                        {{ product.amount | number:3 }}
                                                     </p>
                                                     <p>
                                                         Seller: {{ value.seller.name }}
@@ -103,8 +104,8 @@
                                                             {{ prodVal.request.id }},
                                                         </span>
                                                     </p>
-                                                    <span ng-repeat="(skey, svalue) in value.products track by $index">
-                                                        {{ svalue.product.name }}: {{ svalue.maxQuantity | number:2 }}{{ svalue.uom.name }} - {{ svalue.price | number:3 }} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+                                                    <span>
+                                                        {{ product.product.name }}: {{ product.maxQuantity | number:2 }}{{ product.uom.name }} - {{ product.price | number:3 }} {{ product.currency.code ?  product.currency.code : product.currency.name }}
                                                         <br/>
                                                     </span>
                                                     <div class="location-name">
@@ -120,6 +121,7 @@
                                                                                                         </div> -->
                                                 </div>
                                             </div>
+                                            </span>
                                         </span>
                                     </div>
                                     <div class="col-sm-2 mb">
