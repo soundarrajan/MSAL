@@ -2023,7 +2023,6 @@ span.input-group-addon.im_group {
 
 .custom-hardcoded-table table.table-body {
     min-width: 900px;
-    display: table !important;
 }
 
 .custom-hardcoded-table .table-head td, .custom-hardcoded-table .table-body td {
