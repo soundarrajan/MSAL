@@ -309,21 +309,17 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             setPageTitle();
                             setRequestStatusHeader();
                  
+                            $scope.productTypesLoadedPerLocation = {
+                            	totalProducts : 0,
+                            	loadedProducts : 0
+                            };
+
                             for (var j = 0; j < ctrl.request.locations.length; j++) {
                                 if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
                                     if (!ctrl.request.locations[j].recentEta) ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
                                 }
 
-                  
-                                // $scope.updateDestinations(ctrl.request.locations[j].destination.name, j);
-
-                                // Uncomment this if destination.name is not formatted
-                                // ctrl.request.locations[j].destination.name = [
-                                //     ctrl.request.locations[j].destination.code,
-                                //     ctrl.request.locations[j].voyageCode,
-                                //     ctrl.request.locations[j].destinationEtaFormated,
-                                // ].join(' - ');
-                
+				                $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (var i = 0; i < ctrl.request.locations[j].products.length; i++) {
                                     cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
                                     if (cancelAction != null) {
@@ -349,6 +345,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                     if (ctrl.request.locations[j].products[i].product) {
                                         listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
+                                            $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         });
                                         listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
