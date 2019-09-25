@@ -29,7 +29,10 @@
                         	<br>
                         	<b>Seller</b> : {{value.seller.name}} - {{value.physicalSupplier.name}}
                         	<br>
-                        	<b>Product</b>: {{value.products[0].product.name}} -
+                        	<b>Request Product</b>: {{value.products[0].product.name}} -
+                        	<span ng-if="value.products[0].energyParameterValues.quotedProductName">
+	                        	<b>Quoted Product</b>: {{value.products[0].energyParameterValues.quotedProductName}}
+                        	</span>
                             <span ng-if="value.package">
                                 <!-- Package: {{value.package.id}} -->
 								Package	

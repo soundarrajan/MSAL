@@ -58,6 +58,10 @@ angular.module('shiptech.components')
 					// }
 				}		    	
 		    	ctrl.activeProduct = changes.activeProduct.currentValue.product.id;
+		    	ctrl.quotedProduct = changes.activeProduct.currentValue.energyParameterValues.quotedProductId;
+		    	if (ctrl.quotedProduct) {
+			    	ctrl.activeProduct = ctrl.quotedProduct;
+		    	}
 		    	ctrl.activeProductRequestProductId = changes.activeProduct.currentValue.id;
 	            ctrl.sixMonthPayloadSent = {
 	                "Filters": [
