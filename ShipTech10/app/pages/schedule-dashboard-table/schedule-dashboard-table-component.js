@@ -44,14 +44,18 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
             ctrl.ui = data;
         });
         if (localStorage.getItem('scheduleDates')) {
-            ctrl.startDate = moment.unix(JSON.parse(localStorage.getItem('scheduleDates'))['start']['timestamp'])
-                .utc("dd")
-                .startOf("day")
-                .toISOString();
-            ctrl.endDate = moment.unix(JSON.parse(localStorage.getItem('scheduleDates'))['end']['timestamp'])
-                .utc("dd")
-                .startOf("day")
-                .toISOString();
+        	if (JSON.parse(localStorage.getItem('scheduleDates'))['start']) {
+	            ctrl.startDate = moment.unix(JSON.parse(localStorage.getItem('scheduleDates'))['start']['timestamp'])
+	                .utc("dd")
+	                .startOf("day")
+	                .toISOString();
+        	}
+        	if (JSON.parse(localStorage.getItem('scheduleDates'))['end']) {
+	            ctrl.endDate = moment.unix(JSON.parse(localStorage.getItem('scheduleDates'))['end']['timestamp'])
+	                .utc("dd")
+	                .startOf("day")
+	                .toISOString();
+        	}
             if (localStorage.getItem('scheduleDatesTable')) {
                 localStorage.removeItem('scheduleDatesTable');
             }

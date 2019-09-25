@@ -21,8 +21,9 @@ window.increment = 0;
         "dataProcessors",
         "getExternalFilters",
         "screenLoader",
+        "tenantService",
         "$state",
-        function($templateRequest, $tenantSettings, $compile, $Api_Service, $timeout, Factory_General_Components, $http, $rootScope, uiApiModel, dataProcessors, getExternalFilters, screenLoader, $state) {
+        function($templateRequest, $tenantSettings, $compile, $Api_Service, $timeout, Factory_General_Components, $http, $rootScope, uiApiModel, dataProcessors, getExternalFilters, screenLoader, tenantService, $state) {
             return {
                 restrict: "E",
                 controller: "Controller_Configurable_List_Control as CLC",
@@ -37,6 +38,11 @@ window.increment = 0;
                     modal: "="
                 },
                 link: function(scope, element, attrs, CLC) {
+
+					tenantService.procurementSettings.then(function(settings) {
+						procurementSettings = settings.payload;
+					});
+
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
                     $rootScope.listTableSelector = "flat_" + scope.screen.replace("list", "_list");
@@ -369,6 +375,22 @@ window.increment = 0;
 
                     function buildTable(newValue, attrs, customLayout, initialLayout) {
                    
+                        if (newValue.matchedColumnList) {
+                            // if there is a matched column list, build table with that
+                            newValue.colModel = newValue.matchedColumnList;
+                            // toastr.info('The default layout for this page has changed. Please check additional columns from settings and save your new layout.');
+                        }
+
+                    	if (attrs.screen == "scheduleDashboardTable") {
+                    		for (var i = newValue.colModel.length - 1; i >= 0; i--) {
+                    			if (newValue.colModel[i].name == "voyageDetail.deliveryFrom" || newValue.colModel[i].name == "voyageDetail.deliveryTo") {
+                    				if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
+	                					newValue.colModel.splice(i,1);
+                    				}
+                    			}
+                    		}
+                    	}
+
                         if (scope.source) {
                             console.log("clc static src:", scope.source);
                             // newValue = scope.source;
@@ -388,11 +410,6 @@ window.increment = 0;
                         if (newValue.length == 0) {
                             // empty source? STOP SCRIPT!
                             return false;
-                        }
-                        if (newValue.matchedColumnList) {
-                            // if there is a matched column list, build table with that
-                            newValue.colModel = newValue.matchedColumnList;
-                            // toastr.info('The default layout for this page has changed. Please check additional columns from settings and save your new layout.');
                         }
                         // if (!Elements.scope[attrs.id].modal) {
 
