@@ -349,11 +349,17 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                         });
                                         listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
+							                var isInList = false;
                                         	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
-								            	if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-										            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = r_data.data.payload;
-								            	}
+								            	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
+									            	if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
+										                isInList = true;
+									            	}
+								            	})      
 							            	})
+							            	if (!isInList) {
+									            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
+							            	} 								            	
                                         });
                                     }
                                 }
@@ -425,11 +431,15 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                         });
                                         listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
+											var isInList = false;
                                         	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
 								            	if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-										            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = r_data.data.payload;
+													isInList = true;
 								            	}
 							            	})
+											if (!isInList) {
+											    ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
+											}                                         	
                                         });
                                     }
                                 }
