@@ -347,20 +347,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
                                             $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         });
-                                        listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
-                                            ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
-							                var isInList = false;
-                                        	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
-								            	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
-									            	if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-										                isInList = true;
-									            	}
-								            	})      
-							            	})
-							            	if (!isInList) {
-									            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
-							            	} 								            	
-                                        });
+                                        
                                     }
                                 }
                             }
@@ -429,18 +416,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
                                         	$scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         });
-                                        listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
-                                            ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
-											var isInList = false;
-                                        	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
-								            	if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-													isInList = true;
-								            	}
-							            	})
-											if (!isInList) {
-											    ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
-											}                                         	
-                                        });
                                     }
                                 }
 					            _.each(ctrl.request.locations[j].products, function(value, key) {
@@ -484,14 +459,29 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
 
         $scope.$watch('productTypesLoadedPerLocation.loadedProducts', function(obj) {
-        	if (obj && !ctrl.request.id) {
-	        	console.log(obj, $scope.productTypesLoadedPerLocation.totalProducts);
+        	if (obj) {
 	        	if (obj == $scope.productTypesLoadedPerLocation.totalProducts) {
 	        		for (var j = 0; j < ctrl.request.locations.length; j++) {
-			            ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
-			            _.each(ctrl.request.locations[j].products, function(value, key) {
-			                value.product.name = String(key + 1) + ' - ' + value.product.name;
-			            });        	
+                        if (!ctrl.request.id) {
+                            ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
+                        }
+                        for (var i = 0; i < ctrl.request.locations[j].products.length; i++) {
+                            ctrl.request.locations[j].products[i].name = String(i + 1) + ' - ' + ctrl.request.locations[j].products[i].name;
+                            listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
+                                ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
+                                var isInList = false;
+                                $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
+                                    $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
+                                        if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
+                                            isInList = true;
+                                        }
+                                    }) ;  
+                                });
+                                if (!isInList) {
+                                    ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
+                                }                                               
+                            });
+                        }
 					}
 	        	}
         	}
