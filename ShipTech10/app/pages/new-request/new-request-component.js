@@ -424,7 +424,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                         	$scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         });
                                         listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
-                                            // ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
+                                            ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
                                         	$.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
 								            	if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
 										            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = r_data.data.payload;
