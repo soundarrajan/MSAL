@@ -2926,7 +2926,7 @@ APP_MASTERS.controller("Controller_Master", [
                 });
 
                 function hideTheChildren() {
-                	$scope.initBoostrapTagsInputTooltip();
+					$scope.initBoostrapTagsInputTooltip()                	
                     currentTags = elt.next(".bootstrap-tagsinput").children(".label");
                     currentTags.removeAttr("big-child");
                     currentTags.show();
@@ -3184,7 +3184,7 @@ APP_MASTERS.controller("Controller_Master", [
             }
             var childExpanded = false;
             $("body").on("click", ".bootstrap-tagsinput .hideTagsChild", function() {
-            	$scope.initBoostrapTagsInputTooltip() 
+				$scope.initBoostrapTagsInputTooltip();           	
                 if (childExpanded == true) {
                     $(this)
                         .parent(".bootstrap-tagsinput")
@@ -3293,8 +3293,8 @@ APP_MASTERS.controller("Controller_Master", [
             } else {
                 $scope.formValues[model].push(data);
                 setTimeout(function(){
-					$scope.initBoostrapTagsInputTooltip();           	
-                })
+					$scope.initBoostrapTagsInputTooltip();            	
+                })                
             }
         };
         vm.initDropZone = function(id) {
@@ -3440,7 +3440,7 @@ APP_MASTERS.controller("Controller_Master", [
                     $(v).tooltip();
 				}
             })  
-        }
+        }        
         $scope.addElement = function(ele, idx) {
             $scope.current_field.Active = false;
             var returnKey = [];
@@ -5904,10 +5904,10 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
 		jQuery(document).ready(function() {
-            if ($scope.readyOnce) {
+            if (window.readyOnce) {
                 return;
             }
-            $scope.readyOnce = true;
+            window.readyOnce = true;
         	if (/*$state.current.name.indexOf('.documents') != -1 &&*/ typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(function() {
@@ -5967,15 +5967,6 @@ APP_MASTERS.controller("Controller_Master", [
 	                // });
 	            }, 1500);
         	}
-            // setTimeout(function() {
-                $.each($(".bootstrap-tagsinput .tag"), function(k, v) {
-                    $(this).attr("tooltip", "");
-                    $(this).attr("data-original-title", $(v).text());
-                    $(v)
-                        .tooltip("show")
-                        .tooltip("hide");
-                });
-            // }, 10);
         });
         //  $("select.visibleSectionsFilter").on("change", function() {
         //      select = this
@@ -6026,6 +6017,10 @@ APP_MASTERS.controller("Controller_Master", [
                 });
             }
         });
+		$("body").on("click", function () {
+		    $('[role="tooltip"]').remove();
+			$scope.initBoostrapTagsInputTooltip();	    
+		})        
         vm.initRobSectionUOM = function() {
             if (typeof $scope.formValues != "undefined") {
                 var uomsToPopulate = ["robHsfoDeliveryUom", "robLsfoDeliveryUom", "robDoGoDeliveryUom", "robHsfoRedeliveryUom", "robLsfoRedeliveryUom", "robDoGoRedeliveryUom"];

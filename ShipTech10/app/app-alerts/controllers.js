@@ -51,6 +51,7 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
     }
     $scope.liveNotifications = function() {
     	$scope.getNotificationsLista();
+    	// return;
         Factory_Master.initSignalRParameters(function(callback) {
             $scope.initSignalRData = callback.data;
             $scope.$emit('userId', $scope.initSignalRData.userId)

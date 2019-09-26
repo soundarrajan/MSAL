@@ -9960,6 +9960,7 @@ APP_API.factory("$Api_Service", [
                 },
                 initSignalRParameters: function(callback) {
                     // if (_debug) console.log("$APIService contract.confirm called with the following params:", param);
+                    // return;
                     var apiJSON = {
                         Payload: {}
                     };

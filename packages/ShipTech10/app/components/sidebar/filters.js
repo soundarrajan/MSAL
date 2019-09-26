@@ -1,5 +1,5 @@
 angular.module("shiptech.components").controller("FiltersController", [
-    "$q",
+    "$q", 
     "$rootScope",
     "$scope",
     "$state",
