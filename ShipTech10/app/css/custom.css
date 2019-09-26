@@ -4774,7 +4774,7 @@ table.energyCalculationBlade tr.bg-green-jungle td{
 	opacity: 0.9;
 }
 table.energyCalculationBlade tr.border-green-jungle{
-	border: 3px solid;
+	border: 2px solid;
 }
 #grid_labTestResults, #grid_labTestResults .ui-grid-viewport {
 	height: auto !important;
