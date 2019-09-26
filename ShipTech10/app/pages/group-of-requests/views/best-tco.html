@@ -33,8 +33,7 @@
                     </div>
                 </div>
             </div>
-            <span class="row" ng-if="$ctrl.bestTcoData.bestTotalTCO.length == 0" style="font-weight: bold; margin-left: 1px;">All the request products do not have the offer</span>
-            <div class="row" ng-if="$ctrl.bestTcoData.bestTotalTCO.length> 0">
+            <div class="row">
                 <div class="portlet light">
                     <div class="portlet-title ">
                         <div class="tools ">
@@ -45,19 +44,20 @@
                                 Best Total Offer Value
                             </span>
                         </div>
-                        <div class="pull-right ">
+                        <div class="pull-right " ng-if="$ctrl.bestTcoData.bestTotalTCO.length>0">
                             <a ng-click="$ctrl.viewSupplierCardBlade({sellerCounterparty:svalue.seller},null,svalue.products)" class="font-dark">
                                 <b>
                                     <i class="fa fa-clone"></i>
                                 </b>
                             </a>
-                            <label class="mt-checkbox mt-checkbox-outline">
+                            <label class="mt-checkbox mt-checkbox-outline" ng-if="$ctrl.bestTcoData.bestTotalTCO.length>0">
                                 <input type="checkbox" ng-checked="$ctrl.isSelectedBestTotalTco()" ng-click="$ctrl.selectBestTotalTco()"/>
                                 <span></span>
                             </label>
                         </div>
                     </div>
-                    <div class="portlet-body tcos">
+                    <span ng-if="$ctrl.bestTcoData.bestTotalTCO.length == 0" style="font-weight: bold; margin-left: 1px;">All the request products do not have the offer</span>
+                    <div class="portlet-body tcos" ng-if="$ctrl.bestTcoData.bestTotalTCO.length>0">
                         <div class="row">
                             <div class="col-sm-10">
                                 <!-- {{dragging}} -->
