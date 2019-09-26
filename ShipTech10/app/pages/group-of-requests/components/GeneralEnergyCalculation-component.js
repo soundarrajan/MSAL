@@ -110,6 +110,10 @@ angular.module('shiptech.components')
 
 			}
 
+			$rootScope.$on('updateEnergySpecValuesByProduct', function() {
+				ctrl.updateEnergySpecValuesByProduct();
+			});
+
 			ctrl.checkIfIsOffspec = function(value, specParam) {
 				if (!specParam || !value) {
 					return false;

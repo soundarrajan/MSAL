@@ -5585,8 +5585,13 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.closeBlade = function() {
         	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !$rootScope.overrideCloseNavigation) {
-	        	$('.confirmBladeClose').removeClass('hide');
-	        	$('.confirmBladeClose').modal();
+                if ($('general-energy-calculation').length > 0) {
+                    $('.confirmEnergyBladeClose').removeClass('hide');
+                    $('.confirmEnergyBladeClose').modal();
+                } else {
+                    $('.confirmBladeClose').removeClass('hide');
+                    $('.confirmBladeClose').modal();
+                }
         	} else {
         		$scope.confirmCloseBlade();		
         	}
@@ -5607,6 +5612,22 @@ APP_MASTERS.controller("Controller_Master", [
                 $rootScope.overrideCloseNavigation = false;
             }, 500);
         }
+
+        $scope.confirmSaveBlade = function(){
+            $(".bladeEntity").removeClass("open");
+            $("body").css("overflow-y", "auto");
+            setTimeout(function() {
+                $rootScope.bladeTemplateUrl = "";
+                if($rootScope.refreshPending) {
+                    $state.reload();
+                  // window.location.reload();
+                }
+                $rootScope.$broadcast("counterpartyBladeClosed", true);
+                $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
+                $rootScope.overrideCloseNavigation = false;
+            }, 500);
+        }
+
         $scope.isMeanFormula = function() {
             $.each($scope.formValues.complexFormulaQuoteLines, function(key, val) {
                 if ($scope.formValues.complexFormulaQuoteLines[key].formulaOperation) {

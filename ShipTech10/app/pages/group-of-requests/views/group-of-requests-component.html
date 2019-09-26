@@ -648,7 +648,6 @@
     </div>
 </div>
 
-
 <div class="confirmBladeClose fade bs-modal hide" tabindex="-1" style="z-index: 99999; transform: translateY(50%);" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -662,6 +661,24 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default confirmBladeCloseNo" data-dismiss="modal" >No</button>
         <button ng-controller="Controller_Master as CM" type="button" class="btn btn-default  btn-outline orange confirmBladeCloseYes" ng-click="confirmCloseBlade()" data-dismiss="modal">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confirmEnergyBladeClose fade bs-modal hide" tabindex="-1" style="z-index: 99999; transform: translateY(50%);" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Please confirm</h4>
+      </div>
+      <div class="modal-body">
+         Do you want to save the changes and continue?
+      </div>
+      <div class="modal-footer">
+        <button ng-controller="Controller_Master as CM" type="button" class="btn btn-default confirmBladeCloseYes" ng-click="confirmCloseBlade()" data-dismiss="modal">Close</button>
+        <button ng-controller="Controller_Master as CM" type="button" class="btn btn-default btn-outline orange confirmBladeSaveYes" ng-click="confirmSaveBlade()" data-dismiss="modal">Save</button>
       </div>
     </div>
   </div>
