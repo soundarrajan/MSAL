@@ -770,6 +770,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 label = rowObject[options.colModel.findColor].displayName;
                             }
                             color = $scope.getStatusColor(name, cell);
+                              if (options.colModel.label == "Claim Custom Status") {
+                                color = "#000000";
+                                return '<span class="formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; color:' + color + '" >' + label + "</span>";
+                            }
                         }
 
                         if (options.colModel.name.indexOf("customStatus") != -1) {
