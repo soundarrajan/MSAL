@@ -897,28 +897,29 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
                 }
             }
             validForm = true;
+            ctrl.invalidFields = [];
             $.each($scope.forms, function(key, val) {
                 if (!val.products) return;
                 if (!val.products.$valid) {
-                    ctrl.invalidFields = getInvalidFields(val.products, 'Individuals');
+                    ctrl.invalidFields = ctrl.invalidFields.concat(getInvalidFields(val.products, 'Individuals'));
                     validForm = false;
                 }
                 if (!val.additionalCosts) return;
                 if (!val.additionalCosts.$valid) {
-                    ctrl.invalidFields = getInvalidFields(val.additionalCosts, 'Individuals');
+                    ctrl.invalidFields = ctrl.invalidFields.concat(getInvalidFields(val.additionalCosts, 'Individuals'));
                     validForm = false;
                 }
             });
             $.each($scope.formsPkg, function(key, val) {
                 if (typeof(val.products) != 'undefined') {
                     if (!val.products.$valid) {
-                        ctrl.invalidFields = getInvalidFields(val.products, 'Packages');
+                        ctrl.invalidFields = ctrl.invalidFields.concat(getInvalidFields(val.products, 'Packages'));
                         validForm = false;
                     }
                 }
                 if (typeof(val.additionalCosts) != 'undefined') {
                     if (!val.additionalCosts.$valid) {
-                        ctrl.invalidFields = getInvalidFields(val.additionalCosts, 'Packages');
+                        ctrl.invalidFields = ctrl.invalidFields.conact(getInvalidFields(val.additionalCosts, 'Packages'));
                         validForm = false;
                     }
                 }
