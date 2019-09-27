@@ -183,7 +183,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 			var isMinimumAmountOrTco = false;
 			$.each(ctrl.bestTcoData.bestIndividuals, function(k,v){
 				$.each(v.bestTCO, function(k1,v1){
-					if (v1.id == productOffer.id ) {
+					if (v1.requestOfferId == productOffer.id ) {
 						isMinimumAmountOrTco = true;
 					} 
 				})
