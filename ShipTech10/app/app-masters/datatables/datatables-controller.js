@@ -423,7 +423,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                     var gridClass = '.grid'+ api.grid.id;
                     var gridContainer = $(gridClass);
                     var gridViewport = '';
-                    var maxRowsWithoutScroll = 8;
+                    // Note: Set 1000 to avoid removing max-height logic, it can be necessary in the future
+                    var maxRowsWithoutScroll = 1000;
 
                     setTimeout(function () {
                         gridContainer.removeAttr("style");
