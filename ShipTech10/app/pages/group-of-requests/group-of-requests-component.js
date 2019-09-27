@@ -149,6 +149,49 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 			}
 		}
 
+		ctrl.isMinimumTotal = function(requestProducts, location,seller) {
+			if (!ctrl.bestTcoData) {
+				return;	
+			}
+			var isMinimumTotal = false;
+			var currentRequestOfferIds = [];
+			$.each(requestProducts, function(k,v){
+				if (v.requestLocationId == location[0].id) {
+					$.each(v.sellers, function(k1,v1){
+						if (v1.sellerCounterparty.id == seller.sellerCounterparty.id) {
+							$.each(v1.offers, function(k2,v2){
+								currentRequestOfferIds.push(v2.id);
+							})
+						}
+					})
+				}
+			})
+			$.each(ctrl.bestTcoData.bestTotalTCO, function(k,v){
+				$.each(v.products, function(k1,v1){
+					if (currentRequestOfferIds.indexOf(v1.requestOfferId) != -1 ) {
+						isMinimumTotal = true;
+					} 
+				})
+			})
+			return isMinimumTotal;
+		}
+
+		ctrl.isMinimumAmountOrTco = function(productOffer) {
+			if (!ctrl.bestTcoData || !productOffer) {
+				return;	
+			}
+			var isMinimumAmountOrTco = false;
+			$.each(ctrl.bestTcoData.bestIndividuals, function(k,v){
+				$.each(v.bestTCO, function(k1,v1){
+					if (v1.id == productOffer.id ) {
+						isMinimumAmountOrTco = true;
+					} 
+				})
+			})			
+			return isMinimumAmountOrTco;
+		}
+
+
         function checkAllCheckboxesDefault() {
         	$.each($(".checkAllOnLocation"), function(cbk, cbv){
         		checkAllLocationIdentifier = $(cbv).attr("checkAllUniqueLocationIdentifier");

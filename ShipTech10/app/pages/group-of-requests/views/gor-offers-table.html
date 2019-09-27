@@ -830,7 +830,7 @@
                 </td>
     
                 <!-- Expanded request tab -->
-                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}">
+                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left {{ $ctrl.isMinimumTotal(requestProducts, location,seller) ? 'bg-green-jungle' : '' }}" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true }">
                     <span ng-if="!seller.isCloned">
                         <span class="hidden">
                             {{seller.totalAmountInRequest = $ctrl.calculateTotalAmountForProductsPerRequestperSeller(requestProducts, location, seller)}}
@@ -929,7 +929,7 @@
                         <div style="width:100px" class="energy-content-cell priceGap">
                             {{productOffer.energyParameterValues.priceGap ? ( productOffer.energyParameterValues.priceGap  | number : $ctrl.numberPrecision.amountPrecision ): '-'}}
                         </div>
-                        <div style="width:100px" class="energy-content-cell tco">
+                        <div style="width:100px" class="energy-content-cell tco {{ ($ctrl.isMinimumAmountOrTco(productOffer) && productOffer.totalAmount && productOffer.energyParameterValues.tco) ? 'bg-green-jungle' : '' }}">
                             {{productOffer.energyParameterValues.tco ? (productOffer.energyParameterValues.tco | number : $ctrl.numberPrecision.amountPrecision) : '-'}}
                         </div>
 <!--                         <div style="width:50px" class="energy-content-cell icon text-center">
@@ -947,7 +947,7 @@
                             <!-- total price -->
                             {{(productOffer.price + productOffer.additionalCostPerUnit) | number : $ctrl.numberPrecision.pricePrecision}}
                         </div>                    
-                        <div style="width:100px" class="energy-content-cell">
+                        <div style="width:100px" class="energy-content-cell {{ ($ctrl.isMinimumAmountOrTco(productOffer) && productOffer.totalAmount && !productOffer.energyParameterValues.tco) ? 'bg-green-jungle' : '' }}">
                             <!-- amount -->
                             <!-- {{$ctrl.negotiationDisplayDecimal}} -->
                             <!-- {{productOffer.totalAmount}} -->

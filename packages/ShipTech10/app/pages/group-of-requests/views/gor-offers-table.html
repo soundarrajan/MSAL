@@ -720,6 +720,7 @@
                 <td ng-repeat-start="(rpkey,requestProducts) in $ctrl.products track by $index"
                     ng-show="$ctrl.isRequestTabExpanded($index)"
                     ng-init=""
+                    ng-class="{bg-green-jungle : true}"
                     colspan="2" class="left-border border-selected-left right-border border-selected-right">
                     <span ng-if="seller.isCloned">-</span>
                     <span ng-if="!seller.isCloned">
