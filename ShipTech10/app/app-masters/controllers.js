@@ -5624,6 +5624,7 @@ APP_MASTERS.controller("Controller_Master", [
                 }
                 $rootScope.$broadcast("counterpartyBladeClosed", true);
                 $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
+                $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 $rootScope.overrideCloseNavigation = false;
             }, 500);
         }
