@@ -41,7 +41,16 @@ angular.module('shiptech.components')
 		    	if (changes.getGroupData) {
 		    		ctrl.getGroupData = changes.getGroupData.currentValue
 		    	}
-				
+				ctrl.requestOfferId = changes.activeProduct.currentValue.requestOfferId
+
+				ctrl.saveAverage = true;
+				specParameters = ["ash", "density", "sulphur", "viscosity", "water"];
+				$.each(specParameters, function(k,v) {
+					if (changes.activeProduct.currentValue.energyParameterValues[v].specValue != null) {
+						ctrl.saveAverage = false;
+					}
+				})
+
 				ctrl.fillMedianSixMonth = null;
 
 				defaultLocation = _.find(ctrl.listsCache.Location, function(o) { return o.id == ctrl.sixMonthPayload.locationIds; });
@@ -103,7 +112,7 @@ angular.module('shiptech.components')
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
-					ctrl.onSixMonthsUpdate({results : ctrl.average6monthSelected});
+					// ctrl.onSixMonthsUpdate({results : ctrl.average6monthSelected});
 				})		    	
 		    };
 
@@ -202,6 +211,8 @@ angular.module('shiptech.components')
 				var median = 0;
 				$.each(ctrl.sixMonthsHistoryData, function(k,v){
 					v.requestProductId = ctrl.activeProductRequestProductId;
+					v.requestOfferId = ctrl.requestOfferId;
+					v.saveAverage = ctrl.saveAverage;
 					if (v.isSelected) {
 						sum += parseFloat(v.netSpecificEnergyValue);
 						count++;
