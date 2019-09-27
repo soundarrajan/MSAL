@@ -3913,6 +3913,7 @@ ctrl.setProductData = function(data, loc) {
         };
 
         ctrl.checkIfCanInitEnergyCalculation = function(product) {
+
 			var canInitEnergyCalculation = false;
 
 			requestId = product.requestId;
@@ -3927,7 +3928,9 @@ ctrl.setProductData = function(data, loc) {
 	                        if (productId == prodV.product.id) {
 			                    $.each(prodV.sellers, function (sellerK, sellerV) {
 			                    	if (sellerV.offers.length > 0) {
-										canInitEnergyCalculation = true;
+			                    		if (prodV.isEnergyCalculationRequired && ctrl.isEnergyCalculationRequired) {
+											canInitEnergyCalculation = true;
+			                    		}
 			                    	}
 			                    });
 	                        }

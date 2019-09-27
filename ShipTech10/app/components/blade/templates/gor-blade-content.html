@@ -41,7 +41,7 @@
 					Widget
 				</div>
 				<div class="row">
-					<ul class="no-padding" ng-if="$ctrl.blade.widgetType == 'counterparty'"">
+					<ul class="no-padding" ng-if="$ctrl.blade.widgetType == 'counterparty'">
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='contact' ? 'active' : '' " ng-click=" $ctrl.viewEditCounterpartyBlade($ctrl.blade.counterpartyActiveSeller.sellerCounterparty.id, $ctrl.blade.counterpartyActiveLocation,$ctrl.blade.counterpartyActiveSeller)" ><i class="fa fa-users "></i> CONTACT</li>
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='email' ? 'active' : '' "
 						ng-click="$ctrl.previewEmail($ctrl.blade.counterpartyActiveSeller, $ctrl.blade.counterpartyActiveLocation);" >
@@ -61,7 +61,7 @@
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='generalRfq' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='generalRfq' ; $ctrl.blade.colLayout = 'single'" ><span class="bg-dark font-white">&nbsp;RFQs&nbsp;</span></i> RFQs</li>
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='comments' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='comments' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-comments "></i> COMMENTS</li>
 						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='linkUnlink' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='linkUnlink' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-link "></i> LINK/UNLINK</li>
-						<li class="font-dark" ng-class="$ctrl.blade.activeWidget =='energyCalculation' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='energyCalculation' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-link "></i> ENERGY CALCULATION</li>
+						<li ng-show="$ctrl.isEnergyCalculationRequired" class="font-dark" ng-class="$ctrl.blade.activeWidget =='energyCalculation' ? 'active' : '' " ng-click="$ctrl.blade.activeWidget ='energyCalculation' ; $ctrl.blade.colLayout = 'single'" ><i class="fa fa-tint "></i> ENERGY CALCULATION</li>
 					</ul>
 				</div>
 			</div>
