@@ -301,7 +301,7 @@
                                                 <a href="#/edit-request/{{ $ctrl.data.request.id }}">
                                                     {{ $ctrl.data.request.name }}
                                                 </a>
-                                                {{ $ctrl.vesselDetailsFields.Vessel.name + ' ' + $ctrl.data.vessel.name }}
+                                                {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }} {{$ctrl.data.vessel.name}}
                                                 -
                                                 {{$ctrl.data.voyageCode}}
                                             </span>
@@ -318,30 +318,34 @@
                                     </span>
                                 </div>
                                 <span class="portlet-body">
-                                    <div class="portlet-title">
-                                        <div class="row">
-                                            <div class="col-md-8 caption-subject">
-                                                {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }} <span
-                                                    ng-if="!$ctrl.data.vessel.name.id">{{ $ctrl.data.vessel.name }}</span>
-                                                <span ng-if="$ctrl.data.voyageCode">
-                                                    -
-                                                </span>
-                                                {{ $ctrl.data.voyageCode }}
-                                            </div>
-                                            <form class="col-md-4 form-inline text-right"
-                                                  ng-if="$ctrl.vesselDetailsFields.OrderDate.visible">
 
-                                                <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">
-                                                    <!-- <input class="form-control" picker-type="date" id="orderDate" name="orderDate" new-date-picker disabled ng-model="$ctrl.data.orderDate"
-                                                    /> -->
-													<input class="form-control date-mask new-date-picker" id="orderDate"
-                                                           name="orderDate" new-date-picker ng-model="$ctrl.data.orderDate"
-                                                           picker-type="date">
+<!--                                    TODO: REMOVE THAT-->
+<!--                                    <div class="portlet-title">-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-8 caption-subject">-->
+<!--                                                {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }} <span-->
+<!--                                                    ng-if="!$ctrl.data.vessel.name.id">{{ $ctrl.data.vessel.name }}</span>-->
+<!--                                                <span ng-if="$ctrl.data.voyageCode">-->
+<!--                                                    - -->
+<!--                                                </span>-->
+<!--                                                {{ $ctrl.data.voyageCode }}-->
+<!--                                            </div>-->
+<!--                                            <form class="col-md-4 form-inline text-right"-->
+<!--                                                  ng-if="$ctrl.vesselDetailsFields.OrderDate.visible">-->
 
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+<!--                                                <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">-->
+<!--                                                    &lt;!&ndash; <input class="form-control" picker-type="date" id="orderDate" name="orderDate" new-date-picker disabled ng-model="$ctrl.data.orderDate"-->
+<!--                                                    /> &ndash;&gt;-->
+<!--													<input class="form-control date-mask new-date-picker" id="orderDate"-->
+<!--                                                           name="orderDate" new-date-picker ng-model="$ctrl.data.orderDate"-->
+<!--                                                           picker-type="date">-->
+
+<!--                                                </div>-->
+<!--                                            </form>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+
                                     <span class="clearfix"></span>
                                     <div class="portlet-body">
                                         <!-- <div sorted-form field-ids="" get-from-id="vesselDetails">
@@ -415,7 +419,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-4">
                                                     <div class="form-group  row">
                                                         <label class="{{ $ctrl.sellerDetails.Seller.name }}_label"
@@ -453,8 +456,6 @@
                                             </div>
                                             
                                             <div class="row">
-
-
                                                 <div class="col-md-4" ng-if="$ctrl.portFields.carrierCompany.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.portFields.carrierCompany.name }}_label"
@@ -492,7 +493,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-4" ng-if="$ctrl.portFields.locationName.visible"
                                                      ng-show="$ctrl.orderId">
                                                     <div class="form-group  row">
@@ -505,7 +505,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-4" ng-if="$ctrl.nominationFields.broker.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.broker.name }}_label"
@@ -542,9 +541,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
-
-
+                                            <div class="row">
                                                 <div class="col-md-4" ng-if="$ctrl.portFields.paymentCompany.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.portFields.paymentCompany.name }}_label"
@@ -640,9 +639,9 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>   
-
+                                                </div>
 											</div>
+
 											<div class="row">
 												<div class="col-md-4" ng-if="$ctrl.vesselDetailsFields.Buyer.visible">
                                                     <div class="form-group  row">
@@ -746,7 +745,6 @@
 											</div>
 
                                             <div class="row">
-
                                                 <div class="col-md-4">
                                                     <div class="form-group  row">
                                                         <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
@@ -774,25 +772,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.deliveryDate.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.deliveryDate.name }}_label"
-                                                               for="{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            {{ $ctrl.portFields.deliveryDate.caption | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <input
-                                                                    class="form-control date-mask new-date-picker"
-                                                                    id="deliveryDate"
-                                                                    name="deliveryDate"
-                                                                    new-date-picker
-                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                    ng-model="$ctrl.data.deliveryDate"
-                                                                    picker-type="date">
-                                                        </div>
+                                                <div class="col-md-4" ng-if="ctrl.vesselDetailsFields.OrderDate.visible">
+                                                    <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">
+                                                        <input class="form-control date-mask new-date-picker" id="orderDate"
+                                                               name="orderDate" new-date-picker ng-model="$ctrl.data.orderDate"
+                                                               picker-type="date">
                                                     </div>
-                                                </div>     
-
+                                                </div>
                                                 <div class="col-md-4" ng-if="$ctrl.nominationFields.lab.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.lab.name }}_label"
@@ -825,7 +811,8 @@
                                                         </div>
                                                     </div>
                                                 </div>  
-                                            </div>                                                                                         
+                                            </div>
+
                                             <div class="row">	
                                                 <div class="col-md-4">
                                                     <div class="form-group row">
@@ -854,23 +841,42 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>    
-                                                    <h1>HERE</h1>
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.comments.visible">
+                                                </div>
+                                                <div class="col-md-4" ng-if="$ctrl.portFields.deliveryDate.visible">
                                                     <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                               for="{{ $ctrl.portFields.comments.name }}">
-                                                        	 <!-- Comment -->
-                                                        	 {{'PAGES.NEW_ORDER.COMMENTS' | translate}}
-                                                            <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+                                                        <label class="{{ $ctrl.portFields.deliveryDate.name }}_label"
+                                                               for="{{ $ctrl.portFields.deliveryDate.name }}">
+                                                            {{ $ctrl.portFields.deliveryDate.caption | translate }}
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" maxlength="500"
-                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                      ng-model="$ctrl.data.comments"></textarea>
+                                                            <input
+                                                                    class="form-control date-mask new-date-picker"
+                                                                    id="deliveryDate"
+                                                                    name="deliveryDate"
+                                                                    new-date-picker
+                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                    ng-model="$ctrl.data.deliveryDate"
+                                                                    picker-type="date">
                                                         </div>
                                                     </div>
-                                                </div>                                                                                                                              
+                                                </div>
+
+<!--                                                <div class="col-md-4" ng-if="$ctrl.portFields.comments.visible">-->
+<!--                                                    <div class="form-group row">-->
+<!--                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"-->
+<!--                                                               for="{{ $ctrl.portFields.comments.name }}">-->
+<!--                                                        	 &lt;!&ndash; Comment &ndash;&gt;-->
+<!--                                                        	 {{'PAGES.NEW_ORDER.COMMENTS' | translate}}-->
+<!--                                                            &lt;!&ndash; {{ $ctrl.portFields.comments.caption | translate }} &ndash;&gt;-->
+<!--                                                        </label>-->
+<!--                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">-->
+<!--                                                            <textarea class="col-md-12 form-control" maxlength="500"-->
+<!--                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"-->
+<!--                                                                      ng-model="$ctrl.data.comments"></textarea>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>
+                                                                                                                   -->
                                                 <div class="col-md-4" ng-if="$ctrl.nominationFields.barge.visible"
                                                      style="margin-bottom: 5px">
                                                     <div class="form-group row">
@@ -902,7 +908,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-											</div>                                                
+											</div>
+
 											<div class="row">
                                                 <div class="col-md-4" ng-if="$ctrl.portFields.locationName.visible"
                                                      ng-show="!$ctrl.orderId">
@@ -995,7 +1002,6 @@
                                                                                             
                                             </div>
 
-
 											<div class="row">
                                                 <div class="col-md-4 col-sm-12">
                                                     <div class="form-group row"
@@ -1035,6 +1041,7 @@
                                                     </div>
                                                 </div>
 											</div>
+
 											<div class="row">
 										        <div class="col-md-4 col-sm-12"
                                                      ng-if="$ctrl.portFields.comments.visible" style="float:right">
@@ -1053,6 +1060,7 @@
 										            </div>
 										        </div>
 											</div>
+
                                             <div class="row"
                                                  ng-if="$ctrl.portFields.comments.visible && $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id && $ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes'">
                                                 <div class="col-md-4 col-sm-12" style="float:right">
