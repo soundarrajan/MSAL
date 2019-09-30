@@ -6,7 +6,8 @@
                     Display:
                 </span>
                 <span>
-                    <select class="form-control selectpicker col-md-8 visibleSectionsFilter" data-selected-text-format="count> 3"
+                    <select class="form-control selectpicker col-md-8 visibleSectionsFilter"
+                            data-selected-text-format="count> 3"
                             id="multiple" multi-select
                             multiple ng-change="showHideSections(visible_sections)"
                             ng-model="visible_sections">
@@ -33,7 +34,8 @@
                         <a class="btn btn-auto-width font-grey-cascade" ng-click="$ctrl.orderPreviewEmail()">
                             <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                         </a>
-                        <a class="btn btn-default" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}"
+                        <a class="btn btn-default"
+                           ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}"
                            ng-click="$ctrl.saveOrder()"
                            ng-show="$ctrl.canSave($ctrl.screenActions)">
                             Save
@@ -179,7 +181,7 @@
         </div>
     </div>
     <div class="row">
-
+<!--        RELATED ORDERS-->
         <div class="col-md-12 no-padding-left">
             <div class="portlet light stretch-vertical">
                 <div class="portlet-title">
@@ -282,15 +284,17 @@
             </div>
             <!-- //////////////////// -->
         </div>
+<!--        ORDER DETAILS-->
         <div class="col-md-12 no-padding-left" ng-hide="visible_sections.indexOf('order_details') < 0">
             <div class="portlet light stretch-vertical">
                 <div class="row">
-                    <div class="col-sm-12 col-md-9">
+                    <div class="col-sm-12 col-md-12">
                         <div class="row">
                             <div class="portlet light">
                                 <div class="portlet-title">
                                     <div class="tools">
-                                        <a class="collapse" data-original-title="" href="" ng-click="toggleOrderSummary = !toggleOrderSummary"
+                                        <a class="collapse" data-original-title="" href=""
+                                           ng-click="toggleOrderSummary = !toggleOrderSummary"
                                            title=""></a>
                                     </div>
                                     <div class="caption">
@@ -317,34 +321,6 @@
                                         </span>
                                     </span>
                                 </div>
-                                <span class="portlet-body">
-
-<!--                                    TODO: REMOVE THAT-->
-<!--                                    <div class="portlet-title">-->
-<!--                                        <div class="row">-->
-<!--                                            <div class="col-md-8 caption-subject">-->
-<!--                                                {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }} <span-->
-<!--                                                    ng-if="!$ctrl.data.vessel.name.id">{{ $ctrl.data.vessel.name }}</span>-->
-<!--                                                <span ng-if="$ctrl.data.voyageCode">-->
-<!--                                                    - -->
-<!--                                                </span>-->
-<!--                                                {{ $ctrl.data.voyageCode }}-->
-<!--                                            </div>-->
-<!--                                            <form class="col-md-4 form-inline text-right"-->
-<!--                                                  ng-if="$ctrl.vesselDetailsFields.OrderDate.visible">-->
-
-<!--                                                <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">-->
-<!--                                                    &lt;!&ndash; <input class="form-control" picker-type="date" id="orderDate" name="orderDate" new-date-picker disabled ng-model="$ctrl.data.orderDate"-->
-<!--                                                    /> &ndash;&gt;-->
-<!--													<input class="form-control date-mask new-date-picker" id="orderDate"-->
-<!--                                                           name="orderDate" new-date-picker ng-model="$ctrl.data.orderDate"-->
-<!--                                                           picker-type="date">-->
-
-<!--                                                </div>-->
-<!--                                            </form>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-
 
                                     <span class="clearfix"></span>
                                     <div class="portlet-body">
@@ -353,9 +329,10 @@
                                                         </div> -->
                                         <form autocomplete="off" class="form-horizontal st-new-order-form"
                                               id="vesselDetails" name="forms.vesselDetailsForm">
+
                                             <div class="row">
-												<div class="col-md-4">
-                                                    <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <div><div class="form-group row">
                                                         <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
                                                                for="{{ $ctrl.sellerDetails.VesselImoNo.name }}">
                                                             Vessel
@@ -371,7 +348,8 @@
                                                                        ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
                                                                        ng-model="$ctrl.data.vessel.name"
                                                                        required
-                                                                       typeahead-append-to-body="true" typeahead-editable="false"
+                                                                       typeahead-append-to-body="true"
+                                                                       typeahead-editable="false"
                                                                        typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.data.vessel})"
                                                                        uib-typeahead="vessel as vessel.name for vessel in $ctrl.listsCache.Vessel | filter:$viewValue | limitTo:5">
 							                                    <span class="input-group-addon ng-scope"
@@ -385,10 +363,187 @@
 							                                    </span>
 							                                </div>
                                                         </div>
+                                                    </div></div>
+                                                    <div ng-if="$ctrl.portFields.carrierCompany.visible"><div
+                                                            class="form-group row">
+                                                        <label class="{{ $ctrl.portFields.carrierCompany.name }}_label"
+                                                               for="{{ $ctrl.portFields.carrierCompany.name }}">
+                                                        	<span ng-if='$ctrl.tenantSettings.companyDisplayName.name == "Pool"'>
+                                                        		{{$ctrl.tenantSettings.companyDisplayName.name | translate}}
+                                                        	</span>
+                                                        	<span ng-if='$ctrl.tenantSettings.companyDisplayName.name != "Pool"'>
+	                                                            {{ $ctrl.portFields.carrierCompany.caption | translate }}
+                                                        	</span>
+                                                            <span class="orange-txt">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.carrierCompany.name }}">
+                                                            <input class="typeahead form-control"
+                                                                   id="id_{{ $ctrl.portFields.carrierCompany.name }}"
+                                                                   name="{{ $ctrl.tenantSettings.companyDisplayName.name == 'Pool' ? ($ctrl.tenantSettings.companyDisplayName.name | translate) : ($ctrl.portFields.carrierCompany.caption | translate) }}"
+                                                                   ng-blur="$ctrl.setPaymentCompany()"
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
+                                                                   ng-focus="$ctrl.initLookup($ctrl.portFields.carrierCompany.name, $ctrl.data.carrierCompany)"
+                                                                   ng-model="$ctrl.data.carrierCompany.name"
+                                                                   required
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.selectCompany($item.id)"
+                                                                   uib-typeahead="carrierCompany as carrierCompany.name for carrierCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"/>
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_companylist', 'Carrier' ,'carrier',null,null,null,'bargeList');"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </div></div>
+                                                    <div ng-if="$ctrl.portFields.paymentCompany.visible">
+                                                    <div class="form-group row">
+                                                        <label class="{{ $ctrl.portFields.paymentCompany.name }}_label"
+                                                               for="{{ $ctrl.portFields.paymentCompany.name }}">
+                                                            <!-- {{ $ctrl.portFields.paymentCompany.caption | translate }} -->
+                                                            {{ "Payment " + $ctrl.tenantSettings.companyDisplayName.name | translate }}
+                                                            <span class="orange-txt">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.paymentCompany.name }}">
+                                                            <input class="typeahead form-control"
+                                                                   id="id_{{ $ctrl.portFields.paymentCompany.name }}"
+                                                                   name="{{ 'Payment ' + $ctrl.tenantSettings.companyDisplayName.name | translate }}"
+                                                                   ng-change="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                   ng-focus="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
+                                                                   ng-model="$ctrl.data.paymentCompany.name"
+                                                                   required
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.selectCompany($item.id)"
+                                                                   uib-typeahead="paymentCompany as paymentCompany.name for paymentCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"/>
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.companyDisplayName.name ,'paymentCompany',null,null,null,null);"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4"
-                                                     ng-if="$ctrl.vesselDetailsFields.ServiceCode.visible">
+												    <div ng-if="$ctrl.vesselDetailsFields.Buyer.visible">
+                                                    <div class="form-group  row">
+                                                        <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
+                                                               for="{{ $ctrl.sellerDetails.Buyer.name }}">
+                                                            {{ $ctrl.vesselDetailsFields.Buyer.caption | translate }}
+                                                            <span class="orange-txt">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="form_input form_input_{{ $ctrl.sellerDetails.Buyer.name }} input-group">
+                                                            <input class="typeahead form-control"
+                                                                   id="id_{{ $ctrl.vesselDetailsFields.Buyer.name }}"
+                                                                   name="{{ $ctrl.vesselDetailsFields.Buyer.name }}"
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                   ng-model="$ctrl.data.buyer.name"
+                                                                   required
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select=" $ctrl.isTrader = false; $ctrl.selectBuyer($item);"
+                                                                   uib-typeahead="buyer as buyer.name for buyer in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"/>
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_buyerlist', 'Buyer' ,'buyer',null,null,null,null); $ctrl.isTraderField = false"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
+                                                                <a class=" btn default" href=""
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div><div class="form-group  row">
+                                                        <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
+                                                               for="{{ $ctrl.sellerDetails.Trader.name }}">
+                                                            {{ $ctrl.sellerDetails.Trader.name | translate }}
+
+                                                        </label>
+                                                        <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group">
+                                                            <input class="typeahead form-control"
+                                                                   id="id_{{ $ctrl.sellerDetails.Trader.name }}"
+                                                                   name="{{ $ctrl.sellerDetails.Trader.name }}"
+                                                                   ng-model="$ctrl.data.trader.name"
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.isTrader = true; $ctrl.selectTrader($item);"
+                                                                   uib-typeahead="trader as trader.name for trader in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"
+                                                            />
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_buyerlist', 'Trader' ,'trader',null,null,null,null); $ctrl.isTraderField = true"
+                                                                  ng-controller="Controller_Master as CM">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </div></div>
+                                                    <div><div class="form-group row">
+                                                        <label class="{{ $ctrl.sellerDetails.PaymntTerms.name }}_label"
+                                                               for="{{ $ctrl.sellerDetails.PaymntTerms.name }}">
+                                                            {{ $ctrl.sellerDetails.PaymntTerms.caption | translate }}
+                                                        </label>
+                                                        <div class="input-group form_input form_input_{{ $ctrl.sellerDetails.PaymntTerms.name }}">
+                                                            <input class="typeahead form-control"
+                                                                   id="id_{{ $ctrl.sellerDetails.PaymntTerms.name }}"
+                                                                   name="{{ $ctrl.sellerDetails.PaymntTerms.name }}"
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                   ng-model="$ctrl.data.paymentTerm.name"
+                                                                   required
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.selectPaymntTerm($item)"
+                                                                   uib-typeahead="term as term.name for term in $ctrl.lists.PaymentTerm | filter:$viewValue | limitTo:5"/>
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_paymenttermlist', 'Payment Term' ,'paymentTerm',null,null,null,null);"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </div></div>
+                                                    <div>
+                                                        <div class="form-group row"
+                                                             ng-if="$ctrl.vesselDetailsFields.ExchangeRate.visible">
+
+                                                        <!-- exchange rate -->
+                                                        <span ng-if="!$ctrl.data.exchangeRate"
+                                                              ng-init="$ctrl.data.exchangeRate = 1"></span>
+                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
+                                                               for="exchangeRate">
+                                                            {{ 'PAGES.NEW_ORDER.EXCHANGE_RATE' | translate }}
+                                                        </label>
+                                                        <div class="input-group form_input">
+
+                                                            <input class="col-md-12 form-control" format="number:4"
+                                                                   id="exchangeRate" name="exchangeRate"
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                   ng-model="$ctrl.data.exchangeRate"
+                                                                   type="text">
+
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div ng-if="$ctrl.vesselDetailsFields.ServiceCode.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.sellerDetails.ServiceCode.name }}_label"
                                                                for="{{ $ctrl.sellerDetails.ServiceCode.name }}">
@@ -419,8 +574,169 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                    <div ng-if="$ctrl.portFields.locationName.visible"
+                                                         ng-show="$ctrl.orderId">
                                                     <div class="form-group  row">
+                                                        <label class="{{ $ctrl.portFields.locationName.name }}_label"
+                                                               for="{{ $ctrl.portFields.locationName.name }}">
+                                                            {{ $ctrl.portFields.locationName.caption | translate }}
+                                                        </label>
+                                                        <div class="form_input form_input_{{ $ctrl.portFields.locationName.name }} input-group">
+                                                            {{ $ctrl.data.location.name }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div ng-if="$ctrl.portFields.locationName.visible"
+                                                         ng-show="!$ctrl.orderId">
+                                                        <div class="form-group">
+                                                            <label class="simpleLookupLabel">
+                                                                {{ $ctrl.portFields.locationName.caption | translate }}
+                                                                <span class="orange-txt">
+                                                                *
+                                                            </span>
+                                                            </label>
+                                                            <div class="input-group form_input">
+                                                                <input class="typeahead form-control"
+                                                                       id="id_{{ $ctrl.portFields.locationName.name }}"
+                                                                       name="{{ $ctrl.portFields.locationName.caption | translate }}"
+                                                                       ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
+                                                                       ng-model="$ctrl.data.location"
+                                                                       required
+                                                                       typeahead-append-to-body="true"
+                                                                       typeahead-editable="false"
+                                                                       typeahead-on-select="$ctrl.selectPort($item.id)"
+                                                                       uib-typeahead="location as location.name for location in $ctrl.lists.Location | filter:$viewValue | limitTo:5"/>
+                                                                <span class="input-group-addon ng-scope"
+                                                                      ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);"
+                                                                      ng-controller="Controller_Master as CM">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="$ctrl.portFields.eta.visible">
+                                                    <div class="form-group row">
+                                                        <label class="{{ $ctrl.portFields.eta.name }}_label"
+                                                               for="{{ $ctrl.portFields.eta.name }}">
+                                                            {{ $ctrl.portFields.eta.caption | translate }}
+                                                            <span class="orange-txt">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="hidden">
+                                                            {{disableFromFreezeStatus = $ctrl.procurementSettings.request.etaFreezeStatus.id > 0 && $ctrl.data.status.id > 0}}
+                                                        </div>
+                                                        <div class="form_input form_input_{{ $ctrl.sellerDetails.eta.name }} input-group ">
+                                                           <!-- manual input -->
+                                                            <input
+                                                                    class="form-control date-mask new-date-picker"
+                                                                    id="eta"
+                                                                    name="{{ $ctrl.portFields.eta.caption | translate }}"
+                                                                    new-date-picker
+                                                                    ng-change="$ctrl.inputChangeProcessing('eta')"
+                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || disableFromFreezeStatus"
+                                                                    ng-model="$ctrl.data.eta"
+                                                                    ng-required="true"
+                                                                    picker-type="dynamic">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div ng-if="$ctrl.isRecentETA && $ctrl.portFields.recentEta.visible">
+                                                    <div class="form-group row">
+                                                        <label class="{{ $ctrl.portFields.recentEta.name }}_label"
+                                                               for="{{ $ctrl.portFields.recentEta.name }}">
+                                                            {{ $ctrl.portFields.recentEta.caption | translate }}
+                                                        </label>
+                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.recentEta.name }} ">
+                                                            <input
+                                                                    class="form-control date-mask new-date-picker"
+                                                                    id="recentEta"
+                                                                    name="recentEta"
+                                                                    new-date-picker
+                                                                    ng-change="$ctrl.inputChangeProcessing('recentEta')"
+                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                    ng-model="$ctrl.data.recentEta"
+                                                                    picker-type="dynamic">
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div ng-if="$ctrl.vesselDetailsFields.OrderDate.visible">
+                                                        <div class="form-group row">
+                                                            <label>
+                                                                Order date
+                                                            </label>
+                                                            <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">
+                                                                    <input class="form-control date-mask new-date-picker"
+                                                                           id="orderDate"
+                                                                           name="orderDate" new-date-picker
+                                                                           ng-model="$ctrl.data.orderDate"
+                                                                           picker-type="date">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="$ctrl.portFields.deliveryDate.visible">
+                                                        <div class="form-group row">
+                                                            <label class="{{ $ctrl.portFields.deliveryDate.name }}_label"
+                                                                   for="{{ $ctrl.portFields.deliveryDate.name }}">
+                                                                {{ $ctrl.portFields.deliveryDate.caption | translate }}
+                                                            </label>
+                                                            <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
+                                                                <input
+                                                                        class="form-control date-mask new-date-picker"
+                                                                        id="deliveryDate"
+                                                                        name="deliveryDate"
+                                                                        new-date-picker
+                                                                        ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                        ng-model="$ctrl.data.deliveryDate"
+                                                                        picker-type="date">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="$ctrl.isDeliveryWindow">
+                                                    <div class="form-group row">
+                                                        <label class="deliveryDate_label" for="deliveryDate">
+                                                            {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
+                                                        </label>
+                                                        <div class="input-group form_input form_input_deliveryDate">
+                                                            <div class="input-group w100">
+			                                               <input
+                                                                   class="form-control date-mask new-date-picker"
+                                                                   id="deliveryFrom"
+                                                                   name="deliveryFrom"
+                                                                   new-date-picker
+                                                                   ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}"
+                                                                   ng-model="$ctrl.data.deliveryFrom"
+                                                                   picker-type="dynamic">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div ng-if="$ctrl.isDeliveryWindow && !($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
+                                                        <div class="form-group row">
+                                                            <label class="deliveryDate_label" for="deliveryDate">
+                                                                {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
+                                                            </label>
+                                                            <div class="input-group form_input form_input_deliveryDate">
+                                                                <div class="input-group w100">
+                                                                    <input
+                                                                            class="form-control date-mask new-date-picker"
+                                                                            id="deliveryTo"
+                                                                            name="deliveryTo"
+                                                                            new-date-picker
+                                                                            ng-class="{'etb_invalid': $ctrl.data.deliveryTo > $ctrl.data.deliveryTo}"
+                                                                            ng-model="$ctrl.data.deliveryTo"
+                                                                            picker-type="dynamic">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div>
+                                                        <div class="form-group  row">
                                                         <label class="{{ $ctrl.sellerDetails.Seller.name }}_label"
                                                                for="{{ $ctrl.sellerDetails.Seller.name }}">
                                                             {{ $ctrl.sellerDetails.Seller.caption | translate }}
@@ -432,13 +748,15 @@
                                                             <input autocomplete="off"
                                                                    class="typeahead form-control"
                                                                    id="id_{{ $ctrl.sellerDetails.Seller.name }}"
-                                                                   name="{{ $ctrl.sellerDetails.Seller.caption | translate }}" ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null"
+                                                                   name="{{ $ctrl.sellerDetails.Seller.caption | translate }}"
+                                                                   ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                    ng-model="$ctrl.data.seller.name" ng-required="true"
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-min-length="1"
-                                                                   typeahead-on-select="$ctrl.selectSeller($item)" typeahead-show-hint="true"
+                                                                   typeahead-on-select="$ctrl.selectSeller($item)"
+                                                                   typeahead-show-hint="true"
                                                                    typeahead-wait-ms="100"
                                                                    uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | filter:{name:$viewValue}"/>
                                                             <span class="input-group-addon ng-scope"
@@ -451,61 +769,8 @@
                                                             </span>
                                                         </div>
                                                     </div>
-
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row">
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.carrierCompany.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.carrierCompany.name }}_label"
-                                                               for="{{ $ctrl.portFields.carrierCompany.name }}">
-                                                        	<span ng-if='$ctrl.tenantSettings.companyDisplayName.name == "Pool"'>
-                                                        		{{$ctrl.tenantSettings.companyDisplayName.name | translate}}
-                                                        	</span>
-                                                        	<span ng-if='$ctrl.tenantSettings.companyDisplayName.name != "Pool"'>
-	                                                            {{ $ctrl.portFields.carrierCompany.caption | translate }}
-                                                        	</span>
-                                                            <span class="orange-txt">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.carrierCompany.name }}">
-                                                            <input class="typeahead form-control"
-                                                                   id="id_{{ $ctrl.portFields.carrierCompany.name }}"
-                                                                   name="{{ $ctrl.tenantSettings.companyDisplayName.name == 'Pool' ? ($ctrl.tenantSettings.companyDisplayName.name | translate) : ($ctrl.portFields.carrierCompany.caption | translate) }}"
-                                                                   ng-blur="$ctrl.setPaymentCompany()"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
-                                                                   ng-focus="$ctrl.initLookup($ctrl.portFields.carrierCompany.name, $ctrl.data.carrierCompany)"
-                                                                   ng-model="$ctrl.data.carrierCompany.name"
-                                                                   required
-                                                                   typeahead-append-to-body="true"
-                                                                   typeahead-editable="false"
-                                                                   typeahead-on-select="$ctrl.selectCompany($item.id)" uib-typeahead="carrierCompany as carrierCompany.name for carrierCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"/>
-                                                            <span class="input-group-addon ng-scope"
-                                                                  ng-click="triggerModal('general', 'masters_companylist', 'Carrier' ,'carrier',null,null,null,'bargeList');"
-                                                                  ng-controller="Controller_Master as CM"
-                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
-                                                                <a class=" btn default" href="">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span>
-                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.locationName.visible"
-                                                     ng-show="$ctrl.orderId">
-                                                    <div class="form-group  row">
-                                                        <label class="{{ $ctrl.portFields.locationName.name }}_label"
-                                                               for="{{ $ctrl.portFields.locationName.name }}">
-                                                            {{ $ctrl.portFields.locationName.caption | translate }}
-                                                        </label>
-                                                        <div class="form_input form_input_{{ $ctrl.portFields.locationName.name }} input-group">
-                                                            {{ $ctrl.data.location.name }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" ng-if="$ctrl.nominationFields.broker.visible">
+                                                    <div ng-if="$ctrl.nominationFields.broker.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.broker.name }}_label"
                                                                for="id_{{ $ctrl.nominationFields.broker.name }}">
@@ -541,71 +806,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.paymentCompany.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.paymentCompany.name }}_label"
-                                                               for="{{ $ctrl.portFields.paymentCompany.name }}">
-                                                            <!-- {{ $ctrl.portFields.paymentCompany.caption | translate }} -->
-                                                            {{ "Payment " + $ctrl.tenantSettings.companyDisplayName.name | translate }}
-                                                            <span class="orange-txt">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.paymentCompany.name }}">
-                                                            <input class="typeahead form-control"
-                                                                   id="id_{{ $ctrl.portFields.paymentCompany.name }}"
-                                                                   name="{{ 'Payment ' + $ctrl.tenantSettings.companyDisplayName.name | translate }}"
-                                                                   ng-change="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                   ng-focus="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
-                                                                   ng-model="$ctrl.data.paymentCompany.name"
-                                                                   required
-                                                                   typeahead-append-to-body="true"
-                                                                   typeahead-editable="false"
-                                                                   typeahead-on-select="$ctrl.selectCompany($item.id)" uib-typeahead="paymentCompany as paymentCompany.name for paymentCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"/>
-                                                            <span class="input-group-addon ng-scope"
-                                                                  ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.companyDisplayName.name ,'paymentCompany',null,null,null,null);"
-                                                                  ng-controller="Controller_Master as CM"
-                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
-                                                                <a class=" btn default" href="">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" ng-if=" $ctrl.portFields.eta.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.eta.name }}_label"
-                                                               for="{{ $ctrl.portFields.eta.name }}">
-                                                            {{ $ctrl.portFields.eta.caption | translate }}
-                                                            <span class="orange-txt">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div class="hidden">
-                                                            {{disableFromFreezeStatus = $ctrl.procurementSettings.request.etaFreezeStatus.id > 0 && $ctrl.data.status.id > 0}}
-                                                        </div>
-                                                        <div class="form_input form_input_{{ $ctrl.sellerDetails.eta.name }} input-group ">
-                                                           <!-- manual input -->
-                                                            <input
-                                                                    class="form-control date-mask new-date-picker"
-                                                                    id="eta"
-                                                                    name="{{ $ctrl.portFields.eta.caption | translate }}"
-                                                                    new-date-picker
-                                                                    ng-change="$ctrl.inputChangeProcessing('eta')"
-                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || disableFromFreezeStatus"
-                                                                    ng-model="$ctrl.data.eta"
-                                                                    ng-required="true"
-                                                                    picker-type="dynamic">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4"
-                                                     ng-if="$ctrl.nominationFields.surveyorCounterparty.visible">
+                                                    <div
+                                                            ng-if="$ctrl.nominationFields.surveyorCounterparty.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.surveyorCounterparty.name }}_label"
                                                                for="{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
@@ -640,63 +842,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-											</div>
-
-											<div class="row">
-												<div class="col-md-4" ng-if="$ctrl.vesselDetailsFields.Buyer.visible">
-                                                    <div class="form-group  row">
-                                                        <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
-                                                               for="{{ $ctrl.sellerDetails.Buyer.name }}">
-                                                            {{ $ctrl.vesselDetailsFields.Buyer.caption | translate }}
-                                                            <span class="orange-txt">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div class="form_input form_input_{{ $ctrl.sellerDetails.Buyer.name }} input-group">
-                                                            <input class="typeahead form-control"
-                                                                   id="id_{{ $ctrl.vesselDetailsFields.Buyer.name }}"
-                                                                   name="{{ $ctrl.vesselDetailsFields.Buyer.name }}"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                   ng-model="$ctrl.data.buyer.name"
-                                                                   required
-                                                                   typeahead-append-to-body="true"
-                                                                   typeahead-editable="false"
-                                                                   typeahead-on-select=" $ctrl.isTrader = false; $ctrl.selectBuyer($item);"
-                                                                   uib-typeahead="buyer as buyer.name for buyer in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"/>
-                                                            <span class="input-group-addon ng-scope"
-                                                                  ng-click="triggerModal('general', 'masters_buyerlist', 'Buyer' ,'buyer',null,null,null,null); $ctrl.isTraderField = false"
-                                                                  ng-controller="Controller_Master as CM"
-                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
-                                                                <a class=" btn default" href=""
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div> 
-                                                <div class="col-md-4"
-                                                     ng-if="$ctrl.isRecentETA && $ctrl.portFields.recentEta.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.recentEta.name }}_label"
-                                                               for="{{ $ctrl.portFields.recentEta.name }}">
-                                                            {{ $ctrl.portFields.recentEta.caption | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.recentEta.name }} ">
-                                                            <input
-                                                                    class="form-control date-mask new-date-picker"
-                                                                    id="recentEta"
-                                                                    name="recentEta"
-                                                                    new-date-picker
-                                                                    ng-change="$ctrl.inputChangeProcessing('recentEta')"
-                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                    ng-model="$ctrl.data.recentEta"
-                                                                    picker-type="dynamic">
-                                                        </div>
-                                                    </div>
-                                                </div>  
-                                                <div class="col-md-4"
-                                                     ng-if="$ctrl.portFields.agentCounterparty.visible">
+                                                    <div
+                                                            ng-if="$ctrl.portFields.agentCounterparty.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.sellerDetails.agentCounterparty.name }}_label"
                                                                for="{{ $ctrl.sellerDetails.agentCounterparty.name }}">
@@ -742,44 +889,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-											</div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group  row">
-                                                        <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
-                                                               for="{{ $ctrl.sellerDetails.Trader.name }}">
-                                                            {{ $ctrl.sellerDetails.Trader.name | translate }}
-
-                                                        </label>
-                                                        <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group">
-                                                            <input class="typeahead form-control"
-                                                                   id="id_{{ $ctrl.sellerDetails.Trader.name }}"
-                                                                   name="{{ $ctrl.sellerDetails.Trader.name }}"
-                                                                   ng-model="$ctrl.data.trader.name"
-                                                                   typeahead-append-to-body="true"
-                                                                   typeahead-editable="false"
-                                                                   typeahead-on-select="$ctrl.isTrader = true; $ctrl.selectTrader($item);"
-                                                                   uib-typeahead="trader as trader.name for trader in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"
-                                                            />
-                                                            <span class="input-group-addon ng-scope"
-                                                                  ng-click="triggerModal('general', 'masters_buyerlist', 'Trader' ,'trader',null,null,null,null); $ctrl.isTraderField = true"
-                                                                  ng-controller="Controller_Master as CM">
-                                                                <a class=" btn default" href="">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" ng-if="ctrl.vesselDetailsFields.OrderDate.visible">
-                                                    <div class="form_input form_input_{{ $ctrl.sellerDetails.Trader.name }} input-group date form_meridian_date">
-                                                        <input class="form-control date-mask new-date-picker" id="orderDate"
-                                                               name="orderDate" new-date-picker ng-model="$ctrl.data.orderDate"
-                                                               picker-type="date">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" ng-if="$ctrl.nominationFields.lab.visible">
+                                                    <div ng-if="$ctrl.nominationFields.lab.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.lab.name }}_label"
                                                                for="{{ $ctrl.nominationFields.lab.name }}">
@@ -810,75 +920,9 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>  
-                                            </div>
-
-                                            <div class="row">	
-                                                <div class="col-md-4">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.sellerDetails.PaymntTerms.name }}_label"
-                                                               for="{{ $ctrl.sellerDetails.PaymntTerms.name }}">
-                                                            {{ $ctrl.sellerDetails.PaymntTerms.caption | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input form_input_{{ $ctrl.sellerDetails.PaymntTerms.name }}">
-                                                            <input class="typeahead form-control"
-                                                                   id="id_{{ $ctrl.sellerDetails.PaymntTerms.name }}"
-                                                                   name="{{ $ctrl.sellerDetails.PaymntTerms.name }}"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                   ng-model="$ctrl.data.paymentTerm.name"
-                                                                   required
-                                                                   typeahead-append-to-body="true"
-                                                                   typeahead-editable="false"
-                                                                   typeahead-on-select="$ctrl.selectPaymntTerm($item)"
-                                                                   uib-typeahead="term as term.name for term in $ctrl.lists.PaymentTerm | filter:$viewValue | limitTo:5"/>
-                                                            <span class="input-group-addon ng-scope"
-                                                                  ng-click="triggerModal('general', 'masters_paymenttermlist', 'Payment Term' ,'paymentTerm',null,null,null,null);"
-                                                                  ng-controller="Controller_Master as CM"
-                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id">
-                                                                <a class=" btn default" href="">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.deliveryDate.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.deliveryDate.name }}_label"
-                                                               for="{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            {{ $ctrl.portFields.deliveryDate.caption | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <input
-                                                                    class="form-control date-mask new-date-picker"
-                                                                    id="deliveryDate"
-                                                                    name="deliveryDate"
-                                                                    new-date-picker
-                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                    ng-model="$ctrl.data.deliveryDate"
-                                                                    picker-type="date">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-<!--                                                <div class="col-md-4" ng-if="$ctrl.portFields.comments.visible">-->
-<!--                                                    <div class="form-group row">-->
-<!--                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"-->
-<!--                                                               for="{{ $ctrl.portFields.comments.name }}">-->
-<!--                                                        	 &lt;!&ndash; Comment &ndash;&gt;-->
-<!--                                                        	 {{'PAGES.NEW_ORDER.COMMENTS' | translate}}-->
-<!--                                                            &lt;!&ndash; {{ $ctrl.portFields.comments.caption | translate }} &ndash;&gt;-->
-<!--                                                        </label>-->
-<!--                                                        <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">-->
-<!--                                                            <textarea class="col-md-12 form-control" maxlength="500"-->
-<!--                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"-->
-<!--                                                                      ng-model="$ctrl.data.comments"></textarea>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>
-                                                                                                                   -->
-                                                <div class="col-md-4" ng-if="$ctrl.nominationFields.barge.visible"
-                                                     style="margin-bottom: 5px">
+                                                    <div ng-if="$ctrl.nominationFields.barge.visible"
+                                                         style="margin-bottom: 5px">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.barge.name }}_label"
                                                                for="{{ $ctrl.nominationFields.barge.name }}">
@@ -908,62 +952,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-											</div>
-
-											<div class="row">
-                                                <div class="col-md-4" ng-if="$ctrl.portFields.locationName.visible"
-                                                     ng-show="!$ctrl.orderId">
-                                                    <div class="form-group">
-                                                        <label class="simpleLookupLabel">
-                                                            {{ $ctrl.portFields.locationName.caption | translate }}
-                                                            <span class="orange-txt">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div class="input-group form_input">
-                                                            <input class="typeahead form-control"
-                                                                   id="id_{{ $ctrl.portFields.locationName.name }}"
-                                                                   name="{{ $ctrl.portFields.locationName.caption | translate }}"
-                                                                   ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
-                                                                   ng-model="$ctrl.data.location"
-                                                                   required
-                                                                   typeahead-append-to-body="true"
-                                                                   typeahead-editable="false"
-                                                                   typeahead-on-select="$ctrl.selectPort($item.id)" uib-typeahead="location as location.name for location in $ctrl.lists.Location | filter:$viewValue | limitTo:5"/>
-                                                            <span class="input-group-addon ng-scope"
-                                                                  ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);"
-                                                                  ng-controller="Controller_Master as CM">
-                                                                <a class=" btn default" href="">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- DELIVERYWINDOWDISPLAY -->
-                                                <div class="col-md-4" ng-if="$ctrl.isDeliveryWindow">
-                                                    <div class="form-group row">
-                                                        <label class="deliveryDate_label" for="deliveryDate">
-                                                            {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input form_input_deliveryDate">
-                                                            <div class="input-group w100">
-			                                               <input
-                                                                   class="form-control date-mask new-date-picker"
-                                                                   id="deliveryFrom"
-                                                                   name="deliveryFrom"
-                                                                   new-date-picker
-                                                                   ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}"
-                                                                   ng-model="$ctrl.data.deliveryFrom"
-                                                                   picker-type="dynamic">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" ng-if="$ctrl.isDeliveryWindow">
-                                                    <div class="form-group row">
+                                                    <div ng-if="$ctrl.isDeliveryWindow && ($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
+                                                        <div class="form-group row">
                                                         <label class="deliveryDate_label" for="deliveryDate">
                                                             {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
                                                         </label>
@@ -980,53 +970,31 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </div>
                                                 </div>
-                                                <!-- END DELIVERYWINDOWDISPLAY -->
 
 
-		                                        <div class="col-md-4" ng-if="$ctrl.portFields.emailComments.visible">
-		                                            <div class="form-group row">
-		                                                <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                               for="customNonMandatoryAttribute1">
-		                                                    {{ 'PAGES.NEW_ORDER.EMAIL_COMMENTS' | translate }}
-		                                                </label>
-		                                                <div class="input-group form_input">
+                                                <div class="col-md-3">
 
-		                                                    <textarea class="col-md-12 form-control" maxlength="500"
-                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
-                                                                      ng-model="$ctrl.data.customNonMandatoryAttribute1"></textarea>
-
-		                                                </div>
-		                                            </div>
-                                                </div>      
-                                                                                            
-                                            </div>
-
-											<div class="row">
-                                                <div class="col-md-4 col-sm-12">
-                                                    <div class="form-group row"
-                                                         ng-if="$ctrl.vesselDetailsFields.ExchangeRate.visible">
-
-                                                        <!-- exchange rate -->
-                                                        <span ng-if="!$ctrl.data.exchangeRate"
-                                                              ng-init="$ctrl.data.exchangeRate = 1"></span>
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                               for="exchangeRate">
-                                                            {{ 'PAGES.NEW_ORDER.EXCHANGE_RATE' | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input">
-
-                                                            <input class="col-md-12 form-control" format="number:4"
-                                                                   id="exchangeRate" name="exchangeRate"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" ng-model="$ctrl.data.exchangeRate"
-                                                                   type="text">
-
+                                                    <div ng-if="$ctrl.portFields.comments.visible">
+                                                        <div class="form-group row">
+                                                            <label class="{{ $ctrl.portFields.comments.name }}_label"
+                                                                   for="{{ $ctrl.portFields.comments.name }}">
+                                                                <!-- Comment -->
+                                                                {{'PAGES.NEW_ORDER.COMMENTS' | translate}}
+                                                                <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+                                                            </label>
+                                                            <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
+                                                                <textarea
+                                                                        class="col-md-12 form-control"
+                                                                        maxlength="500"
+                                                                        ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                        ng-model="$ctrl.data.comments"></textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div> 												
-												<div class="col-md-4 col-sm-12"
-                                                     ng-if="$ctrl.portFields.comments.visible" style="float:right">
-                                                    <div class="form-group row">
+                                                    <div ng-if="$ctrl.portFields.comments.visible">
+                                                        <div class="form-group row">
                                                         <label class="{{ $ctrl.portFields.comments.name }}_label"
                                                                for="{{ $ctrl.portFields.comments.name }}">
                                                         	 <!-- Comment -->
@@ -1039,47 +1007,47 @@
                                                                       ng-model="$ctrl.data.customNonMandatoryAttribute10"></textarea>
                                                         </div>
                                                     </div>
-                                                </div>
-											</div>
-
-											<div class="row">
-										        <div class="col-md-4 col-sm-12"
-                                                     ng-if="$ctrl.portFields.comments.visible" style="float:right">
-										            <div class="form-group row">
-										                <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                               for="{{ $ctrl.portFields.comments.name }}">
-										                	 <!-- Comment -->
-										                	 {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}}
-                                                            <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
-										                </label>
-										                <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
+                                                    </div>
+                                                    <div ng-if="$ctrl.portFields.comments.visible">
+										                <div class="form-group row">
+                                                            <label class="{{ $ctrl.portFields.comments.name }}_label"
+                                                                   for="{{ $ctrl.portFields.comments.name }}">
+                                                                 <!-- Comment -->
+                                                                 {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}}
+                                                                <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+                                                            </label>
+                                                            <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
 										                    <textarea class="col-md-12 form-control" maxlength="500"
                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                       ng-model="$ctrl.data.customNonMandatoryAttribute11"></textarea>
 										                </div>
+										                </div>
 										            </div>
-										        </div>
-											</div>
+                                                    <div ng-if="$ctrl.portFields.emailComments.visible">
+		                                            <div class="form-group row">
+		                                                <label class="{{ $ctrl.portFields.comments.name }}_label">
+		                                                    {{ 'PAGES.NEW_ORDER.EMAIL_COMMENTS' | translate }}
+		                                                </label>
+		                                                <div class="input-group form_input">
 
-                                            <div class="row"
-                                                 ng-if="$ctrl.portFields.comments.visible && $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id && $ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes'">
-                                                <div class="col-md-4 col-sm-12" style="float:right">
-                                                    <div class="form-group row">
+		                                                    <textarea class="col-md-12 form-control" maxlength="500"
+                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
+                                                                      ng-model="$ctrl.data.customNonMandatoryAttribute1"></textarea>
+
+		                                                </div>
+		                                            </div></div>
+                                                    <div class="form-group row"  ng-if="$ctrl.portFields.comments.visible && $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id && $ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes'">
                                                         <label class="{{ $ctrl.portFields.comments.name }}_label"
                                                                for="{{ $ctrl.portFields.comments.name }}">
-                                                             <!-- Comment -->
-                                                            <!-- {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}} -->
-                                                            <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
                                                             Cancellation Comments
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" maxlength="1000"
-                                                                      ng-model="$ctrl.data.cancelOrderComments"
-                                                                      readonly></textarea>
+                                                                <textarea class="col-md-12 form-control" maxlength="1000"
+                                                                          ng-model="$ctrl.data.cancelOrderComments"
+                                                                          readonly></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
 	                                    </div>
@@ -1090,63 +1058,10 @@
                             </span>
                         </div>
                     </div>
-
-                    <div class="col-md-3 col-sm-11 no-padding-right no-padding-left pull-right" id="order-order-summary"
-                         ng-hide="visible_sections.indexOf('order_details') < 0"
-                         style="height: calc(100% - 30px); right: 20px;">
-                        <div class="portlet light stretch-vertical" style="background: #eeeeee;">
-                            <div class="portlet-title">
-                                <!-- <div class="tools">
-                                                            <a href="" class="collapse" data-original-title="" title=""></a>
-                                                        </div> -->
-                                <div class="caption">
-                                    <div class="caption-subject">
-                                        ORDER SUMMARY
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="portlet-body" ng-hide="toggleOrderSummary">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="st-span-group">
-                                            <span class="bg-white bg-font-white">
-                                                Total Fuel Price
-                                            </span>
-                                            <span class="bg-white font-blue-steel">
-                                                {{ $ctrl.totalFuelPrice | number: $ctrl.numberPrecision.amountPrecision }}
-                                            </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="st-span-group">
-                                            <span class="bg-white bg-font-white">
-                                                Total Cost
-                                            </span>
-                                            <span class="bg-white font-blue-steel">
-                                                {{ $ctrl.totalAdditionalCost | number: $ctrl.numberPrecision.amountPrecision }}
-                                            </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="st-span-group">
-                                            <span class="bg-white bg-font-white">
-                                                Grand Total
-                                            </span>
-                                            <span class="bg-white font-blue-steel">
-                                                {{ $ctrl.grandTotal | number: $ctrl.numberPrecision.amountPrecision }}
-                                            </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+<!--        ADDITIONAL COSTS FORM-->
         <div class="col-md-12 no-padding-left no-padding-right">
             <div class="portlet light stretch-vertical" ng-hide="visible_sections.indexOf('products') < 0">
                 <div class="portlet-title">
@@ -1201,7 +1116,9 @@
                                         </span>
                                 </td>
                                 <td style="max-width: initial; min-width: 220px;">
-                                    <div class="input-group" data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) }}" ng-init="product.tempProduct = $ctrl.setDefaultTempProduct(product.product)"
+                                    <div class="input-group"
+                                         data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) }}"
+                                         ng-init="product.tempProduct = $ctrl.setDefaultTempProduct(product.product)"
                                          tooltip
                                          tooltiptrigger="hover">
                                         <input class="typeahead form-control "
@@ -1213,7 +1130,8 @@
                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"
                                                typeahead-append-to-body="true"
                                                typeahead-append-to-body="true"
-                                               typeahead-editable="false" typeahead-on-select="$ctrl.selectProduct($item.id)"
+                                               typeahead-editable="false"
+                                               typeahead-on-select="$ctrl.selectProduct($item.id)"
                                                uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | filter:$viewValue | limitTo:5"/>
                                         <span class="input-group-addon" data-toggle="modal" href="#lookup"
                                               ng-click="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
@@ -1251,7 +1169,8 @@
                                 <td style="max-width: 250px;min-width: 150px">
                                     <select class="form-control"
                                             id="product_delOption_{{ $index }}"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]" ng-model="product.deliveryOption"
+                                            ng-disabled="$ctrl.disabledProduct[product.id]"
+                                            ng-model="product.deliveryOption"
                                             ng-options="delOption as delOption.name for delOption in $ctrl.lists.DeliveryOption track by delOption.id"></select>
                                 </td>
                                 <td style="max-width: 300px;min-width: 300px">
@@ -1269,7 +1188,8 @@
                                                uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | filter:$viewValue | limitTo:5"
                                         />
                                         <!-- THIS WAS ON SUPPLIER REQUIRED: $ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id &&  -->
-                                        <span class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' ,'productSupplier',null,null,null,null); $ctrl.physicalSupplierRowUniqueIdUI = product.uniqueIdUI"
+                                        <span class="input-group-addon ng-scope"
+                                              ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' ,'productSupplier',null,null,null,null); $ctrl.physicalSupplierRowUniqueIdUI = product.uniqueIdUI"
                                               ng-controller="Controller_Master as CM"
                                               ng-disabled="$ctrl.disabledProduct[product.id]">
                                                 <a class=" btn default" href=""
@@ -1289,7 +1209,8 @@
                                     -->
 
                                     <div class="input-group">
-                                        <input class="form-control" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                        <input class="form-control"
+                                               format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                id="product_minQuantity_{{ $index }}"
                                                name="{{ $ctrl.productColumns.minQuantity.name }}"
                                                ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
@@ -1303,7 +1224,8 @@
 
                                             <select class="bs-select pull-right"
                                                     id=""
-                                                    id="product_minQuantityUom_{{ $index }}" name="minQuantityUom" ng-change="$ctrl.productUomChanged(product)"
+                                                    id="product_minQuantityUom_{{ $index }}" name="minQuantityUom"
+                                                    ng-change="$ctrl.productUomChanged(product)"
                                                     ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                     ng-model="product.minMaxQuantityUom"
                                                     ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
@@ -1315,7 +1237,8 @@
                                 <td ng-if="$ctrl.productColumns.maxQuantity.visible"
                                     style="max-width: 250px;min-width: 150px">
                                     <div class="input-group">
-                                        <input class="form-control" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                        <input class="form-control"
+                                               format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                id="product_maxQuantity_{{ $index }}"
                                                name="{{ $ctrl.productColumns.maxQuantity.name }}"
                                                ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.defaultMaxQtyFromConfirmed('input', product)"
@@ -1354,7 +1277,9 @@
                                             - not disabled
                                     -->
                                     <div class="input-group">
-                                        <input class="form-control" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" id="product_confirmedQuantity_{{ $index }}"
+                                        <input class="form-control"
+                                               format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                               id="product_confirmedQuantity_{{ $index }}"
                                                name="{{ $ctrl.productColumns.confirmedQuantity.name }}"
                                                ng-change="$ctrl.productUomChanged(product)"
                                                ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
@@ -1367,7 +1292,8 @@
                                              ng-init="!product.quantityUom.id ? product.quantityUom = $ctrl.tenantUom : '' "
                                              style="max-width: 50px;">
 
-                                            <select class="bs-select pull-right" id="" id="product_quantityUom_{{ $index }}"
+                                            <select class="bs-select pull-right" id=""
+                                                    id="product_quantityUom_{{ $index }}"
                                                     name="" ng-change="$ctrl.productUomChanged(product)"
                                                     ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                     ng-model="product.quantityUom"
@@ -1383,8 +1309,10 @@
                                     <div class="input-group">
                                         <!-- price -->
                                         <!-- ( product.contractProductId && !product.formula.id && ['Stemmed','Invoiced','PartiallyInvoiced'].indexOf(product.status.name) == -1)  -->
-                                        <input class="form-control" format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
-                                               id="product_price_{{ $index }}" name="{{ $ctrl.productColumns.price.name }}"
+                                        <input class="form-control"
+                                               format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                               id="product_price_{{ $index }}"
+                                               name="{{ $ctrl.productColumns.price.name }}"
                                                ng-change="$ctrl.productPriceChanged(product)"
                                                ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
                                                ng-model="product.price"
@@ -1397,7 +1325,8 @@
                                         <div class="input-group-btn"
                                              ng-disabled="$ctrl.disabledProduct[product.id]"
                                              ng-init="!product.priceUom.id ? product.priceUom = $ctrl.tenantUom : '' ">
-                                            <select class="bs-select pull-right uomWidth" id="" id="product_priceUom_{{ $index }}"
+                                            <select class="bs-select pull-right uomWidth" id=""
+                                                    id="product_priceUom_{{ $index }}"
                                                     name=""
                                                     ng-change="$ctrl.productUomChanged(product)"
                                                     ng-disabled="product.contractProductId != null  || $ctrl.disabledProduct[product.id]"
@@ -1423,7 +1352,8 @@
                                 </td>
                                 <!--  end unit price for product -->
                                 <td style="max-width: 180px;min-width: 140px">
-                                    		<span class="form-control disabled" data-original-title="{{product.formulaDescription ? product.formulaDescription : product.formula.name}}"
+                                    		<span class="form-control disabled"
+                                                  data-original-title="{{product.formulaDescription ? product.formulaDescription : product.formula.name}}"
                                                   style="background: #e6eaec;overflow: hidden;"
                                                   tooltip>
                                     			{{product.formulaDescription ? product.formulaDescription : product.formula.name}}
@@ -1438,7 +1368,8 @@
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px">
                                     <a ng-click="$ctrl.triggerFormulaDetailsModal(product)"
-                                       ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId">Pricing Details</a>
+                                       ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId">Pricing
+                                        Details</a>
                                     <!-- ng-disabled="$ctrl.disabledProduct[product.id]" -->
                                 </td>
                                 <td style="max-width: 120px;min-width: 120px">
@@ -1453,7 +1384,8 @@
                                     <!-- {{$ctrl.contractAgreementTypesList }} -->
                                     <!-- {{$ctrl.spotAgreementTypesList}} -->
                                     <select class="form-control"
-                                            id="product_agreementType_{{ $index }}" name="{{ $ctrl.productColumns.agreementType.name }}"
+                                            id="product_agreementType_{{ $index }}"
+                                            name="{{ $ctrl.productColumns.agreementType.name }}"
                                             ng-disabled="$ctrl.disabledProduct[product.id]"
                                             ng-init="!product.id ? (product.contractId ? product.agreementType = $ctrl.defaultContractAgreementType : product.agreementType = $ctrl.defaultSpotAgreementType) : '';"
                                             ng-model="product.agreementType"
@@ -1474,7 +1406,8 @@
                                     	</span>
                                     <select class="form-control"
                                             disabled
-                                            id="product_pricingType_{{ $index }}" name="{{ $ctrl.productColumns.pricingType.name }}"
+                                            id="product_pricingType_{{ $index }}"
+                                            name="{{ $ctrl.productColumns.pricingType.name }}"
                                             ng-change=" product.contract = null; product.contractProductId = null"
                                             ng-disabled="$ctrl.disabledProduct[product.id] || disabledPricingType[product.id]"
                                             ng-model="product.pricingType"
@@ -1482,7 +1415,8 @@
                                     <!-- ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" -->
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px; overflow: hidden;">
-                                    <span class="orderProductTable" data-original-title="{{ product.comments }}" ng-disabled="$ctrl.disabledProduct[product.id]"
+                                    <span class="orderProductTable" data-original-title="{{ product.comments }}"
+                                          ng-disabled="$ctrl.disabledProduct[product.id]"
                                           style="text-overflow: ellipsis;"
                                           tooltip>  {{ product.comments }} </span>
                                 </td>
@@ -1506,7 +1440,8 @@
                                                uib-typeahead="contract.contract.name for contract in $ctrl.orderContractOptions[product.product.id] | filter:$viewValue | limitTo:5"
                                         />
 
-                                        <span class="input-group-addon ng-scope" ng-click="triggerModal('general', 'procurement_productcontractlist', 'Contract' ,'contract',null,null,null, $ctrl.productContractFilters[product.product.id]); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
+                                        <span class="input-group-addon ng-scope"
+                                              ng-click="triggerModal('general', 'procurement_productcontractlist', 'Contract' ,'contract',null,null,null, $ctrl.productContractFilters[product.product.id]); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
                                               ng-controller="Controller_Master as CM"
                                               ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId">
                                                 <a class=" btn default" href=""
@@ -1530,7 +1465,8 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label class="mt-checkbox">
-                                                <input id="product_manualPricingDateOverride_{{ $index }}" ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                <input id="product_manualPricingDateOverride_{{ $index }}"
+                                                       ng-disabled="$ctrl.disabledProduct[product.id]"
                                                        ng-model="product.manualPricingDateOverride"
                                                        type="checkbox">
                                                 <span></span>
@@ -1572,8 +1508,10 @@
                                 </td>
                                 <td style="max-width: 250px; min-width: 200px">
                                     <div class="input-group">
-                                        <input class="form-control input-md" data-original-title="{{ product.robOnArrival }}"
-                                               format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" id="product_RobOnArrival_{{ $index }}"
+                                        <input class="form-control input-md"
+                                               data-original-title="{{ product.robOnArrival }}"
+                                               format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                               id="product_RobOnArrival_{{ $index }}"
                                                name="RobOnArrival"
                                                ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                ng-model="$ctrl.data.products[key].robOnArrival"
@@ -1593,10 +1531,12 @@
                                 </td>
                                 <td style="max-width: 250px; min-width: 200px">
                                     <div class="input-group">
-                                        <input class="form-control input-md" data-original-title="{{ product.roundVoyageConsumption }}"
+                                        <input class="form-control input-md"
+                                               data-original-title="{{ product.roundVoyageConsumption }}"
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                id="product_roundVoyageConsumption_{{ $index }}"
-                                               name="roundVoyageConsumption" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                               name="roundVoyageConsumption"
+                                               ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                ng-model="product.roundVoyageConsumption"
                                                type="text">
                                         <div class="input-group-btn"
@@ -1638,7 +1578,8 @@
                                 <th>
                                         <span class="clickable"
                                               id="addCost_addRow_header"
-                                              ng-click="$ctrl.addAdditionalCost()" ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1">
+                                              ng-click="$ctrl.addAdditionalCost()"
+                                              ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                 </th>
@@ -1655,14 +1596,16 @@
                                     <!-- {{$ctrl.data.status.name}} -->
                                     <span class="clickable"
                                           id="addCost_addRow_{{ $index }}"
-                                          ng-click="$ctrl.addAdditionalCost()" ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1">
+                                          ng-click="$ctrl.addAdditionalCost()"
+                                          ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                 </td>
                                 <td>
                                         <span class="clickable"
                                               id="addCost_remRow_{{ $index }}"
-                                              ng-click="$ctrl.deleteAdditionalCost(additionalCost)" ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1">
+                                              ng-click="$ctrl.deleteAdditionalCost(additionalCost)"
+                                              ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-minus st-btn-icon"></i>
                                         </span>
                                 </td>
@@ -1718,7 +1661,9 @@
                                         <!-- <span ng-init="$ctrl.allowNegativeAdditionalCost[$index] = true"></span> -->
                                         <!--  cost value -->
                                         <!-- **{{additionalCost.additionalCost}}** -->
-                                        <input class="form-control" format="number:{{ $ctrl.numberPrecision.pricePrecision }}" id="additional_cost_price_{{ $index }}"
+                                        <input class="form-control"
+                                               format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                               id="additional_cost_price_{{ $index }}"
                                                name="{{ $ctrl.additionalCostColumns.Price.name }}_{{ $index }}"
                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost)"
                                                ng-change="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost)"
@@ -1733,7 +1678,8 @@
                                                 <span ng-if="!(!$ctrl.additionalCostPriceUomEnabled(additionalCost) || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id) && !additionalCost.priceUom.id"
                                                       ng-init="additionalCost.priceUom = $ctrl.tenantUom"></span>
                                             <!-- ng-change="$ctrl.addPriceUomChg(additionalCost)" -->
-                                            <select class="bs-select pull-right uomWidth" id="" id="additional_cost_priceUom_{{ $index }}"
+                                            <select class="bs-select pull-right uomWidth" id=""
+                                                    id="additional_cost_priceUom_{{ $index }}"
                                                     name=""
                                                     ng-change="$ctrl.addPriceUomChanged(additionalCost)"
                                                     ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1"
@@ -1809,7 +1755,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input class="form-control" format="number:{{ $ctrl.numberPrecision.pricePrecision }}" id="additional_cost_extras_{{ $index }}" max="100"
+                                    <input class="form-control"
+                                           format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                           id="additional_cost_extras_{{ $index }}" max="100"
                                            ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                            ng-model="additionalCost.extras"
                                            type="text"
@@ -1863,10 +1811,12 @@
                                 <td>
                                     <div class="input-group input-group-sm">
                                         <input class="form-control" disabled
-                                               format="number:{{ $ctrl.numberPrecision.pricePrecision }}" ng-model="additionalCost.rate"
+                                               format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                               ng-model="additionalCost.rate"
                                                readonly/>
                                         <div class="input-group-btn">
-                                            <button aria-expanded="false" aria-haspopup="true" class="btn dropdown-toggle"
+                                            <button aria-expanded="false" aria-haspopup="true"
+                                                    class="btn dropdown-toggle"
                                                     data-toggle="dropdown" disabled type="button">
                                                 {{ additionalCost.currency.code }}
                                                 <span class="caret"></span>
@@ -1911,13 +1861,74 @@
             </div> -->
         </div>
     </div>
+
+<!--    ORDER SUMMARY-->
+    <div class="row" style="background: #eeeeee;padding: 15px 15px 10px 7px;margin-bottom:5px;">
+        <div class="col-md-12 col-sm-11"
+             ng-hide="visible_sections.indexOf('order_details') < 0">
+            <div class="portlet">
+                <div class="portlet-title" style="margin-bottom: 10px;">
+                    <!-- <div class="tools">
+                                                <a href="" class="collapse" data-original-title="" title=""></a>
+                                            </div> -->
+                    <div class="caption">
+                        <div class="caption-subject">
+                            ORDER SUMMARY
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body" ng-hide="toggleOrderSummary">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="st-span-group">
+                                            <span class="bg-white bg-font-white">
+                                                Total Fuel Price
+                                            </span>
+                                <span class="bg-white font-blue-steel">
+                                                {{ $ctrl.totalFuelPrice | number: $ctrl.numberPrecision.amountPrecision }}
+                                            </span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="st-span-group">
+                                            <span class="bg-white bg-font-white">
+                                                Total Cost
+                                            </span>
+                                <span class="bg-white font-blue-steel">
+                                                {{ $ctrl.totalAdditionalCost | number: $ctrl.numberPrecision.amountPrecision }}
+                                            </span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="st-span-group">
+                                            <span class="bg-white bg-font-white">
+                                                Grand Total
+                                            </span>
+                                <span class="bg-white font-blue-steel">
+                                                {{ $ctrl.grandTotal | number: $ctrl.numberPrecision.amountPrecision }}
+                                            </span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    ACTION BUTTONS-->
+
     <div class="row">
         <div class="st-main-content-menu bottom-menu clearfix">
             <div class="pull-right buttons">
                 <a class="btn btn-auto-width font-grey-cascade" ng-click="$ctrl.orderPreviewEmail()">
                     <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                 </a>
-                <a class="btn btn-default" ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}" ng-click="$ctrl.saveOrder()"
+                <a class="btn btn-default"
+                   ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}"
+                   ng-click="$ctrl.saveOrder()"
                    ng-show="$ctrl.canSave($ctrl.screenActions)">
                     Save
                 </a>
@@ -2047,7 +2058,8 @@
 </div>
 
 <div aria-hidden="true"
-     aria-labelledby="mySmallModalLabel" class="orderConfirmModal confirmModal1 modal fade in" data-width="700px" id="selectContract"
+     aria-labelledby="mySmallModalLabel" class="orderConfirmModal confirmModal1 modal fade in" data-width="700px"
+     id="selectContract"
      ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes' " role="dialog">
     <div role="document">
         <div class="portlet portlet-comment light">
@@ -2069,7 +2081,8 @@
                         </label>
                         <select id="cancel_reason_cancel_reason_{{ $index }}"
                                 name="cancelReason"
-                                ng-model="$ctrl.cancelReason.cancelReason" ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"
+                                ng-model="$ctrl.cancelReason.cancelReason"
+                                ng-options="cancelReason as cancelReason.name for cancelReason in $ctrl.lists.OrderCancelReasonOption track by cancelReason.id"
                                 style=" margin-left: 12.5px; width: 435px; height: 35px;">
 
                         </select>
@@ -2114,7 +2127,8 @@
 </div>
 
 <div aria-labelledby="mySmallModalLabel"
-     class="orderConfirmModal confirmModal1 fade bs-modal hide" ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'No'" role="dialog"
+     class="orderConfirmModal confirmModal1 fade bs-modal hide"
+     ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'No'" role="dialog"
      style="transform: translateY(90px);" tabindex="-1">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
