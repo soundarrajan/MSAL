@@ -4780,7 +4780,8 @@ table.energyCalculationBlade tr.border-green-jungle{
 	height: auto !important;
 }
 #grid_labTestResults .ui-grid-viewport {
-    max-height: 500px;
+    overflow: initial !important;
+   /* max-height: 500px;*/
     /*margin-bottom: 75px;*/
     border-bottom: 1px solid #e6eaec;
 }

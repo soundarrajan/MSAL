@@ -968,6 +968,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         displayName: "Order Spec Parameter",
                         cellTemplate: $scope.dataTableTemplates.link,
                         cellLink: "#/masters/specparameter/edit/",
+                        width: 200
                     },
                     {
                         name: "uom",
@@ -985,7 +986,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "offerSpecParameter",
                         displayName: "Offer Spec Parameter",
                         cellTemplate: $scope.dataTableTemplates.readonlyNumber,
-                        decimalNumbers: vm.quantity
+                        decimalNumbers: vm.quantity,
+                        width: 200
                     },
                     {
                         name: "value",
@@ -3422,7 +3424,8 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "labCounterparty",
                         displayName: "Lab CounterParty",
-                        required: true
+                        required: true,
+                        width: 300
                     },
                     {
                         name: "labStatus",
