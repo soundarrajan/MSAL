@@ -1033,7 +1033,9 @@ APP_MASTERS.controller("Controller_Datatables", [
                         api.core.handleWindowResize().then(function() {
                             var height = Math.min(Math.max(api.grid.rows.length * 60, 80), 400);
                             $('#grid_labTestResults').css('height', height + 'px');
-                            $('.group_labTestResults').show();
+                            $timeout(function() {
+                                $('.group_labTestResults').show();
+                            }, 400);
                         });
                     });
                 }
@@ -3605,7 +3607,7 @@ APP_MASTERS.controller("Controller_Datatables", [
             // }
             	$scope.labResults_claimId = [];
             currentChecksNo = 0;
-            $scope.labResults_specParamIds = [];
+            $scope.labResults_specParamIds = []; 
             $.each(currentTableCheckboxes, function() {
 				loopClaimTypeIds = []
 				if ($(this).attr("spec-selection")) {
