@@ -3122,17 +3122,18 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
                             ctrl.request.locations[idx].buyer = a.val;
                         }
-                        if (a.elem[a.elem.length - 1] == "destination") {
+                        if (a.elem[a.elem.length - 1] == "destinationInput") {
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
                             if(a.val.voyageCode) {
                               a.val.name = a.val.locationCode + ' - ' +  a.val.voyageCode + ' - ' + a.val.etaFormated;
                             }
+                        	ctrl.selectDestinationPort(a.val, idx)
                             
-                            ctrl.request.locations[idx].destination = {
-                              id: a.val.locationId,
-                              name: a.val.name,
-                            };
-                            ctrl.request.locations[idx].destinationVesselVoyageDetailId = a.val.vesselVoyageDetailId;
+                            // ctrl.request.locations[idx].destination = {
+                            //   id: a.val.locationId,
+                            //   name: a.val.name,
+                            // };
+                            // ctrl.request.locations[idx].destinationVesselVoyageDetailId = a.val.vesselVoyageDetailId;
                         }
                         if (a.elem[a.elem.length - 1] == "company") {
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
@@ -3197,7 +3198,8 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
 		ctrl.getLowestEtaForDestinationInLocation = function(locationIdx) {
 			var lowestEta = "9999-12-30T00:00:00.0000000Z";
-			if (ctrl.request.locations[locationIdx].destinationEta) {
+			ctrl.request.locations[locationIdx].destinationInput = null;
+			if (ctrl.request.locations[locationIdx].destinationEta) { 
 				if (moment.utc(ctrl.request.locations[locationIdx].destinationEta).isBefore(moment.utc(lowestEta))) {
 					lowestEta = ctrl.request.locations[locationIdx].destinationEta
 					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination
