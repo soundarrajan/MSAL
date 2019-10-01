@@ -160,7 +160,9 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             	if (correctProduct) {
 	                var productOffer = ctrl.getSellerProductOfferOnLocationRewrite(correctProduct, location, seller.sellerCounterparty.id, seller);
             	}
-				currentRequestOfferIds.push(productOffer.id);
+            	if (productOffer) {
+					currentRequestOfferIds.push(productOffer.id);
+            	}
 				// if (v.requestLocationId == location[0].id) {
 				// 	$.each(v.sellers, function(k1,v1){
 				// 		if (v1.sellerCounterparty.id == seller.sellerCounterparty.id) {

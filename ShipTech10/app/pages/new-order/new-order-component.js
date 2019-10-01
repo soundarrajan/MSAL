@@ -156,13 +156,20 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
         function setAdditionalCostAllowNegative() {
             // debugger;
-            $.each(ctrl.lists.AdditionalCost, function (key, val) {
                 //get val.id, make call to get all info about additional cost
-                Factory_Master.get_master_entity(val.id, "additionalcost", "masters", function (response) {
+                Factory_Master.get_master_list_filtered("masters", "additionalcost", "masters_additionalcostlist" , function (response) {
                     // console.log(response);
-                    ctrl.lists.AdditionalCost[key].allowNegative = response.isAllowingNegativeAmmount;
+                    $.each(response.rows, function(key0, value0) {
+	                    $.each(ctrl.lists.AdditionalCost, function(key1, value1) {
+	                    	if (value0.id == value1.id) {
+			                    ctrl.lists.AdditionalCost[key1].allowNegative = value0.isAllowingNegativeAmmount;
+	                    	}
+	                    })
+                    })
+                    console.log(ctrl.lists.AdditionalCost);
                 });
-            })
+            // $.each(ctrl.lists.AdditionalCost, function (key, val) {
+            // })
         }
 
         ctrl.changedProductContract = function(){
