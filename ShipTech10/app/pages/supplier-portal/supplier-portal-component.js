@@ -2309,6 +2309,20 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 			}
         }
 
+        ctrl.mapSpecParamKeyById = function(product) {
+        	var mappedSpecParamKeys = [];
+        	var object = product.sellers[0].offers[0].energyParameterValues;
+			Object.keys(object).map(function(objectKey, index) {
+			    var value = object[objectKey];
+			    if (value) {
+				    if (value.specParameterId) {
+					    mappedSpecParamKeys[value.specParameterId] = objectKey;
+				    }
+			    }
+			});        	
+			return mappedSpecParamKeys;
+        }
+
 
     }
 ]);

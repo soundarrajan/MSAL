@@ -563,7 +563,7 @@
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <th ng-repeat-start="product in location.products | filter:{isEnergyCalculationRequired:true}" ng-if="product.isEnergyCalculationRequired">
+                                    <th ng-repeat-start="product in location.products | filter:{isEnergyCalculationRequired:true}" ng-if="product.isEnergyCalculationRequired" >
                                         Min
                                     </th>
                                     <th>
@@ -583,7 +583,7 @@
                                     <td>
                                         {{ spec.name }}
                                     </td>
-                                    <td class="hidden" ng-repeat-start="(kp,product) in location.products | filter:{isEnergyCalculationRequired:true}" ></td>
+                                    <td class="hidden" ng-repeat-start="(kp,product) in location.products | filter:{isEnergyCalculationRequired:true}" ng-init=" productSpecParams = $ctrl.mapSpecParamKeyById(product)"></td>
                                     <td>
 
                                         <span ng-repeat="(specKey2, spec2) in product.specParameters" ng-if="spec2.specParameter.id == spec.id">
@@ -595,8 +595,7 @@
                                     </span></td>
                                     <td><span ng-repeat="(specKey2, spec2) in product.specParameters" ng-if="spec2.specParameter.id == spec.id">
                                         <div class="form_input form_input_name" >
-
-                                            <input type="text"  ng-model="product.sellers[0].offers[0].energyParameterValues[$ctrl.specIndex[specKey2]].specValue" class="form-control  " ng-disabled="product.productStatus.name == 'Stemmed'" name="offer{{ specKey }}" id="offer{{ specKey }}" format="number:{{$ctrl.numberPrecision.quantityPrecision}}" ng-if="$ctrl.returnParamIndex(spec2.specParameter, specKey)"/>
+                                            <input type="text"  ng-model="product.sellers[0].offers[0].energyParameterValues[productSpecParams[spec.id]].specValue" class="form-control  " ng-disabled="product.productStatus.name == 'Stemmed'" name="offer{{ specKey }}" id="offer{{ specKey }}" format="number:{{$ctrl.numberPrecision.quantityPrecision}}" ng-if="$ctrl.returnParamIndex(spec2.specParameter, specKey)"/>
 
                                         </div>
                                        </span>
