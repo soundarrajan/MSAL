@@ -586,7 +586,7 @@
 <div ng-include=" 'pages/group-of-requests/views/compare.html'"></div>
 <comments-dialog class="modal fade in" id="comments" aria-hidden="true" data-width="33%" args="{ internalComments: $ctrl.internalComments, externalComments: $ctrl.externalComments}" on-save-comments="$ctrl.saveComments(internalComments, externalComments)"></comments-dialog>
 <div class="bladeEntity" id="confirmOffer" style="overflow: auto;">
-    <confirm-offers-dialog id="confirm" aria-hidden="true" data-width="90%" args="{needSupplierVerif: $ctrl.needSupplierQuote, bestOffer: $ctrl.bestOfferData}" confirmation-product-offers=$ctrl.confirmationProductOffers></confirm-offers-dialog>
+    <confirm-offers-dialog id="confirm" aria-hidden="true" data-width="90%" args="{needSupplierVerif: $ctrl.needSupplierQuote}" confirmation-product-offers=$ctrl.confirmationProductOffers></confirm-offers-dialog>
 </div>
 <div class="bladeEntity" id="offerDetails">
     <offer-details-dialog id="offer_details" aria-hidden="true" args="{product: $ctrl.offerDetailsProduct, offer: $ctrl.offerDetails}" on-offer-saved="$ctrl.updateOffer(offer, product)" data-width="90%"></offer-details-dialog>

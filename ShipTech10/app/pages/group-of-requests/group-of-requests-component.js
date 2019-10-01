@@ -436,9 +436,9 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             initializeDataArrays(ctrl.requests, skipSellerSorting);
             requestGroupProductIds = getRequestGroupProductIdsCSV(ctrl.requests);
             if (!skipBestCalls) {
-	            groupOfRequestsModel.getBestOffer(requestGroupProductIds).then(function (data) {
-	                ctrl.bestOfferData = data.payload;
-	            });
+	            // groupOfRequestsModel.getBestOffer(requestGroupProductIds).then(function (data) {
+	            //     ctrl.bestOfferData = data.payload;
+	            // });
 	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
 	                ctrl.bestTcoData = data.payload;
 	                ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
@@ -2724,9 +2724,9 @@ ctrl.setProductData = function(data, loc) {
             };
         };
         ctrl.isCurrencyDisabled = function () {
-            if (ctrl.bestOfferData && ctrl.bestOfferData.length > 0) {
-                return true;
-            }
+            // if (ctrl.bestOfferData && ctrl.bestOfferData.length > 0) {
+            //     return true;
+            // }
             if (ctrl.rfqSent) {
                 return true;
             }
