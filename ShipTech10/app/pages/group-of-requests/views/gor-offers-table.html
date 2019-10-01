@@ -244,16 +244,18 @@
                             <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price/Spec Energy</div> -->
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price Diff</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">TCO</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Total price</div>
-                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Amount</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || $ctrl.isEnergyCalculationRequired" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || $ctrl.isEnergyCalculationRequired" style="width:100px" class="energy-content-cell">Total price</div>
+                            <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || $ctrl.isEnergyCalculationRequired" style="width:100px" class="energy-content-cell">Amount</div>
                         </div>
                     
                         <div>
-                            <a ng-click="$ctrl.toggleEnergyContentTab(product, reqProdKey);" class="pull-right" style="border-left: 1px solid #dde4ec;position: absolute;min-width:20px;z-index: 9999;background: white;left: 0;display: block;height: 100%;top: 0;transform: translateX(-100%);" ng-show="!$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] && !$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]">
+                            <a ng-click="$ctrl.toggleEnergyContentTab(product, reqProdKey);" class="pull-right" style="border-left: 1px solid #dde4ec;position: absolute;min-width:20px;z-index: 9999;background: white;left: 0;display: block;height: 100%;top: 0;transform: translateX(-100%);" 
+                            	ng-show="$ctrl.isEnergyCalculationRequired ? !$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] : !$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]">
                                 <i class="fa fa-2x fa-angle-right" style="position: absolute;top: 50%;left: 50%;transform:  translate(-50%, -50%);"></i>
                             </a>
-                            <a ng-click="$ctrl.toggleEnergyContentTab(product, reqProdKey);" class="pull-right" style="border-left: 1px solid #dde4ec;position: absolute;min-width:20px;z-index: 9999;background: white;right: 0;height: 100%;top: 0;" ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] || $ctrl.priceExpanded['prod'+product.requestId+reqProdKey]">
+                            <a ng-click="$ctrl.toggleEnergyContentTab(product, reqProdKey);" class="pull-right" style="border-left: 1px solid #dde4ec;position: absolute;min-width:20px;z-index: 9999;background: white;right: 0;height: 100%;top: 0;" 
+                            	ng-show="$ctrl.isEnergyCalculationRequired ? $ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] ">
                                 <i class="fa fa-2x fa-angle-left" style="position: absolute;top: 50%;left: 50%;transform:  translate(-50%, -50%);" ></i>
                             </a>                            
                         </div>
@@ -938,7 +940,7 @@
                             </span>
                         </div> -->
                     </span>
-                    <span ng-show="$ctrl.priceExpanded['prod'+product.requestId+pkey]">
+                    <span ng-show="$ctrl.priceExpanded['prod'+product.requestId+pkey] || $ctrl.isEnergyCalculationRequired">
                         <div style="width:100px;" class="energy-content-cell" ng-if="$ctrl.displayAdditionalCostColumn">
                             <!-- add cost -->
                             {{(productOffer !== null) ? (productOffer.additionalCostPerUnit * maxQuantity.qty | number : $ctrl.numberPrecision.amountPrecision) : "-" }}
