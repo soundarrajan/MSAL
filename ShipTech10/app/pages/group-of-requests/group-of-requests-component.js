@@ -156,16 +156,22 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 			var isMinimumTotal = false;
 			var currentRequestOfferIds = [];
 			$.each(requestProducts, function(k,v){
-				if (v.requestLocationId == location[0].id) {
-					$.each(v.sellers, function(k1,v1){
-						if (v1.sellerCounterparty.id == seller.sellerCounterparty.id) {
-							$.each(v1.offers, function(k2,v2){
-								currentRequestOfferIds.push(v2.id);
-							})
-						}
-					})
-				}
+            	correctProduct = v.productLocations['L' + location[0].uniqueLocationIdentifier];
+            	if (correctProduct) {
+	                var productOffer = ctrl.getSellerProductOfferOnLocationRewrite(correctProduct, location, seller.sellerCounterparty.id, seller);
+            	}
+				currentRequestOfferIds.push(productOffer.id);
+				// if (v.requestLocationId == location[0].id) {
+				// 	$.each(v.sellers, function(k1,v1){
+				// 		if (v1.sellerCounterparty.id == seller.sellerCounterparty.id) {
+				// 			$.each(v1.offers, function(k2,v2){
+				// 				currentRequestOfferIds.push(v2.id);
+				// 			})
+				// 		}
+				// 	})
+				// }
 			})
+			console.log(currentRequestOfferIds);
 			$.each(ctrl.bestTcoData.bestTotalTCO, function(k,v){
 				$.each(v.products, function(k1,v1){
 					if (currentRequestOfferIds.indexOf(v1.requestOfferId) != -1 ) {
@@ -5422,7 +5428,7 @@ ctrl.setProductData = function(data, loc) {
                 	if (productOffer.id) {
 	                	hasAtLeastOneRfq = true;
                 	}
-                    if (productOffer.energyParameterValues) {
+                    if (productOffer.energyParameterValues && ctrl.isEnergyCalculationRequired) {
                         if (productOffer.energyParameterValues.tco) {
                             totalAmount += productOffer.energyParameterValues.tco;
                         } else {
@@ -5444,7 +5450,9 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             if (ctrl.includeAverageSurveyorCharge && hasAtLeastOneRfq) {
-                totalAmount += ctrl.averageSurveyorCost;
+            	if (totalAmount > 0) {
+	                totalAmount += ctrl.averageSurveyorCost;
+            	} 
             }
             return foundNoValidTco ? -1 : totalAmount;
         };
