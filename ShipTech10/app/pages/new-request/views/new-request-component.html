@@ -741,15 +741,52 @@
 	                                                    <!-- <span ng-if="location.destination" ng-init="location.destination = location.destination"></span> -->
 	                                                    <div class="input-group col-md-8 col-sm-12">
 	                                                    	 <!-- {{location.destination}} -->
-	                                                        <input name="{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" id="id_{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" class="typeahead form-control" ng-model="location.destination" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue)" typeahead-on-select="$ctrl.selectDestinationPort($item, locationIdx)" typeahead-editable="false" ng-model-options="{ allowInvalid: false, debounce: 100 }" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" data-origina-title="{{ location.destination.name }}" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" id="id_{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" class="typeahead form-control" ng-model="location.destinationInput" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue)" typeahead-on-select="$ctrl.selectDestinationPort($item, locationIdx)" typeahead-editable="false" ng-model-options="{ allowInvalid: false, debounce: 100 }" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" data-origina-title="{{ location.destination.name }}" ng-disabled="$ctrl.disableAllFields">
 	                                                        
 	                                                <!--         <span class="input-group-addon" data-toggle="modal" href="#lookup_dialog" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="$ctrl.setDialogTypeDestination('Voyages',location.vesselVoyageDetailId); $ctrl.locationIdx =  $index"> -->
-	                                                        <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_destinationport', 'Select Destination Port', '$ctrl.location[' + $index + '].destination','','', $ctrl.productInfoFields.DestinationPort.name + $index, $ctrl.request.vesselDetails.vessel)" ng-disabled="$ctrl.disableAllFields">
+	                                                        <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_destinationport', 'Select Destination Port', '$ctrl.location[' + $index + '].destinationInput','','', $ctrl.productInfoFields.DestinationPort.name + $index, $ctrl.request.vesselDetails.vessel)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="fa fa-search"></i>
+	                                                        </span>
+	                                                        <span ng-init="showMultiDestinations[locationIdx] = false" class="input-group-addon {{showMultiDestinations[locationIdx] ? 'bg-grey-salt' : ''}}" ng-click="showMultiDestinations[locationIdx] = !showMultiDestinations[locationIdx]">
+	                                                            <i class="fa fa-ellipsis-h"></i>
 	                                                        </span>
 	                                                    </div>
 	                                                </div>
 	                                            </div>
+	
+												<div class="multiSelectDestinationPorts" ng-show="showMultiDestinations[locationIdx]">
+													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination.id" data-original-title="location.destination.name">
+				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination = null; location.destinationEta = null; location.destinationEtaFormatted = null; location.destinationVesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
+														<span class="font-dark">
+															{{location.destination.name}}
+														</span>
+					                                </div>	
+													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination1.id" data-original-title="location.destination1.name">
+				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination1 = null; location.destination1Eta = null; location.destination1EtaFormatted = null; location.destination1VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
+														<span class="font-dark">
+															{{location.destination1.name}}
+														</span>
+					                                </div>	
+													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination2.id" data-original-title="location.destination2.name">
+				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination2 = null; location.destination2Eta = null; location.destination2EtaFormatted = null; location.destination2VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
+														<span class="font-dark">
+															{{location.destination2.name}}
+														</span>
+					                                </div>	
+													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination3.id" data-original-title="location.destination3.name">
+				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination3 = null; location.destination3Eta = null; location.destination3EtaFormatted = null; location.destination3VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
+														<span class="font-dark">
+															{{location.destination3.name}}
+														</span>
+					                                </div>	
+													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination4.id" data-original-title="location.destination4.name">
+				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination4 = null; location.destination4Eta = null; location.destination4EtaFormatted = null; location.destination4VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
+														<span class="font-dark">
+															{{location.destination4.name}}
+														</span>
+					                                </div>	
+												</div>
+
 	                                        </div>
 	                                        <div ng-if="$ctrl.productInfoFields.Buyer.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "Buyer","masterSource": "procurement_buyerslist", filters: $ctrl.request.vesselDetails.vessel})'>
 	                                            <div class="row">

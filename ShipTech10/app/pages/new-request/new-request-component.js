@@ -1326,6 +1326,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             };
                         }
                         locationObject.destinationVesselVoyageDetailId = extraInfo.destinationVesselVoyageDetailId;
+                        locationObject.destinationEta = extraInfo.destinationEta;
                     }
                     ctrl.request.locations.push(locationObject);
                     ctrl.etaEnabled[ctrl.request.locations.length - 1] = true;
@@ -1373,9 +1374,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     }
                     ctrl.request.locations[ctrl.request.locations.length - 1].products = _.orderBy(ctrl.request.locations[ctrl.request.locations.length - 1].products, ['productTypeId', 'product.name'], ['asc', 'asc']);
 		            _.each(ctrl.request.locations[ctrl.request.locations.length - 1].products, function(value, key) {
-		                value.product.name = String(key + 1) + ' - ' + value.product.name;
+		                value.product.name = String(key + 1) + ' - ' + angular.copy(value.product.displayName);
 		            });    
                     deferred.resolve();
+                    ctrl.getLowestEtaForDestinationInLocation(ctrl.request.locations.length - 1);
                 },
                 function() {
                     deferred.reject();
@@ -3159,14 +3161,72 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         });
 
 		ctrl.selectDestinationPort = function(data,locationIdx) {
-			ctrl.request.locations[locationIdx].destinationVesselVoyageDetailId = data.destinationVesselVoyageDetailId;
+			var nextAvailableDestinationIndex = "";
+			if (!ctrl.request.locations[locationIdx].destination4) {nextAvailableDestinationIndex = 4}
+			if (!ctrl.request.locations[locationIdx].destination3) {nextAvailableDestinationIndex = 3}
+			if (!ctrl.request.locations[locationIdx].destination2) {nextAvailableDestinationIndex = 2}
+			if (!ctrl.request.locations[locationIdx].destination1) {nextAvailableDestinationIndex = 1}
+	        ctrl.request.locations[locationIdx].destinationInput = null;
+
+			if (
+				ctrl.request.locations[locationIdx].destination && 
+				ctrl.request.locations[locationIdx].destination1 && 
+				ctrl.request.locations[locationIdx].destination2 && 
+				ctrl.request.locations[locationIdx].destination3 && 
+				ctrl.request.locations[locationIdx].destination4 
+			) {
+				toastr.warning("You can select up to 5 Destination Ports");
+				ctrl.getLowestEtaForDestinationInLocation(locationIdx)
+				return;
+			}	
+
+
+
+			ctrl.request.locations[locationIdx]["destination" + nextAvailableDestinationIndex + "VesselVoyageDetailId"] = data.destinationVesselVoyageDetailId;
 			// debugger; 
-            ctrl.request.locations[locationIdx].destination = {
+            ctrl.request.locations[locationIdx]["destination" + nextAvailableDestinationIndex] = {
                   id: data.id,
                   name: data.name,
             };
-            ctrl.request.locations[locationIdx].destinationVesselVoyageDetailId = data.vesselVoyageDetailId;
-            ctrl.request.locations[locationIdx].destinationEta = data.eta;
+            ctrl.request.locations[locationIdx]["destination" + nextAvailableDestinationIndex + "VesselVoyageDetailId"] = data.vesselVoyageDetailId;
+            ctrl.request.locations[locationIdx]["destination" + nextAvailableDestinationIndex + "Eta"] = data.eta;
+
+			ctrl.getLowestEtaForDestinationInLocation(locationIdx)											
+
+		}
+
+		ctrl.getLowestEtaForDestinationInLocation = function(locationIdx) {
+			var lowestEta = "9999-12-30T00:00:00.0000000Z";
+			if (ctrl.request.locations[locationIdx].destinationEta) {
+				if (moment.utc(ctrl.request.locations[locationIdx].destinationEta).isBefore(moment.utc(lowestEta))) {
+					lowestEta = ctrl.request.locations[locationIdx].destinationEta
+					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination
+				}				
+			}
+			if (ctrl.request.locations[locationIdx].destination1Eta) {
+				if (moment.utc(ctrl.request.locations[locationIdx].destination1Eta).isBefore(moment.utc(lowestEta))) {
+					lowestEta = ctrl.request.locations[locationIdx].destination1Eta;
+					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination1
+				}				
+			}
+			if (ctrl.request.locations[locationIdx].destination2Eta) {
+				if (moment.utc(ctrl.request.locations[locationIdx].destination2Eta).isBefore(moment.utc(lowestEta))) {
+					lowestEta = ctrl.request.locations[locationIdx].destination2Eta;
+					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination2
+				}				
+			}
+			if (ctrl.request.locations[locationIdx].destination3Eta) {
+				if (moment.utc(ctrl.request.locations[locationIdx].destination3Eta).isBefore(moment.utc(lowestEta))) {
+					lowestEta = ctrl.request.locations[locationIdx].destination3Eta;
+					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination3
+				}				
+			}
+			if (ctrl.request.locations[locationIdx].destination4Eta) {
+				if (moment.utc(ctrl.request.locations[locationIdx].destination4Eta).isBefore(moment.utc(lowestEta))) {
+					lowestEta = ctrl.request.locations[locationIdx].destination4Eta;
+					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination4
+				}					
+			}
 		}
 
         ctrl.getImoObj = function(vesselId) {
@@ -3229,6 +3289,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 			return computedServiceId;
         	// console.log();
         }
+
+        ctrl.showDestinations = function(locationIdx, event) {
+        	console.log(ctrl.request.locations[locationIdx]);
+        	console.log(event);
+        }
+
 
     }
 
