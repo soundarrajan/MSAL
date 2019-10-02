@@ -993,7 +993,7 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
             $Api_Service.entity.list(data, function(result) {
                 callback(result);
             });
-        },
+        },      
         uploadInvoicePrice: function(fd, callback){
             var uploadUrl = API.BASE_URL_DATA_MASTERS + '/api/masters/prices/import';
             $http.post(uploadUrl, fd, {

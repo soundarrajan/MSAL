@@ -5156,7 +5156,7 @@ APP_API.factory("$Api_Service", [
                         if ($state.params.requestId) {
                             apiJSON.Payload.Filters[0].Value = $state.params.requestId;
                         }
-                   
+
                         if($state.current.name == "masters.documents"){
                             if($state.params.screen_id == "documenttype"){
                                 // change url
@@ -6825,7 +6825,8 @@ APP_API.factory("$Api_Service", [
                                     OrderId: param.field.param.OrderId ? param.field.param.OrderId : null,
                                     DeliveryProductId: param.field.param.DeliveryProductId ? param.field.param.DeliveryProductId : null,
                                     LabResultId: param.field.param.LabResultId ? param.field.param.LabResultId : null,
-                                    ClaimTypeId: param.field.param.ClaimTypeId ? param.field.param.ClaimTypeId : null
+                                    ClaimTypeId: param.field.param.ClaimTypeId ? param.field.param.ClaimTypeId : null,
+                                    OrderProductId: param.field.param.OrderProductId ? param.field.param.OrderProductId : null
                                 }
                             };
                             var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getQuantitySubtypes";

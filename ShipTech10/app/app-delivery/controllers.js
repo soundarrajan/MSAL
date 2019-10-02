@@ -1883,6 +1883,46 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
 	                field_name: field_name
 	            };
 	        }
+            if (clc == "masters_documenttypelist") {
+                    var screen_name = $state.params.screen_id.toLowerCase();
+                    var transactionTypeName = {
+                        // 'claim': 'Claims',
+                        // 'contract': 'Contract',
+                        'labresult': 'Labs',
+                        'request_procurement': 'Request',
+                        'request_procurement_documents': 'Offer',
+                        'order_procurement': 'Order',
+                        'counterparty' : 'Counterparties',
+                        'company': 'Companies',
+                        'country': 'Countries',
+                        'strategy': 'Strategies',
+                        'currency': 'Currencies',
+                        'status': 'Statuses'
+                    }
+                    if (transactionTypeName[screen_name] ) {
+                        screen_name = transactionTypeName[screen_name].toLowerCase();
+                    }
+
+                    var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+                        return el.name.toLowerCase().indexOf(screen_name) > -1;
+                    }).id;
+
+                    if (screen_name == 'statuses') transactionTypeId =  39;
+
+                    $scope.modal.filters = [
+                        {                   
+                            "ColumnName": "ReferenceNo",
+                            "Value": vm.entity_id
+                        },
+                        {
+                            "ColumnName": "TransactionTypeId",
+                            "Value": transactionTypeId
+                        }
+                    ]
+
+                    $scope.filters = $scope.modal.filters;
+            }
+
 	        $scope.modalInstance = $uibModal.open({
 	            template: tpl,
 	            size: "full",

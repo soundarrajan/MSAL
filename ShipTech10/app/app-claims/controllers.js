@@ -925,6 +925,8 @@ APP_CLAIMS.controller("Controller_Claims", [
             specParameterUomConversionFactor = null;
             BDNQuantity = null;
             BDNQuantityUom = null;
+            ConfirmedQuantity = null;
+            ConfirmedQuantityUom = null;
             sellerQuantity = null;
             buyerQuantity = null;
             quantityUom = null;
@@ -969,6 +971,8 @@ APP_CLAIMS.controller("Controller_Claims", [
             if (isDensitySubtype) {
                 BDNQuantityUom = $scope.formValues.densitySubtypes[density.index].bdnQuantityUom;
                 BDNQuantity = $scope.formValues.densitySubtypes[density.index].bdnQuantity;
+                ConfirmedQuantity = $scope.formValues.densitySubtypes[density.index].confirmedQuantity;
+                ConfirmedQuantityUom = $scope.formValues.densitySubtypes[density.index].confirmedQuantityUom;
                 specParameterUomConversionFactor = $scope.formValues.densitySubtypes[density.index].specParameterUomConversionFactor;
                 densityDifference = $scope.formValues.densitySubtypes[density.index].densityDifference;
                 if ($scope.formValues.densitySubtypes[density.index].specParameter) {
@@ -984,6 +988,8 @@ APP_CLAIMS.controller("Controller_Claims", [
                     // specParameterUomConversionFactor : specParameterUomConversionFactor,
                     BdnQuantity : BDNQuantity,
                     BdnQuantityUom : BDNQuantityUom,
+                    confirmedQuantity : ConfirmedQuantity,
+                    confirmedQuantityUom : ConfirmedQuantityUom,
                     densityDifference : densityDifference,
                     sellerQuantity : sellerQuantity,
                     buyerQuantity : buyerQuantity,

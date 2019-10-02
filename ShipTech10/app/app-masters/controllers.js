@@ -2743,6 +2743,11 @@ APP_MASTERS.controller("Controller_Master", [
             } else {
                 lab_result_id = null;
             }
+            if ($scope.formValues.orderDetails && $scope.formValues.orderDetails.orderProductId) {
+                order_product_id = $scope.formValues.orderDetails.orderProductId;
+            } else {
+                order_product_id = null;
+            }
             product_id = $scope.formValues.orderDetails.deliveryProductId;
             field = {
                 Name: master,
@@ -2758,6 +2763,7 @@ APP_MASTERS.controller("Controller_Master", [
             field.param = {
                 OrderId: order_id,
                 DeliveryProductId: product_id,
+                OrderProductId: order_product_id,
                 LabResultId: lab_result_id,
                 ClaimTypeId: claimType,
                 ClaimTypeName: claimTypeName
@@ -7663,43 +7669,66 @@ APP_MASTERS.controller("Controller_Master", [
             return enabledEmailToVessel;
         }
 
-        vm.productEnergyFormulaChanged = function(type, name) {
-            var description = '';
-            _.each($listsCache[type], function(v, k) {
-                if (v.name === name) {
-                    description = v.description;
-                    return;
+        vm.getDocumentTypesFiltered = function() {
+        	console.log("getDocumentTypesFiltered");
+
+			var screen_name = $state.params.screen_id.toLowerCase();
+        	var transactionTypeName = {
+        		// 'claim': 'Claims',
+        		// 'contract': 'Contract',
+        		'labresult': 'Labs',
+        		'request_procurement': 'Request',
+        		'request_procurement_documents': 'Offer',
+        		'order_procurement': 'Order',
+        		'counterparty' : 'Counterparties',
+        		'company': 'Companies',
+        		'country': 'Countries',
+        		'strategy': 'Strategies',
+        		'currency': 'Currencies',
+        		'status': 'Statuses'
+        	}
+        	if (transactionTypeName[screen_name] ) {
+        		screen_name = transactionTypeName[screen_name].toLowerCase();
+        	}
+
+    	    var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+    			return el.name.toLowerCase().indexOf(screen_name) > -1;
+    		}).id;
+
+	    	documentTypeFilters = [
+	    		{		    		
+	    			"ColumnName": "ReferenceNo",
+	    			"Value": vm.entity_id
+	    		},
+	    		{
+	    			"ColumnName": "TransactionTypeId",
+	    			"Value": transactionTypeId
+	    		}
+    		]        	
+            
+            var data = {
+                app: "masters",
+                screen: "documenttype",
+                clc_id: "masters_documenttype",
+                params: {
+                    UIFilters: {},
+                    col: "",
+                    filters: documentTypeFilters,
+                    page: 1,
+                    query: "",
+                    rows: 9999,
+                    shrinkToFit: true,
+                    sort: ""
                 }
+            };
+
+
+            $Api_Service.entity.list(data, function(result) {
+                console.log(result);
+            	$scope.options["DocumentType"] = result.rows;
             });
-            if (type === 'SpecificEnergyCalculation') {
-                $scope.formValues.energyFormulaDescriptionSpecific = description;
-            }
-            if (type === 'CCAI') {
-                $scope.formValues.energyFormulaDescriptionCCAI = description;
-            }
-        }
-
-        // NOT USED AS OF 03.09.2019 - WORK ITEM 14069
-        vm.isCounterpartyContactAddressRequired = function(addressIndex) {
-            var address;
-            if (_.has($scope, 'formValues.contacts')) {
-                address = $scope.formValues.contacts[addressIndex].address;
-            }
-            if (address) {
-                for (var key in address) {
-                    if (address[key] !== null && address[key] !== "" && typeof(address[key]) !== 'undefined')
-                        return true;
-                }
-                return false;
-            }
-            return false;
-        }
-
-        $scope.modifyUom = function(obj) {
-            if (obj.name == "Percentage") {
-                $scope.formValues.delivery.orderedQtyUom = null;
-            }            
 
         }
+
     }
 ]);
