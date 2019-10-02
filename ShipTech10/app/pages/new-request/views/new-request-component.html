@@ -732,7 +732,7 @@
 	                                        </div>
 	                                       <!-- END DELIVERYWINDOWDISPLAY -->
 	                                        <!-- <span ng-init="$ctrl.productInfoFields.DestinationPort.visible = true"></span> -->
-	                                        <div ng-if="$ctrl.productInfoFields.DestinationPort.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "BunkerablePort","masterSource": "masters_locations"})'>
+	                                        <div ng-if="$ctrl.productInfoFields.DestinationPort.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "BunkerablePort","masterSource": "masters_locations"}); $ctrl.getLowestEtaForDestinationInLocation(locationIdx);'>
 	                                            <div class="row">
 	                                                <label class="control-label col-md-4">
 	                                                    {{ $ctrl.productInfoFields.DestinationPort.caption | translate }}
