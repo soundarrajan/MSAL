@@ -1,5 +1,5 @@
 <div class="details-req" ng-class="$ctrl.req_cards == 'big' ? 'expanded' : 'collapsed'">
-    <div class="row">
+    <div class="row" style="display: flex; align-items: center;">
         <div class="col-xs-1">
             <div class="left-arrow arrow">
                 <button  ng-click="offset= offset - 1" ng-disabled="offset == 0" ng-class="offset == 0 ? 'disabled' : ''">
@@ -12,7 +12,7 @@
             <!-- {{$ctrl.sellerOffers}} -->
                 <div class="col-md-4" ng-repeat="(key, value) in $ctrl.sellerOffers |  limitTo:display:offset track by $index" >
                 <!-- ng-if="value.products[0].isEnergyCalculationRequired" -->
-                    <div class="req-card"  ng-class="$ctrl.active_prod == value ? 'active_req' : ''"  ng-click="$ctrl.active_prod = value">
+                    <div class="req-card" style="height: auto" ng-class="$ctrl.active_prod == value ? 'active_req' : ''"  ng-click="$ctrl.active_prod = value">
                         <p class="caption-subject">
                             <a href="" ng-click="$ctrl.req_cards == 'big' ? $ctrl.req_cards = 'small' : $ctrl.req_cards = 'big'">
                                 <i class="fa fa-angle-double-down" aria-hidden="true" ng-if="$ctrl.req_cards == 'small'"></i>

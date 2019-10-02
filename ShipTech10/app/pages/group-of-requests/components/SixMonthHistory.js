@@ -35,6 +35,13 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function (changes) {
 		    	if (!changes.activeProduct) {
+		    		ctrl.sixMonthsHistoryData = null;
+		    		ctrl.computedTableHeight = 0;
+		    		return;
+		    	}
+		    	if (!changes.activeProduct.currentValue) {
+		    		ctrl.sixMonthsHistoryData = null;
+		    		ctrl.computedTableHeight = 0;
 		    		return;
 		    	}
 		    	console.log(changes.activeProduct.currentValue);
