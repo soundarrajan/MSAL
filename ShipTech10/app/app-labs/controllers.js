@@ -663,8 +663,8 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
     	})
     	currentStatusResponse = null
         if (rowVal.value != "") {
-            if (rowVal.min && rowVal.max) {
-                if (rowVal.value > rowVal.min && rowVal.value < rowVal.max) {
+            if (rowVal.min != null && rowVal.max != null) {
+                if (rowVal.value >= rowVal.min && rowVal.value <= rowVal.max) {
                     currentStatusResponse = passedStatus
                 } else {
                     currentStatusResponse = failedStatus
