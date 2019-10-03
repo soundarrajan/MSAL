@@ -662,30 +662,34 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
     		}    		
     	})
     	currentStatusResponse = null
-    	if (rowVal.min && rowVal.max) {
-    		if (rowVal.value > rowVal.min && rowVal.value < rowVal.max) {
-		    	currentStatusResponse = passedStatus
-    		} else {
-		    	currentStatusResponse = failedStatus
-    		}
-    	} else {
-    		if (rowVal.min) {
-	    		if (rowVal.value >= rowVal.min) {
-			    	currentStatusResponse = passedStatus
-	    		} else {
-			    	currentStatusResponse = failedStatus
-	    		}
-    		} 
-    		if (rowVal.max) {
-	    		if (rowVal.value <= rowVal.max) {
-			    	currentStatusResponse = passedStatus
-	    		} else {
-			    	currentStatusResponse = failedStatus
-	    		}
-    		}     		   		
-    	}
+        if (rowVal.value != "") {
+            if (rowVal.min && rowVal.max) {
+                if (rowVal.value > rowVal.min && rowVal.value < rowVal.max) {
+                    currentStatusResponse = passedStatus
+                } else {
+                    currentStatusResponse = failedStatus
+                }
+            } else {
+                if (!isNaN(rowVal.min)) {
+                    if (rowVal.value >= rowVal.min) {
+                        currentStatusResponse = passedStatus
+                    } else {
+                        currentStatusResponse = failedStatus
+                    }
+                } 
+                if (!isNaN(rowVal.max)) {
+                    if (rowVal.value <= rowVal.max) {
+                        currentStatusResponse = passedStatus
+                    } else {
+                        currentStatusResponse = failedStatus
+                    }
+                }                   
+            }
+        }
     	rowVal.qualityMatch = currentStatusResponse;
-    	console.log(currentStatusResponse.name);
+    	if (currentStatusResponse != null) {
+            console.log(currentStatusResponse.name);
+        }
     }
 
     $scope.$on('formValues', function(){
