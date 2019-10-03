@@ -670,14 +670,14 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     currentStatusResponse = failedStatus
                 }
             } else {
-                if (!isNaN(rowVal.min)) {
+                if (rowVal.min != null) {
                     if (rowVal.value >= rowVal.min) {
                         currentStatusResponse = passedStatus
                     } else {
                         currentStatusResponse = failedStatus
                     }
                 } 
-                if (!isNaN(rowVal.max)) {
+                if (rowVal.max != null) {
                     if (rowVal.value <= rowVal.max) {
                         currentStatusResponse = passedStatus
                     } else {
@@ -685,6 +685,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     }
                 }                   
             }
+
         }
     	rowVal.qualityMatch = currentStatusResponse;
     	if (currentStatusResponse != null) {
