@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6 caption-subject">Select Contract</div>
     </div>
-    <div class="portlet-body st-contract-select-dialog" style="overflow: auto;">
+    <div class="portlet-body st-contract-select-dialog" ng-if="$ctrl.refreshedSelectDialog" style="overflow: auto;">
         <table class="table table-striped table-hover table-bordered"
                 id="contract_select">
             <thead>

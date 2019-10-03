@@ -32,7 +32,6 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
             if (changes.filters.isFirstChange()) {
                 return false;
             }
-            ctrl.selectedCheckbox = null;
             ctrl.filters = changes.filters.currentValue;
             ctrl.data = null;
 			$("contract-select-dialog").css({
@@ -40,8 +39,16 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
 			})	
 			screenLoader.isLoading();
 			$("contract-select-dialog").css("opacity", "0")
-			$("contract-select-dialog").css("margin-top", "-100px")
+			$("contract-select-dialog").css("margin-top", "-100px");
+			ctrl.refreshedSelectDialog = false;
+			ctrl.toggleSelection(null, null);
             selectContractModel.getSuggestedContracts(null, null, ctrl.filters).then(function(server_data) {
+				
+				ctrl.refreshedSelectDialog = true;
+				ctrl.selectedCheckbox = null;
+				ctrl.selectedRow = null;
+				ctrl.toggleSelection(null, null);
+                
                 // destroyDataTable();
 				screenLoader.finishLoading();
                 ctrl.data = server_data.payload;
@@ -132,5 +139,11 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
             });
             ctrl.checkboxes = [];
         };
+
+		$('contract-select-dialog').on('hidden.bs.modal', function () {
+		    // ctrl.checkboxes = null;
+		    // ctrl.selectedRow = null;
+		});
+
     }
 ]);
