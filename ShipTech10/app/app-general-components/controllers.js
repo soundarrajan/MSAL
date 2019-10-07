@@ -902,6 +902,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (typeof(theCLC.jqGrid.Ascensys.gridData) != 'undefined') {
                         rowObject.contractMinQuantity = theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].contractMinQuantity;
                         rowObject.contractMaxQuantity = theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].contractMaxQuantity;
+                        rowObject.qtyUom = theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].qtyUom;
                     }
                     if (options.colModel.dataFrom == "base") {
                         if (theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].minQuantity != null) minQty = $filter("number")(theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].minQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
@@ -2834,13 +2835,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 if (response) {
                     maxEdit = response.data.payload.avgMaxOrderedQuantity;
                     minEdit = response.data.payload.avgMinOrderedQuantity;
+                    qtyUom = response.data.payload.qtyUom;
                     bunkerStrategy = response.data.payload.bunkerStrategy;
                     ctrl.currentRowIndex = rowIdx;
                     ctrl.currentRowData.minQuantity = minEdit;
                     ctrl.currentRowData.maxQuantity = maxEdit;
+                    ctrl.currentRowData.qtyUom = qtyUom;
                     ctrl.tableData[ctrl.currentRowIndex-1] = ctrl.currentRowData;
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit)
-                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
+                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", qtyUom)
+                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "qtyUom", qtyUom)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "bunkerStrategy", bunkerStrategy);
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)
@@ -2861,6 +2865,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     ctrl.tableData[ctrl.currentRowIndex-1] = ctrl.currentRowData;
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
+                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "qtyUom", null)
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)   
                     callback(true);               
@@ -3119,6 +3124,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "noOfDaysBeforeExpiry", contract.noOfDaysBeforeExpiry);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMinQuantity", contract.contractMinQuantity);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMaxQuantity", contract.contractMaxQuantity);
+                $("#flat_contract_planning").jqGrid("setCell", rowId, "qtyUom", contract.qtyUom);
 
                 $('#contract-planning-contract-link-' + rowId).html('<a target="_blank" href="#/contracts/contract/edit/' +
                   contractObj.id + '"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>' +
@@ -3133,6 +3139,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "noOfDaysBeforeExpiry", null);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMinQuantity", null);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMaxQuantity", null);
+                $("#flat_contract_planning").jqGrid("setCell", rowId, "qtyUom", null);
 
                 $rootScope.editableCProwsModel['row-'+rowId]['contract'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['contractProductId'] = null;
