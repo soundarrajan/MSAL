@@ -3350,17 +3350,21 @@ ctrl.setProductData = function(data, loc) {
             var product, req, theLocation;
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 req = ctrl.requirements[i];
-                $.each(ctrl.requests, function (reqK, reqV) {
-                    $.each(reqV.locations, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
-                                if (sellerV.randUniquePkg == req.randUniquePkg && locV.location.id == req.LocationId && locV.id == req.RequestLocationId && req.RfqId != null && seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
-                                    requoteRequirements.push(req);
-                                }
-                            });
-                        });
-                    });
-                });
+            	if (req.randUniquePkg == seller.randUniquePkg) {
+                    requoteRequirements.push(req);
+            	}
+                // $.each(ctrl.requests, function (reqK, reqV) {
+                //     $.each(reqV.locations, function (locK, locV) {
+                //         $.each(locV.products, function (prodK, prodV) {
+                //             $.each(prodV.sellers, function (sellerK, sellerV) {
+                //                 if (sellerV.randUniquePkg == req.randUniquePkg && locV.location.id == req.LocationId && locV.id == req.RequestLocationId && req.RfqId != null && seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
+                //                     requoteRequirements.push(req);
+                //                 }
+                //             });
+                //         });
+                //     });
+                // });
+                
                 // for (var j = 0; j < locations.length; j++) {
                 //     location = locations[j];
                 //     // if (seller.sellerCounterparty.id == req.SellerId && location.location.id == req.LocationId && location.id == req.RequestLocationId && req.RfqId != null) {
@@ -3382,7 +3386,7 @@ ctrl.setProductData = function(data, loc) {
                 //     }
                 // }
             }
-            return angular.copy(ctrl.requirements);
+            return angular.copy(requoteRequirements);
         };
         ctrl.previewEmail = function (seller, locations) {
 
