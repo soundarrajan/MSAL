@@ -5620,19 +5620,21 @@ APP_MASTERS.controller("Controller_Master", [
         }
 
         $scope.confirmSaveBlade = function(){
-            $(".bladeEntity").removeClass("open");
-            $("body").css("overflow-y", "auto");
+           $(".bladeEntity").removeClass("open");
+           $("body").css("overflow-y", "auto");
             setTimeout(function() {
                 $rootScope.bladeTemplateUrl = "";
                 if($rootScope.refreshPending) {
                     $state.reload();
                   // window.location.reload();
                 }
-                $rootScope.$broadcast("counterpartyBladeClosed", true);
                 $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
+                $rootScope.$broadcast("counterpartyBladeClosed", true);
                 $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
                 $rootScope.overrideCloseNavigation = false;
-            }, 500);
+
+           }, 500);
+           
         }
 
         $scope.isMeanFormula = function() {

@@ -98,19 +98,27 @@ angular.module('shiptech.components')
 					return;
 				}
 
-                groupOfRequestsModel.updateEnergySpecValuesByProduct(ctrl.energyCalculationBladeData.data).then(function (data) {
+				if (!ctrl.energyCalculationBladeData.data) { 
+					return false
+				}
+				var updatePayload = angular.copy(ctrl.energyCalculationBladeData.data);
+				ctrl.energyCalculationBladeData.data = null;
+                groupOfRequestsModel.updateEnergySpecValuesByProduct(updatePayload).then(function (data) {
             		// $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);  
             		$rootScope.shouldRefreshGroup = true;
-                	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
-                		ctrl.normalizeOffSpecParamsMinMax();
-                		ctrl.computeMinPricePerLocations();
-                	})
+            		if (!ctrl.savedFromBladeClose) {
+	                	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
+	                		ctrl.normalizeOffSpecParamsMinMax();
+	                		ctrl.computeMinPricePerLocations();
+	                	})
+            		}
                 	console.log(data);	
                 });
 
 			}
 
 			$rootScope.$on('updateEnergySpecValuesByProduct', function() {
+				ctrl.savedFromBladeClose = true;
 				ctrl.updateEnergySpecValuesByProduct();
 			});
 
