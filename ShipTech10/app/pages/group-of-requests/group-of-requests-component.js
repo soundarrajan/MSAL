@@ -444,7 +444,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
 	                ctrl.bestTcoData = data.payload;
 	                ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
-	                ctrl.mySelection = data.payload.mySelection.quotations;
+                    ctrl.mySelection = data.payload.mySelection.quotations;
 	                ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
 	            });
             }
@@ -5623,7 +5623,8 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
             });
             $rootScope.shouldRefreshGroup = false;
-	    })    
+	    })  
+
         $rootScope.$on("supplierCardChangedData", function (event, supplierCardData) {
             console.log(supplierCardData);
             ctrl.initScreen();
@@ -7147,7 +7148,40 @@ ctrl.setProductData = function(data, loc) {
         //         $('.table').css('overflow-x', 'auto');
         //         return false;
         //    }
-        // }	
+        // }
+        ctrl.setWidth = function(element) {
+            $(element).css("opacity", "0");
+                setTimeout(function(){
+                    if ($(element).width() > 400) {
+                        $(element).css("width", "380px");
+                        $(element).css("white-space", "initial");
+                    }
+                    $(element).css("opacity", "1");
+            });
+        }
+
+
+        ctrl.setWidthTooltip = function(object) {
+            var elements = $(event.target).parents("td").find(".groupOfRequestTableTooltip ");
+            if (object.generalSellerStatus != ""){
+                var generalSellerStatus = elements[0];
+                ctrl.setWidth(generalSellerStatus);
+            }
+            if (object.generalSellerComment != "") {
+                var generalSellerComments = elements[1];
+                ctrl.setWidth(generalSellerComments);
+            }
+            if (object.portSellerStatus != "") {
+                var portSellerStatus = elements[2];
+                ctrl.setWidth(portSellerStatus);
+            }
+            if (object.portSellerComments != "") {
+                var portSellerComments = elements[3];
+                ctrl.setWidth(portSellerComments);
+            }
+
+
+        }
 
     }
 ]);
