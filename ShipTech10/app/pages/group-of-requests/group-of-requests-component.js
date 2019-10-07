@@ -3350,7 +3350,7 @@ ctrl.setProductData = function(data, loc) {
             var product, req, theLocation;
             for (var i = 0; i < ctrl.requirements.length; i++) {
                 req = ctrl.requirements[i];
-            	if (req.randUniquePkg == seller.randUniquePkg) {
+            	if (req.randUniquePkg == seller.randUniquePkg && locations[0].uniqueLocationIdentifier == req.rowLocationSellerPhysical.split("-")[0]) {
                     requoteRequirements.push(req);
             	}
                 // $.each(ctrl.requests, function (reqK, reqV) {
