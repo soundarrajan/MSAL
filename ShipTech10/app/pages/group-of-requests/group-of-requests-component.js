@@ -5584,7 +5584,11 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.sellerOffers = $filter("orderBy")(ctrl.sellerOffers, "id");
                     console.log($scope.tempProductOffer);
                     // debugger;
-                    ctrl.active_prod = ctrl.sellerOffers[0];
+                    if (ctrl.lastActiveProdIndex) {
+	                    ctrl.active_prod = ctrl.sellerOffers[ctrl.lastActiveProdIndex];
+                    } else {
+	                    ctrl.active_prod = ctrl.sellerOffers[0];
+                    }
 		            ctrl.sixMonthPayload = {
 		                requestGroupId: ctrl.groupId,
 		                locationIds: theLocation.location.id,

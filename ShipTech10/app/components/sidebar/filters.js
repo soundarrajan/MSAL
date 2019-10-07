@@ -306,7 +306,9 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         jQuery(document).on("click", "#clearUnsavedFilters", function() {
         	if ($state.current.url == '/schedule-dashboard-table') {
-        		angular.element($(".clearFiltersSidebar")).scope().clearFilters();
+        		if (!$scope.selectedConfig) {
+	        		angular.element($(".clearFiltersSidebar")).scope().clearFilters();
+        		}
         	} else {
 	        	$scope.clearUnsavedFilters()
         	}
