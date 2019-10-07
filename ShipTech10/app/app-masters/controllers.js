@@ -4253,7 +4253,7 @@ APP_MASTERS.controller("Controller_Master", [
             } else if (element.screen == "destinationport" && vm.app_id == "default") {
                 $scope.selected_value = angular.copy(rowData);
                 if (!angular.equals($scope.selected_value, {})) {
-                    $scope.selected_value.id = $scope.selected_value.destinationId;
+                    $scope.selected_value.id = $scope.selected_value.locationId; 
                 }
             } else if (element.screen == "rfqrequestslist" && vm.app_id == "default") {
                 $scope.selected_value = angular.copy(rowData);
