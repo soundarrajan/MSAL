@@ -2754,6 +2754,19 @@ ctrl.setProductData = function(data, loc) {
         	})
         	return hasNoPrice;
         }
+        ctrl.requirementsHasNoRfqId = function() {
+        	hasNoRfqId = false;
+        	if (ctrl.requirements.length == 0) {
+	        	hasNoRfqId = true;
+	        	return hasNoRfqId;
+        	}
+        	$.each(ctrl.requirements, function(k,v){
+        		if (!v.RfqId) {
+		        	hasNoRfqId = true;
+        		}
+        	})
+        	return hasNoRfqId;
+        }
         ctrl.checkSludgeSeller = function () {
             var i = 0;
             sludgeMatchSellerProductError = false 
