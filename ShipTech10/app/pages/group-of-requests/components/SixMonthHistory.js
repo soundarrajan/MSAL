@@ -35,13 +35,13 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function (changes) {
 		    	if (!changes.activeProduct) {
-		    		ctrl.sixMonthsHistoryData = null;
-		    		ctrl.computedTableHeight = 0;
+		    		// ctrl.sixMonthsHistoryData = null;
+		    		// ctrl.computedTableHeight = 0;
 		    		return;
 		    	}
 		    	if (!changes.activeProduct.currentValue) {
-		    		ctrl.sixMonthsHistoryData = null;
-		    		ctrl.computedTableHeight = 0;
+		    		// ctrl.sixMonthsHistoryData = null;
+		    		// ctrl.computedTableHeight = 0;
 		    		return;
 		    	}
 		    	console.log(changes.activeProduct.currentValue);
@@ -50,11 +50,11 @@ angular.module('shiptech.components')
 		    	}
 				ctrl.requestOfferId = changes.activeProduct.currentValue.requestOfferId
 
-				ctrl.saveAverage = true;
+				ctrl.saveAverage = false;
 				specParameters = ["ash", "density", "sulphur", "viscosity", "water"];
 				$.each(specParameters, function(k,v) {
-					if (changes.activeProduct.currentValue.energyParameterValues[v].specValue != null) {
-						ctrl.saveAverage = false;
+					if (changes.activeProduct.currentValue.energyParameterValues[v].specValue == null) {
+						ctrl.saveAverage = true;
 					}
 				})
 
@@ -172,10 +172,13 @@ angular.module('shiptech.components')
 								});
 							}
 						}
-						ctrl.sixMonthsHistoryData = data.payload;
-	                	if (callback) {
-	                		callback();
-	                	}
+						$timeout(function(){
+							ctrl.sixMonthsHistoryData = data.payload;
+							ctrl.computeTableHeight();
+		                	if (callback) {
+		                		callback();
+		                	}
+						},100)
 	                });	            
 				})
 			}

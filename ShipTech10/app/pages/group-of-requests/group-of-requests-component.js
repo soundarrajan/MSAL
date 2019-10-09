@@ -5602,7 +5602,11 @@ ctrl.setProductData = function(data, loc) {
                     console.log($scope.tempProductOffer);
                     // debugger;
                     if (ctrl.lastActiveProdIndex) {
-	                    ctrl.active_prod = ctrl.sellerOffers[ctrl.lastActiveProdIndex];
+                    	if (ctrl.lastActiveProdIndex < ctrl.sellerOffers.length ) {
+		                    ctrl.active_prod = ctrl.sellerOffers[ctrl.lastActiveProdIndex];
+                    	} else {
+		                    ctrl.active_prod = ctrl.sellerOffers[0];
+                    	}
                     } else {
 	                    ctrl.active_prod = ctrl.sellerOffers[0];
                     }
