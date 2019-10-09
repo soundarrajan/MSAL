@@ -2934,6 +2934,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                     deliveryProductId: rowData.deliveryProductId,
                     invoicedProduct: rowData.invoicedProduct,
                     orderedProduct: rowData.orderedProduct,
+                    contract: rowData.contract,
                     confirmedQuantity: rowData.confirmedQuantity,
                     confirmedQuantityUom: rowData.confirmedQuantityUom,
                     deliveryQuantity: rowData.deliveryQuantity,

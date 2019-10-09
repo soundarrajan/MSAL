@@ -646,9 +646,10 @@ APP_MASTERS.controller("Controller_Datatables", [
                         width: 130
                     },
                     {
-                        name: "contractId",
+                        name: "contract.id",
                         displayName: "Contract",
                         width: 120,
+                        tooltip: "grid.appScope.fVal().formValues.productDetails[grid.appScope.rowIdx(row)].contract.name",
 						cellTemplate: $scope.dataTableTemplates.link,
 						cellLink: "#/contracts/contract/edit/"                        
                     },

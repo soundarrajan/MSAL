@@ -1,8 +1,8 @@
 <div class="ui-grid-cell-contents">
-    <a ng-if="MODEL_COL_FIELD.name" ng-href="{{ col.colDef.cellLink }}{{ MODEL_COL_FIELD.id }}" target="_blank">
+    <a ng-if="MODEL_COL_FIELD.name" tooltip data-original-title="{{ col.colDef.tooltip ? $eval(col.colDef.tooltip) : ''}}" ng-href="{{ col.colDef.cellLink }}{{ MODEL_COL_FIELD.id }}" target="_blank">
         {{ MODEL_COL_FIELD.name }}
     </a>
-    <a ng-if="!MODEL_COL_FIELD.name" ng-href="{{ col.colDef.cellLink }}{{ MODEL_COL_FIELD}}" target="_blank">
+    <a ng-if="!MODEL_COL_FIELD.name" tooltip data-original-title="{{ col.colDef.tooltip ? $eval(col.colDef.tooltip) : ''}}"   ng-href="{{ col.colDef.cellLink }}{{ MODEL_COL_FIELD}}" target="_blank">
         {{ MODEL_COL_FIELD }}
     </a>    
 </div>
