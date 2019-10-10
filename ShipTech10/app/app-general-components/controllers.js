@@ -2836,16 +2836,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     maxEdit = response.data.payload.avgMaxOrderedQuantity;
                     minEdit = response.data.payload.avgMinOrderedQuantity;
                     qtyUom = response.data.payload.qtyUom;
+                    specGroup = response.data.payload.productDefaultSpecGroup;
                     bunkerStrategy = response.data.payload.bunkerStrategy;
                     ctrl.currentRowIndex = rowIdx;
                     ctrl.currentRowData.minQuantity = minEdit;
                     ctrl.currentRowData.maxQuantity = maxEdit;
                     ctrl.currentRowData.qtyUom = qtyUom;
+                    ctrl.currentRowData.specGroup = specGroup;
                     ctrl.tableData[ctrl.currentRowIndex-1] = ctrl.currentRowData;
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", qtyUom)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "qtyUom", qtyUom)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "bunkerStrategy", bunkerStrategy);
+                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "specGroup", specGroup);
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)
                     /*
@@ -2866,6 +2869,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
                     $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "qtyUom", null)
+                    $('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "specGroup", null);
                     $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, $scope.tenantSettings.defaultValues.quantityPrecision) +" - "+ $filter("number")(maxEdit, $scope.tenantSettings.defaultValues.quantityPrecision))
                     $compile($(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"]"))($scope)   
                     callback(true);               
