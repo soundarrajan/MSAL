@@ -175,6 +175,7 @@ angular.module('shiptech.components')
 						$timeout(function(){
 							ctrl.sixMonthsHistoryData = data.payload;
 							ctrl.computeTableHeight();
+							ctrl.verifyLocation(ctrl.sixMonthsHistoryData);
 		                	if (callback) {
 		                		callback();
 		                	}
@@ -318,9 +319,27 @@ angular.module('shiptech.components')
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
 				})
-			}			
+			}	
 
-
+			ctrl.verifyLocation = function(data) {
+				var array = [];
+				$.each(ctrl.selectedLocations, function(k,v) {
+					var name = "";
+					$.each(data, function(k1, value) {
+						if (data[k1].locationId == ctrl.selectedLocations[k].id) {
+							name = ctrl.selectedLocations[k].name;
+						}
+					});
+					if (name == "") {
+						 array.push(ctrl.selectedLocations[k].name);
+					}
+				});
+				if (array.length == 1) {
+					toastr.warning("Selected location " + array + " doesn't have lab results");
+				} else if (array.length >=2) {
+					toastr.warning("Selected locations " + array + " doesn't have lab results");
+				}
+			}		
 
 			jQuery(document).ready(function(){
 				$(".custom-hardcoded-table-wrapper .tablebody").on("scroll", function(){
