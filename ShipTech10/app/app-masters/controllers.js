@@ -1111,6 +1111,7 @@ APP_MASTERS.controller("Controller_Master", [
                     roles = $scope.formValues.roles;
                     $.each(roles.rights, function(key, module) {
                         $.each(module.moduleScreenConfigurations, function(key2, screen) {
+                           // screen.id = null;
                             screen.actions = [];
                         });
                     });
@@ -1153,7 +1154,7 @@ APP_MASTERS.controller("Controller_Master", [
                             obj.module = module;
                             if (screen.id && selectedScreenTemplate.id) {
                                 obj.moduleScreenConfigurations.push({
-                                    id: deepScreen.idSrv,
+                                    id: vm.entity_id == "" ? 0 : deepScreen.idSrv,
                                     screen: screen,
                                     screenTemplate: selectedScreenTemplate,
                                     actions: actions

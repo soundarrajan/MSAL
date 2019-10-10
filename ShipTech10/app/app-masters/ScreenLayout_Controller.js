@@ -641,6 +641,9 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                         $scope.formValues.roles.id = 0;
                                         $.each($scope.formValues.roles.rights, function(key,val){
                                             $scope.formValues.roles.rights[key].id = 0;
+                                            $.each($scope.formValues.roles.rights[key].moduleScreenConfigurations, function(key1, val1){
+                                            	$scope.formValues.roles.rights[key].moduleScreenConfigurations[key1].id = 0;
+                                            })
                                         });
                                     }
                                     if (vm.app_id == "masters" && vm.screen_id == "product") {
