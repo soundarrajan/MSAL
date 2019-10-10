@@ -5630,7 +5630,10 @@ APP_MASTERS.controller("Controller_Master", [
                 }
                 $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
                 $rootScope.$broadcast("counterpartyBladeClosed", true);
-                $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
+                setTimeout(function() {
+                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
+
+                }, 500);
                 $rootScope.overrideCloseNavigation = false;
 
            }, 500);
