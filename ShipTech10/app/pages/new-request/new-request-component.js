@@ -3229,6 +3229,13 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 					ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination4
 				}					
 			}
+			if (!ctrl.request.locations[locationIdx].destinationInput) {
+				if (ctrl.request.locations[locationIdx].destination4) {ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination4}
+				if (ctrl.request.locations[locationIdx].destination3) {ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination3}
+				if (ctrl.request.locations[locationIdx].destination2) {ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination2}
+				if (ctrl.request.locations[locationIdx].destination1) {ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination1}
+				if (ctrl.request.locations[locationIdx].destination) {ctrl.request.locations[locationIdx].destinationInput = ctrl.request.locations[locationIdx].destination}
+			}
 		}
 
         ctrl.getImoObj = function(vesselId) {

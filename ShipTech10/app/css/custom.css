@@ -4793,7 +4793,7 @@ table.energyCalculationBlade tr.border-green-jungle{
     top: -5px;
     display: block;
     right: 0;
-    transform: translate(50%, -100%);
+    transform: translate(0%, -100%);
     z-index: 9999;
     background: #fff;
     padding: 10px;
