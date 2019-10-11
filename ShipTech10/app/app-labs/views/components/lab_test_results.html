@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="row in formValues.labTestResults">
+                <tr ng-repeat="row in formValues.labTestResults" ng-if="!row.isDeleted">
                     <td style="max-width: 20px" width="20px" class="padding">
 				        <label class="mt-checkbox">
 				            <input type="checkbox" ng-disabled="row.disableCheckbox;" ng-change="calculateQualityClaimType(row)" name="Selection-{{$index}}" id="Selection-{{$index}}" ng-model="row.isSelected;"/>
@@ -40,10 +40,10 @@
                     	{{row.offerSpecParameter | number:tenantSetting.defaultValues.quantityPrecision}}
                     </td>
                     <td style="max-width: 50px" width="50px" class="">
-                    	<input type="text" class="form-control" ng-model="row.value" ng-change="calculatePassedFailedInLab(row)" format="number:tenantSetting.defaultValues.quantityPrecision" ng-disabled="formValues.status.name == 'Verified'">
+                    	<input type="text" class="form-control" ng-model="row.value" ng-change="calculatePassedFailedInLab(row)" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" ng-disabled="formValues.status.name == 'Verified'">
                     </td>
                     <td style="max-width: 50px" width="50px" class="">
-                    	<input style="{{row.displayShortageTooltip ? 'color:red' : '' ;}}" type="text" class="form-control" ng-model="row.bdnValue" ng-change="calculatePassedFailedInLab(row)" format="number:tenantSetting.defaultValues.quantityPrecision" ng-disabled="formValues.status.name == 'Verified'" tooltip data-original-title="{{row.displayShortageTooltip ? 'Short By ' + row.quantityShortage + ' - ' + row.quantityShortageUomName : '' }}">
+                    	<input style="{{row.displayShortageTooltip ? 'color:red' : '' ;}}" type="text" class="form-control" ng-model="row.bdnValue" ng-change="calculatePassedFailedInLab(row)" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" ng-disabled="formValues.status.name == 'Verified'" tooltip data-original-title="{{row.displayShortageTooltip ? 'Short By ' + row.quantityShortage + ' - ' + row.quantityShortageUomName : '' }}">
                     </td>
                     <td style="max-width: 50px" width="50px" class="">
                     	<div class="status text-center" style="background: {{ CM.getColorCodeFromLabels(row.qualityMatch) }}; padding: 8px 0;">
