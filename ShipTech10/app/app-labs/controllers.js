@@ -705,6 +705,45 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         }
     }
 
+    $scope.calculateQualityClaimType = function(rowData) {
+    	$scope.labResults_claimId = [];
+        $scope.labResults_specParamIds = [];    
+        $scope.selectedClaimTypeIds = [];    
+        currentChecksNo = 0; 	
+    	$.each($scope.formValues.labTestResults, function(k,v){
+    		if (v.isSelected) {
+	    		$.each(v.claimTypes, function(k1,v1){
+	    			$scope.labResults_claimId.push(v1.id);
+	    		})
+		        $scope.labResults_specParamIds.push(v.id);     	
+    		}
+    	})
+		if ($scope.labResults_claimId.length > 0) {
+	    	$.each($scope.formValues.labTestResults, function(key,row){
+	    		row.disableCheckbox = false;
+	    		isEnabled = false;
+		    	$.each(row.claimTypes, function(k,v){
+			    	if ($scope.labResults_claimId.indexOf(v.id) != -1) {
+			    		isEnabled = true;
+			    	}
+		    	})
+	    		row.disableCheckbox = !isEnabled;
+	    	})
+		} else {
+	    	$.each($scope.formValues.labTestResults, function(key,row){
+	    		row.disableCheckbox = false;
+	    	})
+		}
+
+    };
+
+    $scope.isInSelectedClaimTypes = function(row) {
+    	if (!$scope.labResults_claimId) {
+    		return false;
+    	}
+    	return isEnabled;
+    }
+
     $scope.$on('formValues', function(){
         // console.log($scope.formValues);
         if(vm.app_id == "labs"){

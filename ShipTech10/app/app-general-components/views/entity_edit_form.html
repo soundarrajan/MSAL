@@ -184,6 +184,12 @@
                                         <span ng-switch-when="preferredLocationsGroup">
                                             <span ng-include="'app-general-components/views/screen_parts/masters/preferredLocationsGroup.html'"></span>
                                         </span>
+                                        <span ng-switch-when="labTestResultsGroup">
+                                            <!-- <div class=" group_{{ field.Unique_ID }}">
+                                                <span ng-include="'app-general-components/views/controls/dataTable.html'"></span>
+                                                                                       </div> -->
+                                            <span ng-include="'app-labs/views/components/lab_test_results.html'"></span>
+                                        </span>               
 
                                         <div class="form-group  form-inline row" ng-switch-when="CLC">
                                             <div class=" group_{{ field.Unique_ID }}">

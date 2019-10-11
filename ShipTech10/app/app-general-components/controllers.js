@@ -3521,12 +3521,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     });
                 }
             }
-            $timeout(function() {
-                if (vm.app_id == "labs") {
-                    $("#grid_labTestResults").click();
-                    $("#grid_sealNumber").click();
-                }
-            }, 250);
+            // $timeout(function() {
+            //     if (vm.app_id == "labs") {
+            //         $("#grid_labTestResults").click();
+            //         $("#grid_sealNumber").click();
+            //     }
+            // }, 250);
         };
         $scope.$on("formFields", function(event, payload) {
             if (payload) {
