@@ -294,12 +294,15 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     $scope.formValues.specGroup = filteredSpecGroup.name;
                 }
             }
-            $.each($scope.formValues.labTestResults, function(k, v) {
-                if ($scope.formValues.labTestResults[k].id != 0) {
-                    $scope.formValues.labTestResults[k].isDeleted = true;
-                }
-
-            });
+            if (typeof($scope.formValues.labTestResults) != "undefined") {
+                for (var i = $scope.formValues.labTestResults.length - 1; i >= 0; i--) {              
+                    if ($scope.formValues.labTestResults[i].id != 0) {
+                        $scope.formValues.labTestResults[i].isDeleted = true;
+                    } else {
+                        $scope.formValues.labTestResults.splice(i,1);
+                    }
+                }               
+            }
             vm.setorderProdId();
             if (typeof vm.changed == 'undefined') {
                 vm.changed = 0;
@@ -342,7 +345,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                             $scope.formValues.labTestResults = callback;
                         } else {
                             $.each(callback, function(k, v) {
-                                $scope.formValues.labTestResults.push(callback[k]);
+                                $scope.formValues.labTestResults.push(callback[k]);   
                             });
                         }
                     } else if (obj == 'deliveryProducts') {
