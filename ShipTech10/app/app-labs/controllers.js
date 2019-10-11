@@ -294,6 +294,12 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     $scope.formValues.specGroup = filteredSpecGroup.name;
                 }
             }
+            $.each($scope.formValues.labTestResults, function(k, v) {
+                if ($scope.formValues.labTestResults[k].id != 0) {
+                    $scope.formValues.labTestResults[k].isDeleted = true;
+                }
+
+            });
             vm.setorderProdId();
             if (typeof vm.changed == 'undefined') {
                 vm.changed = 0;
@@ -331,8 +337,14 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 if (callback) {
                     $scope.dynamicTable[id] = callback;
                     if (obj == 'labTestResults') {
-                        $scope.formValues.labTestResults = [];
-                        $scope.formValues.labTestResults = callback;
+                        if (typeof($scope.formValues.labTestResults) == "undefined") {
+                            $scope.formValues.labTestResults  = [];
+                            $scope.formValues.labTestResults = callback;
+                        } else {
+                            $.each(callback, function(k, v) {
+                                $scope.formValues.labTestResults.push(callback[k]);
+                            });
+                        }
                     } else if (obj == 'deliveryProducts') {
                         $scope.formValues.deliveryProducts[idx].qualityParameters = [];
                         angular.merge($scope.formValues.deliveryProducts[idx].qualityParameters, callback);
