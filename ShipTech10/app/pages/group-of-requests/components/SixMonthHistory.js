@@ -175,7 +175,6 @@ angular.module('shiptech.components')
 						$timeout(function(){
 							ctrl.sixMonthsHistoryData = data.payload;
 							ctrl.computeTableHeight();
-							ctrl.verifyLocation(ctrl.sixMonthsHistoryData);
 		                	if (callback) {
 		                		callback();
 		                	}
@@ -297,6 +296,7 @@ angular.module('shiptech.components')
 					console.log(response)
 					ctrl.computeTableHeight();
 					ctrl.countSelectedItems();
+					ctrl.verifyLocation(location);
 				})
 			}
 			ctrl.removeLocationFromHistory = function(index) {
@@ -321,23 +321,15 @@ angular.module('shiptech.components')
 				})
 			}	
 
-			ctrl.verifyLocation = function(data) {
-				var array = [];
-				$.each(ctrl.selectedLocations, function(k,v) {
-					var name = "";
-					$.each(data, function(k1, value) {
-						if (data[k1].locationId == ctrl.selectedLocations[k].id) {
-							name = ctrl.selectedLocations[k].name;
-						}
-					});
-					if (name == "") {
-						 array.push(ctrl.selectedLocations[k].name);
+			ctrl.verifyLocation = function(location) {
+				var name = "";
+				$.each(ctrl.sixMonthsHistoryData, function(k1, value) {
+					if (ctrl.sixMonthsHistoryData[k1].locationId == location.id) {
+						name = location.name;
 					}
 				});
-				if (array.length == 1) {
-					toastr.warning("Selected location " + array + " doesn't have lab results");
-				} else if (array.length >=2) {
-					toastr.warning("Selected locations " + array + " doesn't have lab results");
+				if (name == "") {
+					toastr.warning("Selected location " + location.name + " doesn't have lab results");
 				}
 			}		
 
