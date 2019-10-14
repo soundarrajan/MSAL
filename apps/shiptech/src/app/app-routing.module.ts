@@ -18,10 +18,10 @@ const routes: Routes = [
       },
       {
         canActivate: [AuthenticationGuard],
-        path: KnownModulesPaths.QualityControl,
-        loadChildren: () => import('@shiptech/feature/quality-control').then(m => m.QualityControlModule),
+        path: KnownModulesPaths.QuantityControl,
+        loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule),
         data: {
-          breadcrumb: 'Quality Control'
+          breadcrumb: 'Quantity Control'
         }
       }
     ]

@@ -115,31 +115,31 @@
         }
       }
     },
-    "quality-control": {
+    "quantity-control": {
       "projectType": "library",
-      "root": "libs/feature/quality-control",
-      "sourceRoot": "libs/feature/quality-control/src",
+      "root": "libs/feature/quantity-control",
+      "sourceRoot": "libs/feature/quantity-control/src",
       "prefix": "shiptech",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/feature/quality-control/tsconfig.lib.json",
-              "libs/feature/quality-control/tsconfig.spec.json"
+              "libs/feature/quantity-control/tsconfig.lib.json",
+              "libs/feature/quantity-control/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
-              "!libs/feature/quality-control/**"
+              "!libs/feature/quantity-control/**"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/feature/quality-control/jest.config.js",
-            "tsConfig": "libs/feature/quality-control/tsconfig.spec.json",
-            "setupFile": "libs/feature/quality-control/src/test-setup.ts"
+            "jestConfig": "libs/feature/quantity-control/jest.config.js",
+            "tsConfig": "libs/feature/quantity-control/tsconfig.spec.json",
+            "setupFile": "libs/feature/quantity-control/src/test-setup.ts"
           }
         }
       },
