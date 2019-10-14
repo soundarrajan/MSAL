@@ -243,6 +243,10 @@ angular.module('shiptech.components')
             	$.each($(".months_history .ng-dirty"), function(){
             		$(this).removeClass("ng-dirty");
             	})
+            	if (ctrl.sixMonthsHistoryData.length == 0) {
+            		toastr.warning("Selected locations doesn't have lab results");
+            		return;
+            	}
                 groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
                 	ctrl.onSixMonthsUpdate({results : ctrl.average6monthSelected});
 					ctrl.fillMedianSixMonth = true;
