@@ -19,7 +19,7 @@
       "@shiptech/core": ["libs/core/src/index.ts"],
       "@shiptech/core/*": ["libs/core/src/lib/*"],
       "@shiptech/environment": ["apps/shiptech/src/environments/environment.ts"],
-      "@shiptech/feature/quality-control": ["libs/feature/quality-control/src/index.ts"]
+      "@shiptech/feature/quantity-control": ["libs/feature/quantity-control/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

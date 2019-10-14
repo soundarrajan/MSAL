@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MainQualityControlComponent } from './views/main-quality-control/main-quality-control.component';
-import { QualityControlGridModule } from './quality-control-grid.module';
 import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { PROCUREMENT_API_SERVICE, ProcurementApiService } from './services/api/procurement.api.service';
@@ -13,12 +11,14 @@ import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-prefere
 import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
+import { MainQuantityControlComponent } from './views/main-quality-control/main-quantity-control.component';
+import { QuantityControlGridModule } from './quantity-control-grid.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: '', component: MainQualityControlComponent }]),
-    QualityControlGridModule,
+    RouterModule.forChild([{ path: '', component: MainQuantityControlComponent }]),
+    QuantityControlGridModule,
     LoggingModule,
     AuthenticationModule.forFeature(),
     SearchBoxModule,
@@ -28,7 +28,7 @@ import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/messa
     MessageBoxModule
   ],
   declarations: [
-    MainQualityControlComponent,
+    MainQuantityControlComponent,
     WunderBarComponent
   ],
   providers: [
@@ -41,5 +41,5 @@ import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/messa
     ProcurementService
   ]
 })
-export class QualityControlModule {
+export class QuantityControlModule {
 }

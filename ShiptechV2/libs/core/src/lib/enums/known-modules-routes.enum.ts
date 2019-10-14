@@ -1,3 +1,3 @@
 export enum KnownModulesPaths {
-  QualityControl = 'quality-control'
+  QuantityControl = 'quantity-control'
 }

@@ -4,13 +4,13 @@ import { MessageBoxService } from '@shiptech/core/ui/components/message-box/mess
 import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
 
 @Component({
-  selector: 'shiptech-main-quality-control',
-  templateUrl: './main-quality-control.component.html',
-  styleUrls: ['./main-quality-control.component.scss'],
+  selector: 'shiptech-main-quantity-control',
+  templateUrl: './main-quantity-control.component.html',
+  styleUrls: ['./main-quantity-control.component.scss'],
   providers: [ProcurementRequestsGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MainQualityControlComponent implements OnInit {
+export class MainQuantityControlComponent implements OnInit {
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
 

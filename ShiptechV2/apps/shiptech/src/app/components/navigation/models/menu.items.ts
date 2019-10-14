@@ -4,8 +4,8 @@ import { KnownModulesPaths } from '@shiptech/core';
 
 export const BASE_MENU: KeyedMenuItems = {
   'qualityControl': {
-    'label': 'Quality Control',
-    'routerLink': KnownModulesPaths.QualityControl,
+    'label': 'Quantity Control',
+    'routerLink': KnownModulesPaths.QuantityControl,
   },
   'masters': {
     'label': 'Masters',

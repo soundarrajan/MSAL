@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { SearchBoxComponent } from '../components/search-box/search-box.component';
 import * as postal from 'postal';
-import { PostalChannelsEnum } from '../../../../../feature/quality-control/src/lib/core/postal/channels.postal';
+import { PostalChannelsEnum } from '../../../../../feature/quantity-control/src/lib/core/postal/channels.postal';
 import { tap } from 'rxjs/operators';
 
 

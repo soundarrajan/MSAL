@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainQualityControlComponent } from './main-quality-control.component';
+import { MainQuantityControlComponent } from './main-quantity-control.component';
 
 describe('MainQualityControlComponent', () => {
-  let component: MainQualityControlComponent;
-  let fixture: ComponentFixture<MainQualityControlComponent>;
+  let component: MainQuantityControlComponent;
+  let fixture: ComponentFixture<MainQuantityControlComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainQualityControlComponent ]
+      declarations: [ MainQuantityControlComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainQualityControlComponent);
+    fixture = TestBed.createComponent(MainQuantityControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

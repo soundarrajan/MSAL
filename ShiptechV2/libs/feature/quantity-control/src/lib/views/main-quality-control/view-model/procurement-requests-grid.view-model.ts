@@ -335,7 +335,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     private procurementService: ProcurementService
   ) {
-    super('quality-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProcurementRequestsGridViewModel.name));
+    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProcurementRequestsGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 

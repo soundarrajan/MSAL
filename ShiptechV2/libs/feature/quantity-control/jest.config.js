@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'feature-quality-control',
+  name: 'feature-quantity-control',
   preset: '../../../jest.config.js',
-  coverageDirectory: '../../../coverage/libs/feature/quality-control',
+  coverageDirectory: '../../../coverage/libs/feature/quantity-control',
   snapshotSerializers: [
     'jest-preset-angular/AngularSnapshotSerializer.js',
     'jest-preset-angular/HTMLCommentSerializer.js'
