@@ -345,18 +345,19 @@ angular
         "shiptech.templates",
         "shiptech.components",
         "shiptech.pages",
-        "ngVis",
-        "ApplicationInsightsModule"
+        "ngVis"
     ])
     .controller("appCtrl", [
         "$scope",
+        "$rootScope",
         "adalAuthenticationService",
         "$http",
         "$document",
         "screenLoader",
         "$compile",
         'tenantService',
-        function($scope, adalService, $http, $document, screenLoader, $compile, tenantService) {
+        'appInsightsInstance',
+        function($scope, $rootScope, adalService, $http, $document, screenLoader, $compile, tenantService, appInsightsInstance) {
             toastr.options = {
                 maxOpened: 1,
                 timeOut: 4000,
@@ -553,6 +554,25 @@ angular
                     pageContentWhite: false
                 }
             };
+
+            $rootScope.lastLoggedUri = '';
+            $rootScope.$on('$locationChangeSuccess', function (e, uri) {
+                if (uri !== $rootScope.lastLoggedUri) {
+                    $rootScope.lastLoggedUri = uri;
+                    $rootScope.pageViewTelemetryId = Microsoft.ApplicationInsights.Util.generateW3CId();
+
+                    appInsightsInstance.trackPageView({
+                        id: $rootScope.pageViewTelemetryId,
+                        name: 'shiptech page view',
+                        properties: {
+                            tenantUrl: window.location.origin
+                        }
+                    });
+
+                    if (performance && performance.clearResourceTimings)
+                        performance.clearResourceTimings();
+                }
+            });
         }
     ]);
 angular.module("shiptech").config([
@@ -756,7 +776,7 @@ angular.element(document).ready(function() {
             .constant("EXPORT_FILETYPE_EXTENSION", appConfig.EXPORT_FILETYPE_EXTENSION)
             .constant("PACKAGES_CONFIGURATION", appConfig.PACKAGES_CONFIGURATION)
             .constant("EMAIL_TRANSACTION", appConfig.EMAIL_TRANSACTION)
-            .constant("INSTRUMENTATION_KEY", appConfig.INSTRUMENTATION_KEY);
+            .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
         if (window.location.hash.indexOf("supplier-portal") > 0) {
             angular.module("shiptech").value("$tenantSettings", {});
             angular.module("shiptech").value("$listsCache", {});
@@ -787,25 +807,18 @@ angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
 }])
 
-angular.module('shiptech').config(['$routeProvider', '$locationProvider', 'applicationInsightsServiceProvider', 'INSTRUMENTATION_KEY',
-    function ($routeProvider, $locationProvider, applicationInsightsServiceProvider, INSTRUMENTATION_KEY) {
-
-        applicationInsightsServiceProvider.configure(INSTRUMENTATION_KEY, {
-            appName: 'shiptech',
-            autoLogTracking:true,
-            autoPageViewTracking:true,
-            // We can pass a custom error ID if autoExceptionTracking:false and we manually call trackException as below
-            //applicationInsightsService.trackException(exception, cause, { errorTraceId: "SOME_RANDOM_ID" });
-            autoExceptionTracking:true,
-            // In case instrumentation key is not provided we just logging the tracking events in console
-            developerMode: !INSTRUMENTATION_KEY
-
-        });
-        $routeProvider
-            .when('/', {
-                templateUrl: 'index.html',
-                controller: 'appCtrl'
-            })
-
-    }
-]);
+function appInsightsInstanceProvider(instrumentationKey) {
+    var snippet = {
+        version: 2.0,
+        config: {
+            appId: 'shiptech',
+            instrumentationKey: instrumentationKey,//'ac013f43-6f06-4117-8a33-1f0b388e810b',
+            disableTelemetry: !instrumentationKey,
+            disableAjaxTracking: true,
+            disableExceptionTracking: true,
+            disableFetchTracking: true,
+            enableAutoRouteTracking: false
+        }
+    };
+    return global.Microsoft.ApplicationInsights.ApplicationInsightsContainer.getAppInsights(snippet, snippet.version);
+}

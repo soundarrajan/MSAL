@@ -2387,6 +2387,20 @@
     <Content Include="app\img\torm-logo.png" />
     <Content Include="app\index.html" />
     <Content Include="app\app-alerts.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-analytics-js.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-analytics-js.min.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-channel-js.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-channel-js.min.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-common.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-common.min.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-core-js.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-core-js.min.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-dependencies-js.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-dependencies-js.min.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-properties-js.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-properties-js.min.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-web.js" />
+    <Content Include="app\js\plugins\appInsights\applicationinsights-web.min.js" />
     <Content Include="app\layouts\breadcrumbs.html" />
     <Content Include="app\layouts\default.html" />
     <Content Include="app\layouts\footer.html" />
@@ -2874,7 +2888,6 @@
     <Folder Include="app\components\proceed-dialog\views\" />
     <Folder Include="app\components\route-schedule\views\" />
     <Folder Include="app\components\widgetsContainer\" />
-    <Folder Include="app\js\plugins\" />
     <Folder Include="app\models\new-order\" />
   </ItemGroup>
   <PropertyGroup>

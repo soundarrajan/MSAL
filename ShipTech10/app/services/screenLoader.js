@@ -67,10 +67,71 @@ angular.module("shiptech").config([
 			"api/claims/getQuantityShortage"
     	];
         $httpProvider.interceptors.push([
-            "$q", 'applicationInsightsService', '$log',
-			function($q, applicationInsightsService, $log) {
+            "$q"/*, 'applicationInsightsService'*/, '$log', 'appInsightsInstance', '$rootScope',
+            function ($q/*, applicationInsightsService*/, $log, appInsightsInstance, $rootScope) {
+
+                function computePerformance(url) {
+                    var deferredResult = $q.defer();
+
+                    if (performance && performance.getEntriesByName && performance.clearResourceTimings) {
+                        var perf = performance.getEntriesByName(url);
+
+                        var durationMs = 0;
+                        var networkMs = 0;
+                        var sendMs = 0;
+                        var receiveMs = 0;
+                        var domProcessingMs = 0;
+
+                        var performancePromises = [];
+
+                        for (var i = 0; i < perf.length; i++) {
+                            var perfItem = perf[i];
+
+                            var defer = $q.defer();
+                            performancePromises.push(defer);
+
+                            durationMs += perfItem.duration;
+                            networkMs += perfItem.connectEnd - perfItem.startTime;
+                            sendMs += perfItem.responseStart - perfItem.requestStart;
+                            receiveMs += perfItem.responseEnd - perfItem.responseStart;
+
+                            if (setImmediate && performance.now) {
+                                var startDom = performance.now;
+                                setImmediate(function () {
+                                    domProcessingMs = performance.now() - startDom;
+                                    durationMs += domProcessingMs;
+
+                                    defer.resolve();
+                                });
+                            }
+                        }
+
+                        performance.clearResourceTimings();
+
+                        $q.all(performancePromises).then(function() {
+                            deferredResult.resolve({
+                                durationMs: durationMs,
+                                networkMs: networkMs,
+                                sendMs: sendMs,
+                                receiveMs: receiveMs,
+                                domProcessingMs: domProcessingMs
+                            });
+                        });
+                    }
+
+                    return deferredResult.promise;
+                }
+
                 return {
                     request: function name(request) {
+
+                        request.trackAjaxTelemetryId = '|' + appInsightsInstance.context.telemetryTrace.traceID + '.' + Microsoft.ApplicationInsights.Util.newId();
+                        request.tenantUrl = window.location.origin;
+                        request.startPerformance = (performance && performance.now) ? performance.now() : 0;
+
+                        request.headers['x-ms-request-root-id'] = appInsightsInstance.context.telemetryTrace.traceID;
+                        request.headers['x-ms-request-id'] = request.trackAjaxTelemetryId;
+                        
                     	routeCall = request.url;
 						if(window.openedScreenLoaders <= 0 || typeof(window.openedScreenLoaders) == 'undefined') {
 							window.screenLoaderStartTime = Date.now();
@@ -96,7 +157,34 @@ angular.module("shiptech").config([
                         return request;
                     },
                     response: function name(config) {
-                    	routeCall = config.config.url
+
+                        var request = config.config;
+                        var responseCode = config.status;
+
+                        computePerformance(request.url).then(function (ajaxPerformance) {
+                            appInsightsInstance.dependencies.trackDependencyDataInternal({
+                                    id: request.trackAjaxTelemetryId,
+                                    name: request.method + ' ' + request.url,
+                                    target: request.url,
+                                    type: 'Ajax',
+                                    duration: (performance && performance.now) ? (performance.now() - request.startPerformance) : 0,
+                                    success: responseCode >= 200 && responseCode < 400,
+                                    responseCode: responseCode,
+                                    method: request.method,
+                                    properties: {
+                                        tenantUrl: request.tenantUrl
+                                    }
+                                },
+                                ajaxPerformance,
+                                {
+                                    trace: {
+                                        parentID: $rootScope.pageViewTelemetryId
+                                    }
+                                });
+                        });
+
+                        routeCall = config.config.url;
+
                     	if (config.config.url.indexOf("/api/") != -1) {
 	                    	routeCall = 'api/' + config.config.url.split("/api/")[1];
                     	}
@@ -109,9 +197,10 @@ angular.module("shiptech").config([
 				                    	if (window.openedScreenLoaders <= 0) {
 					                    	// console.log("screenLoader CLOSE:" + routeCall);
 					                    	$('.screen-loader').fadeOut(200);
-					                    	$('clc-table-list tbody').css("opacity", 1);
-											applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
-				                    	}
+                                            $('clc-table-list tbody').css("opacity", 1);
+                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.screenLoaderStartTime }, window.location);
+                                            //applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
+                                        }
 			                    	},50);
 		                    	}
 		                    	// console.log("response timeout:" + window.openedScreenLoaders);
@@ -166,11 +255,13 @@ angular.module("shiptech").config([
 								setTimeout(function(){
 			                    	if (window.openedScreenLoaders <= 0) {
 										$('.screen-loader').fadeOut(200);
-										$('clc-table-list tbody').css("opacity", 1);
-										applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
-			                    	}
-									applicationInsightsService.trackTraceMessage('Page data loaded with an exception', config);
-								},50)
+                                        $('clc-table-list tbody').css("opacity", 1);
+                                        appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.screenLoaderStartTime }, window.location);
+										//applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
+                                    }
+                                    appInsightsInstance.trackTrace({ message: 'Page data loaded with an exception' }, config);
+                                    //applicationInsightsService.trackTraceMessage('Page data loaded with an exception', config);
+                                },50)
 	                    	}
 
 	                    	var guidReference = config.data.Reference || config.data.reference;
@@ -180,7 +271,8 @@ angular.module("shiptech").config([
                     	}
                     	// console.log("***** response:" + window.openedScreenLoaders);
                     	// //console.log(config);
-						applicationInsightsService.trackException('Response error', config);
+                        appInsightsInstance.appInsights.trackException({ message: 'Response error' }, config);
+						//applicationInsightsService.trackException('Response error', config);
                         return false;
                     },                    
                 };
