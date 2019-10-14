@@ -812,7 +812,7 @@ function appInsightsInstanceProvider(instrumentationKey) {
         version: 2.0,
         config: {
             appId: 'shiptech',
-            instrumentationKey: instrumentationKey,//'ac013f43-6f06-4117-8a33-1f0b388e810b',
+            instrumentationKey: instrumentationKey,
             disableTelemetry: !instrumentationKey,
             disableAjaxTracking: true,
             disableExceptionTracking: true,
