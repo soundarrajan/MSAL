@@ -145,6 +145,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 				// 		ctrl.active_prod.products[0].energyParameterValues.specificEnergy = results;
 				// 	}
 				// }
+				$(".blade-column.main-content-column .ng-dirty").removeClass("ng-dirty");
 				ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
 			}
 		}
@@ -173,7 +174,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 				// 	})
 				// }
 			})
-			console.log(currentRequestOfferIds);
+			// console.log(currentRequestOfferIds);
 			$.each(ctrl.bestTcoData.bestTotalTCO, function(k,v){
 				$.each(v.products, function(k1,v1){
 					if (currentRequestOfferIds.indexOf(v1.requestOfferId) != -1 ) {
@@ -402,7 +403,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                             if (typeof seller.offers != "undefined") {
                                 if (seller.offers.length > 0) {
                                     if (seller.offers[0].physicalSupplierCounterparty) {
-                                        uniqueIdentifier = seller.sellerCounterparty.id + "-" + seller.offers[0].physicalSupplierCounterparty.id;
+                                        uniqueIdentifier = seller.sellerCounterparty.id + "-" + seller.offers[0].physicalSupplierCounterparty.id; 
                                     }
                                     if (!seller.offers[0].packageId) {
                                         packageType = "individual";

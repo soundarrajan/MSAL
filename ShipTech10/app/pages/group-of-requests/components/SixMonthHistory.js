@@ -230,7 +230,15 @@ angular.module('shiptech.components')
 				})
 				median = sum / count;
                 ctrl.onSixMonthsUpdate({results : false});
-                payload = ctrl.sixMonthsHistoryData;
+
+				var selectedLocationsIds = []
+				$.each(ctrl.selectedLocations, function(k,v){
+					selectedLocationsIds.push(v.id);
+				})
+                payload = {
+                	"locationsList" : selectedLocationsIds.join(","),
+                	"historySelection" : ctrl.sixMonthsHistoryData
+                };
 
             	$.each($(".months_history .ng-dirty"), function(){
             		$(this).removeClass("ng-dirty");
