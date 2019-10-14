@@ -13,6 +13,10 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 import { MainQuantityControlComponent } from './views/main-quality-control/main-quantity-control.component';
 import { QuantityControlGridModule } from './quantity-control-grid.module';
+import { NgxsModule } from '@ngxs/store';
+import { QuantityControlState } from './core/states/quantity-control.state';
+import { PortCallsListState } from './core/states/port-call-list/port-calls-list.state';
+import { PortCallState } from './core/states/port-call/port-call.state';
 
 @NgModule({
   imports: [
@@ -25,7 +29,8 @@ import { QuantityControlGridModule } from './quantity-control-grid.module';
     UIModule,
     FilterPresetsModule,
     PrimeNGModule,
-    MessageBoxModule
+    MessageBoxModule,
+    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallState]),
   ],
   declarations: [
     MainQuantityControlComponent,

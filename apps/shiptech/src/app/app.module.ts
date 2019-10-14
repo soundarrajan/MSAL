@@ -17,6 +17,8 @@ import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/b
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 
 @NgModule({
@@ -40,7 +42,9 @@ import { HttpClientModule } from '@angular/common/http';
     PrimeNGModule,
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: environment.production }),
-    BreadcrumbsModule
+    BreadcrumbsModule,
+    NgxsModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot()
   ],
   providers: [
     {
