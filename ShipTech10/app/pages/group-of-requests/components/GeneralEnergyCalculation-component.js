@@ -95,6 +95,7 @@ angular.module('shiptech.components')
 				})
 				if (hasInvalidPrice) {
 					toastr.error("Please check price fields");
+					ctrl.isSaveBlade = false;
 					return;
 				}
 
@@ -112,12 +113,30 @@ angular.module('shiptech.components')
 	                		ctrl.computeMinPricePerLocations();
 	                	})
             		}
+            		if (ctrl.isSaveBlade) {
+		            	$(".bladeEntity").removeClass("open");
+			            $("body").css("overflow-y", "auto");
+				            setTimeout(function() {
+				                $rootScope.bladeTemplateUrl = "";
+				                if($rootScope.refreshPending) {
+				                    $state.reload();
+				                  // window.location.reload();
+				            	}
+				            	$rootScope.$broadcast("counterpartyBladeClosed", true);
+				                setTimeout(function() {
+				                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
+
+				                }, 100);
+				                $rootScope.overrideCloseNavigation = false;
+				            }, 500);
+            		}
                 	console.log(data);	
                 });
 
 			}
 
 			$rootScope.$on('updateEnergySpecValuesByProduct', function() {
+				ctrl.isSaveBlade = true;
 				ctrl.savedFromBladeClose = true;
 				ctrl.updateEnergySpecValuesByProduct();
 			});

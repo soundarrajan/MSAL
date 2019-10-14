@@ -5621,24 +5621,7 @@ APP_MASTERS.controller("Controller_Master", [
         }
 
         $scope.confirmSaveBlade = function(){
-           $(".bladeEntity").removeClass("open");
-           $("body").css("overflow-y", "auto");
-            setTimeout(function() {
-                $rootScope.bladeTemplateUrl = "";
-                if($rootScope.refreshPending) {
-                    $state.reload();
-                  // window.location.reload();
-                }
-                $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
-                $rootScope.$broadcast("counterpartyBladeClosed", true);
-                setTimeout(function() {
-                    $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
-
-                }, 500);
-                $rootScope.overrideCloseNavigation = false;
-
-           }, 500);
-           
+            $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
         }
 
         $scope.isMeanFormula = function() {
