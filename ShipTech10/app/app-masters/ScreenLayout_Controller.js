@@ -1008,6 +1008,11 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                             if ($scope.tenantSetting.serviceDisplayName.name == "Operator") {
                                 val.Label = val.Label.replace("SERVICE", "OPERATOR");
                             }
+                            if (vm.app_id == "contracts" && vm.entity_id) {
+                            	if (val.Unique_ID == "createdOn" || val.Unique_ID == "entryDate") {
+                            		val.DefaultToday = false;
+                            	}
+                            }	
                             // if (val.Label.indexOf(Compan) == "Label") {}
                         });
                     });
