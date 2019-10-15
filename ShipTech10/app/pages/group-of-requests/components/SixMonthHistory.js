@@ -244,7 +244,7 @@ angular.module('shiptech.components')
             		$(this).removeClass("ng-dirty");
             	})
             	if (ctrl.sixMonthsHistoryData.length == 0) {
-            		toastr.warning("Selected locations doesn't have lab results");
+            		toastr.warning("Selected locations don't have lab results");
             		return;
             	}
                 groupOfRequestsModel.updateEnergy6MonthHistory(payload).then(function (data) {
