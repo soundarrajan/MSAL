@@ -467,7 +467,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         }
                         for (var i = 0; i < ctrl.request.locations[j].products.length; i++) {
                             ctrl.request.locations[j].products[i].name = String(i + 1) + ' - ' + ctrl.request.locations[j].products[i].name;
-                            listsModel.getSpecGroupByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
+                            listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then(function(server_data) {
                                 ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
                                 var isInList = false;
                                 $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
@@ -475,7 +475,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                         if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
                                             isInList = true;
                                         }
-                                    }) ;  
+                                        if (v.isDefault) {
+                                        	ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
+                                        }
+                                    });  
                                 });
                                 if (!isInList) {
                                     ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
@@ -936,8 +939,8 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             listsModel.getSpecGroupByProductAndVessel(product.id, ctrl.request.vesselDetails.vessel.id).then(function(server_data) {
                 newProduct.specGroups = server_data.data.payload;
             	$.each(newProduct.specGroups, function(k,v){
-	            	if (v.id == specGroup.id) {
-			            newProduct.specGroup = specGroup;
+	            	if (v.isDefault) {
+			            newProduct.specGroup = v;
 	            	}
             	})
             });
@@ -952,8 +955,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 product.specGroups = server_data.data.payload;
                 var isInList = false;
             	$.each(product.specGroups, function(k,v){
-	            	if (v.id == product.specGroup.id) {
+	            	if (v.isDefault) {
 		                isInList = true;
+		                product.specGroup = v;
 	            	}
             	})      
             	if (!isInList) {
@@ -2030,7 +2034,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 			                	$.each(ctrl.request.locations[locIdx].products, function(k,v){
 			                		if (v.uniqueIdUI == prodUniqueIdUI) {
 					                    v.specGroups = server_data2.data.payload;
-					                    v.specGroup = server_data2.data.payload[0];
+					                    v.specGroup = null;
+					                    $.each(server_data2.data.payload, function(k2,v2){
+					                    	if (v2.isDefault) {
+							                    v.specGroup = v2;
+					                    	}	
+					                    })
 			                		}
 			                	})
 								// ctrl.request.locations[locIdx].products = $filter('orderBy')(ctrl.request.locations[locIdx].products, 'productType.name');
