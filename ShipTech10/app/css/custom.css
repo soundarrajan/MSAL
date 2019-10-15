@@ -4804,3 +4804,7 @@ table.energyCalculationBlade tr.border-green-jungle{
 	clear: both;
 	margin-bottom: 3px;
 }
+
+.differentQuotedProduct {
+	border: 2px dashed #138052;
+}
