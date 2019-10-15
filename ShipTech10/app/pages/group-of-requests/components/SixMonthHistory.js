@@ -236,7 +236,7 @@ angular.module('shiptech.components')
 					selectedLocationsIds.push(v.id);
 				})
                 payload = {
-                	"locationsList" : selectedLocationsIds.join(","),
+                	"locationsList" : selectedLocationsIds,
                 	"historySelection" : ctrl.sixMonthsHistoryData
                 };
 
