@@ -19,6 +19,11 @@ angular.module('shiptech.models')
             params: {
                 verb: 'getByProduct'
             }
+        },'getSpecGroupByProductAndVessel': {
+            method: 'POST',
+            params: {
+                verb: 'getSpecGroupByProductAndVessel'
+            }
         }
     })
 }])

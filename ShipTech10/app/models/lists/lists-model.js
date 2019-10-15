@@ -47,6 +47,26 @@ angular.module('shiptech.models')
             return { "data": data, "id":id, "id2":id2 };
         });
     }
+    function getSpecGroupByProductAndVessel(productId,vesselId,id,id2) {
+        var payload = {
+            "Filters": [
+	            {
+	                "ColumnName": "ProductId",
+	                "Value": productId
+	            },{
+	                "ColumnName": "VesselId",
+	                "Value": vesselId
+	            }
+            ],
+        };
+        request_data = payloadDataModel.create(payload);
+        return specGroupResource.getSpecGroupByProductAndVessel(request_data).
+        $promise.
+        then(function (data) {
+            return { "data": data, "id":id, "id2":id2 };
+        });
+    }
+
     function getProductTypeByProduct(productId,id,id2)  {
         var payload = {
             "Filters": [{
@@ -81,6 +101,7 @@ angular.module('shiptech.models')
         get: get,
         getForSupplierPortal: getForSupplierPortal,
         getProductTypeByProduct: getProductTypeByProduct,
+        getSpecGroupByProductAndVessel: getSpecGroupByProductAndVessel,
         getSpecGroupByProduct: getSpecGroupByProduct
 	};
 

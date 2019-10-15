@@ -933,7 +933,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (cancelAction != null) {
                 newProduct.screenActions.push(cancelAction);
             }
-            listsModel.getSpecGroupByProduct(product.id).then(function(server_data) {
+            listsModel.getSpecGroupByProductAndVessel(product.id, ctrl.request.vesselDetails.vessel.id).then(function(server_data) {
                 newProduct.specGroups = server_data.data.payload;
             	$.each(newProduct.specGroups, function(k,v){
 	            	if (v.id == specGroup.id) {
@@ -948,7 +948,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             return null;
         };
         ctrl.getSpecGroups = function(product) {
-            listsModel.getSpecGroupByProduct(product.product.id).then(function(server_data) {
+            listsModel.getSpecGroupByProductAndVessel(product.product.id, ctrl.request.vesselDetails.vessel.id).then(function(server_data) {
                 product.specGroups = server_data.data.payload;
                 var isInList = false;
             	$.each(product.specGroups, function(k,v){
@@ -2026,7 +2026,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 	$.each(ctrl.request.locations[locIdx].products, function(k,v){
                 		if (v.uniqueIdUI == prodUniqueIdUI) {
 		                    v.productType = server_data1.data.payload;
-			                listsModel.getSpecGroupByProduct(server_data.payload.id).then(function(server_data2) {
+			                listsModel.getSpecGroupByProductAndVessel(server_data.payload.id, ctrl.request.vesselDetails.vessel.id).then(function(server_data2) {
 			                	$.each(ctrl.request.locations[locIdx].products, function(k,v){
 			                		if (v.uniqueIdUI == prodUniqueIdUI) {
 					                    v.specGroups = server_data2.data.payload;
