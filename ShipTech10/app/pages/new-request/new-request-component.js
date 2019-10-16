@@ -705,6 +705,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.saveRequest = function() {
            
             ctrl.isRequiredMinMax();
+            ctrl.isSpecGroupIsRequired();
             
             $timeout(function() {
                 $("form").addClass("submitted");
@@ -2465,6 +2466,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             valid = ctrl.checkValidQuantities();
             $("form").addClass("submitted");
             ctrl.isRequiredMinMax(true);
+            ctrl.isSpecGroupIsRequired(true);
             $timeout(function() {
                 // show errors if needed
                 ctrl.saved = true;
@@ -2501,6 +2503,22 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
 	                //2. if prerequest not enabled -> required from save
 	                if (!ctrl.requestTenantSettings.isPrerequestEnabled) ctrl.requiredQty = true;
+            	}
+            }
+        };        
+		ctrl.isSpecGroupIsRequired = function(validate) {
+            if (validate) {
+                //function is called from validate - make fields required for validation
+                ctrl.specGroupIsRequired = true;
+                return false;
+            } else {
+            	if (ctrl.requestTenantSettings) {
+	                //general function call (from template)
+	                //1. if prerequest enabled -> required at validate
+	                if (ctrl.requestTenantSettings.isPrerequestEnabled) ctrl.specGroupIsRequired = false; //not required
+
+	                //2. if prerequest not enabled -> required from save
+	                if (!ctrl.requestTenantSettings.isPrerequestEnabled) ctrl.specGroupIsRequired = true;
             	}
             }
         };
