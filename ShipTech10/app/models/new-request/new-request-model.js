@@ -173,10 +173,10 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             };
             if (seller !== null) {
                 request_data.Payload.Filters.push({
-                    ColumnName: "SellerId",
+                    ColumnName: "RequestSellerId",
                     OperationType: 0,
                     ValueType: 5,
-                    Value: seller.sellerCounterparty.id
+                    Value: seller.id
                 });
                 request_data.Payload.Filters.push({
                     ColumnName: "PhysicalSupplierId",

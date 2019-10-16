@@ -447,6 +447,7 @@
     },
     "LATEST_OFFER_DIALOG": {
       "TITLE": "Latest Offer Prices",
+      "QUOTED_PRODUCT": "Quoted Product",
       "SELLER": "Seller",
       "PRICE": "Price",
       "PRODUCTS": "Products",
