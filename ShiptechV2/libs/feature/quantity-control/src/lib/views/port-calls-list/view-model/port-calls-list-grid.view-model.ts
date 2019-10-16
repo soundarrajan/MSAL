@@ -3,16 +3,16 @@ import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { ProcurementRequestColumnsLabels } from './procurement-requests.columns';
+import { PortCallsListGridColumnsLabels } from './port-calls-list.columns';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ProcurementService } from '../../../services/procurement.service';
 import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
-import { AgTemplateRendererComponent } from 'libs/core/src/lib/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 import { getShiptechFormatPagination } from '../../../core/mappers/shiptech-grid-paging';
 
 @Injectable()
-export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
+export class PortCallsListGridViewModel extends BaseGridViewModel {
 
   public searchText: string;
   gridOptions: GridOptions = {
@@ -89,7 +89,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   requestNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.RequestName,
+    headerName: PortCallsListGridColumnsLabels.RequestName,
     field: 'requestName',
     colId: 'Request ID',
     resizable: true,
@@ -98,7 +98,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   requestGroupIdCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.RequestGroupId,
+    headerName: PortCallsListGridColumnsLabels.RequestGroupId,
     field: 'requestGroupId',
     colId: 'Group ID',
     resizable: true,
@@ -107,7 +107,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   requestDateCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.RequestDate,
+    headerName: PortCallsListGridColumnsLabels.RequestDate,
     field: 'requestDate',
     filter: 'agDateColumnFilter',
     colId: 'Date',
@@ -117,7 +117,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   serviceNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.ServiceName,
+    headerName: PortCallsListGridColumnsLabels.ServiceName,
     field: 'serviceName',
     colId: 'Service',
     resizable: true,
@@ -125,7 +125,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   buyerNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.BuyerName,
+    headerName: PortCallsListGridColumnsLabels.BuyerName,
     field: 'buyerName',
     colId: 'Buyer',
     resizable: true,
@@ -133,7 +133,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   vesselNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.VesselName,
+    headerName: PortCallsListGridColumnsLabels.VesselName,
     field: 'vesselName',
     colId: 'vesselname',
     resizable: true,
@@ -141,7 +141,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   imoCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.Imo,
+    headerName: PortCallsListGridColumnsLabels.Imo,
     field: 'imo',
     colId: 'IMO',
     resizable: true,
@@ -149,7 +149,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   etaCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.Eta,
+    headerName: PortCallsListGridColumnsLabels.Eta,
     field: 'eta',
     colId: 'ETA',
     filter: 'agDateColumnFilter',
@@ -159,7 +159,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   locationNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.LocationName,
+    headerName: PortCallsListGridColumnsLabels.LocationName,
     field: 'locationName',
     colId: 'Location',
     resizable: true,
@@ -167,7 +167,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   requestStatusCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.RequestStatus,
+    headerName: PortCallsListGridColumnsLabels.RequestStatus,
     field: 'requestStatus.name',
     colId: 'Request Status',
     resizable: true,
@@ -176,7 +176,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   productNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.ProductName,
+    headerName: PortCallsListGridColumnsLabels.ProductName,
     field: 'productName',
     colId: 'Product',
     resizable: true,
@@ -184,7 +184,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   productTypeCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.ProductType,
+    headerName: PortCallsListGridColumnsLabels.ProductType,
     field: 'productType.name',
     colId: 'Product Type',
     resizable: true,
@@ -192,7 +192,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   productStatusCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.ProductStatus,
+    headerName: PortCallsListGridColumnsLabels.ProductStatus,
     field: 'productStatus.displayName',
     colId: 'Product Status',
     resizable: true,
@@ -201,7 +201,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   agentNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.AgentName,
+    headerName: PortCallsListGridColumnsLabels.AgentName,
     field: 'agentName',
     colId: 'Agent Name',
     resizable: true,
@@ -209,7 +209,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   createdOnCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.CreatedOn,
+    headerName: PortCallsListGridColumnsLabels.CreatedOn,
     field: 'createdOn',
     colId: 'Created On',
     filter: 'agDateColumnFilter',
@@ -219,7 +219,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   createdByNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.CreatedByName,
+    headerName: PortCallsListGridColumnsLabels.CreatedByName,
     field: 'createdByName',
     colId: 'Created By',
     resizable: true,
@@ -227,7 +227,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   deliveryOptionNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.DeliveryOptionName,
+    headerName: PortCallsListGridColumnsLabels.DeliveryOptionName,
     field: 'deliveryOptionName',
     colId: 'Delivery Option',
     resizable: true,
@@ -235,7 +235,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   commentsCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.Comments,
+    headerName: PortCallsListGridColumnsLabels.Comments,
     field: 'comments',
     colId: 'Comments',
     resizable: true,
@@ -243,7 +243,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   lastModifiedOnCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.LastModifiedOn,
+    headerName: PortCallsListGridColumnsLabels.LastModifiedOn,
     field: 'lastModifiedOn',
     colId: 'Last Modified On',
     filter: 'agDateColumnFilter',
@@ -253,7 +253,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   lastModifiedByNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.LastModifiedByName,
+    headerName: PortCallsListGridColumnsLabels.LastModifiedByName,
     field: 'lastModifiedByName',
     colId: 'Last Modified By',
     resizable: true,
@@ -261,7 +261,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   agreementTypeNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.AgreementTypeName,
+    headerName: PortCallsListGridColumnsLabels.AgreementTypeName,
     field: 'agreementTypeName',
     colId: 'Agreement Type',
     resizable: true,
@@ -269,7 +269,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   etbCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.Etb,
+    headerName: PortCallsListGridColumnsLabels.Etb,
     field: 'etb',
     colId: 'ETB',
     resizable: true,
@@ -278,7 +278,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   etdCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.Etd,
+    headerName: PortCallsListGridColumnsLabels.Etd,
     field: 'etd',
     colId: 'ETD',
     resizable: true,
@@ -287,7 +287,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent
   };
   maxQuantityCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.MaxQuantity,
+    headerName: PortCallsListGridColumnsLabels.MaxQuantity,
     field: 'maxQuantity',
     colId: 'Maximum Quantity',
     filter: 'agNumberColumnFilter',
@@ -296,7 +296,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   minQuantityCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.MinQuantity,
+    headerName: PortCallsListGridColumnsLabels.MinQuantity,
     field: 'minQuantity',
     colId: 'Minimum Quantity',
     filter: 'agNumberColumnFilter',
@@ -305,7 +305,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   uomNameCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.UomName,
+    headerName: PortCallsListGridColumnsLabels.UomName,
     field: 'uomName',
     colId: 'UOM',
     resizable: true,
@@ -313,7 +313,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   robOnArrivalCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.RobOnArrival,
+    headerName: PortCallsListGridColumnsLabels.RobOnArrival,
     field: 'robOnArrival',
     colId: 'Rob on Arrival',
     resizable: true,
@@ -321,7 +321,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     lockPosition: false
   };
   roundVoyageConsumptionCol: ColDef = {
-    headerName: ProcurementRequestColumnsLabels.RoundVoyageConsumption,
+    headerName: PortCallsListGridColumnsLabels.RoundVoyageConsumption,
     field: 'roundVoyageConsumption',
     colId: 'Round Voyage Consumption',
     resizable: true,
@@ -335,7 +335,7 @@ export class ProcurementRequestsGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     private procurementService: ProcurementService
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProcurementRequestsGridViewModel.name));
+    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(PortCallsListGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 

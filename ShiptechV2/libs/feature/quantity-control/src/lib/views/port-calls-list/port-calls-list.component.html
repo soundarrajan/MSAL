@@ -1,22 +1,11 @@
-<shiptech-wunderbar>
-  <div class="col-md-12 d-flex" style="margin: 5px 0;">
-    <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
-    <app-filter-preferences
-      id="qualityControlModule"
-      appAgGridFilterPresets
-      groupId="quantityControlmain"
-      screenId="Main"
-    ></app-filter-preferences>
-  </div>
-</shiptech-wunderbar>
 
 <div class="w-100 px-3 py-4" style="background: white;">
   <div class="row mb-2">
     <div class="col-md-6">
       <app-page-size-selector
         (selectedOptionChange)="onPageSizeChange($event)"
-        [options]="gridViewModel.pageSizeOptions"
-        [selectedOption]="gridViewModel.pageSize">
+        [options]="viewModel.gridViewModel.pageSizeOptions"
+        [selectedOption]="viewModel.gridViewModel.pageSize">
       </app-page-size-selector>
     </div>
     <div class="col-md-6">
@@ -31,17 +20,17 @@
     appAgGridSizeToFit
     appDeselectFiltredRows
     AgGridExternalSearch
-    [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
+    [onSearch]="viewModel.gridViewModel.onSearch.bind(viewModel.gridViewModel)"
     groupId="quantityControlmain"
     id="quantityControlGrid"
     class="ag-theme-balham"
-    [gridOptions]="gridViewModel.gridOptions">
+    [gridOptions]="viewModel.gridViewModel.gridOptions">
   </ag-grid-angular>
 
   <div class="row mt-2">
     <div class="col-md-6">
-      Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}}
-      to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
+      Showing {{((viewModel.gridViewModel.page - 1) * viewModel.gridViewModel.pageSize) + 1}}
+      to {{viewModel.gridViewModel.page * viewModel.gridViewModel.pageSize}} of {{viewModel.gridViewModel.totalItems}} entries
     </div>
     <div class="col-md-6">
       <div style="float:right">
@@ -49,44 +38,44 @@
         <app-ag-paging style="width: 150px;"
                        [pagerLeftArrowIcon]="'fa fa-chevron-left'"
                        [pagerRightArrowIcon]="'fa fa-chevron-right'"
-                       [count]="gridViewModel.totalItems"
-                       [page]="gridViewModel.page"
-                       [size]="gridViewModel.pageSize"
+                       [count]="viewModel.gridViewModel.totalItems"
+                       [page]="viewModel.gridViewModel.page"
+                       [size]="viewModel.gridViewModel.pageSize"
                        [useInputAsPageSelect]="true"
                        (pageChange)="onPageChange($event.page)">
         </app-ag-paging>
-        of {{gridViewModel.totalItems / gridViewModel.pageSize}}
+        of {{viewModel.gridViewModel.totalItems / viewModel.gridViewModel.pageSize}}
       </div>
     </div>
   </div>
 </div>
 
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestNameCol]" let-value="value" let-data="data">
+<ng-template appTemplateRenderer [columnDef]="[viewModel.gridViewModel.requestNameCol]" let-value="value" let-data="data">
   <ng-container>
     <a href="{{'/#/edit-request/448' + value}}">{{value}}</a>
   </ng-container>
 </ng-template>
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestGroupIdCol]" let-value="value" let-data="data">
+<ng-template appTemplateRenderer [columnDef]="[viewModel.gridViewModel.requestGroupIdCol]" let-value="value" let-data="data">
   <ng-container>
     <a href="{{'/#/group-of-requests/' + value}}">{{value}}</a>
   </ng-container>
 </ng-template>
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.editCol]" let-value="value" let-data="data">
+<ng-template appTemplateRenderer [columnDef]="[viewModel.gridViewModel.editCol]" let-value="value" let-data="data">
   <ng-container>
     <a href="{{'/#/edit-request/' + data?.requestId}}" target="_blank"><i class="fas fa-pencil-alt"></i></a>
   </ng-container>
 </ng-template>
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.actionCol]" let-value="value" let-data="data">
+<ng-template appTemplateRenderer [columnDef]="[viewModel.gridViewModel.actionCol]" let-value="value" let-data="data">
   <ng-container>
     <button pButton type="button" label="Proceed"  (click)="showModal(data)" class="ui-button-secondary ui-button-raised"></button>
   </ng-container>
 </ng-template>
 
-<ng-template appTemplateRenderer [columnDef]="[gridViewModel.requestStatusCol, gridViewModel.productStatusCol]"
+<ng-template appTemplateRenderer [columnDef]="[viewModel.gridViewModel.requestStatusCol, viewModel.gridViewModel.productStatusCol]"
              let-value="value" let-data="data">
   <ng-container>
     <div class="requestStatus">
@@ -97,12 +86,12 @@
 
 <ng-template appTemplateRenderer
              [columnDef]="[
-               gridViewModel.requestDateCol,
-               gridViewModel.etaCol,
-               gridViewModel.createdOnCol,
-               gridViewModel.lastModifiedOnCol,
-               gridViewModel.etbCol,
-               gridViewModel.etdCol
+               viewModel.gridViewModel.requestDateCol,
+               viewModel.gridViewModel.etaCol,
+               viewModel.gridViewModel.createdOnCol,
+               viewModel.gridViewModel.lastModifiedOnCol,
+               viewModel.gridViewModel.etbCol,
+               viewModel.gridViewModel.etdCol
              ]"
              let-value="value" let-data="data">
   <ng-container>
