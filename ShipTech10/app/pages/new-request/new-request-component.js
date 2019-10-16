@@ -3194,6 +3194,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 			if (!ctrl.request.locations[locationIdx].destination3) {nextAvailableDestinationIndex = 3}
 			if (!ctrl.request.locations[locationIdx].destination2) {nextAvailableDestinationIndex = 2}
 			if (!ctrl.request.locations[locationIdx].destination1) {nextAvailableDestinationIndex = 1}
+            if (!ctrl.request.locations[locationIdx].destination) {nextAvailableDestinationIndex = ""}
 	        ctrl.request.locations[locationIdx].destinationInput = null;
 
 			if (
