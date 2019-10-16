@@ -5473,7 +5473,7 @@ ctrl.setProductData = function(data, loc) {
                 	}
                 }
             });
-            if (ctrl.includeAverageSurveyorCharge && hasAtLeastOneRfq) {
+            if (ctrl.includeAverageSurveyorCharge && hasAtLeastOneRfq && ctrl.isEnergyCalculationRequired) {
             	if (totalAmount > 0) {
 	                totalAmount += ctrl.averageSurveyorCost;
             	} 
