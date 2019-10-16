@@ -2954,7 +2954,7 @@ APP_MASTERS.controller("Controller_Master", [
                                 $(this).css("clear", "both");
                             }
                             $(this).attr("big-child", "true");
-                        }
+                        }                   
                     });
                     if (currentTags.length > 3 && !elt.next(".bootstrap-tagsinput").children(".hideTagsChild").length) {
                         currentTags.parent().prepend("<span class='hideTagsChild'><i class='fa fa-ellipsis-h' aria-hidden='true'></i><span>");
