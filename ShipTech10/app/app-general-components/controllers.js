@@ -335,6 +335,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 text: text
             };
         };
+        $scope.showDeleteDocumentConfirm = function(controller, text, confirmAction) {
+            $(".confirmModal2").modal();
+            $(".confirmModal2").removeClass("hide");
+            $(".confirmModal2").attr("ng-controller", controller);
+            $(".confirmModal2 .confirmAction").attr("ng-click", confirmAction);
+            $compile($(".confirmModal2"))($scope);
+            $rootScope.confirmModalData = {
+                text: text
+            };
+        };        
         $scope.prettyCloseModal = function() {
             var modalStyles = {
                 transition: "0.3s",
@@ -580,7 +590,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         });
                         break;
                     }
-                    $scope.showSweetConfirm("Controller_Configurable_List_Control", "Are you sure you want to delete the document ?", "deleteDocumentFromList("+id+")");
+                    $scope.showDeleteDocumentConfirm("Controller_Configurable_List_Control", "Are you sure you want to delete the document ? ", "deleteDocumentFromList("+id+")");
                     break;
                 case "insert":
                     console.log("insert new row");

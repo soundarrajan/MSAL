@@ -31,6 +31,8 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
                     obj.name == "requestDate" ||
                     obj.name == "date" ||
                     obj.name == "quoteDate" ||
+                    obj.name == "uploadedOn" ||
+                    obj.name == "verifiedOn" ||
                     obj.name.indexOf("Date") > -1 ||
                     obj.name.indexOf("date") > -1 ||
                     obj.name.indexOf("amount") != -1 ||
@@ -77,7 +79,7 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
             }
 
 
-            if (obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "deliveryLastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate") {
+            if (obj.name == "uploadedOn" || obj.name == "verifiedOn" || obj.name == "createdOn" || obj.name == "modifiedOn" || obj.name == "lastModifiedOn" || obj.name == "deliveryLastModifiedOn" || obj.name == "activateOn" || obj.name == "deactivateOn" || obj.name == "validTo" || obj.name == "validFrom" || obj.name == "confirmedOn" || obj.name == "requestDate") {
                 if (obj.name == "delayInDays" || obj.name.indexOf("delay") > -1) {
                 } else {
                     colmodel[key].formatter = CLC.get_formatter("formatDate");
