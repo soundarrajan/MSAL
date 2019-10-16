@@ -4161,7 +4161,11 @@ ctrl.setProductData = function(data, loc) {
                     // }
                 }
             }
-            console.log(ctrl.locations);
+            ctrl.groupLocationsByUniqueLocationIdentifier();
+            // console.log(ctrl.locations);
+            console.log("_____________");
+            console.log(ctrl.requests);
+            console.log("-------------");
         };
         ctrl.setAsCurrentSelection = function (obj, src) {
             console.log(obj);
