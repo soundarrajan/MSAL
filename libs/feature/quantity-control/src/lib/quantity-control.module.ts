@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { PROCUREMENT_API_SERVICE, ProcurementApiService } from './services/api/procurement.api.service';
@@ -11,18 +11,21 @@ import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-prefere
 import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
-import { MainQuantityControlComponent } from './views/main-quality-control/main-quantity-control.component';
+import { MainQuantityControlComponent } from './views/main-quantity-control.component';
 import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
-import { QuantityControlState } from './core/states/quantity-control.state';
-import { PortCallsListState } from './core/states/port-call-list/port-calls-list.state';
-import { PortCallState } from './core/states/port-call/port-call.state';
+import { QuantityControlState } from './store/quantity-control.state';
+import { PortCallsListState } from './store/port-call-list/port-calls-list.state';
+import { PortCallState } from './store/port-call/port-call.state';
+import { QuantityControlRoutingModule } from './quantity-control-routing.module';
+import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.component';
+import { PortCallComponent } from './views/port-call/port-call.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: '', component: MainQuantityControlComponent }]),
     QuantityControlGridModule,
+    QuantityControlRoutingModule,
     LoggingModule,
     AuthenticationModule.forFeature(),
     SearchBoxModule,
@@ -34,7 +37,9 @@ import { PortCallState } from './core/states/port-call/port-call.state';
   ],
   declarations: [
     MainQuantityControlComponent,
-    WunderBarComponent
+    WunderBarComponent,
+    PortCallsListComponent,
+    PortCallComponent
   ],
   providers: [
     ModuleLoggerFactory,

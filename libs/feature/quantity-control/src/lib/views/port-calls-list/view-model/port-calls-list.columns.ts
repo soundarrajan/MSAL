@@ -1,4 +1,4 @@
-export enum ProcurementRequestColumnsLabels {
+export enum PortCallsListGridColumnsLabels {
   RequestName = 'Request ID',
   RequestGroupId = 'Group ID',
   RequestDate = 'Date',

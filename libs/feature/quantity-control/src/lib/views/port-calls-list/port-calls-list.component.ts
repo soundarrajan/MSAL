@@ -1,28 +1,30 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ProcurementRequestsGridViewModel } from './view-model/procurement-requests-grid.view-model';
+import { PortCallsListGridViewModel } from './view-model/port-calls-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
+import { PortCallsListViewModel } from './view-model/port-calls-list.view-model';
 
 @Component({
-  selector: 'shiptech-main-quantity-control',
-  templateUrl: './main-quantity-control.component.html',
-  styleUrls: ['./main-quantity-control.component.scss'],
-  providers: [ProcurementRequestsGridViewModel],
+  selector: 'shiptech-port-calls-list',
+  templateUrl: './port-calls-list.component.html',
+  styleUrls: ['./port-calls-list.component.css'],
+  providers: [PortCallsListGridViewModel, PortCallsListViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MainQuantityControlComponent implements OnInit {
+export class PortCallsListComponent implements OnInit {
+
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
 
-  constructor(public gridViewModel: ProcurementRequestsGridViewModel, private messageBox: MessageBoxService) {
+  constructor(public viewModel: PortCallsListViewModel, private messageBox: MessageBoxService) {
   }
 
   onPageChange(page: number): void {
-    this.gridViewModel.page = page;
+    this.viewModel.gridViewModel.page = page;
   }
 
   onPageSizeChange(pageSize: number): void {
-    this.gridViewModel.pageSize = pageSize;
+    this.viewModel.gridViewModel.pageSize = pageSize;
   }
 
   showModal(data: IProcurementRequestDto): void {
