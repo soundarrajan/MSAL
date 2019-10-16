@@ -561,13 +561,15 @@ angular
                     $rootScope.lastLoggedUri = uri;
                     $rootScope.pageViewTelemetryId = Microsoft.ApplicationInsights.Util.generateW3CId();
 
-                    appInsightsInstance.trackPageView({
-                        id: $rootScope.pageViewTelemetryId,
-                        name: 'shiptech page view',
-                        properties: {
-                            tenantUrl: window.location.origin
-                        }
-                    });
+                    if (appInsightsInstance) {
+                        appInsightsInstance.trackPageView({
+                            id: $rootScope.pageViewTelemetryId,
+                            name: 'shiptech page view',
+                            properties: {
+                                tenantUrl: window.location.origin
+                            }
+                        });
+                    }
 
                     if (performance && performance.clearResourceTimings)
                         performance.clearResourceTimings();
@@ -808,12 +810,15 @@ angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
 }])
 
 function appInsightsInstanceProvider(instrumentationKey) {
+    if (!instrumentationKey)
+        return null;
+
     var snippet = {
         version: 2.0,
         config: {
             appId: 'shiptech',
             instrumentationKey: instrumentationKey,
-            disableTelemetry: !instrumentationKey,
+            disableTelemetry: false,
             disableAjaxTracking: true,
             disableExceptionTracking: true,
             disableFetchTracking: true,
