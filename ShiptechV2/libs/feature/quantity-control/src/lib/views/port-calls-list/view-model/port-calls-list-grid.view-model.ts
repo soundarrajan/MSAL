@@ -5,7 +5,7 @@ import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { PortCallsListGridColumnsLabels } from './port-calls-list.columns';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { ProcurementService } from '../../../services/procurement.service';
+import { QuantityControlService } from '../../../services/quantity-control.service';
 import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
@@ -333,7 +333,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private procurementService: ProcurementService
+    private procurementService: QuantityControlService
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(PortCallsListGridViewModel.name));
     this.initOptions(this.gridOptions);
@@ -387,7 +387,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
       filters: getShiptechFormatFilters(params),
       searchText: this.searchText
     }).subscribe(
-      response => params.successCallback(response.payload, response.matchedCount),
+      response => params.successCallback(response, 100),
       () => params.failCallback());
   }
 }
