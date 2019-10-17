@@ -4597,10 +4597,12 @@ ctrl.setProductData = function(data, loc) {
                 });
                 console.log();
                 ctrl.disablePhysicalSupplierLookup = false;
-                if ($($(event.target).parent(".physicalSupplier")).find($("[uib-typeahead-popup].dropdown-menu")).css("display") == 'none' ) {
-	                toastr.error("You must select a Physical Supplier");
-                }                
-                return
+                if (ctrl.fieldVisibility.isPhysicalSupplierMandatory) {
+	                if ($($(event.target).parent(".physicalSupplier")).find($("[uib-typeahead-popup].dropdown-menu")).css("display") == 'none' ) {
+		                toastr.error("You must select a Physical Supplier");
+	                }                
+	                return
+                }
             }
             if (seller.isCloned) {
                 $.each(theLocation, function (locK, locV) {
