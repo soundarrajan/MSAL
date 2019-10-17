@@ -50,6 +50,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             });
         }
         if ($stateParams.token) {
+			tenantService.procurementSettings.then(function(settings) {
+				ctrl.procurementSettings = settings.payload;
+			});
             browser = browserInfo();
             Payload = {
                 "OperatingSystem": browser.os + ' ' + browser.osVersion,

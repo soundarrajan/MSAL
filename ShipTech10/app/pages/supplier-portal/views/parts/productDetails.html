@@ -541,7 +541,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="portlet light stretch-vertical " ng-if="$ctrl.token && $ctrl.checkEnergyProduct(location.products)" >
+                <div class="portlet light stretch-vertical " ng-if="$ctrl.token && $ctrl.checkEnergyProduct(location.products) && $ctrl.procurementSettings.energyConfiguration.isEnergyCalculationRequired" >
                     <div class="portlet-title">
                         <div class="tools">
                             <a data-toggle="collapse" aria-expanded="true"  href="#energy{{ $index }}" class="collapse "></a>
