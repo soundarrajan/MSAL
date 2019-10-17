@@ -1957,6 +1957,7 @@ window.increment = 0;
         function($filter) {
             return {
                 // restrict: 'A',
+                // ret
                 require: "ngModel",
                 link: function(scope, elem, attrs, ctrl) {
                     if (!ctrl) return;
@@ -1981,7 +1982,7 @@ window.increment = 0;
                             return parseInt(ctrl.$modelValue);
                         }
                         returnData = null;
-                        if (ctrl.$modelValue) {
+                        if (ctrl.$modelValue != null) {
 	                        returnData = $filter(filter)(ctrl.$modelValue, fraction); 
                         }
                         return returnData;
