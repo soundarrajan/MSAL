@@ -71,7 +71,8 @@
                                                         <b>
                                                             TCO:
                                                         </b>
-                                                        {{ product.amount | number:3 }}
+                                                        <!-- {{ product.amount | number:3 }} -->
+                                                          {{( (!product.amount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (product.amount | number : $ctrl.numberPrecision.amountPrecision))}}
                                                     </p>
                                                     <p>
                                                         Seller: {{ value.seller.name }}
@@ -106,7 +107,7 @@
                                                         </span>
                                                     </p>
                                                     <span>
-                                                        {{ product.product.name }}: {{ product.maxQuantity | number:2 }}{{ product.uom.name }} - {{ product.price | number:3 }} {{ product.currency.code ?  product.currency.code : product.currency.name }}
+                                                        {{ product.product.name }} : {{( (!product.maxQuantity) ? (0 | number : $ctrl.numberPrecision.quantityPrecision) : (product.maxQuantity  | number : $ctrl.numberPrecision.quantityPrecision))}} {{ product.uom.name }} - {{( (!product.price) ? (0 | number : $ctrl.numberPrecision.pricePrecision) : (product.price | number : $ctrl.numberPrecision.pricePrecision))}} {{ product.currency.code ?  product.currency.code : product.currency.name }}
                                                         <br/>
                                                     </span>
                                                     <div class="location-name">
@@ -140,7 +141,7 @@
                                                 <b>
                                                     Total:
                                                 </b>
-                                                {{ $ctrl.getTotalBestTCOForRequest(reqV) | number : 3 }}
+                                                {{( (!$ctrl.getTotalBestTCOForRequest(reqV)) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : ($ctrl.getTotalBestTCOForRequest(reqV) | number : $ctrl.numberPrecision.amountPrecision))}}
                                             </h4>
                                         </div>
                                     </div>
@@ -157,7 +158,7 @@
                                             {{ $ctrl.bestTcoData.bestTotalTCO | sumOfValueArray:'tco' | number:3 }}  {{ value.currency.code ?  value.currency.code : value.currency.name }}
                                         </p> -->
                                         <span>
-                                            {{  $ctrl.calculateBestTotalTCOGrandTotal() | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                             {{( (!$ctrl.calculateBestTotalTCOGrandTotal()) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : ($ctrl.calculateBestTotalTCOGrandTotal() | number : $ctrl.numberPrecision.amountPrecision))}} {{ value.currency.code ?  value.currency.code : value.currency.name }}
                                         </span>
                                         <!--                                        <div>
                                                                                     <b>{{$ctrl.tcoSurveyorCost}}</b>
@@ -315,7 +316,7 @@
                                                         <b ng-if="!svalue.isEnergyContent">
                                                             Best Offer:
                                                         </b>
-                                                        {{ svalue.amount | number:3 }}
+                                                          {{( (!svalue.amount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (svalue.amount | number : $ctrl.numberPrecision.amountPrecision))}}
                                                     </p>
 
 
@@ -348,7 +349,8 @@
                                                         {{ value.request.id }}
                                                     </p>
                                                     <span>
-                                                        {{ svalue.product.name }}: {{ svalue.maxQuantity | number:2 }}{{ svalue.uom.name }} - {{ svalue.price | number:3 }} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+
+                                                        {{ svalue.product.name }}:  {{( (!svalue.maxQuantity) ? (0 | number : $ctrl.numberPrecision.quantityPrecision) : (svalue.maxQuantity | number : $ctrl.numberPrecision.quantityPrecision))}} {{ svalue.uom.name }} - {{( (!svalue.price) ? (0 | number : $ctrl.numberPrecision.pricePrecision) : (svalue.price | number : $ctrl.numberPrecision.pricePrecision))}} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
                                                     </span>
 
                                                 </div>
@@ -371,7 +373,7 @@
                                                 <b>
                                                     Total:
                                                 </b>
-                                                {{ value.request.amount  | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                                {{( (!value.request.amount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (value.request.amount | number : $ctrl.numberPrecision.amountPrecision))}}
                                             </h4>
                                         </div>
                                     </div>
@@ -387,10 +389,10 @@
                                             <!-- {{$ctrl.bestTcoData.bestIndividuals}} -->
                                             {{$ctrl.diffProducts()}}
                                             <span ng-if="$ctrl.includeAverageSurveyorChargeChecbox == true" ng-init="$ctrl.diffProducts()">
-                                                {{  $ctrl.bestTcoData.bestIndividuals.grandTotal  + $ctrl.bestTcoData.bestIndividuals.surveyorCost | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                                 {{( (!($ctrl.bestTcoData.bestIndividuals.grandTotal  + $ctrl.bestTcoData.bestIndividuals.surveyorCost)) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : ($ctrl.bestTcoData.bestIndividuals.grandTotal  + $ctrl.bestTcoData.bestIndividuals.surveyorCost | number : $ctrl.numberPrecision.amountPrecision))}} {{ value.currency.code ?  value.currency.code : value.currency.name }}
                                             </span>
                                             <span ng-if="$ctrl.includeAverageSurveyorChargeChecbox == false" ng-init="$ctrl.diffProducts()">
-                                                {{  $ctrl.bestTcoData.bestIndividuals.grandTotal | number:3 }} {{ value.currency.code ?  value.currency.code : value.currency.name }}
+                                                     {{( (!$ctrl.bestTcoData.bestIndividuals.grandTotal) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : ($ctrl.bestTcoData.bestIndividuals.grandTotal | number : $ctrl.numberPrecision.amountPrecision))}} {{ value.currency.code ?  value.currency.code : value.currency.name }}
                                             </span>
                                         </p>
                                     </h4>
