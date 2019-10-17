@@ -4264,7 +4264,11 @@ ctrl.setProductData = function(data, loc) {
             // ctrl.mySelection.concat(obj)
         };
         ctrl.checkIfPriceChanged = function (value) {
-            ctrl.checkedIfPriceChanged = Math.floor(Number(value));
+        	if (value) {
+	            ctrl.checkedIfPriceChanged = Math.floor(Number(value));
+        	} else {
+	            ctrl.checkedIfPriceChanged = value;
+        	}
         };
 
         ctrl.savePriceChange = function (priceValue, requestOfferId, seller, locations, productSample) {

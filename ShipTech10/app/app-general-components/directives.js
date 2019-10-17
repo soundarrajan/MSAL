@@ -1982,7 +1982,7 @@ window.increment = 0;
                             return parseInt(ctrl.$modelValue);
                         }
                         returnData = null;
-                        if (ctrl.$modelValue != null) {
+                        if (ctrl.$modelValue != null || ctrl.$modelValue != "") {
 	                        returnData = $filter(filter)(ctrl.$modelValue, fraction); 
                         }
                         return returnData;
