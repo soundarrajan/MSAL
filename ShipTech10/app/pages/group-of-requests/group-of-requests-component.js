@@ -4719,7 +4719,9 @@ ctrl.setProductData = function(data, loc) {
                                 });
                             });
                         });
-                        toastr.error("The selected Physical Supplier already exist for that seller on that location");
+                        if (newSupplier != oldSupplier) {
+	                        toastr.error("The selected Physical Supplier already exist for that seller on that location");
+                        }
                     } else {
                         requestOfferIds = [];
                         $.each(theLocation, function (locK, locV) {
