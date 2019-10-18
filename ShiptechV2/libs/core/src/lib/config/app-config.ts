@@ -10,6 +10,8 @@ export class AppConfig implements IAppConfig {
   loggingApi: string;
   userSettingsApi: string;
   userSettingsApiUrl: string;
+  // TODO: add this to config file
+  tenantPublicApiUrl: string;
 }
 
 // tslint:disable-next-line:no-empty-interface
