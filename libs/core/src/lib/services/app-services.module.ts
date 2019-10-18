@@ -2,12 +2,9 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { USER_SETTINGS_API_SERVICE, UserSettingsApiService } from './user-settings/user-settings-api.service';
 import { UserSettingsApiServiceMock } from './user-settings/user-settings-api.service.mock';
 import { getDefaultStorage, PREFERENCE_STORAGE } from './preference-storage/preference-storage.interface';
-import {
-  TENANT_SETTINGS_SERVICE,
-  TenantSettingsService
-} from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { TENANT_SETTINGS_SERVICE, TenantSettingsService } from './tenant-settings/tenant-settings.service';
 import { environment } from '@shiptech/environment';
-import { TenantSettingsServiceMock } from '@shiptech/core/services/tenant-settings/tenant-settings.service.mock';
+import { TenantSettingsServiceMock } from './tenant-settings/tenant-settings.service.mock';
 
 @NgModule({
   imports: [],

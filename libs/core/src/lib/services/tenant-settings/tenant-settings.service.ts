@@ -20,7 +20,7 @@ import { IAppState } from '../../store/states/app.state.interface';
 import { LoggerFactory } from '../../logging/logger-factory.service';
 import { map } from 'rxjs/operators';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
-import { AppConfig } from '@shiptech/core';
+import { AppConfig } from '../../config/app-config';
 
 export type ITransformTenantSettings<T = any> = (settingsDto: Partial<ITenantSettingsDto>) => T;
 
