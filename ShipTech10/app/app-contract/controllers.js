@@ -510,7 +510,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
 	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerMonth');
 	                        vm.editInstance.$valid = false;
 	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
+	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
 	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than TotalContractualQuantity');
 	                        vm.editInstance.$valid = false;
 	                    }
