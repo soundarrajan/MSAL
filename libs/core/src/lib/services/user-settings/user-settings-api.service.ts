@@ -16,7 +16,6 @@ import { fromEvent, Observable, of, Subject, throwError } from 'rxjs';
 import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
 import { catchError, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
-import { ApiError } from '../../error-handling/api/api-error';
 import { AppError } from '../../error-handling/app-error';
 import { AppConfig } from '../../config/app-config';
 import { LoggingInterceptorHeader } from '../../interceptors/logging-http-interceptor.service';
@@ -85,7 +84,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   }
 
   set(key: string, value: any): Observable<any> {
-    return this.save({ key, value: typeof value === 'string' ? value : JSON.stringify(value) });
+    return this.save({ key, value: typeof value === 'string' ? value as string : JSON.stringify(value) });
   }
 
   // TODO: Remove from here, create a UserSettingService

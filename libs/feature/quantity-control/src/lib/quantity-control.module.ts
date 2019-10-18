@@ -19,6 +19,8 @@ import { PortCallState } from './store/port-call/port-call.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.component';
 import { PortCallComponent } from './views/port-call/port-call.component';
+import { QuantityControlMockApiService } from './services/api/quantity-control.api.service.mock';
+import { environment } from '@shiptech/environment';
 
 @NgModule({
   imports: [
@@ -44,8 +46,7 @@ import { PortCallComponent } from './views/port-call/port-call.component';
     ModuleLoggerFactory,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
-      useClass: QuantityControlApiService
-      // useClass: environment.production ? ProcurementApiService : QuantityControlMockApiService
+      useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService
     },
     QuantityControlService
   ]
