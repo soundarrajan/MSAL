@@ -7043,6 +7043,12 @@ ctrl.setProductData = function(data, loc) {
         	}
             groupOfRequestsModel.switchHasNoQuote(ctrl.sendNoQuotePayload).then(function(response) {
                 ctrl.initScreenAfterSendOrSkipRfq();
+	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
+	                ctrl.bestTcoData = data.payload;
+	                ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
+                    ctrl.mySelection = data.payload.mySelection.quotations;
+	                ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
+	            });
             });        	
         }
 
