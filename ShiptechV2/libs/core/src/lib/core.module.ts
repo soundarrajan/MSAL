@@ -17,7 +17,7 @@ import { AppServicesModule } from './services/app-services.module';
     UIModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   exports: [
     AppContextModule,

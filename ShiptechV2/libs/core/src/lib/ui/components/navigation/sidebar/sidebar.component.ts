@@ -1,5 +1,5 @@
 import { AfterContentInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MainComponent } from '../../main.component';
+import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { BASE_MENU } from '../models/menu.items';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ScrollPanel } from 'primeng/primeng';
@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
 
   @ViewChild('layoutMenuScroller', { static: true }) layoutMenuScrollerViewChild: ScrollPanel;
 
-  constructor(public app: MainComponent) {
+  constructor(public app: LayoutMainComponent) {
   }
 
   ngOnInit(): void {

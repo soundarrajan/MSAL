@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PortCallsListGridViewModel } from './view-model/port-calls-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
 import { PortCallsListViewModel } from './view-model/port-calls-list.view-model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -11,8 +12,9 @@ import { PortCallsListViewModel } from './view-model/port-calls-list.view-model'
   providers: [PortCallsListGridViewModel, PortCallsListViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PortCallsListComponent implements OnInit {
+export class PortCallsListComponent implements OnInit, OnDestroy {
 
+  private _destroy$ = new Subject();
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
 
@@ -34,4 +36,8 @@ export class PortCallsListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
 }

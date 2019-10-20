@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MenuItem } from 'primeng/api';
-import { MainComponent } from '../../../main.component';
+import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { SidebarComponent } from '../sidebar.component';
 
 @Component({
@@ -44,7 +44,7 @@ export class AppSubMenuComponent {
 
   activeIndex: number;
 
-  constructor(public app: MainComponent, public appMenu: SidebarComponent) {
+  constructor(public app: LayoutMainComponent, public appMenu: SidebarComponent) {
   }
 
   itemClick(event: Event, item: MenuItem, index: number): boolean {

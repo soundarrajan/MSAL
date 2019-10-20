@@ -1,10 +1,10 @@
 import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
-  selector: 'shiptech-main',
-  templateUrl: './main.component.html'
+  selector: 'layout-main',
+  templateUrl: './layout-main.component.html'
 })
-export class MainComponent implements AfterViewInit {
+export class LayoutMainComponent implements AfterViewInit {
   menuMode = 'static';
 
   overlayMenuActive: boolean;
