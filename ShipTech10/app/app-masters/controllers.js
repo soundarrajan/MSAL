@@ -1105,7 +1105,14 @@ APP_MASTERS.controller("Controller_Master", [
                     	}
                     });
                     $scope.filterFromData.marketPrices = tempMarketPrices;
-                }				          
+                }		
+                if (vm.app_id == "masters" && vm.screen_id == "formula" && (!vm.entity_id || vm.entity_id == "")) {
+                    $.each($scope.filterFromData.complexFormulaQuoteLines, function(key, val) {
+	                    $.each(val.systemInstruments, function(key2, val2) {
+	                    	val2.complexFormulaQuoteLine.id = 0;
+	                    });
+                    });
+                }                		          
                 if (vm.app_id == "admin" && vm.screen_id == "role") {
                     console.log($scope.formValues.deepmerge);
                     roles = $scope.formValues.roles;
