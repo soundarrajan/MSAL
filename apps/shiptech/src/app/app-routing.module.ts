@@ -1,30 +1,15 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { KnownModulesPaths } from '@shiptech/core';
-import { AuthenticationGuard } from '@shiptech/core';
+import { AuthenticationGuard, KnownModulesPaths } from '@shiptech/core';
 import { AdalGuard } from 'adal-angular-wrapper';
-import { BlankComponent } from './components/blank/blank.component';
+import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 
 const routes: Routes = [
+  { path: '', component: LayoutMainComponent, pathMatch: 'full' },
   {
-    path: '',
-    data: {
-      breadcrumb: 'Home'
-    },
-    children: [
-      {
-        path: '',
-        component: BlankComponent
-      },
-      {
-        canActivate: [AuthenticationGuard],
-        path: KnownModulesPaths.QuantityControl,
-        loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule),
-        data: {
-          breadcrumb: 'Quantity Control'
-        }
-      }
-    ]
+    path: KnownModulesPaths.QuantityControl,
+    canActivate: [AuthenticationGuard],
+    loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
   }
 ];
 

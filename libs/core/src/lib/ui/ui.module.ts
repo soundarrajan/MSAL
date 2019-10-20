@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { CopyToClipboardDirective } from './directives/copy-to-clipboard.directive';
 import { AgGridExternalSearchDirective } from './directives/ag-external-search.directive';
 import { MaterialModule } from './material.module';
+import { LayoutMainModule } from '@shiptech/core/ui/layout/main/layout-main.module';
+import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 
 @NgModule({
   imports: [
-    MaterialModule
+    MaterialModule,
+    LayoutMainModule,
   ],
   declarations: [
     CopyToClipboardDirective,
@@ -13,7 +16,8 @@ import { MaterialModule } from './material.module';
   ],
   exports: [
     CopyToClipboardDirective,
-    AgGridExternalSearchDirective
+    AgGridExternalSearchDirective,
+    LayoutMainComponent
   ]
 })
 export class UIModule {

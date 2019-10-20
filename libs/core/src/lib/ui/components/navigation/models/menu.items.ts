@@ -1,11 +1,15 @@
 import { KeyedMenuItems } from './sidebar-view.model';
-import { KnownModulesPaths } from '@shiptech/core';
+import { KnownModulesPaths } from '../../../../enums/known-modules-routes.enum';
 
 
 export const BASE_MENU: KeyedMenuItems = {
   'qualityControl': {
     'label': 'Quantity Control',
-    'routerLink': KnownModulesPaths.QuantityControl,
+    'routerLink': `/${KnownModulesPaths.QuantityControl}`,
+  },
+  'blankPage': {
+    'label': 'Blank Page',
+    'routerLink': `/${KnownModulesPaths.QuantityControl}/blank-page`,
   },
   'masters': {
     'label': 'Masters',

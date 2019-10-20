@@ -21,6 +21,7 @@ import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.
 import { PortCallComponent } from './views/port-call/port-call.component';
 import { QuantityControlMockApiService } from './services/api/quantity-control.api.service.mock';
 import { environment } from '@shiptech/environment';
+import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 
 @NgModule({
   imports: [
@@ -34,13 +35,17 @@ import { environment } from '@shiptech/environment';
     FilterPresetsModule,
     PrimeNGModule,
     MessageBoxModule,
-    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallState]),
+    RelatedLinksModule,
+    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallState])
   ],
   declarations: [
     MainQuantityControlComponent,
     WunderBarComponent,
     PortCallsListComponent,
     PortCallComponent
+  ],
+  exports: [
+    MainQuantityControlComponent
   ],
   providers: [
     ModuleLoggerFactory,
