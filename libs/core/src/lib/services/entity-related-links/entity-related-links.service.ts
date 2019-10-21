@@ -13,7 +13,9 @@ import { Store } from '@ngxs/store';
 import { IEntityRelatedLinksResponseDto } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EntityRelatedLinksService extends BaseStoreService {
   constructor(@Inject(ENTITY_RELATED_LINKS_API) private api: IEntityRelatedLinksApi, store: Store, loggerFactory: ModuleLoggerFactory){
     super(store, loggerFactory.createLogger(EntityRelatedLinksService.name));
@@ -21,7 +23,7 @@ export class EntityRelatedLinksService extends BaseStoreService {
 
   getRelatedLinksForEntity(id: any): Observable<IEntityRelatedLink[]> {
     return this.api.getRelatedLinksForEntity(id).pipe(
-      map(response => AllEntityRelatedTypes.map(t => this.tryMapToIEntityRelatedLink(t, response)).filter(e => !e))
+      map(response => AllEntityRelatedTypes.map(t => this.tryMapToIEntityRelatedLink(t, response)).filter(e => e))
     );
   }
 

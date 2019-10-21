@@ -1,16 +1,27 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import {
+  EntityRelatedLinkType,
+  IEntityRelatedLink
+} from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
+import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
+import { Omit } from '../../../utils/type-definitions';
 
 export interface IRelatedLinksRouteData {
-  relatedLinks?: IRelatedLinksOptions
+  relatedLinksOptions?: IRelatedLinksOptions,
 }
 
 export interface IRelatedLinksOptions {
-  links: MenuItem[],
-  dynamicLinkProvider: Observable<Record<string, string>>
+  availableLinks: IRelatedLinkItem[],
+  currentRouteLinkType?: EntityRelatedLinkType,
+  entityIdRouteParam?: string
+}
+
+export interface IRelatedLinkItem  extends Omit<MenuItem, 'id'> {
+  id: EntityRelatedLinkType;
 }
 
 @Component({
@@ -48,7 +59,7 @@ export interface IRelatedLinksOptions {
 })
 export class RelatedLinksComponent implements OnInit, OnDestroy {
 
-  @Input() model: MenuItem[];
+  @Input() model: IRelatedLinkItem[];
 
   @Input() style: any;
 
@@ -57,18 +68,24 @@ export class RelatedLinksComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private entityRelatedLinksService: EntityRelatedLinksService) {
 
-    this.route.data.pipe(
-      tap((data: IRelatedLinksRouteData) => {
-        const options = (data || {}).relatedLinks || <IRelatedLinksOptions>{};
+    const options = (this.route.snapshot.data || {}).relatedLinksOptions || <IRelatedLinksOptions>{};
 
-        this.model = (options.links || []);
+    this.model = (options.availableLinks || []);
 
+    const entityId = this.route.snapshot.params[options.entityIdRouteParam];
 
-      }),
-      takeUntil(this._destroy$)
-    ).subscribe();
+    // TODO: Log invalid usage
+    if (entityId)
+      this.entityRelatedLinksService.getRelatedLinksForEntity(entityId)
+        .pipe(
+          tap(serverLinks => {
+            (this.model || []).forEach(relatedLinkItem => relatedLinkItem.url = (serverLinks.find(s => s.type === relatedLinkItem.id) || <IEntityRelatedLink>{}).url);
+          }),
+        takeUntil(this._destroy$)
+        ).subscribe();
   }
 
   ngOnInit(): void {

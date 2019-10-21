@@ -11,7 +11,6 @@ export class AppConfig implements IAppConfig {
   userSettingsApi: string;
   // TODO: add this to config file,  check first if they are not in the infrastructure api
   tenantPublicApiUrl: string;
-  infrastructureApiUrl: string;
 }
 
 // tslint:disable-next-line:no-empty-interface
