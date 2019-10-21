@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PortCallsListGridViewModel } from './view-model/port-calls-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
-import { IProcurementRequestDto } from '../../services/models/procurement-requests.dto';
 import { PortCallsListViewModel } from './view-model/port-calls-list.view-model';
 import { Subject } from 'rxjs';
 
@@ -29,7 +28,7 @@ export class PortCallsListComponent implements OnInit, OnDestroy {
     this.viewModel.gridViewModel.pageSize = pageSize;
   }
 
-  showModal(data: IProcurementRequestDto): void {
+  showModal(data: any): void {
     this.messageBox.displayDialog({data, width: '500px', height: '600px'}, this.popupTemplate);
   }
 
