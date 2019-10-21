@@ -5,6 +5,11 @@ import { getDefaultStorage, PREFERENCE_STORAGE } from './preference-storage/pref
 import { TENANT_SETTINGS_SERVICE, TenantSettingsService } from './tenant-settings/tenant-settings.service';
 import { environment } from '@shiptech/environment';
 import { TenantSettingsServiceMock } from './tenant-settings/tenant-settings.service.mock';
+import {
+  ENTITY_RELATED_LINKS_API,
+  EntityRelatedLinksApi
+} from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
+import { EntityRelatedLinksApiMock } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.mock';
 
 @NgModule({
   imports: [],
@@ -30,6 +35,10 @@ export class AppServicesModule {
         {
           provide: TENANT_SETTINGS_SERVICE,
           useClass: environment.production ? TenantSettingsService : TenantSettingsServiceMock
+        },
+        {
+          provide: ENTITY_RELATED_LINKS_API,
+          useClass: environment.production ? EntityRelatedLinksApi : EntityRelatedLinksApiMock
         }
       ]
     };

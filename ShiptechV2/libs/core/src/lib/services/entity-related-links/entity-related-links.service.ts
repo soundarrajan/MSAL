@@ -1,46 +1,31 @@
-import { Injectable, InjectionToken } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
+import { Inject, Injectable } from '@angular/core';
+import { ENTITY_RELATED_LINKS_API } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
 import { Observable } from 'rxjs';
-import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
-import { ApiCallUrl } from '../../utils/decorators/api-call.decorator';
-import { LoggerFactory } from '../../logging/logger-factory.service';
-import { AppConfig } from '../../config/app-config';
-import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
-import { IEntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service.interface';
 import {
   AllEntityRelatedTypes,
   EntityRelatedLinkType,
   IEntityRelatedLink
-} from '@shiptech/core/services/entity-related-links/entity-related-links.model';
-import {
-  IEntityRelatedLinksRequestDto,
-  IEntityRelatedLinksResponseDto
-} from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+} from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
+import { ModuleLoggerFactory } from '../../../../../feature/quantity-control/src/lib/core/logging/module-logger-factory';
+import { BaseStoreService } from '@shiptech/core/services/base-store.service';
+import { Store } from '@ngxs/store';
+import { IEntityRelatedLinksResponseDto } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 import { map } from 'rxjs/operators';
 
-export const EntityRelatedLinksApiPaths = {
-  get: () => `api/infrastructure/navbar/navbaridslist`
-};
-
 @Injectable()
-export class EntityRelatedLinksService extends ApiServiceBase implements IEntityRelatedLinksService {
-  @ApiCallUrl()
-  protected _apiUrl = this.appConfig.infrastructureApiUrl;
-
-  constructor(private http: HttpClient, private appConfig: AppConfig, loggerFactory: LoggerFactory) {
-    super(http, loggerFactory.createLogger(EntityRelatedLinksService.name));
+export class EntityRelatedLinksService extends BaseStoreService {
+  constructor(@Inject(ENTITY_RELATED_LINKS_API) private api: IEntityRelatedLinksApi, store: Store, loggerFactory: ModuleLoggerFactory){
+    super(store, loggerFactory.createLogger(EntityRelatedLinksService.name));
   }
 
-  @ObservableException()
-  public getRelatedLinksForEntity(id: any): Observable<IEntityRelatedLink[]> {
-    return this.http.post<IEntityRelatedLinksResponseDto>(`${this._apiUrl}/${EntityRelatedLinksApiPaths.get()}`,
-      this.Request<IEntityRelatedLinksRequestDto>({
-        InvoiceId: id
-      })).pipe(
+  getRelatedLinksForEntity(id: any): Observable<IEntityRelatedLink[]> {
+    return this.api.getRelatedLinksForEntity(id).pipe(
       map(response => AllEntityRelatedTypes.map(t => this.tryMapToIEntityRelatedLink(t, response)).filter(e => !e))
     );
   }
 
+  // noinspection JSMethodCanBeStatic
   private tryMapToIEntityRelatedLink(type: EntityRelatedLinkType, dto: IEntityRelatedLinksResponseDto): IEntityRelatedLink | undefined {
     switch (type) {
       case EntityRelatedLinkType.Request:
@@ -109,5 +94,3 @@ export class EntityRelatedLinksService extends ApiServiceBase implements IEntity
     }
   }
 }
-
-export const ENTITY_RELATED_LINKS_SERVICE = new InjectionToken<IEntityRelatedLinksService>('IEntityRelatedLinksService');
