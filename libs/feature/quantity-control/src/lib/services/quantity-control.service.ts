@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control.api.service';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { IProcurementOrdersRequest } from './models/procurement-requests.dto';
 import { Observable, of } from 'rxjs';
-import { IGetProcurementOrders } from './models/get-procurement-orders.interface';
 
 @Injectable()
 export class QuantityControlService {
@@ -11,8 +9,8 @@ export class QuantityControlService {
   constructor(@Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
   }
 
-  getAllProcurementRequests(content: IGetProcurementOrders): Observable<unknown[]> {
-    const payload: IProcurementOrdersRequest = {
+  getAllProcurementRequests(content: any): Observable<unknown[]> {
+    const payload: any = {
       pagination: content.pagination,
       SortList: {
         SortList: content.sorts
