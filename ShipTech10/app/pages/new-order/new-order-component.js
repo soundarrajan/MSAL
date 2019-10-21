@@ -694,7 +694,15 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             var result = 0;
             if (ctrl.additionalCosts) {
                 for (var i = 0; i < ctrl.additionalCosts.length; i++) {
-                    if (!ctrl.additionalCosts[i].isDeleted) {
+                	parentProductStatus = 0;
+                	$.each(ctrl.data.products, function(k,v){
+                		if (v.id == ctrl.additionalCosts[i].parentProductId) {
+		                	if (v.status) {
+			                	parentProductStatus = v.status.name
+		                	}
+                		}
+                	})
+                    if (!ctrl.additionalCosts[i].isDeleted && parentProductStatus != "Cancelled") {
                         result += parseFloat(ctrl.additionalCosts[i].totalAmount) || 0;
                     }
                 }
@@ -2871,7 +2879,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 			if (currentProduct.id) {
 				$scope.showModalConfirm("Are you sure you want to cancel product "+ currentProduct.product.name +"?", currentProduct,  function(modalresponse){
 					if (modalresponse) {
-						toastr.info("Please consider changing any additional cost that is applicable for " + currentProduct.product.name + " before canceling the product")
+						toastr.info("Please consider changing any additional cost that is applicable for " + currentProduct.product.name + " before canceling the product") 
 		                orderModel.cancelOrderProduct(modalresponse.id).
 	                    then(function (response) {
 	                        ctrl.buttonsDisabled = false;
