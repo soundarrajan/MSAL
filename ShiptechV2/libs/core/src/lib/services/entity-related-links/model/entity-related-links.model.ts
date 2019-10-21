@@ -5,15 +5,15 @@ export interface IEntityRelatedLink {
 }
 
 export enum EntityRelatedLinkType {
-  Request,
-  Offer,
-  Order,
-  Delivery,
-  QuantityControl,
-  Labs,
-  Claims,
-  Invoices,
-  Recon,
+  Request = 'Request',
+  Offer = 'Offer',
+  Order = 'Order',
+  Delivery = 'Delivery',
+  QuantityControl = 'QuantityControl',
+  Labs = 'Labs',
+  Claims = 'Claims',
+  Invoices = 'Invoices',
+  Recon = 'Recon',
 }
 
 export const AllEntityRelatedTypes: EntityRelatedLinkType[] = [

@@ -21,7 +21,7 @@ export const EntityRelatedLinksApiPaths = {
 })
 export class EntityRelatedLinksApi extends ApiServiceBase implements IEntityRelatedLinksApi {
   @ApiCallUrl()
-  protected _apiUrl = this.appConfig.infrastructureApiUrl;
+  protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
   constructor(private http: HttpClient, private appConfig: AppConfig, loggerFactory: LoggerFactory) {
     super(http, loggerFactory.createLogger(EntityRelatedLinksApi.name));
