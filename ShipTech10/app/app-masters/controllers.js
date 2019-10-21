@@ -1109,7 +1109,9 @@ APP_MASTERS.controller("Controller_Master", [
                 if (vm.app_id == "masters" && vm.screen_id == "formula" && (!vm.entity_id || vm.entity_id == "")) {
                     $.each($scope.filterFromData.complexFormulaQuoteLines, function(key, val) {
 	                    $.each(val.systemInstruments, function(key2, val2) {
-	                    	val2.complexFormulaQuoteLine.id = 0;
+                            if (typeof val2.complexFormulaQuoteLine != "undefined" && 
+                                val2.complexFormulaQuoteLine !== null)
+                                val2.complexFormulaQuoteLine.id = 0;
 	                    });
                     });
                 }                		          
