@@ -1,7 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { PortCallsListGridViewModel } from './port-calls-list/view-model/port-calls-list-grid.view-model';
-import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
-import { IProcurementRequestDto } from '../services/models/procurement-requests.dto';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'shiptech-main-quantity-control',
