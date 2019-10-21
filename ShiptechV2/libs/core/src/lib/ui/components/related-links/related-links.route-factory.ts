@@ -5,7 +5,7 @@ import {
 import { MenuItem } from 'primeng/api';
 import { Route } from '@angular/router';
 import { Type } from '@angular/core';
-import { KnownNamedRouterOutlets } from '@shiptech/core/ui/components/navigation/known-named-router-outlets';
+import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
 
 export interface IBreadrumbsRightRoute extends Route {
   data: IRelatedLinksRouteData;
