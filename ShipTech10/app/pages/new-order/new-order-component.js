@@ -1614,7 +1614,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 } else {
                     ctrl.cancelReason.cancelReason = ctrl.data.orderCancelReasonOption;
                 }
-                $scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
+                $scope.showModalConfirmCancelOrder("Are you sure you want to cancel the order?", true,  function(modalresponse){
                     if (modalresponse) {
                         if (typeof(ctrl.cancelReason) != "undefined") {
                             var orderCancelReasonOption = ctrl.cancelReason.cancelReason;
@@ -1647,7 +1647,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 } else {
                     ctrl.cancelReason.cancelReason = ctrl.data.orderCancelReasonOption;
                 }
-				$scope.showModalConfirm("Are you sure you want to cancel the order?", true,  function(modalresponse){
+				$scope.showModalConfirmCancelOrder("Are you sure you want to cancel the order?", true,  function(modalresponse){
 					console.log(modalresponse)
 					if (modalresponse) {
                         if (typeof(ctrl.cancelReason) != "undefined") {
@@ -2925,6 +2925,25 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 				ctrl.confirmedModal = true
 				return callback($scope.confirmModalAdditionalData);
 			})
+            
+        }
+
+        $scope.showModalConfirmCancelOrder = function(message, additionalData, callback) {
+            $scope.confirmModalAdditionalData = additionalData
+            $(".orderConfirmModal2").modal();
+            $(".orderConfirmModal2").removeClass("hide");
+            ctrl.confirmModalData = {
+                message : message
+            }
+            ctrl.confirmedModal = false
+            $(".confirmAction1").on("click", function(){
+
+                if (ctrl.confirmedModal) {
+                    return
+                }
+                ctrl.confirmedModal = true
+                return callback($scope.confirmModalAdditionalData);
+            })
             
         }
         

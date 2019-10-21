@@ -2058,7 +2058,7 @@
 </div>
 
 <div aria-hidden="true"
-     aria-labelledby="mySmallModalLabel" class="orderConfirmModal confirmModal1 modal fade in" data-width="700px"
+     aria-labelledby="mySmallModalLabel" class="orderConfirmModal2 confirmModal1 modal fade in" data-width="700px"
      id="selectContract"
      ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes' " role="dialog">
     <div role="document">
@@ -2111,13 +2111,13 @@
             <div class="modal-footer-comment" ng-if="$ctrl.data.status.id !== $ctrl.STATUS['Cancelled'].id"
                  style="margin-right: 11.1px;">
                 <button class="btn  btn-default noAction" data-dismiss="modal" type="button">No</button>
-                <button class="btn  btn-default  btn-outline orange confirmAction" data-dismiss="modal"
+                <button class="btn  btn-default  btn-outline orange confirmAction1" data-dismiss="modal"
                         ng-disabled="!$ctrl.cancelReason.cancelReason" type="button">Yes
                 </button>
             </div>
             <div class="modal-footer-comment" ng-if="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                  style="margin-right: 11.1px;">
-                <button class="btn  btn-default  btn-outline orange confirmAction" data-dismiss="modal"
+                <button class="btn  btn-default  btn-outline orange confirmAction1" data-dismiss="modal"
                         ng-disabled="!$ctrl.cancelReason.cancelReason" type="button">Save
                 </button>
                 <button class="btn  btn-default noAction" data-dismiss="modal" type="button">Cancel</button>
@@ -2127,8 +2127,32 @@
 </div>
 
 <div aria-labelledby="mySmallModalLabel"
-     class="orderConfirmModal confirmModal1 fade bs-modal hide"
+     class="orderConfirmModal2 confirmModal1 fade bs-modal hide"
      ng-if="$ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'No'" role="dialog"
+     style="transform: translateY(90px);" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                {{$ctrl.confirmModalData.message}}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">No</button>
+                <button class="btn btn-default  btn-outline orange confirmAction1" data-dismiss="modal" type="button">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-labelledby="mySmallModalLabel1"
+     class="orderConfirmModal confirmModal fade bs-modal hide"
+     role="dialog"
      style="transform: translateY(90px);" tabindex="-1">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -2149,5 +2173,6 @@
         </div>
     </div>
 </div>
+
 
 
