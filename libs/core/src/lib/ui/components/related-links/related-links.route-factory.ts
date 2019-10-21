@@ -4,7 +4,7 @@ import {
   RelatedLinksComponent
 } from '@shiptech/core/ui/components/related-links/related-links.component';
 import { Route } from '@angular/router';
-import { KnownNamedRouterOutlets } from '@shiptech/core/ui/components/navigation/known-named-router-outlets';
+import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
 import { EntityRelatedLinkType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 
 export interface IRelatedLinksRouteDefinition extends Route {
