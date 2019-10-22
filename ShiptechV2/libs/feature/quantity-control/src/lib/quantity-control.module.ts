@@ -24,6 +24,7 @@ import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { tap } from 'rxjs/operators';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/develo
     PrimeNGModule,
     MessageBoxModule,
     RelatedLinksModule,
+    EntityStatusModule,
     NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallState])
   ],
   declarations: [

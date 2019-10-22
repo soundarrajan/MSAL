@@ -21,6 +21,7 @@
 
 .ui-related-links ul li .ui-menuitem-link {
   text-decoration: none;
+  background-color: rgb(193, 195, 199);
 }
 
 .ui-related-links .ui-menuitem-icon {
@@ -32,4 +33,12 @@
   vertical-align: middle;
   text-transform: uppercase;
   color:#fff
+}
+
+.ui-related-links ul li .ui-menuitem-link.previous-active {
+ background-color: rgb(75, 119, 190);
+}
+
+.ui-related-links ul li .ui-menuitem-link.active {
+ background-color: rgb(179, 180, 183);;
 }

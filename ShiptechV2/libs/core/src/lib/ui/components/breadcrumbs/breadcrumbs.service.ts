@@ -30,7 +30,6 @@ export class BreadcrumbsService {
 
   }
 
-
   // Add a prefixed breadcrumb
   public storePrefixed(breadcrumb: IBreadcrumb): void {
     this.storeIfUnique(breadcrumb);
@@ -39,13 +38,10 @@ export class BreadcrumbsService {
     this.breadcrumbsSource.next(allBreadcrumbs);
 
   }
-
-
   //Return the breadcrumbs
   public get(): Observable<IBreadcrumb[]> {
     return this.breadcrumbsChanged$;
   }
-
 
   // storeIfUnique checks if there are any duplicate prefixed breadcrumbs
   private storeIfUnique(newBreadcrumb: IBreadcrumb): void {
@@ -66,5 +62,4 @@ export class BreadcrumbsService {
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 }

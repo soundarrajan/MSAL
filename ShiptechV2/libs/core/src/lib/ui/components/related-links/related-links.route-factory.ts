@@ -31,7 +31,7 @@ export function relatedLinksRouteDefinition(currentRouteLinkType: EntityType, en
     data: {
       relatedLinksOptions: {
         availableLinks,
-        currentRouteLinkType,
+        currentRouteEntityType: currentRouteLinkType,
         entityIdRouteParam
       }
     }
