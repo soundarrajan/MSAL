@@ -1,0 +1,96 @@
+<mat-card class="example-card" style="height:100%">
+  <h3 class="mb-2">{{ apiService.displayName }}</h3>
+  <mat-card-content>
+    <div fxLayout="column">
+      <div fxLayout="column" style="margin-bottom: 15px;">
+        <mat-form-field [floatLabel]="'always'">
+          <mat-select placeholder="Request" [(ngModel)]="selectedMethod">
+            <mat-option *ngFor="let apiCall of methods" [value]="apiCall">
+              {{ apiCall.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="selectedMethod">
+          <mat-form-field [floatLabel]="'always'">
+            <mat-select placeholder="Delay" [ngModel]="selectedMethod.settings.delay" (ngModelChange)="selectedMethod.settings.delay = $event; updateDelayAll()">
+              <mat-option *ngFor="let delayOption of delayOptions" [value]="delayOption.id">
+                {{ delayOption.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-checkbox [(ngModel)]="selectedMethod.settings.throwError" (change)="updateThrowErrorForAll()">Throw Error </mat-checkbox>
+          <mat-checkbox (change)="forwardToRealChanged($event); updateForwardAllToReal()" *ngIf="!isRealService" [(ngModel)]="selectedMethod.settings.forwardToReal">
+            Use Real
+          </mat-checkbox>
+
+          <div *ngIf="selectedMethod.settings.forwardToReal && (suppressUrls === false || suppressUrls === undefined)" fxLayout="column">
+            <mat-form-field style="margin-top: 5px;">
+              <input
+                matInput
+                placeholder="Override Base Url"
+                [ngModel]="selectedMethod.settings.apiUrl"
+                (ngModelChange)="selectedMethod.settings.apiUrl = $event; updateOverrideAll()"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+              />
+            </mat-form-field>
+            <div style="margin-top: -15px" fxLayout="row">
+              <button mat-button (click)="selectedMethod.settings.apiUrl = apiService.localApiUrl; updateOverrideAll()">Local</button>
+              <button mat-button (click)="selectedMethod.settings.apiUrl = apiService.devApiUrl; updateOverrideAll()">Dev</button>
+              <button mat-button (click)="selectedMethod.settings.apiUrl = apiService.qaApiUrl; updateOverrideAll()">Qa</button>
+            </div>
+          </div>
+
+          <mat-form-field
+            style="margin-top: 5px;"
+            *ngIf="!selectedMethod.settings.forwardToReal && !selectedMethod.settings.throwError && selectedMethod.settings.cannedResponses.length > 1"
+          >
+            <mat-select placeholder="Response" [ngModel]="selectedMethod.settings.nextResponse" (ngModelChange)="selectedMethod.settings.nextResponse = $event; cannedResponseChanged()">
+              <mat-option *ngFor="let cannedResponse of selectedMethod.settings.cannedResponses" [value]="cannedResponse">
+                {{ cannedResponse?.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+      </div>
+
+      <mat-expansion-panel class="applyToAll" fxLayout="column" fxLayoutAlign="end none">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Apply to All
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div fxLayout="column">
+          <mat-form-field [floatLabel]="'always'">
+            <mat-label>Delay All Services</mat-label>
+            <mat-select placeholder="Mixed Delay" [ngModel]="selectedDelayAll" (ngModelChange)="changeDelayAll($event)">
+              <mat-option *ngFor="let delayOption of delayOptions" [value]="delayOption.id">
+                {{ delayOption.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-checkbox [ngModel]="throwErrorForAll" (change)="changeThrowErrorToForAll($event)" [indeterminate]="indeterminateThrowErrorAll">All Throw Error </mat-checkbox>
+          <mat-checkbox [ngModel]="forwardAllToReal" (change)="changeForwardCallToForAll($event)" [indeterminate]="indeterminateForwardAll" *ngIf="!isRealService"
+            >All Use Real
+          </mat-checkbox>
+
+          <div *ngIf="forwardAllToReal && (suppressUrls === false || suppressUrls === undefined)" fxLayout="column" style="margin-top: 5px;">
+            <mat-form-field [floatLabel]="'always'">
+              <mat-label>Override All Base Url</mat-label>
+              <input matInput placeholder="Mixed" #allUrl [ngModel]="overrideAllUrls" (ngModelChange)="changeOverrideAllUrls($event)" [ngModelOptions]="{ updateOn: 'blur' }" />
+            </mat-form-field>
+            <div style="margin-top: -15px" fxLayout="row">
+              <button mat-button (click)="overrideAllUrls = apiService.localApiUrl; changeOverrideAllUrls(apiService.localApiUrl)">
+                Local
+              </button>
+              <button mat-button (click)="overrideAllUrls = apiService.devApiUrl; changeOverrideAllUrls(apiService.devApiUrl)">
+                Dev
+              </button>
+              <button mat-button (click)="overrideAllUrls = apiService.qaApiUrl; changeOverrideAllUrls(apiService.qaApiUrl)">Qa</button>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+  </mat-card-content>
+</mat-card>

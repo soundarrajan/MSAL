@@ -8,8 +8,8 @@ import { AppConfig } from '../../../config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
 import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
 import {
-  EntityRelatedLinksRequestDto,
-  EntityRelatedLinksResponseDto, EntityTypeIdField
+  EntityRelatedLinksRequest,
+  EntityRelatedLinksResponse, EntityTypeIdField
 } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 import { EntityType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 
@@ -29,9 +29,9 @@ export class EntityRelatedLinksApi extends ApiServiceBase implements IEntityRela
   }
 
   @ObservableException()
-  public getRelatedLinksForEntity(entityTypeIdField: EntityTypeIdField, id: any): Observable<EntityRelatedLinksResponseDto> {
-    return this.http.post<EntityRelatedLinksResponseDto>(`${this._apiUrl}/${EntityRelatedLinksApiPaths.get()}`,
-      this.Request<EntityRelatedLinksRequestDto>({
+  public getRelatedLinksForEntity(entityTypeIdField: EntityTypeIdField, id: any): Observable<EntityRelatedLinksResponse> {
+    return this.http.post<EntityRelatedLinksResponse>(`${this._apiUrl}/${EntityRelatedLinksApiPaths.get()}`,
+      this.Request<EntityRelatedLinksRequest>({
         [entityTypeIdField]: id
       }));
   }

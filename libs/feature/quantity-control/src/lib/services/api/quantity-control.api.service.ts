@@ -2,7 +2,7 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '@shiptech/core';
+import { ApiCallUrl, AppConfig, ObservableException } from '@shiptech/core';
 import { IGetPortCallsRequest, IGetPortCallsResponse } from './request-response/port-calls.request-response';
 import { IGetPortCallByIdRequest, IGetPortCallByIdResponse } from './request-response/port-call-by-id.request-response';
 import {
@@ -30,39 +30,49 @@ export namespace ProcurementApiPaths {
 })
 export class QuantityControlApiService implements IQuantityControlApiService {
 
+  @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {
+    console.log(appConfig);
   }
 
+  @ObservableException()
   getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   verifyPortCalls(request: IVerifyPortCallsRequest): Observable<IVerifyPortCallsResponse> {
     return throwError('Not implemented');
   }
 
+  @ObservableException()
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
     return throwError('Not implemented');
   }

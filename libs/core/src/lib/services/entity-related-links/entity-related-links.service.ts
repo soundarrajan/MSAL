@@ -11,7 +11,7 @@ import {
 import { ModuleLoggerFactory } from '../../../../../feature/quantity-control/src/lib/core/logging/module-logger-factory';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { Store } from '@ngxs/store';
-import { EntityRelatedLinksResponseDto } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+import { EntityRelatedLinksResponse } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -29,7 +29,7 @@ export class EntityRelatedLinksService extends BaseStoreService {
   }
 
   // noinspection JSMethodCanBeStatic
-  private tryMapToEntityRelatedLink(type: EntityType, dto: EntityRelatedLinksResponseDto): IEntityRelatedLink | undefined {
+  private tryMapToEntityRelatedLink(type: EntityType, dto: EntityRelatedLinksResponse): IEntityRelatedLink | undefined {
     // TODO: Define a V1 Route Service
     switch (type) {
       case EntityType.Request:

@@ -1,4 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
+import { environment } from '@shiptech/environment';
 
 @Component({
   selector: 'shiptech-root',
@@ -8,7 +9,8 @@ import { Component, HostBinding } from '@angular/core';
 export class AppComponent {
   @HostBinding('@.disabled')
   public animationsDisabled = true;
-  title = 'shiptech';
+  title = 'Shiptech';
+  isProduction = environment.production;
   constructor() {
 
   }
