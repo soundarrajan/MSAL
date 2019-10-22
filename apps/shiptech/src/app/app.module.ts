@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { QuantityControlModule } from '@shiptech/feature/quantity-control';
 
 
 @NgModule({
@@ -35,8 +34,7 @@ import { QuantityControlModule } from '@shiptech/feature/quantity-control';
     BreadcrumbsModule,
     RelatedLinksModule,
     NgxsModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    QuantityControlModule
+    NgxsLoggerPluginModule.forRoot()
   ],
   providers: [
     {
