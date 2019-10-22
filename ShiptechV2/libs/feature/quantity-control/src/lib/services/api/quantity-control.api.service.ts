@@ -34,7 +34,6 @@ export class QuantityControlApiService implements IQuantityControlApiService {
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {
-    console.log(appConfig);
   }
 
   @ObservableException()

@@ -15,7 +15,8 @@ export class DeveloperToolbarService {
   }
 
   public registerApi(apiModel: ApiServiceModel): void {
-    this.apiServices$.next([...this._apiServices, apiModel]);
+    this._apiServices = [...this._apiServices, apiModel];
+    this.apiServices$.next(this._apiServices);
   }
 
   ngOnDestroy(): void {
