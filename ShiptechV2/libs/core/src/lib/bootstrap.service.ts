@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, ReplaySubject } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { AppConfig, IAppConfig } from './config/app-config';
@@ -17,6 +17,8 @@ import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory } from './logging/logge
   providedIn: 'root'
 })
 export class BootstrapService {
+
+  public initialized  = new ReplaySubject(1);
 
   constructor(private appConfig: AppConfig,
               private legacyCache: LookupsCacheService,
@@ -38,7 +40,8 @@ export class BootstrapService {
       concatMap(() => this.setupAuthentication()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
-      tap(() => this.setupAgGrid())
+      tap(() => this.setupAgGrid()),
+      tap(() => this.initialized.next())
     );
   }
 

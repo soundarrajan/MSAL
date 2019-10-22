@@ -21,13 +21,34 @@ import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/wa
 import { getMockPortCallsList } from './mock/port-calls-list.mock';
 import * as faker from 'faker';
 import { PortCallListItemModel } from '../models/port-call-list-item.model';
+import { ApiCall, ApiCallForwardTo, AppConfig } from '@shiptech/core';
+import { QuantityControlApiService } from './quantity-control.api.service';
+import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class QuantityControlMockApiService implements IQuantityControlApiService {
 
-  constructor() {
+  @ApiCallForwardTo() realService: QuantityControlApiService;
+
+  constructor(realService: QuantityControlApiService, appConfig: AppConfig, devService: DeveloperToolbarService) {
+    this.realService = realService;
+
+    // Note: It's important to register this only once, and in the root module. We currently don't support multiple services in child providers
+    // devService.registerApi({
+    //   id: QuantityControlApiService.name,
+    //   displayName: 'Quantity Control Api',
+    //   instance: this,
+    //   isRealService: false,
+    //   localApiUrl: 'http://localhost:44398',
+    //   devApiUrl: appConfig.quantityControlApi,
+    //   qaApiUrl: appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
+    // });
   }
 
+  @ApiCall()
   getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse> {
     return of({
       items: getMockPortCallsList(request.pageSize).map(item => new PortCallListItemModel(item)),
@@ -35,30 +56,37 @@ export class QuantityControlMockApiService implements IQuantityControlApiService
     });
   }
 
+  @ApiCall()
   getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse> {
     return throwError('Not implemented');
   }
 
+  @ApiCall()
   getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse> {
     return throwError('Not implemented');
   }
 
+  @ApiCall()
   getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse> {
     return throwError('Not implemented');
   }
 
+  @ApiCall()
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
     return throwError('Not implemented');
   }
 
+  @ApiCall()
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse> {
     return throwError('Not implemented');
   }
 
+  @ApiCall()
   verifyPortCalls(request: IVerifyPortCallsRequest): Observable<IVerifyPortCallsResponse> {
     return throwError('Not implemented');
   }
 
+  @ApiCall()
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
     return throwError('Not implemented');
   }

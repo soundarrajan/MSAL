@@ -9,6 +9,7 @@ export class BreadcrumbsService {
   public breadcrumbsChanged$: Observable<IBreadcrumb[]>;
   private breadcrumbs: IBreadcrumb[];
   private prefixedBreadcrumbs: IBreadcrumb[] = [];
+  private _destroy$ = new Subject();
 
   constructor() {
     this.breadcrumbs = [];
@@ -59,6 +60,11 @@ export class BreadcrumbsService {
       this.prefixedBreadcrumbs.push(newBreadcrumb);
     }
 
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
 }

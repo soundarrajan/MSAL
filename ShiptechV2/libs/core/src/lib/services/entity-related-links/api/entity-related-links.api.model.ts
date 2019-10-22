@@ -1,8 +1,8 @@
-export type EntityRelatedLinksRequestDto = {
+export type EntityRelatedLinksRequest = {
   [K in EntityTypeIdField]?: number
 };
 
-export type EntityRelatedLinksResponseDto = {
+export type EntityRelatedLinksResponse = {
   [K in EntityTypeIdField]?: number
 } & {
   hasQuote?: boolean

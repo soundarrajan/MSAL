@@ -9,6 +9,7 @@ export class AppConfig implements IAppConfig {
   agGridLicense: string;
   loggingApi: string;
   userSettingsApi: string;
+  quantityControlApi: string;
   // TODO: add this to config file,  check first if they are not in the infrastructure api
   tenantPublicApiUrl: string;
 }
