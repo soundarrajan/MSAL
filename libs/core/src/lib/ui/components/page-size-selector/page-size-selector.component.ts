@@ -14,7 +14,7 @@ export interface IPageSizeOption {
 export class PageSizeSelectorComponent implements OnInit {
   @Input() options: number[];
   @Input() selectedOption: number;
-  @Output() selectedOptionChange = new EventEmitter();
+  @Output() selectedOptionChange = new EventEmitter<number>();
 
   get formattedOptions():SelectItem[] {
     return (this.options || []).map(option => ({label: option.toString(), value: option}))

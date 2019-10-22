@@ -3,13 +3,13 @@ import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { PortCallsListGridColumnsLabels } from './port-calls-list.columns';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QuantityControlService } from '../../../services/quantity-control.service';
 import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 import { getShiptechFormatPagination } from '../../../core/mappers/shiptech-grid-paging';
+import { PortCallListItemProps, PortCallsListColumns, PortCallsListColumnsLabels } from './port-calls-list.columns';
 
 @Injectable()
 export class PortCallsListGridViewModel extends BaseGridViewModel {
@@ -64,276 +64,186 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-border-green'
   };
 
-  editCol: ColDef = {
-    colId: 'Edit',
+  callIdCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.callId,
+    colId: PortCallsListColumns.callId,
+    field: this.modelProps.id,
     width: 50,
     hide: false,
     resizable: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent
   };
-  actionCol: ColDef = {
-    colId: 'Edit',
-    width: 100,
+
+  portCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.port,
+    colId: PortCallsListColumns.port,
+    field: this.modelProps.port,
+    width: 50,
     hide: false,
-    lockPosition: true,
-    suppressMovable: true,
-    suppressNavigable: true,
-    suppressMenu: true,
-    suppressAutoSize: true,
-    suppressSizeToFit: true,
-    suppressToolPanel: true,
-    sortable: false,
-    filter: false,
     resizable: false,
-    cellRendererFramework: AgTemplateRendererComponent
   };
-  requestNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.RequestName,
-    field: 'requestName',
-    colId: 'Request ID',
-    resizable: true,
-    hide: false,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
-  };
-  requestGroupIdCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.RequestGroupId,
-    field: 'requestGroupId',
-    colId: 'Group ID',
-    resizable: true,
-    hide: false,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
-  };
-  requestDateCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.RequestDate,
-    field: 'requestDate',
-    filter: 'agDateColumnFilter',
-    colId: 'Date',
-    resizable: true,
-    hide: false,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
-  };
-  serviceNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.ServiceName,
-    field: 'serviceName',
-    colId: 'Service',
-    resizable: true,
-    hide: false,
-    lockPosition: false
-  };
-  buyerNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.BuyerName,
-    field: 'buyerName',
-    colId: 'Buyer',
-    resizable: true,
-    hide: false,
-    lockPosition: false
-  };
+
   vesselNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.VesselName,
-    field: 'vesselName',
-    colId: 'vesselname',
-    resizable: true,
+    headerName: PortCallsListColumnsLabels.vesselName,
+    colId: PortCallsListColumns.vesselName,
+    field: this.modelProps.vesselName,
+    width: 50,
     hide: false,
-    lockPosition: false
+    resizable: false
   };
-  imoCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.Imo,
-    field: 'imo',
-    colId: 'IMO',
-    resizable: true,
+
+  surveyDateCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.surveyDate,
+    colId: PortCallsListColumns.surveyDate,
+    field: this.modelProps.surveyDate,
+    width: 50,
     hide: false,
-    lockPosition: false
+    resizable: false
   };
-  etaCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.Eta,
-    field: 'eta',
-    colId: 'ETA',
-    filter: 'agDateColumnFilter',
-    resizable: true,
+
+  surveyStatusCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.surveyStatus,
+    colId: PortCallsListColumns.surveyStatus,
+    field: this.modelProps.surveyStatus,
+    width: 50,
     hide: false,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
+    resizable: false
   };
-  locationNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.LocationName,
-    field: 'locationName',
-    colId: 'Location',
-    resizable: true,
+
+  matchedQuantityCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.matchedQuantity,
+    colId: PortCallsListColumns.matchedQuantity,
+    field: this.modelProps.matchedQuantity,
+    width: 50,
     hide: false,
-    lockPosition: false
+    resizable: false
   };
-  requestStatusCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.RequestStatus,
-    field: 'requestStatus.name',
-    colId: 'Request Status',
-    resizable: true,
+
+  logBookRobBeforeDeliveryCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.logBookRobBeforeDelivery,
+    colId: PortCallsListColumns.logBookRobBeforeDelivery,
+    field: this.modelProps.logBookRobBeforeDelivery,
+    width: 50,
     hide: false,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
+    resizable: false
   };
-  productNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.ProductName,
-    field: 'productName',
-    colId: 'Product',
-    resizable: true,
+
+  measuredRobBeforeDeliveryCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.measuredRobBeforeDelivery,
+    colId: PortCallsListColumns.measuredRobBeforeDelivery,
+    field: this.modelProps.measuredRobBeforeDelivery,
+    width: 50,
     hide: false,
-    lockPosition: false
+    resizable: false
   };
-  productTypeCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.ProductType,
-    field: 'productType.name',
-    colId: 'Product Type',
-    resizable: true,
+
+  robBeforeDeliveryCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.robBeforeDelivery,
+    colId: PortCallsListColumns.robBeforeDelivery,
+    field: this.modelProps.robBeforeDelivery,
+    width: 50,
     hide: false,
-    lockPosition: false
+    resizable: false
   };
-  productStatusCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.ProductStatus,
-    field: 'productStatus.displayName',
-    colId: 'Product Status',
-    resizable: true,
+
+  bdnQuantityCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.bdnQuantity,
+    colId: PortCallsListColumns.bdnQuantity,
+    field: this.modelProps.bdnQuantity,
+    width: 50,
     hide: false,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
+    resizable: false
   };
-  agentNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.AgentName,
-    field: 'agentName',
-    colId: 'Agent Name',
-    resizable: true,
-    hide: true,
-    lockPosition: false
+
+  measuredDeliveredQuantityCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.measuredDeliveredQuantity,
+    colId: PortCallsListColumns.measuredDeliveredQuantity,
+    field: this.modelProps.measuredDeliveredQuantity,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  createdOnCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.CreatedOn,
-    field: 'createdOn',
-    colId: 'Created On',
-    filter: 'agDateColumnFilter',
-    resizable: true,
-    hide: true,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
+
+  deliveredQuantityCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.deliveredQuantity,
+    colId: PortCallsListColumns.deliveredQuantity,
+    field: this.modelProps.deliveredQuantity,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  createdByNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.CreatedByName,
-    field: 'createdByName',
-    colId: 'Created By',
-    resizable: true,
-    hide: true,
-    lockPosition: false
+
+  logBookRobAfterDeliveryCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.logBookRobAfterDelivery,
+    colId: PortCallsListColumns.logBookRobAfterDelivery,
+    field: this.modelProps.logBookRobAfterDelivery,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  deliveryOptionNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.DeliveryOptionName,
-    field: 'deliveryOptionName',
-    colId: 'Delivery Option',
-    resizable: true,
-    hide: true,
-    lockPosition: false
+
+  measuredRobAfterDeliveryCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.measuredRobAfterDelivery,
+    colId: PortCallsListColumns.measuredRobAfterDelivery,
+    field: this.modelProps.measuredRobAfterDelivery,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  commentsCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.Comments,
-    field: 'comments',
-    colId: 'Comments',
-    resizable: true,
-    hide: true,
-    lockPosition: false
+
+  robAfterDeliveryCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.robAfterDelivery,
+    colId: PortCallsListColumns.robAfterDelivery,
+    field: this.modelProps.robAfterDelivery,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  lastModifiedOnCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.LastModifiedOn,
-    field: 'lastModifiedOn',
-    colId: 'Last Modified On',
-    filter: 'agDateColumnFilter',
-    resizable: true,
-    hide: true,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
+
+  logBookSludgeBeforeDischargeCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.logBookSludgeBeforeDischarge,
+    colId: PortCallsListColumns.logBookSludgeBeforeDischarge,
+    field: this.modelProps.logBookSludgeBeforeDischarge,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  lastModifiedByNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.LastModifiedByName,
-    field: 'lastModifiedByName',
-    colId: 'Last Modified By',
-    resizable: true,
-    hide: true,
-    lockPosition: false
+
+  measuredSludgeRobBeforeDischargeCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.measuredSludgeRobBeforeDischarge,
+    colId: PortCallsListColumns.measuredSludgeRobBeforeDischarge,
+    field: this.modelProps.measuredSludgeRobBeforeDischarge,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  agreementTypeNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.AgreementTypeName,
-    field: 'agreementTypeName',
-    colId: 'Agreement Type',
-    resizable: true,
-    hide: true,
-    lockPosition: false
+
+  sludgeDischargedQuantityCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.sludgeDischargedQuantity,
+    colId: PortCallsListColumns.sludgeDischargedQuantity,
+    field: this.modelProps.sludgeDischargedQuantity,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  etbCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.Etb,
-    field: 'etb',
-    colId: 'ETB',
-    resizable: true,
-    hide: true,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
+
+  commentCol: ColDef = {
+    headerName: PortCallsListColumnsLabels.comment,
+    colId: PortCallsListColumns.comment,
+    field: this.modelProps.comment,
+    width: 50,
+    hide: false,
+    resizable: false
   };
-  etdCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.Etd,
-    field: 'etd',
-    colId: 'ETD',
-    resizable: true,
-    hide: true,
-    lockPosition: false,
-    cellRendererFramework: AgTemplateRendererComponent
-  };
-  maxQuantityCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.MaxQuantity,
-    field: 'maxQuantity',
-    colId: 'Maximum Quantity',
-    filter: 'agNumberColumnFilter',
-    resizable: true,
-    hide: true,
-    lockPosition: false
-  };
-  minQuantityCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.MinQuantity,
-    field: 'minQuantity',
-    colId: 'Minimum Quantity',
-    filter: 'agNumberColumnFilter',
-    resizable: true,
-    hide: true,
-    lockPosition: false
-  };
-  uomNameCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.UomName,
-    field: 'uomName',
-    colId: 'UOM',
-    resizable: true,
-    hide: true,
-    lockPosition: false
-  };
-  robOnArrivalCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.RobOnArrival,
-    field: 'robOnArrival',
-    colId: 'Rob on Arrival',
-    resizable: true,
-    hide: true,
-    lockPosition: false
-  };
-  roundVoyageConsumptionCol: ColDef = {
-    headerName: PortCallsListGridColumnsLabels.RoundVoyageConsumption,
-    field: 'roundVoyageConsumption',
-    colId: 'Round Voyage Consumption',
-    resizable: true,
-    hide: true,
-    lockPosition: false
-  };
+
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private procurementService: QuantityControlService
+    private quantityControlService: QuantityControlService,
+    private modelProps: PortCallListItemProps
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(PortCallsListGridViewModel.name));
     this.initOptions(this.gridOptions);
@@ -342,36 +252,25 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ColDef[] {
     return [
       this.selectCol,
-      this.editCol,
-      this.requestNameCol,
-      this.requestGroupIdCol,
-      this.requestDateCol,
-      this.serviceNameCol,
-      this.buyerNameCol,
+      this.callIdCol,
+      this.portCol,
       this.vesselNameCol,
-      this.imoCol,
-      this.etaCol,
-      this.locationNameCol,
-      this.requestStatusCol,
-      this.productNameCol,
-      this.productTypeCol,
-      this.productStatusCol,
-      this.agentNameCol,
-      this.createdOnCol,
-      this.createdByNameCol,
-      this.deliveryOptionNameCol,
-      this.commentsCol,
-      this.lastModifiedOnCol,
-      this.lastModifiedByNameCol,
-      this.agreementTypeNameCol,
-      this.etbCol,
-      this.etdCol,
-      this.maxQuantityCol,
-      this.minQuantityCol,
-      this.uomNameCol,
-      this.robOnArrivalCol,
-      this.roundVoyageConsumptionCol,
-      this.actionCol
+      this.surveyDateCol,
+      this.surveyStatusCol,
+      this.matchedQuantityCol,
+      this.logBookRobBeforeDeliveryCol,
+      this.measuredRobBeforeDeliveryCol,
+      this.robBeforeDeliveryCol,
+      this.bdnQuantityCol,
+      this.measuredDeliveredQuantityCol,
+      this.deliveredQuantityCol,
+      this.logBookRobAfterDeliveryCol,
+      this.measuredRobAfterDeliveryCol,
+      this.robAfterDeliveryCol,
+      this.logBookSludgeBeforeDischargeCol,
+      this.measuredSludgeRobBeforeDischargeCol,
+      this.sludgeDischargedQuantityCol,
+      this.commentCol
     ];
   }
 
@@ -381,13 +280,16 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.procurementService.getAllProcurementRequests({
+    this.quantityControlService.getPortCalls({
       pagination: getShiptechFormatPagination(params),
       sorts: getShiptechFormatSorts(params),
       filters: getShiptechFormatFilters(params),
       searchText: this.searchText
     }).subscribe(
-      response => params.successCallback(response, 100),
+      response => {
+        console.log('RESPONSE', response);
+        params.successCallback(response.items, 100);
+      },
       () => params.failCallback());
   }
 }

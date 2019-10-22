@@ -21,6 +21,7 @@ import { PortCallComponent } from './views/port-call/port-call.component';
 import { QuantityControlMockApiService } from './services/api/quantity-control.api.service.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
+import { QuantityControlService } from './services/quantity-control.service';
 
 @NgModule({
   imports: [
@@ -51,7 +52,10 @@ import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/r
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService
-    }
+    },
+
+    // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
+    QuantityControlService
   ]
 })
 export class QuantityControlModule {
