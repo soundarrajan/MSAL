@@ -1,29 +1,44 @@
+import { EntityTypeIdField } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+
 export interface IEntityRelatedLink {
-  type: EntityRelatedLinkType,
+  type: EntityType,
   id: any,
   url: string
 }
 
-export enum EntityRelatedLinkType {
+export enum EntityType {
   Request = 'Request',
   Offer = 'Offer',
   Order = 'Order',
   Delivery = 'Delivery',
-  QuantityControl = 'QuantityControl',
-  Labs = 'Labs',
-  Claims = 'Claims',
-  Invoices = 'Invoices',
+  PortCall = 'PortCall',
+  Lab = 'Lab',
+  Claim = 'Claim',
+  Invoice = 'Invoice',
   Recon = 'Recon',
 }
 
-export const AllEntityRelatedTypes: EntityRelatedLinkType[] = [
-  EntityRelatedLinkType.Request,
-  EntityRelatedLinkType.Offer,
-  EntityRelatedLinkType.Order,
-  EntityRelatedLinkType.Delivery,
-  EntityRelatedLinkType.QuantityControl,
-  EntityRelatedLinkType.Labs,
-  EntityRelatedLinkType.Claims,
-  EntityRelatedLinkType.Invoices,
-  EntityRelatedLinkType.Recon,
+export const AllEntityTypes: EntityType[] = [
+  EntityType.Request,
+  EntityType.Offer,
+  EntityType.Order,
+  EntityType.Delivery,
+  EntityType.PortCall,
+  EntityType.Lab,
+  EntityType.Claim,
+  EntityType.Invoice,
+  EntityType.Recon,
 ];
+
+export const EntityToEntityIdFieldMap: Record<EntityType, EntityTypeIdField> = {
+  [EntityType.Request] : EntityTypeIdField.Request,
+  [EntityType.Offer] : EntityTypeIdField.Offer,
+  [EntityType.Order] : EntityTypeIdField.Order,
+  [EntityType.Delivery] : EntityTypeIdField.Delivery,
+  [EntityType.PortCall] : EntityTypeIdField.PortCall,
+  [EntityType.Lab] : EntityTypeIdField.Lab,
+  [EntityType.Claim] : EntityTypeIdField.Claim,
+  [EntityType.Invoice] : EntityTypeIdField.Invoice,
+  [EntityType.Recon] : EntityTypeIdField.Recon,
+};
+

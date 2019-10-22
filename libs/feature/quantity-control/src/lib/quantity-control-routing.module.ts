@@ -5,7 +5,7 @@ import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.
 import { BlankComponent } from '@shiptech/core/ui/components/blank/blank.component';
 import { PortCallComponent } from './views/port-call/port-call.component';
 import { relatedLinksRouteDefinition } from '@shiptech/core/ui/components/related-links/related-links.route-factory';
-import { EntityRelatedLinkType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
+import { EntityType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 
 export enum KnownQuantityControlRoutes {
   portCallsList = 'port-calls',
@@ -43,7 +43,7 @@ const routes: Routes = [
             component: PortCallComponent,
             data: { title: 'Quantity Control - Vessel', breadcrumb: 'Port Call' }
           },
-          relatedLinksRouteDefinition(EntityRelatedLinkType.QuantityControl, KnownQuantityControlRoutes.portCallDetailsParams)
+          relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.portCallDetailsParams)
         ]
       }
     ]
