@@ -19,12 +19,10 @@ import {
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import { getMockPortCallsList } from './mock/port-calls-list.mock';
-import * as faker from 'faker';
 import { PortCallListItemModel } from '../models/port-call-list-item.model';
 import { ApiCall, ApiCallForwardTo, AppConfig } from '@shiptech/core';
 import { QuantityControlApiService } from './quantity-control.api.service';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
-import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +50,7 @@ export class QuantityControlMockApiService implements IQuantityControlApiService
   getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse> {
     return of({
       items: getMockPortCallsList(request.pageSize).map(item => new PortCallListItemModel(item)),
-      totalItems: faker.random.number(5) * request.pageSize
+      totalItems: request.pageSize * 5
     });
   }
 

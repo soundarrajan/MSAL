@@ -2,11 +2,16 @@ import { Inject, Injectable } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control.api.service';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
 import { Observable, of } from 'rxjs';
+import { PortCallListItemModel } from './models/port-call-list-item.model';
 
 @Injectable()
 export class QuantityControlService {
 
   constructor(@Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
+  }
+
+  getPortCalls(filter: unknown): Observable<{ items: PortCallListItemModel[], totalItems: number }> {
+    return this.api.getPortCalls({ pageSize: 100 });
   }
 
   getAllProcurementRequests(content: any): Observable<unknown[]> {
@@ -17,20 +22,20 @@ export class QuantityControlService {
       }
     };
 
-    if(content.filters && content.filters.length) {
+    if (content.filters && content.filters.length) {
       payload.pageFilters = {
         Filters: content.filters
-      }
+      };
     }
 
-    if(content.sorts && content.filters.length) {
+    if (content.sorts && content.filters.length) {
       payload.SortList = {
         SortList: content.sorts
-      }
+      };
     }
 
-    if(content.searchText) {
-      payload.searchText = content.searchText
+    if (content.searchText) {
+      payload.searchText = content.searchText;
     }
 
     return of([]);
