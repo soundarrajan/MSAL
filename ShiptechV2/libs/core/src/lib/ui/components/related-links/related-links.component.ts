@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import {
-  EntityRelatedLinkType,
+  EntityType,
   IEntityRelatedLink
 } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
@@ -16,12 +16,12 @@ export interface IRelatedLinksRouteData {
 
 export interface IRelatedLinksOptions {
   availableLinks: IRelatedLinkItem[],
-  currentRouteLinkType?: EntityRelatedLinkType,
+  currentRouteLinkType?: EntityType,
   entityIdRouteParam?: string
 }
 
-export interface IRelatedLinkItem  extends Omit<MenuItem, 'id'> {
-  id: EntityRelatedLinkType;
+export interface IRelatedLinkItem extends Omit<MenuItem, 'id'> {
+  id: EntityType;
 }
 
 @Component({
@@ -79,12 +79,12 @@ export class RelatedLinksComponent implements OnInit, OnDestroy {
 
     // TODO: Log invalid usage
     if (entityId)
-      this.entityRelatedLinksService.getRelatedLinksForEntity(entityId)
+      this.entityRelatedLinksService.getRelatedLinksForEntity(options.currentRouteLinkType, entityId)
         .pipe(
           tap(serverLinks => {
             (this.model || []).forEach(relatedLinkItem => relatedLinkItem.url = (serverLinks.find(s => s.type === relatedLinkItem.id) || <IEntityRelatedLink>{}).url);
           }),
-        takeUntil(this._destroy$)
+          takeUntil(this._destroy$)
         ).subscribe();
   }
 

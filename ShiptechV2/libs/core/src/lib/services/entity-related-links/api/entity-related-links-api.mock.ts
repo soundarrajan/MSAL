@@ -5,9 +5,14 @@ import { ObservableException } from '../../../utils/decorators/observable-except
 import { Store } from '@ngxs/store';
 import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
 import { EntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
-import { IEntityRelatedLinksResponseDto } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+import {
+  EntityRelatedLinksResponseDto,
+  EntityTypeIdField
+} from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EntityRelatedLinksApiMock implements IEntityRelatedLinksApi {
   @ApiCallForwardTo() realService: EntityRelatedLinksApi;
 
@@ -17,17 +22,17 @@ export class EntityRelatedLinksApiMock implements IEntityRelatedLinksApi {
 
   @ObservableException()
   @ApiCall()
-  getRelatedLinksForEntity(id: any): Observable<IEntityRelatedLinksResponseDto> {
+  getRelatedLinksForEntity(entityType): Observable<EntityRelatedLinksResponseDto> {
     return of({
-      requestId: 1,
-      contractId: 2,
-      requestGroupId: 3,
-      orderId: 4,
-      deliveryId: 5,
-      labId: 6,
-      claimId: 7,
-      invoiceId: 8,
-      hasQuote: false
+      [EntityTypeIdField.Request]: 1,
+      [EntityTypeIdField.Offer]: 2,
+      [EntityTypeIdField.Order]: 3,
+      [EntityTypeIdField.Delivery]: 4,
+      [EntityTypeIdField.PortCall]: 5,
+      [EntityTypeIdField.Lab]: 6,
+      [EntityTypeIdField.Claim]: 7,
+      [EntityTypeIdField.Invoice]: 8,
+      [EntityTypeIdField.Recon]: 9
     });
   }
 }
