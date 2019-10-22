@@ -3,7 +3,9 @@ import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control.api.service
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
 import { Observable, of } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class QuantityControlService {
 
   constructor(@Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
