@@ -34,7 +34,6 @@ import { QuantityControlModule } from '@shiptech/feature/quantity-control';
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: environment.production }),
     BreadcrumbsModule,
-    RelatedLinksModule,
     NgxsModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     QuantityControlModule,

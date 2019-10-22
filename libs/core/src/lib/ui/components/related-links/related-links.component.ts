@@ -16,12 +16,14 @@ export interface IRelatedLinksRouteData {
 
 export interface IRelatedLinksOptions {
   availableLinks: IRelatedLinkItem[],
-  currentRouteLinkType?: EntityType,
+  currentRouteEntityType?: EntityType,
   entityIdRouteParam?: string
 }
 
 export interface IRelatedLinkItem extends Omit<MenuItem, 'id'> {
   id: EntityType;
+  isActive?: boolean;
+  isPreviousActive?: boolean;
 }
 
 @Component({
@@ -34,7 +36,7 @@ export interface IRelatedLinkItem extends Omit<MenuItem, 'id'> {
                   <li role="menuitem">
                       <a *ngIf="!item.routerLink" [href]="item.url||'#'" class="ui-menuitem-link"
                          (click)="itemClick($event, item)"
-                         [ngClass]="{'ui-state-disabled':item.disabled}" [attr.target]="item.target"
+                         [ngClass]="{'ui-state-disabled':item.disabled, 'active': item.isActive, 'previous-active': item.isPreviousActive}" [attr.target]="item.target"
                          [attr.title]="item.title" [attr.id]="item.id"
                          [attr.tabindex]="item.tabindex ? item.tabindex : '0'">
                           <span *ngIf="item.icon" class="ui-menuitem-icon" [ngClass]="item.icon"></span>
@@ -59,7 +61,7 @@ export interface IRelatedLinkItem extends Omit<MenuItem, 'id'> {
 })
 export class RelatedLinksComponent implements OnInit, OnDestroy {
 
-  @Input() model: IRelatedLinkItem[];
+  @Input() model: IRelatedLinkItem[] = [];
 
   @Input() style: any;
 
@@ -71,19 +73,28 @@ export class RelatedLinksComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private entityRelatedLinksService: EntityRelatedLinksService) {
 
-    const options = (this.route.snapshot.data || {}).relatedLinksOptions || <IRelatedLinksOptions>{};
+    const options: IRelatedLinksOptions = (this.route.snapshot.data || {}).relatedLinksOptions || <IRelatedLinksOptions>{};
 
     this.model = (options.availableLinks || []);
+
+    for (let i = 0; i < (this.model || []).length; i++) {
+      if (this.model[i].id === options.currentRouteEntityType) {
+        this.model[i].isActive = options.currentRouteEntityType === this.model[i].id;
+        break;
+      }
+      this.model[i].isPreviousActive = true;
+    }
 
     const entityId = this.route.snapshot.params[options.entityIdRouteParam];
 
     // TODO: Log invalid usage
     if (entityId)
-      this.entityRelatedLinksService.getRelatedLinksForEntity(options.currentRouteLinkType, entityId)
+      this.entityRelatedLinksService.getRelatedLinksForEntity(options.currentRouteEntityType, entityId)
         .pipe(
-          tap(serverLinks => {
-            (this.model || []).forEach(relatedLinkItem => relatedLinkItem.url = (serverLinks.find(s => s.type === relatedLinkItem.id) || <IEntityRelatedLink>{}).url);
-          }),
+          tap(serverLinks =>
+            (this.model || []).forEach(relatedLinkItem => {
+              relatedLinkItem.url = (serverLinks.find(s => s.type === relatedLinkItem.id) || <IEntityRelatedLink>{}).url;
+            })),
           takeUntil(this._destroy$)
         ).subscribe();
   }
