@@ -37,15 +37,15 @@ export class QuantityControlMockApiService implements IQuantityControlApiService
     this.realService = realService;
 
     // Note: It's important to register this only once, and in the root module. We currently don't support multiple services in child providers
-    // devService.registerApi({
-    //   id: QuantityControlApiService.name,
-    //   displayName: 'Quantity Control Api',
-    //   instance: this,
-    //   isRealService: false,
-    //   localApiUrl: 'http://localhost:44398',
-    //   devApiUrl: appConfig.quantityControlApi,
-    //   qaApiUrl: appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
-    // });
+    devService.registerApi({
+      id: QuantityControlApiService.name,
+      displayName: 'Quantity Control Api',
+      instance: this,
+      isRealService: false,
+      localApiUrl: 'http://localhost:44398',
+      devApiUrl: appConfig.quantityControlApi,
+      qaApiUrl: appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
+    });
   }
 
   @ApiCall()

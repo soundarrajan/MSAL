@@ -54,16 +54,16 @@ import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/develo
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService
-    },
-    QuantityControlService
+    }
   ]
 })
 export class QuantityControlModule {
 
   // TODO: Workaround to jump start creation of the Mock Service in order for it to register it with the developer toolbar.
-  constructor(bootStrap : BootstrapService, devService: DeveloperToolbarService, injector: Injector) {
-    bootStrap.initialized.pipe(tap(() => {
-      injector.get(QuantityControlMockApiService);
-    })).subscribe()
-  }
+  // TODO: This doesn t work, for some reason QuantityControlApiService is created, and the appConfig is not yet loaded
+  // constructor(bootStrap : BootstrapService, devService: DeveloperToolbarService, injector: Injector) {
+  //   bootStrap.initialized.pipe(tap(() => {
+  //     injector.get(QuantityControlMockApiService);
+  //   })).subscribe()
+  // }
 }
