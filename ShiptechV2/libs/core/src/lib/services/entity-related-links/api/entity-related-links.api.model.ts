@@ -1,15 +1,21 @@
-export interface IEntityRelatedLinksRequestDto {
-  InvoiceId: string
+export type EntityRelatedLinksRequestDto = {
+  [K in EntityTypeIdField]?: number
+};
+
+export type EntityRelatedLinksResponseDto = {
+  [K in EntityTypeIdField]?: number
+} & {
+  hasQuote?: boolean
 }
 
-export interface IEntityRelatedLinksResponseDto {
-  requestId?: number,
-  contractId?: number,
-  requestGroupId?: number,
-  orderId?: number,
-  deliveryId?: number,
-  labId?: number,
-  claimId?: number,
-  invoiceId?: number,
-  hasQuote?: boolean
+export enum EntityTypeIdField {
+  Request = 'requestId',
+  Offer = 'requestGroupId',
+  Order = 'orderId',
+  Delivery = 'deliveryId',
+  PortCall = 'portCallId',
+  Lab = 'labId',
+  Claim = 'claimId',
+  Invoice = 'invoiceId',
+  Recon = 'orderId',
 }
