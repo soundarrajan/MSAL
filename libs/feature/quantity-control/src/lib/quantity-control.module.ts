@@ -1,10 +1,9 @@
-import { Injector, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApiService } from './services/api/quantity-control.api.service';
-import { QuantityControlService } from './services/quantity-control.service';
-import { AppConfig, AuthenticationModule, BootstrapService, PrimeNGModule } from '@shiptech/core';
+import { AuthenticationModule, PrimeNGModule } from '@shiptech/core';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
@@ -22,8 +21,7 @@ import { PortCallComponent } from './views/port-call/port-call.component';
 import { QuantityControlMockApiService } from './services/api/quantity-control.api.service.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { tap } from 'rxjs/operators';
-import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { QuantityControlService } from './services/quantity-control.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 
 @NgModule({
@@ -56,7 +54,10 @@ import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/e
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService
-    }
+    },
+
+    // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
+    QuantityControlService
   ]
 })
 export class QuantityControlModule {
