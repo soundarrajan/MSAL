@@ -383,7 +383,7 @@
                                                                    id="id_{{ $ctrl.portFields.carrierCompany.name }}"
                                                                    name="{{ $ctrl.tenantSettings.companyDisplayName.name == 'Pool' ? ($ctrl.tenantSettings.companyDisplayName.name | translate) : ($ctrl.portFields.carrierCompany.caption | translate) }}"
                                                                    ng-blur="$ctrl.setPaymentCompany()"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id"
                                                                    ng-focus="$ctrl.initLookup($ctrl.portFields.carrierCompany.name, $ctrl.data.carrierCompany)"
                                                                    ng-model="$ctrl.data.carrierCompany.name"
                                                                    required
