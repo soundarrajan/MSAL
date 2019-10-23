@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { QuantityControlMockApiService } from '../services/api/quantity-control.api.service.mock';
 
 @Component({
   selector: 'shiptech-main-quantity-control',
@@ -8,7 +7,6 @@ import { QuantityControlMockApiService } from '../services/api/quantity-control.
 })
 export class MainQuantityControlComponent {
 
-  constructor(mockApi: QuantityControlMockApiService) {
-
+  constructor() {
   }
 }
