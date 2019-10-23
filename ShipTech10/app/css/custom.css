@@ -4460,6 +4460,7 @@ table#new_order_products td {
 }
 .treasury-datepicker-input input{
     cursor: default;
+    font-size: 1em !important;
 }
 
 .date-picker-icon {

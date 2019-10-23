@@ -1316,7 +1316,21 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         }
                     }
                     if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
-                        locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);
+                    	if (extraInfo.company) {
+	                        locationObject.company = angular.copy(extraInfo.company);
+                    	}
+                    	if (ctrl.vesselDefaultDetails.company) {
+	                        locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);
+                    	}
+                    } else {
+                    	if (extraInfo.company) {
+	                        ctrl.request.company = angular.copy(extraInfo.company);
+                    	}
+                    	if (ctrl.vesselDefaultDetails) {
+	                    	if (ctrl.vesselDefaultDetails.company) {
+		                        ctrl.request.company = angular.copy(ctrl.vesselDefaultDetails.company);
+	                    	}                    	
+                    	}
                     }
                     if (extraInfo) {
                         locationObject.vesselVoyageDetailId = extraInfo.vesselVoyageDetailId;
@@ -1450,9 +1464,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 	if (ctrl.requestTenantSettings.displayOfService.id == 2) {
 	                    location.service = data.service;
                 	}
-                	if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
-	                    location.company = data.company;
-                	}
+                	// if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
+	                //     location.company = data.company;
+                	// }
                 }
             }
         }        
@@ -1575,18 +1589,32 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.selectService(ctrl.request.vesselDetails.service.id);
                         }
                     }
+                	
+                	var companyToDefault = null;
+                	if (vessel.operatingCompany) {
+                    	companyToDefault = vessel.operatingCompany;
+                	} else {
+                		if (vessel.voyages) {
+                			if (vessel.voyages[0].voyageDetails) {
+                				if (vessel.voyages[0].voyageDetails[0].company) {
+		                        	// companyToDefault = vessel.voyages[0].voyageDetails[0].company;
+                				}
+                			}
+                		}
+                	}
+
                     if (ctrl.requestTenantSettings.displayOfCompany.id == 1) {
                         if (!ctrl.request.company) {
                             ctrl.request.company = {};
                         }
                         if (!preventUpdateCompany) {
-	                        ctrl.request.company.name = vessel.operatingCompany ? vessel.operatingCompany.name : ctrl.request.company.name;
-	                        ctrl.request.company.id = vessel.operatingCompany ? vessel.operatingCompany.id : ctrl.request.company.id;
+	                        ctrl.request.company.name = companyToDefault.name;
+	                        ctrl.request.company.id = companyToDefault.id;
                         }
                     }
 
                     ctrl.vesselDefaultDetails = {
-                        company: vessel.operatingCompany ? vessel.operatingCompany : ctrl.request.company,
+                        company: companyToDefault,
                         service: vessel.defaultService ? vessel.defaultService : ctrl.request.vesselDetails.service
                     };
 
