@@ -77,12 +77,12 @@
 	                        		<i ng-if="$ctrl.currentColSort == 'vesselName' " class="fa fa-caret-up font-grey-salt"></i>								
 									Vessel
 								</div>
-	                        	<div style="width:90px" ng-click="$ctrl.setCurrentColSort('buyerName')" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name != 'No' " class="cellContent pull-left text-left">	
+	                        	<div style="width:90px" ng-click="$ctrl.setCurrentColSort('buyerName')" ng-if="$ctrl.displayedColumns['Buyer of the Vessel'] " class="cellContent pull-left text-left">	
 	                        		<i ng-if="$ctrl.currentColSort == '-buyerName' " class="fa fa-caret-down font-grey-salt"></i>
 	                        		<i ng-if="$ctrl.currentColSort == 'buyerName' " class="fa fa-caret-up font-grey-salt"></i>
 	                        		Buyer
 	                        	</div>
-	                        	<div style="width:90px" ng-click="$ctrl.setCurrentColSort('companyName')" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name != 'No' " class="cellContent pull-left text-left">
+	                        	<div style="width:90px" ng-click="$ctrl.setCurrentColSort('companyName')" ng-if="$ctrl.displayedColumns['Company'] " class="cellContent pull-left text-left">
 	                        		<i ng-if="$ctrl.currentColSort == '-companyName' " class="fa fa-caret-down font-grey-salt"></i>
 	                        		<i ng-if="$ctrl.currentColSort == 'companyName' " class="fa fa-caret-up font-grey-salt"></i>
 	                        		{{tenantSettings.companyDisplayName.name == "Pool" ? "Pool" : "Company" }}
@@ -122,8 +122,8 @@
 	                            <div style="width:98px" class="serviceName cellContent pull-left" tooltip data-original-title="{{ row.serviceName }}">{{row.serviceName}}</div>
 	                            <!-- <div class="fakeColContent">********************</div> -->
 	                            <div style="width:130px" class="vesselName pull-left" cellContent  tooltip data-original-title="{{ row.vesselName }} : {{ row.defaultFuel }} : {{ row.defaultDistillate }}" >{{ row.vesselName }}</div>
-	                            <div  style="width:90px" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name != 'No' " class="buyerName cellContent pull-left" tooltip data-original-title="{{ row.buyerName }}" >{{ row.buyerName }}</div>
-	                            <div style="width:90px" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name != 'No' " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName }}" >{{ row.companyName }}</div>
+	                            <div  style="width:90px" ng-if="$ctrl.displayedColumns['Buyer of the Vessel'] " class="buyerName cellContent pull-left" tooltip data-original-title="{{ row.buyerName }}" >{{ row.buyerName }}</div>
+	                            <div style="width:90px" ng-if="$ctrl.displayedColumns['Company'] " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName }}" >{{ row.companyName }}</div>
 	                        </td>
 
 	                        <td class="dayColumn" ng-repeat="(key, voyageStop) in row.calendar  track by $index" id="voyageStop_{{ $index }}" data-voyage-stop-id = "{{ voyageStop.id }}"  ng-class="{'clickable': voyageStop.portCode}" ng-style="voyageStop.style" style="{{ $ctrl.calendarDates[$index].isWeekend && !$ctrl.calendarDates[$index].isNow ? ' background: #dcdcdc!important;' : ''; }}{{ $ctrl.calendarDates[$index].isNow ? 'background: #99cb82!important;' : ''; }} ;width: 44px; height: 20px;" class="voyageStopCell bg-white">

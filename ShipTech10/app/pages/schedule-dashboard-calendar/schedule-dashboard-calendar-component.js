@@ -29,16 +29,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         ];
         tenantService.scheduleDashboardConfiguration.then(function (settings) {
             ctrl.scheduleDashboardConfiguration = settings.payload;
+            buildVisibleColumns();
             ctrl.hiddenCalendarColumns = 0;
-            if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay) {
-                if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name == "No") {
-                    ctrl.hiddenCalendarColumns++;
-                }
+            if (!ctrl.displayedColumns["Buyer of the Vessel"]) {
+                ctrl.hiddenCalendarColumns++;
             }
-            if (ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay) {
-                if (ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name == "No") {
-                    ctrl.hiddenCalendarColumns++;
-                }
+            if (!ctrl.displayedColumns["Company"]) {
+                ctrl.hiddenCalendarColumns++;
             }
         })
         // ctrl.scheduleDashboardConfiguration = tenantService.getScheduleDashboardConfiguration();
@@ -258,6 +255,8 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                 ctrl.breadcrumbsFilter = $rootScope.activeBreadcrumbFilters;
             }
         }
+
+
         $scope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, function (event) {
             // loadData(ctrl.startDate, ctrl.endDate);
             $rootScope.$broadcast("clearUnsavedFilters");
@@ -304,6 +303,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             });
         };
 
+        buildVisibleColumns = function() {
+        	ctrl.displayedColumns = {}; 
+        	$.each(ctrl.scheduleDashboardConfiguration.hiddenFields, function(k,v) {
+        		ctrl.displayedColumns[v.option.name] = !v.hidden ;
+        	})
+        	console.log(ctrl.displayedColumns);
+        }
         function setTableVars(length, start) {
             if (typeof length != 'undefined' && length !== null) {
                 ctrl.tableOptions.pageLength = length;
@@ -931,10 +937,10 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         ctrl.calculateFixedColumnsWidth = function() {
         	if (!ctrl.scheduleDashboardConfiguration) {return}
         	mainWidth = 228;
-        	if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name != 'No') {
+        	if (ctrl.displayedColumns["Buyer of the Vessel"]) {
 	        	mainWidth += 90;
         	}
-        	if (ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name != 'No') {
+        	if (ctrl.displayedColumns["Company"]) {
 	        	mainWidth += 90;
         	}
         	mainWidth += 5;

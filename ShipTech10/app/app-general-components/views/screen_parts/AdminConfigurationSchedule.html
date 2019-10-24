@@ -96,6 +96,40 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-sm-6">
+        <div class="custom-hardcoded-table admin">
+            <table class="table-body" width="100%">
+                <thead class="table-head">
+                    <tr style="background-color: #fff">
+                        <td>
+                            Field
+                        </td>
+                        <td>
+                            Hide
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(key, val) in formValues.schedule.hiddenFields">
+                        <td class="padding">
+                            {{val.option.name}}
+                        </td>
+                        <td class="padding">
+                            <label class="mt-checkbox">
+                                <input type="checkbox" ng-model="val.hidden"/>
+                                <span></span>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <br/>
+    </div>
+</div>
+
 <div class="col-sm-12" >
         <div class="custom-hardcoded-table admin">
             <table class="table-body" width="100%">

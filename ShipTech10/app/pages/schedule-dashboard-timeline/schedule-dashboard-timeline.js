@@ -210,6 +210,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         id: groups.length + 1,
                         serviceName: vessels[i].ServiceName,
                         buyerName: vessels[i].BuyerName,
+                        serviceBuyerName: vessels[i].ServiceBuyerName,
                         vesselName: vessels[i].VesselName,
                         companyName: vessels[i].CompanyName,
                         defaultFuel: vessels[i].DefaultFuel,
@@ -258,6 +259,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var vesselName = group.vesselName;
                     var buyerName = group.buyerName;
                     var companyName = group.companyName;
+                    var serviceBuyerName = group.serviceBuyerName;
 
                     if (serviceName && serviceName.length > 18) {
                         serviceName = serviceName.substr(0, 13) + ' ... ';
@@ -270,6 +272,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     if (buyerName && buyerName.length > 18) {
                         buyerName = buyerName.substr(0, 13) + ' ... ';
                     }
+                    if (serviceBuyerName && serviceBuyerName.length > 18) {
+                        serviceBuyerName = serviceBuyerName.substr(0, 13) + ' ... ';
+                    }                    
 
                     if (companyName && companyName.length > 18) {
                         companyName = companyName.substr(0, 13) + ' ... ';
@@ -277,10 +282,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                     var tpl = `<div class="vis-custom-group"><span class="vis-custom-group-column" tooltip data-original-title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
                     tpl += `<span class="vis-custom-group-column" tooltip data-original-title="${group.vesselName}"> <span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
-                    if (scheduleOptions.displayBuyer) {
+                    if ($scope.displayedColumns["Buyer of the Vessel"]) {
                         tpl += `<span class="vis-custom-group-column" tooltip data-original-title="${vesselName} : ${group.defaultFuel | '-'} : ${group.defaultDistillate | '-'}"><span class="vis-custom-group-column-content"> ${buyerName} </span></span>`;
                     }
-                    if (scheduleOptions.displayCompany) {
+                    if ($scope.displayedColumns["Buyer of the Service"]) {
+                        tpl += `<span class="vis-custom-group-column" tooltip data-original-title="${serviceBuyerName}" ><span class="vis-custom-group-column-content"> ${serviceBuyerName} </span></span>`;
+                    }                    
+                    if ($scope.displayedColumns["Company"]) {
                         tpl += '<span class="vis-custom-group-column last"> <span class="vis-custom-group-column-content">' + (companyName || '-') + '</span></span></div>';
                     }
                     return tpl;
@@ -327,10 +335,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             if ($('.vis-left').width() > 0) {
                 var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns"><span class="vis-custom-group-column"> Service </span>';
                 groupColumnsTitleElement += '<span class="vis-custom-group-column"> Vessel </span>';
-                if (scheduleOptions.displayBuyer) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer </span>';
+                if ($scope.displayedColumns["Buyer of the Vessel"]) {
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer of the Vessel </span>';
                 }
-                if (scheduleOptions.displayCompany) {
+                if ($scope.displayedColumns["Buyer of the Service"]) {
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer of the Service </span>';
+                }                
+                if ($scope.displayedColumns["Company"]) {
                     groupColumnsTitleElement += '<span class="vis-custom-group-column last"> Company </span></div>';
                 }
 
@@ -366,6 +377,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             return await new Promise(resolve => {
                 tenantService.scheduleDashboardConfiguration.then(function (settings) {
                     ctrl.scheduleDashboardConfiguration = settings.payload;
+                    buildVisibleColumns();
                     if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay) {
                         if (ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name == "No") {
                             scheduleOptions.displayBuyer = false;
@@ -423,6 +435,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             });
         }
         doTimeline();
+
+        buildVisibleColumns = function() {
+        	$scope.displayedColumns = {}; 
+        	$.each(ctrl.scheduleDashboardConfiguration.hiddenFields, function(k,v) {
+        		$scope.displayedColumns[v.option.name] = !v.hidden ;
+        	})
+        	console.log($scope.displayedColumns);
+        }
 
         $rootScope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
 
