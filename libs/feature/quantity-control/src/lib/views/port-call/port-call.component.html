@@ -1,6 +1,69 @@
-<p>
-  port-call details!
+<shiptech-wunderbar>
+  <button [routerLink]="['/quantity-control/port-calls']" label="View all port calls" pButton type="button"></button>
+</shiptech-wunderbar>
 
-  <br/>
-  <a [routerLink]="['/quantity-control/port-calls']">View All</a>
-</p>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-12">
+      <p-panel header="PORT CALL ID - VESSEL NAME">
+        <p-header>
+          <div style="float:right">
+            <button class="ui-button-danger mr-1" label="Not Matched" pButton type="button"></button>
+            <button class="ui-button-info mr-1" label="Claim: 2" pButton type="button"></button>
+            <button class="ui-button-info mr-1" label="Deliveries: 2" pButton type="button"></button>
+            <button class="ui-button-secondary" label="Deliveries: 2" pButton type="button"></button>
+          </div>
+        </p-header>
+
+
+        {{portCall$ | async | json}}
+      </p-panel>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-6">
+      <p-panel header="Vessel response (sludge)">
+        Vessel response (sludge) content
+      </p-panel>
+    </div>
+    <div class="col-6">
+      <p-panel header="Vessel response (bunker)">
+        Vessel response (bunker) content
+      </p-panel>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <p-panel [toggleable]="true" header="Comment">
+        Content
+      </p-panel>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <p-panel [toggleable]="true" class="mb-2" header="Sounding reports">
+        <shiptech-survey-report-history></shiptech-survey-report-history>
+      </p-panel>
+    </div>
+  </div>
+
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <p-panel [toggleable]="true" class="mb-2" header="Survey report history">
+        <shiptech-sounding-reports></shiptech-sounding-reports>
+      </p-panel>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <p-panel [toggleable]="true" class="mb-2" header="Events">
+        <shiptech-events-log></shiptech-events-log>
+      </p-panel>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 
 
 export function getMockPortCallsList(n: number): PortCallListItemDto[] {
-  return _.range(n).map(id => getPortCallListItem(id));
+  return _.range(1, n).map(id => getPortCallListItem(id));
 }
 
 export function getPortCallListItem(id: number): PortCallListItemDto {
