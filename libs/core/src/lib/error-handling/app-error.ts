@@ -49,6 +49,6 @@ export class AppError<T = any> implements IAppError {
 
 
   static LoadTenantSettingsFailed(moduleName: TenantSettingsModuleName){
-    return new AppError({ code: AppErrorCode.TenantSettingsFailedToLoad, message: `Tenant settings failed to load for Rack ${moduleName} module.` });
+    return new AppError({ code: AppErrorCode.TenantSettingsFailedToLoad, message: `Tenant settings failed to load for ${moduleName} module.` });
   };
 }
