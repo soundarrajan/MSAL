@@ -3858,6 +3858,16 @@ APP_MASTERS.controller("Controller_Master", [
         $scope.dropDocument = function(file) {
             $rootScope.droppedDoc = file;
             $scope.droppedDoc = $rootScope.droppedDoc;
+            if (typeof $scope.formValues.documentType != "undefined") {
+                if ($scope.formValues.documentType.name != "") {
+                    $scope.uploadDocument("#fileUpload");
+                }
+            } else {
+                toastr.warning("Please select a Document Type and upload the file again");
+                $rootScope.droppedDoc = null;
+                $scope.droppedDoc = null;
+            }
+
         };
         $scope.uploadDocument = function(selector) {
       
@@ -5912,6 +5922,7 @@ APP_MASTERS.controller("Controller_Master", [
             if (window.readyOnce) {
                 return;
             }
+
             window.readyOnce = true;
         	if (/*$state.current.name.indexOf('.documents') != -1 &&*/ typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
         		$rootScope.setDocumentTimeout = true;
@@ -5926,12 +5937,17 @@ APP_MASTERS.controller("Controller_Master", [
 	                    // 	return;
 	                    // }
 	                    currentFile = this.files[0];
-                        
+                        var documentTypeValues = this.form[1].value; 
+                        if (documentTypeValues == "") {
+                            toastr.warning("Please select a Document Type and upload the file again");
+                            return;
+                        }                    
 	                    fileScope = angular.element($("input").parent().find(".fileNameLabel")).scope();
                         $rootScope.droppedDoc = currentFile;
                         fileScope.$apply(function() {
                             fileScope.droppedDoc = currentFile;
                         });
+                        $scope.uploadDocument("#fileUpload");
                         // $("input").parent().find(".fileNameLabel").text(currentFile.name)
                         
                         // var fileName = "";
