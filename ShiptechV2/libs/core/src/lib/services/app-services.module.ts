@@ -10,6 +10,9 @@ import {
   EntityRelatedLinksApi
 } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
 import { EntityRelatedLinksApiMock } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.mock';
+import { RouteReuseStrategy } from '@angular/router';
+import { AppRouteReuseStrategy } from '../route/app-route-reuse.strategy';
+import { ROUTES_TO_CACHE } from '@shiptech/core/route/routes-to-reuse.token';
 
 @NgModule({
   imports: [],
@@ -39,6 +42,16 @@ export class AppServicesModule {
         {
           provide: ENTITY_RELATED_LINKS_API,
           useClass: environment.production ? EntityRelatedLinksApi : EntityRelatedLinksApiMock
+        },
+        {
+          provide: RouteReuseStrategy,
+          useClass: AppRouteReuseStrategy
+        },
+        // Note: Providing ROUTES_TO_CACHE to avoid RouteReuseStrategy crash because of null token
+        {
+          provide: ROUTES_TO_CACHE,
+          useValue: [],
+          multi: true
         }
       ]
     };

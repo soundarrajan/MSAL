@@ -23,6 +23,7 @@ import { PortCallListItemModel } from '../models/port-call-list-item.model';
 import { ApiCall, ApiCallForwardTo, AppConfig } from '@shiptech/core';
 import { QuantityControlApiService } from './quantity-control.api.service';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { getMockPortCall } from './mock/port-call.mock';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +57,7 @@ export class QuantityControlMockApiService implements IQuantityControlApiService
 
   @ApiCall()
   getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse> {
-    return throwError('Not implemented');
+    return of({ portCall: getMockPortCall(request.portCallId) });
   }
 
   @ApiCall()

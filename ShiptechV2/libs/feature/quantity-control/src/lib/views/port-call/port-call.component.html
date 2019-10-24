@@ -14,7 +14,9 @@
             <button class="ui-button-secondary" label="Deliveries: 2" pButton type="button"></button>
           </div>
         </p-header>
-        port-call details!
+
+
+        {{portCall$ | async | json}}
       </p-panel>
     </div>
   </div>
