@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'shiptech-port-calls-list',
   templateUrl: './port-calls-list.component.html',
-  styleUrls: ['./port-calls-list.component.css'],
+  styleUrls: ['./port-calls-list.component.scss'],
   providers: [PortCallsListGridViewModel, PortCallsListViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

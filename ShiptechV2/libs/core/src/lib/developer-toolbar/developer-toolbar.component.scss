@@ -18,8 +18,14 @@ mat-list-item {
 
 .serviceStatus {
   .badge {
-    width: 40px !important;
-    padding: 4px 2px;
+    padding: 1px 9px 2px;
+    font-size: 12.025px;
+    white-space: nowrap;
+    color: #ffffff;
+    background-color: #999999;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
   }
 
   .real {
@@ -55,4 +61,12 @@ mat-list-item {
   margin-top: -24px !important;
   margin-right: -24px !important;
   background-color: #0078d7;
+}
+
+i {
+  color: white;
+}
+
+.font-weight-bold {
+  font-weight: bold;
 }

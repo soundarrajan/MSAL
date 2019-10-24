@@ -23,6 +23,7 @@ import { PortCallListItemModel } from '../models/port-call-list-item.model';
 import { ApiCall, ApiCallForwardTo, AppConfig } from '@shiptech/core';
 import { QuantityControlApiService } from './quantity-control.api.service';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { getMockPortCall } from './mock/port-call.mock';
 
 @Injectable({
   providedIn: 'root'
@@ -31,19 +32,8 @@ export class QuantityControlMockApiService implements IQuantityControlApiService
 
   @ApiCallForwardTo() realService: QuantityControlApiService;
 
-  constructor(realService: QuantityControlApiService, appConfig: AppConfig, devService: DeveloperToolbarService) {
+  constructor(realService: QuantityControlApiService, appConfig: AppConfig) {
     this.realService = realService;
-
-    // Note: It's important to register this only once, and in the root module. We currently don't support multiple services in child providers
-    devService.registerApi({
-      id: QuantityControlApiService.name,
-      displayName: 'Quantity Control Api',
-      instance: this,
-      isRealService: false,
-      localApiUrl: 'http://localhost:44398',
-      devApiUrl: appConfig.quantityControlApi,
-      qaApiUrl: appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
-    });
   }
 
   @ApiCall()
@@ -56,7 +46,7 @@ export class QuantityControlMockApiService implements IQuantityControlApiService
 
   @ApiCall()
   getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse> {
-    return throwError('Not implemented');
+    return of({ portCall: getMockPortCall(request.portCallId) });
   }
 
   @ApiCall()

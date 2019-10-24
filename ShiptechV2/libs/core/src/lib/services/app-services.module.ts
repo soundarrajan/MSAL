@@ -13,6 +13,9 @@ import {
   TenantSettingsApi
 } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api';
 import { TenantSettingsApiMock } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.mock';
+import { RouteReuseStrategy } from '@angular/router';
+import { AppRouteReuseStrategy } from '../route/app-route-reuse.strategy';
+import { ROUTES_TO_CACHE } from '@shiptech/core/route/routes-to-reuse.token';
 
 @NgModule({
   imports: [],
@@ -42,6 +45,16 @@ export class AppServicesModule {
         {
           provide: TENANT_SETTINGS_API,
           useClass: environment.production ? TenantSettingsApi : TenantSettingsApiMock
+        },
+        {
+          provide: RouteReuseStrategy,
+          useClass: AppRouteReuseStrategy
+        },
+        // Note: Providing ROUTES_TO_CACHE to avoid RouteReuseStrategy crash because of null token
+        {
+          provide: ROUTES_TO_CACHE,
+          useValue: [],
+          multi: true
         }
       ]
     };

@@ -63,7 +63,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
     this.devService.registerApi(
       {
         id: EntityRelatedLinksService.name,
-        displayName: 'Entity Related Links Service',
+        displayName: 'Entity Related Links Api',
         instance: this.entityRelatedLinksApiMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
@@ -74,7 +74,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
     this.devService.registerApi(
       {
         id: TenantSettingsService.name,
-        displayName: 'Tenant Settings Service',
+        displayName: 'Tenant Settings Api',
         instance: this.tenantSettingsApiMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
