@@ -23,6 +23,7 @@ import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { QuantityControlService } from './services/quantity-control.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
+import { MainQuantityControlComponentResolver } from './views/main-quantity-control-component.resolver.';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/e
   ],
   providers: [
     ModuleLoggerFactory,
+    MainQuantityControlComponentResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService

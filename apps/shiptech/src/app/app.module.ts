@@ -13,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/developer-toolbar.module';
 import { QuantityControlModule } from '@shiptech/feature/quantity-control';
 

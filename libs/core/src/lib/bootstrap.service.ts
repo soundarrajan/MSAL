@@ -1,5 +1,5 @@
 //TODO: refactor and cleanup all of this.
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Injector } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
@@ -12,13 +12,19 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
 import { ILegacyAppConfig } from './config/legacy-app-config';
 import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory } from './logging/logger-factory.service';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BootstrapService {
 
-  public initialized  = new ReplaySubject(1);
+  get initialized(): Observable<void> {
+    return this._initialized;
+  }
+
+  private _initialized = new ReplaySubject<void>(1);
 
   constructor(private appConfig: AppConfig,
               private legacyCache: LookupsCacheService,
@@ -27,6 +33,7 @@ export class BootstrapService {
               private authService: AuthenticationService,
               private legacyLookupsDatabase: LegacyLookupsDatabase,
               private loggerFactory: LoggerFactory,
+              private injector: Injector,
               @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {
   }
@@ -38,15 +45,16 @@ export class BootstrapService {
     return this.loadAppConfig().pipe(
       tap(() => this.setupLogging()),
       concatMap(() => this.setupAuthentication()),
+      concatMap(() => this.loadGeneralTenantSettings()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
       tap(() => this.setupAgGrid()),
-      tap(() => this.initialized.next())
+      tap(() => this._initialized.next())
     );
   }
 
   private setupLogging(): void {
-    this.loggerFactory.init({ ...this.loggerSettings, serverSideUrl: this.appConfig.loggingApi })
+    this.loggerFactory.init({ ...this.loggerSettings, serverSideUrl: this.appConfig.loggingApi });
   }
 
   private setupAgGrid(): void {
@@ -84,6 +92,11 @@ export class BootstrapService {
     return new Observable<IAppConfig>(() => {
       // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
     });
+  }
+
+  private loadGeneralTenantSettings(): Observable<any> {
+    // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
+    return this.injector.get(TenantSettingsService).loadModule(TenantSettingsModuleName.General);
   }
 }
 

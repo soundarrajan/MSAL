@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { ILegacyAppConfig } from './legacy-app-config';
+import { ITenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,5 @@ export class AppConfig implements IAppConfig {
 // tslint:disable-next-line:no-empty-interface
 export interface IAppConfig extends AppConfig {
 }
-
 
 

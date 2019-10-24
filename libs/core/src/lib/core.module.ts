@@ -6,6 +6,11 @@ import { UIModule } from './ui/ui.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppServicesModule } from './services/app-services.module';
+import { NgxsModule } from '@ngxs/store';
+import { QuantityControlState } from '../../../feature/quantity-control/src/lib/store/quantity-control.state';
+import { PortCallsListState } from '../../../feature/quantity-control/src/lib/store/port-call-list/port-calls-list.state';
+import { PortCallState } from '../../../feature/quantity-control/src/lib/store/port-call/port-call.state';
+import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
 
 // TODO: Define the purpose of Core Module. We should definitely remove UIModule from here and use it where necessary otherwise we risk not being able to lazy load modules
 @NgModule({
@@ -18,6 +23,7 @@ import { AppServicesModule } from './services/app-services.module';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxsModule.forFeature([TenantSettingsState])
   ],
   exports: [
     AppContextModule,

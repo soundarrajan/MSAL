@@ -15,6 +15,8 @@ import { EntityRelatedLinksApiMock } from '@shiptech/core/services/entity-relate
 import { AppConfig } from '@shiptech/core';
 import { UserSettingsApiService } from '@shiptech/core/services/user-settings/user-settings-api.service';
 import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { TenantSettingsApiMock } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.mock';
 
 @Component({
   selector: 'app-developer-toolbar',
@@ -38,6 +40,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
     private devService: DeveloperToolbarService,
     private userSettingsApiServiceMock: UserSettingsApiServiceMock,
     private entityRelatedLinksApiMock: EntityRelatedLinksApiMock,
+    private tenantSettingsApiMock: TenantSettingsApiMock,
     private appConfig: AppConfig
   ) {
 
@@ -66,6 +69,17 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
+      });
+
+    this.devService.registerApi(
+      {
+        id: TenantSettingsService.name,
+        displayName: 'Tenant Settings Service',
+        instance: this.tenantSettingsApiMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
       });
 
     this.keepSettings = Object.keys(sessionStorage).filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX)).length > 0;
