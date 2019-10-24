@@ -8,6 +8,9 @@
       "schematics": {
         "@nrwl/workspace:component": {
           "style": "scss"
+        },
+        "@schematics/angular:component": {
+          "style": "scss"
         }
       },
       "root": "apps/shiptech",
