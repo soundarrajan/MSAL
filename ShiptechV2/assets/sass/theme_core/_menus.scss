@@ -1,6 +1,6 @@
 body {
     .ui-breadcrumb {
-        background-color: $panelContentBgColor;
+      background-color: $breadcrumbBackgroundColor;
         //border: $panelContentBorder;
         padding: $panelContentPadding;
 
@@ -60,18 +60,18 @@ body {
 
     .ui-steps {
         position: relative;
-        
+
         .ui-steps-item {
             background-color: transparent;
             text-align: center;
             @include opacity(1);
-                        
+
             .ui-menuitem-link {
                 display: inline-block;
                 text-align: center;
                 background-color: transparent;
                 overflow: hidden;
-                
+
                 .ui-steps-number {
                     @include border-radius(50%);
                     display: inline-block;
@@ -87,28 +87,28 @@ body {
                     padding-top: .4em;
                     text-align: center;
                 }
-                
-                .ui-steps-title {
+
+              .ui-steps-title {
                     display: block;
                     margin-top: .5em;
                     color: $stepsItemTextColor;
                 }
             }
-                        
-            &.ui-state-highlight {
+
+          &.ui-state-highlight {
                 .ui-steps-number {
                     background: $highlightBgColor;
                     color: $highlightColorText;
                     border: $stepsItemActiveBorder;
                 }
-                
-                .ui-steps-title { 
+
+            .ui-steps-title {
                     font-weight: 700;
                     color: $textColor;
                 }
             }
-            
-            &:last-child {
+
+          &:last-child {
                 .ui-menuitem-link {
                     display: block;
                 }
@@ -152,8 +152,8 @@ body {
             .ui-menuitem-text {
                 color: $menuitemHoverTextColor;
             }
-    
-            .ui-menuitem-icon {
+
+          .ui-menuitem-icon {
                 color: $menuitemHoverIconColor;
             }
         }
@@ -224,16 +224,16 @@ body {
 
         .ui-menuitem {
             margin: $menuitemMargin;
-            
-            &.ui-menuitem-active {
+
+          &.ui-menuitem-active {
                 > .ui-menuitem-link {
                     background-color: $menuitemActiveBgColor;
 
                     .ui-menuitem-text {
                         color: $menuitemActiveTextColor;
                     }
-            
-                    .ui-menuitem-icon, .ui-submenu-icon {
+
+                  .ui-menuitem-icon, .ui-submenu-icon {
                         color: $menuitemActiveIconColor;
                     }
                 }
@@ -270,8 +270,8 @@ body {
                     .ui-menuitem-text {
                         color: $menuitemActiveTextColor;
                     }
-            
-                    .ui-menuitem-icon, .ui-submenu-icon {
+
+                  .ui-menuitem-icon, .ui-submenu-icon {
                         color: $menuitemActiveIconColor;
                     }
                 }
@@ -312,8 +312,8 @@ body {
                     .ui-menuitem-text {
                         color: $menuitemActiveTextColor;
                     }
-            
-                    .ui-menuitem-icon, .ui-submenu-icon {
+
+                  .ui-menuitem-icon, .ui-submenu-icon {
                         color: $menuitemActiveIconColor;
                     }
                 }
@@ -353,8 +353,8 @@ body {
                     .ui-menuitem-text {
                         color: $menuitemActiveTextColor;
                     }
-            
-                    .ui-menuitem-icon, .ui-submenu-icon {
+
+                  .ui-menuitem-icon, .ui-submenu-icon {
                         color: $menuitemActiveIconColor;
                     }
                 }
@@ -390,8 +390,8 @@ body {
             border: $tabsNavBorder;
             border-bottom: 1px solid #dadada;
             background-color: $tabsNavBgColor;
-           
-            .ui-tabmenuitem {
+
+          .ui-tabmenuitem {
                 position: static;
                 border-top: 1px solid transparent;
                 border-left: 1px solid transparent;
@@ -479,8 +479,8 @@ body {
 
         .ui-menuitem {
             margin: $menuitemMargin;
-        
-            .ui-menuitem-link {
+
+          .ui-menuitem-link {
                 .ui-submenu-icon {
                     right: 0.429em;
                 }
@@ -493,8 +493,8 @@ body {
                     .ui-menuitem-text {
                         color: $menuitemActiveTextColor;
                     }
-            
-                    .ui-menuitem-icon, .ui-submenu-icon {
+
+                  .ui-menuitem-icon, .ui-submenu-icon {
                         color: $menuitemActiveIconColor;
                     }
                 }
@@ -538,14 +538,14 @@ body {
                     &.pi-caret-right {
                         @include icon_override("\e901");
                     }
-        
-                    &.pi-caret-down {
+
+                  &.pi-caret-down {
                         @include icon_override("\e902");
                     }
                 }
             }
 
-            &:not(.ui-state-active) {                
+          &:not(.ui-state-active) {
                 > a:hover {
                     outline: 0 none;
                     border: $panelHeaderHoverBorder;
@@ -574,8 +574,8 @@ body {
                         border: $panelHeaderActiveHoverBorder;
                         background-color: $panelHeaderActiveHoverBgColor;
                         color: $panelHeaderActiveHoverTextColor;
-        
-                        .ui-panelmenu-icon {
+
+                      .ui-panelmenu-icon {
                             color: $panelHeaderActiveHoverIconColor;
                         }
                     }
@@ -605,17 +605,17 @@ body {
                 .ui-menuitem-link {
                     padding: $menuitemPadding;
                     color: $menuitemTextColor;
-    
-                    &:hover {
+
+                  &:hover {
                         background-color: $menuitemHoverBgColor;
- 
-                        .ui-menuitem-icon, .ui-panelmenu-icon {
+
+                    .ui-menuitem-icon, .ui-panelmenu-icon {
                             color: $menuitemHoverIconColor;
                         }
 
                         .ui-menuitem-text {
                             color: $menuitemHoverTextColor;
-                        }     
+                        }
                     }
                 }
             }

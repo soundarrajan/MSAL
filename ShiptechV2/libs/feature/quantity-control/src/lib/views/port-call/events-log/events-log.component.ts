@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'shiptech-events-log',
   templateUrl: './events-log.component.html',
-  styleUrls: ['./events-log.component.css']
+  styleUrls: ['./events-log.component.scss']
 })
 export class EventsLogComponent implements OnInit {
 
