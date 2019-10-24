@@ -2,14 +2,17 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { USER_SETTINGS_API_SERVICE, UserSettingsApiService } from './user-settings/user-settings-api.service';
 import { UserSettingsApiServiceMock } from './user-settings/user-settings-api.service.mock';
 import { getDefaultStorage, PREFERENCE_STORAGE } from './preference-storage/preference-storage.interface';
-import { TENANT_SETTINGS_SERVICE, TenantSettingsService } from './tenant-settings/tenant-settings.service';
 import { environment } from '@shiptech/environment';
-import { TenantSettingsServiceMock } from './tenant-settings/tenant-settings.service.mock';
 import {
   ENTITY_RELATED_LINKS_API,
   EntityRelatedLinksApi
 } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
 import { EntityRelatedLinksApiMock } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.mock';
+import {
+  TENANT_SETTINGS_API,
+  TenantSettingsApi
+} from '@shiptech/core/services/tenant-settings/api/tenant-settings-api';
+import { TenantSettingsApiMock } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.mock';
 
 @NgModule({
   imports: [],
@@ -33,12 +36,12 @@ export class AppServicesModule {
           deps: [USER_SETTINGS_API_SERVICE]
         },
         {
-          provide: TENANT_SETTINGS_SERVICE,
-          useClass: environment.production ? TenantSettingsService : TenantSettingsServiceMock
-        },
-        {
           provide: ENTITY_RELATED_LINKS_API,
           useClass: environment.production ? EntityRelatedLinksApi : EntityRelatedLinksApiMock
+        },
+        {
+          provide: TENANT_SETTINGS_API,
+          useClass: environment.production ? TenantSettingsApi : TenantSettingsApiMock
         }
       ]
     };

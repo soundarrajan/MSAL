@@ -8,7 +8,7 @@ import { AppError } from '../error-handling/app-error';
 import { Logger } from '../logging/logger';
 import { ITenantSettingsState } from '../store/states/tenant/tenant-settings.state.interface';
 import * as _ from 'lodash';
-import { ITenantSettings } from '../store/states/tenant/tenant.settings.interface';
+import { IModuleTenantSettings } from '../store/states/tenant/tenant.settings.interface';
 
 type ActionFactory<TResponse = any, T = any> = (response: TResponse) => T;
 
@@ -23,7 +23,7 @@ export class BaseStoreService {
     return <IAppState>this.store.snapshot();
   }
 
-  public tenantState(moduleName: keyof ITenantSettingsState): ITenantSettings {
+  public tenantState(moduleName: keyof ITenantSettingsState): IModuleTenantSettings {
     const tenantState = this.appState.tenantSettings;
 
     if (!tenantState[moduleName]) {
