@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { QuantityControlService } from '../../services/quantity-control.service';
+import { Observable } from 'rxjs';
+import { IPortCallDto } from '../../services/api/dto/port-call.dto';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -7,9 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PortCallComponent implements OnInit {
 
-  constructor() { }
+  // TODO: get port callId dynamically
+  portCall$: Observable<IPortCallDto> = this.quantityControlService.getPortCallById(1).pipe(tap((value) => console.log('vALUE', value)));
 
-  ngOnInit() {
+  constructor(private quantityControlService: QuantityControlService) {
+  }
+
+  ngOnInit(): void {
   }
 
 }

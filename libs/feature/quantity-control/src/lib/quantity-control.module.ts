@@ -22,9 +22,9 @@ import { QuantityControlMockApiService } from './services/api/quantity-control.a
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { QuantityControlService } from './services/quantity-control.service';
-import { SoundingReportsComponent } from './views/port-call/sounding-reports/sounding-reports.component';
-import { EventsLogComponent } from './views/port-call/events-log/events-log.component';
-import { SurveyReportHistoryComponent } from './views/port-call/survey-report-history/survey-report-history.component';
+import { SoundingReportsComponent } from './views/port-call/components/sounding-reports/sounding-reports.component';
+import { EventsLogComponent } from './views/port-call/components/events-log/events-log.component';
+import { SurveyReportHistoryComponent } from './views/port-call/components/survey-report-history/survey-report-history.component';
 
 @NgModule({
   imports: [
