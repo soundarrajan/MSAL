@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { USER_SETTINGS_API_SERVICE, UserSettingsApiService } from './user-settings/user-settings-api.service';
-import { UserSettingsApiServiceMock } from './user-settings/user-settings-api.service.mock';
 import { getDefaultStorage, PREFERENCE_STORAGE } from './preference-storage/preference-storage.interface';
 import { environment } from '@shiptech/environment';
 import {
@@ -31,8 +30,6 @@ export class AppServicesModule {
           provide: USER_SETTINGS_API_SERVICE,
           useClass: UserSettingsApiService // TODO: refactor into proper service and serviceApi the mock will use localStorage // environment.production ? UserSettingsApiService : UserSettingsApiServiceMock
         },
-        UserSettingsApiService,
-        UserSettingsApiServiceMock,
         {
           provide: PREFERENCE_STORAGE,
           useFactory: getDefaultStorage,
