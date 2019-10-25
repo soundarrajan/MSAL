@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, defer, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, distinctUntilChanged, map, mapTo, tap } from 'rxjs/operators';
-import { ILogger } from '@shiptech/core/logging/logger';
-import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
-import { ObservableException, RETURN$ } from '@shiptech/core';
+import { ILogger } from '../../logging/logger';
+import { LoggerFactory } from '../../logging/logger-factory.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
+import { RETURN$ } from '../../utils/rxjs-operators';
 
 @Injectable({
   providedIn: 'root'

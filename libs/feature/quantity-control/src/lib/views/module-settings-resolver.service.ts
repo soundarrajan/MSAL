@@ -8,7 +8,7 @@ import { Observable, of } from 'rxjs';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
 
 @Injectable()
-export class MainQuantityControlComponentResolver implements Resolve<any> {
+export class ModuleSettingsResolver implements Resolve<any> {
   constructor(
     private tenantService: TenantSettingsService,
     private appBusy: AppBusyService

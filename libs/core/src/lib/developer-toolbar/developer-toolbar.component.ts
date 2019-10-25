@@ -2,21 +2,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef } fr
 import { Store } from '@ngxs/store';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import {
-  DEV_SETTINGS_STORAGE_PREFIX,
-  ServiceStatusesEnum
-} from './api-service-settings/api-service-settings.component';
 import { ApiServiceModel } from './api-service.model';
 import { Router } from '@angular/router';
 import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { UserSettingsApiServiceMock } from '@shiptech/core/services/user-settings/user-settings-api.service.mock';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
-import { EntityRelatedLinksApiMock } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.mock';
-import { AppConfig } from '@shiptech/core';
-import { UserSettingsApiService } from '@shiptech/core/services/user-settings/user-settings-api.service';
-import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { TenantSettingsApiMock } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.mock';
+import { ServiceStatusesEnum } from '@shiptech/core/developer-toolbar/api-service-settings/service-statuses.enum';
 
 @Component({
   selector: 'app-developer-toolbar',
@@ -38,10 +29,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private devService: DeveloperToolbarService,
-    private userSettingsApiServiceMock: UserSettingsApiServiceMock,
-    private entityRelatedLinksApiMock: EntityRelatedLinksApiMock,
-    private tenantSettingsApiMock: TenantSettingsApiMock,
-    private appConfig: AppConfig
+    private userSettingsApiServiceMock: UserSettingsApiServiceMock
   ) {
 
     this.devService.apiServices$.pipe(
@@ -49,40 +37,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe();
 
-    this.devService.registerApi(
-      {
-        id: UserSettingsApiService.name,
-        displayName: 'User Settings Api',
-        instance: this.userSettingsApiServiceMock,
-        isRealService: false,
-        localApiUrl: 'http://localhost:44398',
-        devApiUrl: this.appConfig.userSettingsApi,
-        qaApiUrl: this.appConfig.userSettingsApi
-      });
-
-    this.devService.registerApi(
-      {
-        id: EntityRelatedLinksService.name,
-        displayName: 'Entity Related Links Api',
-        instance: this.entityRelatedLinksApiMock,
-        isRealService: false,
-        localApiUrl: 'http://localhost:44398',
-        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE,
-        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
-      });
-
-    this.devService.registerApi(
-      {
-        id: TenantSettingsService.name,
-        displayName: 'Tenant Settings Api',
-        instance: this.tenantSettingsApiMock,
-        isRealService: false,
-        localApiUrl: 'http://localhost:44398',
-        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
-        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
-      });
-
-    this.keepSettings = Object.keys(sessionStorage).filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX)).length > 0;
+    this.keepSettings = this.devService.shouldKeepSettings();
   }
 
   ngOnInit(): void {
@@ -96,9 +51,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
     this.keepSettings = value;
 
     if (!value) {
-      Object.keys(sessionStorage)
-        .filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX))
-        .forEach(key => sessionStorage.removeItem(key));
+      this.devService.purgeApiSettings();
     }
   }
 

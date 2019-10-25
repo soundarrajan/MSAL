@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ILoggerFactory, LoggerFactory } from '../../../../../../core/src/lib/logging/logger-factory.service';
-import { AppContext } from '@shiptech/core';
+import { AppContext } from '../../../../../../core/src/lib/app-context/app-context';
 
 @Injectable({
   providedIn: 'root'
