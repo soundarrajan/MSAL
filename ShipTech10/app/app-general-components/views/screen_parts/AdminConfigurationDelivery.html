@@ -277,7 +277,7 @@
                 <label>
                     {{ CM.app_id + '.MAX_TOLERANCE' | translate }}
                 </label>
-                <input name="qcMaxToleranceLimit" class="input-group form_input form_input_qcMaxTolerance form-control" type="number" ng-min="formValues.delivery.qcMinToleranceLimit" ng-model="formValues.delivery.qcMaxToleranceLimit"/>
+                <input name="qcMaxToleranceLimit" class="input-group form_input form_input_qcMaxTolerance form-control" ng-required="formValues.delivery.qcMinToleranceLimit" type="number" ng-min="formValues.delivery.qcMinToleranceLimit" ng-model="formValues.delivery.qcMaxToleranceLimit"/>
             </div>
         </div>
         <div class="col-md-3">
