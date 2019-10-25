@@ -40,6 +40,9 @@ angular.module("shiptech").service("dataProcessors", ['$filtersData', '$state', 
                 ) {
                     colmodel[key].width = 150;
                 }
+            	if (obj.editableFormatter == "date") {
+                    colmodel[key].width = 185;
+            	}
                 if (obj.name.indexOf("name") > -1) {
                     colmodel[key].width = 300;
                 }
