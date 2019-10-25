@@ -254,6 +254,41 @@
             </div>
         </div>
     </div>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row input-quantity">
+                <label>
+                    Quantity Control Reconcillation
+                </label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    {{ CM.app_id + '.MIN_TOLERANCE' | translate }}
+                </label>
+                <input name="qcMinToleranceLimit" class="input-group form_input form_input_qcMinTolerance form-control" type="number" ng-max="formValues.delivery.qcMaxToleranceLimit" ng-model="formValues.delivery.qcMinToleranceLimit" ng-min="1"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    {{ CM.app_id + '.MAX_TOLERANCE' | translate }}
+                </label>
+                <input name="qcMaxToleranceLimit" class="input-group form_input form_input_qcMaxTolerance form-control" type="number" ng-min="formValues.delivery.qcMinToleranceLimit" ng-model="formValues.delivery.qcMaxToleranceLimit"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <div class="input-group form_input form_input_qcUom" ng-init='options.Timezone ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'>
+                    <select name="qcUom" class="form-control bs-select changeIT" ng-required="formValues.delivery.qcMaxToleranceLimit && formValues.delivery.qcMinToleranceLimit" id="qcUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.delivery.qcToleranceLimitUom">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="portlet">
         <div class="portlet-title">

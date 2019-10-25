@@ -248,7 +248,15 @@ clc-table-list>.jqgrid_component {
 .dynamic_form_editor .input-group-addon i {
     color: #BEC7D6;
 }
-
+.input-quantity label {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: left;
+    margin-left: 15px;
+    /*padding-top: 10px;*/
+    color: #686161;
+}
 .dynamic_form_editor .form-group label {
     font-size: 14px;
     line-height: 1.2;
