@@ -176,6 +176,9 @@
         <div class="form-group row">
             <label for="deliveryDate" class="delivery_date_label">
                 {{ CM.app_id + '.DELIVERY_DATE' | translate }}
+   		        <span class="orange-txt ng-scope">
+		            *
+		        </span>
             </label>
             <div class="form_input form_input_delivery_date">
                 <div class="input-group w100">
@@ -216,6 +219,7 @@
                         ng-disabled="!CM.isEditable"
                         name="bdnDate"
                         id="bdnDate"
+                        required="CM.isEditable"
                         new-date-picker
                         picker-type="date"
                         class="form-control date-mask new-date-picker"> 

@@ -528,6 +528,14 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                     }
                     $('#' + dateInputId).parent().find(".datePickerDayOfWeek").text(dayOfWeekText);
                 }
+				scope.$watch(function(){return ngModel.$invalid;},function(newVal,oldVal){
+					if (newVal) {
+						$(element).addClass('ng-invalid');
+					} else {
+						$(element).removeClass('ng-invalid');
+					}
+				})
+
                 scope.$watch(attrs['ngModel'], function(v) {
                     if (hasDayOfWeek) {
                         var dayOfWeekText = "";
