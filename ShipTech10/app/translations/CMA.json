@@ -1078,6 +1078,7 @@
     "EMAIL_SERVER_TYPE": "Email server type",
     "INTEGRATIONS_URL": "Integrations URL",
     "SSRS_REPORT_FOLDER_PATH": "SSRS report folder path",
+    "DELIVERY_DATE_FLOW": "Delivery Date Flow from order to delivery",
     "NEED_SUPLIER_QUOTE_VALIDITY_DATE_EXPIRY_CHECK": "Need suplier quote validity date expiry check",
     "DISPLYA_PRODUCT_TYPE_IN_REQUEST": "Display product type in request",
     "OVERRIDE_SELLER_EMAIL_WITH_BROKER_EMAIL?": "Override seller email with broker email?",

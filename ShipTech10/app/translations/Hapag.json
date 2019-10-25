@@ -1080,6 +1080,7 @@
             "DISPLYA_PRODUCT_TYPE_IN_REQUEST": "Display product type in request",
             "OVERRIDE_SELLER_EMAIL_WITH_BROKER_EMAIL?": "Override seller email with broker email?",
             "EMAIL_SERVER_TYPE": "Email server type",
+            "DELIVERY_DATE_FLOW": "Delivery Date Flow from order to delivery",
             "DISPLAY_PRODUCT_TYPE": "Display product type",
             "INTEGRATIONS_URL": "Integrations URL",
             "DEFAULT_CARRIER_IF_NOT_PAYMENT_COMPANY": "Default carrier if not payment company",

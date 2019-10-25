@@ -1082,6 +1082,7 @@
         "EMAIL_SERVER_TYPE": "Email server type", 
         "DISPLAY_PRODUCT_TYPE": "Display product type",
         "INTEGRATIONS_URL": "Integrations URL",
+        "DELIVERY_DATE_FLOW": "Delivery Date Flow from order to delivery",
         "DEFAULT_CARRIER_IF_NOT_PAYMENT_COMPANY": "Default carrier if not payment company",
         "POPULATE_REQUEST_COMMENTS_TO": "Populate request comments to",
         "HIDE_CONTRACT_REFERENCED_FORMULAS": "Hide contract referenced formulas",

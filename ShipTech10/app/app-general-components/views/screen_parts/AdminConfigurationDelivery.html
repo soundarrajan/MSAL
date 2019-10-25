@@ -63,8 +63,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
                 <div class="form_input form_input_showQtyReconciliation">
@@ -78,6 +76,19 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+	    <div class="col-md-4">
+	        <div class="form-group row">
+
+                <label>
+                    {{ CM.app_id + '.DELIVERY_DATE_FLOW' | translate }}
+                </label>
+	            <div class="input-group form_input form_input_deliveryDateFlow">
+	                <select name="deliveryDateFlow" class="form-control bs-select changeIT" ng-required="true" id="deliveryDateFlow" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.delivery.deliveryDateFlow"></select>
+	            </div>
+	        </div>
+	    </div>    
     </div>
     <div class="portlet">
         <div class="portlet-title">

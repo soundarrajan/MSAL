@@ -239,7 +239,9 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
                     })
                 })
                 // $scope.formValues.pricingDate = $scope.formValues.temp.deliverysummary.products[0].pricingDate;
-                $scope.formValues.deliveryDate = $scope.formValues.temp.deliverysummary.deliveryDate;
+                if ($scope.adminConfiguration.delivery.deliveryDateFlow.internalName == "Yes") {
+	                $scope.formValues.deliveryDate = $scope.formValues.temp.deliverysummary.deliveryDate;
+                }
             } else {
                 delID = vm.entity_id;
             }
