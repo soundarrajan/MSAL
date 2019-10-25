@@ -3,8 +3,8 @@ import { Inject, Injectable, Injector } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable, ReplaySubject } from 'rxjs';
-import { concatMap, map, tap } from 'rxjs/operators';
+import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { AppConfig, IAppConfig } from './config/app-config';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
@@ -12,8 +12,10 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
 import { ILegacyAppConfig } from './config/legacy-app-config';
 import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory } from './logging/logger-factory.service';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
+import { TenantSettingsService } from './services/tenant-settings/tenant-settings.service';
+import { TenantSettingsModuleName } from './store/states/tenant/tenant.settings.interface';
+import { environment } from '@shiptech/environment';
+import { DeveloperToolbarService } from './developer-toolbar/developer-toolbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +47,7 @@ export class BootstrapService {
     return this.loadAppConfig().pipe(
       tap(() => this.setupLogging()),
       concatMap(() => this.setupAuthentication()),
+      concatMap(() => this.setupDeveloperToolbar()),
       concatMap(() => this.loadGeneralTenantSettings()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
@@ -94,9 +97,21 @@ export class BootstrapService {
     });
   }
 
+  private setupDeveloperToolbar(): Observable<any> {
+    return of(this.injector.get(DeveloperToolbarService).bootstrap());
+  }
   private loadGeneralTenantSettings(): Observable<any> {
     // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
-    return this.injector.get(TenantSettingsService).loadModule(TenantSettingsModuleName.General);
+    return this.injector.get(TenantSettingsService).loadModule(TenantSettingsModuleName.General).pipe(catchError(error => {
+      //TODO: Show Toaster
+
+      if(environment.production){
+        return throwError(error);
+      }else{
+        // TODO Log
+        return of();
+      }
+    }));
   }
 }
 

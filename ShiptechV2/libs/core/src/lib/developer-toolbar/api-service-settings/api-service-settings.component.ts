@@ -5,12 +5,16 @@ import {
   IMethodApiCallSettings
 } from '../../../../../../libs/core/src/lib/utils/decorators/api-call.decorator';
 import { MatCheckboxChange } from '@angular/material';
-import { ICannedResponse, RANDOM_DELAY } from '../../../../../../libs/core/src/lib/utils/decorators/api-call-settings';
+import { RANDOM_DELAY } from '../../../../../../libs/core/src/lib/utils/decorators/api-call-settings';
 import { Observable, Subscription } from 'rxjs';
 import { ILookupDto } from '../../../../../../libs/core/src/lib/lookups/lookup-dto.interface';
-import * as _ from 'lodash';
+import {
+  DeveloperToolbarService
+} from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { IApiService } from '@shiptech/core/developer-toolbar/api-service-settings/api-service.interface';
+import { IApiServiceSettings } from '@shiptech/core/developer-toolbar/api-service-settings/api-service-settings.inteface';
+import { ServiceStatusesEnum } from '@shiptech/core/developer-toolbar/api-service-settings/service-statuses.enum';
 
-export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 export const DelayOptions = [
   { id: 0, name: 'None' },
   { id: RANDOM_DELAY, name: 'Random 50-300 ms' },
@@ -23,29 +27,6 @@ export const DelayOptions = [
   { id: 10000, name: '10 sec' },
   { id: 30000, name: '30 sec' }
 ];
-
-export interface IApiService {
-  id: string;
-  displayName: string;
-  instance: any;
-  isRealService: boolean;
-  suppressUrls?: boolean;
-  localApiUrl?: string;
-  devApiUrl?: string;
-  qaApiUrl?: string;
-}
-
-export enum ServiceStatusesEnum {
-  Mock = 'mock',
-  Real = 'real',
-  Mixed = 'mixed'
-}
-
-export interface IApiServiceSettings {
-  id: string;
-  selectedMethodName: string;
-  methodSettings: IMethodApiCallSettings[];
-}
 
 @Component({
   selector: 'app-api-service-settings',
@@ -70,7 +51,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     this._resetSubscription = this._reset$.subscribe(() => {
       const settings = <IApiServiceSettings>JSON.parse(this.originalSettingsJson);
       this.applySettings(settings);
-      this.saveSettings();
+      this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
     });
   }
 
@@ -83,10 +64,10 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     this._persistSettings = value;
 
     if (this.apiService) {
-      this.saveSettings();
+      this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
     } else {
       if (this.apiService) {
-        sessionStorage.removeItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${this.apiService.id}`);
+        this.devService.deleteApiSettings(this.apiService.id);
       }
     }
   }
@@ -100,16 +81,16 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     this._apiService = value;
 
     if (!this.persistSettings) {
-      sessionStorage.removeItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${this.apiService.id}`);
+      this.devService.deleteApiSettings(this.apiService.id);
     }
 
-    const storedSettings = this.getSettingsFromStorage();
+    const storedSettings = this.devService.getApiSettings(this.apiService.id);
 
     this.loadApiCallSettings();
     this.originalSettingsJson = JSON.stringify(this.getCurrentSettingsForSaving());
 
     this.applySettings(storedSettings);
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
   @Output() settingsChanged = new EventEmitter<IApiServiceSettings>();
@@ -129,7 +110,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
   indeterminateThrowErrorAll: boolean;
   overrideAllUrls: string;
 
-  constructor() {
+  constructor(private devService: DeveloperToolbarService) {
   }
 
   /**
@@ -147,7 +128,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
       this.changeDelayAll(RANDOM_DELAY);
     }
 
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
     this.updateForwardAllToReal();
   }
 
@@ -163,7 +144,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     this.forwardAllToReal = allReal;
     this.indeterminateForwardAll = !allReal && !allMocked;
 
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
   public getServiceStatus(): string {
@@ -206,7 +187,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     this.throwErrorForAll = allThrow;
     this.indeterminateThrowErrorAll = !allThrow && !allNotThrow;
 
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
   /**
@@ -229,18 +210,18 @@ export class ApiServiceSettingsComponent implements OnDestroy {
       this.selectedDelayAll = allSameDelay ? this.methods[0].settings.delay : undefined;
     }
 
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
   cannedResponseChanged(): void {
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
   /**
    * Loads all api call settings for services metadata
    */
   private loadApiCallSettings(): void {
-    this.methods = this.getApiCallMetadata(this.apiService.instance);
+    this.methods = this.devService.getApiCallMetadata(this.apiService.instance);
     this.selectedMethod = this.methods[0];
     this.isRealService = this.apiService.isRealService;
     this.suppressUrls = this.apiService.suppressUrls;
@@ -259,7 +240,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
       return;
     }
 
-    this.patchCallSettings(this.methods, settings.methodSettings);
+    this.devService.patchCallSettings(this.methods, settings.methodSettings);
 
     // Note: Try to find if this api method still exists. Storage settings may have stale, old data
     const devSelectedRackApiCall = this.methods.find(s => s.name === settings.selectedMethodName);
@@ -275,61 +256,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     this.updateOverrideAll();
   }
 
-  /**
-   * Get all MethodApiCallSettings from a service
-   * @param source
-   */
-  private getApiCallMetadata(source: any): IMethodApiCallSettings[] {
-    // Note: Only level of inherited methods
-    return [...Object.getOwnPropertyNames(Object.getPrototypeOf(source)), ... Object.keys(Object.getPrototypeOf(source))]
-      .map(key => <IMethodApiCallSettings>Reflect.getMetadata(API_CALL_KEY, source, key))
-      .filter(m => m);
-  }
 
-  /**
-   * Patch a set of MethodApiCall settings from another a source
-   * @param toSettings
-   * @param fromSettings
-   */
-  private patchCallSettings(toSettings: IMethodApiCallSettings[], fromSettings: IMethodApiCallSettings[]): void {
-    toSettings.forEach(toMethod => {
-      // Note: If method does not exist anymore, skip it. Storage may have an old version
-      const fromMethod = fromSettings.find(f => f.name === toMethod.name);
-      if (!fromMethod) {
-        return;
-      }
-
-      // Note: Check is stored nextResponse still exists. Storage may have an old cannedResponse name.
-      const toNextResponse = toMethod.settings.cannedResponses.find(c => c.name === (fromMethod.settings.nextResponse || <ICannedResponse>{}).name);
-
-      // Note: Skip cannedResponses and nextResponse. These need to be fresh and checked if they still exist.
-      // noinspection JSUnusedLocalSymbols
-      const { cannedResponses, nextResponse, ...otherSettings } = fromMethod.settings;
-
-      Object.assign(toMethod.settings, { ...otherSettings });
-      toMethod.settings.nextResponse = toNextResponse || toMethod.settings.nextResponse;
-    });
-  }
-
-  private getSettingsFromStorage(): IApiServiceSettings {
-    const storedSettingsJson = sessionStorage.getItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${this.apiService.id}`);
-
-    if (!storedSettingsJson) {
-      return;
-    }
-    return JSON.parse(storedSettingsJson);
-  }
-
-  private saveSettings(): void {
-    if (!this.persistSettings) {
-      return;
-    }
-
-    const settings = this.getCurrentSettingsForSaving();
-    this.settingsChanged.emit(settings);
-
-    sessionStorage.setItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${this.apiService.id}`, JSON.stringify(settings));
-  }
 
   private getCurrentSettingsForSaving(): IApiServiceSettings {
     return {
@@ -346,7 +273,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     const allSameValue = this.methods.every((method, i, arr) => method.settings.apiUrl === arr[0].settings.apiUrl);
 
     this.overrideAllUrls = allSameValue ? this.methods[0].settings.apiUrl : undefined;
-    this.saveSettings();
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
   changeOverrideAllUrls(baseUrl: string): void {
@@ -370,5 +297,4 @@ export class ApiServiceSettingsComponent implements OnDestroy {
       this.updateDelayAll();
     }
   }
-
 }

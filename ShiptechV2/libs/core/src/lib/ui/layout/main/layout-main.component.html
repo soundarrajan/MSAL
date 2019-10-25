@@ -11,7 +11,7 @@
   <div class="layout-main">
     <shiptech-breadcrumbs></shiptech-breadcrumbs>
     <div class="layout-content pt-0 mt-2">
-      <router-outlet></router-outlet>
+      <router-outlet *ngIf="moduleLoaded"></router-outlet>
     </div>
   </div>
 
