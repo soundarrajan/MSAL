@@ -43,7 +43,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-6">
+<!-- <div class="col-md-6">
     <div class="form-group row">
         <label for="scheduleBuyerDisplay" class="simpleLookupLabel">
            {{ CM.app_id + '.BUYER_DISPLAY' | translate }}
@@ -55,8 +55,8 @@
             <select class="form-control bs-select changeIT" name="scheduleBuyerDisplay" id="scheduleBuyerDisplay" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.scheduleBuyerDisplay"></select>
         </div>
     </div>
-</div>
-<div class="col-md-6">
+</div> -->
+<!-- <div class="col-md-6">
     <div class="form-group row">
         <label for="scheduleCompanyDisplay" class="simpleLookupLabel">
            {{ CM.app_id + '.COMPANY_DISPLAY' | translate }}
@@ -68,7 +68,7 @@
             <select class="form-control bs-select changeIT" name="scheduleCompanyDisplay" id="scheduleCompanyDisplay" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.scheduleCompanyDisplay"></select>
         </div>
     </div>
-</div>
+</div> -->
 <div class="col-md-6">
     <div class="form-group row">
         <label for="productTypeInSchedule" class="simpleLookupLabel">
@@ -97,37 +97,39 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6">
-        <div class="custom-hardcoded-table admin">
-            <table class="table-body" width="100%">
-                <thead class="table-head">
-                    <tr style="background-color: #fff">
-                        <td>
-                            Field
-                        </td>
-                        <td>
-                            Hide
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="(key, val) in formValues.schedule.hiddenFields">
-                        <td class="padding">
-                            {{val.option.name}}
-                        </td>
-                        <td class="padding">
-                            <label class="mt-checkbox">
-                                <input type="checkbox" ng-model="val.hidden"/>
-                                <span></span>
-                            </label>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br/>
-        <br/>
-    </div>
+	<div class="container-fluid">
+	    <div class="col-sm-6">
+	        <div class="custom-hardcoded-table admin">
+	            <table class="table-body" width="100%">
+	                <thead class="table-head">
+	                    <tr style="background-color: #fff">
+	                        <td>
+	                            Field
+	                        </td>
+	                        <td>
+	                            Hide
+	                        </td>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr ng-repeat="(key, val) in formValues.schedule.hiddenFields">
+	                        <td class="padding">
+	                            {{val.option.name}}
+	                        </td>
+	                        <td class="padding">
+	                            <label class="mt-checkbox">
+	                                <input type="checkbox" ng-model="val.hidden"/>
+	                                <span></span>
+	                            </label>
+	                        </td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	        </div>
+	        <br/>
+	        <br/>
+	    </div>
+	</div>
 </div>
 
 <div class="col-sm-12" >

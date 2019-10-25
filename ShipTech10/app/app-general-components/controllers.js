@@ -3010,7 +3010,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('tr#' + rowIdx + '>td:nth-child(14)').prop('title', value.id);
                 } else {
                     // $("#flat_contract_planning").jqGrid("setCell", rowIdx, columnKey, value);
-                    console.log($("#invoices_treasuryreport").jqGrid.Ascensys.gridObject.rows[rowIdx-1]);
+                    // console.log($("#invoices_treasuryreport").jqGrid.Ascensys.gridObject.rows[rowIdx-1]);
                 }
             } else {
             }
