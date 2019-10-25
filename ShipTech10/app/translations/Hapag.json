@@ -485,6 +485,8 @@
             "PRODUCT_TYPE": "Product Type",
             "ORDER_DATE": "Order Date",
             "ORDER_STATUS": "Order Status",
+            "COMPLAINANT_NAME": "Complainant Name",
+            "PHYSICAL_SUPPLIER": "Physical Supplier",
             "DELIVERY_NUMBER": "Delivery Number",
             "DELIVERY_DATE": "Delivery Date",
             "LAB_RESULT_ID": "Lab Result ID",
