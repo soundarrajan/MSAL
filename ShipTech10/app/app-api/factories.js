@@ -7568,7 +7568,7 @@ APP_API.factory("$Api_Service", [
                         });
                         return;
                     }
-                    if ((param.app == "masters" || param.app == "admin" || param.app == "alerts") && param.field.masterSource == "Users") {
+                    if ((param.app == "masters" || param.app == "admin" || param.app == "alerts" || param.app == "claims") && param.field.masterSource == "Users") {
                         var apiJSON = {
                             Payload: ""
                         };
