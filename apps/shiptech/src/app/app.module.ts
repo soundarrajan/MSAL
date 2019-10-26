@@ -16,6 +16,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/developer-toolbar.module';
 import { QuantityControlModule } from '@shiptech/feature/quantity-control';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     NgxsLoggerPluginModule.forRoot(),
     QuantityControlModule,
     DeveloperToolbarModule,
-    LoadingBarModule
+    LoadingBarModule,
+    LoadingBarRouterModule
   ],
   providers: [
     {

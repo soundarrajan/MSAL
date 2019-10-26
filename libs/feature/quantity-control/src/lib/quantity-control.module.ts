@@ -23,7 +23,7 @@ import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { QuantityControlService } from './services/quantity-control.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
-import { ModuleSettingsResolver } from './views/module-settings-resolver.service';
+import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
 import { SoundingReportsComponent } from './views/port-call/components/sounding-reports/sounding-reports.component';
 import { EventsLogComponent } from './views/port-call/components/events-log/events-log.component';
 import { SurveyReportHistoryComponent } from './views/port-call/components/survey-report-history/survey-report-history.component';
@@ -58,7 +58,7 @@ import { SurveyReportHistoryComponent } from './views/port-call/components/surve
   ],
   providers: [
     ModuleLoggerFactory,
-    ModuleSettingsResolver,
+    QuantityControlRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService

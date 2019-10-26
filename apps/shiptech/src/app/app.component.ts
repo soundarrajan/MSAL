@@ -1,5 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
 import { environment } from '@shiptech/environment';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'shiptech-root',
@@ -11,7 +12,15 @@ export class AppComponent {
   public animationsDisabled = true;
   title = 'Shiptech';
   isProduction = environment.production;
-  constructor() {
+  public isLoading = true;
 
+  constructor(router: Router) {
+    router.events.subscribe(
+      (event: RouterEvent): void => {
+        if (event instanceof NavigationEnd) {
+          this.isLoading = false;
+        }
+      }
+    );
   }
 }

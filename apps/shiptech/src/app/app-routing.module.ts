@@ -10,6 +10,11 @@ const routes: Routes = [
     path: KnownModulesPaths.QuantityControl,
     canActivate: [AuthenticationGuard],
     loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
+  },
+  {
+    path: KnownModulesPaths.LazyLoad,
+    canActivate: [AuthenticationGuard],
+    loadChildren: () => import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)
   }
 ];
 

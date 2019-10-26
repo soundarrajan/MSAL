@@ -1,16 +1,10 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
-import { finalize, take } from 'rxjs/operators';
-import { AppBusyService } from '../../../services/app-busy/app-busy.service';
-import { Observable } from 'rxjs';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'layout-main',
   templateUrl: './layout-main.component.html'
 })
 export class LayoutMainComponent implements AfterViewInit {
-
-  @Input() moduleLoaded$: Observable<void>;
-
   menuMode = 'static';
 
   overlayMenuActive: boolean;
@@ -48,8 +42,7 @@ export class LayoutMainComponent implements AfterViewInit {
   isRTL: boolean;
   moduleLoaded: any;
 
-  constructor(private appBusy: AppBusyService) {
-
+  constructor() {
   }
 
   onLayoutClick(): void {
@@ -203,8 +196,5 @@ export class LayoutMainComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-    this.appBusy.while(this.moduleLoaded$).pipe(take(1), finalize(() => this.moduleLoaded = true
-    )).subscribe();
   }
 }

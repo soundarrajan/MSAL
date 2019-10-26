@@ -16,6 +16,9 @@
     },
     "quantity-control": {
       "tags": []
+    },
+    "lazy-load-poc": {
+      "tags": []
     }
   }
 }
