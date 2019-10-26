@@ -40,8 +40,8 @@
                      style="font-size: 14px;">
         {{ service.displayName }}
         <span class="position-absolute serviceStatus" style="position: absolute;right: 0;">
-          <span class="badge w-100 badge-success text-uppercase" [ngClass]="service.component.getServiceStatus()">
-            {{ service.component.getServiceStatus() }}
+          <span [ngClass]="service?.component?.getServiceStatus()" class="badge w-100 badge-success text-uppercase">
+            {{ service?.component?.getServiceStatus() }}
           </span>
         </span>
       </mat-list-item>

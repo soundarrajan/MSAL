@@ -7,6 +7,9 @@ export class PortCallStateModel {
   comment: string;
   vesselResponse: string;
 
+  isInitialising = false;
+  isInitialised = false;
+  isSaving = false;
   isRaisingClaim: boolean;
   isVerifying: boolean;
 }

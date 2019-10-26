@@ -27,6 +27,7 @@ import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
 import { SoundingReportsComponent } from './views/port-call/components/sounding-reports/sounding-reports.component';
 import { EventsLogComponent } from './views/port-call/components/events-log/events-log.component';
 import { SurveyReportHistoryComponent } from './views/port-call/components/survey-report-history/survey-report-history.component';
+import { PortCallGridComponent } from './views/port-call/components/port-call-grid/port-call-grid.component';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { SurveyReportHistoryComponent } from './views/port-call/components/surve
     PortCallComponent,
     SoundingReportsComponent,
     EventsLogComponent,
-    SurveyReportHistoryComponent
+    SurveyReportHistoryComponent,
+    PortCallGridComponent
   ],
   exports: [
     MainQuantityControlComponent
