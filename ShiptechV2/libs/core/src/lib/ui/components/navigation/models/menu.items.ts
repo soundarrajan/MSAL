@@ -11,6 +11,10 @@ export const BASE_MENU: KeyedMenuItems = {
     'label': 'Blank Page',
     'routerLink': `/${KnownModulesPaths.QuantityControl}/blank-page`,
   },
+  'lazyLoad': {
+    'label': 'Lazy load',
+    'routerLink': `/${KnownModulesPaths.LazyLoad}`,
+  },
   'masters': {
     'label': 'Masters',
     'items': {

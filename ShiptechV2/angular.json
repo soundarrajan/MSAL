@@ -182,6 +182,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "lazy-load-poc": {
+      "projectType": "library",
+      "root": "libs/feature/lazy-load-poc",
+      "sourceRoot": "libs/feature/lazy-load-poc/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/lazy-load-poc/tsconfig.lib.json",
+              "libs/feature/lazy-load-poc/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/feature/lazy-load-poc/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/lazy-load-poc/jest.config.js",
+            "tsConfig": "libs/feature/lazy-load-poc/tsng serveconfig.spec.json",
+            "setupFile": "libs/feature/lazy-load-poc/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

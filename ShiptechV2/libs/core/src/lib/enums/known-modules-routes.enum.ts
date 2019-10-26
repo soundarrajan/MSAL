@@ -1,3 +1,4 @@
 export enum KnownModulesPaths {
-  QuantityControl = 'quantity-control'
+  QuantityControl = 'quantity-control',
+  LazyLoad = 'lazy-load'
 }
