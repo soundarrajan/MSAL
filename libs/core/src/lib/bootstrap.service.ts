@@ -16,6 +16,7 @@ import { TenantSettingsService } from './services/tenant-settings/tenant-setting
 import { TenantSettingsModuleName } from './store/states/tenant/tenant.settings.interface';
 import { environment } from '@shiptech/environment';
 import { DeveloperToolbarService } from './developer-toolbar/developer-toolbar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -100,14 +101,18 @@ export class BootstrapService {
   private setupDeveloperToolbar(): Observable<any> {
     return of(this.injector.get(DeveloperToolbarService).bootstrap());
   }
+
   private loadGeneralTenantSettings(): Observable<any> {
     // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
     return this.injector.get(TenantSettingsService).loadModule(TenantSettingsModuleName.General).pipe(catchError(error => {
       //TODO: Show Toaster
-
-      if(environment.production){
+      return throwError(error);
+      // this.toaster.show({
+      //
+      // })
+      if (environment.production) {
         return throwError(error);
-      }else{
+      } else {
         // TODO Log
         return of();
       }

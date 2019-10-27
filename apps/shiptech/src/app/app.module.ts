@@ -14,15 +14,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/developer-toolbar.module';
-import { QuantityControlModule } from '@shiptech/feature/quantity-control';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { AppErrorHandlingModule } from '@shiptech/core/error-handling/app-error-handling.module';
 
 
 @NgModule({
   declarations: [
     AppComponent
   ],
+  // TODO: Determine which modules should be imported here or in core module
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -35,12 +36,11 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: environment.production }),
     BreadcrumbsModule,
-    NgxsModule.forRoot(),
+    NgxsModule.forRoot([], { developmentMode: !environment.production }),
     NgxsLoggerPluginModule.forRoot(),
-    QuantityControlModule,
     DeveloperToolbarModule,
     LoadingBarModule,
-    LoadingBarRouterModule
+    LoadingBarRouterModule,
   ],
   providers: [
     {
