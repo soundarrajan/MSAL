@@ -21,18 +21,17 @@ import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/wa
 import { getMockPortCallsList } from './mock/port-calls-list.mock';
 import { PortCallListItemModel } from '../models/port-call-list-item.model';
 import { ApiCall, ApiCallForwardTo, AppConfig } from '@shiptech/core';
-import { QuantityControlApiService } from './quantity-control.api.service';
-import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { QuantityControlApi } from './quantity-control-api';
 import { getMockPortCall } from './mock/port-call.mock';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuantityControlMockApiService implements IQuantityControlApiService {
+export class QuantityControlApiMock implements IQuantityControlApiService {
 
-  @ApiCallForwardTo() realService: QuantityControlApiService;
+  @ApiCallForwardTo() realService: QuantityControlApi;
 
-  constructor(realService: QuantityControlApiService, appConfig: AppConfig) {
+  constructor(realService: QuantityControlApi, appConfig: AppConfig) {
     this.realService = realService;
   }
 

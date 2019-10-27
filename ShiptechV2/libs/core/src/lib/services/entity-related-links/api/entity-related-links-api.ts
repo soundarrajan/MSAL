@@ -28,6 +28,7 @@ export class EntityRelatedLinksApi extends ApiServiceBase implements IEntityRela
     super(http, loggerFactory.createLogger(EntityRelatedLinksApi.name));
   }
 
+  // TODO: Refactor tp use Request/Response format
   @ObservableException()
   public getRelatedLinksForEntity(entityTypeIdField: EntityTypeIdField, id: any): Observable<EntityRelatedLinksResponse> {
     return this.http.post<EntityRelatedLinksResponse>(`${this._apiUrl}/${EntityRelatedLinksApiPaths.get()}`,

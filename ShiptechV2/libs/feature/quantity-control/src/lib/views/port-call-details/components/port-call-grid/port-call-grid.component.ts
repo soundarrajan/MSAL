@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IPortCallDto } from '../../../../services/api/dto/port-call.dto';
 import { tap } from 'rxjs/operators';
-import { QuantityControlService } from '../../../../services/quantity-control.service';
+import { PortCallDetailsService } from '../../../../services/port-call-details.service';
 
 @Component({
   selector: 'shiptech-port-call-grid',
@@ -11,9 +11,11 @@ import { QuantityControlService } from '../../../../services/quantity-control.se
 })
 export class PortCallGridComponent implements OnInit {
   // TODO: get port callId dynamically
-  portCall$: Observable<IPortCallDto> = this.quantityControlService.getPortCallById(1).pipe(tap((value) => console.log('vALUE', value)));
+  // Note: At this point the port call details should be already loaded into the state, use the selector.
+  // Note: Rename "Grid" to Product Details
+  //portCall$: Observable<IPortCallDto> = this.portCallDetailsService.loadPortCallDetails('1').pipe(tap((value) => console.log('vALUE', value)));
 
-  constructor(private quantityControlService: QuantityControlService) {
+  constructor(private portCallDetailsService: PortCallDetailsService) {
   }
 
   ngOnInit(): void {
