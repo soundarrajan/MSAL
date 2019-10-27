@@ -3,6 +3,7 @@ import { copyIntoClipoard } from '../../utils/clipboard.utils';
 import { ToastrService } from 'ngx-toastr';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: '[appToClipboard]'
 })
 export class CopyToClipboardDirective {

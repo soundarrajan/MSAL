@@ -37,7 +37,7 @@ export class DeveloperToolbarService {
     const storedSettings = this.getApiSettings(apiModel.id);
 
     // Noted: loaded stored settings, if any
-    if (storedSettings.methodSettings) {
+    if (storedSettings && storedSettings.methodSettings) {
       const target = this.getApiCallMetadata(apiModel.instance);
       this.patchCallSettings(target, storedSettings.methodSettings);
     }

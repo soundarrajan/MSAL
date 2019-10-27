@@ -29,7 +29,7 @@ export class TenantSettingsApiMock implements ITenantSettingsApi {
       case TenantSettingsModuleName.General:
         return of(generalTenantSettings);
       case TenantSettingsModuleName.Delivery:
-        return of(generalTenantSettings);
+        return of(deliveryTenantSettings);
     }
 
     return of();
