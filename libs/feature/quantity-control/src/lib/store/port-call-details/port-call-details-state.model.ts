@@ -1,4 +1,8 @@
-export class PortCallStateModel {
+export class PortCallDetailsStateModel {
+  _hasLoaded: boolean;
+  _isLoading: boolean;
+  portCallId: string;
+
   products: unknown[];
   vesselReports: unknown[];
   soundingReports: unknown[];
@@ -14,6 +18,6 @@ export class PortCallStateModel {
   isVerifying: boolean;
 }
 
-export interface IPortCallState extends PortCallStateModel {
+export interface IPortCallDetailsState extends PortCallDetailsStateModel {
 }
 

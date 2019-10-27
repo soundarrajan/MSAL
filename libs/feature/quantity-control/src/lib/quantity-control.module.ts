@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
-import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApiService } from './services/api/quantity-control.api.service';
+import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApi } from './services/api/quantity-control-api';
 import { AuthenticationModule, PrimeNGModule } from '@shiptech/core';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
@@ -14,20 +14,21 @@ import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
 import { PortCallsListState } from './store/port-call-list/port-calls-list.state';
-import { PortCallState } from './store/port-call/port-call.state';
+import { PortCallDetailsState } from './store/port-call-details/port-call-details.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.component';
-import { PortCallComponent } from './views/port-call/port-call.component';
-import { QuantityControlMockApiService } from './services/api/quantity-control.api.service.mock';
+import { PortCallDetailsComponent } from './views/port-call-details/port-call-details.component';
+import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { QuantityControlService } from './services/quantity-control.service';
+import { PortCallDetailsService } from './services/port-call-details.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { SoundingReportsComponent } from './views/port-call/components/sounding-reports/sounding-reports.component';
-import { EventsLogComponent } from './views/port-call/components/events-log/events-log.component';
-import { SurveyReportHistoryComponent } from './views/port-call/components/survey-report-history/survey-report-history.component';
-import { PortCallGridComponent } from './views/port-call/components/port-call-grid/port-call-grid.component';
+import { SoundingReportsComponent } from './views/port-call-details/components/sounding-reports/sounding-reports.component';
+import { EventsLogComponent } from './views/port-call-details/components/events-log/events-log.component';
+import { SurveyReportHistoryComponent } from './views/port-call-details/components/survey-report-history/survey-report-history.component';
+import { PortCallGridComponent } from './views/port-call-details/components/port-call-grid/port-call-grid.component';
+import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
 
 @NgModule({
   imports: [
@@ -43,13 +44,13 @@ import { PortCallGridComponent } from './views/port-call/components/port-call-gr
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallState])
+    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallDetailsState])
   ],
   declarations: [
     MainQuantityControlComponent,
     WunderBarComponent,
     PortCallsListComponent,
-    PortCallComponent,
+    PortCallDetailsComponent,
     SoundingReportsComponent,
     EventsLogComponent,
     SurveyReportHistoryComponent,
@@ -61,13 +62,14 @@ import { PortCallGridComponent } from './views/port-call/components/port-call-gr
   providers: [
     ModuleLoggerFactory,
     QuantityControlRouteResolver,
+    PortCallDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
-      useClass: environment.production ? QuantityControlApiService : QuantityControlMockApiService
+      useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
     },
 
     // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
-    QuantityControlService
+    PortCallDetailsService
   ]
 })
 export class QuantityControlModule {

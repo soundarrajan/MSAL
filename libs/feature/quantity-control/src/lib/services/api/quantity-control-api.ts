@@ -28,7 +28,7 @@ export namespace ProcurementApiPaths {
 @Injectable({
   providedIn: 'root'
 })
-export class QuantityControlApiService implements IQuantityControlApiService {
+export class QuantityControlApi implements IQuantityControlApiService {
 
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;

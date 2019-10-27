@@ -16,7 +16,7 @@ import { TenantSettingsService } from './services/tenant-settings/tenant-setting
 import { TenantSettingsModuleName } from './store/states/tenant/tenant.settings.interface';
 import { environment } from '@shiptech/environment';
 import { DeveloperToolbarService } from './developer-toolbar/developer-toolbar.service';
-import { ToastrService } from 'ngx-toastr';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,7 @@ export class BootstrapService {
               private legacyLookupsDatabase: LegacyLookupsDatabase,
               private loggerFactory: LoggerFactory,
               private injector: Injector,
+              private appErrorHandler: AppErrorHandler,
               @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {
   }
@@ -104,17 +105,17 @@ export class BootstrapService {
 
   private loadGeneralTenantSettings(): Observable<any> {
     // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
-    return this.injector.get(TenantSettingsService).loadModule(TenantSettingsModuleName.General).pipe(catchError(error => {
-      //TODO: Show Toaster
-      return throwError(error);
-      // this.toaster.show({
-      //
-      // })
+    const tenantSettingsService = this.injector.get(TenantSettingsService);
+
+    return tenantSettingsService.loadModule(TenantSettingsModuleName.General).pipe(catchError(error => {
       if (environment.production) {
         return throwError(error);
       } else {
-        // TODO Log
-        return of();
+        // Note: For development, if the tenant settings service is mocked, the developer toolbar will not be shown
+        // Note: because the app init has failed, thus we should swallow this exception, and manually show the error to the dev.
+        this.appErrorHandler.handleError(error);
+
+        return EMPTY$;
       }
     }));
   }

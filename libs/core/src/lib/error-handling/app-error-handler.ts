@@ -42,27 +42,29 @@ export class AppErrorHandler implements ErrorHandler {
       onActivateTick: true
     };
 
+    let unwrappedError = this.tryUnwrapAngularPromiseError(error);
+
     // Unknown Application Errors
-    if (!(error instanceof AppError) && !(error instanceof ApiError)) {
-      // App does not know how to handleError this type of error so Angular can pick it up
+    if (!(unwrappedError instanceof AppError) && !(unwrappedError instanceof ApiError)) {
+      // App does not know how to handleError this type of unwrappedError so Angular can pick it up
 
       if (this.toastr) {
-        // Note: Most of the times the error handler runs outside of the angular zone. Pass onActivateTick: true
+        // Note: Most of the times the unwrappedError handler runs outside of the angular zone. Pass onActivateTick: true
         this.toastr.error(AppError.Unknown.message, null, toastrLogConfig);
       }
 
       // Note: There isn't much we can do now.
-      this.logger.fatalException(error, 'Unknown Javascript error. See props for details.');
+      this.logger.fatalException(unwrappedError, 'Unknown Javascript unwrappedError. See props for details.');
 
-      throw error;
+      throw unwrappedError;
     }
 
-    if (error instanceof ApiError) {
-      // App does not know how to handleError this type of error so Angular can pick it up
-      error = AppError.UnknownServerErrorWithData(error);
+    if (unwrappedError instanceof ApiError) {
+      // App does not know how to handleError this type of unwrappedError so Angular can pick it up
+      unwrappedError = AppError.UnknownServerErrorWithData(unwrappedError);
     }
     // Add default values
-    const appError = new AppError(error);
+    const appError = new AppError(unwrappedError);
 
     if (this.isSuppressed(appError)) {
       return;
@@ -75,7 +77,7 @@ export class AppErrorHandler implements ErrorHandler {
     }
 
     const showToastr = appError.treatAsWarning ? this.toastr.warning : this.toastr.error;
-    // Note: Most of the times the error handler runs outside oif the angular zone. Pass onActivateTick: true
+    // Note: Most of the times the unwrappedError handler runs outside oif the angular zone. Pass onActivateTick: true
     showToastr.apply(this.toastr, [appError.message, null, toastrLogConfig]);
   }
 
@@ -86,5 +88,26 @@ export class AppErrorHandler implements ErrorHandler {
     }
 
     return false;
+  }
+
+  /**
+   * Note: In case we end up with a resolved promise error like, this happens for angular built in promise methods e.g APP_INITIALIZER
+   * Sample:
+   * {
+   *   promise: ZoneAwarePromise {__zone_symbol__state: 0, __zone_symbol__value: ModuleError}
+   *   rejection: ModuleError {code: 3000, data: undefined ..}
+   *   zone: Zone {_parent: Zone, _name: "angular", _properties: {…}, _zoneDelegate: ZoneDelegate}
+   *   message: "Uncaught (in promise): ModuleError: {"code":3000,"handleStrategy" ... "
+   *   stack: "Error: Uncaught (in promise): ModuleError: {"code":3000,"handleStrategy":0, ... }
+   *   __proto__: Object
+   * }
+   * @param error angular error
+   */
+  private tryUnwrapAngularPromiseError(error: any): any {
+    if(error && error.promise && (error.promise instanceof Promise) && error.rejection){
+      return error.rejection
+    }
+
+    return error;
   }
 }

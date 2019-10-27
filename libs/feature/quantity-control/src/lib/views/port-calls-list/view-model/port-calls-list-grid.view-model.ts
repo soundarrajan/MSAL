@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { QuantityControlService } from '../../../services/quantity-control.service';
+import { PortCallDetailsService } from '../../../services/port-call-details.service';
 import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
@@ -242,7 +242,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private quantityControlService: QuantityControlService,
+    private quantityControlService: PortCallDetailsService,
     private modelProps: PortCallListItemProps
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(PortCallsListGridViewModel.name));

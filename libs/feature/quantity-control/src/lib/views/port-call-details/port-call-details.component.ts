@@ -4,10 +4,10 @@ import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-
 
 @Component({
   selector: 'shiptech-port-call',
-  templateUrl: './port-call.component.html',
-  styleUrls: ['./port-call.component.scss']
+  templateUrl: './port-call-details.component.html',
+  styleUrls: ['./port-call-details.component.scss']
 })
-export class PortCallComponent implements OnInit {
+export class PortCallDetailsComponent implements OnInit {
 
   constructor(private entityStatus: EntityStatusService) {
     //TODO: after loading

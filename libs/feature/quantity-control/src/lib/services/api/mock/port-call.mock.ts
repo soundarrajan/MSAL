@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { MockProductsLookup } from './products.mock';
 import { mockUoms } from './uoms.mock';
 
-export function getMockPortCall(id: number): IPortCallDto {
+export function getMockPortCall(id: string): IPortCallDto {
   return {
     portCallId: id,
     vesselName: faker.commerce.color(),

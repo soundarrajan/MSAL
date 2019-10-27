@@ -2,7 +2,7 @@ import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './req
 import { IPortCallDto } from '../dto/port-call.dto';
 
 export interface IGetPortCallByIdRequest extends IBaseQuantityControlRequest {
-  portCallId: number;
+  portCallId: string;
 }
 
 export interface IGetPortCallByIdResponse extends IBaseQuantityControlResponse {

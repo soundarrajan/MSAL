@@ -1,7 +1,7 @@
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 
 export interface IPortCallDto {
-  portCallId: number;
+  portCallId: string;
   vesselName: string;
   nbOfCliams: number;
   nbOfDeliveries: number;

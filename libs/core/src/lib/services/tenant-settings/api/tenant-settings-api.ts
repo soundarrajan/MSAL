@@ -30,6 +30,7 @@ export class TenantSettingsApi extends ApiServiceBase implements ITenantSettings
     super(http, loggerFactory.createLogger(TenantSettingsApi.name));
   }
 
+  //TODO: Refactor use Request/Response format
   @ObservableException()
   public get(moduleName: TenantSettingsModuleName): Observable<ITenantSettingsApiResponse> {
     return this.http.post<ITenantSettingsApiResponse>(`${this._apiUrl}/${this.getApiPathForModuleName(moduleName)}`, {
