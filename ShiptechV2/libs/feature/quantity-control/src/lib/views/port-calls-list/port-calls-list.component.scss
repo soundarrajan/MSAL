@@ -21,4 +21,39 @@
     }
   }
 
+  .cell-background {
+    color: white;
+
+    &.red {
+      background-color: #e9585a;
+    }
+
+    &.orange {
+      background-color: #e98a46;
+    }
+
+    &.verified {
+      background-color: #26ae61;
+    }
+
+    &.pending {
+      background-color: #fdbf2c;
+    }
+
+    &.matched {
+      background-color: #72bcab;
+    }
+
+  }
+
+  .vessel-to-watch {
+    background: #e98a46;
+    padding: 5px;
+    border-radius: 50%;
+    color: white;
+    float: right;
+    font-size: 8px;
+    cursor: pointer;
+  }
+
 }

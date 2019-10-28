@@ -1,6 +1,7 @@
 import { PortCallListItemDto } from '../dto/port-call-list-item.dto';
 import * as faker from 'faker';
 import * as _ from 'lodash';
+import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 
 
 export function getMockPortCallsList(n: number): PortCallListItemDto[] {
@@ -17,7 +18,7 @@ export function getPortCallListItem(id: number): PortCallListItemDto {
     port: faker.random.alphaNumeric(5),
     vesselName: faker.random.word(),
     surveyDate: faker.date.past().toString(),
-    surveyStatus: faker.random.arrayElement(['New', 'Verified', 'Pending']),
+    surveyStatus: <SurveyStatusEnum>faker.random.arrayElement(['New', 'Verified', 'Pending']),
 
     matchedQuantity: quantityBefore,
     measuredDeliveredQuantity: quantityBefore - rob - sludge,

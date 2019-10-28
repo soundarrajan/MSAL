@@ -1,5 +1,16 @@
 <shiptech-wunderbar>
-  <button [routerLink]="['/quantity-control/port-calls']" label="View all port calls" pButton type="button"></button>
+  <div class="row" style="margin: 5px 0;">
+    <div class="col-6 d-flex">
+      <button [routerLink]="['/quantity-control/port-calls']" label="View all port calls" pButton
+              type="button"></button>
+    </div>
+    <div class="col-6">
+      <div style="float:right">
+        <button (click)="raiseClaim()" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
+        <button (click)="verifyVessel()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
+      </div>
+    </div>
+  </div>
 </shiptech-wunderbar>
 
 <div class="container-fluid">

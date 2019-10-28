@@ -32,6 +32,18 @@ export class PortCallsListComponent implements OnInit, OnDestroy {
     this.messageBox.displayDialog({data, width: '500px', height: '600px'}, this.popupTemplate);
   }
 
+  watchVesselWithId(vesselId: number): void {
+    alert('Not implemented');
+  }
+
+  raiseClaim(): void {
+    alert('Not implemented');
+  }
+
+  verifyVessels(): void {
+    alert('Not implemented');
+  }
+
   ngOnInit(): void {
   }
 
