@@ -10,6 +10,8 @@ import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sort
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 import { getShiptechFormatPagination } from '../../../core/mappers/shiptech-grid-paging';
 import { PortCallListItemProps, PortCallsListColumns, PortCallsListColumnsLabels } from './port-calls-list.columns';
+import { PortCallListItemModel } from '../../../services/models/port-call-list-item.model';
+import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 
 @Injectable()
 export class PortCallsListGridViewModel extends BaseGridViewModel {
@@ -28,7 +30,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     deltaRowDataMode: false,
     suppressPaginationPanel: false,
     suppressColumnVirtualisation: true,
-    rowSelection: RowSelection.Single,
+    rowSelection: RowSelection.Multiple,
     rowDragManaged: true,
     suppressRowClickSelection: true,
 
@@ -70,7 +72,6 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.id,
     width: 50,
     hide: false,
-    resizable: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent
   };
@@ -81,7 +82,6 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.port,
     width: 50,
     hide: false,
-    resizable: false,
   };
 
   vesselNameCol: ColDef = {
@@ -90,7 +90,8 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.vesselName,
     width: 50,
     hide: false,
-    resizable: false
+    cellRendererFramework: AgTemplateRendererComponent
+
   };
 
   surveyDateCol: ColDef = {
@@ -99,7 +100,6 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.surveyDate,
     width: 50,
     hide: false,
-    resizable: false
   };
 
   surveyStatusCol: ColDef = {
@@ -108,7 +108,10 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.surveyStatus,
     width: 50,
     hide: false,
-    resizable: false
+    cellClassRules: {
+      'cell-background pending': params => (<PortCallListItemModel>params.data).surveyStatus === SurveyStatusEnum.Pending,
+      'cell-background verified': params => (<PortCallListItemModel>params.data).surveyStatus === SurveyStatusEnum.Verified
+    }
   };
 
   matchedQuantityCol: ColDef = {
@@ -116,8 +119,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.matchedQuantity,
     field: this.modelProps.matchedQuantity,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   logBookRobBeforeDeliveryCol: ColDef = {
@@ -125,8 +127,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.logBookRobBeforeDelivery,
     field: this.modelProps.logBookRobBeforeDelivery,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
@@ -134,8 +135,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.measuredRobBeforeDelivery,
     field: this.modelProps.measuredRobBeforeDelivery,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   robBeforeDeliveryCol: ColDef = {
@@ -144,7 +144,9 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.robBeforeDelivery,
     width: 50,
     hide: false,
-    resizable: false
+    cellClassRules: {
+      'cell-background red': params => (<PortCallListItemModel>params.data).robBeforeDelivery < 0
+    }
   };
 
   bdnQuantityCol: ColDef = {
@@ -152,8 +154,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.bdnQuantity,
     field: this.modelProps.bdnQuantity,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   measuredDeliveredQuantityCol: ColDef = {
@@ -161,8 +162,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.measuredDeliveredQuantity,
     field: this.modelProps.measuredDeliveredQuantity,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   deliveredQuantityCol: ColDef = {
@@ -171,7 +171,9 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.deliveredQuantity,
     width: 50,
     hide: false,
-    resizable: false
+    cellClassRules: {
+      'cell-background red': params => (<PortCallListItemModel>params.data).deliveredQuantity < 0
+    }
   };
 
   logBookRobAfterDeliveryCol: ColDef = {
@@ -179,8 +181,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.logBookRobAfterDelivery,
     field: this.modelProps.logBookRobAfterDelivery,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
@@ -188,8 +189,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.measuredRobAfterDelivery,
     field: this.modelProps.measuredRobAfterDelivery,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   robAfterDeliveryCol: ColDef = {
@@ -197,8 +197,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.robAfterDelivery,
     field: this.modelProps.robAfterDelivery,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   logBookSludgeBeforeDischargeCol: ColDef = {
@@ -206,8 +205,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.logBookSludgeBeforeDischarge,
     field: this.modelProps.logBookSludgeBeforeDischarge,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   measuredSludgeRobBeforeDischargeCol: ColDef = {
@@ -215,8 +213,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.measuredSludgeRobBeforeDischarge,
     field: this.modelProps.measuredSludgeRobBeforeDischarge,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   sludgeDischargedQuantityCol: ColDef = {
@@ -224,8 +221,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.sludgeDischargedQuantity,
     field: this.modelProps.sludgeDischargedQuantity,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
   commentCol: ColDef = {
@@ -233,8 +229,7 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     colId: PortCallsListColumns.comment,
     field: this.modelProps.comment,
     width: 50,
-    hide: false,
-    resizable: false
+    hide: false
   };
 
 

@@ -13,8 +13,8 @@
       <div style="float:right">
         <shiptech-search-box AgGridExternalSearch [placeholder]="'Search something'" class="mr-1"
                              gridId="quantityControlGrid"></shiptech-search-box>
-        <button class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
-        <button class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
+        <button (click)="raiseClaim()" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
+        <button (click)="verifyVessels()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
       </div>
     </div>
   </div>
@@ -82,5 +82,12 @@
 <ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appTemplateRenderer let-data="data" let-value="value">
   <ng-container>
     <a [routerLink]="['../port-call-details', data.id]" href="#"> View {{data.id}} </a>
+  </ng-container>
+</ng-template>
+
+<ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appTemplateRenderer let-data="data" let-value="value">
+  <ng-container>
+    {{value}}
+    <i (click)="watchVesselWithId(data.id)" class="fa fa-flag vessel-to-watch"></i>
   </ng-container>
 </ng-template>
