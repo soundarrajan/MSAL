@@ -4,3 +4,34 @@
     margin: -5px -5px 10px -5px;
   }
 }
+
+
+.badge {
+  padding: 5px 9px 2px;
+  font-size: 12.025px;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+
+  &.red {
+    color: black;
+    background-color: #ff7f80;
+  }
+
+  &.blue {
+    color: #044f88;
+    background-color: #0c899052;
+  }
+
+  &.info {
+    color: black;
+    background-color: rgba(77, 144, 142, 0.51);
+
+    i {
+      color: darkorange;
+    }
+  }
+}
