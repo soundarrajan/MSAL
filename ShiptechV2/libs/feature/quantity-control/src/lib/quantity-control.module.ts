@@ -26,7 +26,7 @@ import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
 import { SoundingReportsComponent } from './views/port-call-details/components/sounding-reports/sounding-reports.component';
 import { EventsLogComponent } from './views/port-call-details/components/events-log/events-log.component';
 import { SurveyReportHistoryComponent } from './views/port-call-details/components/survey-report-history/survey-report-history.component';
-import { PortCallGridComponent } from './views/port-call-details/components/port-call-grid/port-call-grid.component';
+import { ProductDetailsComponent } from './views/port-call-details/components/port-call-grid/product-details.component';
 import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
@@ -55,7 +55,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     SoundingReportsComponent,
     EventsLogComponent,
     SurveyReportHistoryComponent,
-    PortCallGridComponent
+    ProductDetailsComponent
   ],
   exports: [
     MainQuantityControlComponent
