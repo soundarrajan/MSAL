@@ -45,49 +45,49 @@ export class EntityRelatedLinksService extends BaseStoreService {
         return dto.requestGroupId ? {
           type: type,
           id: dto.requestGroupId,
-          url: `/#/group-of-requests/${(dto.requestGroupId)}`
+          url: this.urlService.offer(dto.requestId)
         } : undefined;
       case EntityType.Order:
         return dto.orderId ? {
           type: type,
           id: dto.orderId,
-          url: `/#/edit-order/${(dto.orderId)}`
+          url: this.urlService.editOrder(dto.orderId)
         } : undefined;
       case EntityType.Delivery:
         return !dto.deliveryId ? undefined : {
           type: type,
           id: dto.deliveryId,
-          url: `/#/delivery/delivery/edit/${(dto.deliveryId)}`
+          url: this.urlService.editDelivery(dto.deliveryId)
         };
       case EntityType.PortCall:
         return dto.portCallId ? {
           type: type,
           id: dto.portCallId,
-          url: `v2/quantity-control/port-call-details/${(dto.portCallId)}` // TODO: harcoded v2
+          url: this.urlService.portCallDetails(dto.portCallId)
         } : undefined;
       case EntityType.Lab:
         return dto.labId ? {
           type: type,
           id: dto.labId,
-          url: `/#/labs/labresult/edit/${(dto.labId)}`
+          url: this.urlService.editLabResults(dto.labId)
         } : undefined;
       case EntityType.Claim:
         return dto.claimId ? {
           type: type,
           id: dto.claimId,
-          url: `/#/claims/edit/${(dto.claimId)}` // TODO: the url is not valid
+          url: this.urlService.editClaim(dto.claimId)
         } : undefined;
       case EntityType.Invoice:
         return dto.invoiceId ? {
           type: type,
           id: dto.invoiceId,
-          url: `/#/invoices/invoice/edit/${(dto.invoiceId)}`
+          url: this.urlService.editInvoice(dto.invoiceId)
         } : undefined;
       case EntityType.Recon:
         return dto.orderId ? {
           type: type,
           id: dto.orderId,
-          url: `/#/recon/reconlist/edit/${(dto.orderId)}`
+          url: this.urlService.editReconListOrder(dto.orderId)
         } : undefined;
     }
   }

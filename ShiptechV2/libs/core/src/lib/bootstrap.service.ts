@@ -17,6 +17,7 @@ import { TenantSettingsModuleName } from './store/states/tenant/tenant.settings.
 import { environment } from '@shiptech/environment';
 import { DeveloperToolbarService } from './developer-toolbar/developer-toolbar.service';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { UrlService } from '@shiptech/core/services/url/url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,7 @@ export class BootstrapService {
               private loggerFactory: LoggerFactory,
               private injector: Injector,
               private appErrorHandler: AppErrorHandler,
+              private urlService: UrlService,
               @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {
   }
@@ -70,8 +72,8 @@ export class BootstrapService {
   private loadAppConfig(): Observable<IAppConfig> {
     // TODO: Remove hardcoded path to settings
     // TODO: Load both settings file, v1 and v2, merge them and also replicate same logic of loading settings based on domain
-    const runtimeSettingsUrl = 'assets/config/settings.runtime.json';
-    const legacySettingsUrl = '/config/defaultConfig.json';
+    const runtimeSettingsUrl = this.urlService.getRuntimeSettings();
+    const legacySettingsUrl = this.urlService.getLegacySettings();
 
     return forkJoin(
       this.http.get<ILegacyAppConfig>(legacySettingsUrl),

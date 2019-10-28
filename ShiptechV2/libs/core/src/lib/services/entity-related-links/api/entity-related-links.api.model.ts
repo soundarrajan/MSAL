@@ -3,7 +3,7 @@ export type EntityRelatedLinksRequest = {
 };
 
 export type EntityRelatedLinksResponse = {
-  [K in EntityTypeIdField]?: number
+  [K in EntityTypeIdField]?: string | number
 } & {
   hasQuote?: boolean
 }
