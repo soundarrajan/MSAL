@@ -8,7 +8,7 @@ import { AppError } from '../error-handling/app-error';
 import { Logger } from '../logging/logger';
 import { ITenantSettingsState } from '../store/states/tenant/tenant-settings.state.interface';
 import * as _ from 'lodash';
-import { IModuleTenantSettings } from '../store/states/tenant/tenant.settings.interface';
+import { IModuleTenantSettings } from '../store/states/tenant/tenant-settings.interface';
 
 type ActionFactory<TResponse = any, T = any> = (response: TResponse) => T;
 

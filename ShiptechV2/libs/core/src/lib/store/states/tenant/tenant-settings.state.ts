@@ -7,7 +7,7 @@ import {
   LoadTenantSettingsFailedAction,
   LoadTenantSettingsSuccessfulAction
 } from './load-tenant.actions';
-import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant.settings.interface';
+import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant-settings.interface';
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
@@ -53,6 +53,7 @@ export class TenantSettingsState {
 
       if (!success.settings) {
         this.logger.warn(`TenantSettings for module: {ModuleName} returned falsy.`, action.moduleName);
+        // TODO: we should probably throw here, if the tenant settings are not loaded
       }
       patchState({
         [success.moduleName]: {

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { Title } from '@angular/platform-browser';
+import { Select } from '@ngxs/store';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 
 @Component({
   selector: 'shiptech-topbar',
@@ -14,6 +16,9 @@ import { Title } from '@angular/platform-browser';
 export class TopbarComponent {
 
   public pageTitle$: Observable<string>;
+
+  @Select(UserProfileState.displayName) displayName$: Observable<string>;
+  @Select(UserProfileState.username) username$: Observable<string>;
 
   constructor(public app: LayoutMainComponent, public authService: AuthenticationService, breadcrumbService: BreadcrumbsService, titleService: Title) {
     this.pageTitle$ = breadcrumbService.get().pipe(map(breadcrumbs => (_.last(breadcrumbs) || { label: ''}).label), tap(title => titleService.setTitle(title)));
