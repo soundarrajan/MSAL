@@ -7,10 +7,10 @@ import {
   ITenantSettingsApi,
   ITenantSettingsApiResponse
 } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
-import { TenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
-import * as generalTenantSettings from './general-tenant-settings.mock.json';
-import * as deliveryTenantSettings from './delivery-tenant-settings.mock.json';
+import { TenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import generalTenantSettings from './general-tenant-settings.mock.json';
+import deliveryTenantSettings from './delivery-tenant-settings.mock.json';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { AppErrorHandlingStrategy } from './app-error-handling-strategy';
 import { AppErrorCode } from './app-error-codes';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 export interface IAppError<T = any> {
   readonly message?: string;
@@ -14,9 +14,27 @@ export class AppError<T = any> implements IAppError {
   static readonly Unknown: AppError = new AppError();
   static readonly UnknownServerError: AppError = new AppError({ code: AppErrorCode.ServerUnknown });
   static readonly Unauthorized: AppError = new AppError({ message: 'You do not have sufficient privileges to perform the requested action.' });
-  static readonly FailedToSaveUserSettings = new AppError({ code: AppErrorCode.FailedToSaveUserSettings, treatAsWarning: true, message: 'Could not save User Settings.' });
-  static readonly FailedToLoadUserSettings = new AppError({ code: AppErrorCode.FailedToLoadUserSettings, treatAsWarning: true, message: 'Could not load User Settings.' });
-  static readonly FailedToPurgeUserSettings = new AppError({ code: AppErrorCode.FailedToPurgeUserSettings, treatAsWarning: true, message: 'Could not purge User Settings.' });
+  static readonly FailedToSaveUserSettings = new AppError({
+    code: AppErrorCode.FailedToSaveUserSettings,
+    treatAsWarning: true,
+    message: 'Could not save User Settings.'
+  });
+  static readonly FailedToLoadUserSettings = new AppError({
+    code: AppErrorCode.FailedToLoadUserSettings,
+    treatAsWarning: true,
+    message: 'Could not load User Settings.'
+  });
+  static readonly FailedToPurgeUserSettings = new AppError({
+    code: AppErrorCode.FailedToPurgeUserSettings,
+    treatAsWarning: true,
+    message: 'Could not purge User Settings.'
+  });
+  static readonly LoadUserProfileFailed = new AppError({
+    code: AppErrorCode.LoadUserProfileFailed,
+    treatAsWarning: true,
+    message: 'Could not load user profile.'
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;
@@ -48,7 +66,10 @@ export class AppError<T = any> implements IAppError {
   }
 
 
-  static LoadTenantSettingsFailed(moduleName: TenantSettingsModuleName){
-    return new AppError({ code: AppErrorCode.TenantSettingsFailedToLoad, message: `Tenant settings failed to load for ${moduleName} module.` });
+  static LoadTenantSettingsFailed<T = any>(moduleName: TenantSettingsModuleName): AppError<T> {
+    return new AppError({
+      code: AppErrorCode.TenantSettingsFailedToLoad,
+      message: `Tenant settings failed to load for ${moduleName} module.`
+    });
   };
 }

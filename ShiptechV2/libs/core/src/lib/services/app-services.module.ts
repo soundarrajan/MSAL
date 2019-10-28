@@ -10,11 +10,13 @@ import { EntityRelatedLinksApiMock } from '@shiptech/core/services/entity-relate
 import {
   TENANT_SETTINGS_API,
   TenantSettingsApi
-} from '@shiptech/core/services/tenant-settings/api/tenant-settings-api';
-import { TenantSettingsApiMock } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.mock';
+} from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
+import { TenantSettingsApiMock } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api-mock.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRouteReuseStrategy } from '../route/app-route-reuse.strategy';
 import { ROUTES_TO_CACHE } from '@shiptech/core/route/routes-to-reuse.token';
+import { USER_PROFILE_API, UserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
+import { UserProfileApiMock } from '@shiptech/core/services/user-profile/api/user-profile-api-mock.service';
 
 @NgModule({
   imports: [],
@@ -42,6 +44,10 @@ export class AppServicesModule {
         {
           provide: TENANT_SETTINGS_API,
           useClass: environment.production ? TenantSettingsApi : TenantSettingsApiMock
+        },
+        {
+          provide: USER_PROFILE_API,
+          useClass: environment.production ? UserProfileApi : UserProfileApiMock
         },
         {
           provide: RouteReuseStrategy,
