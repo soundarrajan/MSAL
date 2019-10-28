@@ -20,9 +20,10 @@ import {
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import { getMockPortCallsList } from './mock/port-calls-list.mock';
 import { PortCallListItemModel } from '../models/port-call-list-item.model';
-import { ApiCall, ApiCallForwardTo, AppConfig } from '@shiptech/core';
 import { QuantityControlApi } from './quantity-control-api';
 import { getMockPortCall } from './mock/port-call.mock';
+import { AppConfig } from '@shiptech/core/config/app-config';
+import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 @Injectable({
   providedIn: 'root'

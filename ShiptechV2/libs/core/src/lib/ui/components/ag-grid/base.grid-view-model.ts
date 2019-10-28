@@ -6,9 +6,9 @@ import { catchError, filter, finalize, first, takeUntil, tap } from 'rxjs/operat
 import { AgColumnPreferencesService } from './ag-column-preferences/ag-column-preferences.service';
 import { Logger } from '../../../logging/logger';
 import { defaultComparer } from './ag-grid.comparators';
-import { nameof } from '../../../index';
 import { AgGridEventsEnum } from './ag-grid.events';
 import { AppError } from '../../../error-handling/app-error';
+import { nameof } from '@shiptech/core/utils/type-definitions';
 
 export const PageSizeOptions = [25, 50, 75, 100];
 export const DefaultPageSize = 25;

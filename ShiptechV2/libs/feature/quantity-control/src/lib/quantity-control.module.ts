@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApi } from './services/api/quantity-control-api';
-import { AuthenticationModule, PrimeNGModule } from '@shiptech/core';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
@@ -29,6 +28,8 @@ import { EventsLogComponent } from './views/port-call-details/components/events-
 import { SurveyReportHistoryComponent } from './views/port-call-details/components/survey-report-history/survey-report-history.component';
 import { PortCallGridComponent } from './views/port-call-details/components/port-call-grid/port-call-grid.component';
 import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
+import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 
 @NgModule({
   imports: [

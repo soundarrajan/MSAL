@@ -13,12 +13,15 @@ import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { Store } from '@ngxs/store';
 import { EntityRelatedLinksResponse } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 import { map } from 'rxjs/operators';
+import { UrlService } from '@shiptech/core/services/url/url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntityRelatedLinksService extends BaseStoreService {
-  constructor(@Inject(ENTITY_RELATED_LINKS_API) private api: IEntityRelatedLinksApi, store: Store, loggerFactory: ModuleLoggerFactory){
+  constructor(
+    private urlService: UrlService,
+    @Inject(ENTITY_RELATED_LINKS_API) private api: IEntityRelatedLinksApi, store: Store, loggerFactory: ModuleLoggerFactory){
     super(store, loggerFactory.createLogger(EntityRelatedLinksService.name));
   }
 
@@ -36,7 +39,7 @@ export class EntityRelatedLinksService extends BaseStoreService {
         return !dto.requestId ? undefined : {
           type: type,
           id: dto.requestId,
-          url: `/#/edit-request/${(dto.requestId)}`
+          url: this.urlService.editRequest(dto.requestId)
         };
       case EntityType.Offer:
         return dto.requestGroupId ? {
