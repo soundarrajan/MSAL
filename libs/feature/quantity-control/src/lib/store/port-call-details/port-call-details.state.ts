@@ -1,5 +1,4 @@
 import { Action, State, StateContext } from '@ngxs/store';
-import { nameof } from '@shiptech/core';
 import { IQuantityControlState } from '../quantity-control.state';
 import { IPortCallDetailsState } from './port-call-details-state.model';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
@@ -8,6 +7,7 @@ import {
   LoadPortCallDetailsFailedAction,
   LoadPortCallDetailsSuccessfulAction
 } from './port-call-details.actions';
+import { nameof } from '@shiptech/core/utils/type-definitions';
 
 @State<IPortCallDetailsState>({
   name: nameof<IQuantityControlState>('portCallDetails')

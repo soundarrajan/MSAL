@@ -6,7 +6,7 @@ import {
   ShiptechConditionValues
 } from '../../services/models/procurement-requests.dto';
 import * as _ from 'lodash';
-import { nameof, Omit } from '@shiptech/core';
+import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
 
 export function getShiptechFormatFilters(params: IServerSideGetRowsParams): IShiptechFilter[] {
   const filtersWithKeys = _.mapValues(params.request.filterModel, (value, key) => ({ ...value, key }));

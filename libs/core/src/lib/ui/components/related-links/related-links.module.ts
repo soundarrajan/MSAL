@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RelatedLinksComponent } from './related-links.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PrimeNGModule } from '@shiptech/core';
+import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 
 @NgModule({
 
@@ -20,6 +20,5 @@ import { PrimeNGModule } from '@shiptech/core';
 export class RelatedLinksModule {
   constructor() {
   }
-
 }
 

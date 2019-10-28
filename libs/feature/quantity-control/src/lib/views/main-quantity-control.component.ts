@@ -2,18 +2,15 @@ import { Component, OnDestroy } from '@angular/core';
 import { QuantityControlApiMock } from '../services/api/quantity-control-api.mock';
 import { QuantityControlApi } from '../services/api/quantity-control-api';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
-import { AppConfig } from '@shiptech/core';
-import { ReplaySubject, Subject } from 'rxjs';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { multicast, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { AppConfig } from '@shiptech/core/config/app-config';
 
 @Component({
   selector: 'shiptech-main-quantity-control',
   templateUrl: './main-quantity-control.component.html',
   styleUrls: ['./main-quantity-control.component.scss']
 })
-export class MainQuantityControlComponent implements OnDestroy{
+export class MainQuantityControlComponent implements OnDestroy {
   private _destroy$ = new Subject();
 
   // TODO: Workaround to jump start creation of the Mock Service in order for it to register it with the developer toolbar.

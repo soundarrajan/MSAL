@@ -1,4 +1,4 @@
-import { IMethodApiCallSettings } from '@shiptech/core';
+import { IMethodApiCallSettings } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 export interface IApiServiceSettings {
   id: string;

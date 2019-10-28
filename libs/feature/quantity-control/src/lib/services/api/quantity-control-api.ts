@@ -2,7 +2,6 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { ApiCallUrl, AppConfig, ObservableException } from '@shiptech/core';
 import { IGetPortCallsRequest, IGetPortCallsResponse } from './request-response/port-calls.request-response';
 import { IGetPortCallByIdRequest, IGetPortCallByIdResponse } from './request-response/port-call-by-id.request-response';
 import {
@@ -20,6 +19,9 @@ import {
   IVerifyPortCallsResponse
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
+import { AppConfig } from '@shiptech/core/config/app-config';
+import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
+import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 export namespace ProcurementApiPaths {
   export const allRequests = 'api/procurement/request/tableView';

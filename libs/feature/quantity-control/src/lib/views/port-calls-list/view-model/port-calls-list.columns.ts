@@ -1,6 +1,6 @@
 import { PortCallListItemModel } from '../../../services/models/port-call-list-item.model';
-import { PropName } from '@shiptech/core';
 import { Injectable } from '@angular/core';
+import { PropName } from '@shiptech/core/utils/decorators/method-name.decorator';
 
 export interface IPortCallListItemProps extends PortCallListItemModel {
 }

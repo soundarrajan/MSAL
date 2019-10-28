@@ -4,8 +4,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthenticationModule, BootstrapService, CoreModule, PrimeNGModule } from '@shiptech/core';
-import { bootstrapApplication } from '../../../../libs/core/src/lib/bootstrap.service';
+import { bootstrapApplication, BootstrapService } from '../../../../libs/core/src/lib/bootstrap.service';
 import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
 import { environment } from '../environments/environment.prod';
 import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.module';
@@ -17,6 +16,9 @@ import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/develop
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { AppErrorHandlingModule } from '@shiptech/core/error-handling/app-error-handling.module';
+import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
+import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { CoreModule } from '@shiptech/core/core.module';
 
 
 @NgModule({

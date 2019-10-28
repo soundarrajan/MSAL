@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { ApiServiceModel } from './api-service.model';
 import { UserSettingsApiService } from '../services/user-settings/user-settings-api.service';
@@ -17,7 +17,7 @@ export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 @Injectable({
   providedIn: 'root'
 })
-export class DeveloperToolbarService {
+export class DeveloperToolbarService implements OnDestroy {
 
   public apiServices$ = new ReplaySubject<ApiServiceModel[]>(1);
   private _apiServices: ApiServiceModel[] = [];

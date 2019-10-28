@@ -1,8 +1,9 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthenticationGuard, KnownModulesPaths } from '@shiptech/core';
 import { AdalGuard } from 'adal-angular-wrapper';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
+import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard';
+import { KnownModulesPaths } from '@shiptech/core/enums/known-modules-routes.enum';
 
 const routes: Routes = [
   { path: '', component: LayoutMainComponent, pathMatch: 'full' },

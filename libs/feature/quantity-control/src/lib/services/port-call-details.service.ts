@@ -12,7 +12,7 @@ import {
   LoadPortCallDetailsFailedAction,
   LoadPortCallDetailsSuccessfulAction
 } from '../store/port-call-details/port-call-details.actions';
-import { ObservableException } from '@shiptech/core';
+import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 
 @Injectable()
 export class PortCallDetailsService extends BaseStoreService {
