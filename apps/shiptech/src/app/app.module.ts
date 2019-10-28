@@ -4,10 +4,10 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { bootstrapApplication, BootstrapService } from '../../../../libs/core/src/lib/bootstrap.service';
-import { LoggingModule } from '../../../../libs/core/src/lib/logging/logging.module';
+import { bootstrapApplication, BootstrapService } from '@shiptech/core/bootstrap.service';
+import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { environment } from '../environments/environment.prod';
-import { BreadcrumbsModule } from '../../../../libs/core/src/lib/ui/components/breadcrumbs/breadcrumbs.module';
+import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
@@ -15,11 +15,19 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/developer-toolbar.module';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { AppErrorHandlingModule } from '@shiptech/core/error-handling/app-error-handling.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { CoreModule } from '@shiptech/core/core.module';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 
+
+function getAppBaseHref(doc: Document): string {
+  const base = doc.querySelector('base');
+  if (!base || !base.href) {
+    return '';
+  }
+  return new URL(base.href).pathname;
+}
 
 @NgModule({
   declarations: [
@@ -42,9 +50,14 @@ import { CoreModule } from '@shiptech/core/core.module';
     NgxsLoggerPluginModule.forRoot(),
     DeveloperToolbarModule,
     LoadingBarModule,
-    LoadingBarRouterModule,
+    LoadingBarRouterModule
   ],
   providers: [
+    {
+      provide: APP_BASE_HREF,
+      useFactory: getAppBaseHref,
+      deps: [DOCUMENT]
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: bootstrapApplication,
