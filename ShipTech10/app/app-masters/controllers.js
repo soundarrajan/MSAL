@@ -1232,31 +1232,31 @@ APP_MASTERS.controller("Controller_Master", [
                 }
                 if (vm.app_id == "delivery" && vm.screen_id == "delivery") {
                      $.each($scope.filterFromData.deliveryProducts, function(key, value) {
-                        if ($scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == "") {
                             $scope.filterFromData.deliveryProducts[key].agreedQuantityUom = null;
                         } 
-                        if ($scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == "") {
                             $scope.filterFromData.deliveryProducts[key].vesselQuantityUom = null;
                         }  
-                        if ($scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == null || $scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == "") {
                             $scope.filterFromData.deliveryProducts[key].fuelManifoldTemperatureUom = null;
                         } 
-                        if ($scope.filterFromData.deliveryProducts[key].confirmedQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].confirmedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].confirmedQuant == "") {
                             $scope.filterFromData.deliveryProducts[key].confirmedQuantityUom = null;
                         }  
-                        if ($scope.filterFromData.deliveryProducts[key].deliveredVolume == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].deliveredVolume == null || $scope.filterFromData.deliveryProducts[key].deliveredVolume == "") {
                             $scope.filterFromData.deliveryProducts[key].deliveredVolumeUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == "") {
                             $scope.filterFromData.deliveryProducts[key].buyerQuantityUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == "") {
                             $scope.filterFromData.deliveryProducts[key].sellerQuantityUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == "") {
                             $scope.filterFromData.deliveryProducts[key].surveyorQuantityUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == null) {
+                        if ($scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == "") {
                             $scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityUom = null;
                         }
                      });
