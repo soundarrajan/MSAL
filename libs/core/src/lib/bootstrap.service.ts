@@ -1,4 +1,3 @@
-//TODO: refactor and cleanup all of this.
 import { Inject, Injectable, Injector } from '@angular/core';
 import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
@@ -13,11 +12,12 @@ import { EMPTY$ } from './utils/rxjs-operators';
 import { ILegacyAppConfig } from './config/legacy-app-config';
 import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory } from './logging/logger-factory.service';
 import { TenantSettingsService } from './services/tenant-settings/tenant-settings.service';
-import { TenantSettingsModuleName } from './store/states/tenant/tenant.settings.interface';
+import { TenantSettingsModuleName } from './store/states/tenant/tenant-settings.interface';
 import { environment } from '@shiptech/environment';
 import { DeveloperToolbarService } from './developer-toolbar/developer-toolbar.service';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { UrlService } from '@shiptech/core/services/url/url.service';
+import { UserProfileService } from '@shiptech/core/services/user-profile/user-profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +52,7 @@ export class BootstrapService {
       tap(() => this.setupLogging()),
       concatMap(() => this.setupAuthentication()),
       concatMap(() => this.setupDeveloperToolbar()),
+      concatMap(() => this.loadUserProfile()),
       concatMap(() => this.loadGeneralTenantSettings()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
@@ -86,7 +87,7 @@ export class BootstrapService {
     }));
   }
 
-  private setupAuthentication(): Observable<any> {
+  private setupAuthentication(): Observable<void> {
 
     this.authService.init(this.appConfig.v1.auth);
 
@@ -96,16 +97,34 @@ export class BootstrapService {
     //TODO: handle adal errors and token expire
     this.authService.login();
 
-    return new Observable<IAppConfig>(() => {
+    return new Observable<void>(() => {
       // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
     });
   }
 
-  private setupDeveloperToolbar(): Observable<any> {
+  private setupDeveloperToolbar(): Observable<void> {
     return of(this.injector.get(DeveloperToolbarService).bootstrap());
   }
 
-  private loadGeneralTenantSettings(): Observable<any> {
+  private loadUserProfile(): Observable<void> {
+    // Note: UserProfileService instance needs to be created after app config is loaded because of the tenant setting api url
+    const userProfileService = this.injector.get(UserProfileService);
+
+    return userProfileService.load().pipe(catchError(error => {
+      // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
+      if (environment.production) {
+        return throwError(error);
+      } else {
+        // Note: For development, if the user profile service is mocked, the developer toolbar will not be shown
+        // Note: because the app init has failed, thus we should swallow this exception, and manually show the error to the dev.
+        this.appErrorHandler.handleError(error);
+
+        return EMPTY$;
+      }
+    }));
+  }
+
+  private loadGeneralTenantSettings(): Observable<void> {
     // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
     const tenantSettingsService = this.injector.get(TenantSettingsService);
 

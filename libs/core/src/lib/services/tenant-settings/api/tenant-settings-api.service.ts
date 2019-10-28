@@ -10,9 +10,8 @@ import {
   ITenantSettingsApi,
   ITenantSettingsApiResponse
 } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { AppError } from '@shiptech/core/error-handling/app-error';
-import { map } from 'rxjs/operators';
 
 export namespace TenantSettingsApiPaths {
   export const general = () => `api/admin/generalConfiguration/get`;
@@ -34,7 +33,7 @@ export class TenantSettingsApi extends ApiServiceBase implements ITenantSettings
   @ObservableException()
   public get(moduleName: TenantSettingsModuleName): Observable<ITenantSettingsApiResponse> {
     return this.http.post<ITenantSettingsApiResponse>(`${this._apiUrl}/${this.getApiPathForModuleName(moduleName)}`, {
-      payload: true,
+      payload: true
     });
   }
 

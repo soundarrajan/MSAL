@@ -1,4 +1,4 @@
-import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant.settings.interface';
+import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant-settings.interface';
 
 export class LoadTenantSettingsAction {
   static readonly type = '[Settings] Load Tenant Settings';

@@ -6,11 +6,13 @@ import { EntityRelatedLinksService } from '../services/entity-related-links/enti
 import { TenantSettingsService } from '../services/tenant-settings/tenant-settings.service';
 import { UserSettingsApiServiceMock } from '../services/user-settings/user-settings-api.service.mock';
 import { EntityRelatedLinksApiMock } from '../services/entity-related-links/api/entity-related-links-api.mock';
-import { TenantSettingsApiMock } from '../services/tenant-settings/api/tenant-settings-api.mock';
+import { TenantSettingsApiMock } from '../services/tenant-settings/api/tenant-settings-api-mock.service';
 import { AppConfig } from '../config/app-config';
 import { ICannedResponse } from '../utils/decorators/api-call-settings';
 import { API_CALL_KEY, IMethodApiCallSettings } from '../utils/decorators/api-call.decorator';
 import { IApiServiceSettings } from './api-service-settings/api-service-settings.inteface';
+import { UserProfileApiMock } from '@shiptech/core/services/user-profile/api/user-profile-api-mock.service';
+import { UserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -28,6 +30,7 @@ export class DeveloperToolbarService implements OnDestroy {
   constructor(private userSettingsApiServiceMock: UserSettingsApiServiceMock,
               private entityRelatedLinksApiMock: EntityRelatedLinksApiMock,
               private tenantSettingsApiMock: TenantSettingsApiMock,
+              private userProfileApiMock: UserProfileApiMock,
               private appConfig: AppConfig) {
   }
 
@@ -78,6 +81,17 @@ export class DeveloperToolbarService implements OnDestroy {
         id: TenantSettingsService.name,
         displayName: 'Tenant Settings Api',
         instance: this.tenantSettingsApiMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
+      });
+
+    this.registerApi(
+      {
+        id: UserProfileApi.name,
+        displayName: 'User Profile Api',
+        instance: this.userProfileApiMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
