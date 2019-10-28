@@ -61,6 +61,7 @@
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.136",
     "@types/postal": "^1.0.29",
+    "@types/url-parse": "^1.4.3",
     "adal-angular-wrapper": "1.0.3",
     "ag-grid-angular": "^21.1.0",
     "ag-grid-community": "^21.1.0",
@@ -90,6 +91,7 @@
     "rxjs-observe": "^2.1.4",
     "rxjs-take-while-inclusive": "^2.1.0",
     "ts-md5": "^1.2.4",
+    "url-parse": "^1.4.7",
     "web-animations-js": "github:angular/web-animations-js#release_pr208",
     "zone.js": "0.9.1"
   },

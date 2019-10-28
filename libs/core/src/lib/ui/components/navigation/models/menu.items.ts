@@ -1,19 +1,19 @@
 import { KeyedMenuItems } from './sidebar-view.model';
-import { KnownModulesPaths } from '../../../../enums/known-modules-routes.enum';
+import { KnownModulesRoutes } from '../../../../enums/known-modules-routes.enum';
 
 
 export const BASE_MENU: KeyedMenuItems = {
   'qualityControl': {
     'label': 'Quantity Control',
-    'routerLink': `/${KnownModulesPaths.QuantityControl}`,
+    'routerLink': `/${KnownModulesRoutes.QuantityControl}`,
   },
   'blankPage': {
     'label': 'Blank Page',
-    'routerLink': `/${KnownModulesPaths.QuantityControl}/blank-page`,
+    'routerLink': `/${KnownModulesRoutes.QuantityControl}/blank-page`,
   },
   'lazyLoad': {
     'label': 'Lazy load',
-    'routerLink': `/${KnownModulesPaths.LazyLoad}`,
+    'routerLink': `/${KnownModulesRoutes.LazyLoad}`,
   },
   'masters': {
     'label': 'Masters',
