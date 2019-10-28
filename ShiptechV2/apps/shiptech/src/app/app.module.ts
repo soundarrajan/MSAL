@@ -21,7 +21,7 @@ import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 
 
-function getAppBaseHref(doc: Document): string {
+export function getAppBaseHref(doc: Document): string {
   const base = doc.querySelector('base');
   if (!base || !base.href) {
     return '';
