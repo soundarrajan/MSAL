@@ -1,12 +1,22 @@
 <shiptech-wunderbar>
-  <div class="col-md-12 d-flex" style="margin: 5px 0;">
-    <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
-    <app-filter-preferences
-      id="qualityControlModule"
-      appAgGridFilterPresets
-      groupId="quantityControlmain"
-      screenId="Main"
-    ></app-filter-preferences>
+  <div class="row" style="margin: 5px 0;">
+    <div class="col-6 d-flex">
+      <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
+      <app-filter-preferences
+        appAgGridFilterPresets
+        groupId="quantityControlmain"
+        id="qualityControlModule"
+        screenId="Main"
+      ></app-filter-preferences>
+    </div>
+    <div class="col-6">
+      <div style="float:right">
+        <shiptech-search-box AgGridExternalSearch [placeholder]="'Search something'" class="mr-1"
+                             gridId="quantityControlGrid"></shiptech-search-box>
+        <button (click)="raiseClaim()" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
+        <button (click)="verifyVessels()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
+      </div>
+    </div>
   </div>
 </shiptech-wunderbar>
 
@@ -20,8 +30,14 @@
       </app-page-size-selector>
     </div>
     <div class="col-md-6">
-      <shiptech-search-box [placeholder]="'Search something'" AgGridExternalSearch gridId="quantityControlGrid"
-                           style="float: right"></shiptech-search-box>
+      <div style="float:right">
+        <button class="ui-button-secondary mr-1 matched" icon="fa fa-check" label="Matched: 60" pButton
+                type="button"></button>
+        <button class="ui-button-secondary mr-1 matched-withing-limit" icon="fa fa-check"
+                label="Matched within limit: 40" pButton type="button"></button>
+        <button class="ui-button-secondary not-matched" icon="fa fa-times" label="Not matched: 20" pButton
+                type="button"></button>
+      </div>
     </div>
   </div>
 
@@ -66,5 +82,12 @@
 <ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appTemplateRenderer let-data="data" let-value="value">
   <ng-container>
     <a [routerLink]="['../port-call-details', data.id]" href="#"> View {{data.id}} </a>
+  </ng-container>
+</ng-template>
+
+<ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appTemplateRenderer let-data="data" let-value="value">
+  <ng-container>
+    {{value}}
+    <i (click)="watchVesselWithId(data.id)" class="fa fa-flag vessel-to-watch"></i>
   </ng-container>
 </ng-template>

@@ -18,4 +18,12 @@ export class PortCallDetailsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  raiseClaim(): void {
+    alert('Not implemented');
+  }
+
+  verifyVessel(): void {
+    alert('Not implemented');
+  }
 }
