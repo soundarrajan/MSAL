@@ -1,9 +1,11 @@
+import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
+
 export interface PortCallListItemDto {
   id: number;
   port: string;
   vesselName: string;
   surveyDate: string;
-  surveyStatus: string;
+  surveyStatus: SurveyStatusEnum;
   matchedQuantity: number;
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;
