@@ -22,13 +22,13 @@ export class EntityRelatedLinksApiMock implements IEntityRelatedLinksApi {
 
   @ObservableException()
   @ApiCall()
-  getRelatedLinksForEntity(entityType): Observable<EntityRelatedLinksResponse> {
+  getRelatedLinksForEntity(entityTypeIdField: EntityTypeIdField, id: any): Observable<EntityRelatedLinksResponse>{
     return of({
       [EntityTypeIdField.Request]: 1,
       [EntityTypeIdField.Offer]: 2,
       [EntityTypeIdField.Order]: 3,
       [EntityTypeIdField.Delivery]: 4,
-      [EntityTypeIdField.PortCall]: 5,
+      [EntityTypeIdField.PortCall]: '5',
       [EntityTypeIdField.Lab]: 6,
       [EntityTypeIdField.Claim]: 7,
       [EntityTypeIdField.Invoice]: 8,
