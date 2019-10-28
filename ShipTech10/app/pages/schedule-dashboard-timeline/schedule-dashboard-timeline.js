@@ -281,12 +281,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
 
                     var tpl = '<div class="vis-custom-group">';
+                    tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
                     if ($scope.displayedColumns["Service"]) {
                     	tpl += `<span class="vis-custom-group-column" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${group.serviceName} </span></span>`;
                     }
-                    tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName}"> <span class="vis-custom-group-column-content"> ${group.vesselName} </span></span>`;
                     if ($scope.displayedColumns["Buyer of the Vessel"]) {
-                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${buyerName} </span></span>`;
+	                    tpl += `<span class="vis-custom-group-column" tooltip title="${group.buyerName}"> <span class="vis-custom-group-column-content"> ${group.buyerName} </span></span>`;
                     }
                     if ($scope.displayedColumns["Buyer of the Service"]) {
                         tpl += `<span class="vis-custom-group-column" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content"> ${group.serviceBuyerName} </span></span>`;
@@ -338,10 +338,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $('#vis-custom-group-columns').remove();
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
+                groupColumnsTitleElement += '<span class="vis-custom-group-column"> Vessel </span>';
                 if ($scope.displayedColumns["Service"]) {
 	                groupColumnsTitleElement += '<span class="vis-custom-group-column"> Service </span>';
                 }
-                groupColumnsTitleElement += '<span class="vis-custom-group-column"> Vessel </span>';
                 if ($scope.displayedColumns["Buyer of the Vessel"]) {
                     groupColumnsTitleElement += '<span class="vis-custom-group-column"> Buyer of the Vessel </span>';
                 }
@@ -398,7 +398,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                     // Create startDate and endDate base on startsBefore and endsAfter
                     ctrl.startDate = moment().add('days', -ctrl.scheduleDashboardConfiguration.startsBefore);
-                    ctrl.endDate = moment().add('days', ctrl.scheduleDashboardConfiguration.endsAfter + 1);
+                    ctrl.endDate = moment().add('days', ctrl.scheduleDashboardConfiguration.endsAfter);
                     $scope.startDateDisplay = ctrl.startDate.format('DD-MM-YYYY');
                     $scope.endDateDisplay = ctrl.endDate.format('DD-MM-YYYY');
     

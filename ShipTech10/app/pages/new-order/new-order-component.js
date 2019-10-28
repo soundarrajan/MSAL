@@ -3236,7 +3236,13 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                             ctrl.isRecentETA ? ctrl.data.recentEta = angular.copy(ctrl.data.eta) : '';
                             break;
                         case 'recentEta': 
-                            ctrl.data.deliveryDate = angular.copy(ctrl.data.recentEta);
+                        	if (!ctrl.data.recentEta) {
+                        		if (ctrl.data.eta) {
+                        			ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
+                        		}
+                        	} else {
+	                            ctrl.data.deliveryDate = angular.copy(ctrl.data.recentEta);
+                        	}
                             break;
                     }
                 },1);   

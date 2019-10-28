@@ -2039,6 +2039,10 @@ span.input-group-addon.im_group {
     display: table !important;
 }
 
+.custom-hardcoded-table.schedule-columns table.table-body {
+	min-width: 0px !important;
+}
+
 .custom-hardcoded-table .table-head td, .custom-hardcoded-table .table-body td {
     padding: 1px;
     border: 1px solid #e2e6ea;
