@@ -415,6 +415,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     $.each($scope.formValues.temp.tempProductforType, function(k, v) {
                         if (v.product.id && v.product.id == $scope.formValues.orderDetails.product.id) {
                             $scope.formValues.orderDetails.productType = v.productType.name;
+                            $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
                         }
                     });
                     $.each($scope.options['Product'], function (k, v) {
@@ -425,24 +426,25 @@ APP_CLAIMS.controller("Controller_Claims", [
                     $timeout(function() {
                         $("#EstimatedSettlementAmount").trigger("change");
                     }, 10);
-                    oldClaimType = angular.copy($scope.formValues.claimType.claimType);
-                    $scope.formValues.claimType.claimType = null;
-                    $timeout(function(){
-                        $scope.formValues.claimType.claimType = oldClaimType;
-                        if ($scope.formValues.densitySubtypes.length) {
-                            $scope.formValues.densitySubtypes = [];
-                        }
-                        if ($scope.formValues.quantitySubtypes.length) {
-                            $scope.formValues.quantitySubtypes = [];
-                        }
-                        if ($scope.formValues.qualitySubtypes.length) {
-                            $scope.formValues.qualitySubtypes = [];
-                        }
-                        $scope.formValues.claimType.quantityShortage = null;
-                        $scope.formValues.claimType.quantityShortageUom = null;
-                    },100)
-                    $scope.checkClaimType();
-                   
+                    if (typeof $scope.formValues.claimType != "undefined") {
+                        oldClaimType = angular.copy($scope.formValues.claimType.claimType);
+                        $scope.formValues.claimType.claimType = null;
+                        $timeout(function(){
+                            $scope.formValues.claimType.claimType = oldClaimType;
+                            if ($scope.formValues.densitySubtypes.length) {
+                                $scope.formValues.densitySubtypes = [];
+                            }
+                            if ($scope.formValues.quantitySubtypes.length) {
+                                $scope.formValues.quantitySubtypes = [];
+                            }
+                            if ($scope.formValues.qualitySubtypes.length) {
+                                $scope.formValues.qualitySubtypes = [];
+                            }
+                            $scope.formValues.claimType.quantityShortage = null;
+                            $scope.formValues.claimType.quantityShortageUom = null;
+                        },100)
+                        $scope.checkClaimType();                      
+                    }                  
                 }
             }
             if (name == "ClaimType") {
