@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 export interface TenantSettingsDto {
 }

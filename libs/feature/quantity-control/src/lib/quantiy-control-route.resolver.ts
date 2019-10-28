@@ -4,7 +4,7 @@ import { Resolve } from '@angular/router';
 import { AppError } from '@shiptech/core/error-handling/app-error';
 import { catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant.settings.interface';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { QuantityControlApi } from './services/api/quantity-control-api';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { AppConfig } from '@shiptech/core/config/app-config';
