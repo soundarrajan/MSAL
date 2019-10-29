@@ -1,4 +1,4 @@
-export class PortCallDetailsStateModel {
+export class QcReportViewStateModel {
   _hasLoaded: boolean;
   _isLoading: boolean;
   portCallId: string;
@@ -19,6 +19,6 @@ export class PortCallDetailsStateModel {
   isVerifying: boolean;
 }
 
-export interface IPortCallDetailsState extends PortCallDetailsStateModel {
+export interface IQcReportViewState extends QcReportViewStateModel {
 }
 

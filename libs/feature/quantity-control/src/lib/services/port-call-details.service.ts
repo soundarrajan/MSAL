@@ -8,12 +8,12 @@ import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { Store } from '@ngxs/store';
 import {
-  LoadPortCallDetailsAction,
-  LoadPortCallDetailsFailedAction,
-  LoadPortCallDetailsSuccessfulAction
-} from '../store/port-call-details/port-call-details.actions';
+  LoadReportViewAction,
+  LoadReportViewFailedAction,
+  LoadReportViewSuccessfulAction
+} from '../store/report-view/qc-report-view.actions';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { PortCallDetailsModel } from './models/port-call-details.model';
+import { ReportItemViewModel } from './models/port-call-details.model';
 
 @Injectable()
 export class PortCallDetailsService extends BaseStoreService {
@@ -37,9 +37,9 @@ export class PortCallDetailsService extends BaseStoreService {
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
       () => this.api.getPortCallById({ portCallId }),
-      new LoadPortCallDetailsAction(portCallId),
-      (response) => new LoadPortCallDetailsSuccessfulAction(portCallId, new PortCallDetailsModel(response.portCall)),
-      new LoadPortCallDetailsFailedAction(portCallId),
+      new LoadReportViewAction(portCallId),
+      (response) => new LoadReportViewSuccessfulAction(portCallId, new ReportItemViewModel(response.portCall)),
+      new LoadReportViewFailedAction(portCallId),
       ModuleError.LoadPortCallDetailsFailed(portCallId)
     );
   }
