@@ -44,7 +44,7 @@ export class UrlService {
   }
 
   public portCallDetails(portCallId: string | number): string {
-    return `${this.baseHref}${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.portCallDetails}/${(portCallId)}`;
+    return `${this.baseHref}${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.ReportView}/${(portCallId)}`;
   }
 
   public editLabResults(labId: string | number): string {

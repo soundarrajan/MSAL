@@ -12,8 +12,8 @@ import { MainQuantityControlComponent } from './views/main-quantity-control.comp
 import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
-import { PortCallsListState } from './store/port-call-list/port-calls-list.state';
-import { PortCallDetailsState } from './store/port-call-details/port-call-details.state';
+import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
+import { QcReportViewState } from './store/report-view/qc-report-view.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
 import { QcReportViewComponent } from './views/qc-report-view/qc-report-view.component';
@@ -45,7 +45,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallDetailsState])
+    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportViewState])
   ],
   declarations: [
     MainQuantityControlComponent,

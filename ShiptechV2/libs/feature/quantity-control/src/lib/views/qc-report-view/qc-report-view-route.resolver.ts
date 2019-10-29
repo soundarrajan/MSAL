@@ -16,7 +16,7 @@ export class QcReportViewRouteResolver implements Resolve<any> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    const portCallIdParam = route.params[KnownQuantityControlRoutes.portCallIdParam];
+    const portCallIdParam = route.params[KnownQuantityControlRoutes.ReportIdParam];
 
     return this.portCallDetailsService.loadPortCallDetails(portCallIdParam)
       .pipe(
@@ -24,7 +24,7 @@ export class QcReportViewRouteResolver implements Resolve<any> {
           // Note: If the user navigated directly to this route, we need to redirect to root and show and error
           if (!state.root.component) {
             this.appErrorHandler.handleError(error);
-            return this.router.navigate([KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.portCallsList]);
+            return this.router.navigate([KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.ReportList]);
           } else {
             // Note: if the application is already loaded (something visible on the screen) and we navigate to a bad route we need to "cancel" the navigation and show an error
             return throwError(error);

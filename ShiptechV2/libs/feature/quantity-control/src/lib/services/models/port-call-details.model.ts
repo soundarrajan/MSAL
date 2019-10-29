@@ -1,7 +1,7 @@
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { IPortCallDetailsDto, IPortCallProductDto, IPortCallUoms } from '../api/dto/port-call.dto';
 
-export class PortCallDetailsModel {
+export class ReportItemViewModel {
   portCallId: string;
   vesselName: string;
   nbOfCliams: number;

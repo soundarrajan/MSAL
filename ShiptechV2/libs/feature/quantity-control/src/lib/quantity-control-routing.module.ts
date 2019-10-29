@@ -22,17 +22,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: KnownQuantityControlRoutes.portCallsList,
+        redirectTo: KnownQuantityControlRoutes.ReportList,
         pathMatch: 'full'
       },
       {
-        path: KnownQuantityControlRoutes.portCallsList,
+        path: KnownQuantityControlRoutes.ReportList,
         component: QcReportsListComponent,
       //  resolve: { tenantSettings: ModuleSettingsResolver },
         data: { title: 'Quantity Control', breadcrumb: 'Quantity Control' }
       },
       {
-        path: `${KnownQuantityControlRoutes.portCallDetails}/:${KnownQuantityControlRoutes.portCallIdParam}`,
+        path: `${KnownQuantityControlRoutes.ReportView}/:${KnownQuantityControlRoutes.ReportIdParam}`,
         resolve: {
           portCall: QcReportViewRouteResolver
         },
@@ -48,7 +48,7 @@ const routes: Routes = [
             outlet: KnownNamedRouterOutlets.topbar,
             component: EntityStatusComponent
           },
-          relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.portCallIdParam)
+          relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
         ]
       }
     ]

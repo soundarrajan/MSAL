@@ -1,14 +1,14 @@
 import { IPageInfo, PageInfo } from '@shiptech/core/grid/page-info.interface';
 import { ISortInfo } from '@shiptech/core/grid/sort-info.interface';
 
-export class PortCallsListStateModel {
+export class QcReportsListStateModel {
   pageInfo: IPageInfo;
   filter: any;
   sorts: ISortInfo[];
   isLoading: boolean;
   isLoaded: boolean;
 
-  constructor(state: Partial<PortCallsListStateModel> = {}) {
+  constructor(state: Partial<QcReportsListStateModel> = {}) {
     this.filter = state.filter;
     this.sorts = state.sorts;
     this.pageInfo = new PageInfo();
@@ -17,4 +17,5 @@ export class PortCallsListStateModel {
   }
 }
 
-export interface IPortCallsList extends PortCallsListStateModel {}
+export interface IQcReportsListState extends QcReportsListStateModel {
+}
