@@ -1,23 +1,23 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { PortCallsListGridViewModel } from './view-model/port-calls-list-grid.view-model';
+import { QcReportsListGridViewModel } from './view-model/qc-reports-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
-import { PortCallsListViewModel } from './view-model/port-calls-list.view-model';
+import { QcReportsListViewModel } from './view-model/qc-reports-list.view-model';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shiptech-port-calls-list',
-  templateUrl: './port-calls-list.component.html',
-  styleUrls: ['./port-calls-list.component.scss'],
-  providers: [PortCallsListGridViewModel, PortCallsListViewModel],
+  templateUrl: './qc-reports-list.component.html',
+  styleUrls: ['./qc-reports-list.component.scss'],
+  providers: [QcReportsListGridViewModel, QcReportsListViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PortCallsListComponent implements OnInit, OnDestroy {
+export class QcReportsListComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
 
-  constructor(public viewModel: PortCallsListViewModel, private messageBox: MessageBoxService) {
+  constructor(public viewModel: QcReportsListViewModel, private messageBox: MessageBoxService) {
   }
 
   onPageChange(page: number): void {

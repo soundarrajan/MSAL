@@ -1,6 +1,6 @@
 import { PortCallListItemDto } from '../api/dto/port-call-list-item.dto';
 
-export class PortCallListItemModel {
+export class QcReportsListItemModel {
   id: number;
   port: string;
   vesselName: string;

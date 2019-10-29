@@ -15,19 +15,19 @@ import { QuantityControlState } from './store/quantity-control.state';
 import { PortCallsListState } from './store/port-call-list/port-calls-list.state';
 import { PortCallDetailsState } from './store/port-call-details/port-call-details.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
-import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.component';
-import { PortCallDetailsComponent } from './views/port-call-details/port-call-details.component';
+import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
+import { QcReportViewComponent } from './views/qc-report-view/qc-report-view.component';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { PortCallDetailsService } from './services/port-call-details.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { SoundingReportsComponent } from './views/port-call-details/components/sounding-reports/sounding-reports.component';
-import { EventsLogComponent } from './views/port-call-details/components/events-log/events-log.component';
-import { SurveyReportHistoryComponent } from './views/port-call-details/components/survey-report-history/survey-report-history.component';
-import { ProductDetailsComponent } from './views/port-call-details/components/port-call-grid/product-details.component';
-import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
+import { SoundingReportsComponent } from './views/qc-report-view/components/sounding-reports/sounding-reports.component';
+import { EventsLogComponent } from './views/qc-report-view/components/events-log/events-log.component';
+import { SurveyReportHistoryComponent } from './views/qc-report-view/components/survey-report-history/survey-report-history.component';
+import { ProductDetailsComponent } from './views/qc-report-view/components/port-call-grid/product-details.component';
+import { QcReportViewRouteResolver } from './views/qc-report-view/qc-report-view-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 
@@ -50,8 +50,8 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
   declarations: [
     MainQuantityControlComponent,
     WunderBarComponent,
-    PortCallsListComponent,
-    PortCallDetailsComponent,
+    QcReportsListComponent,
+    QcReportViewComponent,
     SoundingReportsComponent,
     EventsLogComponent,
     SurveyReportHistoryComponent,
@@ -63,7 +63,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
   providers: [
     ModuleLoggerFactory,
     QuantityControlRouteResolver,
-    PortCallDetailsRouteResolver,
+    QcReportViewRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApi : QuantityControlApiMock

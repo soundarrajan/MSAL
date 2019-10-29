@@ -9,12 +9,12 @@ import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-fi
 import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 import { getShiptechFormatPagination } from '../../../core/mappers/shiptech-grid-paging';
-import { PortCallListItemProps, PortCallsListColumns, PortCallsListColumnsLabels } from './port-calls-list.columns';
-import { PortCallListItemModel } from '../../../services/models/port-call-list-item.model';
+import { QcReportsListColumns, QcReportsListColumnsLabels, QcReportsListItemProps } from './qc-reports-list.columns';
+import { QcReportsListItemModel } from '../../../services/models/qc-reports-list-item.model';
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 
 @Injectable()
-export class PortCallsListGridViewModel extends BaseGridViewModel {
+export class QcReportsListGridViewModel extends BaseGridViewModel {
 
   public searchText: string;
   gridOptions: GridOptions = {
@@ -67,8 +67,8 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
   };
 
   callIdCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.callId,
-    colId: PortCallsListColumns.callId,
+    headerName: QcReportsListColumnsLabels.callId,
+    colId: QcReportsListColumns.callId,
     field: this.modelProps.id,
     width: 50,
     hide: false,
@@ -77,16 +77,16 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
   };
 
   portCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.port,
-    colId: PortCallsListColumns.port,
+    headerName: QcReportsListColumnsLabels.port,
+    colId: QcReportsListColumns.port,
     field: this.modelProps.port,
     width: 50,
     hide: false,
   };
 
   vesselNameCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.vesselName,
-    colId: PortCallsListColumns.vesselName,
+    headerName: QcReportsListColumnsLabels.vesselName,
+    colId: QcReportsListColumns.vesselName,
     field: this.modelProps.vesselName,
     width: 50,
     hide: false,
@@ -95,138 +95,138 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
   };
 
   surveyDateCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.surveyDate,
-    colId: PortCallsListColumns.surveyDate,
+    headerName: QcReportsListColumnsLabels.surveyDate,
+    colId: QcReportsListColumns.surveyDate,
     field: this.modelProps.surveyDate,
     width: 50,
     hide: false,
   };
 
   surveyStatusCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.surveyStatus,
-    colId: PortCallsListColumns.surveyStatus,
+    headerName: QcReportsListColumnsLabels.surveyStatus,
+    colId: QcReportsListColumns.surveyStatus,
     field: this.modelProps.surveyStatus,
     width: 50,
     hide: false,
     cellClassRules: {
-      'cell-background pending': params => (<PortCallListItemModel>params.data).surveyStatus === SurveyStatusEnum.Pending,
-      'cell-background verified': params => (<PortCallListItemModel>params.data).surveyStatus === SurveyStatusEnum.Verified
+      'cell-background pending': params => (<QcReportsListItemModel>params.data).surveyStatus === SurveyStatusEnum.Pending,
+      'cell-background verified': params => (<QcReportsListItemModel>params.data).surveyStatus === SurveyStatusEnum.Verified
     }
   };
 
   matchedQuantityCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.matchedQuantity,
-    colId: PortCallsListColumns.matchedQuantity,
+    headerName: QcReportsListColumnsLabels.matchedQuantity,
+    colId: QcReportsListColumns.matchedQuantity,
     field: this.modelProps.matchedQuantity,
     width: 50,
     hide: false
   };
 
   logBookRobBeforeDeliveryCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.logBookRobBeforeDelivery,
-    colId: PortCallsListColumns.logBookRobBeforeDelivery,
+    headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
+    colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: this.modelProps.logBookRobBeforeDelivery,
     width: 50,
     hide: false
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.measuredRobBeforeDelivery,
-    colId: PortCallsListColumns.measuredRobBeforeDelivery,
+    headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
+    colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: this.modelProps.measuredRobBeforeDelivery,
     width: 50,
     hide: false
   };
 
   robBeforeDeliveryCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.robBeforeDelivery,
-    colId: PortCallsListColumns.robBeforeDelivery,
+    headerName: QcReportsListColumnsLabels.robBeforeDelivery,
+    colId: QcReportsListColumns.robBeforeDelivery,
     field: this.modelProps.robBeforeDelivery,
     width: 50,
     hide: false,
     cellClassRules: {
-      'cell-background red': params => (<PortCallListItemModel>params.data).robBeforeDelivery < 0
+      'cell-background red': params => (<QcReportsListItemModel>params.data).robBeforeDelivery < 0
     }
   };
 
   bdnQuantityCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.bdnQuantity,
-    colId: PortCallsListColumns.bdnQuantity,
+    headerName: QcReportsListColumnsLabels.bdnQuantity,
+    colId: QcReportsListColumns.bdnQuantity,
     field: this.modelProps.bdnQuantity,
     width: 50,
     hide: false
   };
 
   measuredDeliveredQuantityCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.measuredDeliveredQuantity,
-    colId: PortCallsListColumns.measuredDeliveredQuantity,
+    headerName: QcReportsListColumnsLabels.measuredDeliveredQuantity,
+    colId: QcReportsListColumns.measuredDeliveredQuantity,
     field: this.modelProps.measuredDeliveredQuantity,
     width: 50,
     hide: false
   };
 
   deliveredQuantityCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.deliveredQuantity,
-    colId: PortCallsListColumns.deliveredQuantity,
+    headerName: QcReportsListColumnsLabels.deliveredQuantity,
+    colId: QcReportsListColumns.deliveredQuantity,
     field: this.modelProps.deliveredQuantity,
     width: 50,
     hide: false,
     cellClassRules: {
-      'cell-background red': params => (<PortCallListItemModel>params.data).deliveredQuantity < 0
+      'cell-background red': params => (<QcReportsListItemModel>params.data).deliveredQuantity < 0
     }
   };
 
   logBookRobAfterDeliveryCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.logBookRobAfterDelivery,
-    colId: PortCallsListColumns.logBookRobAfterDelivery,
+    headerName: QcReportsListColumnsLabels.logBookRobAfterDelivery,
+    colId: QcReportsListColumns.logBookRobAfterDelivery,
     field: this.modelProps.logBookRobAfterDelivery,
     width: 50,
     hide: false
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.measuredRobAfterDelivery,
-    colId: PortCallsListColumns.measuredRobAfterDelivery,
+    headerName: QcReportsListColumnsLabels.measuredRobAfterDelivery,
+    colId: QcReportsListColumns.measuredRobAfterDelivery,
     field: this.modelProps.measuredRobAfterDelivery,
     width: 50,
     hide: false
   };
 
   robAfterDeliveryCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.robAfterDelivery,
-    colId: PortCallsListColumns.robAfterDelivery,
+    headerName: QcReportsListColumnsLabels.robAfterDelivery,
+    colId: QcReportsListColumns.robAfterDelivery,
     field: this.modelProps.robAfterDelivery,
     width: 50,
     hide: false
   };
 
   logBookSludgeBeforeDischargeCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.logBookSludgeBeforeDischarge,
-    colId: PortCallsListColumns.logBookSludgeBeforeDischarge,
+    headerName: QcReportsListColumnsLabels.logBookSludgeBeforeDischarge,
+    colId: QcReportsListColumns.logBookSludgeBeforeDischarge,
     field: this.modelProps.logBookSludgeBeforeDischarge,
     width: 50,
     hide: false
   };
 
   measuredSludgeRobBeforeDischargeCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.measuredSludgeRobBeforeDischarge,
-    colId: PortCallsListColumns.measuredSludgeRobBeforeDischarge,
+    headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
+    colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
     field: this.modelProps.measuredSludgeRobBeforeDischarge,
     width: 50,
     hide: false
   };
 
   sludgeDischargedQuantityCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.sludgeDischargedQuantity,
-    colId: PortCallsListColumns.sludgeDischargedQuantity,
+    headerName: QcReportsListColumnsLabels.sludgeDischargedQuantity,
+    colId: QcReportsListColumns.sludgeDischargedQuantity,
     field: this.modelProps.sludgeDischargedQuantity,
     width: 50,
     hide: false
   };
 
   commentCol: ColDef = {
-    headerName: PortCallsListColumnsLabels.comment,
-    colId: PortCallsListColumns.comment,
+    headerName: QcReportsListColumnsLabels.comment,
+    colId: QcReportsListColumns.comment,
     field: this.modelProps.comment,
     width: 50,
     hide: false
@@ -238,9 +238,9 @@ export class PortCallsListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private quantityControlService: PortCallDetailsService,
-    private modelProps: PortCallListItemProps
+    private modelProps: QcReportsListItemProps
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(PortCallsListGridViewModel.name));
+    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 

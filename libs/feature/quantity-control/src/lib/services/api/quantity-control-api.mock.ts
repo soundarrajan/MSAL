@@ -19,7 +19,7 @@ import {
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import { getMockPortCallsList } from './mock/port-calls-list.mock';
-import { PortCallListItemModel } from '../models/port-call-list-item.model';
+import { QcReportsListItemModel } from '../models/qc-reports-list-item.model';
 import { QuantityControlApi } from './quantity-control-api';
 import { getMockPortCall } from './mock/port-call.mock';
 import { AppConfig } from '@shiptech/core/config/app-config';
@@ -39,7 +39,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse> {
     return of({
-      items: getMockPortCallsList(request.pageSize).map(item => new PortCallListItemModel(item)),
+      items: getMockPortCallsList(request.pageSize).map(item => new QcReportsListItemModel(item)),
       totalItems: request.pageSize * 5
     });
   }

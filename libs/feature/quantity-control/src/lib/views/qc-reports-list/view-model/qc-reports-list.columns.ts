@@ -1,14 +1,14 @@
-import { PortCallListItemModel } from '../../../services/models/port-call-list-item.model';
+import { QcReportsListItemModel } from '../../../services/models/qc-reports-list-item.model';
 import { Injectable } from '@angular/core';
 import { PropName } from '@shiptech/core/utils/decorators/method-name.decorator';
 
-export interface IPortCallListItemProps extends PortCallListItemModel {
+export interface IQcReportsListItemProps extends QcReportsListItemModel {
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class PortCallListItemProps implements IPortCallListItemProps {
+export class QcReportsListItemProps implements IQcReportsListItemProps {
   @PropName id;
   @PropName port;
   @PropName vesselName;
@@ -30,7 +30,7 @@ export class PortCallListItemProps implements IPortCallListItemProps {
   @PropName comment;
 }
 
-export enum PortCallsListColumns {
+export enum QcReportsListColumns {
   callId = 'Call ID',
   port = 'Port call',
   vesselName = 'Vessel name',
@@ -52,7 +52,7 @@ export enum PortCallsListColumns {
   comment = 'Comment',
 }
 
-export enum PortCallsListColumnsLabels {
+export enum QcReportsListColumnsLabels {
   callId = 'Call ID',
   port = 'Port call',
   vesselName = 'Vessel name',
