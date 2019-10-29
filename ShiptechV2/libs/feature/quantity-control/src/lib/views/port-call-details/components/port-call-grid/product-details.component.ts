@@ -15,7 +15,7 @@ export class ProductDetailsComponent implements OnInit {
   // Note: Rename "Grid" to Product Details
   // portCall$: Observable<IPortCallProductDto> = this.store.select(state => state.)
 
-  constructor(private viewModel: ProductDetailsViewModel, private store: Store) {
+  constructor(public viewModel: ProductDetailsViewModel, private store: Store) {
   }
 
   ngOnInit(): void {
