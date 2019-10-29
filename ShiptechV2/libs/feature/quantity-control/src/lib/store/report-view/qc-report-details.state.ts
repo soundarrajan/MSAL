@@ -1,39 +1,39 @@
 import { Action, createSelector, Select, Selector, State, StateContext } from '@ngxs/store';
 import { IQuantityControlState } from '../quantity-control.state';
-import { IQcReportViewState } from './qc-report-view.state.model';
+import { IQcReportViewState } from './qc-report-details.state.model';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
-  LoadReportViewAction,
-  LoadReportViewFailedAction,
-  LoadReportViewSuccessfulAction
-} from './qc-report-view.actions';
+  LoadReportDetailsAction,
+  LoadReportDetailsFailedAction,
+  LoadReportDetailsSuccessfulAction
+} from './qc-report-details.actions';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 
 @State<IQcReportViewState>({
   name: nameof<IQuantityControlState>('portCallDetails')
 })
-export class QcReportViewState {
+export class QcReportDetailsState {
 
   @Select()
   static getPortCallsProductTypesIds(state: IQcReportViewState): unknown[] {
     return state.products;
   }
 
-  @Selector([QcReportViewState.getPortCallsProductTypesIds])
+  @Selector([QcReportDetailsState.getPortCallsProductTypesIds])
   static getSelectedPurchaseDeliveries(state: IQcReportViewState, productTypesIds: number[]): unknown[] {
     return productTypesIds.map(productTypeId => state.productsById[productTypeId]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => unknown {
     return createSelector(
-      [QcReportViewState],
+      [QcReportDetailsState],
       (state: IQcReportViewState) => state.productsById[productTypeId]
     );
   }
 
-  @Action(LoadReportViewAction)
-  loadPortCallDetails({ getState, patchState }: StateContext<IQcReportViewState>, { reportId }: LoadReportViewAction): void {
+  @Action(LoadReportDetailsAction)
+  loadPortCallDetails({ getState, patchState }: StateContext<IQcReportViewState>, { reportId }: LoadReportDetailsAction): void {
     patchState({
       _isLoading: true,
       _hasLoaded: false,
@@ -41,11 +41,11 @@ export class QcReportViewState {
     });
   }
 
-  @Action([LoadReportViewSuccessfulAction, LoadReportViewFailedAction])
-  loadPortCallDetailsFinished({ getState, patchState }: StateContext<IQcReportViewState>, action: LoadReportViewSuccessfulAction | LoadReportViewFailedAction): void {
-    if (isAction(action, LoadReportViewSuccessfulAction)) {
+  @Action([LoadReportDetailsSuccessfulAction, LoadReportDetailsFailedAction])
+  loadPortCallDetailsFinished({ getState, patchState }: StateContext<IQcReportViewState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
+    if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const state = getState();
-      const success = <LoadReportViewSuccessfulAction>action;
+      const success = <LoadReportDetailsSuccessfulAction>action;
 
       patchState({
         _isLoading: false,
@@ -55,7 +55,7 @@ export class QcReportViewState {
         productsById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId)
         // TODO: load other props
       });
-    } else if (isAction(action, LoadReportViewFailedAction)) {
+    } else if (isAction(action, LoadReportDetailsFailedAction)) {
       patchState({
         _isLoading: false,
         _hasLoaded: false,

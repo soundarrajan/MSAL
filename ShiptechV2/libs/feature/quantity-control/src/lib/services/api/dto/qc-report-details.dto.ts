@@ -1,34 +1,34 @@
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 
-export interface IQcReportViewDto {
+export interface IQcReportDetailsDto {
   portCallId: string;
   vesselName: string;
   nbOfCliams: number;
   nbOfDeliveries: number;
   status: ILookupDto;
-  productTypes: IQcReportViewProductDto[];
-  uoms: IQcReportViewUoms;
+  productTypes: IQcReportDetailsProductDto[];
+  uoms: IQcReportDetailsUoms;
 }
 
-export interface IQcReportViewProductDto {
+export interface IQcReportDetailsProductDto {
   productTypeName: string;
   productTypeId: number;
-  robBeforeDelivery: IPortCallRob;
-  deliveredQty: IPortCallDeliveredQty;
-  robAfterDelivery: IPortCallRob;
+  robBeforeDelivery: IQcReportDetailsRob;
+  deliveredQty: IQcReportDetailsDeliveredQty;
+  robAfterDelivery: IQcReportDetailsRob;
 }
 
-export interface IPortCallDeliveredQty {
+export interface IQcReportDetailsDeliveredQty {
   bdnQty: number;
   messuredDeliveredQty: number;
 }
 
-export interface IPortCallRob {
+export interface IQcReportDetailsRob {
   logBookROB: number;
   measuredROB: number;
 }
 
-export interface IQcReportViewUoms {
+export interface IQcReportDetailsUoms {
   robBeforeDeliveryUom: ILookupDto,
   robAfterDeliveryUom: ILookupDto,
   deliveredQtyUom: ILookupDto

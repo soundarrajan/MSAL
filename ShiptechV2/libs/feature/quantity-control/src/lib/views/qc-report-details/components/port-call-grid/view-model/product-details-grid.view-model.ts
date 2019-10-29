@@ -10,12 +10,12 @@ import {
   ProductDetailsProps
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../core/logging/module-logger-factory';
-import { ReportViewService } from '../../../../../services/report-view.service';
+import { QcReportDetailsService } from '../../../../../services/qc-report-details.service';
 import {
-  IPortCallDeliveredQty,
-  IPortCallRob,
-  IQcReportViewProductDto
-} from '../../../../../services/api/dto/port-call.dto';
+  IQcReportDetailsDeliveredQty,
+  IQcReportDetailsProductDto,
+  IQcReportDetailsRob
+} from '../../../../../services/api/dto/qc-report-details.dto';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 
 @Injectable()
@@ -63,7 +63,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   logBookBeforeDeliveryCol: ColDef = {
     headerName: ProductDetailsColumns.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
-    field: this.getPathToModel<IPortCallRob>('robBeforeDelivery', 'logBookROB'),
+    field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'logBookROB'),
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -72,7 +72,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   measuredRobBeforeDeliveryCol: ColDef = {
     headerName: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
-    field: this.getPathToModel<IPortCallRob>('robBeforeDelivery', 'measuredROB'),
+    field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'measuredROB'),
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -90,7 +90,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   bdnDeliveredQuantityCol: ColDef = {
     headerName: ProductDetailsColumns.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
-    field: this.getPathToModel<IPortCallDeliveredQty>('deliveredQty', 'bdnQty'),
+    field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'bdnQty'),
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -99,7 +99,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   measuredDeliveredQuantityCol: ColDef = {
     headerName: ProductDetailsColumns.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
-    field: this.getPathToModel<IPortCallDeliveredQty>('deliveredQty', 'messuredDeliveredQty'),
+    field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'messuredDeliveredQty'),
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -117,7 +117,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   logBookAfterDeliveryCol: ColDef = {
     headerName: ProductDetailsColumns.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
-    field: this.getPathToModel<IPortCallRob>('robAfterDelivery', 'logBookROB'),
+    field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'logBookROB'),
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -126,7 +126,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   measuredRobAfterDeliveryCol: ColDef = {
     headerName: ProductDetailsColumns.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
-    field: this.getPathToModel<IPortCallRob>('robAfterDelivery', 'measuredROB'),
+    field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'measuredROB'),
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -177,7 +177,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private quantityControlService: ReportViewService,
+    private quantityControlService: QcReportDetailsService,
     private modelProps: ProductDetailsProps
   ) {
     super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
@@ -192,7 +192,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     this.searchText = value;
     this.gridApi.purgeServerSideCache();
 
-    this.getPathToModel<IPortCallRob>('deliveredQty', 'measuredROB');
+    this.getPathToModel<IQcReportDetailsRob>('deliveredQty', 'measuredROB');
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -210,8 +210,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   }
 
   // TODO: Must be refactored
-  getPathToModel<T = any>(propertyName: keyof IQcReportViewProductDto, childPropertyName?: keyof T): string {
-    return `${nameof<IQcReportViewProductDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
+  getPathToModel<T = any>(propertyName: keyof IQcReportDetailsProductDto, childPropertyName?: keyof T): string {
+    return `${nameof<IQcReportDetailsProductDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
   }
 
 }

@@ -2,8 +2,14 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { IGetQcReportsListRequest, IGetQcReportsListResponse } from './request-response/port-calls.request-response';
-import { IGetQcReportByIdRequest, IGetQcReportByIdResponse } from './request-response/port-call-by-id.request-response';
+import {
+  IGetQcReportsListRequest,
+  IGetQcReportsListResponse
+} from './request-response/qc-reports-list.request-response';
+import {
+  IGetQcReportDetailsByIdRequest,
+  IGetQcReportDetailsByIdResponse
+} from './request-response/qc-report-details-by-id.request-response';
 import {
   IGetSoundingReportsRequest,
   IGetSoundingReportsResponse
@@ -44,7 +50,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getPortCallById(request: IGetQcReportByIdRequest): Observable<IGetQcReportByIdResponse> {
+  getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
     return throwError('Not implemented');
   }
 

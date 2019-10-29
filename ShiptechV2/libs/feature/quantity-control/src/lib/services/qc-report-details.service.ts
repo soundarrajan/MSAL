@@ -8,21 +8,21 @@ import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { Store } from '@ngxs/store';
 import {
-  LoadReportViewAction,
-  LoadReportViewFailedAction,
-  LoadReportViewSuccessfulAction
-} from '../store/report-view/qc-report-view.actions';
+  LoadReportDetailsAction,
+  LoadReportDetailsFailedAction,
+  LoadReportDetailsSuccessfulAction
+} from '../store/report-view/qc-report-details.actions';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { QcReportItemViewModel } from './models/qc-report-item-view.model';
+import { QcReportDetailsModel } from './models/qc-report-details.model';
 
 @Injectable()
-export class ReportViewService extends BaseStoreService {
+export class QcReportDetailsService extends BaseStoreService {
 
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
-    super(store, loggerFactory.createLogger(ReportViewService.name));
+    super(store, loggerFactory.createLogger(QcReportDetailsService.name));
   }
 
   getPortCalls(filter: unknown): Observable<{ items: QcReportsListItemModel[], totalItems: number }> {
@@ -37,9 +37,9 @@ export class ReportViewService extends BaseStoreService {
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
       () => this.api.getPortCallById({ portCallId }),
-      new LoadReportViewAction(portCallId),
-      (response) => new LoadReportViewSuccessfulAction(portCallId, new QcReportItemViewModel(response.portCall)),
-      new LoadReportViewFailedAction(portCallId),
+      new LoadReportDetailsAction(portCallId),
+      (response) => new LoadReportDetailsSuccessfulAction(portCallId, new QcReportDetailsModel(response.portCall)),
+      new LoadReportDetailsFailedAction(portCallId),
       ModuleError.LoadPortCallDetailsFailed(portCallId)
     );
   }
