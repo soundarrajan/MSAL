@@ -53,7 +53,7 @@ export class AppServicesModule {
           provide: RouteReuseStrategy,
           useClass: AppRouteReuseStrategy
         },
-        // Note: Providing ROUTES_TO_CACHE to avoid RouteReuseStrategy crash because of null token
+        // Note: Providing/Initializing ROUTES_TO_CACHE to avoid RouteReuseStrategy crash because of null token
         {
           provide: ROUTES_TO_CACHE,
           useValue: [],

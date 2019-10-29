@@ -1,5 +1,5 @@
-import { IPortCallDto } from '../../services/api/dto/port-call.dto';
 import { nullable } from '@shiptech/core/utils/nullable';
+import { PortCallDetailsModel } from '../../services/models/port-call-details.model';
 
 export class LoadPortCallDetailsAction {
   static readonly type = '[Settings] Load Port Call Details';
@@ -17,7 +17,7 @@ export class LoadPortCallDetailsAction {
 export class LoadPortCallDetailsSuccessfulAction {
   static readonly type = '[Settings] Load Port Call Details Successful';
 
-  constructor(public portCallId: string, public dto: IPortCallDto) {
+  constructor(public portCallId: string, public dto: PortCallDetailsModel) {
   }
 
   public log(): any {

@@ -13,6 +13,7 @@ import {
   LoadPortCallDetailsSuccessfulAction
 } from '../store/port-call-details/port-call-details.actions';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
+import { PortCallDetailsModel } from './models/port-call-details.model';
 
 @Injectable()
 export class PortCallDetailsService extends BaseStoreService {
@@ -37,7 +38,7 @@ export class PortCallDetailsService extends BaseStoreService {
     return this.apiDispatch(
       () => this.api.getPortCallById({ portCallId }),
       new LoadPortCallDetailsAction(portCallId),
-      (response) => new LoadPortCallDetailsSuccessfulAction(portCallId, response.portCall),
+      (response) => new LoadPortCallDetailsSuccessfulAction(portCallId, new PortCallDetailsModel(response.portCall)),
       new LoadPortCallDetailsFailedAction(portCallId),
       ModuleError.LoadPortCallDetailsFailed(portCallId)
     );

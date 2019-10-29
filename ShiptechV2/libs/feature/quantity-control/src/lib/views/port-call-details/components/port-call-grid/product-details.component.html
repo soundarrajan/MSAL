@@ -1,0 +1,13 @@
+<ag-grid-angular
+  AgGridExternalSearch
+  [gridOptions]="viewModel.gridViewModel.gridOptions"
+  [onSearch]="viewModel.gridViewModel.onSearch.bind(viewModel.gridViewModel)"
+  appAgGridFilterPresets
+  appAgGridFirstColumnLocked
+  appAgGridSizeToFit
+  appDeselectFiltredRows
+  class="ag-theme-balham"
+  groupId="quantityControlCallView"
+  id="quantityControlProductsGrid"
+  style="height:500px">
+</ag-grid-angular>

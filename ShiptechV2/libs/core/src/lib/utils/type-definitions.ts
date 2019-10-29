@@ -18,3 +18,7 @@ export enum LogicalOperator {
   And = 'And',
   Or = 'Or'
 }
+
+export function getPathToModel<T = any, TProp1 extends keyof T = keyof T, TProp2 extends keyof T[TProp1] = keyof T[TProp1]>(prop1: TProp1, prop2: TProp2): string {
+  return `${prop1}.${prop2}`;
+}
