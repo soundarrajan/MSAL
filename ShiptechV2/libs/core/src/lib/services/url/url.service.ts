@@ -4,7 +4,7 @@ import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { APP_BASE_HREF } from '@angular/common';
 import { KnownQuantityControlRoutes } from '../../../../../feature/quantity-control/src/lib/known-quantity-control.routes';
-import { KnownModulesRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,7 @@ export class UrlService {
   }
 
   public portCallDetails(portCallId: string | number): string {
-    return `${this.baseHref}${KnownModulesRoutes.QuantityControl}/${KnownQuantityControlRoutes.portCallDetails}/${(portCallId)}`;
+    return `${this.baseHref}${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.portCallDetails}/${(portCallId)}`;
   }
 
   public editLabResults(labId: string | number): string {

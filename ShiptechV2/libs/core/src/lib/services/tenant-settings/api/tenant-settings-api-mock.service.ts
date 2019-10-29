@@ -24,14 +24,28 @@ export class TenantSettingsApiMock implements ITenantSettingsApi {
 
   @ObservableException()
   @ApiCall()
-  get(moduleName: TenantSettingsModuleName): Observable<ITenantSettingsApiResponse>{
+  get(moduleName: TenantSettingsModuleName): Observable<ITenantSettingsApiResponse> {
     switch (moduleName) {
       case TenantSettingsModuleName.General:
-        return of(generalTenantSettings);
+        return this.getGeneralSettings();
       case TenantSettingsModuleName.Delivery:
-        return of(deliveryTenantSettings);
+        return this.getDeliverySettings();
     }
 
     return of();
+  }
+
+  @ObservableException()
+  @ApiCall()
+  // Note: Used just to show in Developer Toolbar.
+  private getDeliverySettings(): Observable<ITenantSettingsApiResponse> {
+    return of(deliveryTenantSettings);
+  }
+
+  @ObservableException()
+  @ApiCall()
+  // Note: Used just to show in Developer Toolbar.
+  private getGeneralSettings(): Observable<ITenantSettingsApiResponse> {
+    return of(generalTenantSettings);
   }
 }
