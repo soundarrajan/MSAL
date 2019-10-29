@@ -358,6 +358,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $('#vis-custom-group-columns').height($('.vis-time-axis.vis-foreground').height());
                 $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
             }
+
             $scope.timelineLoaded = true;
         };
 
@@ -578,9 +579,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $rootScope.$broadcast("clearUnsavedFilters");
         });
 
+        document.addEventListener('contextmenu', function(e) {
+	        if ($(event.target).hasClass("vis-voyage-content") || $(event.target).parents('.vis-voyage-content').length || $(event.target).hasClass('screen-loader')) {
+            	e.preventDefault();
+            }
+        });
+
+        $(document).on("click", function(event) {
+	        if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
+	        	$scope.rightClickPopoverData = null;
+	        	$scope.$digest();
+	        }
+        });
+
         $(document).on("mousedown", "span[voyage-detail-id]", function(event){
+            event.preventDefault();
             if (event.which == 3) {
-                event.preventDefault();
                 voyageDetailId = $(this).attr("voyage-detail-id");
 
                 object = _.filter(ctrl.voyageData, function(el){

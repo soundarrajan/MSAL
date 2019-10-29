@@ -56,3 +56,39 @@
 	</div>
 
 </div>
+
+<div class="cancelStrategyModal fade bs-modal hide" tabindex="-1" role="dialog" style="transform: translateY(50%);" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="gridSystemModalLabel"><i class="fa fa-warning"></i> Warning</h4>
+			</div>
+			<div class="modal-body">
+				<div>Vessel: <b>{{cancelStrategyModalData.vesselName}}</b></div> 
+				<div>Port: <b>{{cancelStrategyModalData.portCode}}</b></div> 
+				<div>ETA: <b>{{cancelStrategyModalData.eta}}</b></div>
+				<br>
+				<div>
+					You expect to cancel <b>{{cancelStrategyModalData.fuelType}}</b> strategy to supply <b>{{cancelStrategyModalData.quantity}}</b> <b>{{cancelStrategyModalData.uom}}</b> in this port
+				</div> 
+				<br>
+				<div>
+					This action will inform SAP and the bunker plan will be recalculated.
+				</div>
+				<br>
+				<div>Do you want to proceed?</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-sm-6">
+						<button style="display: block; width: 100%" type="button" class="btn orange btn-outline confirmAction" data-dismiss="modal" ng-click="$ctrl.cancelStrategy(cancelStrategyModalData.bunkerPlanId)">Yes</button>
+					</div>
+					<div class="col-sm-6">
+						<button style="display: block; width: 100%" type="button" class="btn  default" data-dismiss="modal">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

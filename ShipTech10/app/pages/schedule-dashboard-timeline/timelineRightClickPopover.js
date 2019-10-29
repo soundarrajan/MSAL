@@ -1,6 +1,6 @@
 angular.module('shiptech.components')
-    .controller('timelineRightClickPopover', ['$scope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings',  
-        function($scope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings) {
+    .controller('timelineRightClickPopover', ['$scope', '$rootScope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', 'API', '$http',
+        function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http) {
 
 	        var ctrl = this;
 		
@@ -17,6 +17,36 @@ angular.module('shiptech.components')
 
 			ctrl.$onInit = function() {
 			};
+
+	        $scope.confirmCancelBunkerStrategy = function(bunkerPlan, vsVal) {
+				$(".cancelStrategyModal").modal();
+				$(".cancelStrategyModal").removeClass("hide");
+				$scope.cancelStrategyModalData = {};
+				$scope.cancelStrategyModalData.vesselName = vsVal.request.vesselName;
+				$scope.cancelStrategyModalData.portCode = vsVal.locationCode;
+				$scope.cancelStrategyModalData.eta = vsVal.eta;
+				$scope.cancelStrategyModalData.fuelType = bunkerPlan.productType;
+				$scope.cancelStrategyModalData.quantity = bunkerPlan.supplyQuantity;
+				$scope.cancelStrategyModalData.uom = bunkerPlan.supplyUomName;
+				$scope.cancelStrategyModalData.bunkerPlanId = bunkerPlan.id;
+			}
+
+
+	        ctrl.cancelStrategy = function(bunkerPlanId){
+				var url = API.BASE_URL_DATA_MASTERS + "/api/masters/vessels/cancelStrategy";
+				payload = {
+					payload : bunkerPlanId
+				}
+				var currentBunkerPlanId = bunkerPlanId;
+	            $http.post(url, payload).then(function success(response) {
+	                if (response.status == 200) {
+	                	$state.reload();
+	                } else {
+	                    console.log("Error cancelStrategy");
+	                }
+	            });
+	            $scope.cancelStrategyModalData = null;
+			}
 		}
 	]	
 );
