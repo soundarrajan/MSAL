@@ -7,6 +7,7 @@ export class PortCallDetailsStateModel {
   vesselReports: unknown[];
   soundingReports: unknown[];
   events: unknown[];
+  productsById: Record<string, unknown>;
 
   comment: string;
   vesselResponse: string;
