@@ -1,5 +1,5 @@
 import { IServerSideGetRowsParams } from 'ag-grid-community';
-import { IShiptechSorts, ShiptechSortParamtersEnum } from '../../services/models/procurement-requests.dto';
+import { IShiptechSorts, ShiptechSortParamtersEnum } from '../../services/models/generic-shiptech.dto';
 
 export function getShiptechFormatSorts(params: IServerSideGetRowsParams): IShiptechSorts[] {
 

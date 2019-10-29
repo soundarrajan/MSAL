@@ -2,8 +2,8 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { IGetPortCallsRequest, IGetPortCallsResponse } from './request-response/port-calls.request-response';
-import { IGetPortCallByIdRequest, IGetPortCallByIdResponse } from './request-response/port-call-by-id.request-response';
+import { IGetQcReportsListRequest, IGetQcReportsListResponse } from './request-response/port-calls.request-response';
+import { IGetQcReportByIdRequest, IGetQcReportByIdResponse } from './request-response/port-call-by-id.request-response';
 import {
   IGetSoundingReportsRequest,
   IGetSoundingReportsResponse
@@ -15,8 +15,8 @@ import {
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import { IRaiseClaimRequest, IRaiseClaimResponse } from './request-response/raise-claim.request-response';
 import {
-  IVerifyPortCallsRequest,
-  IVerifyPortCallsResponse
+  IVerifyQcReportsRequest,
+  IVerifyQcReportsResponse
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import { AppConfig } from '@shiptech/core/config/app-config';
@@ -39,12 +39,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse> {
+  getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return throwError('Not implemented');
   }
 
   @ObservableException()
-  getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse> {
+  getPortCallById(request: IGetQcReportByIdRequest): Observable<IGetQcReportByIdResponse> {
     return throwError('Not implemented');
   }
 
@@ -69,7 +69,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  verifyPortCalls(request: IVerifyPortCallsRequest): Observable<IVerifyPortCallsResponse> {
+  verifyPortCalls(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
     return throwError('Not implemented');
   }
 

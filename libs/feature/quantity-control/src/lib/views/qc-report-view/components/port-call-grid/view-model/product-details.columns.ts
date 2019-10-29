@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   IPortCallDeliveredQty,
-  IPortCallProductDto,
-  IPortCallRob
+  IPortCallRob,
+  IQcReportViewProductDto
 } from '../../../../../services/api/dto/port-call.dto';
 import { PropName } from '@shiptech/core/utils/decorators/method-name.decorator';
 
-export interface IPortCallDetailsProps extends IPortCallProductDto {
+export interface IPortCallDetailsProps extends IQcReportViewProductDto {
 }
 
 @Injectable({

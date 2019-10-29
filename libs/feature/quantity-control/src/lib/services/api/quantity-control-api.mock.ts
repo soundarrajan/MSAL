@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
 import { Observable, of, throwError } from 'rxjs';
-import { IGetPortCallsRequest, IGetPortCallsResponse } from './request-response/port-calls.request-response';
-import { IGetPortCallByIdRequest, IGetPortCallByIdResponse } from './request-response/port-call-by-id.request-response';
+import { IGetQcReportsListRequest, IGetQcReportsListResponse } from './request-response/port-calls.request-response';
+import { IGetQcReportByIdRequest, IGetQcReportByIdResponse } from './request-response/port-call-by-id.request-response';
 import {
   IGetSoundingReportsRequest,
   IGetSoundingReportsResponse
@@ -14,8 +14,8 @@ import {
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import { IRaiseClaimRequest, IRaiseClaimResponse } from './request-response/raise-claim.request-response';
 import {
-  IVerifyPortCallsRequest,
-  IVerifyPortCallsResponse
+  IVerifyQcReportsRequest,
+  IVerifyQcReportsResponse
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import { getMockPortCallsList } from './mock/port-calls-list.mock';
@@ -37,7 +37,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse> {
+  getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return of({
       items: getMockPortCallsList(request.pageSize).map(item => new QcReportsListItemModel(item)),
       totalItems: request.pageSize * 5
@@ -45,7 +45,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse> {
+  getPortCallById(request: IGetQcReportByIdRequest): Observable<IGetQcReportByIdResponse> {
     return of({ portCall: getMockPortCall(request.portCallId) });
   }
 
@@ -70,7 +70,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  verifyPortCalls(request: IVerifyPortCallsRequest): Observable<IVerifyPortCallsResponse> {
+  verifyPortCalls(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
     return throwError('Not implemented');
   }
 
