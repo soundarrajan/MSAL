@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { PortCallListItemModel } from './models/port-call-list-item.model';
 import { ModuleError } from '../core/error-handling/module-error';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
@@ -28,8 +28,11 @@ export class PortCallDetailsService extends BaseStoreService {
     return this.api.getPortCalls({ pageSize: 100 });
   }
 
-  @ObservableException(ModuleError.LoadPortCallDetailsFailed)
+  @ObservableException()
   loadPortCallDetails(portCallId: string): Observable<unknown> {
+    if (!portCallId) {
+      return throwError(ModuleError.InvalidPortCallId(portCallId));
+    }
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
       () => this.api.getPortCallById({ portCallId }),

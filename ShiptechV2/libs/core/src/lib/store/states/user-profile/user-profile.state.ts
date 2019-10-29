@@ -10,6 +10,7 @@ import {
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
+import { patch } from '@ngxs/store/operators';
 
 // @dynamic
 @State<IUserProfileState>({
