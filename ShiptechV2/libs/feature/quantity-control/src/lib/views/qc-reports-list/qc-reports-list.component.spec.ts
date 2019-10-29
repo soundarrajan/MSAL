@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PortCallsListComponent } from './port-calls-list.component';
+import { QcReportsListComponent } from './qc-reports-list.component';
 
 describe('PortCallsListComponent', () => {
-  let component: PortCallsListComponent;
-  let fixture: ComponentFixture<PortCallsListComponent>;
+  let component: QcReportsListComponent;
+  let fixture: ComponentFixture<QcReportsListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PortCallsListComponent ]
+      declarations: [QcReportsListComponent]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PortCallsListComponent);
+    fixture = TestBed.createComponent(QcReportsListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

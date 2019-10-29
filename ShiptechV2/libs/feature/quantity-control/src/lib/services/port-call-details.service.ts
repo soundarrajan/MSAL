@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
 import { Observable, throwError } from 'rxjs';
-import { PortCallListItemModel } from './models/port-call-list-item.model';
+import { QcReportsListItemModel } from './models/qc-reports-list-item.model';
 import { ModuleError } from '../core/error-handling/module-error';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -25,7 +25,7 @@ export class PortCallDetailsService extends BaseStoreService {
     super(store, loggerFactory.createLogger(PortCallDetailsService.name));
   }
 
-  getPortCalls(filter: unknown): Observable<{ items: PortCallListItemModel[], totalItems: number }> {
+  getPortCalls(filter: unknown): Observable<{ items: QcReportsListItemModel[], totalItems: number }> {
     return this.api.getPortCalls({ pageSize: 100 });
   }
 
