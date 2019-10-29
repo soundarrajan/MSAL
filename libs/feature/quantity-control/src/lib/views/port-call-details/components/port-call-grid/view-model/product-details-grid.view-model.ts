@@ -180,7 +180,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     private quantityControlService: PortCallDetailsService,
     private modelProps: ProductDetailsProps
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
+    super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 
