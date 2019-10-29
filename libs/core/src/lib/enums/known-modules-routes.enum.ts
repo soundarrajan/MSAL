@@ -1,4 +1,5 @@
-export enum KnownModulesRoutes {
+export enum KnownPrimaryRoutes {
   QuantityControl = 'quantity-control',
-  LazyLoad = 'lazy-load'
+  LazyLoad = 'lazy-load',
+  Root = ''
 }

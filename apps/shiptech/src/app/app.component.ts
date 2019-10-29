@@ -1,6 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
 import { environment } from '@shiptech/environment';
-import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'shiptech-root',
@@ -17,7 +17,7 @@ export class AppComponent {
   constructor(router: Router) {
     router.events.subscribe(
       (event: RouterEvent): void => {
-        if (event instanceof NavigationEnd) {
+        if ((event instanceof NavigationEnd) || (event instanceof  NavigationCancel) || (event instanceof  NavigationError)) {
           this.isLoading = false;
         }
       }
