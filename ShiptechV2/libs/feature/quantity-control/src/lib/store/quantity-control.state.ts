@@ -1,6 +1,6 @@
 import { State } from '@ngxs/store';
 import { QcReportsListState } from './reports-list/qc-reports-list.state';
-import { IQcReportViewState } from './report-view/qc-report-details.state.model';
+import { IQcReportDetailsState } from './report-view/qc-report-details.state.model';
 import { QcReportDetailsState } from './report-view/qc-report-details.state';
 
 @State<IQuantityControlState>({
@@ -10,7 +10,7 @@ import { QcReportDetailsState } from './report-view/qc-report-details.state';
 export class QuantityControlState {}
 
 export interface IQuantityControlState {
-  portCallDetails: IQcReportViewState;
+  portCallDetails: IQcReportDetailsState;
   portCallsList: Record<number, unknown>;
 }
 

@@ -8,7 +8,7 @@ import { EntityType } from '@shiptech/core/services/entity-related-links/model/e
 import { EntityStatusComponent } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { QcReportViewRouteResolver } from './views/qc-report-details/qc-report-view-route.resolver';
+import { QcReportDetailsRouteResolver } from './views/qc-report-details/qc-report-details-route.resolver';
 import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
 
 const routes: Routes = [
@@ -34,7 +34,7 @@ const routes: Routes = [
       {
         path: `${KnownQuantityControlRoutes.ReportDetails}/:${KnownQuantityControlRoutes.ReportIdParam}`,
         resolve: {
-          portCall: QcReportViewRouteResolver
+          portCall: QcReportDetailsRouteResolver
         },
         children: [
           {

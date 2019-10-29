@@ -1,6 +1,6 @@
 import { Action, createSelector, Select, Selector, State, StateContext } from '@ngxs/store';
 import { IQuantityControlState } from '../quantity-control.state';
-import { IQcReportViewState } from './qc-report-details.state.model';
+import { IQcReportDetailsState } from './qc-report-details.state.model';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
   LoadReportDetailsAction,
@@ -10,30 +10,30 @@ import {
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 
-@State<IQcReportViewState>({
+@State<IQcReportDetailsState>({
   name: nameof<IQuantityControlState>('portCallDetails')
 })
 export class QcReportDetailsState {
 
   @Select()
-  static getPortCallsProductTypesIds(state: IQcReportViewState): unknown[] {
+  static getPortCallsProductTypesIds(state: IQcReportDetailsState): unknown[] {
     return state.products;
   }
 
   @Selector([QcReportDetailsState.getPortCallsProductTypesIds])
-  static getSelectedPurchaseDeliveries(state: IQcReportViewState, productTypesIds: number[]): unknown[] {
+  static getSelectedPurchaseDeliveries(state: IQcReportDetailsState, productTypesIds: number[]): unknown[] {
     return productTypesIds.map(productTypeId => state.productsById[productTypeId]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => unknown {
     return createSelector(
       [QcReportDetailsState],
-      (state: IQcReportViewState) => state.productsById[productTypeId]
+      (state: IQcReportDetailsState) => state.productsById[productTypeId]
     );
   }
 
   @Action(LoadReportDetailsAction)
-  loadPortCallDetails({ getState, patchState }: StateContext<IQcReportViewState>, { reportId }: LoadReportDetailsAction): void {
+  loadPortCallDetails({ getState, patchState }: StateContext<IQcReportDetailsState>, { reportId }: LoadReportDetailsAction): void {
     patchState({
       _isLoading: true,
       _hasLoaded: false,
@@ -42,7 +42,7 @@ export class QcReportDetailsState {
   }
 
   @Action([LoadReportDetailsSuccessfulAction, LoadReportDetailsFailedAction])
-  loadPortCallDetailsFinished({ getState, patchState }: StateContext<IQcReportViewState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
+  loadPortCallDetailsFinished({ getState, patchState }: StateContext<IQcReportDetailsState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const state = getState();
       const success = <LoadReportDetailsSuccessfulAction>action;
