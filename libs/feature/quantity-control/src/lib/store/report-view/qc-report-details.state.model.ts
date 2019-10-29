@@ -19,6 +19,6 @@ export class QcReportDetailsStateModel {
   isVerifying: boolean;
 }
 
-export interface IQcReportViewState extends QcReportDetailsStateModel {
+export interface IQcReportDetailsState extends QcReportDetailsStateModel {
 }
 

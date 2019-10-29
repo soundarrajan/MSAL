@@ -27,7 +27,7 @@ import { SoundingReportsComponent } from './views/qc-report-details/components/s
 import { EventsLogComponent } from './views/qc-report-details/components/events-log/events-log.component';
 import { SurveyReportHistoryComponent } from './views/qc-report-details/components/survey-report-history/survey-report-history.component';
 import { ProductDetailsComponent } from './views/qc-report-details/components/port-call-grid/product-details.component';
-import { QcReportViewRouteResolver } from './views/qc-report-details/qc-report-view-route.resolver';
+import { QcReportDetailsRouteResolver } from './views/qc-report-details/qc-report-details-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 
@@ -63,7 +63,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
   providers: [
     ModuleLoggerFactory,
     QuantityControlRouteResolver,
-    QcReportViewRouteResolver,
+    QcReportDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApi : QuantityControlApiMock

@@ -8,7 +8,7 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 @Injectable()
-export class QcReportViewRouteResolver implements Resolve<any> {
+export class QcReportDetailsRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
