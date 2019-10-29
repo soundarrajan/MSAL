@@ -1,5 +1,5 @@
 import { nullable } from '@shiptech/core/utils/nullable';
-import { ReportItemViewModel } from '../../services/models/port-call-details.model';
+import { QcReportItemViewModel } from '../../services/models/qc-report-item-view.model';
 
 export class LoadReportViewAction {
   static readonly type = '[Settings] Load Report View Details';
@@ -17,7 +17,7 @@ export class LoadReportViewAction {
 export class LoadReportViewSuccessfulAction {
   static readonly type = '[Settings] Load Report View Successful';
 
-  constructor(public reportId: string, public dto: ReportItemViewModel) {
+  constructor(public reportId: string, public dto: QcReportItemViewModel) {
   }
 
   public log(): any {

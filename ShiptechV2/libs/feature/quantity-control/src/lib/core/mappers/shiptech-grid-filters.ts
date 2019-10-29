@@ -1,10 +1,11 @@
 import { IServerSideGetRowsParams } from 'ag-grid-community';
 import {
   IShiptechDateFilter,
-  IShiptechFilter, IShiptechNumberFilter,
+  IShiptechFilter,
+  IShiptechNumberFilter,
   IShiptechTextFilter,
   ShiptechConditionValues
-} from '../../services/models/procurement-requests.dto';
+} from '../../services/models/generic-shiptech.dto';
 import * as _ from 'lodash';
 import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
 

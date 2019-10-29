@@ -20,7 +20,7 @@ import { QcReportViewComponent } from './views/qc-report-view/qc-report-view.com
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { PortCallDetailsService } from './services/port-call-details.service';
+import { ReportViewService } from './services/report-view.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
 import { SoundingReportsComponent } from './views/qc-report-view/components/sounding-reports/sounding-reports.component';
@@ -70,7 +70,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     },
 
     // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
-    PortCallDetailsService
+    ReportViewService
   ]
 })
 export class QuantityControlModule {

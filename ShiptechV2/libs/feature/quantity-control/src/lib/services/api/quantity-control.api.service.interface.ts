@@ -1,6 +1,6 @@
-import { IGetPortCallsRequest, IGetPortCallsResponse } from './request-response/port-calls.request-response';
+import { IGetQcReportsListRequest, IGetQcReportsListResponse } from './request-response/port-calls.request-response';
 import { Observable } from 'rxjs';
-import { IGetPortCallByIdRequest, IGetPortCallByIdResponse } from './request-response/port-call-by-id.request-response';
+import { IGetQcReportByIdRequest, IGetQcReportByIdResponse } from './request-response/port-call-by-id.request-response';
 import {
   IGetSoundingReportsRequest,
   IGetSoundingReportsResponse
@@ -12,15 +12,15 @@ import {
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import { IRaiseClaimRequest, IRaiseClaimResponse } from './request-response/raise-claim.request-response';
 import {
-  IVerifyPortCallsRequest,
-  IVerifyPortCallsResponse
+  IVerifyQcReportsRequest,
+  IVerifyQcReportsResponse
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 
 export interface IQuantityControlApiService {
-  getPortCalls(request: IGetPortCallsRequest): Observable<IGetPortCallsResponse>;
+  getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
 
-  getPortCallById(request: IGetPortCallByIdRequest): Observable<IGetPortCallByIdResponse>;
+  getPortCallById(request: IGetQcReportByIdRequest): Observable<IGetQcReportByIdResponse>;
 
   getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse>;
 
@@ -30,7 +30,7 @@ export interface IQuantityControlApiService {
 
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse>;
 
-  verifyPortCalls(request: IVerifyPortCallsRequest): Observable<IVerifyPortCallsResponse>;
+  verifyPortCalls(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse>;
 
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse>;
 }

@@ -10,11 +10,11 @@ import {
   ProductDetailsProps
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../core/logging/module-logger-factory';
-import { PortCallDetailsService } from '../../../../../services/port-call-details.service';
+import { ReportViewService } from '../../../../../services/report-view.service';
 import {
   IPortCallDeliveredQty,
-  IPortCallProductDto,
-  IPortCallRob
+  IPortCallRob,
+  IQcReportViewProductDto
 } from '../../../../../services/api/dto/port-call.dto';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 
@@ -177,7 +177,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private quantityControlService: PortCallDetailsService,
+    private quantityControlService: ReportViewService,
     private modelProps: ProductDetailsProps
   ) {
     super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
@@ -210,8 +210,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   }
 
   // TODO: Must be refactored
-  getPathToModel<T = any>(propertyName: keyof IPortCallProductDto, childPropertyName?: keyof T): string {
-    return `${nameof<IPortCallProductDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
+  getPathToModel<T = any>(propertyName: keyof IQcReportViewProductDto, childPropertyName?: keyof T): string {
+    return `${nameof<IQcReportViewProductDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
   }
 
 }

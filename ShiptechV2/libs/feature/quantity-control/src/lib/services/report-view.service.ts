@@ -13,16 +13,16 @@ import {
   LoadReportViewSuccessfulAction
 } from '../store/report-view/qc-report-view.actions';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { ReportItemViewModel } from './models/port-call-details.model';
+import { QcReportItemViewModel } from './models/qc-report-item-view.model';
 
 @Injectable()
-export class PortCallDetailsService extends BaseStoreService {
+export class ReportViewService extends BaseStoreService {
 
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
-    super(store, loggerFactory.createLogger(PortCallDetailsService.name));
+    super(store, loggerFactory.createLogger(ReportViewService.name));
   }
 
   getPortCalls(filter: unknown): Observable<{ items: QcReportsListItemModel[], totalItems: number }> {
@@ -38,7 +38,7 @@ export class PortCallDetailsService extends BaseStoreService {
     return this.apiDispatch(
       () => this.api.getPortCallById({ portCallId }),
       new LoadReportViewAction(portCallId),
-      (response) => new LoadReportViewSuccessfulAction(portCallId, new ReportItemViewModel(response.portCall)),
+      (response) => new LoadReportViewSuccessfulAction(portCallId, new QcReportItemViewModel(response.portCall)),
       new LoadReportViewFailedAction(portCallId),
       ModuleError.LoadPortCallDetailsFailed(portCallId)
     );

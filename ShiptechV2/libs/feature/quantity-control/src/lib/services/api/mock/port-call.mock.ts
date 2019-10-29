@@ -1,4 +1,4 @@
-import { IPortCallDetailsDto, IPortCallProductDto } from '../dto/port-call.dto';
+import { IQcReportViewDto, IQcReportViewProductDto } from '../dto/port-call.dto';
 import * as faker from 'faker';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { PortCallStatusEnum } from '../../../core/enums/port-call-status.enum';
@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { MockProductsLookup } from './products.mock';
 import { mockUoms } from './uoms.mock';
 
-export function getMockPortCall(id: string): IPortCallDetailsDto {
+export function getMockPortCall(id: string): IQcReportViewDto {
   return {
     portCallId: id,
     vesselName: faker.commerce.color(),
@@ -37,7 +37,7 @@ export const PortCallStatuses: ILookupDto<number, PortCallStatusEnum>[] = [
   }
 ];
 
-export function getMockPortCallProductTypes(n: number): IPortCallProductDto[] {
+export function getMockPortCallProductTypes(n: number): IQcReportViewProductDto[] {
   const product = _.sample(MockProductsLookup);
 
   return _.range(1, n).map(() => ({
