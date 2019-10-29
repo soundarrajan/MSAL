@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { PortCallDetailsService } from '../../../../services/port-call-details.service';
+import { ProductDetailsViewModel } from './view-model/product-details.view-model';
+import { Store } from '@ngxs/store';
+import { ProductDetailsGridViewModel } from './view-model/product-details-grid.view-model';
 
 @Component({
   selector: 'shiptech-port-call-grid',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss']
+  styleUrls: ['./product-details.component.scss'],
+  providers: [ProductDetailsViewModel, ProductDetailsGridViewModel]
 })
 export class ProductDetailsComponent implements OnInit {
   // TODO: get port callId dynamically
   // Note: At this point the port call details should be already loaded into the state, use the selector.
   // Note: Rename "Grid" to Product Details
-  //portCall$: Observable<IPortCallDto> = this.portCallDetailsService.loadPortCallDetails('1').pipe(tap((value) => console.log('vALUE', value)));
+  // portCall$: Observable<IPortCallProductDto> = this.store.select(state => state.)
 
-  constructor(private portCallDetailsService: PortCallDetailsService) {
+  constructor(private viewModel: ProductDetailsViewModel, private store: Store) {
   }
 
   ngOnInit(): void {
