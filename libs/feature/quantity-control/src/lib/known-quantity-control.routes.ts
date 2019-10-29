@@ -1,5 +1,5 @@
 export enum KnownQuantityControlRoutes {
-  ReportList = 'port-calls',
-  ReportView = 'port-call-details',
-  ReportIdParam = 'portCallId',
+  ReportList = 'reports-list',
+  ReportDetails = 'report-details',
+  ReportIdParam = 'reportId',
 }

@@ -1,4 +1,4 @@
-import { PortCallListItemDto } from '../api/dto/port-call-list-item.dto';
+import { QcReportsListItemDto } from '../api/dto/qc-reports-list-item.dto';
 
 export class QcReportsListItemModel {
   id: number;
@@ -21,7 +21,7 @@ export class QcReportsListItemModel {
   sludgeDischargedQuantity: number;
   comment: number;
 
-  constructor(dto: PortCallListItemDto) {
+  constructor(dto: QcReportsListItemDto) {
     Object.assign(this, dto);
   }
 }

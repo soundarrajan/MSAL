@@ -1,11 +1,11 @@
 import { State } from '@ngxs/store';
 import { QcReportsListState } from './reports-list/qc-reports-list.state';
-import { IQcReportViewState } from './report-view/qc-report-view.state.model';
-import { QcReportViewState } from './report-view/qc-report-view.state';
+import { IQcReportViewState } from './report-view/qc-report-details.state.model';
+import { QcReportDetailsState } from './report-view/qc-report-details.state';
 
 @State<IQuantityControlState>({
   name: 'quantityControl',
-  children: [QcReportsListState, QcReportViewState]
+  children: [QcReportsListState, QcReportDetailsState]
 })
 export class QuantityControlState {}
 

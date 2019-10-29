@@ -1,14 +1,14 @@
-import { PortCallListItemDto } from '../dto/port-call-list-item.dto';
+import { QcReportsListItemDto } from '../dto/qc-reports-list-item.dto';
 import * as faker from 'faker';
 import * as _ from 'lodash';
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 
 
-export function getMockPortCallsList(n: number): PortCallListItemDto[] {
-  return _.range(1, n).map(id => getPortCallListItem(id));
+export function getMockQcReportsList(n: number): QcReportsListItemDto[] {
+  return _.range(1, n).map(id => getMockQcReportsListItem(id));
 }
 
-export function getPortCallListItem(id: number): PortCallListItemDto {
+export function getMockQcReportsListItem(id: number): QcReportsListItemDto {
   const quantityBefore: number = faker.random.number(5000);
   const rob: number = faker.random.number(200);
   const sludge: number = faker.random.number(500);

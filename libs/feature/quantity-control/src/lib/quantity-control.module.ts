@@ -13,21 +13,21 @@ import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
 import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportViewState } from './store/report-view/qc-report-view.state';
+import { QcReportDetailsState } from './store/report-view/qc-report-details.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
-import { QcReportViewComponent } from './views/qc-report-view/qc-report-view.component';
+import { QcReportDetailsComponent } from './views/qc-report-details/qc-report-details.component';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { ReportViewService } from './services/report-view.service';
+import { QcReportDetailsService } from './services/qc-report-details.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { SoundingReportsComponent } from './views/qc-report-view/components/sounding-reports/sounding-reports.component';
-import { EventsLogComponent } from './views/qc-report-view/components/events-log/events-log.component';
-import { SurveyReportHistoryComponent } from './views/qc-report-view/components/survey-report-history/survey-report-history.component';
-import { ProductDetailsComponent } from './views/qc-report-view/components/port-call-grid/product-details.component';
-import { QcReportViewRouteResolver } from './views/qc-report-view/qc-report-view-route.resolver';
+import { SoundingReportsComponent } from './views/qc-report-details/components/sounding-reports/sounding-reports.component';
+import { EventsLogComponent } from './views/qc-report-details/components/events-log/events-log.component';
+import { SurveyReportHistoryComponent } from './views/qc-report-details/components/survey-report-history/survey-report-history.component';
+import { ProductDetailsComponent } from './views/qc-report-details/components/port-call-grid/product-details.component';
+import { QcReportViewRouteResolver } from './views/qc-report-details/qc-report-view-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 
@@ -45,13 +45,13 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportViewState])
+    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportDetailsState])
   ],
   declarations: [
     MainQuantityControlComponent,
     WunderBarComponent,
     QcReportsListComponent,
-    QcReportViewComponent,
+    QcReportDetailsComponent,
     SoundingReportsComponent,
     EventsLogComponent,
     SurveyReportHistoryComponent,
@@ -70,7 +70,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     },
 
     // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
-    ReportViewService
+    QcReportDetailsService
   ]
 })
 export class QuantityControlModule {

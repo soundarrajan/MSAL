@@ -1,6 +1,6 @@
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 
-export interface PortCallListItemDto {
+export interface QcReportsListItemDto {
   id: number;
   port: string;
   vesselName: string;

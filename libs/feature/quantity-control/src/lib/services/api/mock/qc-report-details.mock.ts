@@ -1,12 +1,12 @@
-import { IQcReportViewDto, IQcReportViewProductDto } from '../dto/port-call.dto';
+import { IQcReportDetailsDto, IQcReportDetailsProductDto } from '../dto/qc-report-details.dto';
 import * as faker from 'faker';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
-import { PortCallStatusEnum } from '../../../core/enums/port-call-status.enum';
+import { QcReportStatusEnum } from '../../../core/enums/qc-report-status.enum';
 import * as _ from 'lodash';
 import { MockProductsLookup } from './products.mock';
 import { mockUoms } from './uoms.mock';
 
-export function getMockPortCall(id: string): IQcReportViewDto {
+export function getQcReportDetailsCall(id: string): IQcReportDetailsDto {
   return {
     portCallId: id,
     vesselName: faker.commerce.color(),
@@ -18,26 +18,26 @@ export function getMockPortCall(id: string): IQcReportViewDto {
       robAfterDeliveryUom: _.sample(mockUoms),
       robBeforeDeliveryUom: _.sample(mockUoms)
     },
-    productTypes: getMockPortCallProductTypes(faker.random.number(10))
+    productTypes: getMockQcReportProductTypes(faker.random.number(10))
   };
 }
 
-export const PortCallStatuses: ILookupDto<number, PortCallStatusEnum>[] = [
+export const PortCallStatuses: ILookupDto<number, QcReportStatusEnum>[] = [
   {
     id: 1,
-    name: PortCallStatusEnum.New
+    name: QcReportStatusEnum.New
   },
   {
     id: 2,
-    name: PortCallStatusEnum.Pending
+    name: QcReportStatusEnum.Pending
   },
   {
     id: 3,
-    name: PortCallStatusEnum.Verify
+    name: QcReportStatusEnum.Verify
   }
 ];
 
-export function getMockPortCallProductTypes(n: number): IQcReportViewProductDto[] {
+export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductDto[] {
   const product = _.sample(MockProductsLookup);
 
   return _.range(1, n).map(() => ({

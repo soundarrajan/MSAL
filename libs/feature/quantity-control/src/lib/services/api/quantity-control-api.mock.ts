@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
 import { Observable, of, throwError } from 'rxjs';
-import { IGetQcReportsListRequest, IGetQcReportsListResponse } from './request-response/port-calls.request-response';
-import { IGetQcReportByIdRequest, IGetQcReportByIdResponse } from './request-response/port-call-by-id.request-response';
+import {
+  IGetQcReportsListRequest,
+  IGetQcReportsListResponse
+} from './request-response/qc-reports-list.request-response';
+import {
+  IGetQcReportDetailsByIdRequest,
+  IGetQcReportDetailsByIdResponse
+} from './request-response/qc-report-details-by-id.request-response';
 import {
   IGetSoundingReportsRequest,
   IGetSoundingReportsResponse
@@ -18,10 +24,10 @@ import {
   IVerifyQcReportsResponse
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
-import { getMockPortCallsList } from './mock/port-calls-list.mock';
+import { getMockQcReportsList } from './mock/qc-reports-list.mock';
 import { QcReportsListItemModel } from '../models/qc-reports-list-item.model';
 import { QuantityControlApi } from './quantity-control-api';
-import { getMockPortCall } from './mock/port-call.mock';
+import { getQcReportDetailsCall } from './mock/qc-report-details.mock';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
 
@@ -39,14 +45,14 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return of({
-      items: getMockPortCallsList(request.pageSize).map(item => new QcReportsListItemModel(item)),
+      items: getMockQcReportsList(request.pageSize).map(item => new QcReportsListItemModel(item)),
       totalItems: request.pageSize * 5
     });
   }
 
   @ApiCall()
-  getPortCallById(request: IGetQcReportByIdRequest): Observable<IGetQcReportByIdResponse> {
-    return of({ portCall: getMockPortCall(request.portCallId) });
+  getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
+    return of({ portCall: getQcReportDetailsCall(request.portCallId) });
   }
 
   @ApiCall()

@@ -1,6 +1,12 @@
-import { IGetQcReportsListRequest, IGetQcReportsListResponse } from './request-response/port-calls.request-response';
+import {
+  IGetQcReportsListRequest,
+  IGetQcReportsListResponse
+} from './request-response/qc-reports-list.request-response';
 import { Observable } from 'rxjs';
-import { IGetQcReportByIdRequest, IGetQcReportByIdResponse } from './request-response/port-call-by-id.request-response';
+import {
+  IGetQcReportDetailsByIdRequest,
+  IGetQcReportDetailsByIdResponse
+} from './request-response/qc-report-details-by-id.request-response';
 import {
   IGetSoundingReportsRequest,
   IGetSoundingReportsResponse
@@ -20,7 +26,7 @@ import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/wa
 export interface IQuantityControlApiService {
   getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
 
-  getPortCallById(request: IGetQcReportByIdRequest): Observable<IGetQcReportByIdResponse>;
+  getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse>;
 
   getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse>;
 
