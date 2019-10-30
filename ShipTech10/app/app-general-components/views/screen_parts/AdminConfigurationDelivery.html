@@ -300,8 +300,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row" ng-if="formValues.delivery.qcMaxToleranceLimit == null && formValues.delivery.qcMinToleranceLimit == null">
-                {{formValues.delivery.qcToleranceLimitUom = null}}
+            <div class="form-group row" ng-if="formValues.delivery.qcMaxToleranceLimit == null && formValues.delivery.qcMinToleranceLimit == null" ng-init="setQcTolleranceLimitUom(formValues.delivery.qcToleranceLimitUom)">
             </div>
         </div>
     </div>

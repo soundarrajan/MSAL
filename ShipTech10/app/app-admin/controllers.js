@@ -858,6 +858,14 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
 		return 4;
     }
 
+    $scope.setQcTolleranceLimitUom = function() {
+        if (typeof $scope.formValues.delivery != "undefined") {
+            if ($scope.formValues.delivery.qcMaxToleranceLimit == null && $scope.formValues.delivery.qcMinToleranceLimit == null) {
+              $scope.formValues.delivery.qcToleranceLimitUom = null;
+            } 
+        }
+    }
+
 
 
 }]);
