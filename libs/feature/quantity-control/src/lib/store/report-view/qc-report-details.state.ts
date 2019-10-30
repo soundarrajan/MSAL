@@ -51,6 +51,7 @@ export class QcReportDetailsState {
         _isLoading: false,
         _hasLoaded: true,
         id: success.dto.id,
+        portCallId: success.dto.portCallId,
         productTypes: success.dto.productTypes.map(productType => productType.productTypeId),
         productTypesById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId)
         // TODO: load other props
