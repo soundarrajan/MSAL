@@ -1,4 +1,4 @@
-import { BaseSubState } from './base.sub-state';
+import { BaseSubState } from '../models/base.sub-state';
 
 export class QcSoundingReportsState extends BaseSubState {
   items: QcSoundingReportItemState[];
