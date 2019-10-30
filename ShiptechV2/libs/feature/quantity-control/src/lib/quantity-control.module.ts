@@ -12,22 +12,22 @@ import { MainQuantityControlComponent } from './views/main-quantity-control.comp
 import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
-import { PortCallsListState } from './store/port-call-list/port-calls-list.state';
-import { PortCallDetailsState } from './store/port-call-details/port-call-details.state';
+import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
+import { QcReportDetailsState } from './store/report-view/qc-report-details.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
-import { PortCallsListComponent } from './views/port-calls-list/port-calls-list.component';
-import { PortCallDetailsComponent } from './views/port-call-details/port-call-details.component';
+import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
+import { QcReportDetailsComponent } from './views/qc-report-details/qc-report-details.component';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { PortCallDetailsService } from './services/port-call-details.service';
+import { QcReportDetailsService } from './services/qc-report-details.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { SoundingReportsComponent } from './views/port-call-details/components/sounding-reports/sounding-reports.component';
-import { EventsLogComponent } from './views/port-call-details/components/events-log/events-log.component';
-import { SurveyReportHistoryComponent } from './views/port-call-details/components/survey-report-history/survey-report-history.component';
-import { ProductDetailsComponent } from './views/port-call-details/components/port-call-grid/product-details.component';
-import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
+import { SoundingReportsComponent } from './views/qc-report-details/components/sounding-reports/sounding-reports.component';
+import { EventsLogComponent } from './views/qc-report-details/components/events-log/events-log.component';
+import { SurveyReportHistoryComponent } from './views/qc-report-details/components/survey-report-history/survey-report-history.component';
+import { ProductDetailsComponent } from './views/qc-report-details/components/port-call-grid/product-details.component';
+import { QcReportDetailsRouteResolver } from './views/qc-report-details/qc-report-details-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { AuditLogModule } from '@shiptech/core/ui/components/audit-log/audit-log.module';
@@ -46,14 +46,13 @@ import { AuditLogModule } from '@shiptech/core/ui/components/audit-log/audit-log
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallDetailsState]),
-    AuditLogModule,
+    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportDetailsState])
   ],
   declarations: [
     MainQuantityControlComponent,
     WunderBarComponent,
-    PortCallsListComponent,
-    PortCallDetailsComponent,
+    QcReportsListComponent,
+    QcReportDetailsComponent,
     SoundingReportsComponent,
     EventsLogComponent,
     SurveyReportHistoryComponent,
@@ -65,14 +64,14 @@ import { AuditLogModule } from '@shiptech/core/ui/components/audit-log/audit-log
   providers: [
     ModuleLoggerFactory,
     QuantityControlRouteResolver,
-    PortCallDetailsRouteResolver,
+    QcReportDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
     },
 
     // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
-    PortCallDetailsService
+    QcReportDetailsService
   ]
 })
 export class QuantityControlModule {
