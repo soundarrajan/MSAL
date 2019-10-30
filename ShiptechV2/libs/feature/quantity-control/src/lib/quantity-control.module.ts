@@ -13,7 +13,7 @@ import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
 import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportDetailsState } from './store/report-view/qc-report-details.state';
+import { QcReportState } from './store/report-view/qc-report.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
 import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';
@@ -49,7 +49,7 @@ import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportDetailsState])
+    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState])
   ],
   declarations: [
     MainQuantityControlComponent,
