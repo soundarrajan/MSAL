@@ -6,6 +6,7 @@ import {
 } from '../api/dto/qc-report-details.dto';
 
 export class QcReportDetailsModel {
+  id: number;
   portCallId: string;
   vesselName: string;
   nbOfCliams: number;

@@ -8,27 +8,27 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not load port call list. Please try again later.'
   });
 
-  static PortCallNotFound(portCallId?: string): ModuleError {
+  static QcReportNotFound(reportId?: number): ModuleError {
     return new ModuleError({
       code: ErrorCode.PortCallNotFound,
       treatAsWarning: true,
-      message: `Port Call${portCallId ? ` with id ${portCallId} ` : ' '}was not found.`
+      message: `Port Call${reportId ? ` with id ${reportId} ` : ' '}was not found.`
     });
   }
 
-  static InvalidPortCallId(portCallId: string): ModuleError {
+  static InvalidQcReportId(reportId: number): ModuleError {
     return new ModuleError({
       code: ErrorCode.InvalidPortCallId,
       treatAsWarning: true,
-      message: `Invalid Port Call id format '${portCallId}'.`
+      message: `Invalid Port Call id format '${reportId}'.`
     });
   }
 
-  static LoadPortCallDetailsFailed(portCallId?: string): ModuleError {
+  static LoadQcReportDetailsFailed(reportId?: number): ModuleError {
     return new ModuleError({
       code: ErrorCode.LoadPortCallDetailsFailed,
       treatAsWarning: true,
-      message: `Could not load details for Port Call with id '${portCallId}'.`
+      message: `Could not load details for Port Call with id '${reportId}'.`
     });
   }
 

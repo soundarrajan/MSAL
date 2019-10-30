@@ -15,6 +15,7 @@ export function getMockQcReportsListItem(id: number): QcReportsListItemDto {
 
   return {
     id,
+    portCallId: faker.internet.mac(),
     port: faker.random.alphaNumeric(5),
     vesselName: faker.random.word(),
     surveyDate: faker.date.past().toString(),

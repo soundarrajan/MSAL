@@ -81,7 +81,7 @@
 
 <ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appTemplateRenderer let-data="data" let-value="value">
   <ng-container>
-    <a [routerLink]="['../port-call-details', data.id]" href="#"> View {{data.id}} </a>
+    <a [routerLink]="['../' + knownRoutes.ReportDetails, data.id]" href="#"> View {{data.id}} </a>
   </ng-container>
 </ng-template>
 
