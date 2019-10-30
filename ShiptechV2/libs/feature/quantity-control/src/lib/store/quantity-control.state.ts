@@ -12,6 +12,6 @@ export class QuantityControlState {
 
 export interface IQuantityControlState {
   report: IQcReportState;
-  portCallsList: Record<number, unknown>;
+  reportsList: Record<number, unknown>;
 }
 

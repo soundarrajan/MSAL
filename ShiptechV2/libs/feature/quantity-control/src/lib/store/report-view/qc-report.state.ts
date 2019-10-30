@@ -8,12 +8,15 @@ import {
 } from './qc-report-details.actions';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
-import { IQcReportState } from './qc-report.state.model';
+import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 
 @State<IQcReportState>({
-  name: nameof<IQuantityControlState>('report')
+  name: nameof<IQuantityControlState>('report'),
+  defaults: QcReportState.default
 })
 export class QcReportState {
+
+  static default = new QcReportStateModel();
 
   @Select()
   static getPortCallsProductTypesIds(state: IQcReportState): unknown[] {

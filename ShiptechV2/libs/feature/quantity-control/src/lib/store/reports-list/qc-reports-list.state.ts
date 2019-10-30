@@ -4,7 +4,7 @@ import { IQcReportsListState, QcReportsListStateModel } from './qc-reports-list.
 import { nameof } from '@shiptech/core/utils/type-definitions';
 
 @State<IQcReportsListState>({
-  name: nameof<IQuantityControlState>('portCallsList'),
+  name: nameof<IQuantityControlState>('reportsList'),
   defaults: QcReportsListState.default
 })
 export class QcReportsListState {
