@@ -10,6 +10,7 @@ import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
 import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
 import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
+import { AuditLogComponent } from '@shiptech/core/ui/components/audit-log/audit-log.component';
 
 const routes: Routes = [
   {
@@ -40,8 +41,12 @@ const routes: Routes = [
           {
             path: '',
             component: PortCallDetailsComponent,
-          //  resolve: { tenantSettings: ModuleSettingsResolver },
-            data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' }
+            data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' },
+          },
+          {
+            path: KnownQuantityControlRoutes.portCallDetailsAuditPath,
+            component: AuditLogComponent,
+            data: { title: 'Quantity Control - Audit', breadcrumb: 'Audit' },
           },
           {
             path: '',

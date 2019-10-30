@@ -1,6 +1,8 @@
 <shiptech-wunderbar>
+  <!-- TODO: Remove inline style-->
   <div class="row" style="margin: 5px 0;">
     <div class="col-6 d-flex">
+      <p-tabMenu [model]="toolbarTabMenuItems"></p-tabMenu>
       <button [routerLink]="['/quantity-control/port-calls']" label="View all port calls" pButton
               type="button"></button>
     </div>
