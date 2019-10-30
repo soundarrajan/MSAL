@@ -5,7 +5,7 @@ import { QcSoundingReportsState } from './qc-sounding-reports.state';
 import { QcEventsLogState } from './qc-events-log.state';
 import { QcProductTypeListItemState } from './qc-product-type-list-item.state';
 
-export class QcReportDetailsStateModel {
+export class QcReportDetailsState {
   id: number;
   portCallId: string;
 
@@ -30,6 +30,6 @@ export class QcReportDetailsStateModel {
   _isLoading: boolean;
 }
 
-export interface IQcReportDetailsState extends QcReportDetailsStateModel {
+export interface IQcReportDetailsState extends QcReportDetailsState {
 }
 
