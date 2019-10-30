@@ -14,7 +14,7 @@ import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes'
 })
 export class QcReportsListComponent implements OnInit, OnDestroy {
 
-  public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.ReportDetails}`;
+  public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.Report}`;
   knownRoutes = KnownQuantityControlRoutes;
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;

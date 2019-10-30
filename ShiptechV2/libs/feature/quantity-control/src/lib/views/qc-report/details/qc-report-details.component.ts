@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
-import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
+import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 
 @Component({
   selector: 'shiptech-port-call',

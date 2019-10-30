@@ -16,24 +16,24 @@ import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
 import { QcReportDetailsState } from './store/report-view/qc-report-details.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
-import { QcReportDetailsComponent } from './views/qc-report-details/qc-report-details.component';
+import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { QcReportDetailsService } from './services/qc-report-details.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { SoundingReportsComponent } from './views/qc-report-details/components/sounding-reports/sounding-reports.component';
-import { EventsLogComponent } from './views/qc-report-details/components/events-log/events-log.component';
-import { SurveyReportHistoryComponent } from './views/qc-report-details/components/survey-report-history/survey-report-history.component';
-import { ProductDetailsComponent } from './views/qc-report-details/components/port-call-grid/product-details.component';
-import { QcReportDetailsRouteResolver } from './views/qc-report-details/qc-report-details-route.resolver';
+import { SoundingReportsComponent } from './views/qc-report/details/components/sounding-reports/sounding-reports.component';
+import { EventsLogComponent } from './views/qc-report/details/components/events-log/events-log.component';
+import { SurveyReportHistoryComponent } from './views/qc-report/details/components/survey-report-history/survey-report-history.component';
+import { ProductDetailsComponent } from './views/qc-report/details/components/port-call-grid/product-details.component';
+import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-report-details-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
-import { QcReportDetailsAuditLogComponent } from './views/qc-report-details/audit-log/qc-report-details-audit-log.component';
-import { QcReportDetailsToolbarComponent } from './views/qc-report-details/toolbar/qc-report-details-toolbar.component';
-import { QcReportDetailsDocumentsComponent } from './views/qc-report-details/documents/qc-report-details-documents.component';
-import { QcReportDetailsEmailLogComponent } from './views/qc-report-details/email-log/qc-report-details-email-log.component';
+import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
+import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-report-details-toolbar.component';
+import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
+import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 
 @NgModule({
   imports: [
