@@ -6,9 +6,10 @@ import * as _ from 'lodash';
 import { MockProductsLookup } from './products.mock';
 import { mockUoms } from './uoms.mock';
 
-export function getQcReportDetailsCall(id: string): IQcReportDetailsDto {
+export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   return {
-    portCallId: id,
+    id,
+    portCallId: faker.internet.mac(),
     vesselName: faker.commerce.color(),
     nbOfCliams: faker.random.number(),
     nbOfDeliveries: faker.random.number(),

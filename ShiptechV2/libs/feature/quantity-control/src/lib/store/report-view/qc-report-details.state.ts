@@ -17,18 +17,18 @@ export class QcReportDetailsState {
 
   @Select()
   static getPortCallsProductTypesIds(state: IQcReportDetailsState): unknown[] {
-    return state.products;
+    return state.productTypes;
   }
 
   @Selector([QcReportDetailsState.getPortCallsProductTypesIds])
   static getSelectedPurchaseDeliveries(state: IQcReportDetailsState, productTypesIds: number[]): unknown[] {
-    return productTypesIds.map(productTypeId => state.productsById[productTypeId]);
+    return productTypesIds.map(productTypeId => state.productTypesById[productTypeId]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => unknown {
     return createSelector(
       [QcReportDetailsState],
-      (state: IQcReportDetailsState) => state.productsById[productTypeId]
+      (state: IQcReportDetailsState) => state.productTypesById[productTypeId]
     );
   }
 
@@ -37,7 +37,7 @@ export class QcReportDetailsState {
     patchState({
       _isLoading: true,
       _hasLoaded: false,
-      portCallId: reportId
+      id: reportId
     });
   }
 
@@ -50,16 +50,17 @@ export class QcReportDetailsState {
       patchState({
         _isLoading: false,
         _hasLoaded: true,
+        id: success.dto.id,
         portCallId: success.dto.portCallId,
-        products: success.dto.productTypes.map(productType => productType.productTypeId),
-        productsById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId)
+        productTypes: success.dto.productTypes.map(productType => productType.productTypeId),
+        productTypesById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId)
         // TODO: load other props
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
       patchState({
         _isLoading: false,
         _hasLoaded: false,
-        portCallId: undefined
+        id: undefined
       });
     }
   }

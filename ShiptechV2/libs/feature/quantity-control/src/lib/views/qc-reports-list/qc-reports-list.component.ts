@@ -3,6 +3,7 @@ import { QcReportsListGridViewModel } from './view-model/qc-reports-list-grid.vi
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { QcReportsListViewModel } from './view-model/qc-reports-list.view-model';
 import { Subject } from 'rxjs';
+import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -14,6 +15,7 @@ import { Subject } from 'rxjs';
 export class QcReportsListComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
+  knownRoutes = KnownQuantityControlRoutes;
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
 
