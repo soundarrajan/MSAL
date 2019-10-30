@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
+import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -8,6 +9,8 @@ import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-
   styleUrls: ['./qc-report-details.component.scss']
 })
 export class QcReportDetailsComponent implements OnInit {
+
+  knownRoutes = KnownQuantityControlRoutes;
 
   constructor(private entityStatus: EntityStatusService) {
     //TODO: after loading
