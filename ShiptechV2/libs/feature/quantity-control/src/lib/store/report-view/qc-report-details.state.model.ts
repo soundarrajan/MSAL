@@ -2,6 +2,7 @@ import { QcVesselResponseState } from './qc-vessel-response.state';
 
 export class QcReportDetailsStateModel {
   id: number;
+  portCallId: string;
 
   productTypes: number[];
   productTypesById: Record<string, unknown>;
