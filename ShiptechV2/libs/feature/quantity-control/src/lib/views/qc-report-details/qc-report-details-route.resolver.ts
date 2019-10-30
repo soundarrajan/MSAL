@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable, throwError } from 'rxjs';
 import { QcReportDetailsService } from '../../services/qc-report-details.service';
 import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
@@ -29,7 +29,9 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
             // Note: if the application is already loaded (something visible on the screen) and we navigate to a bad route we need to "cancel" the navigation and show an error
             return throwError(error);
           }
-        })
+        }),
+        // Note: Routes will contain the ReportIdParam in the data (also inherited)
+        mapTo(reportIdParam)
       );
   }
 }

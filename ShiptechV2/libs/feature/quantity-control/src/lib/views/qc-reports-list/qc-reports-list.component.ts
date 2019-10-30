@@ -14,10 +14,11 @@ import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes'
 })
 export class QcReportsListComponent implements OnInit, OnDestroy {
 
-  private _destroy$ = new Subject();
+  public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.ReportDetails}`;
   knownRoutes = KnownQuantityControlRoutes;
 
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
+  private _destroy$ = new Subject();
 
   constructor(public viewModel: QcReportsListViewModel, private messageBox: MessageBoxService) {
   }
