@@ -20,7 +20,7 @@ import { AuthenticationModule } from '@shiptech/core/authentication/authenticati
 import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 
-
+// Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
 export function getAppBaseHref(doc: Document): string {
   const base = doc.querySelector('base');
   if (!base || !base.href) {

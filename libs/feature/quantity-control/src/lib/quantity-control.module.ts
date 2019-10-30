@@ -30,7 +30,10 @@ import { ProductDetailsComponent } from './views/qc-report-details/components/po
 import { QcReportDetailsRouteResolver } from './views/qc-report-details/qc-report-details-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
-import { AuditLogModule } from '@shiptech/core/ui/components/audit-log/audit-log.module';
+import { QcReportDetailsAuditLogComponent } from './views/qc-report-details/audit-log/qc-report-details-audit-log.component';
+import { QcReportDetailsToolbarComponent } from './views/qc-report-details/toolbar/qc-report-details-toolbar.component';
+import { QcReportDetailsDocumentsComponent } from './views/qc-report-details/documents/qc-report-details-documents.component';
+import { QcReportDetailsEmailLogComponent } from './views/qc-report-details/email-log/qc-report-details-email-log.component';
 
 @NgModule({
   imports: [
@@ -56,7 +59,11 @@ import { AuditLogModule } from '@shiptech/core/ui/components/audit-log/audit-log
     SoundingReportsComponent,
     EventsLogComponent,
     SurveyReportHistoryComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    QcReportDetailsToolbarComponent,
+    QcReportDetailsDocumentsComponent,
+    QcReportDetailsEmailLogComponent,
+    QcReportDetailsAuditLogComponent,
   ],
   exports: [
     MainQuantityControlComponent
