@@ -1,5 +1,5 @@
 import { QcVesselResponseState } from './qc-vessel-response.state';
-import { QcAuditLogState } from './qc-audit-log.state';
+import { QcAuditLogState } from '../audit-log/qc-audit-log.state';
 import { QcSurveyReportsState } from './qc-survey-reports.state';
 import { QcSoundingReportsState } from './qc-sounding-reports.state';
 import { QcEventsLogState } from './qc-events-log.state';
