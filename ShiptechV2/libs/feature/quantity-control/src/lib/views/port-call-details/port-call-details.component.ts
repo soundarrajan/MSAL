@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
+import { MenuItem } from 'primeng/api';
+import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -8,6 +10,7 @@ import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-
   styleUrls: ['./port-call-details.component.scss']
 })
 export class PortCallDetailsComponent implements OnInit {
+  public toolbarTabMenuItems: MenuItem[];
 
   constructor(private entityStatus: EntityStatusService) {
     //TODO: after loading
@@ -17,6 +20,10 @@ export class PortCallDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.toolbarTabMenuItems = [
+      { label: 'Main Page', routerLink: ['./'] },
+      { label: 'Audit Log', routerLink: [KnownQuantityControlRoutes.portCallDetailsAuditPath]},
+    ];
   }
 
   raiseClaim(): void {

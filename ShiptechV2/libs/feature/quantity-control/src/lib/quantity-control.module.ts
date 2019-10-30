@@ -30,6 +30,7 @@ import { ProductDetailsComponent } from './views/port-call-details/components/po
 import { PortCallDetailsRouteResolver } from './views/port-call-details/port-call-details-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
+import { AuditLogModule } from '@shiptech/core/ui/components/audit-log/audit-log.module';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallDetailsState])
+    NgxsModule.forFeature([QuantityControlState, PortCallsListState, PortCallDetailsState]),
+    AuditLogModule,
   ],
   declarations: [
     MainQuantityControlComponent,
