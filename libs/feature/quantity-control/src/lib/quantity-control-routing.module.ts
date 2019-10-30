@@ -2,23 +2,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainQuantityControlComponent } from './views/main-quantity-control.component';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
-import { QcReportDetailsComponent } from './views/qc-report-details/qc-report-details.component';
+import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';
 import { relatedLinksRouteDefinition } from '@shiptech/core/ui/components/related-links/related-links.route-factory';
 import { EntityType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { EntityStatusComponent } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { QcReportDetailsRouteResolver } from './views/qc-report-details/qc-report-details-route.resolver';
+import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-report-details-route.resolver';
 import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
-import { QcReportDetailsAuditLogComponent } from './views/qc-report-details/audit-log/qc-report-details-audit-log.component';
-import { QcReportDetailsDocumentsComponent } from './views/qc-report-details/documents/qc-report-details-documents.component';
-import { QcReportDetailsEmailLogComponent } from './views/qc-report-details/email-log/qc-report-details-email-log.component';
+import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
+import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
+import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainQuantityControlComponent,
-    resolve: { moduleInit: QuantityControlRouteResolver},
+    resolve: { moduleInit: QuantityControlRouteResolver },
     data: {
       breadcrumb: 'Delivery'
     },
@@ -34,31 +34,36 @@ const routes: Routes = [
         data: { title: 'Quantity Control', breadcrumb: 'Quantity Control' }
       },
       {
-        path: `${KnownQuantityControlRoutes.ReportDetails}/:${KnownQuantityControlRoutes.ReportIdParam}`,
-        resolve: {
-          // Note: ReportId is expected in child routes in the data.
-          [KnownQuantityControlRoutes.ReportIdParam]: QcReportDetailsRouteResolver
-        },
+        path: `${KnownQuantityControlRoutes.Report}/:${KnownQuantityControlRoutes.ReportIdParam}`,
         children: [
           {
             path: '',
+            redirectTo: KnownQuantityControlRoutes.ReportDetails,
+            pathMatch: 'full'
+          },
+          {
+            path: KnownQuantityControlRoutes.ReportDetails,
             component: QcReportDetailsComponent,
-            data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' },
+            resolve: {
+              // Note: ReportId is expected in child routes in the data.
+              [KnownQuantityControlRoutes.ReportIdParam]: QcReportDetailsRouteResolver
+            },
+            data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' }
           },
           {
             path: KnownQuantityControlRoutes.ReportDocumentsPath,
             component: QcReportDetailsDocumentsComponent,
-            data: { title: 'Quantity Control - Documents', breadcrumb: 'Documents' },
+            data: { title: 'Quantity Control - Documents', breadcrumb: 'Documents' }
           },
           {
             path: KnownQuantityControlRoutes.ReportEmailLogPath,
             component: QcReportDetailsEmailLogComponent,
-            data: { title: 'Quantity Control - E-mail Log', breadcrumb: 'E-mail Log' },
+            data: { title: 'Quantity Control - E-mail Log', breadcrumb: 'E-mail Log' }
           },
           {
             path: KnownQuantityControlRoutes.ReportAuditPath,
             component: QcReportDetailsAuditLogComponent,
-            data: { title: 'Quantity Control - Audit Log', breadcrumb: 'Audit Log' },
+            data: { title: 'Quantity Control - Audit Log', breadcrumb: 'Audit Log' }
           },
           {
             path: '',

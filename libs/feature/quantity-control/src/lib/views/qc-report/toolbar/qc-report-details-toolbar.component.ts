@@ -17,14 +17,13 @@ export class QcReportDetailsToolbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Note: ReportId is set by QcReportDetailsRouteResolver
-    const reportId = this.route.snapshot.data[KnownQuantityControlRoutes.ReportIdParam];
-    const routeLinkToReportDetails = ['/', KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.ReportDetails, reportId];
+    const reportId = this.route.snapshot.params[KnownQuantityControlRoutes.ReportIdParam];
+    const routeLinkToReportDetails = ['/', KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.Report, reportId];
 
     this.menuItems = [
       {
         label: 'Main Page',
-        routerLink: routeLinkToReportDetails,
+        routerLink:  [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportDetails],
         routerLinkActiveOptions: { exact: true }
       },
       {
@@ -41,7 +40,7 @@ export class QcReportDetailsToolbarComponent implements OnInit {
         label: 'Audit Log',
         routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportAuditPath],
         routerLinkActiveOptions: { exact: true }
-      },
+      }
     ];
   }
 

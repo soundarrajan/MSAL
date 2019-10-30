@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { QcReportDetailsService } from '../../services/qc-report-details.service';
-import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
+import { QcReportDetailsService } from '../../../services/qc-report-details.service';
+import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 import { catchError, map, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
@@ -30,7 +30,6 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
             return throwError(error);
           }
         }),
-        // Note: Routes will contain the ReportIdParam in the data (also inherited)
         mapTo(reportIdParam)
       );
   }

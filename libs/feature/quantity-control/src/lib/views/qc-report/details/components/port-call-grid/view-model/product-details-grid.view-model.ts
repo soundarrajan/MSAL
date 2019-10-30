@@ -9,13 +9,13 @@ import {
   ProductDetailsColumns,
   ProductDetailsProps
 } from './product-details.columns';
-import { ModuleLoggerFactory } from '../../../../../core/logging/module-logger-factory';
-import { QcReportDetailsService } from '../../../../../services/qc-report-details.service';
+import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
+import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
 import {
   IQcReportDetailsDeliveredQty,
   IQcReportDetailsProductDto,
   IQcReportDetailsRob
-} from '../../../../../services/api/dto/qc-report-details.dto';
+} from '../../../../../../services/api/dto/qc-report-details.dto';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 
 @Injectable()
