@@ -7572,6 +7572,13 @@ APP_API.factory("$Api_Service", [
                         var apiJSON = {
                             Payload: ""
                         };
+                        if (param.app == "claims") {
+                            apiJSON = {
+                            Payload: true
+                        };
+
+                        }
+
                         url = api_map["admin"]["user"]["listForSearch"];
                         $http.post(url, apiJSON).then(
                             function success(response) {
