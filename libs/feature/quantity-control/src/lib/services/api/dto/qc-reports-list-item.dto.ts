@@ -2,6 +2,7 @@ import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 
 export interface QcReportsListItemDto {
   id: number;
+  portCallId: string;
   port: string;
   vesselName: string;
   surveyDate: string;

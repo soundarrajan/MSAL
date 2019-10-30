@@ -30,17 +30,17 @@ export class QcReportDetailsService extends BaseStoreService {
   }
 
   @ObservableException()
-  loadPortCallDetails(portCallId: string): Observable<unknown> {
-    if (!portCallId) {
-      return throwError(ModuleError.InvalidPortCallId(portCallId));
+  loadPortCallDetails(reportId: number): Observable<unknown> {
+    if (!reportId) {
+      return throwError(ModuleError.InvalidQcReportId(reportId));
     }
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
-      () => this.api.getPortCallById({ portCallId }),
-      new LoadReportDetailsAction(portCallId),
-      (response) => new LoadReportDetailsSuccessfulAction(portCallId, new QcReportDetailsModel(response.portCall)),
-      new LoadReportDetailsFailedAction(portCallId),
-      ModuleError.LoadPortCallDetailsFailed(portCallId)
+      () => this.api.getPortCallById({ reportId }),
+      new LoadReportDetailsAction(reportId),
+      (response) => new LoadReportDetailsSuccessfulAction(reportId, new QcReportDetailsModel(response.report)),
+      new LoadReportDetailsFailedAction(reportId),
+      ModuleError.LoadQcReportDetailsFailed(reportId)
     );
   }
 }

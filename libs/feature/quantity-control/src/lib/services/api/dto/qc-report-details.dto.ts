@@ -1,6 +1,7 @@
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 
 export interface IQcReportDetailsDto {
+  id: number;
   portCallId: string;
   vesselName: string;
   nbOfCliams: number;
