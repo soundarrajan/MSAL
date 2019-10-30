@@ -8,7 +8,7 @@
       "COMPANY": "Company",
       "POOL": "Pool",
       "STATUS": "Status",
-      "SERVICES": "Services",
+      "SERVICES": "Service",
       "OPERATORS": "Operators",
       "VESSEL": "Vessel",
       "DEFAULT_FUEL": "Default Fuel",
@@ -16,7 +16,7 @@
       "VOYAGE_CODE": "Voyage Code",
       "LOCATION": "Location",
       "ETA": "ETA",
-      "BUYER": "Buyer",
+      "BUYER": "Buyer of the vessel",
       "AGREEMENT": "Agreement",
       "MINMAX": "Min-Max Qty",
       "DISTILLATE": "Distillate",
@@ -26,7 +26,8 @@
       "VESSELVOYAGEID": "Vessel voyage ID",
       "CONTRACTUALMINMAX": "Contractual min-max",
       "DELIVERY_FROM": "Delivery From",
-      "DELIVERY_TO": "Delivery To"
+      "DELIVERY_TO": "Delivery To",
+      "BUYER_OF_THE_SERVICE": "Buyer of the service"
     },
     "SCHEDULE_DASHBOARD_CALENDAR": {
       "SERVICE": "Service",
