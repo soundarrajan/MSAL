@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  IQcReportDetailsDeliveredQty,
-  IQcReportDetailsProductDto,
-  IQcReportDetailsRob
-} from '../../../../../services/api/dto/qc-report-details.dto';
+import { IQcReportDetailsProductDto } from '../../../../../services/api/dto/qc-report-details.dto';
 import { PropName } from '@shiptech/core/utils/decorators/method-name.decorator';
 
 export interface IPortCallDetailsProps extends IQcReportDetailsProductDto {
@@ -13,11 +9,11 @@ export interface IPortCallDetailsProps extends IQcReportDetailsProductDto {
   providedIn: 'root'
 })
 export class ProductDetailsProps implements IPortCallDetailsProps {
-  @PropName productTypeName: string;
-  @PropName productTypeId: number;
-  @PropName robBeforeDelivery: IQcReportDetailsRob;
-  @PropName deliveredQty: IQcReportDetailsDeliveredQty;
-  @PropName robAfterDelivery: IQcReportDetailsRob;
+  @PropName productTypeName;
+  @PropName productTypeId;
+  @PropName robBeforeDelivery;
+  @PropName deliveredQty;
+  @PropName robAfterDelivery;
 }
 
 export enum ProductDetailsColGroups {

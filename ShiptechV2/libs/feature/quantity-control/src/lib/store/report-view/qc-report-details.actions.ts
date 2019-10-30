@@ -2,9 +2,9 @@ import { nullable } from '@shiptech/core/utils/nullable';
 import { QcReportDetailsModel } from '../../services/models/qc-report-details.model';
 
 export class LoadReportDetailsAction {
-  static readonly type = '[Settings] Load Report Details';
+  static readonly type = '[QC.Settings] Load Report Details';
 
-  constructor(public reportId: string) {
+  constructor(public reportId: number) {
   }
 
   public log(): any {
@@ -15,9 +15,9 @@ export class LoadReportDetailsAction {
 }
 
 export class LoadReportDetailsSuccessfulAction {
-  static readonly type = '[Settings] Load Report Details Successful';
+  static readonly type = '[QC.Settings] Load Report Details Successful';
 
-  constructor(public reportId: string, public dto: QcReportDetailsModel) {
+  constructor(public reportId: number, public dto: QcReportDetailsModel) {
   }
 
   public log(): any {
@@ -30,9 +30,9 @@ export class LoadReportDetailsSuccessfulAction {
 }
 
 export class LoadReportDetailsFailedAction {
-  static readonly type = '[Settings] Load Report Details Failed';
+  static readonly type = '[QC.Settings] Load Report Details Failed';
 
-  constructor(public reportId: string) {
+  constructor(public reportId: number) {
   }
 
   public log(): any {

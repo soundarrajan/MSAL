@@ -2,9 +2,9 @@ import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './req
 import { IQcReportDetailsDto } from '../dto/qc-report-details.dto';
 
 export interface IGetQcReportDetailsByIdRequest extends IBaseQuantityControlRequest {
-  portCallId: string;
+  reportId: number;
 }
 
 export interface IGetQcReportDetailsByIdResponse extends IBaseQuantityControlResponse {
-  portCall: IQcReportDetailsDto
+  report: IQcReportDetailsDto
 }

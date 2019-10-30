@@ -1,22 +1,27 @@
-export class QcReportDetailsStateModel {
-  _hasLoaded: boolean;
-  _isLoading: boolean;
-  portCallId: string;
+import { QcVesselResponseState } from './qc-vessel-response.state';
 
-  products: unknown[];
+export class QcReportDetailsStateModel {
+  id: number;
+
+  productTypes: number[];
+  productTypesById: Record<string, unknown>;
   vesselReports: unknown[];
   soundingReports: unknown[];
-  events: unknown[];
-  productsById: Record<string, unknown>;
+  eventsLog: unknown[];
+  // Avem nevoie de el aici?
+  //auditLogs: unknown[];
 
   comment: string;
-  vesselResponse: string;
+  vesselResponse: QcVesselResponseState;
 
   isInitialising = false;
   isInitialised = false;
   isSaving = false;
   isRaisingClaim: boolean;
   isVerifying: boolean;
+
+  _hasLoaded: boolean;
+  _isLoading: boolean;
 }
 
 export interface IQcReportDetailsState extends QcReportDetailsStateModel {

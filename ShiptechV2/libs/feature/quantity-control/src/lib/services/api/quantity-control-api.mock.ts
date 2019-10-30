@@ -52,7 +52,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
-    return of({ portCall: getQcReportDetailsCall(request.portCallId) });
+    return of({ report: getQcReportDetailsCall(request.reportId) });
   }
 
   @ApiCall()
