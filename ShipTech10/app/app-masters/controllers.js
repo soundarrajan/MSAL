@@ -4699,7 +4699,7 @@ APP_MASTERS.controller("Controller_Master", [
             	}
             }
 
-            $.each($scope.formValues.Seller, function(sk,sv){
+            $.each($scope.formValues.SellerWithInactive, function(sk,sv){
             	if (sv.id) {
             		newFilterItem = {
 					    "column": {
@@ -4726,7 +4726,7 @@ APP_MASTERS.controller("Controller_Master", [
             		treasurySummaryFilters.push(newFilterItem);
             	}
             })
-            $.each($scope.formValues.Broker, function(bk,bv){
+            $.each($scope.formValues.BrokerWithInactive, function(bk,bv){
             	if (bv.id) {
             		newFilterItem = {
 					    "column": {
@@ -4753,7 +4753,7 @@ APP_MASTERS.controller("Controller_Master", [
             		treasurySummaryFilters.push(newFilterItem);
             	}
             })   
-            $.each($scope.formValues.Company, function(ck,cv){
+            $.each($scope.formValues.CompanyWithInactive, function(ck,cv){
             	if (cv.id) {
             		newFilterItem = {
 					    "column": {
@@ -4919,9 +4919,9 @@ APP_MASTERS.controller("Controller_Master", [
         		
 				$scope.formValues.PaymentStatus = null;
 				$scope.formValues.PaymentDateFrom = null;
-				$scope.formValues.Seller = null;
-				$scope.formValues.Broker = null;
-				$scope.formValues.Company = null;
+				$scope.formValues.SellerWithInactive = null;
+				$scope.formValues.BrokerWithInactive = null;
+				$scope.formValues.CompanyWithInactive = null;
 				$scope.formValues.PaymentDateTo = null;
         	})
         }
