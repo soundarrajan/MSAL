@@ -248,12 +248,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
-                'start': ctrl.startDate.format('YYYY-MM-DD'),
-                'min': ctrl.startDate.subtract('days', 7).format('YYYY-MM-DD'),
-                'end': ctrl.endDate.format('YYYY-MM-DD'),
-                'max': ctrl.endDate.add('days', 7).format('YYYY-MM-DD'),
+                'start': angular.copy(ctrl.startDate).format('YYYY-MM-DD'),
+                'min': angular.copy(ctrl.startDate).subtract('days', 7).format('YYYY-MM-DD'),
+                'end': angular.copy(ctrl.endDate).format('YYYY-MM-DD'),
+                'max': angular.copy(ctrl.endDate).add('days', 7).format('YYYY-MM-DD'),
                 'zoomMin': 129600000,
-                'zoomMax': 1814400000,
+                'zoomMax': 3628800000,
                 groupTemplate: function (group) {
                     var serviceName = group.serviceName;
                     var vesselName = group.vesselName;
@@ -320,9 +320,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         };
 
         var updateTimeline = function(data) {
+            $('#timeline').html(''); 
+            buildTimeline(data);
+
+            /*
             var timelineData = computeData(data);
             var groups = new vis.DataSet(timelineData.groups);
             var voyages = new vis.DataSet(timelineData.voyages);
+
+            if (!voyages || voyages.length === 0) {
+                $('#timeline').hide();
+                return;
+            } else {
+                $('#timeline').show();
+            }
+
             timeline.setOptions(getTimelineOptions());
             timeline.setGroups(groups);
             timeline.setItems(voyages);
@@ -331,6 +343,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $scope.timelineItems = groups.length;
                 setLayoutAfterTimelineLoad();
             })
+            */
         };
 
         var setLayoutAfterTimelineLoad = function() {
@@ -605,7 +618,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 removePopups();
 
                 currentElem = $(event.currentTarget);
-                html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content">';
+                html = '<div class="contextmenu alert alert-info fade in"> <span class="close" aria-label="close"> &times; </span> <div class="content">';
                 var hasRequest = false; 
                 var hasBunkerPlan = false; 
                 $.each(object, function (k, value) {
@@ -678,31 +691,32 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
                 $('.contextmenu').css("top", $(currentElem).offset().top - 15);
                 $('.contextmenu').removeClass("hidden");
+
                 $('.contextAction').click(function () {
                     index = $(this).attr('data-index');
                     contextAction(object[index]);
                     removePopups();
                 });
+
                 $('.contextActionContractPlanning').click(function () {
                     index = $(this).attr('data-index');
                     contextActionContractPlanning(object[index]);
                     removePopups();
                 });
+
                 $('.contextmenu .close').click(function (e) {
                     e.preventDefault();
-                    $(this).hide();
                     removePopups();
-                    // $("schedule-dashboard-timeline > .contextmenu").remove();
                 });
 
                 function contextAction(voyageStop) {
                     var href;
-                    if (!voyageStop) {
+                    if (!voyageStop || !voyageStop.voyageDetail) {
                         return;
                     }
-                    if (voyageStop.request && voyageStop.request.id != 0) {
+                    if (voyageStop.voyageDetail.request && voyageStop.voyageDetail.request.id != 0) {
                         href = $state.href(STATE.EDIT_REQUEST, {
-                            requestId: voyageStop.request.id
+                            requestId: voyageStop.voyageDetail.request.id
                         }, {
                                 absolute: false
                             });
@@ -713,13 +727,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                                 absolute: false
                             });
                     }
-                    $('.contextmenu a.close').click();
                     window.open(href, '_blank');
                 };
                 function contextActionContractPlanning(voyageStop) {
                     $rootScope.scheduleDashboardVesselVoyages = [voyageStop];
                     localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
-                    $('.contextmenu a.close').click();
                     window.open("/#/contract-planning/", "_blank");
                 };
             }
@@ -727,9 +739,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         });
 
         function removePopups() {
-            $("schedule-dashboard-timeline > .morePortsPopup").remove();
+            $('.popover').remove();
             $("schedule-dashboard-timeline > .contextmenu").remove();
         }
+
+        ctrl.onPopoverClose = function(results) {
+            if (results) {
+                removePopups();
+                $scope.rightClickPopoverData = null;
+                $scope.$digest();
+            }
+        };
 
         $scope.formatDateToMomentFormat = function( dateFormat ){
             dbFormat = dateFormat;
@@ -747,6 +767,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             return currentFormat;
         };
         $scope.dateFormat = $scope.formatDateToMomentFormat($scope.tenantSettings.tenantFormats.dateFormat.name);
+        ctrl.convertDate = function (date) {
+            return moment(date).format('DD/MM/YYYY HH:mm');
+        };
 
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
@@ -770,7 +793,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var buildHoverPopoverMarkup = function(voyageDetailId) {
             var hasRequest = false;
             voyageStop = _.filter(ctrl.voyageData, function(el){
-                return el.voyageDetail.id == voyageDetailId;
+                return el && el.voyageDetail.id == voyageDetailId;
             }); 
             voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
 
@@ -802,7 +825,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 preHtml += voyageStop[0].voyageDetail.request.requestDetail.location + " - ";
                 preHtml += " ETA : " + moment(voyageStop[0].voyageDetail.eta).format($scope.dateFormat) + " - ";
                 if (voyageStop[0].voyageDetail.etd) {
-                    preHtml += " ETD : " + moment(voyageStop[0].voyageDetail.etd).format($scope.dateFormat) + " - ";
+                    preHtml += " ETD : " + moment(voyageStop[0].voyageDetail.etd).format($scope.dateFormat);
                 }
                 if (voyageStop[0].voyageDetail.deliveryFrom && voyageStop[0].voyageDetail.deliveryTo) {
                     preHtml += " Delivery Window : " + moment(voyageStop[0].voyageDetail.deliveryFrom).format($scope.dateFormat) + " - " + moment(voyageStop[0].voyageDetail.deliveryTo).format($scope.dateFormat);
