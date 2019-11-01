@@ -19,7 +19,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       robAfterDeliveryUom: _.sample(mockUoms),
       robBeforeDeliveryUom: _.sample(mockUoms)
     },
-    productTypes: getMockQcReportProductTypes(faker.random.number(10))
+    productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 }))
   };
 }
 
@@ -39,22 +39,23 @@ export const PortCallStatuses: ILookupDto<number, QcReportStatusEnum>[] = [
 ];
 
 export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductDto[] {
-  const product = _.sample(MockProductsLookup);
-
-  return _.range(1, n).map(() => ({
-    productTypeName: product.name,
-    productTypeId: product.id,
-    deliveredQty: {
-      bdnQty: faker.random.number(500),
-      messuredDeliveredQty: faker.random.number(400)
-    },
-    robAfterDelivery: {
-      logBookROB: faker.random.number(500),
-      measuredROB: faker.random.number(500)
-    },
-    robBeforeDelivery: {
-      logBookROB: faker.random.number(500),
-      measuredROB: faker.random.number(500)
-    }
-  }));
+  return _.range(1, n).map(() => {
+    const product = _.sample(MockProductsLookup);
+    return {
+      productTypeName: product.name,
+      productTypeId: product.id,
+      deliveredQty: {
+        bdnQty: faker.random.number(500),
+        messuredDeliveredQty: faker.random.number(400)
+      },
+      robAfterDelivery: {
+        logBookROB: faker.random.number(500),
+        measuredROB: faker.random.number(500)
+      },
+      robBeforeDelivery: {
+        logBookROB: faker.random.number(500),
+        measuredROB: faker.random.number(500)
+      }
+    };
+  });
 }

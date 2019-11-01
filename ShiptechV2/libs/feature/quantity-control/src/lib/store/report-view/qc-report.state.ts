@@ -1,4 +1,4 @@
-import { Action, createSelector, Select, Selector, State, StateContext } from '@ngxs/store';
+import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
 import { IQuantityControlState } from '../quantity-control.state';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
@@ -18,14 +18,14 @@ export class QcReportState {
 
   static default = new QcReportStateModel();
 
-  @Select()
+  @Selector()
   static getPortCallsProductTypesIds(state: IQcReportState): unknown[] {
     return state.details.productTypes;
   }
 
-  @Selector([QcReportState.getPortCallsProductTypesIds])
-  static getSelectedPurchaseDeliveries(state: IQcReportState, productTypesIds: number[]): unknown[] {
-    return productTypesIds.map(productTypeId => state.details.productTypesById[productTypeId]);
+  @Selector()
+  static getPortCallReportProductTypes(state: IQcReportState): unknown[] {
+    return state.details.productTypes.map(productTypeId => state.details.productTypesById[productTypeId]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => unknown {
