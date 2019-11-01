@@ -128,7 +128,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var computeData = function(data) {
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
             ctrl.voyageData = angular.copy(vessels);
-            vessels = _.uniqBy(vessels, "voyageDetail.id");
+            // vessels = _.uniqBy(vessels, "voyageDetail.id");
 
             var groups = [];
             var voyages = [];
@@ -140,7 +140,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     continue;
                 }
 
-                if (typeof (ctrl.bunkerDetails[vessels[i].voyageDetail.id]) == "undefined") { ctrl.bunkerDetails[vessels[i].voyageDetail.id] = [] }
+                if (typeof (ctrl.bunkerDetails[vessels[i].voyageDetail.id]) == "undefined") {
+                	ctrl.bunkerDetails[vessels[i].voyageDetail.id] = []
+                }
                 ctrl.bunkerDetails[vessels[i].voyageDetail.id].push(angular.copy(vessels[i].voyageDetail.bunkerPlan));
                 // Create voyage object
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
@@ -600,8 +602,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         $(document).on("click", function(event) {
 	        if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
-	        	$scope.rightClickPopoverData = null;
-	        	$scope.$digest();
+	        	$timeout(function() {
+		        	$scope.rightClickPopoverData = null;
+	        	});
 	        }
         });
 
