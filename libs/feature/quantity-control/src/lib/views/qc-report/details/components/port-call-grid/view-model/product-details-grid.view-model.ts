@@ -7,6 +7,7 @@ import {
   ProductDetailsColGroups,
   ProductDetailsColGroupsLabels,
   ProductDetailsColumns,
+  ProductDetailsColumnsLabels,
   ProductDetailsProps
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
@@ -52,7 +53,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   productTypeNameCol: ColDef = {
-    headerName: ProductDetailsColumns.ProductTypeName,
+    headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: this.modelProps.productTypeName,
     width: 50,
@@ -61,7 +62,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   logBookBeforeDeliveryCol: ColDef = {
-    headerName: ProductDetailsColumns.LogBookRobBeforeDelivery,
+    headerName: ProductDetailsColumnsLabels.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'logBookROB'),
     width: 50,
@@ -70,7 +71,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
-    headerName: ProductDetailsColumns.MeasuredRobBeforeDelivery,
+    headerName: ProductDetailsColumnsLabels.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'measuredROB'),
     width: 50,
@@ -79,8 +80,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   differenceRobBeforeDeliveryCol: ColDef = {
-    headerName: ProductDetailsColumns.MeasuredRobBeforeDelivery,
-    colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
+    headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
+    colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     width: 50,
     hide: false,
     suppressToolPanel: true
@@ -88,7 +89,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
 
   bdnDeliveredQuantityCol: ColDef = {
-    headerName: ProductDetailsColumns.BdnQty,
+    headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
     field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'bdnQty'),
     width: 50,
@@ -97,7 +98,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   measuredDeliveredQuantityCol: ColDef = {
-    headerName: ProductDetailsColumns.MessuredDeliveredQty,
+    headerName: ProductDetailsColumnsLabels.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'messuredDeliveredQty'),
     width: 50,
@@ -106,7 +107,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   differenceDeliveredQuantityCol: ColDef = {
-    headerName: ProductDetailsColumns.DeliveredQuantityDiffernce,
+    headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     width: 50,
     hide: false,
@@ -115,7 +116,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
 
   logBookAfterDeliveryCol: ColDef = {
-    headerName: ProductDetailsColumns.LogBookRobAfterDelivery,
+    headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'logBookROB'),
     width: 50,
@@ -124,7 +125,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
-    headerName: ProductDetailsColumns.MeasuredRobAfterDelivery,
+    headerName: ProductDetailsColumnsLabels.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'measuredROB'),
     width: 50,
@@ -133,7 +134,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   };
 
   differenceRobAfterDeliveryCol: ColDef = {
-    headerName: ProductDetailsColumns.RobAfterDeliveryDifference,
+    headerName: ProductDetailsColumnsLabels.RobAfterDeliveryDifference,
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     width: 50,
     hide: false,

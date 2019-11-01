@@ -1,6 +1,7 @@
 <ag-grid-angular
   AgGridExternalSearch
   [gridOptions]="viewModel.gridViewModel.gridOptions"
+  [rowData]="viewModel.productTypes$ | async"
   [onSearch]="viewModel.gridViewModel.onSearch.bind(viewModel.gridViewModel)"
   appAgGridFilterPresets
   appAgGridFirstColumnLocked
