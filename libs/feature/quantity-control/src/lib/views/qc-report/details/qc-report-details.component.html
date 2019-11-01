@@ -13,7 +13,7 @@
       <p-panel header="PORT CALL ID - VESSEL NAME">
         <p-header>
           <div style="float:right">
-            <span class="badge red">Not Matched</span> |
+            <span class="badge red">{{reportStatus}}</span> |
             <span class="badge blue">Claim: 2</span> |
             <span class="badge blue">Deliveries: 2</span> |
             <span class="badge info">Vessel to Watch
@@ -30,13 +30,66 @@
 
   <div class="row mb-2">
     <div class="col-6">
-      <p-panel header="Vessel response (sludge)">
-        Vessel response (sludge) content
+      <p-panel>
+
+        <p-header>
+          <div class="row">
+            <div class="col-6">Vessel response (sludge)</div>
+            <div class="col-3">
+              <span class="mr-1">Sludge %</span>
+              <p-inputMask [style]="{'width': '100px'}" mask="99.999"></p-inputMask>
+            </div>
+            <div class="col-3">
+              <p-checkbox label="Verify Sludge Qty"></p-checkbox>
+            </div>
+          </div>
+        </p-header>
+
+        <div class="row">
+          <div class="col-2">
+            Category
+          </div>
+          <div class="col-10">
+            <p-dropdown [autoWidth]="false" [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="row mt-1">
+          <div class="col-2">
+            Description
+          </div>
+          <div class="col-10">
+            <textarea [rows]="5" pInputTextare style="width: 100%"></textarea>
+          </div>
+        </div>
+
       </p-panel>
     </div>
     <div class="col-6">
-      <p-panel header="Vessel response (bunker)">
-        Vessel response (bunker) content
+      <p-panel>
+
+        <p-header>
+          Vessel response (bunker)
+        </p-header>
+
+        <div class="row">
+          <div class="col-2">
+            Category
+          </div>
+          <div class="col-10">
+            <p-dropdown [autoWidth]="false" [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="row mt-1">
+          <div class="col-2">
+            Description
+          </div>
+          <div class="col-10">
+            <textarea [rows]="5" pInputTextare style="width: 100%"></textarea>
+          </div>
+        </div>
+
       </p-panel>
     </div>
   </div>
@@ -44,14 +97,21 @@
   <div class="row mb-2">
     <div class="col-12">
       <p-panel [toggleable]="true" header="Comment">
-        Content
+        <div class="row mt-1">
+          <div class="col-1">
+            Internal comment
+          </div>
+          <div class="col-11">
+            <textarea [rows]="5" pInputTextare style="width: 100%"></textarea>
+          </div>
+        </div>
       </p-panel>
     </div>
   </div>
 
   <div class="row mb-2">
     <div class="col-12">
-      <p-panel [toggleable]="true" class="mb-2" header="Sounding reports">
+      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" header="Sounding reports">
         <shiptech-survey-report-history></shiptech-survey-report-history>
       </p-panel>
     </div>
@@ -60,7 +120,7 @@
 
   <div class="row mb-2">
     <div class="col-12">
-      <p-panel [toggleable]="true" class="mb-2" header="Survey report history">
+      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" header="Survey report history">
         <shiptech-sounding-reports></shiptech-sounding-reports>
       </p-panel>
     </div>
@@ -68,7 +128,7 @@
 
   <div class="row mb-2">
     <div class="col-12">
-      <p-panel [toggleable]="true" class="mb-2" header="Events">
+      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" header="Events">
         <shiptech-events-log></shiptech-events-log>
       </p-panel>
     </div>

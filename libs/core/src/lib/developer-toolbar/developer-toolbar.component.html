@@ -2,7 +2,7 @@
   <app-api-service-settings [apiService]="service" [appGetServiceInstance]="service" [persistSettings]="keepSettings" [reset$]="reset$"></app-api-service-settings>
 </div>
 
-<div style="position: absolute; right: 10px;bottom: 10px;">
+<div style="position: fixed; right: 10px;bottom: 10px;">
   <button mat-mini-fab [color]="allUseReal() ? 'primary' : 'warn'" (click)="openDialog(devToolbar)">
     <i class="fas fa-cog" style="font-size: 20px"></i>
   </button>
