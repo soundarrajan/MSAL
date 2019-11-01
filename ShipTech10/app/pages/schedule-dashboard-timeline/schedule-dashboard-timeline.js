@@ -32,6 +32,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, $scope.filtersAppliedPayload, {}, searchText).then(function (response) {
                 if (timeline) {
                     updateTimeline(response);
+                    $scope.getTimelineStatus();
                 } else {
                     buildTimeline(response);
                 }
@@ -128,7 +129,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var computeData = function(data) {
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
             ctrl.voyageData = angular.copy(vessels);
-            // vessels = _.uniqBy(vessels, "voyageDetail.id");
+            vessels = _.uniqBy(vessels, "voyageDetail.id");
 
             var groups = [];
             var voyages = [];
@@ -140,9 +141,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     continue;
                 }
 
-                if (typeof (ctrl.bunkerDetails[vessels[i].voyageDetail.id]) == "undefined") {
-                	ctrl.bunkerDetails[vessels[i].voyageDetail.id] = []
-                }
+                if (typeof (ctrl.bunkerDetails[vessels[i].voyageDetail.id]) == "undefined") { ctrl.bunkerDetails[vessels[i].voyageDetail.id] = [] }
                 ctrl.bunkerDetails[vessels[i].voyageDetail.id].push(angular.copy(vessels[i].voyageDetail.bunkerPlan));
                 // Create voyage object
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
@@ -375,10 +374,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
 
             $scope.timelineLoaded = true;
+
         };
 
         $scope.selectTimeFrame = function(direction) {
-            var daysDifference = ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter;
+            var daysDifference = ctrl.scheduleDashboardConfiguration.traverseBy;
 
             if (direction === 'backwards') {
                 ctrl.startDate = ctrl.startDate.subtract('days', daysDifference);
@@ -602,9 +602,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         $(document).on("click", function(event) {
 	        if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
-	        	$timeout(function() {
-		        	$scope.rightClickPopoverData = null;
-	        	});
+	        	$scope.rightClickPopoverData = null;
+	        	$scope.$digest();
 	        }
         });
 
@@ -838,6 +837,94 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
             return html;
         };
+
+
+        $scope.getTimelineStatus = function () {
+            var model = scheduleDashboardTimelineModel.getLatestVersion();
+            if (model) {
+                if (!model.payload) return;
+                $scope.timelineStatuses = model.payload.scheduleDashboardStatus;
+                // if ($scope.calendarStatusesInScheduleTable) {
+                //     $scope.calendarStatuses = $scope.calendarStatusesInScheduleTable;
+                // }
+                // if ($scope.calendarStatusesInScheduleCalendar) {
+                //     $scope.calendarStatuses = $scope.calendarStatusesInScheduleCalendar;
+                // }                
+                // if ($scope.adminDashboardStatuses) {
+                //  createStatusFilters();
+                // }
+                console.log(new Date())
+                if($state.current.name == STATE.DASHBOARD_TIMELINE) { 
+
+                    if (window.scheduleDashboardConfiguration) {
+
+                        $scope.timelineAdminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.payload.labels, { displayInDashboard : true}, true);
+                        if ($scope.timelineStatuses) {
+                            $rootScope.timelineStatusList = $scope.createStatusFilters()
+                        }
+                    }
+                }                
+        
+            }
+             return $rootScope.timelineStatusList;
+        };
+
+        $scope.createStatusFilters = function () {
+            $rootScope.timelineStatusList = [];
+            $.each($scope.timelineAdminDashboardStatuses, function (adsk, adsv) {
+
+                var transactionTypeId = null;
+                if (adsv.transactionType) {
+                    transactionTypeId = adsv.transactionType.id;
+                }
+                if(adsv.status.transactionTypeId) {
+                    transactionTypeId = adsv.status.transactionTypeId;
+                }
+
+                var statusId = null;
+                if(adsv.status) {
+                    statusId = adsv.status.id;
+                }
+
+                var statusObj = {
+                    id: statusId,
+                    transactionTypeId: transactionTypeId,
+                    name: adsv.status.name,
+                }
+
+                var colorCode = statusColors.getColorCodeFromLabels(statusObj, $listsCache.ScheduleDashboardLabelConfiguration);
+
+                var status = {}
+                status.style = createStyle(colorCode);
+                status.count = 0;
+                status.name = adsv.status.name;
+                status.statusDisplayName = adsv.status.displayName;
+                status.label = adsv.label;
+                status.display = true;
+                $.each($scope.timelineStatuses,
+                    function(csk, csv) {
+
+                        if (csv.status.displayName == adsv.status.displayName) {
+                            status.style = createStyle(colorCode);
+                            status.count = csv.count;
+                            status.name = adsv.status.name;
+                            status.statusDisplayName = adsv.status.displayName;
+                            status.label = adsv.label;
+                            status.display = true;
+                        }
+                    });
+                statusIsAlreadyAdded = false;
+                $.each($rootScope.timelineStatusList, function (k, v) {
+                    if (v.name == adsv.status.name) {
+                        statusIsAlreadyAdded = true;
+                    }
+                })
+                if (!statusIsAlreadyAdded) {
+                    $rootScope.timelineStatusList.push(status);
+                }
+            })
+            return $rootScope.timelineStatusList;
+        }
 
     }
 ]);
