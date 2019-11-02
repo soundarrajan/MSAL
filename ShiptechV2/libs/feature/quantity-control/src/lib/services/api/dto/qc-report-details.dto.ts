@@ -8,13 +8,13 @@ export interface IQcReportDetailsDto {
   nbOfCliams: number;
   nbOfDeliveries: number;
   status: ILookupDto;
-  productTypes: IQcReportDetailsProductDto[];
+  productTypes: IQcReportDetailsProductTypeDto[];
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;
   comment: string;
 }
 
-export interface IQcReportDetailsProductDto {
+export interface IQcReportDetailsProductTypeDto {
   productTypeName: string;
   productTypeId: number;
   robBeforeDelivery: IQcReportDetailsRob;

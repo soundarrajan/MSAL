@@ -1,7 +1,7 @@
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import {
   IQcReportDetailsDto,
-  IQcReportDetailsProductDto,
+  IQcReportDetailsProductTypeDto,
   IQcReportDetailsUoms
 } from '../api/dto/qc-report-details.dto';
 import { IQcVesselResponsesDto } from '../api/dto/qc-vessel-response.dto';
@@ -13,7 +13,7 @@ export class QcReportDetailsModel {
   nbOfCliams: number;
   nbOfDeliveries: number;
   status: ILookupDto;
-  productTypes: IQcReportDetailsProductDto[];
+  productTypes: IQcReportDetailsProductTypeDto[];
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;
   comment: string;

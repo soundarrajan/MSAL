@@ -14,14 +14,15 @@ import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logge
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
 import {
   IQcReportDetailsDeliveredQty,
-  IQcReportDetailsProductDto,
+  IQcReportDetailsProductTypeDto,
   IQcReportDetailsRob
 } from '../../../../../../services/api/dto/qc-report-details.dto';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
-import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
+import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
+import { Decimal } from 'decimal.js';
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
@@ -93,8 +94,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
-      const productType = (<QcProductTypeListItemState>params.data);
-      return productType.robBeforeDelivery.logBookROB - productType.robBeforeDelivery.measuredROB;
+      const productType = (<ProductTypeListItemViewModel>params.data);
+      return this.getDifference(productType.robBeforeDelivery.logBookROB, productType.robBeforeDelivery.measuredROB);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -128,8 +129,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
-      const productType = (<QcProductTypeListItemState>params.data);
-      return productType.deliveredQty.bdnQty - productType.deliveredQty.messuredDeliveredQty;
+      const productType = (<ProductTypeListItemViewModel>params.data);
+      return this.getDifference(productType.deliveredQty.bdnQty, productType.deliveredQty.messuredDeliveredQty);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -163,8 +164,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
-      const productType = (<QcProductTypeListItemState>params.data);
-      return productType.robAfterDelivery.logBookROB - productType.robAfterDelivery.measuredROB;
+      const productType = (<ProductTypeListItemViewModel>params.data);
+      return this.getDifference(productType.robAfterDelivery.logBookROB, productType.robAfterDelivery.measuredROB);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -242,8 +243,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   }
 
   // TODO: Must be refactored
-  getPathToModel<T = any>(propertyName: keyof IQcReportDetailsProductDto, childPropertyName?: keyof T): string {
-    return `${nameof<IQcReportDetailsProductDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
+  getPathToModel<T = any>(propertyName: keyof IQcReportDetailsProductTypeDto, childPropertyName?: keyof T): string {
+    return `${nameof<IQcReportDetailsProductTypeDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
   }
 
   getToleranceClassRules(): { [cssClassName: string]: (Function | string) } {
@@ -252,5 +253,9 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
       'cell-background red': (params: BaseWithValueColDefParams) => params.value < 0,
       'cell-background orange': (params: BaseWithValueColDefParams) => params.value > 0 && params.value < 100
     };
+  }
+
+  getDifference(minuend: number, suptrahend: number): number {
+    return new Decimal(minuend).sub(new Decimal(suptrahend)).toNumber();
   }
 }
