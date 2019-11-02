@@ -34,6 +34,7 @@ import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc
 import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-report-details-toolbar.component';
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
+import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc
     QcReportDetailsDocumentsComponent,
     QcReportDetailsEmailLogComponent,
     QcReportDetailsAuditLogComponent,
+    UomSelectorComponent
   ],
   exports: [
     MainQuantityControlComponent

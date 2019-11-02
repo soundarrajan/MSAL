@@ -20,13 +20,15 @@ import {
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
+import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
+import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
   public searchText: string;
   gridOptions: GridOptions = {
-    groupHeaderHeight: 20,
+    groupHeaderHeight: 40,
     headerHeight: 40,
     rowHeight: 35,
 
@@ -93,7 +95,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     valueGetter: params => {
       const productType = (<QcProductTypeListItemState>params.data);
       return productType.robBeforeDelivery.logBookROB - productType.robBeforeDelivery.measuredROB;
-    }
+    },
+    cellClassRules: this.getToleranceClassRules()
   };
 
 
@@ -103,7 +106,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'bdnQty'),
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent
   };
 
   measuredDeliveredQuantityCol: ColDef = {
@@ -126,7 +130,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     valueGetter: params => {
       const productType = (<QcProductTypeListItemState>params.data);
       return productType.deliveredQty.bdnQty - productType.deliveredQty.messuredDeliveredQty;
-    }
+    },
+    cellClassRules: this.getToleranceClassRules()
   };
 
 
@@ -160,7 +165,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     valueGetter: params => {
       const productType = (<QcProductTypeListItemState>params.data);
       return productType.robAfterDelivery.logBookROB - productType.robAfterDelivery.measuredROB;
-    }
+    },
+    cellClassRules: this.getToleranceClassRules()
   };
 
 
@@ -176,6 +182,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     groupId: ProductDetailsColGroups.RobBeforeDelivery,
     headerTooltip: ProductDetailsColGroupsLabels.RobBeforeDelivery,
     headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
     children: [this.logBookBeforeDeliveryCol, this.measuredRobBeforeDeliveryCol, this.differenceRobBeforeDeliveryCol]
   };
@@ -184,6 +191,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     groupId: ProductDetailsColGroups.DeliveredQuantity,
     headerTooltip: ProductDetailsColGroupsLabels.DeliveredQuantity,
     headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
     children: [this.bdnDeliveredQuantityCol, this.measuredDeliveredQuantityCol, this.differenceDeliveredQuantityCol]
   };
@@ -192,6 +200,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     groupId: ProductDetailsColGroups.RobAfterDelivery,
     headerTooltip: ProductDetailsColGroupsLabels.RobAfterDelivery,
     headerName: ProductDetailsColGroupsLabels.RobAfterDelivery,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
     children: [this.logBookAfterDeliveryCol, this.measuredRobAfterDeliveryCol, this.differenceRobAfterDeliveryCol]
   };
@@ -237,4 +246,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return `${nameof<IQcReportDetailsProductDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
   }
 
+  getToleranceClassRules(): { [cssClassName: string]: (Function | string) } {
+    // TODO: Add real tolerance logic
+    return {
+      'cell-background red': (params: BaseWithValueColDefParams) => params.value < 0,
+      'cell-background orange': (params: BaseWithValueColDefParams) => params.value > 0 && params.value < 100
+    };
+  }
 }
