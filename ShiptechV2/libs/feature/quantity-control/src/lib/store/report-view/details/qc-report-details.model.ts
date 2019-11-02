@@ -1,24 +1,25 @@
 import { QcVesselResponseState } from './qc-vessel-response.state';
-import { QcAuditLogState } from '../audit-log/qc-audit-log.state';
+import { QcAuditLogModel } from '../audit-log/qc-audit-log.model';
 import { QcSurveyReportsState } from './qc-survey-reports.state';
-import { QcSoundingReportsState } from './qc-sounding-reports.state';
+import { IQcSoundingReportsState } from './qc-sounding-reports.model';
 import { QcEventsLogState } from './qc-events-log.state';
 import { QcProductTypeListItemState } from './qc-product-type-list-item.state';
 
-export class QcReportDetailsState {
+export class QcReportDetailsModel {
   id: number;
   portCallId: string;
-
+// TODO: Use interfaces everyone
   productTypes: number[];
   productTypesById: Record<number, QcProductTypeListItemState>;
-  soundingReports: QcSoundingReportsState;
+  soundingReports: IQcSoundingReportsState;
   surveyReports: QcSurveyReportsState;
   eventsLog: QcEventsLogState;
 
-  auditLog: QcAuditLogState;
+  auditLog: QcAuditLogModel;
 
   comment: string;
   vesselResponse: QcVesselResponseState;
+
 
   isInitialising = false;
   isInitialised = false;
@@ -30,6 +31,6 @@ export class QcReportDetailsState {
   _isLoading: boolean;
 }
 
-export interface IQcReportDetailsState extends QcReportDetailsState {
+export interface IQcReportDetailsState extends QcReportDetailsModel {
 }
 

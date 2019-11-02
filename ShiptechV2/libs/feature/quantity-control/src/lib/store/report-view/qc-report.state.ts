@@ -11,6 +11,11 @@ import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
 import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
+import {
+  LoadSoundingReportListAction,
+  LoadSoundingReportListFailedAction,
+  LoadSoundingReportListSuccessfulAction
+} from './qc-report-sounding.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -45,7 +50,7 @@ export class QcReportState {
     return state.details.productTypes.map(productTypeId => state.details.productTypesById[productTypeId]);
   }
 
-  static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => unknown {
+  static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemState {
     return createSelector(
       [QcReportState],
       (state: IQcReportState) => state.details.productTypesById[productTypeId]
@@ -97,4 +102,52 @@ export class QcReportState {
       });
     }
   }
+
+  @Action(LoadSoundingReportListAction)
+  loadSoundingReports({ getState, patchState }: StateContext<IQcReportState>, action: LoadSoundingReportListAction): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        soundingReports: {
+          _hasLoaded: false,
+          _isLoading: true,
+          items: [],
+          itemsById: undefined,
+        }
+      }
+    });
+  }
+
+  @Action([LoadSoundingReportListSuccessfulAction, LoadSoundingReportListFailedAction])
+  loadSoundingReportFinished({ getState, patchState }: StateContext<IQcReportState>, action: LoadSoundingReportListSuccessfulAction | LoadSoundingReportListFailedAction): void {
+    const state = getState();
+    if (isAction(action, LoadSoundingReportListSuccessfulAction)) {
+
+      patchState({
+        details: {
+          ...state.details,
+          soundingReports: {
+            _hasLoaded: true,
+            _isLoading: false,
+            items: undefined,
+            itemsById: undefined
+          }
+        }
+      });
+    } else if (isAction(action, LoadSoundingReportListFailedAction)) {
+      patchState({
+        details: {
+          ...state.details,
+          soundingReports: {
+            _hasLoaded: false,
+            _isLoading: false,
+            items: undefined,
+            itemsById: undefined
+          }
+        }
+      });
+    }
+  }
+
 }

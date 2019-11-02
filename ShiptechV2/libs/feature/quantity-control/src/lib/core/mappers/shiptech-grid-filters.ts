@@ -1,38 +1,36 @@
 import { IServerSideGetRowsParams } from 'ag-grid-community';
-import {
-  IShiptechDateFilter,
-  IShiptechFilter,
-  IShiptechNumberFilter,
-  IShiptechTextFilter,
-  ShiptechConditionValues
-} from '../../services/models/generic-shiptech.dto';
 import * as _ from 'lodash';
 import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
+import { IApiGridFilterDto } from '@shiptech/core/grid/api-grid-filter.dto';
+import { IApiGridDateFilterDto } from '@shiptech/core/grid/api-grid-date-filter.dto';
+import { IApiGridTextFilterDto } from '@shiptech/core/grid/api-grid-text-filter.dto';
+import { IApiGridNumberFilterDto } from '@shiptech/core/grid/api-grid-number-filter.dto';
+import { ApiGridConditionFilterEnum } from '@shiptech/core/grid/api-grid-condition-filter.enum';
 
-export function getShiptechFormatFilters(params: IServerSideGetRowsParams): IShiptechFilter[] {
+export function getShiptechFormatFilters(params: IServerSideGetRowsParams): IApiGridFilterDto[] {
   const filtersWithKeys = _.mapValues(params.request.filterModel, (value, key) => ({ ...value, key }));
   const filters = flattenFilters(_.values(filtersWithKeys)).map(f => getShiptechFormatFilter(f, params));
   return filters || [];
 }
 
-function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRowsParams): IShiptechFilter {
-  let result: Omit<IShiptechFilter, 'Values'> = {
+function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRowsParams): IApiGridFilterDto {
+  let result: Omit<IApiGridFilterDto, 'Values'> = {
     ColumnType: filter.filterType,
-    ConditionValue: ShiptechConditionValues[filter.type],
+    ConditionValue: ApiGridConditionFilterEnum[filter.type],
     columnValue: params.parentNode['gridApi'].getColumnDef(filter.key).field,
     isComputedColumn: false,
     FilterOperator: ShiptechGridFilterOperators[filter.operator] || 0
   };
 
   if (filter.filterType === knownFilterTypes.Text) {
-    result = <IShiptechTextFilter>{
+    result = <IApiGridTextFilterDto>{
       ...result,
       Values: [(<AgGridTextFilter>filter).filter.toString()]
     };
   }
 
   if (filter.filterType === knownFilterTypes.Date) {
-    result = <IShiptechDateFilter>{
+    result = <IApiGridDateFilterDto>{
       ...result,
       dateType: 'server',
       Values: [(<AgGridDateFilter>filter).dateFrom.toString()]
@@ -42,7 +40,7 @@ function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRow
   if (filter.filterType === knownFilterTypes.Number) {
     const numberFilter = <AgGridNumberFilter>filter;
 
-    result = <IShiptechNumberFilter>{
+    result = <IApiGridNumberFilterDto>{
       ...result,
       // TODO: Temporary workaround to avoid backend crash on number value
       ColumnType: 'Quantity',
@@ -50,7 +48,7 @@ function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRow
     };
   }
 
-  return <IShiptechFilter>result;
+  return <IApiGridFilterDto>result;
 
 }
 
@@ -80,7 +78,7 @@ export interface AgGridFilter {
   operator?: string;
   filterType: knownFilterTypes;
   key: string;
-  type: ShiptechConditionValues
+  type: ApiGridConditionFilterEnum
 }
 
 export interface AgGridDateFilter extends AgGridFilter {

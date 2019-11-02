@@ -1,13 +1,13 @@
-import { IQcReportDetailsState, QcReportDetailsState } from './details/qc-report-details.state';
-import { IQcAuditLogState, QcAuditLogState } from './audit-log/qc-audit-log.state';
-import { IQcEmailLogState, QcEmailLogState } from './email-log/qc-email-log.state';
-import { IQcDocumentsState, QcDocumentsState } from './documents/qc-documents.state';
+import { IQcReportDetailsState, QcReportDetailsModel } from './details/qc-report-details.model';
+import { IQcAuditLogState, QcAuditLogModel } from './audit-log/qc-audit-log.model';
+import { IQcEmailLogState, QcEmailLogModel } from './email-log/qc-email-log.model';
+import { IQcDocumentsState, QcDocumentsModel } from './documents/qc-documents.model';
 
 export class QcReportStateModel {
-  details: IQcReportDetailsState = new QcReportDetailsState();
-  auditLog: IQcAuditLogState = new QcAuditLogState();
-  emailLog: IQcEmailLogState = new QcEmailLogState();
-  documents: IQcDocumentsState = new QcDocumentsState();
+  details: IQcReportDetailsState = new QcReportDetailsModel();
+  auditLog: IQcAuditLogState = new QcAuditLogModel();
+  emailLog: IQcEmailLogState = new QcEmailLogModel();
+  documents: IQcDocumentsState = new QcDocumentsModel();
 }
 
 export interface IQcReportState extends QcReportStateModel {

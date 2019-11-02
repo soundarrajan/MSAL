@@ -275,16 +275,13 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getPortCalls({
+    this.quantityControlService.getReportsList({
       pagination: getShiptechFormatPagination(params),
-      sorts: getShiptechFormatSorts(params),
+      sortList: getShiptechFormatSorts(params),
       filters: getShiptechFormatFilters(params),
       searchText: this.searchText
     }).subscribe(
-      response => {
-        console.log('RESPONSE', response);
-        params.successCallback(response.items, 100);
-      },
+      response => params.successCallback(response.items, response.totalItems),
       () => params.failCallback());
   }
 }

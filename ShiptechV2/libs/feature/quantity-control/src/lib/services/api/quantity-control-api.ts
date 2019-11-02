@@ -11,8 +11,8 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
-  IGetSoundingReportsRequest,
-  IGetSoundingReportsResponse
+  IGetSoundingReportListRequest,
+  IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
 import {
   IGetSurveyReportHistoryRequest,
@@ -55,7 +55,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse> {
+  getSoundingReports(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
     return throwError('Not implemented');
   }
 

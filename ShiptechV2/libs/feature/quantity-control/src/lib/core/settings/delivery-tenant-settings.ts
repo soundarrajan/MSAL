@@ -1,12 +1,6 @@
-import {
-  IModuleTenantSettings,
-  ITenantSettingsState, TenantSettingsModuleName, moduleSettings
-} from '@shiptech/core/store/states/tenant/tenant-settings.state.interface';
+import { IModuleTenantSettings } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 export interface IDeliveryTenantSettings extends IModuleTenantSettings {
+  // TODO: Define Delivery settings props
   myProp: number;
-}
-
-export function deliverySettings(tenantSettings: ITenantSettingsState): IDeliveryTenantSettings {
-  return moduleSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery, tenantSettings);
 }
