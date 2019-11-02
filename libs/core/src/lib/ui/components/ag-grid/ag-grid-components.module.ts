@@ -7,6 +7,8 @@ import { PageSizeSelectorComponent } from '../page-size-selector/page-size-selec
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgPagingModule } from '../ag-paging/ag-paging.module';
 import { ListboxModule } from 'primeng/listbox';
+import { AgHeaderRendererDirective } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-header-renderer.directive';
+import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 
 @NgModule({
   imports: [
@@ -19,11 +21,15 @@ import { ListboxModule } from 'primeng/listbox';
   declarations: [
     AgTemplateRendererComponent,
     AgTemplateRendererDirective,
+    AgHeaderRendererDirective,
+    AgColumnGroupHeaderComponent,
     PageSizeSelectorComponent
   ],
   exports: [
     AgTemplateRendererComponent,
     AgTemplateRendererDirective,
+    AgHeaderRendererDirective,
+    AgColumnGroupHeaderComponent,
     AgPagingComponent,
     PageSizeSelectorComponent
   ]

@@ -14,6 +14,35 @@
 </ag-grid-angular>
 
 
+<ng-template [columnDef]="viewModel.gridViewModel.bdnDeliveredQuantityCol"
+             appTemplateRenderer
+             let-model="data.model" let-value="value">
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <a href="#">{{value | number: viewModel.numberDisplayFormat}}</a>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template [columnDef]="[
+              viewModel.gridViewModel.robBeforeDeliveryColGroup,
+              viewModel.gridViewModel.robAfterDeliveryColGroup,
+              viewModel.gridViewModel.deliveredQuantityColGroup]"
+             appHeaderRenderer
+             let-title="title">
+  <div class="ag-header-group-cell-label p-2" ref="agContainer">
+    <div class="row" style="width: 100%">
+      <div class="col-6">
+        <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
+      </div>
+      <div class="col-6">
+        <shiptech-uom-selector></shiptech-uom-selector>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
 <ng-template [columnDef]="[
               viewModel.gridViewModel.logBookBeforeDeliveryCol,
               viewModel.gridViewModel.measuredRobBeforeDeliveryCol,
@@ -25,12 +54,12 @@
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <input
-        #premiumDiscount
         [ngModel]="value"
       />
     </div>
   </ng-container>
 </ng-template>
+
 
 <ng-template [columnDef]="[
              viewModel.gridViewModel.differenceDeliveredQuantityCol,
@@ -39,10 +68,10 @@
              appTemplateRenderer
              let-model="data.model" let-value="value">
   <ng-container>
-    <!--    TODO: Add UOM-->
+    <!--    TODO: Add UOM conversion -->
     <div fxLayout="row" fxLayoutAlign="center center">
       <div class="row">
-        <div class="col-6">{{value}}</div>
+        <div class="col-6">{{value | number: viewModel.numberDisplayFormat}}</div>
         <div class="col-6" style="border-left: 1px solid grey;">UOM</div>
       </div>
     </div>

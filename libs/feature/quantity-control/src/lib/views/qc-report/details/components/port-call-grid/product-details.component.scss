@@ -1,0 +1,30 @@
+::ng-deep {
+  .cell-background {
+    color: white;
+
+    &.red {
+      background-color: #e9585a;
+    }
+
+    &.orange {
+      background-color: #e98a46;
+    }
+
+    &.verified {
+      background-color: #26ae61;
+    }
+
+    &.pending {
+      background-color: #fdbf2c;
+    }
+
+    &.matched {
+      background-color: #72bcab;
+    }
+
+  }
+
+  shiptech-uom-selector {
+    overflow: visible
+  }
+}
