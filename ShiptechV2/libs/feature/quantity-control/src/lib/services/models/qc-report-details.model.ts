@@ -4,6 +4,7 @@ import {
   IQcReportDetailsProductDto,
   IQcReportDetailsUoms
 } from '../api/dto/qc-report-details.dto';
+import { IQcVesselResponsesDto } from '../api/dto/qc-vessel-response.dto';
 
 export class QcReportDetailsModel {
   id: number;
@@ -14,6 +15,8 @@ export class QcReportDetailsModel {
   status: ILookupDto;
   productTypes: IQcReportDetailsProductDto[];
   uoms: IQcReportDetailsUoms;
+  vesselResponses: IQcVesselResponsesDto;
+  comment: string;
 
   constructor(content: IQcReportDetailsDto) {
     Object.assign(this, content);

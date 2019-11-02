@@ -45,12 +45,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+  getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return throwError('Not implemented');
   }
 
   @ObservableException()
-  getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
+  getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
     return throwError('Not implemented');
   }
 
@@ -75,7 +75,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  verifyPortCalls(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
+  verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
     return throwError('Not implemented');
   }
 

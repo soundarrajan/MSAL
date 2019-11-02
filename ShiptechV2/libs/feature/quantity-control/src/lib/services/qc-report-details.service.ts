@@ -26,7 +26,7 @@ export class QcReportDetailsService extends BaseStoreService {
   }
 
   getPortCalls(filter: unknown): Observable<{ items: QcReportsListItemModel[], totalItems: number }> {
-    return this.api.getPortCalls({ pageSize: 100 });
+    return this.api.getReportsList({ pageSize: 100 });
   }
 
   @ObservableException()
@@ -36,7 +36,7 @@ export class QcReportDetailsService extends BaseStoreService {
     }
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
-      () => this.api.getPortCallById({ reportId }),
+      () => this.api.getReportById({ reportId }),
       new LoadReportDetailsAction(reportId),
       (response) => new LoadReportDetailsSuccessfulAction(reportId, new QcReportDetailsModel(response.report)),
       new LoadReportDetailsFailedAction(reportId),

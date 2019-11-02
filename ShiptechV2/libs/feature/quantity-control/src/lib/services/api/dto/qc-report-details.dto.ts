@@ -1,4 +1,5 @@
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { IQcVesselResponsesDto } from './qc-vessel-response.dto';
 
 export interface IQcReportDetailsDto {
   id: number;
@@ -9,6 +10,8 @@ export interface IQcReportDetailsDto {
   status: ILookupDto;
   productTypes: IQcReportDetailsProductDto[];
   uoms: IQcReportDetailsUoms;
+  vesselResponses: IQcVesselResponsesDto;
+  comment: string;
 }
 
 export interface IQcReportDetailsProductDto {
@@ -34,3 +37,5 @@ export interface IQcReportDetailsUoms {
   robAfterDeliveryUom: ILookupDto,
   deliveredQtyUom: ILookupDto
 }
+
+

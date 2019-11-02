@@ -43,7 +43,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+  getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return of({
       items: getMockQcReportsList(request.pageSize).map(item => new QcReportsListItemModel(item)),
       totalItems: request.pageSize * 5
@@ -51,7 +51,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
+  getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
     return of({ report: getQcReportDetailsCall(request.reportId) });
   }
 
@@ -76,7 +76,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  verifyPortCalls(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
+  verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
     return throwError('Not implemented');
   }
 
