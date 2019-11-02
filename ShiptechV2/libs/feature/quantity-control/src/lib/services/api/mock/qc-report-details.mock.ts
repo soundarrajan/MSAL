@@ -23,7 +23,11 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 })),
     vesselResponses: {
       bunker: getMockVesselResponse(),
-      sludge: { ...getMockVesselResponse(), sludge: faker.random.number(10), sludgeVerified: faker.random.boolean() }
+      sludge: {
+        ...getMockVesselResponse(),
+        sludge: faker.random.number(10) + Math.random(),
+        sludgeVerified: faker.random.boolean()
+      }
     },
     comment: faker.random.words(faker.random.number({ min: 10, max: 40 }))
   };
