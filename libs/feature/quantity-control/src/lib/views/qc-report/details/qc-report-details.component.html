@@ -37,10 +37,12 @@
             <div class="col-6">Vessel response (sludge)</div>
             <div class="col-3">
               <span class="mr-1">Sludge %</span>
-              <p-inputMask [style]="{'width': '100px'}" mask="99.999"></p-inputMask>
+              <!--              TODO: Find a way to bind number values-->
+              <p-inputMask [ngModel]="'10.000'" [style]="{'width': '100px'}" mask="99.999"></p-inputMask>
             </div>
             <div class="col-3">
-              <p-checkbox label="Verify Sludge Qty"></p-checkbox>
+              <p-checkbox [ngModel]="(sludgeVesselResponse$ | async).sludgeVerified" binary="true"
+                          label="Verify Sludge Qty"></p-checkbox>
             </div>
           </div>
         </p-header>
@@ -50,7 +52,8 @@
             Category
           </div>
           <div class="col-10">
-            <p-dropdown [autoWidth]="false" [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
+            <p-dropdown [autoWidth]="false" [ngModel]="(sludgeVesselResponse$ | async).categoryId"
+                        [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
           </div>
         </div>
 
@@ -59,7 +62,8 @@
             Description
           </div>
           <div class="col-10">
-            <textarea [rows]="5" pInputTextare style="width: 100%"></textarea>
+            <textarea [rows]="5" [value]="(sludgeVesselResponse$ | async).description" pInputTextare
+                      style="width: 100%"></textarea>
           </div>
         </div>
 
@@ -77,7 +81,8 @@
             Category
           </div>
           <div class="col-10">
-            <p-dropdown [autoWidth]="false" [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
+            <p-dropdown [autoWidth]="false" [ngModel]="(bunkerVesselResponse$ | async).categoryId"
+                        [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
           </div>
         </div>
 
@@ -86,7 +91,8 @@
             Description
           </div>
           <div class="col-10">
-            <textarea [rows]="5" pInputTextare style="width: 100%"></textarea>
+            <textarea [rows]="5" [value]="(bunkerVesselResponse$ | async).description" pInputTextare
+                      style="width: 100%"></textarea>
           </div>
         </div>
 
@@ -102,7 +108,7 @@
             Internal comment
           </div>
           <div class="col-11">
-            <textarea [rows]="5" pInputTextare style="width: 100%"></textarea>
+            <textarea [rows]="5" [value]="comment$ | async" pInputTextare style="width: 100%"></textarea>
           </div>
         </div>
       </p-panel>

@@ -18,6 +18,8 @@ import {
   IQcReportDetailsRob
 } from '../../../../../../services/api/dto/qc-report-details.dto';
 import { nameof } from '@shiptech/core/utils/type-definitions';
+import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
@@ -67,7 +69,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'logBookROB'),
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
@@ -76,7 +79,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'measuredROB'),
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent
   };
 
   differenceRobBeforeDeliveryCol: ColDef = {
@@ -84,7 +88,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: params => {
+      const productType = (<QcProductTypeListItemState>params.data);
+      return productType.robBeforeDelivery.logBookROB - productType.robBeforeDelivery.measuredROB;
+    }
   };
 
 
@@ -103,7 +112,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'messuredDeliveredQty'),
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent
   };
 
   differenceDeliveredQuantityCol: ColDef = {
@@ -111,7 +121,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: params => {
+      const productType = (<QcProductTypeListItemState>params.data);
+      return productType.deliveredQty.bdnQty - productType.deliveredQty.messuredDeliveredQty;
+    }
   };
 
 
@@ -121,7 +136,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'logBookROB'),
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
@@ -130,7 +146,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'measuredROB'),
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent
   };
 
   differenceRobAfterDeliveryCol: ColDef = {
@@ -138,7 +155,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     width: 50,
     hide: false,
-    suppressToolPanel: true
+    suppressToolPanel: true,
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: params => {
+      const productType = (<QcProductTypeListItemState>params.data);
+      return productType.robAfterDelivery.logBookROB - productType.robAfterDelivery.measuredROB;
+    }
   };
 
 

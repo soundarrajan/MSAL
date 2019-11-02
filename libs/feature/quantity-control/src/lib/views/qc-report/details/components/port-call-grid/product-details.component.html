@@ -12,3 +12,39 @@
   id="quantityControlProductsGrid"
   style="height:500px">
 </ag-grid-angular>
+
+
+<ng-template [columnDef]="[
+              viewModel.gridViewModel.logBookBeforeDeliveryCol,
+              viewModel.gridViewModel.measuredRobBeforeDeliveryCol,
+              viewModel.gridViewModel.measuredDeliveredQuantityCol,
+              viewModel.gridViewModel.logBookAfterDeliveryCol,
+              viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
+             appTemplateRenderer
+             let-model="data.model" let-value="value">
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <input
+        #premiumDiscount
+        [ngModel]="value"
+      />
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template [columnDef]="[
+             viewModel.gridViewModel.differenceDeliveredQuantityCol,
+             viewModel.gridViewModel.differenceRobBeforeDeliveryCol,
+             viewModel.gridViewModel.differenceRobAfterDeliveryCol]"
+             appTemplateRenderer
+             let-model="data.model" let-value="value">
+  <ng-container>
+    <!--    TODO: Add UOM-->
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <div class="row">
+        <div class="col-6">{{value}}</div>
+        <div class="col-6" style="border-left: 1px solid grey;">UOM</div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
