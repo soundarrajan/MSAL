@@ -9,6 +9,7 @@ import {
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
+import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -21,6 +22,21 @@ export class QcReportState {
   @Selector()
   static getPortCallsProductTypesIds(state: IQcReportState): unknown[] {
     return state.details.productTypes;
+  }
+
+  @Selector()
+  static getSludgeVesselResponse(state: IQcReportState): QcVesselResponseSludgeStateModel {
+    return state.details.vesselResponse.sludge;
+  }
+
+  @Selector()
+  static getBunkerVesselResponse(state: IQcReportState): QcVesselResponseBaseStateModel {
+    return state.details.vesselResponse.bunker;
+  }
+
+  @Selector()
+  static getReportComment(state: IQcReportState): string {
+    return state.details.comment;
   }
 
   @Selector()
@@ -62,8 +78,10 @@ export class QcReportState {
           id: success.dto.id,
           portCallId: success.dto.portCallId,
           productTypes: success.dto.productTypes.map(productType => productType.productTypeId),
-          productTypesById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId)
+          productTypesById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId),
           // TODO: load other props
+          comment: success.dto.comment,
+          vesselResponse: success.dto.vesselResponses
         }
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {

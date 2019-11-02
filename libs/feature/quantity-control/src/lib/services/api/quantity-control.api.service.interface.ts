@@ -24,9 +24,9 @@ import {
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 
 export interface IQuantityControlApiService {
-  getPortCalls(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
+  getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
 
-  getPortCallById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse>;
+  getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse>;
 
   getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse>;
 
@@ -36,7 +36,7 @@ export interface IQuantityControlApiService {
 
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse>;
 
-  verifyPortCalls(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse>;
+  verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse>;
 
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse>;
 }

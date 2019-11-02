@@ -5,6 +5,7 @@ import { QcReportStatusEnum } from '../../../core/enums/qc-report-status.enum';
 import * as _ from 'lodash';
 import { MockProductsLookup } from './products.mock';
 import { mockUoms } from './uoms.mock';
+import { IQcVesselResponseDto } from '../dto/qc-vessel-response.dto';
 
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   return {
@@ -19,7 +20,12 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       robAfterDeliveryUom: _.sample(mockUoms),
       robBeforeDeliveryUom: _.sample(mockUoms)
     },
-    productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 }))
+    productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 })),
+    vesselResponses: {
+      bunker: getMockVesselResponse(),
+      sludge: { ...getMockVesselResponse(), sludge: faker.random.number(10), sludgeVerified: faker.random.boolean() }
+    },
+    comment: faker.random.words(faker.random.number({ min: 10, max: 40 }))
   };
 }
 
@@ -58,4 +64,13 @@ export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductD
       }
     };
   });
+}
+
+export function getMockVesselResponse(): IQcVesselResponseDto {
+  return {
+    categoryId: faker.random.number(3),
+    // TODO: Do we need categoryName?
+    categoryName: faker.random.words(3),
+    description: faker.lorem.paragraph(faker.random.number(5))
+  };
 }
