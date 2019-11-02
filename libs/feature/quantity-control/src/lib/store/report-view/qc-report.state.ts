@@ -10,6 +10,7 @@ import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
+import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -40,7 +41,7 @@ export class QcReportState {
   }
 
   @Selector()
-  static getPortCallReportProductTypes(state: IQcReportState): unknown[] {
+  static getPortCallReportProductTypes(state: IQcReportState): QcProductTypeListItemState[] {
     return state.details.productTypes.map(productTypeId => state.details.productTypesById[productTypeId]);
   }
 
@@ -78,7 +79,8 @@ export class QcReportState {
           id: success.dto.id,
           portCallId: success.dto.portCallId,
           productTypes: success.dto.productTypes.map(productType => productType.productTypeId),
-          productTypesById: _.keyBy(success.dto.productTypes, productType => productType.productTypeId),
+          productTypesById: _.keyBy((success.dto.productTypes || []).map(productType => new QcProductTypeListItemState(productType)),
+            productType => productType.productTypeId),
           // TODO: load other props
           comment: success.dto.comment,
           vesselResponse: success.dto.vesselResponses

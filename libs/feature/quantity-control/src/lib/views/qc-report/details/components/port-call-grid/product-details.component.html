@@ -49,13 +49,10 @@
               viewModel.gridViewModel.measuredDeliveredQuantityCol,
               viewModel.gridViewModel.logBookAfterDeliveryCol,
               viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
-             appTemplateRenderer
-             let-model="data.model" let-value="value">
+             appTemplateRenderer let-value="value">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <input
-        [ngModel]="value"
-      />
+      <p-inputMask [mask]="viewModel.numberMaskFormat" [ngModel]="value"></p-inputMask>
     </div>
   </ng-container>
 </ng-template>

@@ -1,4 +1,4 @@
-import { IQcReportDetailsDto, IQcReportDetailsProductDto } from '../dto/qc-report-details.dto';
+import { IQcReportDetailsDto, IQcReportDetailsProductTypeDto } from '../dto/qc-report-details.dto';
 import * as faker from 'faker';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { QcReportStatusEnum } from '../../../core/enums/qc-report-status.enum';
@@ -44,23 +44,23 @@ export const PortCallStatuses: ILookupDto<number, QcReportStatusEnum>[] = [
   }
 ];
 
-export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductDto[] {
+export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductTypeDto[] {
   return _.range(1, n).map(() => {
     const product = _.sample(MockProductsLookup);
     return {
       productTypeName: product.name,
       productTypeId: product.id,
       deliveredQty: {
-        bdnQty: faker.random.number(500),
-        messuredDeliveredQty: faker.random.number(400)
+        bdnQty: faker.random.number(500) + Math.random(),
+        messuredDeliveredQty: faker.random.number(400) + Math.random()
       },
       robAfterDelivery: {
-        logBookROB: faker.random.number(500),
-        measuredROB: faker.random.number(500)
+        logBookROB: faker.random.number(500) + Math.random(),
+        measuredROB: faker.random.number(500) + Math.random()
       },
       robBeforeDelivery: {
-        logBookROB: faker.random.number(500),
-        measuredROB: faker.random.number(500)
+        logBookROB: faker.random.number(500) + Math.random(),
+        measuredROB: faker.random.number(500) + Math.random()
       }
     };
   });

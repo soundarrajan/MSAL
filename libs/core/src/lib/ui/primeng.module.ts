@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastrModule } from 'ngx-toastr';
 //TODO: Remove unused module
 import {
   AccordionModule,
@@ -29,6 +28,7 @@ import {
   InputSwitchModule,
   InputTextareaModule,
   InputTextModule,
+  KeyFilterModule,
   LightboxModule,
   ListboxModule,
   MegaMenuModule,
@@ -137,7 +137,8 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     TooltipModule,
     TreeModule,
     TreeTableModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    KeyFilterModule
   ],
   exports: [
     AccordionModule,
@@ -204,7 +205,8 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     TooltipModule,
     TreeModule,
     TreeTableModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    KeyFilterModule
   ]
 })
 export class PrimeNGModule {}
