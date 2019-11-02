@@ -37,5 +37,3 @@ export interface IQcReportDetailsUoms {
   robAfterDeliveryUom: ILookupDto,
   deliveredQtyUom: ILookupDto
 }
-
-

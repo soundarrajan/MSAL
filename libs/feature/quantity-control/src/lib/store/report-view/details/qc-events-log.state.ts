@@ -1,6 +1,6 @@
-import { BaseSubState } from '../models/base.sub-state';
+import { BaseModel } from '../models/base.sub-state';
 
-export class QcEventsLogState extends BaseSubState {
+export class QcEventsLogState extends BaseModel {
   items: QcEventsLogItemState[];
 }
 

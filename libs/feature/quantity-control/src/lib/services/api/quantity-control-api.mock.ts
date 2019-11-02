@@ -10,8 +10,8 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
-  IGetSoundingReportsRequest,
-  IGetSoundingReportsResponse
+  IGetSoundingReportListRequest,
+  IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
 import {
   IGetSurveyReportHistoryRequest,
@@ -28,7 +28,6 @@ import { getMockQcReportsList } from './mock/qc-reports-list.mock';
 import { QcReportsListItemModel } from '../models/qc-reports-list-item.model';
 import { QuantityControlApi } from './quantity-control-api';
 import { getQcReportDetailsCall } from './mock/qc-report-details.mock';
-import { AppConfig } from '@shiptech/core/config/app-config';
 import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 @Injectable({
@@ -38,15 +37,15 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCallForwardTo() realService: QuantityControlApi;
 
-  constructor(realService: QuantityControlApi, appConfig: AppConfig) {
+  constructor(realService: QuantityControlApi) {
     this.realService = realService;
   }
 
   @ApiCall()
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return of({
-      items: getMockQcReportsList(request.pageSize).map(item => new QcReportsListItemModel(item)),
-      totalItems: request.pageSize * 5
+      items: getMockQcReportsList(request.pagination.take).map(item => new QcReportsListItemModel(item)),
+      totalItems: request.pagination.take * 5
     });
   }
 
@@ -56,7 +55,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getSoundingReports(request: IGetSoundingReportsRequest): Observable<IGetSoundingReportsResponse> {
+  getSoundingReports(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
     return throwError('Not implemented');
   }
 
