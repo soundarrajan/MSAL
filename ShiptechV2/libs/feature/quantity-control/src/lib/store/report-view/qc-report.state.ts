@@ -104,7 +104,7 @@ export class QcReportState {
   }
 
   @Action(LoadSoundingReportListAction)
-  loadSoundingReports({ getState, patchState }: StateContext<IQcReportState>, action: LoadSoundingReportListAction): void {
+  loadSoundingReports({ getState, patchState }: StateContext<IQcReportState>, {gridInfo}: LoadSoundingReportListAction): void {
     const state = getState();
     patchState({
       details: {
@@ -112,6 +112,7 @@ export class QcReportState {
         soundingReports: {
           _hasLoaded: false,
           _isLoading: true,
+          gridInfo: gridInfo,
           items: [],
           itemsById: undefined,
         }
@@ -128,10 +129,11 @@ export class QcReportState {
         details: {
           ...state.details,
           soundingReports: {
+            ...state.details.soundingReports,
             _hasLoaded: true,
             _isLoading: false,
-            items: undefined,
-            itemsById: undefined
+            items: [], // TODO
+            itemsById: {} // TODO
           }
         }
       });
@@ -140,6 +142,7 @@ export class QcReportState {
         details: {
           ...state.details,
           soundingReports: {
+            ...state.details.soundingReports,
             _hasLoaded: false,
             _isLoading: false,
             items: undefined,

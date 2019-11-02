@@ -1,5 +1,5 @@
 import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
-import { IApiGridRequestDto } from '@shiptech/core/grid/api-grid-request-response.dto';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 export interface IGetSoundingReportListItemDto {
   vesselName: string;
@@ -17,7 +17,7 @@ export interface IGetSoundingReportListItemDto {
   robDogoDiff: number;
 }
 
-export interface IGetSoundingReportListRequest extends IBaseQuantityControlRequest, IApiGridRequestDto {
+export interface IGetSoundingReportListRequest extends IBaseQuantityControlRequest, IServerGridInfo {
 
 }
 

@@ -1,4 +1,4 @@
-export enum ApiGridConditionFilterEnum {
+export enum ServerGridConditionFilterEnum {
   isBlank = 'IS BLANK',
   isNotBlank = 'IS NOT NULL',
   contains = 'LIKE',

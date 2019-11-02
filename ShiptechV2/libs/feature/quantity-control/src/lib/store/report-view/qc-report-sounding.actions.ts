@@ -1,14 +1,18 @@
 import { TODO } from '@shiptech/core/utils/type-definitions';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { nullable } from '@shiptech/core/utils/nullable';
 
 export class LoadSoundingReportListAction {
   static readonly type = '[QC.Report.Sounding] Load Sounding Report List';
 
-  constructor(public reportId: number) {
+  constructor(public reportId: number, public gridInfo: IServerGridInfo) {
   }
 
   public log(): any {
     return {
-      reportId: this.reportId
+      reportId: this.reportId,
+      skip: nullable(nullable(this.gridInfo).pagination).skip,
+      take: nullable(nullable(this.gridInfo).pagination).take,
     };
   }
 }
