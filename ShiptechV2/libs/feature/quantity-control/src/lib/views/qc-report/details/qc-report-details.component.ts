@@ -3,6 +3,13 @@ import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 import { SelectItem } from 'primeng/api';
+import { Select, Store } from '@ngxs/store';
+import { QcReportState } from '../../../store/report-view/qc-report.state';
+import { Observable } from 'rxjs';
+import {
+  QcVesselResponseBaseStateModel,
+  QcVesselResponseSludgeStateModel
+} from '../../../store/report-view/details/qc-vessel-response.state';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -10,6 +17,11 @@ import { SelectItem } from 'primeng/api';
   styleUrls: ['./qc-report-details.component.scss']
 })
 export class QcReportDetailsComponent implements OnInit {
+
+  @Select(QcReportState.getBunkerVesselResponse) bunkerVesselResponse$: Observable<QcVesselResponseBaseStateModel>;
+  @Select(QcReportState.getSludgeVesselResponse) sludgeVesselResponse$: Observable<QcVesselResponseSludgeStateModel>;
+  @Select(QcReportState.getReportComment) comment$: Observable<string>;
+
   knownRoutes = KnownQuantityControlRoutes;
   mockResponseSelectItems: SelectItem[] = [
     {
@@ -30,11 +42,15 @@ export class QcReportDetailsComponent implements OnInit {
     }
   ];
 
-  constructor(public entityStatus: EntityStatusService) {
+  constructor(private entityStatus: EntityStatusService, private store: Store) {
     //TODO: after loading
     this.entityStatus.setStatus({
       value: EntityStatus.Delivered
     });
+  }
+
+  get reportStatus(): EntityStatus {
+    return this.entityStatus.currentStatus.value;
   }
 
   ngOnInit(): void {
@@ -46,9 +62,5 @@ export class QcReportDetailsComponent implements OnInit {
 
   verifyVessel(): void {
     alert('Not implemented');
-  }
-
-  get reportStatus(): EntityStatus {
-    return this.entityStatus.currentStatus.value;
   }
 }
