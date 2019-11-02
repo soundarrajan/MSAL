@@ -1,7 +1,7 @@
 import { IServerSideGetRowsParams } from 'ag-grid-community';
-import { IApiGridPaginationDto } from '@shiptech/core/grid/api-grid-pagination.dto';
+import { IServerGridPagination } from '@shiptech/core/grid/server-grid/server-grid-pagination';
 
-export function getShiptechFormatPagination(params: IServerSideGetRowsParams): IApiGridPaginationDto {
+export function getShiptechFormatPagination(params: IServerSideGetRowsParams): IServerGridPagination {
   return {
     take: params.request.endRow - params.request.startRow,
     skip: params.request.startRow

@@ -1,4 +1,5 @@
 import { BaseModel } from '../models/base.sub-state';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 export class QcSoundingReportItemDetailsItemModel {
   reportId: number;
@@ -37,6 +38,7 @@ export interface IQcSoundingReportItemDetailsState extends QcSoundingReportItemD
 }
 
 export class QcSoundingReportsModel extends BaseModel {
+  gridInfo: IServerGridInfo;
   items: number[];
   itemsById: Record<number, IQcSoundingReportItemDetailsState>;
 }

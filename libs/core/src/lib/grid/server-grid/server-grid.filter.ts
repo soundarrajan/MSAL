@@ -1,4 +1,4 @@
-export interface IApiGridFilterDto {
+export interface ServerGridFilter {
   ColumnType: string;
   ConditionValue: string;
   FilterOperator?: number;

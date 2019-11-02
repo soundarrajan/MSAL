@@ -21,7 +21,7 @@ import {
   LoadSoundingReportListFailedAction,
   LoadSoundingReportListSuccessfulAction
 } from '../store/report-view/qc-report-sounding.actions';
-import { IApiGridRequestDto } from '@shiptech/core/grid/api-grid-request-response.dto';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { IGetQcReportsListResponse } from './api/request-response/qc-reports-list.request-response';
 
 @Injectable()
@@ -35,7 +35,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   }
 
   @ObservableException()
-  getReportsList(gridRequest: IApiGridRequestDto): Observable<IGetQcReportsListResponse> {
+  getReportsList(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
     return this.api.getReportsList(gridRequest);
   }
 
@@ -54,7 +54,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     );
   }
 
-  loadSoundingReport(reportId: number, gridRequest: IApiGridRequestDto): Observable<unknown> {
+  loadSoundingReport(reportId: number, gridRequest: IServerGridInfo): Observable<unknown> {
     if (!reportId) {
       return throwError(ModuleError.InvalidQcReportId(reportId));
     }
@@ -65,8 +65,8 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
       () => this.api.getSoundingReports(gridRequest),
-      new LoadSoundingReportListAction(reportId),
-      (response) => new LoadSoundingReportListSuccessfulAction(response.report),
+      new LoadSoundingReportListAction(reportId, gridRequest),
+      (response) => new LoadSoundingReportListSuccessfulAction(gridRequest),
       new LoadSoundingReportListFailedAction(reportId),
       ModuleError.LoadQcReportDetailsFailed(reportId)
     );
