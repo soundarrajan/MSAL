@@ -38,7 +38,8 @@
             <div class="col-3">
               <span class="mr-1">Sludge %</span>
               <!--              TODO: Find a way to bind number values-->
-              <p-inputMask [ngModel]="'10.000'" [style]="{'width': '100px'}" mask="99.999"></p-inputMask>
+              <p-inputMask [ngModel]="(sludgeVesselResponse$ | async).sludge" [style]="{'width': '100px'}"
+                           mask="99.999"></p-inputMask>
             </div>
             <div class="col-3">
               <p-checkbox [ngModel]="(sludgeVesselResponse$ | async).sludgeVerified" binary="true"

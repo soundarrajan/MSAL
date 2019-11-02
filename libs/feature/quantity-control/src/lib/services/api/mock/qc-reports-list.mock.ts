@@ -11,7 +11,7 @@ export function getMockQcReportsList(n: number): QcReportsListItemDto[] {
 export function getMockQcReportsListItem(id: number): QcReportsListItemDto {
   const quantityBefore: number = faker.random.number(5000);
   const rob: number = faker.random.number(200);
-  const sludge: number = faker.random.number(500);
+  const sludge: number = faker.random.number(20);
 
   return {
     id,
