@@ -1,7 +1,6 @@
 import { QcVesselResponseState } from './qc-vessel-response.state';
 import { QcAuditLogModel } from '../audit-log/qc-audit-log.model';
 import { QcSurveyReportsState } from './qc-survey-reports.state';
-import { IQcSoundingReportsState } from './qc-sounding-reports.model';
 import { QcEventsLogState } from './qc-events-log.state';
 import { QcProductTypeListItemState } from './qc-product-type-list-item.state';
 
@@ -11,7 +10,6 @@ export class QcReportDetailsModel {
 // TODO: Use interfaces everyone
   productTypes: number[];
   productTypesById: Record<number, QcProductTypeListItemState>;
-  soundingReports: IQcSoundingReportsState;
   surveyReports: QcSurveyReportsState;
   eventsLog: QcEventsLogState;
 
