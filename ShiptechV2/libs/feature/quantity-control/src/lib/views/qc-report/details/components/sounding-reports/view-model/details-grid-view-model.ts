@@ -4,9 +4,6 @@ import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definiti
 import { QcSoundingReportDetailsColumns, QcSoundingReportDetailsColumnsLabels } from './grid-columns';
 import { QcSoundingReportDetailsItemModel } from '../../../../../../services/models/qc-sounding-report-details-item.model';
 import { QcSoundingReportItemModel } from '../../../../../../services/models/qc-sounding-report-item.model';
-import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
-import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
-import { getShiptechFormatFilters } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
 
 function model(prop: keyof QcSoundingReportDetailsItemModel): string {
@@ -21,7 +18,7 @@ export class QcSoundingReportDetailsGridViewModel {
     headerHeight: 40,
     rowHeight: 35,
 
-    rowModelType: RowModelType.ServerSide,
+   // rowModelType: RowModelType.ServerSide,
     pagination: true,
 
     animateRows: true,
@@ -43,9 +40,7 @@ export class QcSoundingReportDetailsGridViewModel {
       resizable: true,
       filter: 'agTextColumnFilter',
       width: 150
-    },
-
-    columnDefs: []
+    }
   };
 
   reportIdCol: ColDef = {
@@ -123,9 +118,9 @@ export class QcSoundingReportDetailsGridViewModel {
   public detailServerSideGetRows(params: any): void {
     this.quantityControlService.getSoundingReportListItemDetails((<QcSoundingReportItemModel>params.data).reportId, {}).subscribe(
       response => params.successCallback(response.items, response.totalItems),
-      () =>{
+      () => {
         // TODO: master detail has no failcallback for detail grid
-       // params.failCallback()
+        // params.failCallback()
       });
   }
 }
