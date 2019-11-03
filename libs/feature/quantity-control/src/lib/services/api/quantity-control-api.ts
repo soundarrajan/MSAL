@@ -11,6 +11,7 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
+  IGetSoundingReportDetailsRequest, IGetSoundingReportDetailsResponse,
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
@@ -37,7 +38,6 @@ export namespace ProcurementApiPaths {
   providedIn: 'root'
 })
 export class QuantityControlApi implements IQuantityControlApiService {
-
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
@@ -55,7 +55,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getSoundingReports(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
+  getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
+    return throwError('Not implemented');
+  }
+
+  @ObservableException()
+  getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
     return throwError('Not implemented');
   }
 

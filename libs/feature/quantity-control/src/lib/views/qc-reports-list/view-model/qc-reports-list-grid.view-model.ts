@@ -5,10 +5,10 @@ import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QcReportDetailsService } from '../../../services/qc-report-details.service';
-import { getShiptechFormatFilters } from '../../../core/mappers/shiptech-grid-filters';
-import { getShiptechFormatSorts } from '../../../core/mappers/shiptech-grid-sorts';
+import { getShiptechFormatFilters } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-filters';
+import { getShiptechFormatSorts } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-sorts';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
-import { getShiptechFormatPagination } from '../../../core/mappers/shiptech-grid-paging';
+import { getShiptechFormatPagination } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-paging';
 import { QcReportsListColumns, QcReportsListColumnsLabels, QcReportsListItemProps } from './qc-reports-list.columns';
 import { QcReportsListItemModel } from '../../../services/models/qc-reports-list-item.model';
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';

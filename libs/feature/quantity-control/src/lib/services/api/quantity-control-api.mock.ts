@@ -10,6 +10,7 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
+  IGetSoundingReportDetailsRequest, IGetSoundingReportDetailsResponse,
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
@@ -29,12 +30,14 @@ import { QcReportsListItemModel } from '../models/qc-reports-list-item.model';
 import { QuantityControlApi } from './quantity-control-api';
 import { getQcReportDetailsCall } from './mock/qc-report-details.mock';
 import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
+import { getMockQcSoundingReportList } from './mock/qc-sounding-report-list.mock';
+import { getMockQcSoundingReportDetails } from './mock/qc-sounding-report-details.mock';
+import { nullable } from '@shiptech/core/utils/nullable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApiMock implements IQuantityControlApiService {
-
   @ApiCallForwardTo() realService: QuantityControlApi;
 
   constructor(realService: QuantityControlApi) {
@@ -55,8 +58,19 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getSoundingReports(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
-    return throwError('Not implemented');
+  getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
+    return of({
+      items: getMockQcSoundingReportList(nullable(request.pagination).take || 10),
+      totalItems: (nullable(request.pagination).take || 10) * 5
+    });
+  }
+
+  @ApiCall()
+  getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
+    return of({
+      items: getMockQcSoundingReportDetails(nullable(request.pagination).take || 10),
+      totalItems: (nullable(request.pagination).take || 10) * 5
+    });
   }
 
   @ApiCall()

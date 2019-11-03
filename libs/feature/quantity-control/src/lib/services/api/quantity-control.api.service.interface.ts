@@ -8,6 +8,8 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
+  IGetSoundingReportDetailsRequest,
+  IGetSoundingReportDetailsResponse,
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
@@ -28,7 +30,9 @@ export interface IQuantityControlApiService {
 
   getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse>;
 
-  getSoundingReports(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse>;
+  getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse>;
+
+  getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse>;
 
   getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse>;
 
