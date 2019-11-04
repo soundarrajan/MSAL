@@ -28,7 +28,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         timeline = null;
         groupsIndex = 1;
 
+        var searchTextFilters = null;
+        var pagination = null;
+
         $scope.searchTimeline = function(searchText) {
+            searchTextFilters = searchText;
             scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, $scope.filtersAppliedPayload, {}, searchText).then(function (response) {
                 if (timeline) {
                     updateTimeline(response);
@@ -442,7 +446,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         async function getData(payload) {
             return await new Promise(resolve => {
-                scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload).then(function (response) {
+                scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters).then(function (response) {
                     resolve(response);
                 });
             });
@@ -925,6 +929,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
+
 
     }
 ]);

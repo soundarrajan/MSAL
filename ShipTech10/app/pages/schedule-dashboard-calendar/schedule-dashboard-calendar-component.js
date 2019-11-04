@@ -70,6 +70,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         };
         ctrl.startDate = null;
         ctrl.endDate = null;
+        var searchTextFilters = null;
         if (localStorage.getItem('scheduleDates')) {
             ctrl.startDate = JSON.parse(localStorage.getItem('scheduleDates'))['start'];
             ctrl.endDate = JSON.parse(localStorage.getItem('scheduleDates'))['end'];
@@ -111,7 +112,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                $scope.calledCalendarWithDefaultFilters = true;
                 // if (initDone) {
     	            setTimeout(function(){
-    		            scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, payload).then(function (response) {
+    		            scheduleDashboardCalendarModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters).then(function (response) {
     		            	showData(response);
     		            });
     	            })
@@ -947,6 +948,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         	ctrl.fixedColumnsWidth = mainWidth + 'px'
         }
         $scope.search = function (value) {
+            searchTextFilters = value;
             ctrl.tableOptions.searchTerm = value;
             ctrl.setPage(1, ctrl.tableOptions.searchTerm);
         }
