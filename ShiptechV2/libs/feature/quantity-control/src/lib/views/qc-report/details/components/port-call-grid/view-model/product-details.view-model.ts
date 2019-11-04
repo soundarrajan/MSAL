@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { QcReportState } from '../../../../../../store/report-view/qc-report.state';
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
 import { map } from 'rxjs/operators';
+import { Column } from 'ag-grid-community';
 
 @Injectable()
 export class ProductDetailsViewModel {
@@ -28,5 +29,9 @@ export class ProductDetailsViewModel {
     delimiter: '.'
   }): string {
     return '9'.repeat(options.integerDigits) + options.delimiter + '9'.repeat(options.fractionDigits);
+  }
+
+  public updateProductType(column: Column, model: ProductTypeListItemViewModel, value: number): void {
+    console.log(column.getUserProvidedColDef().field, model.productTypeId, value);
   }
 }
