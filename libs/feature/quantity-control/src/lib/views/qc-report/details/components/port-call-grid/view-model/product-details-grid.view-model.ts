@@ -12,12 +12,6 @@ import {
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
-import {
-  IQcReportDetailsDeliveredQty,
-  IQcReportDetailsProductTypeDto,
-  IQcReportDetailsRob
-} from '../../../../../../services/api/dto/qc-report-details.dto';
-import { nameof } from '@shiptech/core/utils/type-definitions';
 import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
@@ -69,7 +63,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   logBookBeforeDeliveryCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
-    field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'logBookROB'),
+    field: this.modelProps.robBeforeDeliveryLogBookROB,
     width: 50,
     hide: false,
     suppressToolPanel: true,
@@ -79,7 +73,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   measuredRobBeforeDeliveryCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
-    field: this.getPathToModel<IQcReportDetailsRob>('robBeforeDelivery', 'measuredROB'),
+    field: this.modelProps.robBeforeDeliveryMeasuredROB,
     width: 50,
     hide: false,
     suppressToolPanel: true,
@@ -95,7 +89,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.robBeforeDelivery.logBookROB, productType.robBeforeDelivery.measuredROB);
+      return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -104,7 +98,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   bdnDeliveredQuantityCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
-    field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'bdnQty'),
+    field: this.modelProps.deliveredQuantityBdnQty,
     width: 50,
     hide: false,
     suppressToolPanel: true,
@@ -114,7 +108,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   measuredDeliveredQuantityCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
-    field: this.getPathToModel<IQcReportDetailsDeliveredQty>('deliveredQty', 'messuredDeliveredQty'),
+    field: this.modelProps.deliveredQuantityMessuredDeliveredQuantity,
     width: 50,
     hide: false,
     suppressToolPanel: true,
@@ -130,7 +124,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.deliveredQty.bdnQty, productType.deliveredQty.messuredDeliveredQty);
+      return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -139,7 +133,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   logBookAfterDeliveryCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
-    field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'logBookROB'),
+    field: this.modelProps.robAfterDeliveryLogBookROB,
     width: 50,
     hide: false,
     suppressToolPanel: true,
@@ -149,7 +143,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   measuredRobAfterDeliveryCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
-    field: this.getPathToModel<IQcReportDetailsRob>('robAfterDelivery', 'measuredROB'),
+    field: this.modelProps.robAfterDeliveryMeasuredROB,
     width: 50,
     hide: false,
     suppressToolPanel: true,
@@ -165,7 +159,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.robAfterDelivery.logBookROB, productType.robAfterDelivery.measuredROB);
+      return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -224,8 +218,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   public onSearch(value: string): void {
     this.searchText = value;
     this.gridApi.purgeServerSideCache();
-
-    this.getPathToModel<IQcReportDetailsRob>('deliveredQty', 'measuredROB');
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -240,11 +232,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     //     params.successCallback(response.items, 100);
     //   },
     //   () => params.failCallback());
-  }
-
-  // TODO: Must be refactored
-  getPathToModel<T = any>(propertyName: keyof IQcReportDetailsProductTypeDto, childPropertyName?: keyof T): string {
-    return `${nameof<IQcReportDetailsProductTypeDto>(propertyName)}.${nameof<T>(childPropertyName)}`;
   }
 
   getToleranceClassRules(): { [cssClassName: string]: (Function | string) } {

@@ -11,11 +11,7 @@ import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
 import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
-import {
-  LoadSoundingReportListAction,
-  LoadSoundingReportListFailedAction,
-  LoadSoundingReportListSuccessfulAction
-} from './qc-report-sounding.actions';
+import { UpdateProductTypeAction } from './details/update-product-type.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -66,6 +62,27 @@ export class QcReportState {
         _isLoading: true,
         _hasLoaded: false,
         id: reportId
+      }
+    });
+  }
+
+  @Action(UpdateProductTypeAction)
+  updateProductType({ getState, patchState }: StateContext<IQcReportState>, { productTypeId, productType }: UpdateProductTypeAction): void {
+    const state = getState();
+    if (!state.details.productTypesById[productTypeId]) {
+      return;
+    }
+
+    patchState({
+      details: {
+        ...state.details,
+        productTypesById: {
+          ...state.details.productTypesById,
+          [productTypeId]: {
+            ...state.details.productTypesById[productTypeId],
+            ...productType
+          }
+        }
       }
     });
   }
