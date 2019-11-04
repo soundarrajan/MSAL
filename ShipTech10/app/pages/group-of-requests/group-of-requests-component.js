@@ -2922,9 +2922,20 @@ ctrl.setProductData = function(data, loc) {
                     	toastr.info(response.errorMessage);
                     }
                     if (reload) {
-                    	angular.element($(".bladeEntity .closeBlade")).scope().closeBlade();
-                    	ctrl.initScreenAfterSendOrSkipRfq();
-                        // $state.reload();
+                        angular.element($(".bladeEntity .closeBlade")).scope().closeBlade();
+                        $("body").css("overflow-y", "auto");
+                            setTimeout(function() {
+                                $rootScope.bladeTemplateUrl = "";
+                                if($rootScope.refreshPending) {
+                                    $state.reload();
+                                  // window.location.reload();
+                                }
+                                setTimeout(function() {
+                                    ctrl.initScreenAfterSendOrSkipRfq();
+
+                                }, 10);
+                            }, 10);
+                        $state.reload();
                     }
                     return false;
                 },
@@ -3219,6 +3230,11 @@ ctrl.setProductData = function(data, loc) {
             });
             if (productList.length > 0) {
                 product = productList[0];
+                seller = $filter("filter")(product.sellers, {
+                    sellerCounterparty : {
+                        id: seller.sellerCounterparty.id
+                    } 
+                })[0];
             }
             ctrl.latestOfferProduct = product;
             ctrl.latestOfferSeller = seller;
