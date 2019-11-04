@@ -20,6 +20,8 @@ import {
   IGetSoundingReportDetailsResponse,
   IGetSoundingReportListResponse
 } from './api/request-response/sounding-reports.request-response';
+import { UpdateProductTypeAction } from '../store/report-view/details/update-product-type.actions';
+import { QcProductTypeEditableProps } from '../views/qc-report/details/components/port-call-grid/view-model/product-details.view-model';
 
 @Injectable()
 export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
@@ -61,6 +63,10 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   @ObservableException()
   getSoundingReportListItemDetails(reportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
     return this.api.getSoundingReportDetails({ ...gridRequest, reportId });
+  }
+
+  updateProductType(productTypeId: number, prop: QcProductTypeEditableProps, value: number): Observable<unknown> {
+    return this.store.dispatch(new UpdateProductTypeAction(productTypeId, prop, value));
   }
 
   protected get reportDetailsState(): IQcReportDetailsState {
