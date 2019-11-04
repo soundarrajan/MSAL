@@ -5,7 +5,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         $scope.numberPrecision = $tenantSettings.defaultValues;
         $scope.tenantSettings = $tenantSettings;
         ctrl.bunkerDetails = [];
-
         
         ctrl.startDate = null;
         ctrl.endDate = null;
@@ -319,7 +318,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             timeline.setItems(voyages);
 
             $scope.timelineItems = groups.length;
-
+            
             setLayoutAfterTimelineLoad();
             $rootScope.clc_loaded = true;
         };
@@ -479,10 +478,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
 
             $scope.filtersAppliedPayload = payload;
-            
+
             getConfiguration().then(function(settings) {
                 getData(payload).then(function(response) {
                     updateTimeline(response);
+                    $timeout(function() {
+                        $scope.getTimelineStatus();
+                    })
                 });
             });
 
@@ -848,15 +850,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             if (model) {
                 if (!model.payload) return;
                 $scope.timelineStatuses = model.payload.scheduleDashboardStatus;
-                // if ($scope.calendarStatusesInScheduleTable) {
-                //     $scope.calendarStatuses = $scope.calendarStatusesInScheduleTable;
-                // }
-                // if ($scope.calendarStatusesInScheduleCalendar) {
-                //     $scope.calendarStatuses = $scope.calendarStatusesInScheduleCalendar;
-                // }                
-                // if ($scope.adminDashboardStatuses) {
-                //  createStatusFilters();
-                // }
                 console.log(new Date())
                 if($state.current.name == STATE.DASHBOARD_TIMELINE) { 
 
@@ -864,13 +857,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                         $scope.timelineAdminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.payload.labels, { displayInDashboard : true}, true);
                         if ($scope.timelineStatuses) {
-                            $rootScope.timelineStatusList = $scope.createStatusFilters()
+                            $rootScope.timelineStatusList = $scope.createStatusFilters();
                         }
                     }
                 }                
         
             }
-             return $rootScope.timelineStatusList;
+            return $rootScope.timelineStatusList;
         };
 
         $scope.createStatusFilters = function () {
