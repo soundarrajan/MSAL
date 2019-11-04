@@ -51,6 +51,8 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     );
   }
 
+  // updateProductType(productTypeId: number, update: Product)
+
   @ObservableException()
   getSoundingReportList(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
     return this.api.getSoundingReportList({ ...gridRequest, reportId: this.reportDetailsState.id });
