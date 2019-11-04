@@ -118,8 +118,8 @@
 
   <div class="row mb-2">
     <div class="col-12">
-      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" header="Sounding reports">
-        <shiptech-sounding-reports></shiptech-sounding-reports>
+      <p-panel [collapsed]="true" [toggleable]="true" #SoundingReportPanel class="mb-2" header="Sounding reports">
+        <shiptech-sounding-reports *ngIf="!SoundingReportPanel.collapsed"></shiptech-sounding-reports>
       </p-panel>
     </div>
   </div>
@@ -127,16 +127,16 @@
 
   <div class="row mb-2">
     <div class="col-12">
-      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" header="Survey report history">
-        <shiptech-survey-report-history></shiptech-survey-report-history>
+      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" #SurveyHistoryPanel header="Survey report history">
+        <shiptech-survey-report-history *ngIf="!SurveyHistoryPanel.collapsed"></shiptech-survey-report-history>
       </p-panel>
     </div>
   </div>
 
   <div class="row mb-2">
     <div class="col-12">
-      <p-panel [collapsed]="true" [toggleable]="true" class="mb-2" header="Events">
-        <shiptech-events-log></shiptech-events-log>
+      <p-panel [collapsed]="true" [toggleable]="true" #EventsPanel class="mb-2" header="Events">
+        <shiptech-events-log *ngIf="!EventsPanel.collapsed"></shiptech-events-log>
       </p-panel>
     </div>
   </div>

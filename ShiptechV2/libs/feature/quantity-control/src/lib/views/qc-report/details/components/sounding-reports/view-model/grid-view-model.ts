@@ -19,6 +19,8 @@ function model(prop: keyof QcSoundingReportItemModel): string {
 @Injectable()
 export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
 
+  detailsGridViewModel =  new QcSoundingReportDetailsGridViewModel(this.quantityControlService);
+
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -156,8 +158,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private quantityControlService: QcReportDetailsService,
-    private detailsGridViewModel: QcSoundingReportDetailsGridViewModel
+    private quantityControlService: QcReportDetailsService
   ) {
     super('qc-sounding-report-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSoundingReportListGridViewModel.name));
     this.initOptions(this.gridOptions);

@@ -18,7 +18,7 @@ export class QcSoundingReportDetailsGridViewModel {
     headerHeight: 40,
     rowHeight: 35,
 
-   // rowModelType: RowModelType.ServerSide,
+    rowModelType: RowModelType.ServerSide,
     pagination: true,
 
     animateRows: true,
@@ -34,6 +34,12 @@ export class QcSoundingReportDetailsGridViewModel {
     enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: () => Math.random().toString(),
+    serverSideDatasource: {
+      getRows: (params) =>  this.detailServerSideGetRows2(params),
+      destroy(): void {
+        //TODO
+      }
+    },
 
     defaultColDef: {
       sortable: true,
@@ -115,13 +121,24 @@ export class QcSoundingReportDetailsGridViewModel {
     ];
   }
 
-  public detailServerSideGetRows(params: any): void {
-    this.quantityControlService.getSoundingReportListItemDetails((<QcSoundingReportItemModel>params.data).reportId, {}).subscribe(
+  public detailServerSideGetRows2(params: any): void {
+    //TODO
+    this.quantityControlService.getSoundingReportListItemDetails(1, {}).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       () => {
         // TODO: master detail has no failcallback for detail grid
         // params.failCallback()
       });
+  }
+
+  public detailServerSideGetRows(params: any): void {
+    //TODO
+    // this.quantityControlService.getSoundingReportListItemDetails(1, {}).subscribe(
+    //   response => params.successCallback(response.items, response.totalItems),
+    //   () => {
+    //     // TODO: master detail has no failcallback for detail grid
+    //     // params.failCallback()
+    //   });
   }
 }
 

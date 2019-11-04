@@ -140,6 +140,7 @@ export class AgColumnPreferencesService implements OnDestroy {
         // Note: Restore sort only existing columns.
         const sortModels = sortState.filter(sortModel => allColumnsSet.has(sortModel.colId));
 
+        // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
         options.api.setSortModel(sortModels);
       })
     );
