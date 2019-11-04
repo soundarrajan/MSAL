@@ -12,6 +12,7 @@ import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
 import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
 import { UpdateProductTypeAction } from './details/update-product-type.actions';
+import { Decimal } from 'decimal.js';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -67,7 +68,7 @@ export class QcReportState {
   }
 
   @Action(UpdateProductTypeAction)
-  updateProductType({ getState, patchState }: StateContext<IQcReportState>, { productTypeId, productType }: UpdateProductTypeAction): void {
+  updateProductType({ getState, patchState }: StateContext<IQcReportState>, { productTypeId, prop, value }: UpdateProductTypeAction): void {
     const state = getState();
     if (!state.details.productTypesById[productTypeId]) {
       return;
@@ -80,7 +81,7 @@ export class QcReportState {
           ...state.details.productTypesById,
           [productTypeId]: {
             ...state.details.productTypesById[productTypeId],
-            ...productType
+            [prop]: new Decimal(value)
           }
         }
       }
