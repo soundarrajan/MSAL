@@ -29,7 +29,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
     deltaRowDataMode: false,
     suppressPaginationPanel: false,
-    suppressColumnVirtualisation: true,
+    suppressColumnVirtualisation: false,
     rowSelection: RowSelection.Multiple,
     rowDragManaged: true,
     suppressRowClickSelection: true,
@@ -41,6 +41,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     getRowNodeId: () => Math.random().toString(),
     defaultColDef: {
       sortable: true,
+      resizable: true,
       filter: 'agTextColumnFilter',
       width: 150
     }

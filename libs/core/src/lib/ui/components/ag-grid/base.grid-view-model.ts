@@ -234,16 +234,12 @@ export abstract class BaseGridViewModel implements OnDestroy {
     if (this.saveColumnPreferences) {
       this.columnPreferences.registerWatch(this.gridId, this.gridOptions);
 
-      this.gridApi.showLoadingOverlay();
-
       this.columnPreferences
         .restore(this.gridId)
         .pipe(
           catchError(() => of(AppError.GridPreferenceRestore(this.gridId))),
           finalize(() => {
             // Note: Set the source as the final operation otherwise with each column state update or pagination, will call server side source multiple times
-            this.gridApi.hideOverlay();
-
            this.setupServerSideDatasource();
           })
         )
