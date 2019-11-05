@@ -31,7 +31,7 @@ export class ProductDetailsViewModel {
 
   getNumberMaskFormat(options: { integerDigits?: number, fractionDigits?: number, delimiter?: string } = {
     integerDigits: 3,
-    fractionDigits: this.maxFractionDigits,
+    fractionDigits: 5,
     delimiter: '.'
   }): string {
     return '9'.repeat(options.integerDigits) + options.delimiter + '9'.repeat(options.fractionDigits);
