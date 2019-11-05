@@ -20,8 +20,18 @@ import {
   IGetSoundingReportDetailsResponse,
   IGetSoundingReportListResponse
 } from './api/request-response/sounding-reports.request-response';
-import { UpdateProductTypeAction } from '../store/report-view/details/update-product-type.actions';
+import { UpdateProductTypeAction } from '../store/report-view/details/actions/update-product-type.actions';
 import { QcProductTypeEditableProps } from '../views/qc-report/details/components/port-call-grid/view-model/product-details.view-model';
+import {
+  QcVesselResponseBaseStateModel,
+  QcVesselResponseSludgeStateModel
+} from '../store/report-view/details/qc-vessel-response.state';
+import _ from 'lodash';
+import {
+  UpdateBunkerVesselResponse,
+  UpdateSludgeVesselResponse
+} from '../store/report-view/details/actions/qc-vessel-response.actions';
+import { UpdateQcReportComment } from '../store/report-view/details/actions/qc-comment.action';
 
 @Injectable()
 export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
@@ -67,6 +77,26 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   updateProductType(productTypeId: number, prop: QcProductTypeEditableProps, value: number): Observable<unknown> {
     return this.store.dispatch(new UpdateProductTypeAction(productTypeId, prop, value));
+  }
+
+  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): Observable<unknown> {
+    if (!_.keys(this.reportDetailsState.vesselResponse.sludge).some(vesselResponseKey => vesselResponseKey === key)) {
+      return throwError('Invalid argument provided for updateSludgeVesselResponse');
+    }
+
+    return this.store.dispatch(new UpdateSludgeVesselResponse(key, value));
+  }
+
+  updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateModel, value: any): Observable<unknown> {
+    if (!_.keys(this.reportDetailsState.vesselResponse.bunker).some(vesselResponseKey => vesselResponseKey === key)) {
+      return throwError('Invalid argument provided for updateBunkerVesselResponse');
+    }
+
+    return this.store.dispatch(new UpdateBunkerVesselResponse(key, value));
+  }
+
+  updateReportComment(content: string): Observable<unknown> {
+    return this.store.dispatch(new UpdateQcReportComment(content));
   }
 
   protected get reportDetailsState(): IQcReportDetailsState {
