@@ -46,7 +46,7 @@ const routes: Routes = [
             component: QcReportDetailsComponent,
             resolve: {
               // Note: ReportId is expected in child routes in the data.
-              [KnownQuantityControlRoutes.ReportIdParam]: QcReportDetailsRouteResolver
+              ...getTypedResolverPropertyName(KnownQuantityControlRoutes.ReportIdParam)
             },
             data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' }
           },
@@ -77,6 +77,12 @@ const routes: Routes = [
   }
 ];
 
+
+export function getTypedResolverPropertyName(value: string): Object {
+  return {
+    [value]: QcReportDetailsRouteResolver
+  };
+}
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
