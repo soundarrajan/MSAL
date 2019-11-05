@@ -29,4 +29,3 @@ export class QcReportDetailsModel {
 
 export interface IQcReportDetailsState extends QcReportDetailsModel {
 }
-

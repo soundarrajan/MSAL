@@ -38,12 +38,15 @@
             <div class="col-3">
               <span class="mr-1">Sludge %</span>
               <!--              TODO: Find a way to bind number values-->
-              <p-inputMask [ngModel]="(sludgeVesselResponse$ | async).sludge" [style]="{'width': '100px'}"
+              <p-inputMask (ngModelChange)="updateSludgeVesselResponse('sludge', $event)"
+                           [ngModelOptions]="{updateOn: 'blur'}"
+                           [ngModel]="(sludgeVesselResponse$ | async).sludge" [style]="{'width': '100px'}"
                            mask="99.999"></p-inputMask>
             </div>
             <div class="col-3">
-              <p-checkbox [ngModel]="(sludgeVesselResponse$ | async).sludgeVerified" binary="true"
-                          label="Verify Sludge Qty"></p-checkbox>
+              <p-checkbox (ngModelChange)="updateSludgeVesselResponse('sludgeVerified', $event)"
+                          [ngModel]="(sludgeVesselResponse$ | async).sludgeVerified"
+                          binary="true" label="Verify Sludge Qty"></p-checkbox>
             </div>
           </div>
         </p-header>
@@ -54,6 +57,7 @@
           </div>
           <div class="col-10">
             <p-dropdown [autoWidth]="false" [ngModel]="(sludgeVesselResponse$ | async).categoryId"
+                        (ngModelChange)="updateSludgeVesselResponse('categoryId', $event)"
                         [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
           </div>
         </div>
@@ -63,7 +67,9 @@
             Description
           </div>
           <div class="col-10">
-            <textarea [rows]="5" [value]="(sludgeVesselResponse$ | async).description" pInputTextare
+            <textarea (ngModelChange)="updateSludgeVesselResponse('description', $event)"
+                      [ngModelOptions]="{updateOn: 'blur'}" [ngModel]="(sludgeVesselResponse$ | async).description"
+                      [rows]="5" pInputTextare
                       style="width: 100%"></textarea>
           </div>
         </div>
@@ -83,6 +89,7 @@
           </div>
           <div class="col-10">
             <p-dropdown [autoWidth]="false" [ngModel]="(bunkerVesselResponse$ | async).categoryId"
+                        (ngModelChange)="updateBunkerVesselResponse('categoryId', $event)"
                         [options]="mockResponseSelectItems" [style]="{'width':'100%'}"></p-dropdown>
           </div>
         </div>
@@ -92,7 +99,9 @@
             Description
           </div>
           <div class="col-10">
-            <textarea [rows]="5" [value]="(bunkerVesselResponse$ | async).description" pInputTextare
+            <textarea (ngModelChange)="updateBunkerVesselResponse('description', $event)"
+                      [ngModelOptions]="{updateOn: 'blur'}" [ngModel]="(bunkerVesselResponse$ | async).description"
+                      [rows]="5" pInputTextare
                       style="width: 100%"></textarea>
           </div>
         </div>
@@ -109,7 +118,10 @@
             Internal comment
           </div>
           <div class="col-11">
-            <textarea [rows]="5" [value]="comment$ | async" pInputTextare style="width: 100%"></textarea>
+            <textarea (ngModelChange)="updateComment($event)" [ngModelOptions]="{updateOn: 'blur'}"
+                      [ngModel]="comment$ | async" [rows]="5"
+                      pInputTextare
+                      style="width: 100%"></textarea>
           </div>
         </div>
       </p-panel>
