@@ -43,7 +43,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: () => Math.random().toString(),
     defaultColDef: {
       sortable: true,
       filter: 'agTextColumnFilter',

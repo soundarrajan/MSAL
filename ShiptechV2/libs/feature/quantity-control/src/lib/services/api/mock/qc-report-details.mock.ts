@@ -10,7 +10,7 @@ import { IQcVesselResponseDto } from '../dto/qc-vessel-response.dto';
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   return {
     id,
-    portCallId: faker.internet.mac(),
+    portCallId: faker.finance.bitcoinAddress(),
     vesselName: faker.commerce.color(),
     nbOfCliams: faker.random.number(),
     nbOfDeliveries: faker.random.number(),
