@@ -5,7 +5,6 @@ export class QcVesselResponseState {
 
 export class QcVesselResponseBaseStateModel {
   categoryId: number;
-  categoryName: string;
   description: string;
 }
 

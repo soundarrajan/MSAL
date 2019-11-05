@@ -11,8 +11,10 @@ import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
 import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
-import { UpdateProductTypeAction } from './details/update-product-type.actions';
+import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
 import { Decimal } from 'decimal.js';
+import { UpdateBunkerVesselResponse, UpdateSludgeVesselResponse } from './details/actions/qc-vessel-response.actions';
+import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -28,6 +30,11 @@ export class QcReportState {
   }
 
   @Selector()
+  static getPortCallReportProductTypes(state: IQcReportState): Record<number, QcProductTypeListItemState> {
+    return state.details.productTypesById;
+  }
+
+  @Selector()
   static getSludgeVesselResponse(state: IQcReportState): QcVesselResponseSludgeStateModel {
     return state.details.vesselResponse.sludge;
   }
@@ -40,11 +47,6 @@ export class QcReportState {
   @Selector()
   static getReportComment(state: IQcReportState): string {
     return state.details.comment;
-  }
-
-  @Selector()
-  static getPortCallReportProductTypes(state: IQcReportState): QcProductTypeListItemState[] {
-    return state.details.productTypes.map(productTypeId => state.details.productTypesById[productTypeId]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemState {
@@ -84,6 +86,52 @@ export class QcReportState {
             [prop]: new Decimal(value)
           }
         }
+      }
+    });
+  }
+
+  @Action(UpdateSludgeVesselResponse)
+  updateSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateSludgeVesselResponse): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        vesselResponse: {
+          ...state.details.vesselResponse,
+          sludge: {
+            ...state.details.vesselResponse.sludge,
+            [prop]: value
+          }
+        }
+      }
+    });
+  }
+
+  @Action(UpdateBunkerVesselResponse)
+  updateBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateBunkerVesselResponse): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        vesselResponse: {
+          ...state.details.vesselResponse,
+          bunker: {
+            ...state.details.vesselResponse.bunker,
+            [prop]: value
+          }
+        }
+      }
+    });
+  }
+
+
+  @Action(UpdateQcReportComment)
+  updateQcReportComment({ getState, patchState }: StateContext<IQcReportState>, { comment }: UpdateQcReportComment): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        comment
       }
     });
   }

@@ -10,6 +10,7 @@ import {
   QcVesselResponseBaseStateModel,
   QcVesselResponseSludgeStateModel
 } from '../../../store/report-view/details/qc-vessel-response.state';
+import { QcReportDetailsService } from '../../../services/qc-report-details.service';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -42,7 +43,7 @@ export class QcReportDetailsComponent implements OnInit {
     }
   ];
 
-  constructor(private entityStatus: EntityStatusService, private store: Store) {
+  constructor(private entityStatus: EntityStatusService, private store: Store, private detailsService: QcReportDetailsService) {
     //TODO: after loading
     this.entityStatus.setStatus({
       value: EntityStatus.Delivered
@@ -56,6 +57,18 @@ export class QcReportDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): void {
+    this.detailsService.updateSludgeVesselResponse(key, value).subscribe();
+  }
+
+  updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateModel, value: any): void {
+    this.detailsService.updateBunkerVesselResponse(key, value).subscribe();
+  }
+
+  updateComment(content: string): void {
+    this.detailsService.updateReportComment(content).subscribe();
+  }
+
   raiseClaim(): void {
     alert('Not implemented');
   }
@@ -63,4 +76,5 @@ export class QcReportDetailsComponent implements OnInit {
   verifyVessel(): void {
     alert('Not implemented');
   }
+
 }
