@@ -1,5 +1,9 @@
 import { IPageInfo, PageInfo } from '@shiptech/core/grid/page-info.interface';
 import { ISortInfo } from '@shiptech/core/grid/sort-info.interface';
+import {
+  IQcReportListSummaryState,
+  QcReportListSummaryStateModel
+} from './qc-report-list-summary/qc-report-list-summary.state';
 
 export class QcReportsListStateModel {
   pageInfo: IPageInfo;
@@ -7,6 +11,7 @@ export class QcReportsListStateModel {
   sortList: ISortInfo[];
   isLoading: boolean;
   isLoaded: boolean;
+  summary: IQcReportListSummaryState = new QcReportListSummaryStateModel();
 
   constructor(state: Partial<QcReportsListStateModel> = {}) {
     this.filter = state.filter;

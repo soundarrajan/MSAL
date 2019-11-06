@@ -30,14 +30,38 @@
       </app-page-size-selector>
     </div>
     <div class="col-md-6">
-      <div style="float:right">
+      <div class="summary" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
         <!-- TODO these should not be buttons -->
-        <button class="ui-button-secondary mr-1 matched" icon="fa fa-check" label="Matched: 60" pButton
-                type="button"></button>
-        <button class="ui-button-secondary mr-1 matched-withing-limit" icon="fa fa-check"
-                label="Matched within limit: 40" pButton type="button"></button>
-        <button class="ui-button-secondary not-matched" icon="fa fa-times" label="Not matched: 20" pButton
-                type="button"></button>
+        <div class="summary-item matched">
+          <i class="fa fa-check"></i>
+          <span class="label">
+            Matched:
+          </span>
+          <span class="value">
+            {{(summary$ | async).nbOfMatched}}
+          </span>
+        </div>
+
+        <div class="summary-item matched-withing-limit">
+          <i class="fa fa-check"></i>
+          <span class="label">
+            Matched within limit:
+          </span>
+          <span class="value">
+            {{(summary$ | async).nbOfMatchedWithinLimit}}
+          </span>
+        </div>
+
+        <div class="summary-item not-matched">
+          <i class="fa fa-times"></i>
+          <span class="label">
+            Not matched:
+          </span>
+          <span class="value">
+            {{(summary$ | async).nbOfNotMatched}}
+          </span>
+        </div>
+
       </div>
     </div>
   </div>

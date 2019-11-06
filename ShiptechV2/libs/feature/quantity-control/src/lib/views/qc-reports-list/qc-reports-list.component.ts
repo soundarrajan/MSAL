@@ -2,8 +2,11 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, Vie
 import { QcReportsListGridViewModel } from './view-model/qc-reports-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { QcReportsListViewModel } from './view-model/qc-reports-list.view-model';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes';
+import { QcReportsListState } from '../../store/reports-list/qc-reports-list.state';
+import { IQcReportListSummaryState } from '../../store/reports-list/qc-report-list-summary/qc-report-list-summary.state';
+import { Select } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -13,6 +16,8 @@ import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportsListComponent implements OnInit, OnDestroy {
+
+  @Select(QcReportsListState.getReportsListSummary) summary$: Observable<IQcReportListSummaryState>;
 
   public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.Report}`;
   knownRoutes = KnownQuantityControlRoutes;
