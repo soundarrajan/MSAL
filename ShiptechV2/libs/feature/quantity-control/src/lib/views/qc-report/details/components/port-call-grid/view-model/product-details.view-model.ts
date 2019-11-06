@@ -17,6 +17,7 @@ export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemState, 
 export class ProductDetailsViewModel {
 
   productTypes$: Observable<ProductTypeListItemViewModel[]>;
+
   public numberMaskFormat: string = this.getNumberMaskFormat();
   private minIntegerDigits: number = 1;
   private minFractionDigits: number = 3;

@@ -15,6 +15,7 @@ import {
   SwitchActiveBunkerResponse,
   SwitchActiveSludgeResponse
 } from '../../../store/report-view/details/actions/qc-vessel-response.actions';
+import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -28,6 +29,7 @@ export class QcReportDetailsComponent implements OnInit {
   public sludgeVesselResponseCategories$: Observable<QcVesselResponseSludgeStateItem[]>;
   public sludgeVesselResponseActiveCategory$: Observable<QcVesselResponseSludgeStateItem>;
 
+  @Select(QcReportState.getReportDetails) reportDetailsState$: Observable<IQcReportDetailsState>;
   @Select(QcReportState.getReportComment) comment$: Observable<string>;
 
   constructor(private entityStatus: EntityStatusService, private store: Store, private detailsService: QcReportDetailsService) {

@@ -10,8 +10,10 @@ export class QcReportDetailsModel {
   productTypes: number[];
   productTypesById: Record<number, QcProductTypeListItemState>;
   eventsLog: QcEventsLogState;
-
   auditLog: QcAuditLogModel;
+
+  nbOfCliams: number;
+  nbOfDeliveries: number;
 
   comment: string;
   vesselResponse = new QcVesselResponseByTypeState();

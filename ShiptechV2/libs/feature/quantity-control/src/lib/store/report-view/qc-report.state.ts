@@ -25,6 +25,7 @@ import {
   UpdateActiveSludgeVesselResponse
 } from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
+import { IQcReportDetailsState } from './details/qc-report-details.model';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -33,6 +34,11 @@ import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 export class QcReportState {
 
   static default = new QcReportStateModel();
+
+  @Selector()
+  static getReportDetails(state: IQcReportState): IQcReportDetailsState {
+    return state.details;
+  }
 
   @Selector()
   static getPortCallsProductTypesIds(state: IQcReportState): unknown[] {
@@ -234,7 +240,9 @@ export class QcReportState {
               categories: _.keyBy(bunkerResponseCategories, response => response.id),
               activeCategoryId: (_.first(bunkerResponseCategories) || {} as QcVesselResponseBaseStateItem).id
             }
-          }
+          },
+          nbOfCliams: success.dto.nbOfCliams,
+          nbOfDeliveries: success.dto.nbOfDeliveries
         }
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
