@@ -22,12 +22,12 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 })),
     vesselResponses: {
-      bunker: getMockVesselResponse(),
-      sludge: {
-        ...getMockVesselResponse(),
-        sludge: faker.random.number(10) + Math.random(),
+      bunker: _.range(faker.random.number(10)).map(categoryId => getMockVesselResponse(categoryId)),
+      sludge: _.range(faker.random.number(10)).map(categoryId => ({
+        ...getMockVesselResponse(categoryId),
+        sludge: faker.random.number({ min: 1, max: 10 }) + Math.random(),
         sludgeVerified: faker.random.boolean()
-      }
+      }))
     },
     comment: faker.random.words(faker.random.number({ min: 10, max: 40 }))
   };
@@ -70,11 +70,12 @@ export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductT
   });
 }
 
-export function getMockVesselResponse(): IQcVesselResponseDto {
+export function getMockVesselResponse(id: number): IQcVesselResponseDto {
   return {
-    categoryId: faker.random.number(3),
-    // TODO: Do we need categoryName?
-    categoryName: faker.random.words(3),
+    category: {
+      id,
+      name: faker.random.words(3)
+    },
     description: faker.lorem.paragraph(faker.random.number(5))
   };
 }
