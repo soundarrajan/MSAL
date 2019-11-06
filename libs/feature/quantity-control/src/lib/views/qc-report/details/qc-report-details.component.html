@@ -14,8 +14,8 @@
         <p-header>
           <div style="float:right">
             <span class="badge red">{{reportStatus}}</span> |
-            <span class="badge blue">Claim: 2</span> |
-            <span class="badge blue">Deliveries: 2</span> |
+            <span class="badge blue">Claims: {{(reportDetailsState$ | async).nbOfCliams}}</span> |
+            <span class="badge blue">Deliveries: {{(reportDetailsState$ | async).nbOfDeliveries}}</span> |
             <span class="badge info">Vessel to Watch
               <i class="fa fa-flag"></i>
             </span>
@@ -70,6 +70,7 @@
           </div>
           <div class="col-10">
             <textarea (ngModelChange)="updateSludgeVesselResponse('description', $event)"
+                      [ngModelOptions]="{updateOn: 'blur'}"
                       [ngModel]="(sludgeVesselResponseActiveCategory$ | async)?.description"
                       [rows]="5" pInputTextare style="width: 100%"></textarea>
           </div>

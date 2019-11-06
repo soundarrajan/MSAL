@@ -22,8 +22,8 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 })),
     vesselResponses: {
-      bunker: _.range(faker.random.number(10)).map(categoryId => getMockVesselResponse(categoryId)),
-      sludge: _.range(faker.random.number(10)).map(categoryId => ({
+      bunker: _.range(faker.random.number({ min: 1, max: 10 })).map(categoryId => getMockVesselResponse(categoryId)),
+      sludge: _.range(faker.random.number({ min: 1, max: 10 })).map(categoryId => ({
         ...getMockVesselResponse(categoryId),
         sludge: faker.random.number({ min: 1, max: 10 }) + Math.random(),
         sludgeVerified: faker.random.boolean()
@@ -76,6 +76,6 @@ export function getMockVesselResponse(id: number): IQcVesselResponseDto {
       id,
       name: faker.random.words(3)
     },
-    description: faker.lorem.paragraph(faker.random.number(5))
+    description: faker.lorem.paragraph(faker.random.number({ min: 1, max: 10 }))
   };
 }
