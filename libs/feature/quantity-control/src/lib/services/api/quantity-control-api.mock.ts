@@ -33,11 +33,18 @@ import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-c
 import { getMockQcSoundingReportList } from './mock/qc-sounding-report-list.mock';
 import { getMockQcSoundingReportDetails } from './mock/qc-sounding-report-details.mock';
 import { nullable } from '@shiptech/core/utils/nullable';
+import {
+  IGetQcSurveyHistoryListRequest,
+  IGetQcSurveyHistoryListResponse
+} from './request-response/qc-survey-history-list.request-response';
+import { getMockQcSurveyHistoryList } from './mock/qc-survey-history-list.mock';
+import { QcSurveyHistoryListItemModel } from '../models/qc-survey-history-list-item.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApiMock implements IQuantityControlApiService {
+
   @ApiCallForwardTo() realService: QuantityControlApi;
 
   constructor(realService: QuantityControlApi) {
@@ -48,6 +55,13 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return of({
       items: getMockQcReportsList(request.pagination.take).map(item => new QcReportsListItemModel(item)),
+      totalItems: request.pagination.take * 5
+    });
+  }
+
+  getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
+    return of({
+      items: getMockQcSurveyHistoryList(request.pagination.take).map(item => new QcSurveyHistoryListItemModel(item)),
       totalItems: request.pagination.take * 5
     });
   }

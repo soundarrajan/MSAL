@@ -49,6 +49,11 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   }
 
   @ObservableException()
+  getSurveyHistoryList(portCallId: string, gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
+    return this.api.getSurveyHistoryList({ portCallId, ...gridRequest});
+  }
+
+  @ObservableException()
   loadReportDetails(reportId: number): Observable<unknown> {
     if (!reportId) {
       return throwError(ModuleError.InvalidQcReportId(reportId));
@@ -63,8 +68,6 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     );
   }
 
-  // updateProductType(productTypeId: number, update: Product)
-
   @ObservableException()
   getSoundingReportList(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
     return this.api.getSoundingReportList({ ...gridRequest, reportId: this.reportDetailsState.id });
@@ -75,10 +78,12 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.api.getSoundingReportDetails({ ...gridRequest, reportId });
   }
 
+  @ObservableException()
   updateProductType(productTypeId: number, prop: QcProductTypeEditableProps, value: number): Observable<unknown> {
     return this.store.dispatch(new UpdateProductTypeAction(productTypeId, prop, value));
   }
 
+  @ObservableException()
   updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): Observable<unknown> {
     if (!_.keys(this.reportDetailsState.vesselResponse.sludge).some(vesselResponseKey => vesselResponseKey === key)) {
       return throwError('Invalid argument provided for updateSludgeVesselResponse');
@@ -87,6 +92,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.store.dispatch(new UpdateSludgeVesselResponse(key, value));
   }
 
+  @ObservableException()
   updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateModel, value: any): Observable<unknown> {
     if (!_.keys(this.reportDetailsState.vesselResponse.bunker).some(vesselResponseKey => vesselResponseKey === key)) {
       return throwError('Invalid argument provided for updateBunkerVesselResponse');
@@ -95,6 +101,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.store.dispatch(new UpdateBunkerVesselResponse(key, value));
   }
 
+  @ObservableException()
   updateReportComment(content: string): Observable<unknown> {
     return this.store.dispatch(new UpdateQcReportComment(content));
   }
