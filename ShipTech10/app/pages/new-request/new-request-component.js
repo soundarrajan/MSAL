@@ -2732,14 +2732,26 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             return;
         };
 
-        $scope.updateDestinations = function(val, index) {
+        $scope.updateDestinations = function(val, index, location) {
+            var IsDestinationPort = false;
+            var voyageIdToSend = angular.copy($stateParams.voyageId);
+            if (index == 'DestinationPort') {
+                IsDestinationPort = true;
+	            if (!voyageIdToSend) {
+            		if (location && location.vesselVoyageDetailId) {
+            			voyageIdToSend = location.vesselVoyageDetailId;
+            		}
+	            }
+            } else {
+            	voyageIdToSend = null;
+            }
             ctrl.loadedTypeaheadPort = false;
-            return newRequestModel.getDestinations(val, ctrl.request.vesselId, voyageId).then(function(response) {
+            return newRequestModel.getDestinations(val, ctrl.request.vesselId, voyageIdToSend, IsDestinationPort).then(function(response) {
                 if (response && response.payload) {
                     ctrl.loadedTypeaheadPort = true;
-                    if(index != null){
-                        ctrl.request.locations[index].destination = response.payload[0];
-                    }
+                    // if(index != null){
+                    //     ctrl.request.locations[index].destination = response.payload[0];
+                    // }
                     return response.payload;
                 }
                 return null;

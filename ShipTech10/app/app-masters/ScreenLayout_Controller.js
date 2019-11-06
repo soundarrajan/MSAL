@@ -1248,16 +1248,22 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                     $scope.modal.filters = filter;
                 }
                 if (clc == "procurement_bunkerableport" || clc == "procurement_destinationport") {
-                    $scope.modal.filters = [
+                	$scope.modal.filters = [
                         {
                             ColumnName: "VesselId",
                             Value: filter.id
                         },
                         {
                             ColumnName: "VesselVoyageDetailId",
-                            Value: null
+                            Value: ctrlData ? _.get(ctrlData, 'vesselVoyageDetailId') : null,
+                        },
+                        {
+                        	ColumnName: "IsDestinationList",
+                        	Value: !!(($state.params.title.indexOf('New Request') !== -1 || $state.params.title.indexOf('Edit Request') !== -1) && clc == 'procurement_destinationport')
                         }
-                    ];
+               		];
+	               
+
                 }
                 if (clc == "procurement_requestcounterpartytypes") {
                     var filterString = "";

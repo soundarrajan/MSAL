@@ -239,7 +239,7 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             });
         }
         // Update destination port list on type
-        function getDestinations(val, vesselId, destinationId) {
+        function getDestinations(val, vesselId, destinationId, IsDestinationPort) {
             if (destinationId) {
                 dest = destinationId;
             } else {
@@ -261,6 +261,9 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
                 }, {
                     "ColumnName": "VesselVoyageDetailId",
                     "Value": dest
+                }, {
+                    "ColumnName": "IsDestinationList",
+                    "Value": IsDestinationPort
                 }],
                 "SearchText": val
             };

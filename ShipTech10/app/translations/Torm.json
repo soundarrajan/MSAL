@@ -170,7 +170,8 @@
                   "ETA": "ETA",
                   "ETB": "ETB",
                   "ETD": "ETD",
-                  "PORT_CALL_ID": "Port Call ID"
+                  "PORT_CALL_ID": "Port Call ID",
+                  "SERVICE": "Service"
             },
             "SELLERS_DIALOG": {
                   "COUNTERPARTY": "Counterparty",
