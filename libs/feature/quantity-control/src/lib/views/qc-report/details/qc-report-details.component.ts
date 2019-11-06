@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
-import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
-import { SelectItem } from 'primeng/api';
 import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report-view/qc-report.state';
 import { Observable } from 'rxjs';
 import {
-  QcVesselResponseBaseStateModel,
-  QcVesselResponseSludgeStateModel
-} from '../../../store/report-view/details/qc-vessel-response.state';
+  QcVesselResponseBaseStateItem,
+  QcVesselResponseSludgeStateItem
+} from '../../../store/report-view/details/qc-vessel-responses.state';
 import { QcReportDetailsService } from '../../../services/qc-report-details.service';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
+import _ from 'lodash';
+import {
+  SwitchActiveBunkerResponse,
+  SwitchActiveSludgeResponse
+} from '../../../store/report-view/details/actions/qc-vessel-response.actions';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -19,35 +23,35 @@ import { QcReportDetailsService } from '../../../services/qc-report-details.serv
 })
 export class QcReportDetailsComponent implements OnInit {
 
-  @Select(QcReportState.getBunkerVesselResponse) bunkerVesselResponse$: Observable<QcVesselResponseBaseStateModel>;
-  @Select(QcReportState.getSludgeVesselResponse) sludgeVesselResponse$: Observable<QcVesselResponseSludgeStateModel>;
-  @Select(QcReportState.getReportComment) comment$: Observable<string>;
+  public bunkerVesselResponseCategories$: Observable<QcVesselResponseBaseStateItem[]>;
+  public bunkerVesselResponseActiveCategory$: Observable<QcVesselResponseBaseStateItem>;
+  public sludgeVesselResponseCategories$: Observable<QcVesselResponseSludgeStateItem[]>;
+  public sludgeVesselResponseActiveCategory$: Observable<QcVesselResponseSludgeStateItem>;
 
-  knownRoutes = KnownQuantityControlRoutes;
-  mockResponseSelectItems: SelectItem[] = [
-    {
-      value: 1,
-      label: 'General Email'
-    },
-    {
-      value: 2,
-      label: 'Specific Email'
-    },
-    {
-      value: 3,
-      label: 'Friendly Email'
-    },
-    {
-      value: 4,
-      label: 'Poke Email'
-    }
-  ];
+  @Select(QcReportState.getReportComment) comment$: Observable<string>;
 
   constructor(private entityStatus: EntityStatusService, private store: Store, private detailsService: QcReportDetailsService) {
     //TODO: after loading
     this.entityStatus.setStatus({
       value: EntityStatus.Delivered
     });
+
+    this.sludgeVesselResponseCategories$ = this.store.select(QcReportState.getSludgeVesselResponse).pipe(map(sludge => _.values(sludge.categories)));
+    this.sludgeVesselResponseActiveCategory$ = this.store.select(QcReportState.getSludgeVesselResponseActiveCategoryId)
+      .pipe(
+        switchMap(id => this.store.select(QcReportState.getSludgeVesselResponse).pipe(
+          map(sludge => sludge.categories[id] || {} as QcVesselResponseBaseStateItem),
+          shareReplay()
+        )));
+
+
+    this.bunkerVesselResponseCategories$ = this.store.select(QcReportState.getBunkerVesselResponse).pipe(map(bunker => _.values(bunker.categories)));
+    this.bunkerVesselResponseActiveCategory$ = this.store.select(QcReportState.getBunkerVesselResponseActiveCategoryId)
+      .pipe(
+        switchMap(id => this.store.select(QcReportState.getBunkerVesselResponse).pipe(
+          map(bunker => bunker.categories[id] || {} as QcVesselResponseSludgeStateItem),
+          shareReplay()
+        )));
   }
 
   get reportStatus(): EntityStatus {
@@ -57,12 +61,22 @@ export class QcReportDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): void {
-    this.detailsService.updateSludgeVesselResponse(key, value).subscribe();
+  changeActiveSludgeResponse(option: QcVesselResponseBaseStateItem): void {
+    // TODO: move to service method
+    this.store.dispatch(new SwitchActiveSludgeResponse(option.id));
   }
 
-  updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateModel, value: any): void {
-    this.detailsService.updateBunkerVesselResponse(key, value).subscribe();
+  changeActiveBunkerResponse(option: QcVesselResponseBaseStateItem): void {
+    // TODO: move to service method
+    this.store.dispatch(new SwitchActiveBunkerResponse(option.id));
+  }
+
+  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): void {
+    this.detailsService.updateActiveSludgeVesselResponse(key, value).subscribe();
+  }
+
+  updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): void {
+    this.detailsService.updateActiveBunkerVesselResponse(key, value).subscribe();
   }
 
   updateComment(content: string): void {
