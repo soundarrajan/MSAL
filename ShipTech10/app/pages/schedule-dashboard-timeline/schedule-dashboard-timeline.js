@@ -161,20 +161,34 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 var startDate, endDate;
 
-                if (vessels[i].voyageDetail.deliveryFrom && vessels[i].voyageDetail.deliveryTo) {
-                    startDate = moment.utc(vessels[i].voyageDetail.deliveryFrom).format('YYYY-MM-DD HH:mm');
-                    endDate = moment.utc(vessels[i].voyageDetail.deliveryTo).format('YYYY-MM-DD HH:mm');
-                } else {
+                var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
+
+                if (displayScheduleBasedOn === 'Delivery Date') {
+                    if (vessels[i].voyageDetail.deliveryFrom && vessels[i].voyageDetail.deliveryTo) {
+                        startDate = moment.utc(vessels[i].voyageDetail.deliveryFrom).format('YYYY-MM-DD HH:mm');
+                        endDate = moment.utc(vessels[i].voyageDetail.deliveryTo).format('YYYY-MM-DD HH:mm');
+                    } else {
+                        startDate = moment.utc(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm');
+                        if (vessels[i].voyageDetail.etd) {
+                            endDate = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
+                        } else {
+                            endDate = moment.utc(vessels[i].voyageDetail.eta).endOf('day').format('YYYY-MM-DD HH:mm');
+                        }
+                    }
+                } 
+
+                if (!displayScheduleBasedOn || displayScheduleBasedOn === 'ETA') {
                     startDate = moment.utc(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm');
                     if (vessels[i].voyageDetail.etd) {
-                    	EtaEtdDiff = moment(vessels[i].voyageDetail.etd) - moment(vessels[i].voyageDetail.eta);
                         endDate = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
-                    	if (EtaEtdDiff < 86400000) {
-	                        endDate = moment.utc(vessels[i].voyageDetail.etd).endOf('day').format('YYYY-MM-DD HH:mm');
-                    	}
                     } else {
                         endDate = moment.utc(vessels[i].voyageDetail.eta).endOf('day').format('YYYY-MM-DD HH:mm');
                     }
+                }
+
+                startEndDiff = moment(endDate) - moment(startDate);
+                if (startEndDiff < 86400000) {
+                    endDate = moment.utc(endDate).endOf('day').format('YYYY-MM-DD HH:mm');
                 }
 
                 var voyage = {
