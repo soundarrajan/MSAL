@@ -1,11 +1,12 @@
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+
 export interface IQcVesselResponsesDto {
-  sludge: IQcVesselSludgeResponseDto;
-  bunker: IQcVesselResponseDto;
+  sludge: IQcVesselSludgeResponseDto[];
+  bunker: IQcVesselResponseDto[];
 }
 
 export interface IQcVesselResponseDto {
-  categoryId: number;
-  categoryName: string;
+  category: ILookupDto;
   description: string;
 }
 
