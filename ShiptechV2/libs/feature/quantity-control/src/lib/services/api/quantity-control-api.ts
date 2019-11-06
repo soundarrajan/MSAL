@@ -29,6 +29,10 @@ import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/wa
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
+import {
+  IGetQcSurveyHistoryListRequest,
+  IGetQcSurveyHistoryListResponse
+} from './request-response/qc-survey-history-list.request-response';
 
 export namespace ProcurementApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -46,6 +50,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+    return throwError('Not implemented');
+  }
+
+  @ObservableException()
+  getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
     return throwError('Not implemented');
   }
 
