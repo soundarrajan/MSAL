@@ -9,11 +9,21 @@ import {
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
-import { QcVesselResponseBaseStateModel, QcVesselResponseSludgeStateModel } from './details/qc-vessel-response.state';
+import {
+  QcVesselResponseBaseStateItem,
+  QcVesselResponseCategoriesState,
+  QcVesselResponseSludgeCategoriesState,
+  QcVesselResponseSludgeStateItem
+} from './details/qc-vessel-responses.state';
 import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
 import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
 import { Decimal } from 'decimal.js';
-import { UpdateBunkerVesselResponse, UpdateSludgeVesselResponse } from './details/actions/qc-vessel-response.actions';
+import {
+  SwitchActiveBunkerResponse,
+  SwitchActiveSludgeResponse,
+  UpdateActiveBunkerVesselResponse,
+  UpdateActiveSludgeVesselResponse
+} from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 
 @State<IQcReportState>({
@@ -35,13 +45,23 @@ export class QcReportState {
   }
 
   @Selector()
-  static getSludgeVesselResponse(state: IQcReportState): QcVesselResponseSludgeStateModel {
+  static getSludgeVesselResponse(state: IQcReportState): QcVesselResponseSludgeCategoriesState {
     return state.details.vesselResponse.sludge;
   }
 
   @Selector()
-  static getBunkerVesselResponse(state: IQcReportState): QcVesselResponseBaseStateModel {
+  static getSludgeVesselResponseActiveCategoryId(state: IQcReportState): number {
+    return state.details.vesselResponse.sludge.activeCategoryId;
+  }
+
+  @Selector()
+  static getBunkerVesselResponse(state: IQcReportState): QcVesselResponseCategoriesState {
     return state.details.vesselResponse.bunker;
+  }
+
+  @Selector()
+  static getBunkerVesselResponseActiveCategoryId(state: IQcReportState): number {
+    return state.details.vesselResponse.bunker.activeCategoryId;
   }
 
   @Selector()
@@ -90,9 +110,11 @@ export class QcReportState {
     });
   }
 
-  @Action(UpdateSludgeVesselResponse)
-  updateSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateSludgeVesselResponse): void {
+  @Action(UpdateActiveSludgeVesselResponse)
+  updateSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveSludgeVesselResponse): void {
     const state = getState();
+
+    const activeCategoryId = state.details.vesselResponse.sludge.activeCategoryId;
     patchState({
       details: {
         ...state.details,
@@ -100,16 +122,39 @@ export class QcReportState {
           ...state.details.vesselResponse,
           sludge: {
             ...state.details.vesselResponse.sludge,
-            [prop]: value
+            [activeCategoryId]: {
+              ...state.details.vesselResponse.sludge.categories[activeCategoryId],
+              [prop]: value
+            }
           }
         }
       }
     });
   }
 
-  @Action(UpdateBunkerVesselResponse)
-  updateBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateBunkerVesselResponse): void {
+  @Action(SwitchActiveSludgeResponse)
+  switchActiveSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { categoryId }: SwitchActiveSludgeResponse): void {
     const state = getState();
+
+    patchState({
+      details: {
+        ...state.details,
+        vesselResponse: {
+          ...state.details.vesselResponse,
+          sludge: {
+            ...state.details.vesselResponse.sludge,
+            activeCategoryId: categoryId
+          }
+        }
+      }
+    });
+  }
+
+  @Action(UpdateActiveBunkerVesselResponse)
+  updateBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveBunkerVesselResponse): void {
+    const state = getState();
+
+    const activeCategoryId = state.details.vesselResponse.bunker.activeCategoryId;
     patchState({
       details: {
         ...state.details,
@@ -117,7 +162,28 @@ export class QcReportState {
           ...state.details.vesselResponse,
           bunker: {
             ...state.details.vesselResponse.bunker,
-            [prop]: value
+            [activeCategoryId]: {
+              ...state.details.vesselResponse.bunker.categories[activeCategoryId],
+              [prop]: value
+            }
+          }
+        }
+      }
+    });
+  }
+
+  @Action(SwitchActiveBunkerResponse)
+  switchActiveBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { categoryId }: SwitchActiveBunkerResponse): void {
+    const state = getState();
+
+    patchState({
+      details: {
+        ...state.details,
+        vesselResponse: {
+          ...state.details.vesselResponse,
+          bunker: {
+            ...state.details.vesselResponse.bunker,
+            activeCategoryId: categoryId
           }
         }
       }
@@ -142,6 +208,8 @@ export class QcReportState {
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
+      const sludgeResponseCategories = success.dto.vesselResponses.sludge.map(sludgeResponse => new QcVesselResponseSludgeStateItem(sludgeResponse));
+      const bunkerResponseCategories = success.dto.vesselResponses.bunker.map(bunkerResponse => new QcVesselResponseBaseStateItem(bunkerResponse));
       patchState({
         details: {
           ...state.details,
@@ -154,7 +222,19 @@ export class QcReportState {
             productType => productType.productTypeId),
           // TODO: load other props
           comment: success.dto.comment,
-          vesselResponse: success.dto.vesselResponses
+          vesselResponse: {
+            ...state.details.vesselResponse,
+            sludge: {
+              ...state.details.vesselResponse.sludge,
+              categories: _.keyBy(sludgeResponseCategories, response => response.id),
+              activeCategoryId: (_.first(bunkerResponseCategories) || {} as QcVesselResponseBaseStateItem).id
+            },
+            bunker: {
+              ...state.details.vesselResponse.bunker,
+              categories: _.keyBy(bunkerResponseCategories, response => response.id),
+              activeCategoryId: (_.first(bunkerResponseCategories) || {} as QcVesselResponseBaseStateItem).id
+            }
+          }
         }
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {

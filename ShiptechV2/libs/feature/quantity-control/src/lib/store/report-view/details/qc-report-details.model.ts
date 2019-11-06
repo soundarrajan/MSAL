@@ -1,4 +1,4 @@
-import { QcVesselResponseState } from './qc-vessel-response.state';
+import { QcVesselResponseByTypeState } from './qc-vessel-responses.state';
 import { QcAuditLogModel } from '../audit-log/qc-audit-log.model';
 import { QcEventsLogState } from './qc-events-log.state';
 import { QcProductTypeListItemState } from './qc-product-type-list-item.state';
@@ -14,7 +14,7 @@ export class QcReportDetailsModel {
   auditLog: QcAuditLogModel;
 
   comment: string;
-  vesselResponse: QcVesselResponseState;
+  vesselResponse = new QcVesselResponseByTypeState();
 
 
   isInitialising = false;

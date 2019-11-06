@@ -23,13 +23,12 @@ import {
 import { UpdateProductTypeAction } from '../store/report-view/details/actions/update-product-type.actions';
 import { QcProductTypeEditableProps } from '../views/qc-report/details/components/port-call-grid/view-model/product-details.view-model';
 import {
-  QcVesselResponseBaseStateModel,
-  QcVesselResponseSludgeStateModel
-} from '../store/report-view/details/qc-vessel-response.state';
-import _ from 'lodash';
+  QcVesselResponseBaseStateItem,
+  QcVesselResponseSludgeStateItem
+} from '../store/report-view/details/qc-vessel-responses.state';
 import {
-  UpdateBunkerVesselResponse,
-  UpdateSludgeVesselResponse
+  UpdateActiveBunkerVesselResponse,
+  UpdateActiveSludgeVesselResponse
 } from '../store/report-view/details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from '../store/report-view/details/actions/qc-comment.action';
 
@@ -79,20 +78,20 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.store.dispatch(new UpdateProductTypeAction(productTypeId, prop, value));
   }
 
-  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): Observable<unknown> {
-    if (!_.keys(this.reportDetailsState.vesselResponse.sludge).some(vesselResponseKey => vesselResponseKey === key)) {
-      return throwError('Invalid argument provided for updateSludgeVesselResponse');
-    }
+  updateActiveSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): Observable<unknown> {
+    // if (!_.keys(this.reportDetailsState.vesselResponse.sludge[categoryId]).some(vesselResponseKey => vesselResponseKey === key)) {
+    //   return throwError('Invalid argument provided for updateSludgeVesselResponse');
+    // }
 
-    return this.store.dispatch(new UpdateSludgeVesselResponse(key, value));
+    return this.store.dispatch(new UpdateActiveSludgeVesselResponse(key, value));
   }
 
-  updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateModel, value: any): Observable<unknown> {
-    if (!_.keys(this.reportDetailsState.vesselResponse.bunker).some(vesselResponseKey => vesselResponseKey === key)) {
-      return throwError('Invalid argument provided for updateBunkerVesselResponse');
-    }
+  updateActiveBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): Observable<unknown> {
+    // if (!_.keys(this.reportDetailsState.vesselResponse.bunker[categoryId]).some(vesselResponseKey => vesselResponseKey === key)) {
+    //   return throwError('Invalid argument provided for updateBunkerVesselResponse');
+    // }
 
-    return this.store.dispatch(new UpdateBunkerVesselResponse(key, value));
+    return this.store.dispatch(new UpdateActiveBunkerVesselResponse(key, value));
   }
 
   updateReportComment(content: string): Observable<unknown> {
