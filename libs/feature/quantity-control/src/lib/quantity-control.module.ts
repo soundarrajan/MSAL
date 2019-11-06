@@ -35,7 +35,6 @@ import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-re
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -51,7 +50,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    FlexLayoutModule,
     NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState])
   ],
   declarations: [

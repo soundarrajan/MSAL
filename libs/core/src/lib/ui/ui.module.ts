@@ -4,11 +4,12 @@ import { AgGridExternalSearchDirective } from './directives/ag-external-search.d
 import { MaterialModule } from './material.module';
 import { LayoutMainModule } from '@shiptech/core/ui/layout/main/layout-main.module';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
     MaterialModule,
-    LayoutMainModule,
+    LayoutMainModule
   ],
   declarations: [
     CopyToClipboardDirective,
@@ -17,7 +18,8 @@ import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.c
   exports: [
     CopyToClipboardDirective,
     AgGridExternalSearchDirective,
-    LayoutMainComponent
+    LayoutMainComponent,
+    FlexLayoutModule
   ]
 })
 export class UIModule {
