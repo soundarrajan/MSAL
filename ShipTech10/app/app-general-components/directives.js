@@ -507,7 +507,36 @@ window.increment = 0;
                             if (scope.Filters) {
                                 CLC.tableParams.Filters = scope.Filters;
                             }
-                            // console.log(CLC)
+                            if (scope.id == "admin_userlist" && scope.$root.currentColumnRoute.indexOf("claims") != -1) {
+                                if (CLC.tableParams.PageFilters.length == 0) {
+                                        CLC.tableParams.PageFilters =  [
+                                            {                   
+                                                "ColumnName": "IsDeleted",
+                                                "ColumnType": "Bool",
+                                                "ColumnValue": "IsDeleted",
+                                                "ConditionValue": "=",
+                                                "Values": ["0"],
+                                                "FilterOperator": 0,
+                                                "isComputedColumn": false
+                                            }
+                                        ];
+                                } else {
+                                    var obj = 
+                                            {                   
+                                                "ColumnName": "IsDeleted",
+                                                "ColumnType": "Bool",
+                                                "ColumnValue": "IsDeleted",
+                                                "ConditionValue": "=",
+                                                "Values": ["0"],
+                                                "FilterOperator": 0,
+                                                "isComputedColumn": false
+                                            }
+                        
+                                    CLC.tableParams.PageFilters.push(obj);
+                                }
+
+                            }
+                            // console.log(CLC) 
                             // if (CLC.tableParams.PageFilters) {
 
                             // $rootScope.sortList = []task
