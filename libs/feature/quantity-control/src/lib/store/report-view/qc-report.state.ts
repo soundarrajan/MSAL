@@ -128,9 +128,12 @@ export class QcReportState {
           ...state.details.vesselResponse,
           sludge: {
             ...state.details.vesselResponse.sludge,
-            [activeCategoryId]: {
-              ...state.details.vesselResponse.sludge.categories[activeCategoryId],
-              [prop]: value
+            categories: {
+              ...state.details.vesselResponse.sludge.categories,
+              [activeCategoryId]: {
+                ...state.details.vesselResponse.sludge.categories[activeCategoryId],
+                [prop]: value
+              }
             }
           }
         }
@@ -168,9 +171,12 @@ export class QcReportState {
           ...state.details.vesselResponse,
           bunker: {
             ...state.details.vesselResponse.bunker,
-            [activeCategoryId]: {
-              ...state.details.vesselResponse.bunker.categories[activeCategoryId],
-              [prop]: value
+            categories: {
+              ...state.details.vesselResponse.bunker,
+              [activeCategoryId]: {
+                ...state.details.vesselResponse.bunker.categories[activeCategoryId],
+                [prop]: value
+              }
             }
           }
         }
