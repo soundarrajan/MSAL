@@ -31,6 +31,9 @@ import {
   UpdateActiveSludgeVesselResponse
 } from '../store/report-view/details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from '../store/report-view/details/actions/qc-comment.action';
+import { tap } from 'rxjs/operators';
+import { UpdateQcReportsListSummaryAction } from '../store/reports-list/qc-report-list-summary/qc-report-list-summary.actions';
+import { IGetQcSurveyHistoryListResponse } from './api/request-response/qc-survey-history-list.request-response';
 
 @Injectable()
 export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
@@ -42,14 +45,25 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     super(store, loggerFactory.createLogger(QcReportDetailsService.name));
   }
 
-  @ObservableException()
-  getReportsList(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
-    return this.api.getReportsList(gridRequest);
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
   }
 
   @ObservableException()
-  getSurveyHistoryList(portCallId: string, gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
-    return this.api.getSurveyHistoryList({ portCallId, ...gridRequest});
+  getReportsList(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
+    return this.api.getReportsList(gridRequest).pipe(
+      tap(({ nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched }) => this.store.dispatch(new UpdateQcReportsListSummaryAction({
+        nbOfMatched,
+        nbOfMatchedWithinLimit,
+        nbOfNotMatched
+      })))
+    );
+  }
+
+  @ObservableException()
+  getSurveyHistoryList(portCallId: string, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
+    return this.api.getSurveyHistoryList({ portCallId, ...gridRequest });
   }
 
   @ObservableException()
@@ -82,7 +96,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.store.dispatch(new UpdateProductTypeAction(productTypeId, prop, value));
   }
 
-  @ObservableException()  
+  @ObservableException()
   updateActiveSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): Observable<unknown> {
     // if (!_.keys(this.reportDetailsState.vesselResponse.sludge[categoryId]).some(vesselResponseKey => vesselResponseKey === key)) {
     //   return throwError('Invalid argument provided for updateSludgeVesselResponse');
@@ -91,7 +105,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.store.dispatch(new UpdateActiveSludgeVesselResponse(key, value));
   }
 
-  @ObservableException()  
+  @ObservableException()
   updateActiveBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): Observable<unknown> {
     // if (!_.keys(this.reportDetailsState.vesselResponse.bunker[categoryId]).some(vesselResponseKey => vesselResponseKey === key)) {
     //   return throwError('Invalid argument provided for updateBunkerVesselResponse');
@@ -103,11 +117,6 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   @ObservableException()
   updateReportComment(content: string): Observable<unknown> {
     return this.store.dispatch(new UpdateQcReportComment(content));
-  }
-
-  protected get reportDetailsState(): IQcReportDetailsState {
-    // Note: Always get a fresh reference to the state.
-    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
   }
 
   ngOnDestroy(): void {

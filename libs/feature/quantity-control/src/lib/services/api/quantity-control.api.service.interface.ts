@@ -24,12 +24,15 @@ import {
   IVerifyQcReportsResponse
 } from './request-response/verify-port-calls.request-response';
 import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
-import { IGetQcSurveyHistoryListRequest } from './request-response/qc-survey-history-list.request-response';
+import {
+  IGetQcSurveyHistoryListRequest,
+  IGetQcSurveyHistoryListResponse
+} from './request-response/qc-survey-history-list.request-response';
 
 export interface IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
 
-  getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcReportsListResponse>;
+  getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse>;
 
   getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse>;
 

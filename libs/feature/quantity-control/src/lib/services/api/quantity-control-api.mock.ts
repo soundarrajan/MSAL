@@ -10,7 +10,8 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
-  IGetSoundingReportDetailsRequest, IGetSoundingReportDetailsResponse,
+  IGetSoundingReportDetailsRequest,
+  IGetSoundingReportDetailsResponse,
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
@@ -39,6 +40,7 @@ import {
 } from './request-response/qc-survey-history-list.request-response';
 import { getMockQcSurveyHistoryList } from './mock/qc-survey-history-list.mock';
 import { QcSurveyHistoryListItemModel } from '../models/qc-survey-history-list-item.model';
+import * as faker from 'faker';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +57,10 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return of({
       items: getMockQcReportsList(request.pagination.take).map(item => new QcReportsListItemModel(item)),
-      totalItems: request.pagination.take * 5
+      totalItems: request.pagination.take * 5,
+      nbOfMatched: faker.random.number({ min: 5, max: 50 }),
+      nbOfNotMatched: faker.random.number({ min: 5, max: 50 }),
+      nbOfMatchedWithinLimit: faker.random.number({ min: 5, max: 50 })
     });
   }
 
