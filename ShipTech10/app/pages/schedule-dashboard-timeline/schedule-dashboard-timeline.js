@@ -170,7 +170,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     	EtaEtdDiff = moment(vessels[i].voyageDetail.etd) - moment(vessels[i].voyageDetail.eta);
                         endDate = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
                     	if (EtaEtdDiff < 86400000) {
-	                        endDate = moment.utc(vessels[i].voyageDetail.eta).endOf('day').format('YYYY-MM-DD HH:mm');
+	                        endDate = moment.utc(vessels[i].voyageDetail.etd).endOf('day').format('YYYY-MM-DD HH:mm');
                     	}
                     } else {
                         endDate = moment.utc(vessels[i].voyageDetail.eta).endOf('day').format('YYYY-MM-DD HH:mm');
