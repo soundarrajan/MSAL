@@ -737,7 +737,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             		ctrl.email.businessId = ctrl.data.groupId;
             	}
             }
-            if (ctrl.transaction == EMAIL_TRANSACTION.ORDER) {
+            if (ctrl.transaction == EMAIL_TRANSACTION.ORDER && ctrl.email.comment.emailTemplate.name != "SludgeConfirmationToVesselEmail") {
         		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
 	                orderModel.sendOrderCommand('confirmToSeller', ctrl.email.businessId).
 	                then(function (response) {
