@@ -412,6 +412,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             getData($scope.filtersAppliedPayload).then(function(response) {
                 updateTimeline(response);
+                $timeout(function() {
+                    $scope.getTimelineStatus();
+                })
             });
         };
 
