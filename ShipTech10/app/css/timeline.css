@@ -106,9 +106,20 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 }
 
 .vis-voyage-content-sap {
-    box-shadow: 0px 2px 0px 0px #000 inset, 0px 3px 0px 0px #fff inset, 0px 5px 0px 0px #000 inset;
+    /* box-shadow: 0px 2px 0px 0px #000 inset, 0px 3px 0px 0px #fff inset, 0px 5px 0px 0px #000 inset; */
     font-size: 1em;
     align-items: flex-end;
+}
+
+.vis-voyage-content-sap::before {
+	content: 'SAP';
+    color: white;
+    background: gray;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 16px;
+    padding: 0.1em;
 }
 
 .vis-timeline-filters-container {
