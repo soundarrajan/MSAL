@@ -132,7 +132,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var computeData = function(data) {
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
             ctrl.voyageData = angular.copy(vessels);
-            vessels = _.uniqBy(vessels, "voyageDetail.id");
+            // vessels = _.uniqBy(vessels, "voyageDetail.id");
 
             var groups = [];
             var voyages = [];
