@@ -250,12 +250,14 @@ angular
 
                                                         if (currentLists && !(JSON.stringify(data.data) === JSON.stringify(currentLists))) {
                                                             listsToUpdate = [];
-                                                            listFound = false;
                                                             $.each(data.data.selectListTimestamps, function(k, v) {
+	                                                            listFound = false;
                                                                 $.each(currentLists.selectListTimestamps, function(k1, v1) {
-                                                                    if (v1.name === v.name && (v1.lastModificationDate !== v.lastModificationDate)) {
-                                                                        listsToUpdate.push(v1.name);
+                                                                    if (v1.name === v.name) {
                                                                         listFound = true;
+                                                                    	if (v1.lastModificationDate !== v.lastModificationDate) {
+	                                                                        listsToUpdate.push(v1.name);
+                                                                    	}
                                                                     }
                                                                 });
                                                                 if (!listFound) {
