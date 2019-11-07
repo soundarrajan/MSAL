@@ -272,6 +272,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'max': angular.copy(ctrl.endDate).add('days', 7).format('YYYY-MM-DD'),
                 'zoomMin': 129600000,
                 'zoomMax': 3628800000,
+                'zoomKey': 'altKey',
                 groupTemplate: function (group) {
                     var serviceName = group.serviceName;
                     var vesselName = group.vesselName;
