@@ -35,6 +35,10 @@ import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-re
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
+import {
+  NUMBER_FORMAT,
+  NumberFormat
+} from './views/qc-report/details/components/port-call-grid/view-model/number.format';
 
 @NgModule({
   imports: [
@@ -77,6 +81,12 @@ import { UomSelectorComponent } from './views/qc-report/details/components/uom-s
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
+    },
+    {
+      provide: NUMBER_FORMAT,
+      useValue: {
+        ...new NumberFormat()
+      }
     },
 
     // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel

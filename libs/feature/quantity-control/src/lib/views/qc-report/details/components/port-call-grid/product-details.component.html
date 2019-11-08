@@ -52,11 +52,9 @@
              appTemplateRenderer let-column="column" let-model="data" let-value="value">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <p-inputMask
-        (ngModelChange)="viewModel.updateProductType(column, model, $event)"
-        [mask]="viewModel.numberMaskFormat"
-        [ngModelOptions]="{updateOn: 'blur'}"
-        [ngModel]="value"></p-inputMask>
+      <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)" [formatInput]="true"
+                 [ngModelOptions]="{updateOn: 'blur'}"
+                 [ngModel]="value" [step]="0.001" decimalSeparator="."></p-spinner>
     </div>
   </ng-container>
 </ng-template>

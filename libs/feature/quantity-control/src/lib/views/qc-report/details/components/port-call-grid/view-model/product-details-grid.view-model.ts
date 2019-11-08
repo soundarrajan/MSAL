@@ -32,7 +32,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
     animateRows: true,
 
-    deltaRowDataMode: false,
+    deltaRowDataMode: true,
     suppressPaginationPanel: false,
     suppressColumnVirtualisation: true,
     rowSelection: RowSelection.Multiple,
@@ -40,6 +40,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     suppressRowClickSelection: true,
 
     multiSortKey: 'ctrl',
+    getRowNodeId: (data: ProductTypeListItemViewModel) => data.productTypeId.toString(),
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
