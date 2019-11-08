@@ -518,7 +518,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                         // }
                         packedFilters.push(filter);
                     } else {
-                        toastr.error("Invalid configuration!");
+                        // toastr.error("Invalid configuration!");
                     }
                 });
             }

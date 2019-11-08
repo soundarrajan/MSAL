@@ -6,6 +6,15 @@
 .vis-inner {
 	padding: 0 !important;
 	display: table !important;
+	height: 32px !important;
+}
+
+.vis-label {
+	height: 32px !important;
+}
+
+.vis-group {
+	height: 32px !important;
 }
 
 .vis-custom-group { 
@@ -16,10 +25,10 @@
 }
 
 .vis-custom-group-column { 
-	width: 120px;
+	width: 85px;
 	/* height: 100%; */
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     border-right: 1px solid #bfbfbf;
     text-align: center;
@@ -29,6 +38,11 @@
     font-size: 0.8em;
 }
 
+ .vis-custom-group-column-header {
+	justify-content: center;
+	text-align: center;
+ }
+
 .vis-custom-group-column.last { 
 	border-right: none;
 }
@@ -36,8 +50,9 @@
 .vis-custom-group-column-content {
 	height: 30px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
+	text-align: start;
 }
 
 .vis-time-axis .vis-text {
@@ -50,7 +65,8 @@
 }
 
 .vis-item {
-	/* height: 20px; */
+	height: 32px;
+	top: 0 !important;
 }
 
 .vis-item-content {
@@ -96,7 +112,7 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 }
 
 .vis-voyage-content {
-	height: 20px;
+	height: 32px;
 	color: darkslateblue;
 	font-weight: bold;
 	font-size: 1em;
@@ -108,7 +124,7 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 .vis-voyage-content-sap {
     /* box-shadow: 0px 2px 0px 0px #000 inset, 0px 3px 0px 0px #fff inset, 0px 5px 0px 0px #000 inset; */
     font-size: 1em;
-    align-items: flex-end;
+    /* align-items: flex-end; */
 }
 
 .vis-voyage-content-sap::before {
@@ -133,11 +149,13 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 	background: #f0f8ff;
 	border: 1px solid #bfbfbf;
 	text-align: center;
+	display: flex;
 }
 
 .vis-timeline-timeselect {
 	font-weight: bold;
 	text-align: center;
+	margin: auto;
 }
 
 .schedule-dashboard-timeline-footer {

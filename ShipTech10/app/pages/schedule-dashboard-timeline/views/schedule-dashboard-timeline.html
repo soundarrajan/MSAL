@@ -27,6 +27,18 @@
 	            <i class="fa fa-caret-right font-grey-salt"></i>
 	        </span>
 		</span>
+		<div class="vis-timeline-zoom-container" ng-if="timelineLoaded">
+		    <span class="st-btn-icon">
+		        <a id="timeline-zoom-minus" ng-click="changeZoomLevel(0)">
+		            <i class="fa fa-minus clickable"></i>
+		        </a>
+		    </span>
+		    <span class="st-btn-icon" style="margin-left: 5px;">
+		        <a id="timeline-zoom-plus" ng-click="changeZoomLevel(1)">
+		            <i class="fa fa-plus clickable"></i>
+		        </a>
+		    </span>
+		</div>
 	</div>
 	<div class="schedule-dashboard-timeline"></div>
 	<div id="timeline"></div>
