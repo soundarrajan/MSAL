@@ -180,6 +180,15 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
                 return data;
             });
         }
+
+         function verifyOrders(params) {
+            var request_data = payloadDataModel.create(params);
+            screenLoader.showLoader();
+            return orderResource.verifyOrders(request_data).$promise.then(function(data) {
+                screenLoader.hideLoader();
+                return data;
+            });
+        }        
         /**
          * Makes an API call to send an order-specific "command", with a simple payload,
          * containing just the order ID.
@@ -422,6 +431,7 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             list: list,
             create: create,
             update: update,
+            verifyOrders: verifyOrders,
             confirm: confirm,
             exportList: exportList,
             createOrders: createOrders,

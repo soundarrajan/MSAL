@@ -4415,6 +4415,32 @@ table#new_order_products td {
     position: absolute;
 }
 
+#selectAllOrderList {
+    background: white;
+    content: none;
+    /*font-family: initial;*/
+    content: none;
+    width: 19px;
+    height: 19px;
+    border: 1px solid #d5d5d5;
+    position: relative;
+    left: -6px;
+}
+#selectAllOrderList:before {
+    content: none;
+}
+#selectAllOrderList.fa-check-square-o:before {
+    content: "";
+    left: 6px;
+    top: 3px;
+    width: 5px !important;
+    height: 10px !important;
+    border: solid #666666;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+}
+
 #app > div.page-container > div.page-content-wrapper > div > div.fade-in-up.inside_content.ng-scope > ui-view > group-of-requests > div:nth-child(3) > div > div.portlet-body > div.row > div.col-sm-12.legend {
     display: flex;
     justify-content: space-between;

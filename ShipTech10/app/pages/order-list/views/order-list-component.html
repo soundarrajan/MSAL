@@ -37,8 +37,13 @@
                     </div>
                     <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
                             Clear
-                        </a>
+                    </a>
                 </div>
+                <span ng-controller="Controller_Master as CM">
+                        <a ng-disabled="value.disabled" class="btn btn-default btn-outline orange" data-group="extern" ng-click="createOrderFromOrderList()">
+                            Verify
+                        </a>
+                </span>
 
             </form>
         </div>

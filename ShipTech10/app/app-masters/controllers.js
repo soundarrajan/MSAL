@@ -7774,6 +7774,29 @@ APP_MASTERS.controller("Controller_Master", [
             });
 
         }
+         $scope.createOrderFromOrderList = function() {
+            console.log($rootScope.selectedOrderListRows);
+            if ($rootScope.selectedOrderListRows) {
+                if ($rootScope.selectedOrderListRows.length == 1) {
+                    localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows[0]));
+                } else {
+                    localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows));
+                }
+            }
+            orderModel.verifyOrders($rootScope.selectedOrderListRows[0]).then(function (responseData) {
+                     console.log("oas");
+                    // ctrl.buttonsDisabled = false;
+                    // $state.go(STATE.EDIT_ORDER, {
+                    //     orderId: ctrl.orderId
+                    // });
+                    // addFirstAdditionalCost(null);
+                }).catch(function (err) {
+                    // ctrl.buttonsDisabled = false;
+                    // addFirstAdditionalCost(null);
+            });
+
+
+        }
 
     }
 ]);

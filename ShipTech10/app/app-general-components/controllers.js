@@ -35,7 +35,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         $scope.tenantSettings = $tenantSettings;
         vm.entity_id = $state.params.entity_id;
         vm.screen_id = $state.params.screen_id;
-
+        $rootScope.selectedOrderListRows = [];
         vm.triggerRobStandard = function(){
            // console.error('trigger');
            //  alert('trigger');
@@ -896,6 +896,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
                 var contract_planning_checkbox = function(cellValue, options, rowObject) {
                     var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="contract_planning_checkbox" rowId="' + options.rowId + '" ng-disabled="!CLC.cpCtr[' + options.rowId + ']" ng-model="selectContracts[' + options.rowId + ']"  ng-click="selectContractPlanningRow(' + options.rowId + ",selectContracts[" + options.rowId + '])"/><span></span></label>';
+
+                    return tpl;
+                };
+                var order_list_checkbox = function(cellValue, options, rowObject) {
+                    var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '" " ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
 
                     return tpl;
                 };
@@ -3025,13 +3030,24 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
 
         $rootScope.$on("gridDataDone", function(data,res){
-            $scope.selectedContractPlanningRows = [];
-            // selectContracts = []
-            $scope.selectContracts = []
-            $('#jqgh_flat_contract_planning_actions-0').html('<i id="selectAllContractPlanning"' +
-                ' style="font-size: 25px !important; color: #d9d9d9;"' +
-                ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
-            $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
+            if (data.currentScope.currentColumnRoute == "order-list") {
+               $rootScope.selectedOrderListRows = [];
+               $scope.selectOrders = []
+               $('#jqgh_flat_orders_list_actions-1').html('<i id="selectAllOrderList"' +
+                    ' style="font-size: 25px !important; color: #d9d9d9;"' +
+                    ' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
+               $('#jqgh_flat_orders_list_actions-1').css('display', 'inherit');
+            } else {
+                $scope.selectedContractPlanningRows = [];
+                // selectContracts = []
+                $scope.selectContracts = []
+                $('#jqgh_flat_contract_planning_actions-0').html('<i id="selectAllContractPlanning"' +
+                    ' style="font-size: 25px !important; color: #d9d9d9;"' +
+                    ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
+                $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
+
+            }
+
         });
 
         $scope.evaluateChangedContracts = function() {
@@ -3091,6 +3107,62 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 } else if ($scope.selectedContractPlanningRows.length === rowsWithContract) {
                     var el = $('#selectAllContractPlanning').first();
+                    if (el.hasClass('fa-square-o')) {
+                        el.removeClass('fa-square-o');
+                        el.addClass('fa-check-square-o');
+                    }
+                }            
+        }
+
+         $scope.selectAllOrderList = function() {
+            // $('[ng-model*="CLC.cpCtr"]').blur()
+                var el = $('#selectAllOrderList').first();
+                if (el.hasClass('fa-square-o')) {
+                    theCLC = $("#flat_orders_list");
+                    for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                        if (!$scope.selectOrders[i + 1]) {
+                            $scope.selectOrders[i + 1] = true;
+                            $scope.selectOrderListRow(i + 1, i + 1);
+                        }
+                    }
+                } else if (el.hasClass('fa-check-square-o')) {
+                    for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                        if ($scope.selectOrders[i + 1]) {
+                            $scope.selectOrders[i + 1] = false;
+                            $scope.selectOrderListRow(i + 1, i + 1);
+                        }
+                    }
+                }
+                $.each($rootScope.selectedOrderListRows, function(ksc, vsc) {
+                    if (typeof $rootScope.editableCProwsModel != "undefined") {
+                        Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+                            var value = $rootScope.editableCProwsModel[objectKey];
+                            if ("row-" + vsc.rowIndex == objectKey) {
+                                if (value.contractChanged) {
+                                    vsc.contract = value.contract;
+                                } else {
+                                    vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+                                }
+                            }
+                        });
+                    }
+                });  
+
+                rowsWithOrder = 0;
+                $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
+                    if (gdv.order) {
+                        rowsWithOrder += 1;
+                    }
+                })
+
+                if ($rootScope.selectedOrderListRows.length < rowsWithOrder || rowsWithOrder == 0) {
+                    var el = $('#selectAllOrderList').first();
+                    if (el.hasClass('fa-check-square-o')) {
+                        el.removeClass('fa-check-square-o');
+                        el.addClass('fa-square-o');
+                    }
+                } else if ($rootScope.selectedOrderListRows.length === rowsWithOrder) {
+                    var el = $('#selectAllOrderList').first();
                     if (el.hasClass('fa-square-o')) {
                         el.removeClass('fa-square-o');
                         el.addClass('fa-check-square-o');
@@ -3438,7 +3510,84 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     el.addClass('fa-check-square-o');
                 }
             }
-        };
+        }
+        $scope.selectOrderListRow = function(rowIdx, value) {
+            CLC = $("#flat_orders_list");
+            order = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            order.rowIndex = rowIdx;
+            if (typeof $rootScope.selectedOrderListRows == "undefined") {
+                $rootScope.selectedOrderListRows = [];
+            }
+            rowIsAlreadySelected = false;
+            $.each($rootScope.selectedOrderListRows, function(k, v) {
+                if (v.rowIndex == rowIdx) {
+                    rowIsAlreadySelected = true;
+                    indexInCollection = k;
+                }
+            });
+            if (!rowIsAlreadySelected) {
+                $rootScope.selectedOrderListRows.push(order);
+                // $('#' + rowIdx + '.jqgrow').first().css({'background-color': 'rgba(0, 0, 255, 0.1)'});
+            } else {
+                $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
+                // $('#' + rowIdx + '.jqgrow').first().css({'background-color': '#ffffff'});
+            }
+            // $.each($scope.selectedOrderListRows, function(ksc, vsc) {
+            //     if (typeof $rootScope.editableCProwsModel != "undefined") {
+            //         Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+            //             var value = $rootScope.editableCProwsModel[objectKey];
+            //             if ("row-" + vsc.rowIndex == objectKey) {
+            //                 if (value.contractChanged) {
+            //                     vsc.contract = value.contract;
+            //                 } else {
+            //                     vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+            //                 }
+            //                 // vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+            //                 vsc.comment = value.comment ? value.comment : null;
+            //                 vsc.agreementType = value.agreementType;
+            //                 vsc.product = value.product;
+            //                 if (typeof(value.contractProductId) != 'undefined') {
+            //                     vsc.contractProductId = value.contractProductId;
+            //                 }
+            //                 // if (value.agreementType != null) {
+            //                 //     vsc.agreementType = {};
+            //                 //     vsc.agreementType.id = value.agreementType;
+            //                 // }
+            //             }
+            //         });
+            //     }
+            // });
+            console.log($rootScope.selectedOrderListRows);
+           // $rootScope.$broadcast("orderListSelectedRows", $scope.selectedOrderListRows);
+
+
+            var rowsWithOrder = 0;
+            if (CLC.jqGrid.Ascensys.gridObject.page == 1) {
+                $.each(CLC.jqGrid.Ascensys.gridData, function(k, v) {
+                    rowsWithOrder+= !!v.order;
+                });
+            } else {
+                $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k,v) {
+                    if (v.order) {
+                        rowsWithOrder += 1;
+                    }   
+                })
+            }
+
+            if ($rootScope.selectedOrderListRows.length < rowsWithOrder || rowsWithOrder == 0) {
+                var el = $('#selectAllOrderList').first();
+                if (el.hasClass('fa-check-square-o')) {
+                    el.removeClass('fa-check-square-o');
+                    el.addClass('fa-square-o');
+                }
+            } else if ($rootScope.selectedOrderListRows.length === rowsWithOrder) {
+                var el = $('#selectAllOrderList').first();
+                if (el.hasClass('fa-square-o')) {
+                    el.removeClass('fa-square-o');
+                    el.addClass('fa-check-square-o');
+                }
+            }
+        }
         $scope.openContractPopupInCP = function(rowIdx) {
             CLC = $("#flat_contract_planning");
             request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];

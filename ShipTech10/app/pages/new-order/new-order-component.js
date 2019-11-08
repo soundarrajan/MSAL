@@ -3226,27 +3226,27 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             })
         })
         
-        
-            ctrl.inputChangeProcessing = function(inputName){
+    
+        ctrl.inputChangeProcessing = function(inputName){
 
-                $timeout(function(){
-                    switch(inputName){
-                        case 'eta':
-                            ctrl.data.deliveryDate = angular.copy(ctrl.data.eta); 
-                            ctrl.isRecentETA ? ctrl.data.recentEta = angular.copy(ctrl.data.eta) : '';
-                            break;
-                        case 'recentEta': 
-                        	if (!ctrl.data.recentEta) {
-                        		if (ctrl.data.eta) {
-                        			ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
-                        		}
-                        	} else {
-	                            ctrl.data.deliveryDate = angular.copy(ctrl.data.recentEta);
-                        	}
-                            break;
-                    }
-                },1);   
-            }
+            $timeout(function(){
+                switch(inputName){
+                    case 'eta':
+                        ctrl.data.deliveryDate = angular.copy(ctrl.data.eta); 
+                        ctrl.isRecentETA ? ctrl.data.recentEta = angular.copy(ctrl.data.eta) : '';
+                        break;
+                    case 'recentEta': 
+                    	if (!ctrl.data.recentEta) {
+                    		if (ctrl.data.eta) {
+                    			ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
+                    		}
+                    	} else {
+                            ctrl.data.deliveryDate = angular.copy(ctrl.data.recentEta);
+                    	}
+                        break;
+                }
+            },1);   
+        }
 
     }
 ]);
