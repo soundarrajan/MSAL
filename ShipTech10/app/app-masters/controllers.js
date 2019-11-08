@@ -7774,7 +7774,7 @@ APP_MASTERS.controller("Controller_Master", [
             });
 
         }
-         $scope.createOrderFromOrderList = function() {
+        $scope.createOrderFromOrderList = function() {
             console.log($rootScope.selectedOrderListRows);
             if ($rootScope.selectedOrderListRows) {
                 if ($rootScope.selectedOrderListRows.length == 1) {
@@ -7788,9 +7788,9 @@ APP_MASTERS.controller("Controller_Master", [
             //             ];
             var payload = [];
             $.each($rootScope.selectedOrderListRows, function(k, v) {
-                if ($rootScope.selectedOrderListRows[k].id) {
+                if ($rootScope.selectedOrderListRows[k].order.name) {
                     var obj = { 
-                                "Id": $rootScope.selectedOrderListRows[k].id
+                                "Id": $rootScope.selectedOrderListRows[k].order.name
                              };
                     payload.push(obj);
                 }
@@ -7798,11 +7798,6 @@ APP_MASTERS.controller("Controller_Master", [
             });
 
             orderModel.verifyOrders(payload).then(function (responseData) {
-                    // ctrl.buttonsDisabled = false;
-                    // $state.go(STATE.EDIT_ORDER, {
-                    //     orderId: ctrl.orderId
-                    // });
-                    // addFirstAdditionalCost(null);
                 }).catch(function (err) {
                     // ctrl.buttonsDisabled = false;
                     // addFirstAdditionalCost(null);
