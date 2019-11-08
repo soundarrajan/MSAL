@@ -7783,8 +7783,21 @@ APP_MASTERS.controller("Controller_Master", [
                     localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows));
                 }
             }
-            orderModel.verifyOrders($rootScope.selectedOrderListRows[0]).then(function (responseData) {
-                     console.log("oas");
+            // var payload = [
+            //                 {"Id": 15665}
+            //             ];
+            var payload = [];
+            $.each($rootScope.selectedOrderListRows, function(k, v) {
+                if ($rootScope.selectedOrderListRows[k].id) {
+                    var obj = { 
+                                "Id": $rootScope.selectedOrderListRows[k].id
+                             };
+                    payload.push(obj);
+                }
+                
+            });
+
+            orderModel.verifyOrders(payload).then(function (responseData) {
                     // ctrl.buttonsDisabled = false;
                     // $state.go(STATE.EDIT_ORDER, {
                     //     orderId: ctrl.orderId

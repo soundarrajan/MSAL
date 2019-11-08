@@ -311,7 +311,14 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <span class="header-status pull-right">
+                                    <span class="header-status pull-right" style="display: flex;">
+                                        <span style="display: flex; cursor: pointer;">
+                                            <span style="margin-right: 10px;"  onclick="$('#verifyCheckboxInput').trigger('click')">Verify</span>
+                                            <label class="mt-checkbox" id="verifyCheckboxLabel" style="margin:0; padding-left: 46px;">
+                                                <input type="checkbox" name="verifyCheckbox" id="verifyCheckboxInput"/>
+                                                <span></span>
+                                            </label>
+                                        </span>
                                         <b>
                                             Status:
                                         </b>

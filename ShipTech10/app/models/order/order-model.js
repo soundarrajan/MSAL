@@ -181,8 +181,8 @@ angular.module('shiptech.models').factory('orderModel', ['$q', 'orderResource', 
             });
         }
 
-         function verifyOrders(params) {
-            var request_data = payloadDataModel.create(params);
+         function verifyOrders(data) {
+            var request_data = payloadDataModel.create(data);
             screenLoader.showLoader();
             return orderResource.verifyOrders(request_data).$promise.then(function(data) {
                 screenLoader.hideLoader();

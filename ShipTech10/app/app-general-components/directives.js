@@ -390,15 +390,15 @@ window.increment = 0;
                     			}
                     		}
                     	}
-                        // if (attrs.screen == "orderlist") {
-                        //     for (var i = newValue.colModel.length - 1; i >= 0; i--) {
-                        //         if (newValue.colModel[i].name == "product.name") {
-                        //             if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
-                        //                 newValue.colModel.splice(i,1);
-                        //             }
-                        //         }
-                        //     }
-                        // }
+                        if (attrs.screen == "orderlist") {
+                            for (var i = newValue.colModel.length - 1; i >= 0; i--) {
+                                if (newValue.colModel[i].name == "isVerified.name" || newValue.colModel[i].name == "verifiedBy.name"  || newValue.colModel[i].name == "verifiedOn" ) {
+                                    if (procurementSettings.order.orderVerificationReq.id == 2) {
+                                        newValue.colModel.splice(i,1);
+                                    }
+                                }
+                            }
+                        }
 
                         if (scope.source) {
                             console.log("clc static src:", scope.source);

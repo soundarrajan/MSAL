@@ -1310,7 +1310,20 @@
                     <br/>
                     <br/>
                 </div>
+                <div class="col-md-4" style="margin-left: 310px;
+                                             margin-top: 40px;">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "orderVerificationReq", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="orderVerificationReq" class="simpleLookupLabel" style="max-height: initial;">
+                            Order Verification Required
+                        </label>
+                        <div class="input-group form_input form_input_orderVerificationReq">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.orderVerificationReq track by item.id"
+                                ng-required="true" id="orderVerificationReq" ng-model="formValues.procurement.order.orderVerificationReq"></select>
+                        </div>
+                    </div>
+                </div>
             </div>
+        
 
                 <!-- <div class="col-md-4 ">
                     <div class="form-group row">
