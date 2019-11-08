@@ -3,7 +3,7 @@ import { ProductDetailsGridViewModel } from './product-details-grid.view-model';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { QcReportState } from '../../../../../../store/report-view/qc-report.state';
-import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
+import { ProductTypeListItemViewModel, ProductTypeListItemViewModelBuilder } from './product-type-list-item.view-model';
 import { map } from 'rxjs/operators';
 import { Column } from 'ag-grid-community';
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
@@ -24,9 +24,13 @@ export class ProductDetailsViewModel {
   private maxFractionDigits: number = 5;
   public numberDisplayFormat: string = `${this.minIntegerDigits}.${this.minFractionDigits}-${this.maxFractionDigits}`;
 
-  constructor(public gridViewModel: ProductDetailsGridViewModel, private store: Store, private detailsService: QcReportDetailsService) {
+  constructor(
+    public gridViewModel: ProductDetailsGridViewModel,
+    private store: Store,
+    private detailsService: QcReportDetailsService,
+    private viewModelBuilder: ProductTypeListItemViewModelBuilder) {
     this.productTypes$ = this.store.select(QcReportState.getPortCallReportProductTypes).pipe(
-      map(productTypes => _.values(productTypes).map(productType => new ProductTypeListItemViewModel(productType)))
+      map(productTypes => _.values(productTypes).map(productType => viewModelBuilder.build(productType)))
     );
   }
 

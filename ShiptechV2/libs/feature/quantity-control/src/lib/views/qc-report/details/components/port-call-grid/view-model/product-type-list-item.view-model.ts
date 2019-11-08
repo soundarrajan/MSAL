@@ -1,5 +1,17 @@
 import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
-import { Decimal } from 'decimal.js';
+import { INumberFormat, NUMBER_FORMAT } from './number.format';
+import { Inject, Injectable } from '@angular/core';
+import { truncateDecimals } from '@shiptech/core/utils/math';
+
+@Injectable()
+export class ProductTypeListItemViewModelBuilder {
+  constructor(@Inject(NUMBER_FORMAT) private numberFormat: INumberFormat) {
+  }
+
+  build(itemState: QcProductTypeListItemState): ProductTypeListItemViewModel {
+    return new ProductTypeListItemViewModel(itemState, this.numberFormat);
+  }
+}
 
 export class ProductTypeListItemViewModel {
   productTypeName: string;
@@ -12,29 +24,16 @@ export class ProductTypeListItemViewModel {
   robAfterDeliveryMeasuredROB: number;
 
 
-  constructor(itemState: QcProductTypeListItemState) {
+  constructor(itemState: QcProductTypeListItemState, numberFormat: INumberFormat) {
     this.productTypeId = itemState.productTypeId;
     this.productTypeName = itemState.productTypeName;
 
-    this.robBeforeDeliveryLogBookROB = itemState.robBeforeDeliveryLogBookROB.toNumber();
-    this.robBeforeDeliveryMeasuredROB = itemState.robBeforeDeliveryMeasuredROB.toNumber();
-    this.deliveredQuantityBdnQty = itemState.deliveredQuantityBdnQty.toNumber();
-    this.deliveredQuantityMessuredDeliveredQuantity = itemState.deliveredQuantityMessuredDeliveredQuantity.toNumber();
-    this.robAfterDeliveryLogBookROB = itemState.robAfterDeliveryLogBookROB.toNumber();
-    this.robAfterDeliveryMeasuredROB = itemState.robAfterDeliveryMeasuredROB.toNumber();
-  }
-
-  toStateModel(): QcProductTypeListItemState {
-    return {
-      productTypeId: this.productTypeId,
-      productTypeName: this.productTypeName,
-      robBeforeDeliveryLogBookROB: new Decimal(this.robBeforeDeliveryLogBookROB),
-      robBeforeDeliveryMeasuredROB: new Decimal(this.robBeforeDeliveryMeasuredROB),
-      deliveredQuantityBdnQty: new Decimal(this.deliveredQuantityBdnQty),
-      deliveredQuantityMessuredDeliveredQuantity: new Decimal(this.deliveredQuantityMessuredDeliveredQuantity),
-      robAfterDeliveryLogBookROB: new Decimal(this.robAfterDeliveryLogBookROB),
-      robAfterDeliveryMeasuredROB: new Decimal(this.robAfterDeliveryMeasuredROB)
-    };
+    this.robBeforeDeliveryLogBookROB = truncateDecimals(itemState.robBeforeDeliveryLogBookROB.toNumber(), numberFormat.maxFractionDigits);
+    this.robBeforeDeliveryMeasuredROB = truncateDecimals(itemState.robBeforeDeliveryMeasuredROB.toNumber(), numberFormat.maxFractionDigits);
+    this.deliveredQuantityBdnQty = truncateDecimals(itemState.deliveredQuantityBdnQty.toNumber(), numberFormat.maxFractionDigits);
+    this.deliveredQuantityMessuredDeliveredQuantity = truncateDecimals(itemState.deliveredQuantityMessuredDeliveredQuantity.toNumber(), numberFormat.maxFractionDigits);
+    this.robAfterDeliveryLogBookROB = truncateDecimals(itemState.robAfterDeliveryLogBookROB.toNumber(), numberFormat.maxFractionDigits);
+    this.robAfterDeliveryMeasuredROB = truncateDecimals(itemState.robAfterDeliveryMeasuredROB.toNumber(), numberFormat.maxFractionDigits);
   }
 
 }

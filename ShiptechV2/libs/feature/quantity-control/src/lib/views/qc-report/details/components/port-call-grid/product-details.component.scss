@@ -25,6 +25,34 @@
   }
 
   shiptech-uom-selector {
-    overflow: visible
+    overflow: visible;
+    z-index: 9999
+  }
+
+  .ag-header {
+    overflow: visible !important;
+
+    .ag-header-viewport {
+      overflow: visible !important;
+    }
+  }
+
+  .ag-header-row {
+    overflow: visible !important;
+
+    .ag-header-group-cell {
+      overflow: visible;
+      z-index: 9999;
+
+      .ag-header-group-cell-label {
+        overflow: visible;
+        z-index: 9999;
+      }
+    }
+  }
+
+  .ui-dropdown-items-wrapper {
+    overflow: visible !important;
+    z-index: 9999
   }
 }
