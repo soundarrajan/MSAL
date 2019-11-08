@@ -158,6 +158,17 @@ APP_CLAIMS.controller("Controller_Claims", [
                 Factory_Master.get_master_list(vm.app_id, vm.screen_id, field, function(callback) {
                     if (callback) {
                         $scope.options[field.Name] = callback;
+                        if (field.Name === 'Product') {
+                            if ($scope.options['Product'] && $scope.options['Product'].length > 0) {
+                                $.each($scope.formValues.temp.tempProductforType, function(k, v) {
+                                    $.each($scope.options['Product'], function(k1, v1) {
+                                        if (v.product.id && v1.id === v.product.id) {
+                                            v.physicalSupplier = v1.payload.orderDetails.physicalSupplier;
+                                        }
+                                    });
+                                });
+                            }
+                        }
                         $scope.$watchGroup([$scope.formValues, $scope.options], function() {
                             $timeout(function() {
                                 if (field.Type == "textUOM") {
@@ -342,6 +353,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                                 $.each($scope.formValues.temp.tempProductforType, function(k, v) {
                                     if (v.product.id && v.product.id == $scope.formValues.orderDetails.product.id) {
                                         $scope.formValues.orderDetails.productType = v.productType.name;
+                                       // $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
                                     }
                                 });
                             }
@@ -386,6 +398,9 @@ APP_CLAIMS.controller("Controller_Claims", [
                     if (field) vm.getOptions(field);
                     delete $scope.formValues.orderDetails.deliveryNo.payload;
                     delete field;
+                    if ($scope.formValues.claimDetails.physicalSupplier) {
+                        $scope.formValues.claimDetails.physicalSupplier = null;
+                    }
                 } else {
                     $timeout(function(){
                         $scope.formValues.deliveryDate = $scope.formValues.deliveryDate;

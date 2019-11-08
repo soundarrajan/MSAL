@@ -7137,7 +7137,8 @@ APP_API.factory("$Api_Service", [
                                                             orderProductId: entry.orderProductId,
                                                             deliveryProductId: entry.deliveryProductId,
                                                             orderPrice: entry.orderPrice,
-                                                            currency: entry.currency
+                                                            currency: entry.currency,
+                                                            physicalSupplier: entry.physicalSupplier
                                                         },
                                                         productTypeId: entry.productType.id
                                                     }
