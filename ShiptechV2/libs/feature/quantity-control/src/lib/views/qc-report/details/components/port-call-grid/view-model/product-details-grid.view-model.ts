@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColDef, ColGroupDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
-  ProductDetailsColGroups,
+  ProductDetailsColGroupsEnum,
   ProductDetailsColGroupsLabels,
   ProductDetailsColumns,
   ProductDetailsColumnsLabels,
@@ -17,9 +17,43 @@ import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/c
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
 import { Decimal } from 'decimal.js';
+import { Select, Store } from '@ngxs/store';
+import { QcReportState } from '../../../../../../store/report-view/qc-report.state';
+import { Observable, throwError } from 'rxjs';
+import { IQcUomState, QcUomStateModel } from '../../../../../../store/report-view/models/uom.state';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import {
+  SwitchUomForDeliveredQuantityAction,
+  SwitchUomForRobAfterDelivery,
+  SwitchUomForRobBeforeDeliveryAction
+} from '../../../../../../store/report-view/details/actions/qc-uom.actions';
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
+
+  productsColGroup: ColGroupDef = {
+    groupId: ProductDetailsColGroupsEnum.Products,
+    headerTooltip: ProductDetailsColGroupsLabels.Products,
+    headerName: ProductDetailsColGroupsLabels.Products,
+    marryChildren: true,
+    children: [this.productTypeNameCol]
+  };
+  robBeforeDeliveryColGroup: ColGroupDef = {
+    groupId: ProductDetailsColGroupsEnum.RobBeforeDelivery,
+    headerTooltip: ProductDetailsColGroupsLabels.RobBeforeDelivery,
+    headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
+    marryChildren: true,
+    children: [this.logBookBeforeDeliveryCol, this.measuredRobBeforeDeliveryCol, this.differenceRobBeforeDeliveryCol]
+  };
+  deliveredQuantityColGroup: ColGroupDef = {
+    groupId: ProductDetailsColGroupsEnum.DeliveredQuantity,
+    headerTooltip: ProductDetailsColGroupsLabels.DeliveredQuantity,
+    headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
+    marryChildren: true,
+    children: [this.bdnDeliveredQuantityCol, this.measuredDeliveredQuantityCol, this.differenceDeliveredQuantityCol]
+  };
 
   public searchText: string;
   gridOptions: GridOptions = {
@@ -163,49 +197,25 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     },
     cellClassRules: this.getToleranceClassRules()
   };
-
-
-  productsColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroups.Products,
-    headerTooltip: ProductDetailsColGroupsLabels.Products,
-    headerName: ProductDetailsColGroupsLabels.Products,
-    marryChildren: true,
-    children: [this.productTypeNameCol]
-  };
-
-  robBeforeDeliveryColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroups.RobBeforeDelivery,
-    headerTooltip: ProductDetailsColGroupsLabels.RobBeforeDelivery,
-    headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
-    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
-    marryChildren: true,
-    children: [this.logBookBeforeDeliveryCol, this.measuredRobBeforeDeliveryCol, this.differenceRobBeforeDeliveryCol]
-  };
-
-  deliveredQuantityColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroups.DeliveredQuantity,
-    headerTooltip: ProductDetailsColGroupsLabels.DeliveredQuantity,
-    headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
-    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
-    marryChildren: true,
-    children: [this.bdnDeliveredQuantityCol, this.measuredDeliveredQuantityCol, this.differenceDeliveredQuantityCol]
-  };
-
   robAfterDeliveryColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroups.RobAfterDelivery,
+    groupId: ProductDetailsColGroupsEnum.RobAfterDelivery,
     headerTooltip: ProductDetailsColGroupsLabels.RobAfterDelivery,
     headerName: ProductDetailsColGroupsLabels.RobAfterDelivery,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
     children: [this.logBookAfterDeliveryCol, this.measuredRobAfterDeliveryCol, this.differenceRobAfterDeliveryCol]
   };
+  @Select(QcReportState.getReportDetailsRobUomBeforeDelivery) private robUomBeforeDelivery$: Observable<IQcUomState>;
+  @Select(QcReportState.getReportDetailsRobUomAfterDelivery) private robUomAfterDelivery$: Observable<IQcUomState>;
+  @Select(QcReportState.getReportDetailsDeliveredQtyUom) private deliveredQtyUom$: Observable<IQcUomState>;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private quantityControlService: QcReportDetailsService,
-    private modelProps: ProductDetailsProps
+    private modelProps: ProductDetailsProps,
+    private store: Store
   ) {
     super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
     this.initOptions(this.gridOptions);
@@ -245,4 +255,53 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   getDifference(minuend: number, suptrahend: number): number {
     return new Decimal(minuend).sub(new Decimal(suptrahend)).toNumber();
   }
+
+  getSelectedUomValue(groupId: ProductDetailsColGroupsEnum): Observable<IQcUomState> {
+    switch (groupId) {
+      case ProductDetailsColGroupsEnum.RobBeforeDelivery: {
+        return this.robUomBeforeDelivery$;
+        break;
+      }
+
+      case ProductDetailsColGroupsEnum.RobAfterDelivery: {
+        return this.robUomAfterDelivery$;
+        break;
+      }
+
+      case ProductDetailsColGroupsEnum.DeliveredQuantity: {
+        return this.deliveredQtyUom$;
+        break;
+      }
+
+      default: {
+        throwError('Invalid groupId');
+        break;
+      }
+    }
+  }
+
+  switchSelectedUom(groupId: ProductDetailsColGroupsEnum, value: ILookupDto): void {
+    switch (groupId) {
+      case ProductDetailsColGroupsEnum.RobBeforeDelivery: {
+        this.store.dispatch(new SwitchUomForRobBeforeDeliveryAction(new QcUomStateModel(value)));
+        break;
+      }
+
+      case ProductDetailsColGroupsEnum.RobAfterDelivery: {
+        this.store.dispatch(new SwitchUomForRobAfterDelivery(new QcUomStateModel(value)));
+        break;
+      }
+
+      case ProductDetailsColGroupsEnum.DeliveredQuantity: {
+        this.store.dispatch(new SwitchUomForDeliveredQuantityAction(new QcUomStateModel(value)));
+        break;
+      }
+
+      default: {
+        throwError('Invalid groupId');
+        break;
+      }
+    }
+  }
+
 }
