@@ -85,6 +85,10 @@ export class QcReportDetailsComponent implements OnInit {
     this.detailsService.updateReportComment(content).subscribe();
   }
 
+  save(): void {
+    alert('save');
+  }
+
   raiseClaim(): void {
     alert('Not implemented');
   }
