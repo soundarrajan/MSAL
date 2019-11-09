@@ -29,15 +29,16 @@
               viewModel.gridViewModel.robAfterDeliveryColGroup,
               viewModel.gridViewModel.deliveredQuantityColGroup]"
              appHeaderRenderer
-             let-title="title">
+             let-groupDef="groupDef" let-title="title">
   <div class="ag-header-group-cell-label p-2" ref="agContainer">
     <div class="row" style="width: 100%">
       <div class="col-6">
         <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
       </div>
       <div class="col-6">
-        <shiptech-uom-selector [selectedUom]="viewModel.deliveredQtyUom$ | async"
-                               [uoms]="uomsLookup$ | async"></shiptech-uom-selector>
+        <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
+                               [selectedUom]="viewModel.gridViewModel.getSelectedUomValue(groupDef.groupId) | async"
+                               [uoms]="viewModel.uomsLookup$ | async"></shiptech-uom-selector>
       </div>
     </div>
   </div>

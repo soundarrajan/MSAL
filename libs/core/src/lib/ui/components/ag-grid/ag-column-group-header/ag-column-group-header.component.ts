@@ -17,13 +17,9 @@ export class AgColumnGroupHeaderComponent implements IHeaderGroupAngularComp {
   agInit(params: IHeaderGroupParams): void {
     this.params = params;
 
-    // TODO: must discuss why this was here
-    // if (params.columnGroup.getPinned()) {
-    //   return;
-    // }
-
     this.templateContext = {
-      title: params.displayName
+      title: params.displayName,
+      groupDef: params.columnGroup.getColGroupDef()
     };
     this.template = this.params.ngTemplate;
   }

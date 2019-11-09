@@ -27,6 +27,11 @@ import {
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 import { IQcReportDetailsState } from './details/qc-report-details.model';
 import { IQcUomState, QcUomStateModel } from './models/uom.state';
+import {
+  SwitchUomForDeliveredQuantityAction,
+  SwitchUomForRobAfterDelivery,
+  SwitchUomForRobBeforeDeliveryAction
+} from './details/actions/qc-uom.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -218,6 +223,40 @@ export class QcReportState {
     });
   }
 
+  @Action([SwitchUomForRobBeforeDeliveryAction, SwitchUomForRobAfterDelivery, SwitchUomForDeliveredQuantityAction])
+  switchUom({ getState, patchState }: StateContext<IQcReportState>, action: SwitchUomForRobBeforeDeliveryAction | SwitchUomForRobAfterDelivery | SwitchUomForDeliveredQuantityAction): void {
+    const state = getState();
+
+    if (isAction(action, SwitchUomForRobBeforeDeliveryAction)) {
+      patchState({
+          details: {
+            ...state.details,
+            robBeforeDeliveryUom: { ...action.uom }
+          }
+        }
+      );
+    }
+
+    if (isAction(action, SwitchUomForRobAfterDelivery)) {
+      patchState({
+          details: {
+            ...state.details,
+            robAfterDeliveryUom: { ...action.uom }
+          }
+        }
+      );
+    }
+
+    if (isAction(action, SwitchUomForDeliveredQuantityAction)) {
+      patchState({
+          details: {
+            ...state.details,
+            deliveredQtyUom: { ...action.uom }
+          }
+        }
+      );
+    }
+  }
 
   @Action(UpdateQcReportComment)
   updateQcReportComment({ getState, patchState }: StateContext<IQcReportState>, { comment }: UpdateQcReportComment): void {

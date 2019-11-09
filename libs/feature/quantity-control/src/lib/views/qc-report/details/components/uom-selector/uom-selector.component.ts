@@ -9,7 +9,9 @@ import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 })
 export class UomSelectorComponent {
   public options: SelectItem[];
-  public selectedOption: SelectItem;
+  public selectedOptionId: number;
+
+  private originalOptions: ILookupDto[];
 
   @Output() public selectionChanged = new EventEmitter<ILookupDto>();
 
@@ -18,21 +20,21 @@ export class UomSelectorComponent {
       return;
     }
     this.options = options.map(value => ({ label: value.name, value: value.id }));
+    this.originalOptions = options;
   }
 
   @Input('selectedUom') set _selectedOption(option: ILookupDto) {
     if (!option) {
       return;
     }
-    this.selectedOption = { label: option.name, value: option.name };
+    this.selectedOptionId = option.id;
   }
 
   constructor() {
   }
 
   onSelectionChanged(selectedId: number): void {
-    const { value, label } = this.options.find(option => option.value === selectedId);
-    this.selectionChanged.next({ id: value, name: label });
+    this.selectionChanged.next(this.originalOptions.find(option => option.id === selectedId));
   }
 
 }

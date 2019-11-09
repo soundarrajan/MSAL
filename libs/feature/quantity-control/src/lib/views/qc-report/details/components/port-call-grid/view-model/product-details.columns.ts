@@ -20,7 +20,7 @@ export class ProductDetailsProps implements IPortCallDetailsProps {
   @PropName robAfterDeliveryMeasuredROB;
 }
 
-export enum ProductDetailsColGroups {
+export enum ProductDetailsColGroupsEnum {
   Products = 'Products',
   RobBeforeDelivery = 'RobBeforeDelivery',
   DeliveredQuantity = 'DeliveredQuantity',
