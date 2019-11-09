@@ -7,7 +7,9 @@ import { Injectable } from '@angular/core';
 import { ILookupsApiService } from './lookups-api.service.interface';
 import { IUomLookupDto, mockUomsLookup } from './mock-data/uoms.mock';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LookupsApiServiceMock implements ILookupsApiService {
   @ApiCallForwardTo() realService: LookupsApiService;
 

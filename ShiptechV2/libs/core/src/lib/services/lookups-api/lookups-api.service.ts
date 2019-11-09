@@ -21,7 +21,9 @@ enum LookupsApiPaths {
 }
 
 // @dynamic
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LookupsApiService extends ApiServiceBase implements ILookupsApiService {
   @ApiCallUrl()
   protected _lookupApiUrl = this.appConfig.lookupApiUrl;

@@ -8,7 +8,9 @@ import { switchMap } from 'rxjs/operators';
 import { ApiError } from '../../error-handling/api/api-error';
 
 // @dynamic
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CacheApiService {
 
   constructor(protected httpClient: HttpClient) {
