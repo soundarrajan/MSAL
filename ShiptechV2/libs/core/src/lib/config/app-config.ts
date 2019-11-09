@@ -1,7 +1,5 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ILegacyAppConfig } from './legacy-app-config';
-import { ITenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +10,7 @@ export class AppConfig implements IAppConfig {
   loggingApi: string;
   userSettingsApi: string;
   quantityControlApi: string;
+  lookupApiUrl: string;
   // TODO: add this to config file,  check first if they are not in the infrastructure api
   tenantPublicApiUrl: string;
 }

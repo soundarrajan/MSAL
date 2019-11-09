@@ -26,6 +26,7 @@ import {
 } from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 import { IQcReportDetailsState } from './details/qc-report-details.model';
+import { QcUomStateModel } from './models/uom.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -248,7 +249,10 @@ export class QcReportState {
             }
           },
           nbOfCliams: success.dto.nbOfCliams,
-          nbOfDeliveries: success.dto.nbOfDeliveries
+          nbOfDeliveries: success.dto.nbOfDeliveries,
+          robBeforeDeliveryUom: new QcUomStateModel(success.dto.uoms.robBeforeDeliveryUom),
+          robAfterDeliveryUom: new QcUomStateModel(success.dto.uoms.robAfterDeliveryUom),
+          deliveredQtyUom: new QcUomStateModel(success.dto.uoms.deliveredQtyUom)
         }
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
