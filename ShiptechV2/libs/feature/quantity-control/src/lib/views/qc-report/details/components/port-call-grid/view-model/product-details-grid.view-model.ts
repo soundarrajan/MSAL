@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { ColDef, ColGroupDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
+import { ColDef, ColGroupDef, GridOptions, IServerSideGetRowsParams, ValueGetterParams } from 'ag-grid-community';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   ProductDetailsColGroupsEnum,
@@ -27,6 +27,8 @@ import {
   SwitchUomForRobAfterDelivery,
   SwitchUomForRobBeforeDeliveryAction
 } from '../../../../../../store/report-view/details/actions/qc-uom.actions';
+import { IQcReportDetailsState } from '../../../../../../store/report-view/details/qc-report-details.model';
+import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
@@ -77,7 +79,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
@@ -87,7 +90,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
   };
 
   differenceRobBeforeDeliveryCol: ColDef = {
@@ -99,7 +103,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB);
+      return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB) * this.reportDetailsState.robBeforeDeliveryUom.conversionRate;
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -112,7 +116,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
   };
 
   measuredDeliveredQuantityCol: ColDef = {
@@ -122,7 +127,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
   };
 
   differenceDeliveredQuantityCol: ColDef = {
@@ -134,7 +140,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity);
+      return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity) * this.reportDetailsState.deliveredQtyUom.conversionRate;
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -147,7 +153,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
@@ -157,7 +164,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgTemplateRendererComponent,
+    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
   };
 
   differenceRobAfterDeliveryCol: ColDef = {
@@ -169,7 +177,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgTemplateRendererComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB);
+      return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB) * this.reportDetailsState.robAfterDeliveryUom.conversionRate;
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -223,6 +231,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     this.initOptions(this.gridOptions);
   }
 
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
+  }
+
   getColumnsDefs(): ColDef[] {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
@@ -251,6 +264,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return {
       'cell-background red': (params: BaseWithValueColDefParams) => params.value < 0,
       'cell-background orange': (params: BaseWithValueColDefParams) => params.value > 0 && params.value < 100
+    };
+  }
+
+  relativeValueGetter(conversionRateCb: () => number): ((params: ValueGetterParams) => any) | string {
+    return (params: ValueGetterParams) => {
+      return params.data[params.colDef.field] / conversionRateCb();
     };
   }
 
@@ -304,6 +323,9 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
         break;
       }
     }
+
+    // TODO: Move this into an state listener for siwtchUom actions
+    this.gridApi.redrawRows();
   }
 
 }

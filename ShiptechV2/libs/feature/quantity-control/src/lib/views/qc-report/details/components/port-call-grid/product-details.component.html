@@ -36,6 +36,7 @@
         <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
       </div>
       <div class="col-6">
+        <!--        // TODO: Implement switchable dataSource for relativeUom call-->
         <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
                                [selectedUom]="viewModel.gridViewModel.getSelectedUomValue(groupDef.groupId) | async"
                                [uoms]="viewModel.uomsLookup$ | async"></shiptech-uom-selector>
