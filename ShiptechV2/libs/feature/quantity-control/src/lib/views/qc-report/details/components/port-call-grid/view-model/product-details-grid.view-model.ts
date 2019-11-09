@@ -31,30 +31,6 @@ import {
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
-  productsColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroupsEnum.Products,
-    headerTooltip: ProductDetailsColGroupsLabels.Products,
-    headerName: ProductDetailsColGroupsLabels.Products,
-    marryChildren: true,
-    children: [this.productTypeNameCol]
-  };
-  robBeforeDeliveryColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroupsEnum.RobBeforeDelivery,
-    headerTooltip: ProductDetailsColGroupsLabels.RobBeforeDelivery,
-    headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
-    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
-    marryChildren: true,
-    children: [this.logBookBeforeDeliveryCol, this.measuredRobBeforeDeliveryCol, this.differenceRobBeforeDeliveryCol]
-  };
-  deliveredQuantityColGroup: ColGroupDef = {
-    groupId: ProductDetailsColGroupsEnum.DeliveredQuantity,
-    headerTooltip: ProductDetailsColGroupsLabels.DeliveredQuantity,
-    headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
-    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
-    marryChildren: true,
-    children: [this.bdnDeliveredQuantityCol, this.measuredDeliveredQuantityCol, this.differenceDeliveredQuantityCol]
-  };
-
   public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
@@ -205,6 +181,32 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     marryChildren: true,
     children: [this.logBookAfterDeliveryCol, this.measuredRobAfterDeliveryCol, this.differenceRobAfterDeliveryCol]
   };
+
+
+  productsColGroup: ColGroupDef = {
+    groupId: ProductDetailsColGroupsEnum.Products,
+    headerTooltip: ProductDetailsColGroupsLabels.Products,
+    headerName: ProductDetailsColGroupsLabels.Products,
+    marryChildren: true,
+    children: [this.productTypeNameCol]
+  };
+  robBeforeDeliveryColGroup: ColGroupDef = {
+    groupId: ProductDetailsColGroupsEnum.RobBeforeDelivery,
+    headerTooltip: ProductDetailsColGroupsLabels.RobBeforeDelivery,
+    headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
+    marryChildren: true,
+    children: [this.logBookBeforeDeliveryCol, this.measuredRobBeforeDeliveryCol, this.differenceRobBeforeDeliveryCol]
+  };
+  deliveredQuantityColGroup: ColGroupDef = {
+    groupId: ProductDetailsColGroupsEnum.DeliveredQuantity,
+    headerTooltip: ProductDetailsColGroupsLabels.DeliveredQuantity,
+    headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
+    headerGroupComponentFramework: AgColumnGroupHeaderComponent,
+    marryChildren: true,
+    children: [this.bdnDeliveredQuantityCol, this.measuredDeliveredQuantityCol, this.differenceDeliveredQuantityCol]
+  };
+
   @Select(QcReportState.getReportDetailsRobUomBeforeDelivery) private robUomBeforeDelivery$: Observable<IQcUomState>;
   @Select(QcReportState.getReportDetailsRobUomAfterDelivery) private robUomAfterDelivery$: Observable<IQcUomState>;
   @Select(QcReportState.getReportDetailsDeliveredQtyUom) private deliveredQtyUom$: Observable<IQcUomState>;
