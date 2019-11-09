@@ -1,35 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 
 @Component({
   selector: 'shiptech-uom-selector',
   templateUrl: './uom-selector.component.html',
   styleUrls: ['./uom-selector.component.css']
 })
-export class UomSelectorComponent implements OnInit {
+export class UomSelectorComponent {
+  public options: SelectItem[];
+  public selectedOption: SelectItem;
 
-  public uoms$: Observable<SelectItem[]>;
+  @Output() public selectionChanged = new EventEmitter<ILookupDto>();
 
-  constructor() {
-    // TODO: assign dynamic value
-    this.uoms$ = of([
-      {
-        label: 'MT',
-        value: 1
-      },
-      {
-        label: 'GAL',
-        value: 2
-      },
-      {
-        label: 'Other',
-        value: 2
-      }
-    ]);
+  @Input('uoms') set _options(options: ILookupDto[]) {
+    if (!options) {
+      return;
+    }
+    this.options = options.map(value => ({ label: value.name, value: value.id }));
   }
 
-  ngOnInit(): void {
+  @Input('selectedUom') set _selectedOption(option: ILookupDto) {
+    if (!option) {
+      return;
+    }
+    this.selectedOption = { label: option.name, value: option.name };
+  }
+
+  constructor() {
+  }
+
+  onSelectionChanged(selectedId: number): void {
+    const { value, label } = this.options.find(option => option.value === selectedId);
+    this.selectionChanged.next({ id: value, name: label });
   }
 
 }

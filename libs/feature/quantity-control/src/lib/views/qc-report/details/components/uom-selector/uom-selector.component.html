@@ -1,1 +1,2 @@
-<p-dropdown [options]="uoms$ | async"></p-dropdown>
+<p-dropdown (ngModelChange)="onSelectionChanged($event)" [dataKey]="'value'" [ngModel]="selectedOption"
+            [options]="options"></p-dropdown>

@@ -3,9 +3,9 @@ import * as faker from 'faker';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { QcReportStatusEnum } from '../../../core/enums/qc-report-status.enum';
 import * as _ from 'lodash';
-import { MockProductsLookup } from './products.mock';
-import { mockUoms } from './uoms.mock';
 import { IQcVesselResponseDto } from '../dto/qc-vessel-response.dto';
+import { mockUomsLookup } from '@shiptech/core/services/lookups-api/mock-data/uoms.mock';
+import { MockProductsLookup } from '@shiptech/core/services/lookups-api/mock-data/products.mock';
 
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   return {
@@ -16,9 +16,9 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     nbOfDeliveries: faker.random.number(),
     status: _.sample(PortCallStatuses),
     uoms: {
-      deliveredQtyUom: _.sample(mockUoms),
-      robAfterDeliveryUom: _.sample(mockUoms),
-      robBeforeDeliveryUom: _.sample(mockUoms)
+      deliveredQtyUom: _.sample(mockUomsLookup),
+      robAfterDeliveryUom: _.sample(mockUomsLookup),
+      robBeforeDeliveryUom: _.sample(mockUomsLookup)
     },
     productTypes: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 })),
     vesselResponses: {

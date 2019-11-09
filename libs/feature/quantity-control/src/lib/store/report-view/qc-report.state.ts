@@ -26,7 +26,7 @@ import {
 } from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 import { IQcReportDetailsState } from './details/qc-report-details.model';
-import { QcUomStateModel } from './models/uom.state';
+import { IQcUomState, QcUomStateModel } from './models/uom.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -39,6 +39,21 @@ export class QcReportState {
   @Selector()
   static getReportDetails(state: IQcReportState): IQcReportDetailsState {
     return state.details;
+  }
+
+  @Selector()
+  static getReportDetailsRobUomBeforeDelivery(state: IQcReportState): IQcUomState {
+    return state.details.robBeforeDeliveryUom;
+  }
+
+  @Selector()
+  static getReportDetailsRobUomAfterDelivery(state: IQcReportState): IQcUomState {
+    return state.details.robAfterDeliveryUom;
+  }
+
+  @Selector()
+  static getReportDetailsDeliveredQtyUom(state: IQcReportState): IQcUomState {
+    return state.details.deliveredQtyUom;
   }
 
   @Selector()
