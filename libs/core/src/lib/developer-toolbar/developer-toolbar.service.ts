@@ -13,6 +13,8 @@ import { API_CALL_KEY, IMethodApiCallSettings } from '../utils/decorators/api-ca
 import { IApiServiceSettings } from './api-service-settings/api-service-settings.inteface';
 import { UserProfileApiMock } from '@shiptech/core/services/user-profile/api/user-profile-api-mock.service';
 import { UserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
+import { LookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service';
+import { LookupsApiServiceMock } from '@shiptech/core/services/lookups-api/lookups-api.service.mock';
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -31,6 +33,7 @@ export class DeveloperToolbarService implements OnDestroy {
               private entityRelatedLinksApiMock: EntityRelatedLinksApiMock,
               private tenantSettingsApiMock: TenantSettingsApiMock,
               private userProfileApiMock: UserProfileApiMock,
+              private lookupsApiServiceMock: LookupsApiServiceMock,
               private appConfig: AppConfig) {
   }
 
@@ -63,6 +66,17 @@ export class DeveloperToolbarService implements OnDestroy {
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.userSettingsApi,
         qaApiUrl: this.appConfig.userSettingsApi
+      });
+
+    this.registerApi(
+      {
+        id: LookupsApiService.name,
+        displayName: 'Lookups Api',
+        instance: this.lookupsApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.lookupApiUrl,
+        qaApiUrl: this.appConfig.lookupApiUrl
       });
 
     this.registerApi(
