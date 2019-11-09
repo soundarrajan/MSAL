@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProductDetailsGridViewModel } from './product-details-grid.view-model';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { QcReportState } from '../../../../../../store/report-view/qc-report.state';
 import { ProductTypeListItemViewModel, ProductTypeListItemViewModelBuilder } from './product-type-list-item.view-model';
@@ -10,6 +10,7 @@ import { QcReportDetailsService } from '../../../../../../services/qc-report-det
 import { Omit } from '@shiptech/core/utils/type-definitions';
 import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
 import _ from 'lodash';
+import { IQcUomState } from '../../../../../../store/report-view/models/uom.state';
 
 export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemState, 'productTypeId' | 'productTypeName'>;
 
@@ -17,6 +18,10 @@ export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemState, 
 export class ProductDetailsViewModel {
 
   productTypes$: Observable<ProductTypeListItemViewModel[]>;
+  @Select(QcReportState.getReportDetailsRobUomBeforeDelivery) robUomBeforeDelivery$: Observable<IQcUomState>;
+  @Select(QcReportState.getReportDetailsRobUomAfterDelivery) robUomAfterDelivery$: Observable<IQcUomState>;
+  @Select(QcReportState.getReportDetailsDeliveredQtyUom) deliveredQtyUom$: Observable<IQcUomState>;
+
 
   public numberMaskFormat: string = this.getNumberMaskFormat();
   private minIntegerDigits: number = 1;

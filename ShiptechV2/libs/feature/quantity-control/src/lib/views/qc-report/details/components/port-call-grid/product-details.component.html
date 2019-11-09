@@ -36,7 +36,8 @@
         <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
       </div>
       <div class="col-6">
-        <shiptech-uom-selector></shiptech-uom-selector>
+        <shiptech-uom-selector [selectedUom]="viewModel.deliveredQtyUom$ | async"
+                               [uoms]="uomsLookup$ | async"></shiptech-uom-selector>
       </div>
     </div>
   </div>

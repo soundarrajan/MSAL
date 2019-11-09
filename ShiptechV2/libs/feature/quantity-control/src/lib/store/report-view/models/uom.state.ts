@@ -1,9 +1,5 @@
 import { IUomLookupDto } from '@shiptech/core/services/lookups-api/mock-data/uoms.mock';
 
-export interface IPsUomState extends IUomLookupDto {
-  conversionFactor: number;
-}
-
 export class QcUomStateModel {
   id: number;
   name: string;
@@ -13,7 +9,7 @@ export class QcUomStateModel {
   // Note: Used for cost transformation
   conversionFactor: number;
 
-  constructor(uom: Partial<IPsUomState> = {}) {
+  constructor(uom: Partial<IUomLookupDto> = {}) {
     // Note: avoiding setting wrong type to state, tenant settings returns strings
     this.id = uom.id;
     this.name = uom.name;
