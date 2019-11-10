@@ -28,6 +28,7 @@ export class QcSurveyHistoryListItemProps implements IQcSurveyHistoryListItemPro
   @PropName measuredSludgeRobBeforeDischarge;
   @PropName sludgeDischargedQuantity;
   @PropName comment;
+  @PropName portCallId;
 }
 
 export enum QcSurveyHistoryListColumns {

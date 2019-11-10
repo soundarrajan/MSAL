@@ -7,17 +7,19 @@ export interface ITemplateRendererParams extends Partial<ICellRendererParams> {
 }
 
 @Component({
-  selector: 'app-template-renderer',
+  // tslint:disable-next-line:component-selector
+  selector: 'ag-cell-template',
   template: `
-    <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
+      <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AgTemplateRendererComponent implements ICellRendererAngularComp {
+export class AgCellTemplateComponent implements ICellRendererAngularComp {
   template: TemplateRef<any>;
   templateContext: { $implicit: any; params: ITemplateRendererParams; data: any; value: any; valueFormatted: string; columnDef: ColDef; column: Column };
 
-  constructor(private changeDetector: ChangeDetectorRef) {}
+  constructor(private changeDetector: ChangeDetectorRef) {
+  }
 
   refresh(params: ITemplateRendererParams): boolean {
     this.templateContext = {

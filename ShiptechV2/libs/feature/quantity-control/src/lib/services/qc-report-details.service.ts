@@ -27,13 +27,18 @@ import {
   QcVesselResponseSludgeStateItem
 } from '../store/report-view/details/qc-vessel-responses.state';
 import {
-  UpdateActiveBunkerVesselResponse,
-  UpdateActiveSludgeVesselResponse
+  UpdateActiveBunkerVesselResponseAction,
+  UpdateActiveSludgeVesselResponseAction
 } from '../store/report-view/details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from '../store/report-view/details/actions/qc-comment.action';
 import { tap } from 'rxjs/operators';
 import { UpdateQcReportsListSummaryAction } from '../store/reports-list/qc-report-list-summary/qc-report-list-summary.actions';
 import { IGetQcSurveyHistoryListResponse } from './api/request-response/qc-survey-history-list.request-response';
+import {
+  QcLoadEventsLogAction,
+  QcLoadEventsLogFailedAction,
+  QcLoadEventsLogSuccessfulAction
+} from '../store/report-view/details/actions/qc-events-log.action';
 
 @Injectable()
 export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
@@ -75,7 +80,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     return this.apiDispatch(
       () => this.api.getReportById({ reportId }),
       new LoadReportDetailsAction(reportId),
-      (response) => new LoadReportDetailsSuccessfulAction(reportId, response.report),
+      response => new LoadReportDetailsSuccessfulAction(reportId, response.report),
       new LoadReportDetailsFailedAction(reportId),
       ModuleError.LoadQcReportDetailsFailed(reportId)
     );
@@ -102,7 +107,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     //   return throwError('Invalid argument provided for updateSludgeVesselResponse');
     // }
 
-    return this.store.dispatch(new UpdateActiveSludgeVesselResponse(key, value));
+    return this.store.dispatch(new UpdateActiveSludgeVesselResponseAction(key, value));
   }
 
   @ObservableException()
@@ -111,12 +116,25 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
     //   return throwError('Invalid argument provided for updateBunkerVesselResponse');
     // }
 
-    return this.store.dispatch(new UpdateActiveBunkerVesselResponse(key, value));
+    return this.store.dispatch(new UpdateActiveBunkerVesselResponseAction(key, value));
   }
 
   @ObservableException()
   updateReportComment(content: string): Observable<unknown> {
     return this.store.dispatch(new UpdateQcReportComment(content));
+  }
+
+  @ObservableException()
+  loadEventsLog(): Observable<unknown> {
+    const reportId = this.reportDetailsState.id;
+
+    return this.apiDispatch(
+      () => this.api.getEventsLog({ reportId }),
+      new QcLoadEventsLogAction(),
+      response => new QcLoadEventsLogSuccessfulAction(response.items),
+      new QcLoadEventsLogFailedAction(),
+      ModuleError.LoadEventsLogFailed
+    );
   }
 
   ngOnDestroy(): void {

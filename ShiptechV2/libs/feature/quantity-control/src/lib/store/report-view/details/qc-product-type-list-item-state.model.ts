@@ -1,7 +1,7 @@
 import { IQcReportDetailsProductTypeDto } from '../../../services/api/dto/qc-report-details.dto';
 import { Decimal } from 'decimal.js';
 
-export class QcProductTypeListItemState {
+export class QcProductTypeListItemStateModel {
   productTypeName: string;
   productTypeId: number;
   robBeforeDeliveryLogBookROB: Decimal;

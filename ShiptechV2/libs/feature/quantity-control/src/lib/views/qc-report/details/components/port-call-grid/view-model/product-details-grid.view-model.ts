@@ -12,7 +12,7 @@ import {
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
-import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
@@ -77,7 +77,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
@@ -87,7 +87,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   differenceRobBeforeDeliveryCol: ColDef = {
@@ -96,7 +96,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
       return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB);
@@ -112,7 +112,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   measuredDeliveredQuantityCol: ColDef = {
@@ -122,7 +122,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   differenceDeliveredQuantityCol: ColDef = {
@@ -131,7 +131,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
       return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity);
@@ -147,7 +147,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
@@ -157,7 +157,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   differenceRobAfterDeliveryCol: ColDef = {
@@ -166,7 +166,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
       return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB);

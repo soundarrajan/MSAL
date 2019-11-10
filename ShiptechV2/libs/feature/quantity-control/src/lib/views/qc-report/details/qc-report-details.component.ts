@@ -12,8 +12,8 @@ import { QcReportDetailsService } from '../../../services/qc-report-details.serv
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import _ from 'lodash';
 import {
-  SwitchActiveBunkerResponse,
-  SwitchActiveSludgeResponse
+  SwitchActiveBunkerResponseAction,
+  SwitchActiveSludgeResponseAction
 } from '../../../store/report-view/details/actions/qc-vessel-response.actions';
 import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
 
@@ -23,6 +23,7 @@ import { IQcReportDetailsState } from '../../../store/report-view/details/qc-rep
   styleUrls: ['./qc-report-details.component.scss']
 })
 export class QcReportDetailsComponent implements OnInit {
+// TODO: Missing NgDestroy
 
   public bunkerVesselResponseCategories$: Observable<QcVesselResponseBaseStateItem[]>;
   public bunkerVesselResponseActiveCategory$: Observable<QcVesselResponseBaseStateItem>;
@@ -65,12 +66,12 @@ export class QcReportDetailsComponent implements OnInit {
 
   changeActiveSludgeResponse(option: QcVesselResponseBaseStateItem): void {
     // TODO: move to service method
-    this.store.dispatch(new SwitchActiveSludgeResponse(option.id));
+    this.store.dispatch(new SwitchActiveSludgeResponseAction(option.id));
   }
 
   changeActiveBunkerResponse(option: QcVesselResponseBaseStateItem): void {
     // TODO: move to service method
-    this.store.dispatch(new SwitchActiveBunkerResponse(option.id));
+    this.store.dispatch(new SwitchActiveBunkerResponseAction(option.id));
   }
 
   updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): void {
