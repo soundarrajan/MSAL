@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PropName } from '@shiptech/core/utils/decorators/method-name.decorator';
-import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
+import { QcProductTypeListItemStateModel } from '../../../../../../store/report-view/details/qc-product-type-list-item-state.model';
 
-export interface IPortCallDetailsProps extends QcProductTypeListItemState {
+export interface IPortCallDetailsProps extends QcProductTypeListItemStateModel {
 }
 
 @Injectable({

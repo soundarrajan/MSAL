@@ -3,11 +3,11 @@ import { IHeaderGroupAngularComp } from 'ag-grid-angular';
 import { IHeaderGroupParams } from 'ag-grid-community';
 
 @Component({
-  selector: 'app-column-group-header',
+  // tslint:disable-next-line:component-selector
+  selector: 'ag-column-group-header',
   template: `
       <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
   `,
-  styleUrls: ['./ag-column-group-header.component.scss']
 })
 export class AgColumnGroupHeaderComponent implements IHeaderGroupAngularComp {
   public params: any;

@@ -8,13 +8,13 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Column } from 'ag-grid-community';
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
 import { Omit } from '@shiptech/core/utils/type-definitions';
-import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
+import { QcProductTypeListItemStateModel } from '../../../../../../store/report-view/details/qc-product-type-list-item-state.model';
 import _ from 'lodash';
 import { LOOKUPS_API_SERVICE } from '@shiptech/core/services/lookups-api/lookups-api.service';
 import { ILookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service.interface';
 import { IUomLookupDto } from '@shiptech/core/services/lookups-api/mock-data/uoms.mock';
 
-export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemState, 'productTypeId' | 'productTypeName'>;
+export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productTypeId' | 'productTypeName'>;
 
 @Injectable()
 export class ProductDetailsViewModel {

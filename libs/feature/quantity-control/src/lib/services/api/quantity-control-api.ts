@@ -33,6 +33,7 @@ import {
   IGetQcSurveyHistoryListRequest,
   IGetQcSurveyHistoryListResponse
 } from './request-response/qc-survey-history-list.request-response';
+import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
 
 export namespace ProcurementApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -95,6 +96,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
+    return throwError('Not implemented');
+  }
+
+  @ObservableException()
+  getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
     return throwError('Not implemented');
   }
 }

@@ -15,14 +15,14 @@ import {
   QcVesselResponseSludgeCategoriesState,
   QcVesselResponseSludgeStateItem
 } from './details/qc-vessel-responses.state';
-import { QcProductTypeListItemState } from './details/qc-product-type-list-item.state';
+import { QcProductTypeListItemStateModel } from './details/qc-product-type-list-item-state.model';
 import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
 import { Decimal } from 'decimal.js';
 import {
-  SwitchActiveBunkerResponse,
-  SwitchActiveSludgeResponse,
-  UpdateActiveBunkerVesselResponse,
-  UpdateActiveSludgeVesselResponse
+  SwitchActiveBunkerResponseAction,
+  SwitchActiveSludgeResponseAction,
+  UpdateActiveBunkerVesselResponseAction,
+  UpdateActiveSludgeVesselResponseAction
 } from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 import { IQcReportDetailsState } from './details/qc-report-details.model';
@@ -32,6 +32,13 @@ import {
   SwitchUomForRobAfterDelivery,
   SwitchUomForRobBeforeDeliveryAction
 } from './details/actions/qc-uom.actions';
+import {
+  QcLoadEventsLogAction,
+  QcLoadEventsLogFailedAction,
+  QcLoadEventsLogSuccessfulAction
+} from './details/actions/qc-events-log.action';
+import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
+import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -67,7 +74,7 @@ export class QcReportState {
   }
 
   @Selector()
-  static getPortCallReportProductTypes(state: IQcReportState): Record<number, QcProductTypeListItemState> {
+  static getPortCallReportProductTypes(state: IQcReportState): Record<number, QcProductTypeListItemStateModel> {
     return state.details.productTypesById;
   }
 
@@ -96,7 +103,15 @@ export class QcReportState {
     return state.details.comment;
   }
 
-  static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemState {
+  @Selector([
+    (state: IAppState) => state.quantityControl.report.details.eventsLog.itemsById,
+    (state: IAppState) => state.quantityControl.report.details.eventsLog.items
+  ])
+  static eventLogsItems(itemsById: Record<number, IQcEventsLogItemState>, items:  number[]): IQcEventsLogItemState[] {
+    return items.map(i => itemsById[i]);
+  }
+
+  static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemStateModel {
     return createSelector(
       [QcReportState],
       (state: IQcReportState) => state.details.productTypesById[productTypeId]
@@ -137,8 +152,8 @@ export class QcReportState {
     });
   }
 
-  @Action(UpdateActiveSludgeVesselResponse)
-  updateSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveSludgeVesselResponse): void {
+  @Action(UpdateActiveSludgeVesselResponseAction)
+  updateSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveSludgeVesselResponseAction): void {
     const state = getState();
 
     const activeCategoryId = state.details.vesselResponse.sludge.activeCategoryId;
@@ -162,8 +177,8 @@ export class QcReportState {
     });
   }
 
-  @Action(SwitchActiveSludgeResponse)
-  switchActiveSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { categoryId }: SwitchActiveSludgeResponse): void {
+  @Action(SwitchActiveSludgeResponseAction)
+  switchActiveSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { categoryId }: SwitchActiveSludgeResponseAction): void {
     const state = getState();
 
     patchState({
@@ -180,8 +195,8 @@ export class QcReportState {
     });
   }
 
-  @Action(UpdateActiveBunkerVesselResponse)
-  updateBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveBunkerVesselResponse): void {
+  @Action(UpdateActiveBunkerVesselResponseAction)
+  updateBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveBunkerVesselResponseAction): void {
     const state = getState();
 
     const activeCategoryId = state.details.vesselResponse.bunker.activeCategoryId;
@@ -205,8 +220,8 @@ export class QcReportState {
     });
   }
 
-  @Action(SwitchActiveBunkerResponse)
-  switchActiveBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { categoryId }: SwitchActiveBunkerResponse): void {
+  @Action(SwitchActiveBunkerResponseAction)
+  switchActiveBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { categoryId }: SwitchActiveBunkerResponseAction): void {
     const state = getState();
 
     patchState({
@@ -274,9 +289,10 @@ export class QcReportState {
     const state = getState();
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const success = <LoadReportDetailsSuccessfulAction>action;
+      const vesselResponses = success.dto.vesselResponses;
 
-      const sludgeResponseCategories = success.dto.vesselResponses.sludge.map(sludgeResponse => new QcVesselResponseSludgeStateItem(sludgeResponse));
-      const bunkerResponseCategories = success.dto.vesselResponses.bunker.map(bunkerResponse => new QcVesselResponseBaseStateItem(bunkerResponse));
+      const sludgeResponseCategories = vesselResponses.sludge.map(sludgeResponse => new QcVesselResponseSludgeStateItem(sludgeResponse));
+      const bunkerResponseCategories = vesselResponses.bunker.map(bunkerResponse => new QcVesselResponseBaseStateItem(bunkerResponse));
       patchState({
         details: {
           ...state.details,
@@ -285,7 +301,7 @@ export class QcReportState {
           id: success.dto.id,
           portCallId: success.dto.portCallId,
           productTypes: success.dto.productTypes.map(productType => productType.productTypeId),
-          productTypesById: _.keyBy((success.dto.productTypes || []).map(productType => new QcProductTypeListItemState(productType)),
+          productTypesById: _.keyBy((success.dto.productTypes || []).map(productType => new QcProductTypeListItemStateModel(productType)),
             productType => productType.productTypeId),
           // TODO: load other props
           comment: success.dto.comment,
@@ -316,6 +332,54 @@ export class QcReportState {
           _isLoading: false,
           _hasLoaded: false,
           id: undefined
+        }
+      });
+    }
+  }
+
+  @Action(QcLoadEventsLogAction)
+  loadEventsLog({ getState, patchState }: StateContext<IQcReportState>, action: QcLoadEventsLogAction): void {
+    const state = getState();
+
+    patchState({
+      details: {
+        ...state.details,
+        eventsLog: {
+          ...state.details.eventsLog,
+          _isLoading: true,
+          _hasLoaded: false
+        }
+      }
+    });
+  }
+
+  @Action([QcLoadEventsLogSuccessfulAction, QcLoadEventsLogFailedAction])
+  loadEventsLogFinished({ getState, patchState }: StateContext<IQcReportState>, action: QcLoadEventsLogSuccessfulAction | QcLoadEventsLogFailedAction): void {
+    const state = getState();
+    if (isAction(action, QcLoadEventsLogSuccessfulAction)) {
+      const success = <QcLoadEventsLogSuccessfulAction>action;
+
+      patchState({
+        details: {
+          ...state.details,
+          eventsLog: {
+            ...state.details.eventsLog,
+            items: (success.items || []).map(e => e.id),
+            itemsById: _.keyBy((success.items || []).map(e => new QcEventsLogItemStateModel(e)), e => e.id),
+            _isLoading: false,
+            _hasLoaded: true
+          }
+        }
+      });
+    } else if (isAction(action, QcLoadEventsLogFailedAction)) {
+      patchState({
+        details: {
+          ...state.details,
+          eventsLog: {
+            ...state.details.eventsLog,
+            _isLoading: false,
+            _hasLoaded: false
+          }
         }
       });
     }
