@@ -1,6 +1,7 @@
 <shiptech-qc-report-details-toolbar>
   <div class="col-6">
     <div style="float:right">
+      <button (click)="save()" class="ui-button-info mr-1" label="Save" pButton type="button"></button>
       <button (click)="raiseClaim()" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
       <button (click)="verifyVessel()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
     </div>
@@ -13,7 +14,7 @@
       <p-panel header="PORT CALL ID - VESSEL NAME">
         <p-header>
           <div style="float:right">
-            <span class="badge red">{{reportStatus}}</span> |
+            <span class="badge red">Not Matched</span> |
             <span class="badge blue">Claims: {{(reportDetailsState$ | async).nbOfCliams}}</span> |
             <span class="badge blue">Deliveries: {{(reportDetailsState$ | async).nbOfDeliveries}}</span> |
             <span class="badge info">Vessel to Watch

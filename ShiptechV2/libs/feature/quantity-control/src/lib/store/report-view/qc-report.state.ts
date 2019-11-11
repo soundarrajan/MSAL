@@ -6,7 +6,7 @@ import {
   LoadReportDetailsFailedAction,
   LoadReportDetailsSuccessfulAction
 } from './qc-report-details.actions';
-import { nameof } from '@shiptech/core/utils/type-definitions';
+import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import {
@@ -141,13 +141,20 @@ export class QcReportState {
       return;
     }
 
+    const productType = state.details.productTypesById[productTypeId];
+    const conversionRate = (<Decimal>productType.original[prop]).div(productType[prop]);
+
     patchState({
       details: {
         ...state.details,
         productTypesById: {
           ...state.details.productTypesById,
           [productTypeId]: {
-            ...state.details.productTypesById[productTypeId],
+            ...productType,
+            original: {
+              ...productType.original,
+              [prop]: new Decimal(value).mul(conversionRate)
+            },
             [prop]: new Decimal(value)
           }
         }
@@ -249,7 +256,11 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
-            robBeforeDeliveryUom: { ...action.uom }
+            robBeforeDeliveryUom: { ...action.uom },
+            productTypesById: ConvertProductTypeValues(
+              state.details.productTypesById,
+              ['robBeforeDeliveryLogBookROB', 'robBeforeDeliveryMeasuredROB'],
+              action.uom.conversionRate)
           }
         }
       );
@@ -259,6 +270,10 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
+            productTypesById: ConvertProductTypeValues(
+              state.details.productTypesById,
+              ['robAfterDeliveryLogBookROB', 'robAfterDeliveryMeasuredROB'],
+              action.uom.conversionRate),
             robAfterDeliveryUom: { ...action.uom }
           }
         }
@@ -269,6 +284,10 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
+            productTypesById: ConvertProductTypeValues(
+              state.details.productTypesById,
+              ['deliveredQuantityBdnQty', 'deliveredQuantityMessuredDeliveredQuantity'],
+              action.uom.conversionRate),
             deliveredQtyUom: { ...action.uom }
           }
         }
@@ -457,4 +476,18 @@ export class QcReportState {
     });
   }
 
+}
+
+export function ConvertProductTypeValues(productTypesMap: Record<number, QcProductTypeListItemStateModel>,
+                                         propsToConvert: (keyof Omit<QcProductTypeListItemStateModel, 'productTypeName' | 'productTypeId' | 'original'>)[],
+                                         conversionRate: number): Record<number, QcProductTypeListItemStateModel> {
+  const convertedProductTypes = _.values(productTypesMap).map(productType => {
+    const convertedProductType = { ...productType };
+    propsToConvert.forEach(prop => {
+      convertedProductType[prop] = convertedProductType.original[prop].mul(conversionRate);
+    });
+    return convertedProductType;
+  });
+
+  return _.keyBy(convertedProductTypes, nameof<QcProductTypeListItemStateModel>('productTypeId'));
 }
