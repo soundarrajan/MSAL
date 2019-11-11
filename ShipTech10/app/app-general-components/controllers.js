@@ -3031,12 +3031,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
         $rootScope.$on("gridDataDone", function(data,res){
             if (data.currentScope.currentColumnRoute == "order-list") {
-               $rootScope.selectedOrderListRows = [];
-               $scope.selectOrders = []
-               $('#jqgh_flat_orders_list_actions-1').html('<i id="selectAllOrderList"' +
-                    ' style="font-size: 25px !important; color: #d9d9d9;"' +
-                    ' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
-               $('#jqgh_flat_orders_list_actions-1').css('display', 'inherit');
+                if (procurementSettings.order.orderVerificationReq.id == 1) {
+                   $rootScope.selectedOrderListRows = [];
+                   $scope.selectOrders = []
+                   $('#jqgh_flat_orders_list_actions-1').html('<i id="selectAllOrderList"' +
+                        ' style="font-size: 25px !important; color: #d9d9d9;"' +
+                        ' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
+                   $('#jqgh_flat_orders_list_actions-1').css('display', 'inherit');
+                   $('"#\\32  > td:nth-child(1)"').remove();
+                } else if (procurementSettings.order.orderVerificationReq.id == 2) {
+                    $('#jqgh_flat_orders_list_actions-1').remove();
+
+                }
             } else {
                 $scope.selectedContractPlanningRows = [];
                 // selectContracts = []
