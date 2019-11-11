@@ -57,10 +57,6 @@ export class QcReportDetailsComponent implements OnInit {
         )));
   }
 
-  get reportStatus(): EntityStatus {
-    return this.entityStatus.currentStatus.value;
-  }
-
   ngOnInit(): void {
   }
 
