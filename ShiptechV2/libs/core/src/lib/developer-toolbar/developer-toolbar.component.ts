@@ -1,15 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { ApiServiceModel } from './api-service.model';
 import { Router } from '@angular/router';
-import { finalize, takeUntil, tap } from 'rxjs/operators';
-import { UserSettingsApiServiceMock } from '@shiptech/core/services/user-settings/user-settings-api.service.mock';
+import { takeUntil, tap } from 'rxjs/operators';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { ServiceStatusesEnum } from '@shiptech/core/developer-toolbar/api-service-settings/service-statuses.enum';
+import {
+  IPreferenceStorage,
+  PREFERENCE_STORAGE
+} from '@shiptech/core/services/preference-storage/preference-storage.interface';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-developer-toolbar',
   templateUrl: './developer-toolbar.component.html',
   styleUrls: ['./developer-toolbar.component.scss'],
@@ -29,7 +33,7 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private devService: DeveloperToolbarService,
-    private userSettingsApiServiceMock: UserSettingsApiServiceMock
+    @Inject(PREFERENCE_STORAGE) private preferenceStorage: IPreferenceStorage
   ) {
 
     this.devService.apiServices$.pipe(
@@ -63,9 +67,11 @@ export class DeveloperToolbarComponent implements OnInit, OnDestroy {
   }
 
   public purgePreferences(): void {
-    this.userSettingsApiServiceMock
+    this.preferenceStorage
       .removeAll()
-      .pipe(finalize(() => window.location.reload()))
+      .pipe(tap(() => {
+        window.location.reload();
+      }))
       .subscribe();
   }
 

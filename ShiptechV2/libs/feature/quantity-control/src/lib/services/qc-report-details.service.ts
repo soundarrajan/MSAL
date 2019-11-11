@@ -35,9 +35,10 @@ import { tap } from 'rxjs/operators';
 import { UpdateQcReportsListSummaryAction } from '../store/reports-list/qc-report-list-summary/qc-report-list-summary.actions';
 import { IGetQcSurveyHistoryListResponse } from './api/request-response/qc-survey-history-list.request-response';
 import {
+  QcAddEventLogAction,
   QcLoadEventsLogAction,
   QcLoadEventsLogFailedAction,
-  QcLoadEventsLogSuccessfulAction
+  QcLoadEventsLogSuccessfulAction, QcRemoveEventLogAction, QcUpdateEventLogAction
 } from '../store/report-view/details/actions/qc-events-log.action';
 
 @Injectable()
@@ -88,12 +89,12 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   @ObservableException()
   getSoundingReportList(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
-    return this.api.getSoundingReportList({ ...gridRequest, reportId: this.reportDetailsState.id });
+    return this.api.getSoundingReportList({ ...gridRequest, portCallId: this.reportDetailsState.id });
   }
 
   @ObservableException()
-  getSoundingReportListItemDetails(reportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
-    return this.api.getSoundingReportDetails({ ...gridRequest, reportId });
+  getSoundingReportListItemDetails(soundingReportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
+    return this.api.getSoundingReportDetails({ ...gridRequest, soundingReportId });
   }
 
   @ObservableException()
@@ -139,5 +140,32 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   ngOnDestroy(): void {
     super.onDestroy();
+  }
+
+  addEventLog(eventDetails?: string): void {
+    this.addEventLog$().subscribe();
+  }
+
+  @ObservableException()
+  addEventLog$(eventDetails?: string): Observable<unknown> {
+    return this.store.dispatch(new QcAddEventLogAction(eventDetails))
+  }
+
+  removeEventLog(id: number): void {
+    this.removeEventLog$(id).subscribe();
+  }
+
+  @ObservableException()
+  removeEventLog$(id: number): Observable<unknown> {
+    return this.store.dispatch(new QcRemoveEventLogAction(id))
+  }
+
+  updateEventLog(id: number, newEventDetails: string): void {
+    this.updateEventLog$(id, newEventDetails).subscribe();
+  }
+
+  @ObservableException()
+  updateEventLog$(id: number, newEventDetails: string):  Observable<unknown> {
+    return this.store.dispatch(new QcUpdateEventLogAction(id, newEventDetails))
   }
 }
