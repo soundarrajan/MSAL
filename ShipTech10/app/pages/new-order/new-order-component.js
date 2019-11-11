@@ -2099,6 +2099,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
              	})
              	return;
              }
+             if (ctrl.data.isVerified == true) {
+                ctrl.data.verifiedBy = $rootScope.user;
+                ctrl.data.displayName = null;
+                ctrl.data.code = null;
+                ctrl.data.collectionName = null;
+                ctrl.data.verifiedOn = moment().format();
+             }
+           
 
             angular.copy(ctrl.data, payload);
             if ($.isEmptyObject(payload.broker) || !payload.broker.name) {
