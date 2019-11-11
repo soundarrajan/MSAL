@@ -105,13 +105,13 @@
 
 <ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appAgCellTemplate let-data="data" let-value="value">
   <ng-container>
-    <a [routerLink]="[reportDetailsRoutePath, data.id]" href="#"> View {{data.id}} </a>
+    <a *ngIf="data && data.id" [routerLink]="[reportDetailsRoutePath, data.id]" href="#"> View {{data?.id}} </a>
   </ng-container>
 </ng-template>
 
 <ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appAgCellTemplate let-data="data" let-value="value">
   <ng-container>
     {{value}}
-    <i (click)="watchVesselWithId(data.id)" class="fa fa-flag vessel-to-watch"></i>
+    <i (click)="watchVesselWithId(data?.id)" *ngIf="data && data.id" class="fa fa-flag vessel-to-watch"></i>
   </ng-container>
 </ng-template>
