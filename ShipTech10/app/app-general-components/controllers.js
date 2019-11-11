@@ -3038,10 +3038,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         ' style="font-size: 25px !important; color: #d9d9d9;"' +
                         ' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
                    $('#jqgh_flat_orders_list_actions-1').css('display', 'inherit');
-                   $('"#\\32  > td:nth-child(1)"').remove();
                 } else if (procurementSettings.order.orderVerificationReq.id == 2) {
                     $('#jqgh_flat_orders_list_actions-1').remove();
-
                 }
             } else {
                 $scope.selectedContractPlanningRows = [];
@@ -3128,14 +3126,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
                         if (!$scope.selectOrders[i + 1]) {
                             $scope.selectOrders[i + 1] = true;
-                            $scope.selectOrderListRow(i + 1, i + 1);
+                            $scope.selectOrderListRow(i + 1, i + 1, true);
                         }
                     }
                 } else if (el.hasClass('fa-check-square-o')) {
                     for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
                         if ($scope.selectOrders[i + 1]) {
                             $scope.selectOrders[i + 1] = false;
-                            $scope.selectOrderListRow(i + 1, i + 1);
+                            $scope.selectOrderListRow(i + 1, i + 1, true);
                         }
                     }
                 }
@@ -3517,26 +3515,71 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
             }
         }
-        $scope.selectOrderListRow = function(rowIdx, value) {
+        $scope.selectOrderListRow = function(rowIdx, value, all) {
             CLC = $("#flat_orders_list");
-            order = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
-            order.rowIndex = rowIdx;
+            request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            request.rowIndex = rowIdx;
             if (typeof $rootScope.selectedOrderListRows == "undefined") {
                 $rootScope.selectedOrderListRows = [];
             }
-            rowIsAlreadySelected = false;
-            $.each($rootScope.selectedOrderListRows, function(k, v) {
-                if (v.rowIndex == rowIdx) {
-                    rowIsAlreadySelected = true;
-                    indexInCollection = k;
+            if (typeof all == "undefined") {
+                for (var i = 0; i <  CLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                    if (!$scope.selectOrders[i + 1] && request.order.id ==  CLC.jqGrid.Ascensys.gridObject.rows[i].order.id) {
+                        $scope.selectOrders[i + 1] = true;
+                        rowIdx = i + 1;
+                        request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+                        request.rowIndex = rowIdx;
+
+                        rowIsAlreadySelected = false;
+                        $.each($rootScope.selectedOrderListRows, function(k, v) {
+                            if (v.rowIndex == rowIdx) {
+                                rowIsAlreadySelected = true;
+                                indexInCollection = k;
+                            }
+                        });
+                        if (!rowIsAlreadySelected) {
+                            $rootScope.selectedOrderListRows.push(request);
+                        } else {
+                            $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
+                        }
+
+                    } else if ($scope.selectOrders[i + 1] && request.order.id ==  CLC.jqGrid.Ascensys.gridObject.rows[i].order.id) {
+                        $scope.selectOrders[i + 1] = false;
+                        rowIdx = i + 1;
+                        request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+                        request.rowIndex = rowIdx;
+
+                        rowIsAlreadySelected = false;
+                        $.each($rootScope.selectedOrderListRows, function(k, v) {
+                            if (v.rowIndex == rowIdx) {
+                                rowIsAlreadySelected = true;
+                                indexInCollection = k;
+                            }
+                        });
+                        if (!rowIsAlreadySelected) {
+                            $rootScope.selectedOrderListRows.push(request);
+                        } else {
+                            $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
+                        }
+
+                    }
                 }
-            });
-            if (!rowIsAlreadySelected) {
-                $rootScope.selectedOrderListRows.push(order);
-                // $('#' + rowIdx + '.jqgrow').first().css({'background-color': 'rgba(0, 0, 255, 0.1)'});
             } else {
-                $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
-                // $('#' + rowIdx + '.jqgrow').first().css({'background-color': '#ffffff'});
+                rowIsAlreadySelected = false;
+                $.each($rootScope.selectedOrderListRows, function(k, v) {
+                    if (v.rowIndex == rowIdx) {
+                        rowIsAlreadySelected = true;
+                        indexInCollection = k;
+                    }
+                });
+                if (!rowIsAlreadySelected) {
+                    $rootScope.selectedOrderListRows.push(request);
+                    // $('#' + rowIdx + '.jqgrow').first().css({'background-color': 'rgba(0, 0, 255, 0.1)'});
+                } else {
+                    $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
+                    // $('#' + rowIdx + '.jqgrow').first().css({'background-color': '#ffffff'});
+                }
+
             }
             // $.each($scope.selectedOrderListRows, function(ksc, vsc) {
             //     if (typeof $rootScope.editableCProwsModel != "undefined") {
