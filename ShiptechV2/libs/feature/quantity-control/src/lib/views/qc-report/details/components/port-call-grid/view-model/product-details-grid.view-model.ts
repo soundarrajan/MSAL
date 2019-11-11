@@ -77,7 +77,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
+    // valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
@@ -87,7 +87,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
+    // valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
   };
 
   differenceRobBeforeDeliveryCol: ColDef = {
@@ -111,7 +111,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
+    // valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
   };
 
   measuredDeliveredQuantityCol: ColDef = {
@@ -121,7 +121,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
+    // valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
   };
 
   differenceDeliveredQuantityCol: ColDef = {
@@ -145,7 +145,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
+    // valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
@@ -155,7 +155,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
+    // valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
   };
 
   differenceRobAfterDeliveryCol: ColDef = {
@@ -314,7 +314,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
 
     // TODO: Move this into an state listener for siwtchUom actions
-    this.gridApi.redrawRows();
+    // this.gridApi.redrawRows();
   }
 
 }
