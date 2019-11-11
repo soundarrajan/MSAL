@@ -9,6 +9,7 @@ export function getMockQcSoundingReportList(n: number): IQcSoundingReportItemDto
 
 export function getMockQcSoundingReportListItem(id: number): IQcSoundingReportItemDto {
   return {
+    soundingReportId: faker.random.number(),
     computedRobDogo: faker.random.number({ min: 1000, max: 3000 }),
     computedRobHsfo: faker.random.number({ min: 1000, max: 3000 }),
     computedRobLsfo: faker.random.number({ min: 1000, max: 3000 }),

@@ -16,7 +16,6 @@ export class EventsLogComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(public gridViewModel: EventsLogGridViewModel,
-              private store: Store,
               private detailsService: QcReportDetailsService) {
   }
 
@@ -24,13 +23,16 @@ export class EventsLogComponent implements OnInit, OnDestroy {
     this.detailsService.loadEventsLog().pipe(takeUntil(this._destroy$)).subscribe();
   }
 
-  updateEventDetails(model: IQcEventsLogItemState, $event: any): void {
+  updateEventDetails(item: IQcEventsLogItemState, newEventDetails: string): void {
+    this.detailsService.updateEventLog(item.id, newEventDetails);
   }
 
-  remove($event: any): void {
+  remove(item: IQcEventsLogItemState): void {
+    this.detailsService.removeEventLog(item.id);
   }
 
-  add($event: any): void {
+  add(): void {
+    this.detailsService.addEventLog();
   }
 
   ngOnDestroy(): void {

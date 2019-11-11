@@ -11,29 +11,29 @@
              appAgColumnHeaderTemplate>
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <p-button (onClick)="add($event)" icon="pi pi-plus" iconPos="left"></p-button>
+      <p-button (onClick)="add()" icon="pi pi-plus" iconPos="left"></p-button>
     </div>
   </ng-container>
 </ng-template>
 
 
 <ng-template [columnDef]="[gridViewModel.actionsColumn]"
-             appAgCellTemplate let-column="column" let-model="data" let-value="value">
+             appAgCellTemplate let-item="data">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <p-button (onClick)="remove($event)" icon="pi pi-minus" iconPos="left"></p-button>
+      <p-button (onClick)="remove(item)" icon="pi pi-minus" iconPos="left"></p-button>
     </div>
   </ng-container>
 </ng-template>
 
 <ng-template [columnDef]="[gridViewModel.eventDetailsCol]"
              appAgCellTemplate
-             let-model="data.model" let-value="value">
+             let-model="data.model" let-value="value" let-item="data">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="start center">
       <div class="row">
         <textarea [rows]="1" [cols]="30" pInputTextarea autoResize="autoResize"
-                  (ngModelChange)="updateEventDetails(model, $event)"
+                  (ngModelChange)="updateEventDetails(item, $event)"
                   [ngModelOptions]="{updateOn: 'blur'}"
                   [ngModel]="value"
         ></textarea>
