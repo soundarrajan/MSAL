@@ -281,7 +281,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   }
 
   protected detailServerSideGetRows(params: any): void {
-    this.quantityControlService.getSoundingReportListItemDetails((<IQcSoundingReportItemDto>params.data).reportId, {}).subscribe(
+    this.quantityControlService.getSoundingReportListItemDetails((<IQcSoundingReportItemDto>params.data).soundingReportId, {}).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       error => {
         this.appErrorHandler.handleError(error);

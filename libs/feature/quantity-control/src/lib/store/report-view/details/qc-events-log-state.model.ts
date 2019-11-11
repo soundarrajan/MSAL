@@ -6,8 +6,9 @@ export class QcEventsLogItemStateModel implements QcEventLogListItemDto {
   createdBy: string;
   eventDetails: string;
   id: number;
+  isNew = false;
 
-  constructor(dto: Partial<QcEventLogListItemDto> = {}) {
+  constructor(dto: Partial<QcEventsLogItemStateModel> = {}) {
     Object.assign(this, dto);
   }
 }
