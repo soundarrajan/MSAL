@@ -1,4 +1,4 @@
-import { QcProductTypeListItemState } from '../../../../../../store/report-view/details/qc-product-type-list-item.state';
+import { QcProductTypeListItemStateModel } from '../../../../../../store/report-view/details/qc-product-type-list-item-state.model';
 import { INumberFormat, NUMBER_FORMAT } from './number.format';
 import { Inject, Injectable } from '@angular/core';
 import { truncateDecimals } from '@shiptech/core/utils/math';
@@ -8,7 +8,7 @@ export class ProductTypeListItemViewModelBuilder {
   constructor(@Inject(NUMBER_FORMAT) private numberFormat: INumberFormat) {
   }
 
-  build(itemState: QcProductTypeListItemState): ProductTypeListItemViewModel {
+  build(itemState: QcProductTypeListItemStateModel): ProductTypeListItemViewModel {
     return new ProductTypeListItemViewModel(itemState, this.numberFormat);
   }
 }
@@ -24,7 +24,7 @@ export class ProductTypeListItemViewModel {
   robAfterDeliveryMeasuredROB: number;
 
 
-  constructor(itemState: QcProductTypeListItemState, numberFormat: INumberFormat) {
+  constructor(itemState: QcProductTypeListItemStateModel, numberFormat: INumberFormat) {
     this.productTypeId = itemState.productTypeId;
     this.productTypeName = itemState.productTypeName;
 

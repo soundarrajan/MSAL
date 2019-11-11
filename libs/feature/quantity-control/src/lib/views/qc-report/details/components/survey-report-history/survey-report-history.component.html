@@ -53,7 +53,7 @@
   </div>
 </div>
 
-<ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appTemplateRenderer let-data="data" let-value="value">
+<ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appAgCellTemplate let-data="data" let-value="value">
   <ng-container>
     <a [routerLink]="[reportDetailsRoutePath, data.id]" href="#"> View {{data.id}} </a>
   </ng-container>

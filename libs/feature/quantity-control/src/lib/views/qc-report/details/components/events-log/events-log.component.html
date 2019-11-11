@@ -1,3 +1,43 @@
-<p>
-  events-log works!
-</p>
+<ag-grid-angular
+  [gridOptions]="gridViewModel.gridOptions"
+  [rowData]="gridViewModel.eventLogs$ | async"
+  appAgGridFirstColumnLocked
+  appAgGridSizeToFit
+  class="ag-theme-balham"
+  id="quantityControlEventsLog">
+</ag-grid-angular>
+
+<ng-template [columnDef]="[gridViewModel.actionsColumn]"
+             appAgColumnHeaderTemplate>
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <p-button (onClick)="add($event)" icon="pi pi-plus" iconPos="left"></p-button>
+    </div>
+  </ng-container>
+</ng-template>
+
+
+<ng-template [columnDef]="[gridViewModel.actionsColumn]"
+             appAgCellTemplate let-column="column" let-model="data" let-value="value">
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <p-button (onClick)="remove($event)" icon="pi pi-minus" iconPos="left"></p-button>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template [columnDef]="[gridViewModel.eventDetailsCol]"
+             appAgCellTemplate
+             let-model="data.model" let-value="value">
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div class="row">
+        <textarea [rows]="1" [cols]="30" pInputTextarea autoResize="autoResize"
+                  (ngModelChange)="updateEventDetails(model, $event)"
+                  [ngModelOptions]="{updateOn: 'blur'}"
+                  [ngModel]="value"
+        ></textarea>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

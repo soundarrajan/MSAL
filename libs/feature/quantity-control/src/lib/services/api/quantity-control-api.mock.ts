@@ -41,12 +41,13 @@ import {
 import { getMockQcSurveyHistoryList } from './mock/qc-survey-history-list.mock';
 import { QcSurveyHistoryListItemModel } from '../models/qc-survey-history-list-item.model';
 import * as faker from 'faker';
+import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
+import { getMockQcEventsLog } from './mock/qc-events-log.mock';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApiMock implements IQuantityControlApiService {
-
   @ApiCallForwardTo() realService: QuantityControlApi;
 
   constructor(realService: QuantityControlApi) {
@@ -115,5 +116,12 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
     return throwError('Not implemented');
+  }
+
+  @ApiCall()
+  getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
+    return of({
+      items: getMockQcEventsLog(3)
+    });
   }
 }

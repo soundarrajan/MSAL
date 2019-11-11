@@ -2,9 +2,10 @@ import { Directive, Input, OnChanges, SimpleChanges, TemplateRef } from '@angula
 import { ColGroupDef } from 'ag-grid-community';
 
 @Directive({
-  selector: '[appHeaderRenderer]'
+  // tslint:disable-next-line:directive-selector
+  selector: '[agGroupHeaderTemplate]'
 })
-export class AgHeaderRendererDirective implements OnChanges {
+export class AgColumnGroupHeaderTemplateDirective implements OnChanges {
   // Note: Consider refactor to accept multiple columnDefs
   @Input() columnDef: ColGroupDef | ColGroupDef[];
 

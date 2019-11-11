@@ -12,7 +12,7 @@ import {
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
-import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
@@ -76,7 +76,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.modelProps.robBeforeDeliveryLogBookROB,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
   };
 
@@ -86,7 +86,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.modelProps.robBeforeDeliveryMeasuredROB,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robBeforeDeliveryUom.conversionRate)
   };
 
@@ -95,7 +95,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
       return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB) * this.reportDetailsState.robBeforeDeliveryUom.conversionRate;
@@ -110,7 +110,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.modelProps.deliveredQuantityBdnQty,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
   };
 
@@ -120,7 +120,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.modelProps.deliveredQuantityMessuredDeliveredQuantity,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: this.relativeValueGetter(() => this.reportDetailsState.deliveredQtyUom.conversionRate)
   };
 
@@ -129,7 +129,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
       return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity) * this.reportDetailsState.deliveredQtyUom.conversionRate;
@@ -144,7 +144,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.modelProps.robAfterDeliveryLogBookROB,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
   };
 
@@ -154,7 +154,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: this.modelProps.robAfterDeliveryMeasuredROB,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: this.relativeValueGetter(() => this.reportDetailsState.robAfterDeliveryUom.conversionRate)
   };
 
@@ -163,7 +163,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent,
+    cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
       return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB) * this.reportDetailsState.robAfterDeliveryUom.conversionRate;

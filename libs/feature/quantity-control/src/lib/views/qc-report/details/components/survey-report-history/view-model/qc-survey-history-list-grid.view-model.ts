@@ -7,7 +7,7 @@ import {
   QcSurveyHistoryListColumnsLabels,
   QcSurveyHistoryListItemProps
 } from './qc-survey-history-list.columns';
-import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
 import { QcSurveyHistoryListItemModel } from '../../../../../../services/models/qc-survey-history-list-item.model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
@@ -55,7 +55,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   portCol: ColDef = {
@@ -240,6 +240,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     ];
   }
 
+  //TODO: ADD loading overlay
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.quantityControlService.getSurveyHistoryList(this.reportDetailsState.portCallId, {
       pagination: getShiptechFormatPagination(params),

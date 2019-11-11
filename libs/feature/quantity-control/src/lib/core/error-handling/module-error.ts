@@ -8,6 +8,11 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not load port call list. Please try again later.'
   });
 
+  static readonly LoadEventsLogFailed = new ModuleError({
+    code: ErrorCode.LoadPortCallListFailed,
+    message: 'Could not load events log. Please try again later.'
+  });
+
   static QcReportNotFound(reportId?: number): ModuleError {
     return new ModuleError({
       code: ErrorCode.PortCallNotFound,

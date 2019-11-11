@@ -1,11 +1,13 @@
 import { QcSurveyHistoryListItemDto } from '../api/dto/qc-survey-history-list-item.dto';
+import { SurveyStatusEnum } from '../../core/enums/survey-status.enum';
 
-export class QcSurveyHistoryListItemModel {
+export class QcSurveyHistoryListItemModel implements QcSurveyHistoryListItemDto{
   id: number;
+  portCallId: string;
   port: string;
   vesselName: string;
   surveyDate: string;
-  surveyStatus: string;
+  surveyStatus: SurveyStatusEnum;
   matchedQuantity: number;
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;
