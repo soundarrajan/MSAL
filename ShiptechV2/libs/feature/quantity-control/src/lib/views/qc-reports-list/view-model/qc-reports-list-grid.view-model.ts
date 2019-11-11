@@ -104,8 +104,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.surveyStatus,
     hide: false,
     cellClassRules: {
-      'cell-background pending': params => (<QcReportsListItemModel>params.data).surveyStatus === SurveyStatusEnum.Pending,
-      'cell-background verified': params => (<QcReportsListItemModel>params.data).surveyStatus === SurveyStatusEnum.Verified
+      'cell-background pending': params => ((<QcReportsListItemModel>params.data) || {} as QcReportsListItemModel).surveyStatus === SurveyStatusEnum.Pending,
+      'cell-background verified': params => ((<QcReportsListItemModel>params.data) || {} as QcReportsListItemModel).surveyStatus === SurveyStatusEnum.Verified
     }
   };
 
@@ -136,7 +136,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.robBeforeDelivery,
     hide: false,
     cellClassRules: {
-      'cell-background red': params => (<QcReportsListItemModel>params.data).robBeforeDelivery < 0
+      'cell-background red': params => ((<QcReportsListItemModel>params.data) || {} as QcReportsListItemModel).robBeforeDelivery < 0
     }
   };
 
@@ -160,7 +160,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.deliveredQuantity,
     hide: false,
     cellClassRules: {
-      'cell-background red': params => (<QcReportsListItemModel>params.data).deliveredQuantity < 0
+      'cell-background red': params => ((<QcReportsListItemModel>params.data) || {} as QcReportsListItemModel).deliveredQuantity < 0
     }
   };
 
