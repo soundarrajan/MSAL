@@ -58,8 +58,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     singleClickEdit: true,
     defaultColDef: {
       sortable: true,
-      filter: 'agTextColumnFilter',
-      width: 150
+      filter: 'agTextColumnFilter'
     }
   };
 
@@ -67,7 +66,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: this.modelProps.productTypeName,
-    width: 50,
     hide: false,
     suppressToolPanel: true
   };
@@ -76,7 +74,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: this.modelProps.robBeforeDeliveryLogBookROB,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -87,7 +84,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: this.modelProps.robBeforeDeliveryMeasuredROB,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -97,7 +93,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   differenceRobBeforeDeliveryCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -113,7 +108,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
     field: this.modelProps.deliveredQuantityBdnQty,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -124,7 +118,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: this.modelProps.deliveredQuantityMessuredDeliveredQuantity,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -134,7 +127,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   differenceDeliveredQuantityCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -150,7 +142,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: this.modelProps.robAfterDeliveryLogBookROB,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -161,7 +152,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: this.modelProps.robAfterDeliveryMeasuredROB,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
@@ -171,7 +161,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   differenceRobAfterDeliveryCol: ColDef = {
     headerName: ProductDetailsColumnsLabels.RobAfterDeliveryDifference,
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgTemplateRendererComponent,
