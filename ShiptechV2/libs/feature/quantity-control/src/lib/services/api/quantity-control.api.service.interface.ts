@@ -28,6 +28,7 @@ import {
   IGetQcSurveyHistoryListRequest,
   IGetQcSurveyHistoryListResponse
 } from './request-response/qc-survey-history-list.request-response';
+import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
 
 export interface IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -49,4 +50,6 @@ export interface IQuantityControlApiService {
   verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse>;
 
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse>;
+
+  getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse>;
 }

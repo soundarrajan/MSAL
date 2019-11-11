@@ -31,7 +31,6 @@
     </div>
     <div class="col-md-6">
       <div class="summary" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
-        <!-- TODO these should not be buttons -->
         <div class="summary-item matched">
           <i class="fa fa-check"></i>
           <span class="label">
@@ -104,13 +103,13 @@
 </div>
 
 
-<ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appTemplateRenderer let-data="data" let-value="value">
+<ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appAgCellTemplate let-data="data" let-value="value">
   <ng-container>
     <a [routerLink]="[reportDetailsRoutePath, data.id]" href="#"> View {{data.id}} </a>
   </ng-container>
 </ng-template>
 
-<ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appTemplateRenderer let-data="data" let-value="value">
+<ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appAgCellTemplate let-data="data" let-value="value">
   <ng-container>
     {{value}}
     <i (click)="watchVesselWithId(data.id)" class="fa fa-flag vessel-to-watch"></i>

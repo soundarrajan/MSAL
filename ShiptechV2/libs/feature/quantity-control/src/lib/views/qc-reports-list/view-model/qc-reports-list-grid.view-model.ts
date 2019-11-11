@@ -7,7 +7,7 @@ import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid
 import { QcReportDetailsService } from '../../../services/qc-report-details.service';
 import { getShiptechFormatFilters } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-sorts';
-import { AgTemplateRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-template-renderer/ag-template-renderer.component';
+import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { getShiptechFormatPagination } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-paging';
 import { QcReportsListColumns, QcReportsListColumnsLabels, QcReportsListItemProps } from './qc-reports-list.columns';
 import { QcReportsListItemModel } from '../../../services/models/qc-reports-list-item.model';
@@ -74,7 +74,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   portCol: ColDef = {
@@ -91,7 +91,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: this.modelProps.vesselName,
     width: 50,
     hide: false,
-    cellRendererFramework: AgTemplateRendererComponent
+    cellRendererFramework: AgCellTemplateComponent
 
   };
 

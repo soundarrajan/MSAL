@@ -1,11 +1,12 @@
 import { Directive, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
-import { ITemplateRendererParams } from './ag-template-renderer.component';
+import { ITemplateRendererParams } from './ag-cell-template.component';
 import { TypedColDef } from '../type.definition';
 
 @Directive({
-  selector: '[appTemplateRenderer]'
+  // tslint:disable-next-line:directive-selector
+  selector: '[appAgCellTemplate]'
 })
-export class AgTemplateRendererDirective implements OnChanges {
+export class AgCellTemplateDirective implements OnChanges {
   @Input() columnDef: TypedColDef<ITemplateRendererParams> | TypedColDef<ITemplateRendererParams>[];
 
   constructor(public template: TemplateRef<any>) {}

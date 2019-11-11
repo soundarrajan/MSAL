@@ -15,7 +15,7 @@
 
 
 <ng-template [columnDef]="viewModel.gridViewModel.bdnDeliveredQuantityCol"
-             appTemplateRenderer
+             appAgCellTemplate
              let-model="data.model" let-value="value">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
@@ -28,7 +28,7 @@
               viewModel.gridViewModel.robBeforeDeliveryColGroup,
               viewModel.gridViewModel.robAfterDeliveryColGroup,
               viewModel.gridViewModel.deliveredQuantityColGroup]"
-             appHeaderRenderer
+             agGroupHeaderTemplate
              let-groupDef="groupDef" let-title="title">
   <div class="ag-header-group-cell-label p-2" ref="agContainer">
     <div class="row" style="width: 100%">
@@ -52,7 +52,7 @@
               viewModel.gridViewModel.measuredDeliveredQuantityCol,
               viewModel.gridViewModel.logBookAfterDeliveryCol,
               viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
-             appTemplateRenderer let-column="column" let-model="data" let-value="value">
+             appAgCellTemplate let-column="column" let-model="data" let-value="value">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)" [formatInput]="true"
@@ -67,7 +67,7 @@
              viewModel.gridViewModel.differenceDeliveredQuantityCol,
              viewModel.gridViewModel.differenceRobBeforeDeliveryCol,
              viewModel.gridViewModel.differenceRobAfterDeliveryCol]"
-             appTemplateRenderer
+             appAgCellTemplate
              let-model="data.model" let-value="value">
   <ng-container>
     <!--    TODO: Add UOM conversion -->
