@@ -33,9 +33,12 @@ import {
   SwitchUomForRobBeforeDeliveryAction
 } from './details/actions/qc-uom.actions';
 import {
+  QcAddEventLogAction,
   QcLoadEventsLogAction,
   QcLoadEventsLogFailedAction,
-  QcLoadEventsLogSuccessfulAction
+  QcLoadEventsLogSuccessfulAction,
+  QcRemoveEventLogAction,
+  QcUpdateEventLogAction
 } from './details/actions/qc-events-log.action';
 import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
@@ -403,6 +406,76 @@ export class QcReportState {
       });
     }
   }
+
+  @Action(QcAddEventLogAction)
+  addEventLogAction({ getState, patchState }: StateContext<IQcReportState>, { eventDetails }: QcAddEventLogAction): void {
+    const state = getState();
+
+    const newEventLogId = -Math.random();
+
+    patchState({
+      details: {
+        ...state.details,
+        eventsLog: {
+          ...state.details.eventsLog,
+          items: [...state.details.eventsLog.items, newEventLogId],
+          itemsById: {
+            ...state.details.eventsLog.itemsById,
+            [newEventLogId]: new QcEventsLogItemStateModel({
+              id: newEventLogId,
+              eventDetails: eventDetails,
+              createdBy: 'yourself',
+              created: new Date().toString(),
+              isNew: true
+            })
+          }
+        }
+      }
+    });
+  }
+
+  @Action(QcRemoveEventLogAction)
+  removeEventLogAction({ getState, patchState }: StateContext<IQcReportState>, { id }: QcRemoveEventLogAction): void {
+    const state = getState();
+
+    const { [id]: __, ...itemsById } = state.details.eventsLog.itemsById;
+    const items = _.remove(state.details.eventsLog.items, i => i !== id);
+
+    patchState({
+      details: {
+        ...state.details,
+        eventsLog: {
+          ...state.details.eventsLog,
+          items: items,
+          itemsById: itemsById
+        }
+      }
+    });
+  }
+
+  @Action(QcUpdateEventLogAction)
+  updateEventLogAction({ getState, patchState }: StateContext<IQcReportState>, { id, eventDetails }: QcUpdateEventLogAction): void {
+    const state = getState();
+
+    patchState({
+      details: {
+        ...state.details,
+        eventsLog: {
+          ...state.details.eventsLog,
+          itemsById: {
+            ...state.details.eventsLog.itemsById,
+            [id]: {
+              ...state.details.eventsLog.itemsById[id],
+              eventDetails: eventDetails,
+              created: new Date().toString(),
+              isNew: true
+            }
+          }
+        }
+      }
+    });
+  }
+
 }
 
 export function ConvertProductTypeValues(productTypesMap: Record<number, QcProductTypeListItemStateModel>,

@@ -18,7 +18,8 @@ export abstract class BaseGridViewModel implements OnDestroy {
   saveColumnPreferences = true;
   pageSizeOptions = PageSizeOptions;
 
-  protected constructor(protected gridId: string, protected columnPreferences: AgColumnPreferencesService, protected changeDetector: ChangeDetectorRef, protected logger: Logger) {}
+  protected constructor(protected gridId: string, protected columnPreferences: AgColumnPreferencesService, protected changeDetector: ChangeDetectorRef, protected logger: Logger) {
+  }
 
   private _page: number = 1;
 
@@ -108,7 +109,9 @@ export abstract class BaseGridViewModel implements OnDestroy {
 
     if (this._pageSize !== this.gridApi.paginationGetPageSize()) {
       // Note: workaround to force ag-Grid to use new pageSize
-      this.gridApi.setServerSideDatasource(undefined);
+      if (this.isServerSide) {
+        this.gridApi.setServerSideDatasource(undefined);
+      }
 
       this.gridOptions.cacheBlockSize = this._pageSize;
       this.gridOptions.paginationPageSize = this._pageSize;
@@ -240,7 +243,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
           catchError(() => of(AppError.GridPreferenceRestore(this.gridId))),
           finalize(() => {
             // Note: Set the source as the final operation otherwise with each column state update or pagination, will call server side source multiple times
-           this.setupServerSideDatasource();
+            this.setupServerSideDatasource();
           })
         )
         .subscribe();

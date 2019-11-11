@@ -4,7 +4,7 @@ import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from '../dt
 
 
 export interface IGetSoundingReportListRequest extends IBaseQuantityControlRequest, IServerGridInfo {
-  reportId: number;
+  portCallId: number;
 }
 
 export interface IGetSoundingReportListResponse extends IBaseQuantityControlResponse {
@@ -13,7 +13,7 @@ export interface IGetSoundingReportListResponse extends IBaseQuantityControlResp
 }
 
 export interface IGetSoundingReportDetailsRequest extends IBaseQuantityControlRequest, IServerGridInfo {
-  reportId: number;
+  soundingReportId: number;
 }
 
 export interface IGetSoundingReportDetailsResponse extends IBaseQuantityControlResponse {

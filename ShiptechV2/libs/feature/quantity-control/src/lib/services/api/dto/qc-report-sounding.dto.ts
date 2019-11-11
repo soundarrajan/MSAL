@@ -1,4 +1,5 @@
 export interface IQcSoundingReportItemDto {
+  soundingReportId: number;
   vesselName: string;
   vesselCode: string;
   imoNo: number;

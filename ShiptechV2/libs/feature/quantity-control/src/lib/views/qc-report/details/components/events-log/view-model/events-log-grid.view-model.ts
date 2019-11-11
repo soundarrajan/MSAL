@@ -4,17 +4,18 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { EventsLogColumns, EventsLogColumnsLabels } from './events-log.columns';
 import { Observable } from 'rxjs';
 import { IQcEventsLogItemState } from '../../../../../../store/report-view/details/qc-events-log-state.model';
-import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { QcReportState } from '../../../../../../store/report-view/qc-report.state';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
+import { nameof } from '@shiptech/core/utils/type-definitions';
 
 function model(prop: keyof IQcEventsLogItemState): string {
   return prop;
 }
+const a = AgCellTemplateComponent.name.toString();
 
 @Injectable()
 export class EventsLogGridViewModel extends BaseGridViewModel {
@@ -34,21 +35,25 @@ export class EventsLogGridViewModel extends BaseGridViewModel {
     multiSortKey: 'ctrl',
     getRowNodeId: (data: IQcEventsLogItemState) => data.id.toString(),
 
+    frameworkComponents:{
+      [nameof(AgCellTemplateComponent)]: AgCellTemplateComponent
+    },
     defaultColDef: {
+      resizable: true,
       sortable: true,
-      filter: 'agTextColumnFilter',
+      filter: 'agTextColumnFilter'
     }
   };
 
   actionsColumn: ColDef = {
     colId: EventsLogColumns.Actions,
-    width: 300,
+    width: 50,
     hide: false,
     resizable: false,
     sortable: false,
     suppressToolPanel: true,
-    cellRendererFramework: AgCellTemplateComponent,
-    headerComponentFramework: AgColumnHeaderComponent
+    headerComponentFramework: AgColumnHeaderComponent,
+    cellRendererSelector: params => (<IQcEventsLogItemState>params.data).isNew ? { component: nameof(AgCellTemplateComponent)} : null
   };
 
   eventDetailsCol: ColDef = {
@@ -56,7 +61,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel {
     colId: EventsLogColumns.EventDetails,
     field: model('eventDetails'),
     autoHeight: true,
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererSelector: params => (<IQcEventsLogItemState>params.data).isNew ? { component: nameof(AgCellTemplateComponent)} : null
   };
 
   createdByCol: ColDef = {

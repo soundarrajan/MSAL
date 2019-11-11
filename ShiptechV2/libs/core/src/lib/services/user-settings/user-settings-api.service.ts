@@ -62,13 +62,13 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   @ObservableException()
   delete(request: IDeleteUserSettingRequest): Observable<IDeleteUserSettingResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.$delete(request.key)}`;
-    return this.http.delete<IDeleteUserSettingResponse>(requestUrl);
+    return this.http.post<IDeleteUserSettingResponse>(requestUrl, { payload: false});
   }
 
   @ObservableException()
   purge(request: IPurgeUserSettingsRequest): Observable<IPurgeUserSettingsResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.purge()}`;
-    return this.http.delete<IPurgeUserSettingsResponse>(requestUrl).pipe(catchError(() => throwError(AppError.FailedToPurgeUserSettings)));
+    return this.http.post<IPurgeUserSettingsResponse>(requestUrl, { payload: false}).pipe(catchError(error => throwError(AppError.FailedToPurgeUserSettings)));
   }
 
   get<T>(key: string): Observable<T> {
