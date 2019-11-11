@@ -98,7 +98,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB) * this.reportDetailsState.robBeforeDeliveryUom.conversionRate;
+      return this.getDifference(productType.robBeforeDeliveryLogBookROB, productType.robBeforeDeliveryMeasuredROB);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -132,7 +132,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity) * this.reportDetailsState.deliveredQtyUom.conversionRate;
+      return this.getDifference(productType.deliveredQuantityBdnQty, productType.deliveredQuantityMessuredDeliveredQuantity);
     },
     cellClassRules: this.getToleranceClassRules()
   };
@@ -166,7 +166,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent,
     valueGetter: params => {
       const productType = (<ProductTypeListItemViewModel>params.data);
-      return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB) * this.reportDetailsState.robAfterDeliveryUom.conversionRate;
+      return this.getDifference(productType.robAfterDeliveryLogBookROB, productType.robAfterDeliveryMeasuredROB);
     },
     cellClassRules: this.getToleranceClassRules()
   };
