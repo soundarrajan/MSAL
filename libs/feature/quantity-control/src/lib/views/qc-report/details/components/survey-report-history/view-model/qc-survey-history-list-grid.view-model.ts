@@ -81,8 +81,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     cellClassRules: {
-      'cell-background pending': params => (<QcSurveyHistoryListItemModel>params.data).surveyStatus === SurveyStatusEnum.Pending,
-      'cell-background verified': params => (<QcSurveyHistoryListItemModel>params.data).surveyStatus === SurveyStatusEnum.Verified
+      'cell-background pending': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusEnum.Pending,
+      'cell-background verified': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusEnum.Verified
     }
   };
 
@@ -117,7 +117,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     cellClassRules: {
-      'cell-background red': params => (<QcSurveyHistoryListItemModel>params.data).robBeforeDelivery < 0
+      'cell-background red': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).robBeforeDelivery < 0
     }
   };
 
@@ -144,7 +144,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     width: 50,
     hide: false,
     cellClassRules: {
-      'cell-background red': params => (<QcSurveyHistoryListItemModel>params.data).deliveredQuantity < 0
+      'cell-background red': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).deliveredQuantity < 0
     }
   };
 
