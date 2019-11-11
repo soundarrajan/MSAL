@@ -7783,14 +7783,11 @@ APP_MASTERS.controller("Controller_Master", [
                     localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows));
                 }
             }
-            // var payload = [
-            //                 {"Id": 15665}
-            //             ];
             var payload = [];
             $.each($rootScope.selectedOrderListRows, function(k, v) {
-                if ($rootScope.selectedOrderListRows[k].order.name) {
+                if ($rootScope.selectedOrderListRows[k].order.id) {
                     var obj = { 
-                                "Id": $rootScope.selectedOrderListRows[k].order.name
+                                "Id": $rootScope.selectedOrderListRows[k].order.id
                              };
                     payload.push(obj);
                 }
@@ -7799,8 +7796,6 @@ APP_MASTERS.controller("Controller_Master", [
 
             orderModel.verifyOrders(payload).then(function (responseData) {
                 }).catch(function (err) {
-                    // ctrl.buttonsDisabled = false;
-                    // addFirstAdditionalCost(null);
             });
 
 
