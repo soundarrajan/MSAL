@@ -42,8 +42,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter',
-      width: 150
+      filter: 'agTextColumnFilter'
     }
   };
 
@@ -71,7 +70,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.callId,
     colId: QcReportsListColumns.callId,
     field: this.modelProps.id,
-    width: 50,
     hide: false,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent
@@ -81,7 +79,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.port,
     colId: QcReportsListColumns.port,
     field: this.modelProps.port,
-    width: 50,
     hide: false,
   };
 
@@ -89,7 +86,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
     field: this.modelProps.vesselName,
-    width: 50,
     hide: false,
     cellRendererFramework: AgCellTemplateComponent
 
@@ -99,7 +95,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.surveyDate,
     colId: QcReportsListColumns.surveyDate,
     field: this.modelProps.surveyDate,
-    width: 50,
     hide: false,
   };
 
@@ -107,7 +102,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.surveyStatus,
     colId: QcReportsListColumns.surveyStatus,
     field: this.modelProps.surveyStatus,
-    width: 50,
     hide: false,
     cellClassRules: {
       'cell-background pending': params => (<QcReportsListItemModel>params.data).surveyStatus === SurveyStatusEnum.Pending,
@@ -119,7 +113,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.matchedQuantity,
     colId: QcReportsListColumns.matchedQuantity,
     field: this.modelProps.matchedQuantity,
-    width: 50,
     hide: false
   };
 
@@ -127,7 +120,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: this.modelProps.logBookRobBeforeDelivery,
-    width: 50,
     hide: false
   };
 
@@ -135,7 +127,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: this.modelProps.measuredRobBeforeDelivery,
-    width: 50,
     hide: false
   };
 
@@ -143,7 +134,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.robBeforeDelivery,
     colId: QcReportsListColumns.robBeforeDelivery,
     field: this.modelProps.robBeforeDelivery,
-    width: 50,
     hide: false,
     cellClassRules: {
       'cell-background red': params => (<QcReportsListItemModel>params.data).robBeforeDelivery < 0
@@ -154,7 +144,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.bdnQuantity,
     colId: QcReportsListColumns.bdnQuantity,
     field: this.modelProps.bdnQuantity,
-    width: 50,
     hide: false
   };
 
@@ -162,7 +151,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.measuredDeliveredQuantity,
     colId: QcReportsListColumns.measuredDeliveredQuantity,
     field: this.modelProps.measuredDeliveredQuantity,
-    width: 50,
     hide: false
   };
 
@@ -170,7 +158,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.deliveredQuantity,
     colId: QcReportsListColumns.deliveredQuantity,
     field: this.modelProps.deliveredQuantity,
-    width: 50,
     hide: false,
     cellClassRules: {
       'cell-background red': params => (<QcReportsListItemModel>params.data).deliveredQuantity < 0
@@ -181,7 +168,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.logBookRobAfterDelivery,
     colId: QcReportsListColumns.logBookRobAfterDelivery,
     field: this.modelProps.logBookRobAfterDelivery,
-    width: 50,
     hide: false
   };
 
@@ -189,7 +175,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.measuredRobAfterDelivery,
     colId: QcReportsListColumns.measuredRobAfterDelivery,
     field: this.modelProps.measuredRobAfterDelivery,
-    width: 50,
     hide: false
   };
 
@@ -197,7 +182,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.robAfterDelivery,
     colId: QcReportsListColumns.robAfterDelivery,
     field: this.modelProps.robAfterDelivery,
-    width: 50,
     hide: false
   };
 
@@ -205,7 +189,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.logBookSludgeBeforeDischarge,
     colId: QcReportsListColumns.logBookSludgeBeforeDischarge,
     field: this.modelProps.logBookSludgeBeforeDischarge,
-    width: 50,
     hide: false
   };
 
@@ -213,7 +196,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
     field: this.modelProps.measuredSludgeRobBeforeDischarge,
-    width: 50,
     hide: false
   };
 
@@ -221,7 +203,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.sludgeDischargedQuantity,
     colId: QcReportsListColumns.sludgeDischargedQuantity,
     field: this.modelProps.sludgeDischargedQuantity,
-    width: 50,
     hide: false
   };
 
@@ -229,7 +210,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.comment,
     colId: QcReportsListColumns.comment,
     field: this.modelProps.comment,
-    width: 50,
     hide: false
   };
 
