@@ -11,6 +11,9 @@ export class QcProductTypeListItemStateModel {
   robAfterDeliveryLogBookROB: Decimal;
   robAfterDeliveryMeasuredROB: Decimal;
 
+
+  original: QcProductTypeListItemStateModel;
+
   constructor(productType: IQcReportDetailsProductTypeDto) {
     this.productTypeName = productType.productTypeName;
     this.productTypeId = productType.productTypeId;
@@ -21,5 +24,7 @@ export class QcProductTypeListItemStateModel {
     this.deliveredQuantityMessuredDeliveredQuantity = new Decimal(productType.deliveredQty.messuredDeliveredQty);
     this.robAfterDeliveryLogBookROB = new Decimal(productType.robAfterDelivery.logBookROB);
     this.robAfterDeliveryMeasuredROB = new Decimal(productType.robAfterDelivery.measuredROB);
+
+    this.original = { ...this };
   }
 }

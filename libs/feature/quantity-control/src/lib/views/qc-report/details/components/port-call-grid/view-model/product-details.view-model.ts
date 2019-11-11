@@ -14,7 +14,7 @@ import { LOOKUPS_API_SERVICE } from '@shiptech/core/services/lookups-api/lookups
 import { ILookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service.interface';
 import { IUomLookupDto } from '@shiptech/core/services/lookups-api/mock-data/uoms.mock';
 
-export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productTypeId' | 'productTypeName'>;
+export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productTypeId' | 'productTypeName' | 'original'>;
 
 @Injectable()
 export class ProductDetailsViewModel {
