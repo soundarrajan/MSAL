@@ -16,7 +16,7 @@ export interface ITemplateRendererParams extends Partial<ICellRendererParams> {
 })
 export class AgCellTemplateComponent implements ICellRendererAngularComp {
   template: TemplateRef<any>;
-  templateContext: { $implicit: any; params: ITemplateRendererParams; data: any; value: any; valueFormatted: string; columnDef: ColDef; column: Column };
+  templateContext: { $implicit: any; params: ITemplateRendererParams; data: any; value: any; valueFormatted: string; columnDef: ColDef; column: Column; rowIndex: number };
 
   constructor(private changeDetector: ChangeDetectorRef) {
   }
@@ -29,7 +29,8 @@ export class AgCellTemplateComponent implements ICellRendererAngularComp {
       value: params.value,
       valueFormatted: params.valueFormatted,
       columnDef: params.colDef,
-      column: params.column
+      column: params.column,
+      rowIndex: params.rowIndex
     };
     this.changeDetector.markForCheck();
     return true;

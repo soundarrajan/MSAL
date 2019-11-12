@@ -5,6 +5,7 @@ import { MaterialModule } from './material.module';
 import { LayoutMainModule } from '@shiptech/core/ui/layout/main/layout-main.module';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directive';
 
 @NgModule({
   imports: [
@@ -13,11 +14,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   ],
   declarations: [
     CopyToClipboardDirective,
-    AgGridExternalSearchDirective
+    AgGridExternalSearchDirective,
+    AutosizeDirective
   ],
   exports: [
     CopyToClipboardDirective,
     AgGridExternalSearchDirective,
+    AutosizeDirective,
     LayoutMainComponent,
     FlexLayoutModule
   ]

@@ -36,6 +36,9 @@ export class QcReportDetailsComponent implements OnInit {
 
   @Select(QcReportState.getReportDetails) reportDetailsState$: Observable<IQcReportDetailsState>;
   @Select(QcReportState.getReportComment) comment$: Observable<string>;
+  eventsLogLoaded: boolean;
+  surveyHistoryLoaded: boolean;
+  soundingReportLoaded: boolean;
 
   constructor(private entityStatus: EntityStatusService,
               private store: Store,
