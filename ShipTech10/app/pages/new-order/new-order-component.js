@@ -2101,7 +2101,6 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
              }
              if (ctrl.data.isVerified == true) {
                 ctrl.data.verifiedBy = $rootScope.user;
-                ctrl.data.displayName = null;
                 ctrl.data.code = null;
                 ctrl.data.collectionName = null;
                 ctrl.data.verifiedOn = moment().format();

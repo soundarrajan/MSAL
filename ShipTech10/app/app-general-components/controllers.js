@@ -901,8 +901,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
                 var order_list_checkbox = function(cellValue, options, rowObject) {
                     var isVerifiedLine = false;
-                    if (rowObject.isVerified == true || rowObject.orderStatus.displayName == "Cancelled") {
-                        isVerifiedLine = true;
+                    if (typeof(rowObject.isVerified) != "undefined" && typeof(rowObject.orderStatus) != "undefined") {
+                        if (rowObject.isVerified.name == "Yes" || rowObject.orderStatus.displayName == "Cancelled") {
+                             isVerifiedLine = true;
+                        }
+
                     }
                     if (procurementSettings.order.orderVerificationReq.id == 1) {
                         if (isVerifiedLine == true) {
