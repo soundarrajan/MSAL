@@ -3051,14 +3051,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 } else if (procurementSettings.order.orderVerificationReq.id == 2) {
                     $timeout(function() {
                         $('.verifyButton').css({"display": "none"});
-                        // $('#flat_orders_list_actions-1').css({"display": "none"});
-                        // $('#' + 1 + '>td').first().css({"display": "none"});
-                       
-    
                     })
-                    // $('#flat_orders_list > tbody > tr >td:first-child').css('display', 'none');
-                   // $('#flat_orders_list_actions-1').css('display', 'none');
-                    //$('#flat_orders_list_actions-1').css('display', 'none');
                 }
             } else {
                 $scope.selectedContractPlanningRows = [];
