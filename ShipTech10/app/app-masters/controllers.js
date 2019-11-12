@@ -7774,32 +7774,32 @@ APP_MASTERS.controller("Controller_Master", [
             });
 
         }
-        $scope.createOrderFromOrderList = function() {
-            console.log($rootScope.selectedOrderListRows);
-            if ($rootScope.selectedOrderListRows) {
-                if ($rootScope.selectedOrderListRows.length == 1) {
-                    localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows[0]));
-                } else {
-                    localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows));
-                }
-            }
-            var payload = [];
-            $.each($rootScope.selectedOrderListRows, function(k, v) {
-                if ($rootScope.selectedOrderListRows[k].order.id) {
-                    var obj = { 
-                                "Id": $rootScope.selectedOrderListRows[k].order.id
-                             };
-                    payload.push(obj);
-                }
+        // $scope.createOrderFromOrderList = function() {
+        //     console.log($rootScope.selectedOrderListRows);
+        //     if ($rootScope.selectedOrderListRows) {
+        //         if ($rootScope.selectedOrderListRows.length == 1) {
+        //             localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows[0]));
+        //         } else {
+        //             localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows));
+        //         }
+        //     }
+        //     var payload = [];
+        //     $.each($rootScope.selectedOrderListRows, function(k, v) {
+        //         if ($rootScope.selectedOrderListRows[k].order.id) {
+        //             var obj = { 
+        //                         "Id": $rootScope.selectedOrderListRows[k].order.id
+        //                      };
+        //             payload.push(obj);
+        //         }
                 
-            });
+        //     });
 
-            orderModel.verifyOrders(payload).then(function (responseData) {
-                }).catch(function (err) {
-            });
+        //     orderModel.verifyOrders(payload).then(function (responseData) {
+        //         }).catch(function (err) {
+        //     });
 
 
-        }
+        // }
 
     }
 ]);
