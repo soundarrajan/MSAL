@@ -43,6 +43,10 @@ import { QcSurveyHistoryListItemModel } from '../models/qc-survey-history-list-i
 import * as faker from 'faker';
 import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
 import { getMockQcEventsLog } from './mock/qc-events-log.mock';
+import {
+  ISaveReportDetailsRequest,
+  ISaveReportDetailsResponse
+} from './request-response/report-details.request-response';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +69,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
     });
   }
 
+  @ApiCall()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
     return of({
       items: getMockQcSurveyHistoryList(request.pagination.take).map(item => new QcSurveyHistoryListItemModel(item)),
@@ -75,6 +80,11 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
     return of({ report: getQcReportDetailsCall(request.reportId) });
+  }
+
+  @ApiCall()
+  saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
+    return of();
   }
 
   @ApiCall()

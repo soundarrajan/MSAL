@@ -38,7 +38,9 @@ import {
   QcAddEventLogAction,
   QcLoadEventsLogAction,
   QcLoadEventsLogFailedAction,
-  QcLoadEventsLogSuccessfulAction, QcRemoveEventLogAction, QcUpdateEventLogAction
+  QcLoadEventsLogSuccessfulAction,
+  QcRemoveEventLogAction,
+  QcUpdateEventLogAction
 } from '../store/report-view/details/actions/qc-events-log.action';
 
 @Injectable()
@@ -85,6 +87,11 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
       new LoadReportDetailsFailedAction(reportId),
       ModuleError.LoadQcReportDetailsFailed(reportId)
     );
+  }
+
+  @ObservableException()
+  saveReportDetails(): Observable<unknown> {
+    return this.api.saveReportDetails({});
   }
 
   @ObservableException()

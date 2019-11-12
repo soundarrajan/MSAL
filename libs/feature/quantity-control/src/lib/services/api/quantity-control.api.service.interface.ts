@@ -29,6 +29,10 @@ import {
   IGetQcSurveyHistoryListResponse
 } from './request-response/qc-survey-history-list.request-response';
 import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
+import {
+  ISaveReportDetailsRequest,
+  ISaveReportDetailsResponse
+} from './request-response/report-details.request-response';
 
 export interface IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -42,6 +46,8 @@ export interface IQuantityControlApiService {
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse>;
 
   getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse>;
+
+  saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse>;
 
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse>;
 

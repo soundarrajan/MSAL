@@ -39,6 +39,8 @@ import {
   NUMBER_FORMAT,
   NumberFormat
 } from './views/qc-report/details/components/port-call-grid/view-model/number.format';
+import { RaiseClaimComponent } from './views/qc-report/raise-claim/raise-claim.component';
+import { DialogService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -69,7 +71,11 @@ import {
     QcReportDetailsDocumentsComponent,
     QcReportDetailsEmailLogComponent,
     QcReportDetailsAuditLogComponent,
-    UomSelectorComponent
+    UomSelectorComponent,
+    RaiseClaimComponent
+  ],
+  entryComponents: [
+    RaiseClaimComponent
   ],
   exports: [
     MainQuantityControlComponent
@@ -90,7 +96,8 @@ import {
     },
 
     // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
-    QcReportDetailsService
+    QcReportDetailsService,
+    DialogService
   ]
 })
 export class QuantityControlModule {
