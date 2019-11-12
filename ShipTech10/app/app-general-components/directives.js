@@ -392,11 +392,19 @@ window.increment = 0;
                     	}
                         if (attrs.screen == "orderlist") {
                             for (var i = newValue.colModel.length - 1; i >= 0; i--) {
-                                if (newValue.colModel[i].name == "isVerified.name" || newValue.colModel[i].name == "verifiedBy.name"  || newValue.colModel[i].name == "verifiedOn" ) {
+                                if (newValue.colModel[i].name == "isVerified" || newValue.colModel[i].name == "verifiedBy.name"  || newValue.colModel[i].name == "verifiedOn" ) {
                                     if (procurementSettings.order.orderVerificationReq.id == 2) {
                                         newValue.colModel.splice(i,1);
                                     }
                                 }
+                            }
+                            for (var i = newValue.rowActions.length - 1; i >= 0; i--) {
+                                if (newValue.rowActions[i].name == "Select") {
+                                    if (procurementSettings.order.orderVerificationReq.id == 2) {
+                                        newValue.rowActions.splice(i,1);
+                                    }
+                                }
+
                             }
                         }
 

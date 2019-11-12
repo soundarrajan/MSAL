@@ -904,14 +904,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (rowObject.isVerified == true || rowObject.orderStatus.displayName == "Cancelled") {
                         isVerifiedLine = true;
                     }
-                    if (isVerifiedLine == true) {
-                        var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '"ng-disabled="true" " ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
-                    } else {
-                        var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '"" ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
+                    if (procurementSettings.order.orderVerificationReq.id == 1) {
+                        if (isVerifiedLine == true) {
+                            var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="contract_planning_checkbox ng-pristine ng-untouched ng-valid ng-empty" rowId="' + options.rowId + '"ng-disabled="true" " ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
+                        } else {
+                            var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '"" ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
 
+                        }
+                       return tpl;
                     }
-                 
-                    return tpl;
                 };
                 var contract_planning_email = function(cellValue, options, rowObject) {
                     var tpl = '<a class="font-grey-cascade" ng-click="contractPlanningEmail(' + rowObject.id + ')"><i class="glyphicon glyphicon-envelope"></i></a>';
@@ -3048,7 +3049,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         ' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
                    $('#jqgh_flat_orders_list_actions-1').css('display', 'inherit');
                 } else if (procurementSettings.order.orderVerificationReq.id == 2) {
-                    $('#jqgh_flat_orders_list_actions-1').remove();
+                    $timeout(function() {
+                        $('.verifyButton').css({"display": "none"});
+                        // $('#flat_orders_list_actions-1').css({"display": "none"});
+                        // $('#' + 1 + '>td').first().css({"display": "none"});
+                       
+    
+                    })
+                    // $('#flat_orders_list > tbody > tr >td:first-child').css('display', 'none');
+                   // $('#flat_orders_list_actions-1').css('display', 'none');
+                    //$('#flat_orders_list_actions-1').css('display', 'none');
                 }
             } else {
                 $scope.selectedContractPlanningRows = [];
