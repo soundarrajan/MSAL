@@ -20,7 +20,6 @@ export class EventsLogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.detailsService.loadEventsLog().pipe(takeUntil(this._destroy$)).subscribe();
   }
 
   updateEventDetails(item: IQcEventsLogItemState, newEventDetails: string): void {

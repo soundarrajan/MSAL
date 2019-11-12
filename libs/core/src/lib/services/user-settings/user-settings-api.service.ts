@@ -22,9 +22,9 @@ import { LoggingInterceptorHeader } from '../../interceptors/logging-http-interc
 
 export namespace UserSettingsApiPaths {
   export const get = (key: string) => `api/user-settings/${key}`;
-  export const save = (key: string) => `api/user-settings/${key}`;
+  export const save = (key: string) => `api/user-settings/save/${key}`;
   export const $delete = (key: string) => `api/user-settings/${key}`;
-  export const purge = () => `api/user-settings`;
+  export const purge = () => `api/user-settings/purge`;
 }
 
 // @dynamic

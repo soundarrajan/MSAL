@@ -111,7 +111,7 @@ export class QcReportState {
     (state: IAppState) => state.quantityControl.report.details.eventsLog.items
   ])
   static eventLogsItems(itemsById: Record<number, IQcEventsLogItemState>, items: number[]): IQcEventsLogItemState[] {
-    return items.map(i => itemsById[i]);
+    return (items || []).map(i => (itemsById || {})[i]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemStateModel {
@@ -424,8 +424,6 @@ export class QcReportState {
             [newEventLogId]: new QcEventsLogItemStateModel({
               id: newEventLogId,
               eventDetails: eventDetails,
-              createdBy: 'yourself',
-              created: new Date().toString(),
               isNew: true
             })
           }
@@ -467,7 +465,6 @@ export class QcReportState {
             [id]: {
               ...state.details.eventsLog.itemsById[id],
               eventDetails: eventDetails,
-              created: new Date().toString(),
               isNew: true
             }
           }
