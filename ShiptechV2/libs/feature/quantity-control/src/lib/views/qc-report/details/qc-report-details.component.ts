@@ -16,14 +16,15 @@ import {
   SwitchActiveSludgeResponseAction
 } from '../../../store/report-view/details/actions/qc-vessel-response.actions';
 import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
-import { DialogService } from 'primeng/api';
+import { ConfirmationService, DialogService } from 'primeng/api';
 import { RaiseClaimComponent } from '../raise-claim/raise-claim.component';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 
 @Component({
   selector: 'shiptech-port-call',
   templateUrl: './qc-report-details.component.html',
-  styleUrls: ['./qc-report-details.component.scss']
+  styleUrls: ['./qc-report-details.component.scss'],
+  providers: [ConfirmationService]
 })
 export class QcReportDetailsComponent implements OnInit {
 // TODO: Missing NgDestroy
@@ -36,7 +37,12 @@ export class QcReportDetailsComponent implements OnInit {
   @Select(QcReportState.getReportDetails) reportDetailsState$: Observable<IQcReportDetailsState>;
   @Select(QcReportState.getReportComment) comment$: Observable<string>;
 
-  constructor(private entityStatus: EntityStatusService, private store: Store, private detailsService: QcReportDetailsService, private dialogService: DialogService) {
+  constructor(private entityStatus: EntityStatusService,
+              private store: Store,
+              private detailsService: QcReportDetailsService,
+              private dialogService: DialogService,
+              private confirmationService: ConfirmationService
+  ) {
     //TODO: after loading
     this.entityStatus.setStatus({
       value: EntityStatus.Delivered
@@ -58,6 +64,13 @@ export class QcReportDetailsComponent implements OnInit {
           map(bunker => bunker.categories[id] || {} as QcVesselResponseSludgeStateItem),
           shareReplay()
         )));
+  }
+
+
+  // TODO: Remove after demo
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
   }
 
   ngOnInit(): void {
@@ -85,11 +98,6 @@ export class QcReportDetailsComponent implements OnInit {
     this.detailsService.updateReportComment(content).subscribe();
   }
 
-  protected get reportDetailsState(): IQcReportDetailsState {
-    // Note: Always get a fresh reference to the state.
-    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
-  }
-
   save(): void {
     this.dialogService.open(RaiseClaimComponent, {
       header: 'Data to be saved',
@@ -100,7 +108,17 @@ export class QcReportDetailsComponent implements OnInit {
   }
 
   verifyVessel(): void {
-    alert('Not implemented');
+    this.confirmationService.confirm({
+      header: 'Verify?',
+      message: 'Please confirm',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        alert('accepted');
+      },
+      reject: () => {
+        alert('rejected');
+      }
+    });
   }
 
   raiseClaim(): void {
