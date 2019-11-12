@@ -1,6 +1,5 @@
 <ag-grid-angular
   [gridOptions]="gridViewModel.gridOptions"
-  [rowData]="gridViewModel.eventLogs$ | async"
   appAgGridFirstColumnLocked
   appAgGridSizeToFit
   class="ag-theme-balham"
@@ -28,16 +27,14 @@
 
 <ng-template [columnDef]="[gridViewModel.eventDetailsCol]"
              appAgCellTemplate
-             let-model="data.model" let-value="value" let-item="data">
+             let-model="data.model" let-value="value" let-item="data" let-rowIndex="rowIndex">
   <ng-container>
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <div class="row">
-        <textarea [rows]="1" [cols]="30" pInputTextarea autoResize="autoResize"
-                  (ngModelChange)="updateEventDetails(item, $event)"
-                  [ngModelOptions]="{updateOn: 'blur'}"
-                  [ngModel]="value"
-        ></textarea>
-      </div>
+    <div fxLayout="row">
+      <textarea fxFlexFill [rows]="2" [cols]="30"
+                (ngModelChange)="updateEventDetails(item, $event)"
+                [ngModelOptions]="{updateOn: 'blur'}"
+                [ngModel]="value"></textarea>
     </div>
+
   </ng-container>
 </ng-template>
