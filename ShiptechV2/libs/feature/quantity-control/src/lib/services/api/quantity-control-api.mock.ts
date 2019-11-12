@@ -104,11 +104,6 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse> {
-    return throwError('Not implemented');
-  }
-
-  @ApiCall()
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
     return throwError('Not implemented');
   }

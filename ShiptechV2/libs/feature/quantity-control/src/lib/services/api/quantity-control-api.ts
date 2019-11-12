@@ -86,11 +86,6 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse> {
-    return throwError('Not implemented');
-  }
-
-  @ObservableException()
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
     return throwError('Not implemented');
   }
