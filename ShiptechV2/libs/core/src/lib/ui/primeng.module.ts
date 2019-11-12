@@ -16,6 +16,7 @@ import {
   ColorPickerModule,
   ConfirmDialogModule,
   ContextMenuModule,
+  DialogService,
   DropdownModule,
   EditorModule,
   FieldsetModule,
@@ -34,6 +35,7 @@ import {
   MenubarModule,
   MenuModule,
   MessageModule,
+  MessageService,
   MessagesModule,
   MultiSelectModule,
   OrderListModule,
@@ -144,6 +146,10 @@ const MODULES = [
 @NgModule({
   imports: [
     ...MODULES
+  ],
+  providers: [
+    DialogService,
+    MessageService
   ],
   exports: [
     ...MODULES
