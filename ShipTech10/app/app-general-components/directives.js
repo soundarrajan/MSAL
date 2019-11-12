@@ -619,7 +619,13 @@ window.increment = 0;
                             if ((JSON.stringify(listPayload) === $rootScope.lastLoadedListPayload) && !Elements.scope[attrs.id].modal) {
                                 return;
                             }
-
+                            $.each(listPayload.params.PageFilters, function(k, v) {
+                                if (typeof listPayload.params.PageFilters[k] != "undefined") {
+                                    if (listPayload.params.PageFilters[k].columnValue == "IsVerified_Name") {
+                                        listPayload.params.PageFilters[k].ColumnType = "YesNo";
+                                     }
+                                }
+                            })
                             $rootScope.lastLoadedListPayload = JSON.stringify(listPayload);
 
                             $Api_Service.entity.list(listPayload,
