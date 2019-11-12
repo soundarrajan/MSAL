@@ -133,6 +133,21 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   }
 
   @ObservableException()
+  flagVesselForReport(reportId: number): Observable<unknown> {
+    return this.api.watchVessel({ reportId });
+  }
+
+  @ObservableException()
+  verifyVesselReports(reportIds: number[]): Observable<unknown> {
+    return this.api.verifyReports({ reportIds });
+  }
+
+  @ObservableException()
+  raiseClaim(reportIds: number[]): Observable<unknown> {
+    return this.api.raiseClaim({});
+  }
+
+  @ObservableException()
   loadEventsLog(): Observable<unknown> {
     const reportId = this.reportDetailsState.id;
 
@@ -143,10 +158,6 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
       new QcLoadEventsLogFailedAction(),
       ModuleError.LoadEventsLogFailed
     );
-  }
-
-  ngOnDestroy(): void {
-    super.onDestroy();
   }
 
   addEventLog(eventDetails?: string): void {
@@ -174,5 +185,9 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   @ObservableException()
   updateEventLog$(id: number, newEventDetails: string):  Observable<unknown> {
     return this.store.dispatch(new QcUpdateEventLogAction(id, newEventDetails))
+  }
+
+  ngOnDestroy(): void {
+    super.onDestroy();
   }
 }

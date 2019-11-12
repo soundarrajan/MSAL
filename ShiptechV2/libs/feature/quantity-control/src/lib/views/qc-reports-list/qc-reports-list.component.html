@@ -20,6 +20,8 @@
   </div>
 </shiptech-wunderbar>
 
+<p-messages></p-messages>
+
 <div class="w-100 px-3 py-4" style="background: white;">
   <div class="row mb-2">
     <div class="col-md-6">
@@ -110,6 +112,6 @@
 <ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appAgCellTemplate let-data="data" let-value="value">
   <ng-container>
     {{value}}
-    <i (click)="watchVesselWithId(data?.id)" *ngIf="data && data.id" class="fa fa-flag vessel-to-watch"></i>
+    <i (click)="flagVesselForReport(data?.id)" *ngIf="data && data.id" class="fa fa-flag vessel-to-watch"></i>
   </ng-container>
 </ng-template>
