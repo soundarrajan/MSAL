@@ -115,17 +115,17 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse> {
-    return throwError('Not implemented');
+    return of(undefined);
   }
 
   @ApiCall()
   verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
-    return throwError('Not implemented');
+    return of(undefined);
   }
 
   @ApiCall()
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
-    return throwError('Not implemented');
+    return of(undefined);
   }
 
   @ApiCall()

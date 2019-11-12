@@ -7,6 +7,10 @@ import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes'
 import { QcReportsListState } from '../../store/reports-list/qc-reports-list.state';
 import { IQcReportListSummaryState } from '../../store/reports-list/qc-report-list-summary/qc-report-list-summary.state';
 import { Select } from '@ngxs/store';
+import { QcReportDetailsService } from '../../services/qc-report-details.service';
+import { QcReportsListItemModel } from '../../services/models/qc-reports-list-item.model';
+import { MessageService } from 'primeng/api';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -25,7 +29,10 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
-  constructor(public viewModel: QcReportsListViewModel, private messageBox: MessageBoxService) {
+  constructor(public viewModel: QcReportsListViewModel,
+              private messageBox: MessageBoxService,
+              private detailsService: QcReportDetailsService,
+              private messageService: MessageService) {
   }
 
   onPageChange(page: number): void {
@@ -40,16 +47,59 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
     this.messageBox.displayDialog({data, width: '500px', height: '600px'}, this.popupTemplate);
   }
 
-  watchVesselWithId(vesselId: number): void {
-    alert('Not implemented');
+  flagVesselForReport(reportId: number): void {
+    const gridApi = this.viewModel.gridViewModel.gridOptions.api;
+    this.detailsService.flagVesselForReport(reportId).pipe(
+      tap(() => {
+        gridApi.deselectAll();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Vessel for report [${reportId}] has been flagged`
+        });
+      })
+    ).subscribe();
   }
 
   raiseClaim(): void {
-    alert('Not implemented');
+    const gridApi = this.viewModel.gridViewModel.gridOptions.api;
+
+    const selectedReports = gridApi.getSelectedNodes();
+    if (!selectedReports.length) {
+      return;
+    }
+    const reportIds = selectedReports.map((rowNode) => (<QcReportsListItemModel>rowNode.data).id);
+    this.detailsService.raiseClaim(reportIds).pipe(
+      tap(() => {
+        gridApi.deselectAll();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Claim has been raised for reports: [${reportIds}]`
+        });
+      })
+    ).subscribe();
   }
 
   verifyVessels(): void {
-    alert('Not implemented');
+    const gridApi = this.viewModel.gridViewModel.gridOptions.api;
+
+    const selectedReports = gridApi.getSelectedNodes();
+    if (!selectedReports.length) {
+      return;
+    }
+
+    const reportIds = selectedReports.map((rowNode) => (<QcReportsListItemModel>rowNode.data).id);
+    this.detailsService.verifyVesselReports(reportIds).pipe(
+      tap(() => {
+        gridApi.deselectAll();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Reports [${reportIds}] has been varified`
+        });
+      })
+    ).subscribe();
   }
 
   ngOnInit(): void {
