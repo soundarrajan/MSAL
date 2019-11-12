@@ -16,7 +16,7 @@ import {
   SwitchActiveSludgeResponseAction
 } from '../../../store/report-view/details/actions/qc-vessel-response.actions';
 import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
-import { ConfirmationService, DialogService } from 'primeng/api';
+import { ConfirmationService, DialogService, MessageService } from 'primeng/api';
 import { RaiseClaimComponent } from '../raise-claim/raise-claim.component';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 
@@ -41,7 +41,8 @@ export class QcReportDetailsComponent implements OnInit {
               private store: Store,
               private detailsService: QcReportDetailsService,
               private dialogService: DialogService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService
   ) {
     //TODO: after loading
     this.entityStatus.setStatus({
@@ -113,10 +114,14 @@ export class QcReportDetailsComponent implements OnInit {
       message: 'Please confirm',
       icon: 'pi pi-info-circle',
       accept: () => {
-        alert('accepted');
+        this.messageService.add({ severity: 'success', summary: 'Verified', detail: 'Vessel report was verified' });
       },
       reject: () => {
-        alert('rejected');
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Verification canceled',
+          detail: 'Vessel report verification has been canceled'
+        });
       }
     });
   }
