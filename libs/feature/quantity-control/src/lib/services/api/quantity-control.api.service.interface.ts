@@ -45,8 +45,6 @@ export interface IQuantityControlApiService {
 
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse>;
 
-  getSurveyReportHistory(request: IGetSurveyReportHistoryRequest): Observable<IGetSurveyReportHistoryResponse>;
-
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse>;
 
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse>;
