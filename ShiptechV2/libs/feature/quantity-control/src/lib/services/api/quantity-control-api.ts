@@ -11,7 +11,8 @@ import {
   IGetQcReportDetailsByIdResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
-  IGetSoundingReportDetailsRequest, IGetSoundingReportDetailsResponse,
+  IGetSoundingReportDetailsRequest,
+  IGetSoundingReportDetailsResponse,
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
@@ -34,6 +35,10 @@ import {
   IGetQcSurveyHistoryListResponse
 } from './request-response/qc-survey-history-list.request-response';
 import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
+import {
+  ISaveReportDetailsRequest,
+  ISaveReportDetailsResponse
+} from './request-response/report-details.request-response';
 
 export namespace ProcurementApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -63,6 +68,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
   getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
     return throwError('Not implemented');
   }
+
+  @ObservableException()
+  saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
+    return throwError('Not implemented');
+  }
+
 
   @ObservableException()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
