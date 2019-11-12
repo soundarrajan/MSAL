@@ -16,6 +16,9 @@ import {
   SwitchActiveSludgeResponseAction
 } from '../../../store/report-view/details/actions/qc-vessel-response.actions';
 import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
+import { DialogService } from 'primeng/api';
+import { RaiseClaimComponent } from '../raise-claim/raise-claim.component';
+import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -33,7 +36,7 @@ export class QcReportDetailsComponent implements OnInit {
   @Select(QcReportState.getReportDetails) reportDetailsState$: Observable<IQcReportDetailsState>;
   @Select(QcReportState.getReportComment) comment$: Observable<string>;
 
-  constructor(private entityStatus: EntityStatusService, private store: Store, private detailsService: QcReportDetailsService) {
+  constructor(private entityStatus: EntityStatusService, private store: Store, private detailsService: QcReportDetailsService, private dialogService: DialogService) {
     //TODO: after loading
     this.entityStatus.setStatus({
       value: EntityStatus.Delivered
@@ -82,16 +85,28 @@ export class QcReportDetailsComponent implements OnInit {
     this.detailsService.updateReportComment(content).subscribe();
   }
 
-  save(): void {
-    alert('save');
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
   }
 
-  raiseClaim(): void {
-    alert('Not implemented');
+  save(): void {
+    this.dialogService.open(RaiseClaimComponent, {
+      header: 'Data to be saved',
+      width: '70%',
+      contentStyle: { 'max-height': '350px', 'overflow': 'auto' },
+      data: this.reportDetailsState
+    });
   }
 
   verifyVessel(): void {
     alert('Not implemented');
   }
 
+  raiseClaim(): void {
+    this.dialogService.open(RaiseClaimComponent, {
+      header: 'Raise claim',
+      width: '50%'
+    });
+  }
 }
