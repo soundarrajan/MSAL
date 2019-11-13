@@ -179,7 +179,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     private quantityControlService: QcReportDetailsService,
     private modelProps: QcSurveyHistoryListItemProps
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSurveyHistoryListGridViewModel.name));
+    super('qc-survey-history-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSurveyHistoryListGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 
