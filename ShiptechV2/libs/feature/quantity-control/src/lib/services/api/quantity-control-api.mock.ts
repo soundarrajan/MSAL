@@ -47,6 +47,11 @@ import {
   ISaveReportDetailsRequest,
   ISaveReportDetailsResponse
 } from './request-response/report-details.request-response';
+import {
+  IGetOrderProductsListRequest,
+  IGetOrderProductsListResponse
+} from './request-response/claims-list.request-response';
+import { getQcOrderProductsList } from './mock/qc-order-products-list.mock';
 
 @Injectable({
   providedIn: 'root'
@@ -116,6 +121,11 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse> {
     return of(undefined);
+  }
+
+  @ApiCall()
+  getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
+    return of({ items: getQcOrderProductsList(10), totalItems: 10 });
   }
 
   @ApiCall()

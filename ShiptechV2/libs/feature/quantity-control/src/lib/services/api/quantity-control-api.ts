@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   IGetQcReportsListRequest,
@@ -39,6 +39,10 @@ import {
   ISaveReportDetailsRequest,
   ISaveReportDetailsResponse
 } from './request-response/report-details.request-response';
+import {
+  IGetOrderProductsListRequest,
+  IGetOrderProductsListResponse
+} from './request-response/claims-list.request-response';
 
 export namespace ProcurementApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -93,6 +97,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
   @ObservableException()
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
     return throwError('Not implemented');
+  }
+
+  @ObservableException()
+  getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
+    return of(undefined);
   }
 
   @ObservableException()

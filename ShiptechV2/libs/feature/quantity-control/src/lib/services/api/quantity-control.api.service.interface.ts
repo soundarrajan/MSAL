@@ -33,6 +33,10 @@ import {
   ISaveReportDetailsRequest,
   ISaveReportDetailsResponse
 } from './request-response/report-details.request-response';
+import {
+  IGetOrderProductsListRequest,
+  IGetOrderProductsListResponse
+} from './request-response/claims-list.request-response';
 
 export interface IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -50,6 +54,8 @@ export interface IQuantityControlApiService {
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse>;
 
   sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse>;
+
+  getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse>;
 
   raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse>;
 

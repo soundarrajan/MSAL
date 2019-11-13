@@ -42,6 +42,7 @@ import {
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
 } from '../store/report-view/details/actions/qc-events-log.action';
+import { IGetOrderProductsListResponse } from './api/request-response/claims-list.request-response';
 
 @Injectable()
 export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
@@ -140,6 +141,11 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   @ObservableException()
   verifyVesselReports(reportIds: number[]): Observable<unknown> {
     return this.api.verifyReports({ reportIds });
+  }
+
+  @ObservableException()
+  getOrderProductsList(): Observable<IGetOrderProductsListResponse> {
+    return this.api.getOrderProductsList({});
   }
 
   @ObservableException()
