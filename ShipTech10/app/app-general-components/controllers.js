@@ -3141,6 +3141,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 if (el.hasClass('fa-square-o')) {
                     theCLC = $("#flat_orders_list");
                     for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                        // var rowId = i+1;
+                        // var disabledOrder = $('#' + rowId + '>td > label >input').attr('disabled');
                         if (!$scope.selectOrders[i + 1]) {
                             $scope.selectOrders[i + 1] = true;
                             $scope.selectOrderListRow(i + 1, i + 1, true);
@@ -3148,26 +3150,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 } else if (el.hasClass('fa-check-square-o')) {
                     for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                        // var rowId = i+1;
+                        // var disabledOrder = $('#' + rowId + '>td > label >input').attr('disabled');
                         if ($scope.selectOrders[i + 1]) {
                             $scope.selectOrders[i + 1] = false;
                             $scope.selectOrderListRow(i + 1, i + 1, true);
                         }
                     }
                 }
-                $.each($rootScope.selectedOrderListRows, function(ksc, vsc) {
-                    if (typeof $rootScope.editableCProwsModel != "undefined") {
-                        Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
-                            var value = $rootScope.editableCProwsModel[objectKey];
-                            if ("row-" + vsc.rowIndex == objectKey) {
-                                if (value.contractChanged) {
-                                    vsc.contract = value.contract;
-                                } else {
-                                    vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
-                                }
-                            }
-                        });
-                    }
-                });  
 
                 rowsWithOrder = 0;
                 $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){

@@ -344,6 +344,15 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 }
             });
         }
+        function setCheckbox(){
+            if (typeof ctrl.data.isVerified != "undefined" && typeof ctrl.data != null){
+                if (ctrl.data.isVerified.name == "Yes") {
+                    $('#verifyCheckboxInput').trigger('click');
+                    $('#verifyCheckboxInput').attr('disabled', 'disabled');
+
+                }
+            }
+        }
 
         //set all data mappings
         function loadData(data) {
@@ -361,6 +370,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty && ctrl.isSurveyorMandatory;
             ctrl.data.missingAgent = ctrl.isAgentMandatory && (ctrl.isAgentFreeText ? !ctrl.data.agentCounterpartyFreeText : !ctrl.data.agentCounterparty);
             ctrl.data.missingLab = !ctrl.data.lab;
+
 
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');	
 
@@ -461,6 +471,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             setOrderStatusHeader();
             calculateProductsAmountField();
             getOrderListForRequest();
+            setCheckbox();
 
             for (var i = 0; i < ctrl.additionalCosts.length; i++) addPriceUomChg(ctrl.additionalCosts[i]);
             updateOrderSummary();
@@ -2151,6 +2162,13 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                         if (val.additionalCosts.length == 0) delete val.additionalCosts;
                     }
                 });
+            }
+            if (typeof payload.isVerified != "undefined" && payload.isVerified != null) {
+                payload.isVerified = null;
+                payload.isVerified = {id: 1, name: "Yes"};
+                payload.isVerified.id = 1;
+                payload.isVerified.name = "Yes";
+                                        
             }
 
             if (ctrl.orderId) {
