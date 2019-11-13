@@ -41,6 +41,7 @@ const COMPONENTS = [
     ...COMPONENTS
   ],
   exports: [
+    AgPagingModule,
     ...COMPONENTS
   ]
 })
