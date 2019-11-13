@@ -1,8 +1,18 @@
+<div class="row" style="margin-top: -20px;">
+  <div class="col-6">
+    <h2>Raise claim</h2>
+  </div>
+  <div class="col-6" fxLayout="row" fxLayoutAlign="end center">
+    <button class="ui-button-warning mr-2" label="Raise Caim" pButton type="button"></button>
+    <div>
+      <span (click)="ref.close()" class="pi pi-times" style="cursor: pointer"></span>
+    </div>
+  </div>
+</div>
 <ag-grid-angular
   [gridOptions]="viewModel.gridViewModel.gridOptions"
-  appAgGridFirstColumnLocked
   appAgGridSizeToFit
   class="ag-theme-balham"
   id="qc-order-products-list"
-  style="height:500px">
+  style="height:300px">
 </ag-grid-angular>
