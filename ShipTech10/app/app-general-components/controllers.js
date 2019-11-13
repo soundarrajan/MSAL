@@ -3165,7 +3165,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     rowsWithOrder += 1;
                 }
             })
-            if (enabledNumber < rowsWithOrder) {
+            if (enabledNumber <= rowsWithOrder) {
                 var el = $('#selectAllOrderList').first();
                 if (el.hasClass('fa-square-o')) {
                     el.removeClass('fa-square-o');
@@ -3530,7 +3530,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             if (typeof all == "undefined") {
                 for (var i = 0; i <  CLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
                     if (!$scope.selectOrders[i + 1] && request.order.id ==  CLC.jqGrid.Ascensys.gridObject.rows[i].order.id) {
-                        //$scope.selectOrders[i + 1] = true;
+                        $scope.selectOrders[i + 1] = true;
                         rowIdx = i + 1;
                         request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
                         request.rowIndex = rowIdx;

@@ -631,6 +631,19 @@ window.increment = 0;
                                      }
                                 }
                             })
+                            $.each(listPayload.params.PageFilters.raw, function(k, v) {
+                                if (typeof listPayload.params.PageFilters.raw[k] != "undefined") {
+                                    if (listPayload.params.PageFilters.raw[k].column.columnValue == "IsVerified_Name") {
+                                        listPayload.params.PageFilters.raw[k].column.columnType = "YesNo";
+                                        listPayload.params.PageFilters.raw[k].condition.conditionApplicable = "YesNo"
+                                        if (listPayload.params.PageFilters.raw[k].value[0] == "1") {
+                                            listPayload.params.PageFilters.raw[k].value[0] = "Yes";
+                                        } else if(listPayload.params.PageFilters.raw[k].value[0] == "0") {
+                                             listPayload.params.PageFilters.raw[k].value[0] = "No";
+                                        }
+                                     }
+                                }
+                            })
                             $rootScope.lastLoadedListPayload = JSON.stringify(listPayload);
 
                             $Api_Service.entity.list(listPayload,

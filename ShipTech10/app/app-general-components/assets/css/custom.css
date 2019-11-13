@@ -3132,7 +3132,7 @@ td.gridcell input.cbox {
 tr[aria-selected="true"] .mt-checkbox>span:after {
     display: block;
 }
-tr[aria-selected="true"] .mt-checkbox>input[disabled="disabled"]+span:after {
+tr[aria-selected="true"] .mt-checkbox>input[disabled="disabled"]~span:after {
     display: none;
 }
 
