@@ -15,7 +15,6 @@ import { QcReportDetailsService } from '../../../../services/qc-report-details.s
 @Injectable()
 export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
 
-  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -78,7 +77,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     private quantityControlService: QcReportDetailsService,
     private modelProps: QcOrderProductsListItemProps
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
+    super('qc-order-products-list', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 
