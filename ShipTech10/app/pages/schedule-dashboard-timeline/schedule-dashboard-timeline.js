@@ -864,13 +864,41 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     preHtml += " ETD : " + moment(voyageStop[0].voyageDetail.etd).format($scope.dateFormat);
                 }
                 if (voyageStop[0].voyageDetail.deliveryFrom && voyageStop[0].voyageDetail.deliveryTo) {
-                    preHtml += " Delivery Window : " + moment(voyageStop[0].voyageDetail.deliveryFrom).format($scope.dateFormat) + " - " + moment(voyageStop[0].voyageDetail.deliveryTo).format($scope.dateFormat);
+                    var deliveryFrom = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryFrom);
+                    var deliveryTo = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryTo);
+                    preHtml += " Delivery Window : " + deliveryFrom + " - " + deliveryTo;
                 }               
                 preHtml += "</b></p>";
                 html = preHtml + html;              
             }
             return html;
         };
+        $scope.formatDateUtc = function (cellValue) {
+            var dateFormat = $scope.dateFormat;
+            var hasDayOfWeek = false;                  
+            dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+            formattedDate = moment(cellValue).format($scope.dateFormat);
+            if (formattedDate) {
+                var array = formattedDate.split(" ");
+                var format = [];
+                $.each(array, function(k,v) {
+                    if (array[k] != "00:00") {
+                        format = format + array[k] + " ";
+                    }
+                });
+                formattedDate = format;
+            }
+     
+            if (formattedDate) {
+                if (formattedDate.indexOf("0001") != -1) {
+                    formattedDate = "";
+                }
+            }
+            if (cellValue != null) {
+                return formattedDate;
+            }
+            return "";
+        }
 
 
         $scope.getTimelineStatus = function () {
