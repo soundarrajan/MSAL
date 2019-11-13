@@ -3582,6 +3582,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 } else {
                     $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
                 }
+                return;
 
             }
             console.log($rootScope.selectedOrderListRows);
@@ -3600,19 +3601,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 })
             }
 
-            // if ($rootScope.selectedOrderListRows.length < rowsWithOrder || rowsWithOrder == 0) {
-            //     var el = $('#selectAllOrderList').first();
-            //     if (el.hasClass('fa-check-square-o')) {
-            //         el.removeClass('fa-check-square-o');
-            //         el.addClass('fa-square-o');
-            //     }
-            // } else if ($rootScope.selectedOrderListRows.length === rowsWithOrder) {
-            //     var el = $('#selectAllOrderList').first();
-            //     if (el.hasClass('fa-square-o')) {
-            //         el.removeClass('fa-square-o');
-            //         el.addClass('fa-check-square-o');
-            //     }
-            // }
+            if ($rootScope.selectedOrderListRows.length < rowsWithOrder || rowsWithOrder == 0) {
+                var el = $('#selectAllOrderList').first();
+                if (el.hasClass('fa-check-square-o')) {
+                    el.removeClass('fa-check-square-o');
+                    el.addClass('fa-square-o');
+                }
+            } else if ($rootScope.selectedOrderListRows.length === rowsWithOrder) {
+                var el = $('#selectAllOrderList').first();
+                if (el.hasClass('fa-square-o')) {
+                    el.removeClass('fa-square-o');
+                    el.addClass('fa-check-square-o');
+                }
+            }
         }
         $scope.openContractPopupInCP = function(rowIdx) {
             CLC = $("#flat_contract_planning");
