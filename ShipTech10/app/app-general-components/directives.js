@@ -621,8 +621,13 @@ window.increment = 0;
                             }
                             $.each(listPayload.params.PageFilters, function(k, v) {
                                 if (typeof listPayload.params.PageFilters[k] != "undefined") {
-                                    if (listPayload.params.PageFilters[k].columnValue == "IsVerified_Id") {
+                                    if (listPayload.params.PageFilters[k].columnValue == "IsVerified_Name") {
                                         listPayload.params.PageFilters[k].ColumnType = "YesNo";
+                                        if (listPayload.params.PageFilters[k].Values[0] == "1") {
+                                            listPayload.params.PageFilters[k].Values[0] = "Yes";
+                                        } else if(listPayload.params.PageFilters[k].Values[0] == "0") {
+                                             listPayload.params.PageFilters[k].Values[0] = "No";
+                                        }
                                      }
                                 }
                             })

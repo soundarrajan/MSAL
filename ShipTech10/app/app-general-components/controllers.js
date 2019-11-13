@@ -906,7 +906,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                              isVerifiedLine = true;
                         }
                     }
-                    if (rowObject.orderStatus.displayName == "Cancelled") {
+                    if (typeof(rowObject.orderStatus) != "undefined" && rowObject.orderStatus.displayName == "Cancelled") {
                         isVerifiedLine = true;
                     }
                     if (procurementSettings.order.orderVerificationReq.id == 1) {
