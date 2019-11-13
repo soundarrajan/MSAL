@@ -131,8 +131,8 @@ export class QcReportDetailsComponent implements OnInit {
 
   raiseClaim(): void {
     this.dialogService.open(RaiseClaimComponent, {
-      header: 'Raise claim',
-      width: '50%'
+      width: '50%',
+      showHeader: false
     });
   }
 }
