@@ -3160,7 +3160,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
             }
             rowsWithOrder = 0;
-            $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
+            $.each(theCLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
                 if (gdv.order) {
                     rowsWithOrder += 1;
                 }
