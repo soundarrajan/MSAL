@@ -998,7 +998,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             // debugger;
             // only type text
 
-            if (column == "IsVerified_Name") {
+            if (column == "IsVerified_Id") {
                 $scope.columnFilters[column][key].column.columnType = "Bool";
             }
 

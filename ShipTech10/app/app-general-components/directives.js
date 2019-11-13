@@ -621,7 +621,7 @@ window.increment = 0;
                             }
                             $.each(listPayload.params.PageFilters, function(k, v) {
                                 if (typeof listPayload.params.PageFilters[k] != "undefined") {
-                                    if (listPayload.params.PageFilters[k].columnValue == "IsVerified_Name") {
+                                    if (listPayload.params.PageFilters[k].columnValue == "IsVerified_Id") {
                                         listPayload.params.PageFilters[k].ColumnType = "YesNo";
                                      }
                                 }
