@@ -44,7 +44,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
       sortable: true,
       resizable: true,
       filter: 'agTextColumnFilter',
-      width: 150
+      minWidth: 150
     }
   };
 
@@ -52,8 +52,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.callId,
     colId: QcSurveyHistoryListColumns.callId,
     field: this.modelProps.id,
-    width: 50,
     hide: false,
+    width:100,
     suppressToolPanel: true,
     cellRendererFramework: AgCellTemplateComponent
   };
@@ -61,25 +61,19 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   portCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.port,
     colId: QcSurveyHistoryListColumns.port,
-    field: this.modelProps.port,
-    width: 50,
-    hide: false
+    field: this.modelProps.port
   };
 
   surveyDateCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.surveyDate,
     colId: QcSurveyHistoryListColumns.surveyDate,
     field: this.modelProps.surveyDate,
-    width: 50,
-    hide: false
   };
 
   surveyStatusCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.surveyStatus,
     colId: QcSurveyHistoryListColumns.surveyStatus,
     field: this.modelProps.surveyStatus,
-    width: 50,
-    hide: false,
     cellClassRules: {
       'cell-background pending': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusEnum.Pending,
       'cell-background verified': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusEnum.Verified
@@ -89,33 +83,25 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   matchedQuantityCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.matchedQuantity,
     colId: QcSurveyHistoryListColumns.matchedQuantity,
-    field: this.modelProps.matchedQuantity,
-    width: 50,
-    hide: false
+    field: this.modelProps.matchedQuantity
   };
 
   logBookRobBeforeDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.logBookRobBeforeDelivery,
-    field: this.modelProps.logBookRobBeforeDelivery,
-    width: 50,
-    hide: false
+    field: this.modelProps.logBookRobBeforeDelivery
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.measuredRobBeforeDelivery,
-    field: this.modelProps.measuredRobBeforeDelivery,
-    width: 50,
-    hide: false
+    field: this.modelProps.measuredRobBeforeDelivery
   };
 
   robBeforeDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.robBeforeDelivery,
     colId: QcSurveyHistoryListColumns.robBeforeDelivery,
     field: this.modelProps.robBeforeDelivery,
-    width: 50,
-    hide: false,
     cellClassRules: {
       'cell-background red': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).robBeforeDelivery < 0
     }
@@ -124,25 +110,19 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   bdnQuantityCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.bdnQuantity,
     colId: QcSurveyHistoryListColumns.bdnQuantity,
-    field: this.modelProps.bdnQuantity,
-    width: 50,
-    hide: false
+    field: this.modelProps.bdnQuantity
   };
 
   measuredDeliveredQuantityCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredDeliveredQuantity,
     colId: QcSurveyHistoryListColumns.measuredDeliveredQuantity,
-    field: this.modelProps.measuredDeliveredQuantity,
-    width: 50,
-    hide: false
+    field: this.modelProps.measuredDeliveredQuantity
   };
 
   deliveredQuantityCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.deliveredQuantity,
     colId: QcSurveyHistoryListColumns.deliveredQuantity,
     field: this.modelProps.deliveredQuantity,
-    width: 50,
-    hide: false,
     cellClassRules: {
       'cell-background red': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).deliveredQuantity < 0
     }
@@ -151,57 +131,43 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   logBookRobAfterDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.logBookRobAfterDelivery,
     colId: QcSurveyHistoryListColumns.logBookRobAfterDelivery,
-    field: this.modelProps.logBookRobAfterDelivery,
-    width: 50,
-    hide: false
+    field: this.modelProps.logBookRobAfterDelivery
   };
 
   measuredRobAfterDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredRobAfterDelivery,
     colId: QcSurveyHistoryListColumns.measuredRobAfterDelivery,
-    field: this.modelProps.measuredRobAfterDelivery,
-    width: 50,
-    hide: false
+    field: this.modelProps.measuredRobAfterDelivery
   };
 
   robAfterDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.robAfterDelivery,
     colId: QcSurveyHistoryListColumns.robAfterDelivery,
-    field: this.modelProps.robAfterDelivery,
-    width: 50,
-    hide: false
+    field: this.modelProps.robAfterDelivery
   };
 
   logBookSludgeBeforeDischargeCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.logBookSludgeBeforeDischarge,
     colId: QcSurveyHistoryListColumns.logBookSludgeBeforeDischarge,
-    field: this.modelProps.logBookSludgeBeforeDischarge,
-    width: 50,
-    hide: false
+    field: this.modelProps.logBookSludgeBeforeDischarge
   };
 
   measuredSludgeRobBeforeDischargeCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcSurveyHistoryListColumns.measuredSludgeRobBeforeDischarge,
-    field: this.modelProps.measuredSludgeRobBeforeDischarge,
-    width: 50,
-    hide: false
+    field: this.modelProps.measuredSludgeRobBeforeDischarge
   };
 
   sludgeDischargedQuantityCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.sludgeDischargedQuantity,
     colId: QcSurveyHistoryListColumns.sludgeDischargedQuantity,
-    field: this.modelProps.sludgeDischargedQuantity,
-    width: 50,
-    hide: false
+    field: this.modelProps.sludgeDischargedQuantity
   };
 
   commentCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.comment,
     colId: QcSurveyHistoryListColumns.comment,
-    field: this.modelProps.comment,
-    width: 50,
-    hide: false
+    field: this.modelProps.comment
   };
 
 
