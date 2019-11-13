@@ -1,14 +1,12 @@
 import { MenuItem } from 'primeng/api';
 import * as _ from 'lodash';
+import { Omit } from '@shiptech/core/utils/type-definitions';
 
 export interface OrderedMenuItem extends MenuItem {
   order?: number;
 }
 
 export type KeyedMenuItems = Record<string, KeyedMenuItem>;
-
-//TODO: Move to proper core types
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 export interface KeyedMenuItem extends Omit<OrderedMenuItem, 'items'> {
   items?: KeyedMenuItems;
