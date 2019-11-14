@@ -42,7 +42,7 @@
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.seller.displayName ? counterparty.seller.displayName : counterparty.seller.name}}" readonly ng-model="counterparty.seller.name"></td><!--  Counterparty -->
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.physicalSupplier.displayName ? counterparty.physicalSupplier.displayName : counterparty.physicalSupplier.name}}" readonly ng-model="counterparty.physicalSupplier.name"></td><!--  Physical Supplier -->
 				            	<td width="50px">
-				            		<input ng-disabled="counterparty.hasNoQuote || counterparty.requestProductStatus.name == 'Stemmed' " ng-class="{'border-red' : (!location.allowZeroPricing && (counterparty.price <= 0) && counterparty.price )}" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.price" ng-change="$ctrl.priceChanged()">
+				            		<input ng-disabled="counterparty.hasNoQuote || counterparty.requestProductStatus.name == 'Stemmed' " ng-class="{'border-red' : (!location.allowZeroPricing && (counterparty.price <= 0) && counterparty.price )}" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.price" ng-change="$ctrl.priceChanged()" ng-blur="$ctrl.deletePrice(counterparty)">
 				            	</td><!--  Price -->
 				            	<td width="50px">
 				            		<input class="form-control" 

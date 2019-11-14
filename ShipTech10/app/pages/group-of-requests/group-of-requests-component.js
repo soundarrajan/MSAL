@@ -220,12 +220,22 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         		}
         	})
         }
+        ctrl.isPhysicalSupplierMandatory = function (counterparty) {
+            if (ctrl.fieldVisibility.isPhysicalSupplierMandatory) {
+                if (typeof counterparty.physicalSupplier == "undefined" || counterparty.physicalSupplier == null){
+                    toastr.info("Please make sure you have selected a Physical Supplier before entering price");
+                    counterparty.price = null;
+                }
+                
+            }
+        }
 
         ctrl.initScreenAfterSendOrSkipRfq = function() {
                 // if (action == 'sendRFQ') {
                 //     $state.reload();
                 //     return;
                 // }
+            
 	        	$(".checkAllOnLocation").prop("checked", false);
                 ctrl.requirements = [];
                 ctrl.selectedNoQuoteItems = [];
@@ -5670,6 +5680,9 @@ ctrl.setProductData = function(data, loc) {
             });
             $rootScope.shouldRefreshGroup = false;
 	    })  
+        $rootScope.$on("isPhysicalSupplierMandatory", function (event, res) {
+            ctrl.isPhysicalSupplierMandatory(res);
+        })  
 
         $rootScope.$on("supplierCardChangedData", function (event, supplierCardData) {
             console.log(supplierCardData);

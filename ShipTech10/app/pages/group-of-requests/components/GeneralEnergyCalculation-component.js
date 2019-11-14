@@ -104,8 +104,7 @@ angular.module('shiptech.components')
 				}
 				var updatePayload = angular.copy(ctrl.energyCalculationBladeData.data);
 				ctrl.energyCalculationBladeData.data = null;
-                groupOfRequestsModel.updateEnergySpecValuesByProduct(updatePayload).then(function (data) {
-            		// $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);  
+                groupOfRequestsModel.updateEnergySpecValuesByProduct(updatePayload).then(function (data) { 
             		$rootScope.shouldRefreshGroup = true;
             		if (!ctrl.savedFromBladeClose) {
 	                	ctrl.getEnergyBladeContentByProduct(ctrl.energyCalculationBladePayload.payload, function(){
@@ -167,6 +166,9 @@ angular.module('shiptech.components')
 
 			ctrl.priceChanged = function() {
 				ctrl.computeMinPricePerLocations();
+			}
+			ctrl.deletePrice = function(counterparty) {
+				$rootScope.$broadcast("isPhysicalSupplierMandatory", counterparty);
 			}
 
 		}
