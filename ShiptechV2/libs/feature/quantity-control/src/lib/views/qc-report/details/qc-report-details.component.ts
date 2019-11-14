@@ -3,13 +3,13 @@ import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report-view/qc-report.state';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import {
   QcVesselResponseBaseStateItem,
   QcVesselResponseSludgeStateItem
 } from '../../../store/report-view/details/qc-vessel-responses.state';
 import { QcReportDetailsService } from '../../../services/qc-report-details.service';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import _ from 'lodash';
 import {
   SwitchActiveBunkerResponseAction,
@@ -103,12 +103,23 @@ export class QcReportDetailsComponent implements OnInit {
   }
 
   save(): void {
-    this.dialogService.open(RaiseClaimComponent, {
-      header: 'Data to be saved',
-      width: '70%',
-      contentStyle: { 'max-height': '350px', 'overflow': 'auto' },
-      data: this.reportDetailsState
-    });
+    this.detailsService.saveReportDetails().pipe(
+      tap(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Saved',
+          detail: 'Vessel report changes were saved'
+        });
+      }),
+      catchError((e) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Saving error',
+          detail: 'Vessel report changes were not saved'
+        });
+        return throwError(e);
+      })
+    ).subscribe();
   }
 
   verifyVessel(): void {
@@ -117,9 +128,11 @@ export class QcReportDetailsComponent implements OnInit {
       message: 'Please confirm',
       icon: 'pi pi-info-circle',
       accept: () => {
+        this.messageService.clear();
         this.messageService.add({ severity: 'success', summary: 'Verified', detail: 'Vessel report was verified' });
       },
       reject: () => {
+        this.messageService.clear();
         this.messageService.add({
           severity: 'error',
           summary: 'Verification canceled',
