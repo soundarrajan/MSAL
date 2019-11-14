@@ -4907,8 +4907,8 @@ APP_MASTERS.controller("Controller_Master", [
         		// $('.date-picker-icon').next("input").val("");
 
         		// try refresh datepicker
-        		$('[ng-model="formValues.PaymentDateFrom"]').parent().find("input").val("").trigger("change");
-        		$('[ng-model="formValues.PaymentDateTo"]').parent().find("input").val("").trigger("change");
+                // $('[ng-model="formValues.PaymentDateFrom"]').parent().find("input").val("").trigger("change");
+                // $('[ng-model="formValues.PaymentDateTo"]').parent().find("input").val("").trigger("change");
         		if ($('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek')) {
 	        		$('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek').text("")
         		}
