@@ -1,5 +1,4 @@
 import { ILookupDto } from '../../../lookups/lookup-dto.interface';
-import * as _ from 'lodash';
 
 export const MockProductsLookup: ILookupDto[] = [
   { id: 1, name: 'Cadalene' },
@@ -22,6 +21,5 @@ export const MockProductsLookup: ILookupDto[] = [
   { id: 18, name: 'Mineral oil' },
   { id: 19, name: 'Morris J. Berman oil spill' },
   { id: 20, name: 'Template:Motor fuel' },
-  { id: 21, name: 'Motul (company)' },
-  ..._.range(100).map((__, index) => ({ id: index + 30, name: `Product ${index + 30}` }))
+  { id: 21, name: 'Motul (company)' }
 ];

@@ -5,11 +5,11 @@ import { MockProductsLookup } from '@shiptech/core/services/lookups-api/mock-dat
 import { IQcOrderProductsListItemDto } from '../dto/qc-order-products-list-item.dto';
 
 export function getQcOrderProductsList(n: number): IQcOrderProductsListItemDto[] {
-  return _.range(1, n).map(() => {
+  return _.range(n).map((id) => {
     const product = _.sample(MockProductsLookup);
     return {
-      orderId: n,
-      orderNo: faker.random.word(),
+      orderId: id + 1,
+      orderNo: 'No' + (id + 1),
       counterpartyId: faker.random.number(),
       counterpartyName: faker.company.companyName(),
       productId: product.id,

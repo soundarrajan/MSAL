@@ -3,12 +3,14 @@
     <h2>Raise claim</h2>
   </div>
   <div class="col-6" fxLayout="row" fxLayoutAlign="end center">
-    <button class="ui-button-warning mr-2" label="Raise Caim" pButton type="button"></button>
+    <button (click)="raiseClaim()" class="ui-button-warning mr-2" label="Raise" pButton type="button"></button>
     <div>
       <span (click)="ref.close()" class="pi pi-times" style="cursor: pointer"></span>
     </div>
   </div>
 </div>
+
+<p-messages></p-messages>
 <ag-grid-angular
   [gridOptions]="viewModel.gridViewModel.gridOptions"
   appAgGridSizeToFit
