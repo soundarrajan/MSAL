@@ -315,6 +315,9 @@ export class QcReportState {
 
       const sludgeResponseCategories = vesselResponses.sludge.map(sludgeResponse => new QcVesselResponseSludgeStateItem(sludgeResponse));
       const bunkerResponseCategories = vesselResponses.bunker.map(bunkerResponse => new QcVesselResponseBaseStateItem(bunkerResponse));
+
+      const productTypesMap = _.keyBy((success.dto.productTypes || []).map(productType => new QcProductTypeListItemStateModel(productType)));
+
       patchState({
         details: {
           ...state.details,
@@ -323,8 +326,7 @@ export class QcReportState {
           id: success.dto.id,
           portCallId: success.dto.portCallId,
           productTypes: success.dto.productTypes.map(productType => productType.productTypeId),
-          productTypesById: _.keyBy((success.dto.productTypes || []).map(productType => new QcProductTypeListItemStateModel(productType)),
-            productType => productType.productTypeId),
+          productTypesById: productTypesMap,
           // TODO: load other props
           comment: success.dto.comment,
           vesselResponse: {

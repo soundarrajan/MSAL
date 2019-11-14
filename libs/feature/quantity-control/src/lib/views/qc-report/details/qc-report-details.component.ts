@@ -102,6 +102,10 @@ export class QcReportDetailsComponent implements OnInit {
     this.detailsService.updateReportComment(content).subscribe();
   }
 
+  openEmailPreview(): void {
+    alert('Oh, such an email preview');
+  }
+
   save(): void {
     this.detailsService.saveReportDetails().pipe(
       tap(() => {

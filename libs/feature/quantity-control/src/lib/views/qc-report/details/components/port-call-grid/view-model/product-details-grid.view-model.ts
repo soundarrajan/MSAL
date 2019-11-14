@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { ColDef, ColGroupDef, GridOptions, IServerSideGetRowsParams, ValueGetterParams } from 'ag-grid-community';
+import { ColDef, ColGroupDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   ProductDetailsColGroupsEnum,
@@ -256,17 +256,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     };
   }
 
-  relativeValueGetter(conversionRateCb: () => number): ((params: ValueGetterParams) => any) | string {
-    return (params: ValueGetterParams) => {
-      return params.data[params.colDef.field] / conversionRateCb();
-    };
-  }
-
   getDifference(minuend: number, suptrahend: number): number {
     return new Decimal(minuend).sub(new Decimal(suptrahend)).toNumber();
   }
 
-  getSelectedUomValue(groupId: ProductDetailsColGroupsEnum): Observable<IQcUomState> {
+  getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IQcUomState> {
     switch (groupId) {
       case ProductDetailsColGroupsEnum.RobBeforeDelivery: {
         return this.robUomBeforeDelivery$;
@@ -284,7 +278,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
       }
 
       default: {
-        throwError('Invalid groupId');
+        return throwError('Invalid groupId');
         break;
       }
     }
@@ -312,9 +306,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
         break;
       }
     }
-
-    // TODO: Move this into an state listener for siwtchUom actions
-    // this.gridApi.redrawRows();
   }
 
 }
