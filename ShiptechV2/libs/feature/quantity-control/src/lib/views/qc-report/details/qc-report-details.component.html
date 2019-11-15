@@ -1,9 +1,9 @@
 <shiptech-qc-report-details-toolbar>
   <div class="col-6">
     <div style="float:right">
-      <button (click)="save()" class="ui-button-info mr-1" label="Save" pButton type="button"></button>
-      <button (click)="raiseClaim()" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
-      <button (click)="verifyVessel()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
+      <button (click)="save()" [disabled]="isBusy$ | async" class="ui-button-info mr-1" label="Save" pButton type="button"></button>
+      <button (click)="raiseClaim()" [disabled]="isBusy$ | async" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
+      <button (click)="verifyVessel()" [disabled]="isBusy$ | async" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
     </div>
   </div>
 </shiptech-qc-report-details-toolbar>
@@ -20,11 +20,11 @@
             <span class="badge blue">Claims: {{(reportDetailsState$ | async).nbOfCliams}}</span> |
             <span class="badge blue">Deliveries: {{(reportDetailsState$ | async).nbOfDeliveries}}</span> |
             <span class="badge info">Vessel to Watch
+              <!-- add  [disabled]="isBusy$ | async" on the button/checkbox that will trigger flagging the vessel -->
               <i class="fa fa-flag"></i>
             </span>
           </div>
         </p-header>
-
 
         <shiptech-port-call-grid></shiptech-port-call-grid>
       </p-panel>
@@ -43,12 +43,14 @@
               <!--                            TODO: Find a way to bind number values-->
               <p-inputMask (ngModelChange)="updateSludgeVesselResponse('sludge', $event)"
                            [ngModelOptions]="{updateOn: 'blur'}"
+                           [disabled]="isBusy$ | async"
                            [ngModel]="(sludgeVesselResponseActiveCategory$ | async)?.sludge"
                            [style]="{'width': '100px'}"
                            mask="99.999"></p-inputMask>
             </div>
             <div class="col-3">
               <p-checkbox (ngModelChange)="updateSludgeVesselResponse('sludgeVerified', $event)"
+                          [disabled]="isBusy$ | async"
                           [ngModel]="(sludgeVesselResponseActiveCategory$ | async)?.sludgeVerified"
                           binary="true" label="Verify Sludge Qty"></p-checkbox>
             </div>
@@ -61,6 +63,7 @@
           </div>
           <div class="col-10">
             <p-dropdown (ngModelChange)="changeActiveSludgeResponse($event)" [autoWidth]="false" [dataKey]="'id'"
+                        [disabled]="isBusy$ | async"
                         [ngModel]="(sludgeVesselResponseActiveCategory$ | async)"
                         [optionLabel]="'name'"
                         [options]="sludgeVesselResponseCategories$ | async" [style]="{'width':'100%'}"></p-dropdown>
@@ -73,6 +76,7 @@
           </div>
           <div class="col-10">
             <textarea (ngModelChange)="updateSludgeVesselResponse('description', $event)"
+                      [disabled]="isBusy$ | async"
                       [ngModelOptions]="{updateOn: 'blur'}"
                       [ngModel]="(sludgeVesselResponseActiveCategory$ | async)?.description"
                       [rows]="5" pInputTextare style="width: 100%"></textarea>
@@ -94,6 +98,7 @@
           </div>
           <div class="col-10">
             <p-dropdown (ngModelChange)="changeActiveBunkerResponse($event)" [autoWidth]="false" [dataKey]="'id'"
+                        [disabled]="isBusy$ | async"
                         [ngModel]="(bunkerVesselResponseActiveCategory$ | async)"
                         [optionLabel]="'name'"
                         [options]="bunkerVesselResponseCategories$ | async" [style]="{'width':'100%'}"></p-dropdown>
@@ -106,6 +111,7 @@
           </div>
           <div class="col-10">
             <textarea (ngModelChange)="updateBunkerVesselResponse('description', $event)"
+                      [disabled]="isBusy$ | async"
                       [ngModelOptions]="{updateOn: 'blur'}"
                       [ngModel]="(bunkerVesselResponseActiveCategory$ | async)?.description"
                       [rows]="5" pInputTextare style="width: 100%"></textarea>
@@ -126,6 +132,7 @@
           <div class="col-11">
             <textarea (ngModelChange)="updateComment($event)" [ngModelOptions]="{updateOn: 'blur'}"
                       [ngModel]="comment$ | async" [rows]="5"
+                      [disabled]="isBusy$ | async"
                       pInputTextare
                       style="width: 100%"></textarea>
           </div>
@@ -159,5 +166,3 @@
     </div>
   </div>
 </div>
-
-<p-confirmDialog></p-confirmDialog>

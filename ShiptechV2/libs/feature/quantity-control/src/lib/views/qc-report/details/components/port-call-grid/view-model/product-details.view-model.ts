@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { LOOKUPS_API_SERVICE } from '@shiptech/core/services/lookups-api/lookups-api.service';
 import { ILookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service.interface';
 import { IUomLookupDto } from '@shiptech/core/services/lookups-api/mock-data/uoms.mock';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 
 export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productTypeId' | 'productTypeName' | 'original'>;
 
@@ -20,7 +21,7 @@ export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateMo
 export class ProductDetailsViewModel {
 
   productTypes$: Observable<ProductTypeListItemViewModel[]>;
-  uomsLookup$: Observable<IUomLookupDto[]>;
+  uomsLookup$: Observable<ILookupDto[]>;
 
   public numberMaskFormat: string = this.getNumberMaskFormat();
   private minIntegerDigits: number = 1;

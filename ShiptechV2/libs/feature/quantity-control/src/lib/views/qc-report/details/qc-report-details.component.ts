@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report-view/qc-report.state';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   QcVesselResponseBaseStateItem,
   QcVesselResponseSludgeStateItem
@@ -26,8 +26,9 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
   styleUrls: ['./qc-report-details.component.scss'],
   providers: [ConfirmationService]
 })
-export class QcReportDetailsComponent implements OnInit {
-// TODO: Missing NgDestroy
+export class QcReportDetailsComponent implements OnInit, OnDestroy {
+
+  private _destroy$ = new Subject();
 
   public bunkerVesselResponseCategories$: Observable<QcVesselResponseBaseStateItem[]>;
   public bunkerVesselResponseActiveCategory$: Observable<QcVesselResponseBaseStateItem>;
@@ -36,6 +37,8 @@ export class QcReportDetailsComponent implements OnInit {
 
   @Select(QcReportState.getReportDetails) reportDetailsState$: Observable<IQcReportDetailsState>;
   @Select(QcReportState.getReportComment) comment$: Observable<string>;
+  @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
+
   eventsLogLoaded: boolean;
   surveyHistoryLoaded: boolean;
   soundingReportLoaded: boolean;
@@ -103,6 +106,8 @@ export class QcReportDetailsComponent implements OnInit {
   }
 
   save(): void {
+    this.detailsService.saveReport();
+
     this.dialogService.open(RaiseClaimComponent, {
       header: 'Data to be saved',
       width: '70%',
@@ -134,5 +139,10 @@ export class QcReportDetailsComponent implements OnInit {
       header: 'Raise claim',
       width: '50%'
     });
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

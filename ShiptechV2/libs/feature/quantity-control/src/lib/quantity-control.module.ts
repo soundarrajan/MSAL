@@ -40,6 +40,7 @@ import {
   NumberFormat
 } from './views/qc-report/details/components/port-call-grid/view-model/number.format';
 import { RaiseClaimComponent } from './views/qc-report/raise-claim/raise-claim.component';
+import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 
 @NgModule({
   imports: [
@@ -93,8 +94,7 @@ import { RaiseClaimComponent } from './views/qc-report/raise-claim/raise-claim.c
         ...new NumberFormat()
       }
     },
-
-    // TODO: Recheck, if we don't provide it here it crashes inside of PortCallsGridViewModel
+    QcReportDetailsUnsavedChangesGuard,
     QcReportDetailsService
   ]
 })

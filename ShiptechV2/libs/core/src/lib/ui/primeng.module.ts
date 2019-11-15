@@ -13,7 +13,7 @@ import {
   CheckboxModule,
   ChipsModule,
   CodeHighlighterModule,
-  ColorPickerModule,
+  ColorPickerModule, ConfirmationService,
   ConfirmDialogModule,
   ContextMenuModule,
   DialogService,
@@ -149,7 +149,8 @@ const MODULES = [
   ],
   providers: [
     DialogService,
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   exports: [
     ...MODULES

@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { IBreadcrumb } from './breadcrumbs.model';
 import { BreadcrumbsService } from './breadcrumbs.service';
 import { MenuItem } from 'primeng/primeng';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -11,14 +12,18 @@ import { MenuItem } from 'primeng/primeng';
   template: `
       <div fxLayout="row" fxLayoutAlign="start center" class="breadcrumbs-container">
           <p-breadcrumb fxFlex="auto" [model]="breadcrumbs" [home]="{icon: 'pi pi-home'}"></p-breadcrumb>
-          <router-outlet class="breadcrumbs-right" fxFlex="initial" fxLayoutAlign="end start" name="breadcrumbs-right"></router-outlet>
+          <router-outlet class="breadcrumbs-right" fxFlex="initial" fxLayoutAlign="end start"
+                         name="breadcrumbs-right"></router-outlet>
       </div>
   `,
   styleUrls: ['./breadcrumbs.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent implements OnInit, OnDestroy {
+
+  private _destroy$ = new Subject();
+
   private ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
   private ROUTE_PARAM_BREADCRUMB: string = 'breadcrumb';
   private PREFIX_BREADCRUMB: string = 'prefixBreadcrumb';
@@ -29,7 +34,7 @@ export class BreadcrumbComponent implements OnInit {
   public breadcrumbs: MenuItem[];
 
   public constructor(private breadcrumbService: BreadcrumbsService, private activatedRoute: ActivatedRoute, private router: Router) {
-    breadcrumbService.get().subscribe((breadcrumbs: IBreadcrumb[]) => {
+    breadcrumbService.get().pipe(takeUntil(this._destroy$)).subscribe((breadcrumbs: IBreadcrumb[]) => {
       this.breadcrumbs = breadcrumbs.map(breadcrumb => ({ label: breadcrumb.label, routerLink: breadcrumb.url }));
     });
   }
@@ -48,7 +53,9 @@ export class BreadcrumbComponent implements OnInit {
     // subscribe to the NavigationEnd event
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd
-      )).subscribe(event => {
+      ),
+      takeUntil(this._destroy$)
+    ).subscribe(event => {
       this.generateBreadcrumbTrail();
     });
   }
@@ -117,5 +124,10 @@ export class BreadcrumbComponent implements OnInit {
       });
       this.breadcrumbService.store(this.currentBreadcrumbs);
     }
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }
