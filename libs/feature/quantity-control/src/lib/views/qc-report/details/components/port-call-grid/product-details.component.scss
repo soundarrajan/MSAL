@@ -42,11 +42,11 @@
 
     .ag-header-group-cell {
       overflow: visible;
-      z-index: 9999;
+      z-index: 1000;
 
       .ag-header-group-cell-label {
         overflow: visible;
-        z-index: 9999;
+        z-index: 1000;
       }
     }
   }

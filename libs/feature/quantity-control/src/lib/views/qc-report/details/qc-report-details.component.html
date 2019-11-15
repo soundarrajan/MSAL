@@ -1,6 +1,7 @@
 <shiptech-qc-report-details-toolbar>
   <div class="col-6">
     <div style="float:right">
+      <button (click)="openEmailPreview()" [disabled]="isBusy$ | async" class="mr-1" icon="pi pi-envelope" pButton></button>
       <button (click)="save()" [disabled]="isBusy$ | async" class="ui-button-info mr-1" label="Save" pButton type="button"></button>
       <button (click)="raiseClaim()" [disabled]="isBusy$ | async" class="ui-button-warning mr-1" label="Raise Caim" pButton type="button"></button>
       <button (click)="verifyVessel()" [disabled]="isBusy$ | async" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
