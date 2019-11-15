@@ -10,7 +10,7 @@
              appAgColumnHeaderTemplate>
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <p-button (onClick)="add()" icon="pi pi-plus" iconPos="left"></p-button>
+      <p-button (onClick)="add()" icon="pi pi-plus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
     </div>
   </ng-container>
 </ng-template>
@@ -20,7 +20,7 @@
              appAgCellTemplate let-item="data">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <p-button (onClick)="remove(item)" icon="pi pi-minus" iconPos="left"></p-button>
+      <p-button (onClick)="remove(item)" icon="pi pi-minus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
     </div>
   </ng-container>
 </ng-template>
@@ -31,9 +31,11 @@
   <ng-container>
     <div fxLayout="row">
       <textarea fxFlexFill [rows]="2" [cols]="30"
-                (ngModelChange)="updateEventDetails(item, $event)"
+                (ngModelChange)="update(item, $event)"
                 [ngModelOptions]="{updateOn: 'blur'}"
-                [ngModel]="value"></textarea>
+                [ngModel]="value"
+                [disabled]="isBusy$ | async"
+      ></textarea>
     </div>
 
   </ng-container>

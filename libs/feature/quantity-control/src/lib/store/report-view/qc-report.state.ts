@@ -42,6 +42,11 @@ import {
 } from './details/actions/qc-events-log.action';
 import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
+import {
+  QcSaveReportDetailsAction,
+  QcSaveReportDetailsFailedAction,
+  QcSaveReportDetailsSuccessfulAction
+} from './details/actions/save-report.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -50,6 +55,27 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 export class QcReportState {
 
   static default = new QcReportStateModel();
+
+  @Selector()
+  static isBusy(state: IQcReportState): boolean {
+    const isBusy = [
+      state.details._isLoading,
+      state.details.isSaving,
+      state.details.isVerifying,
+      state.details.isRaisingClaim,
+    ];
+    return isBusy.some(s => s);
+  }
+
+  @Selector()
+  static hasUnsavedChanges(state: IQcReportState): boolean {
+    return state.details.hasChanges;
+  }
+
+  @Selector()
+  static canSave(state: IQcReportState): boolean {
+    return true;
+  }
 
   @Selector()
   static getReportDetails(state: IQcReportState): IQcReportDetailsState {
@@ -147,6 +173,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         productTypesById: {
           ...state.details.productTypesById,
           [productTypeId]: {
@@ -170,6 +197,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         vesselResponse: {
           ...state.details.vesselResponse,
           sludge: {
@@ -194,6 +222,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         vesselResponse: {
           ...state.details.vesselResponse,
           sludge: {
@@ -213,6 +242,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         vesselResponse: {
           ...state.details.vesselResponse,
           bunker: {
@@ -237,6 +267,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         vesselResponse: {
           ...state.details.vesselResponse,
           bunker: {
@@ -301,6 +332,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         comment
       }
     });
@@ -416,6 +448,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         eventsLog: {
           ...state.details.eventsLog,
           items: [...state.details.eventsLog.items, newEventLogId],
@@ -442,6 +475,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         eventsLog: {
           ...state.details.eventsLog,
           items: items,
@@ -458,6 +492,7 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
+        hasChanges: true,
         eventsLog: {
           ...state.details.eventsLog,
           itemsById: {
@@ -473,6 +508,40 @@ export class QcReportState {
     });
   }
 
+  @Action(QcSaveReportDetailsAction)
+  saveReportDetailsAction({ getState, patchState }: StateContext<IQcReportState>, action: QcSaveReportDetailsAction): void {
+    const state = getState();
+
+    patchState({
+      details: {
+        ...state.details,
+        isSaving: true
+      }
+    });
+  }
+
+  @Action([QcSaveReportDetailsSuccessfulAction, QcSaveReportDetailsFailedAction])
+  saveReportDetailsSuccessfulAction({ getState, patchState }: StateContext<IQcReportState>, action: QcSaveReportDetailsSuccessfulAction | QcSaveReportDetailsFailedAction): void {
+    const state = getState();
+    if (isAction(action, QcSaveReportDetailsSuccessfulAction)) {
+      const success = <QcSaveReportDetailsSuccessfulAction>action;
+
+      patchState({
+        details: {
+          ...state.details,
+          hasChanges: false,
+          isSaving: false
+        }
+      });
+    } else if (isAction(action, QcSaveReportDetailsFailedAction)) {
+      patchState({
+        details: {
+          ...state.details,
+          isSaving: false
+        }
+      });
+    }
+  }
 }
 
 export function ConvertProductTypeValues(productTypesMap: Record<number, QcProductTypeListItemStateModel>,

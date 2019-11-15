@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { ModuleError } from '../core/error-handling/module-error';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -43,6 +43,11 @@ import {
   QcUpdateEventLogAction
 } from '../store/report-view/details/actions/qc-events-log.action';
 import { IGetOrderProductsListResponse } from './api/request-response/claims-list.request-response';
+import {
+  QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction,
+  QcSaveReportDetailsSuccessfulAction
+} from '../store/report-view/details/actions/save-report.actions';
+import { QcReportState } from '../store/report-view/qc-report.state';
 
 @Injectable()
 export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
@@ -191,6 +196,21 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   @ObservableException()
   updateEventLog$(id: number, newEventDetails: string):  Observable<unknown> {
     return this.store.dispatch(new QcUpdateEventLogAction(id, newEventDetails))
+  }
+
+  saveReport(): void {
+    this.saveReport$().subscribe();
+  }
+
+  @ObservableException()
+  saveReport$(): Observable<unknown> {
+    return this.apiDispatch(
+      () => this.api.saveReportDetails({ }),
+      new QcSaveReportDetailsAction(),
+      response => new QcSaveReportDetailsSuccessfulAction(),
+      new QcSaveReportDetailsFailedAction(),
+      ModuleError.LoadEventsLogFailed
+    );
   }
 
   ngOnDestroy(): void {

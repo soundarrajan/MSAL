@@ -13,6 +13,7 @@ import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
 import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
+import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 
 const routes: Routes = [
   {
@@ -43,6 +44,7 @@ const routes: Routes = [
           },
           {
             path: KnownQuantityControlRoutes.ReportDetails,
+            canDeactivate: [QcReportDetailsUnsavedChangesGuard],
             component: QcReportDetailsComponent,
             resolve: {
               // Note: ReportId is expected in child routes in the data.
@@ -83,6 +85,7 @@ export function getTypedResolverPropertyName(value: string): Object {
     [value]: QcReportDetailsRouteResolver
   };
 }
+
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

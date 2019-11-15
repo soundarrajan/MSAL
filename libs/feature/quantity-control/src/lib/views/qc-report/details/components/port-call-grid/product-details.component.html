@@ -2,13 +2,9 @@
   AgGridExternalSearch
   [gridOptions]="viewModel.gridViewModel.gridOptions"
   [rowData]="viewModel.productTypes$ | async"
-  [onSearch]="viewModel.gridViewModel.onSearch.bind(viewModel.gridViewModel)"
-  appAgGridFilterPresets
   appAgGridFirstColumnLocked
   appAgGridSizeToFit
-  appDeselectFiltredRows
   class="ag-theme-balham"
-  groupId="quantityControlCallView"
   id="quantityControlProductsGrid"
   style="height:500px">
 </ag-grid-angular>
@@ -39,6 +35,7 @@
         <!--        // TODO: Implement switchable dataSource for relativeUom call-->
         <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
                                [selectedUom]="viewModel.gridViewModel.getSelectedUomValue(groupDef.groupId) | async"
+                               [disabled]="isBusy$ | async"
                                [uoms]="viewModel.uomsLookup$ | async"></shiptech-uom-selector>
       </div>
     </div>
@@ -56,6 +53,7 @@
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)" [formatInput]="true"
+                 [disabled]="isBusy$ | async"
                  [ngModelOptions]="{updateOn: 'blur'}"
                  [ngModel]="value" [step]="0.001" decimalSeparator="."></p-spinner>
     </div>

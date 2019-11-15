@@ -229,25 +229,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 
-  public onSearch(value: string): void {
-    this.searchText = value;
-    this.gridApi.purgeServerSideCache();
-  }
-
-  public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    // this.quantityControlService.getPortCalls({
-    //   pagination: getShiptechFormatPagination(params),
-    //   sorts: getShiptechFormatSorts(params),
-    //   filters: getShiptechFormatFilters(params),
-    //   searchText: this.searchText
-    // }).subscribe(
-    //   response => {
-    //     console.log('RESPONSE', response);
-    //     params.successCallback(response.items, 100);
-    //   },
-    //   () => params.failCallback());
-  }
-
   getToleranceClassRules(): { [cssClassName: string]: (Function | string) } {
     // TODO: Add real tolerance logic
     return {
@@ -270,22 +251,15 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     switch (groupId) {
       case ProductDetailsColGroupsEnum.RobBeforeDelivery: {
         return this.robUomBeforeDelivery$;
-        break;
       }
-
       case ProductDetailsColGroupsEnum.RobAfterDelivery: {
         return this.robUomAfterDelivery$;
-        break;
       }
-
       case ProductDetailsColGroupsEnum.DeliveredQuantity: {
         return this.deliveredQtyUom$;
-        break;
       }
-
       default: {
-        throwError('Invalid groupId');
-        break;
+        return throwError('Invalid groupId');
       }
     }
   }

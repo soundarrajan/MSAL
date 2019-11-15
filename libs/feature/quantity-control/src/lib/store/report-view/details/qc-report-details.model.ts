@@ -24,12 +24,10 @@ export class QcReportDetailsModel {
   comment: string;
   vesselResponse = new QcVesselResponseByTypeState();
 
-
-  isInitialising = false;
-  isInitialised = false;
   isSaving = false;
   isRaisingClaim: boolean;
   isVerifying: boolean;
+  hasChanges: boolean;
 
   _hasLoaded: boolean;
   _isLoading: boolean;

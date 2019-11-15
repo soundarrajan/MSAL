@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProductDetailsViewModel } from './view-model/product-details.view-model';
 import { ProductDetailsGridViewModel } from './view-model/product-details-grid.view-model';
 import { ProductTypeListItemViewModelBuilder } from './view-model/product-type-list-item.view-model';
+import { Select } from '@ngxs/store';
+import { QcReportState } from '../../../../../store/report-view/qc-report.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'shiptech-port-call-grid',
@@ -10,6 +13,8 @@ import { ProductTypeListItemViewModelBuilder } from './view-model/product-type-l
   providers: [ProductDetailsViewModel, ProductDetailsGridViewModel, ProductTypeListItemViewModelBuilder]
 })
 export class ProductDetailsComponent implements OnInit {
+
+  @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
 
   constructor(public viewModel: ProductDetailsViewModel) {
   }

@@ -14,6 +14,7 @@ export class UomSelectorComponent {
   private originalOptions: ILookupDto[];
 
   @Output() public selectionChanged = new EventEmitter<ILookupDto>();
+  @Input() public disabled = false;
 
   @Input('uoms') set _options(options: ILookupDto[]) {
     if (!options) {
