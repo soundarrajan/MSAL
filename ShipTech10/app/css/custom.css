@@ -4864,3 +4864,6 @@ table.energyCalculationBlade tr.border-green-jungle{
 #gview_flat_delivery_list > div.ui-jqgrid-hdiv.ui-state-default.ui-corner-top > div > table > thead > tr > th > div.ui-jqgrid-sortable {
     height: 62px;
 }
+#orderVerificationReq {
+    width: 96.9%;
+}

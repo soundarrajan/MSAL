@@ -2641,6 +2641,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     	})
                     	return;
                     }
+                    if (typeof payload.isVerified != "undefined" && payload.isVerified != null) {
+                        payload.isVerified = null;
+                        payload.isVerified = {id: 1, name: "Yes"};
+                        payload.isVerified.id = 1;
+                        payload.isVerified.name = "Yes";                
+                    }
 
                     ctrl.sendOrderConfirmation(payload);
 

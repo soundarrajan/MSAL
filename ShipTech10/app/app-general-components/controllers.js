@@ -2576,7 +2576,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $('select.contract_planning_product').select2();
                 })        
 
-            },500)
+            },500);
+            if (data.table == "flat_orders_list") {
+                $timeout(function() {
+                    theCLC = $("#flat_orders_list");
+                    for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                        var checkbox = $('#' + i + '>td').first();
+                        checkbox.attr('title', "");
+                    }
+                });
+            }
         })
         $scope.resetTreasuryCheckboxes = function() {
             allRows = vm.changedfields;
@@ -3583,7 +3592,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $rootScope.selectedOrderListRows.splice(indexInCollection, 1);
                 }
                 return;
-
+        
             }
             console.log($rootScope.selectedOrderListRows);
        
@@ -3591,28 +3600,27 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             var rowsWithOrder = 0;
             if (CLC.jqGrid.Ascensys.gridObject.page == 1) {
                 $.each(CLC.jqGrid.Ascensys.gridData, function(k, v) {
-                    rowsWithOrder+= !!v.order;
+                    rowsWithOrder+= (!!v.order && !v.isVerified && v.orderStatus.name != 'Cancelled');
                 });
             } else {
                 $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k,v) {
-                    if (v.order) {
-                        rowsWithOrder += 1;
-                    }   
+                    rowsWithOrder+= (!!v.order && !v.isVerified && v.orderStatus.name != 'Cancelled');
                 })
             }
 
-            if ($rootScope.selectedOrderListRows.length < rowsWithOrder || rowsWithOrder == 0) {
+            if ($rootScope.selectedOrderListRows.length < rowsWithOrder) {
                 var el = $('#selectAllOrderList').first();
                 if (el.hasClass('fa-check-square-o')) {
                     el.removeClass('fa-check-square-o');
                     el.addClass('fa-square-o');
-                }
-            } else if ($rootScope.selectedOrderListRows.length === rowsWithOrder) {
+                } 
+            } else if ($rootScope.selectedOrderListRows.length == rowsWithOrder) {
                 var el = $('#selectAllOrderList').first();
                 if (el.hasClass('fa-square-o')) {
                     el.removeClass('fa-square-o');
                     el.addClass('fa-check-square-o');
                 }
+
             }
         }
         $scope.openContractPopupInCP = function(rowIdx) {
