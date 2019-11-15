@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   QcOrderProductsListColumns,
   QcOrderProductsListColumnsLabels,
@@ -15,13 +15,13 @@ import { QcReportDetailsService } from '../../../../services/qc-report-details.s
 @Injectable()
 export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
 
-  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
     rowHeight: 35,
 
     rowModelType: RowModelType.ServerSide,
+    rowSelection: RowSelection.Single,
     pagination: true,
     animateRows: true,
 
@@ -35,37 +35,40 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter',
-      width: 150
+      filter: 'agTextColumnFilter'
     }
   };
+
   orderNoCol: ColDef = {
-    headerName: QcOrderProductsListColumns.orderNo,
-    colId: QcOrderProductsListColumnsLabels.orderNo,
+    colId: QcOrderProductsListColumns.orderNo,
+    headerName: QcOrderProductsListColumnsLabels.orderNo,
     field: this.modelProps.orderNo,
-    hide: false
+    hide: false,
+    headerCheckboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    checkboxSelection: true
   };
   counterpartyCol: ColDef = {
-    headerName: QcOrderProductsListColumns.counterpartyName,
-    colId: QcOrderProductsListColumnsLabels.counterpartyName,
+    colId: QcOrderProductsListColumns.counterpartyName,
+    headerName: QcOrderProductsListColumnsLabels.counterpartyName,
     field: this.modelProps.counterpartyName,
     hide: false
   };
   productCol: ColDef = {
-    headerName: QcOrderProductsListColumns.productName,
-    colId: QcOrderProductsListColumnsLabels.productName,
+    colId: QcOrderProductsListColumns.productName,
+    headerName: QcOrderProductsListColumnsLabels.productName,
     field: this.modelProps.productName,
     hide: false
   };
   confirmedQuantityCol: ColDef = {
-    headerName: QcOrderProductsListColumns.confirmedQuantity,
-    colId: QcOrderProductsListColumnsLabels.confirmedQuantity,
+    colId: QcOrderProductsListColumns.confirmedQuantity,
+    headerName: QcOrderProductsListColumnsLabels.confirmedQuantity,
     field: this.modelProps.confirmedQuantity,
     hide: false
   };
   uomCol: ColDef = {
-    headerName: QcOrderProductsListColumns.uomName,
-    colId: QcOrderProductsListColumnsLabels.uomName,
+    colId: QcOrderProductsListColumns.uomName,
+    headerName: QcOrderProductsListColumnsLabels.uomName,
     field: this.modelProps.uomName,
     hide: false
   };
@@ -78,7 +81,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     private quantityControlService: QcReportDetailsService,
     private modelProps: QcOrderProductsListItemProps
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
+    super('qc-order-products-list', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
     this.initOptions(this.gridOptions);
   }
 

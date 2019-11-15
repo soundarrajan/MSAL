@@ -96,11 +96,6 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   }
 
   @ObservableException()
-  saveReportDetails(): Observable<unknown> {
-    return this.api.saveReportDetails({});
-  }
-
-  @ObservableException()
   getSoundingReportList(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
     return this.api.getSoundingReportList({ ...gridRequest, portCallId: this.reportDetailsState.id });
   }
