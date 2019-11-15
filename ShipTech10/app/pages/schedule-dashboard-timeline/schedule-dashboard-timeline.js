@@ -226,8 +226,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
-                        style: 'border-width: 1.8px; border-style: dotted;  border-right-style: none;',
-                        class: 'Ioana'
+                        style: 'border-width: 1.8px; border-style: dotted;  border-right-style: none;'
                     };
                     numberVessels += 1;
                 }
@@ -319,22 +318,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var serviceBuyerName = group.serviceBuyerName;
 
                     if (serviceName && serviceName.length > 12) {
-                        serviceName = serviceName.substr(0, 7) + ' ... ';
+                        serviceName = serviceName.substr(0, 11) + ' ... ';
                     }
 
                     if (vesselName && vesselName.length > 12) {
-                        vesselName = vesselName.substr(0, 7) + ' ... ';
+                        vesselName = vesselName.substr(0, 11) + ' ... ';
                     }
 
                     if (buyerName && buyerName.length > 12) {
-                        buyerName = buyerName.substr(0, 7) + ' ... ';
+                        buyerName = buyerName.substr(0, 11) + ' ... ';
                     }
                     if (serviceBuyerName && serviceBuyerName.length > 12) {
-                        serviceBuyerName = serviceBuyerName.substr(0, 7) + ' ... ';
+                        serviceBuyerName = serviceBuyerName.substr(0, 11) + ' ... ';
                     }                    
 
                     if (companyName && companyName.length > 12) {
-                        companyName = companyName.substr(0, 7) + ' ... ';
+                        companyName = companyName.substr(0, 11) + ' ... ';
                     }
 
                     var tpl = '<div class="vis-custom-group">';
