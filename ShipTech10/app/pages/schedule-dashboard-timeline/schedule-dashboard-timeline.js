@@ -29,6 +29,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         var searchTextFilters = null;
         var pagination = null;
+        //var filtersDefault = null;
 
         $scope.searchTimeline = function(searchText) {
             searchTextFilters = searchText;
@@ -137,7 +138,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var groups = [];
             var voyages = [];
             var groupStrings = [];
-
+            // var numberVessels = vessels.length;
             for (var i = 0; i < vessels.length; i++) {
 
                 if (!vessels[i]) {
@@ -150,15 +151,24 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
 
                 var voyageContent = '';
-
+                // var voyageContentDotted = '';
+                // var initialEtaDotted = '';
 
                 var cls = "vis-voyage-content";
+                var clsDotted ="vis-voyage-dotted";
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
                 }
+                // if (vessels[i].voyageDetail.originalEta) {
+                //     initialEtaDotted =  vessels[i].voyageDetail.originalEta;
+                //     //voyageContent += '<span class="' + clsDotted + '" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"  style="background-color: blue"> ' + originalEtaDotted + ' </span>';
 
+                // }
+                // if (initialEtaDotted != '') {
+                //     voyageContentDotted = '<span class="'+ clsDotted + '"> </span>';
+                // } 
                 voyageContent += '<span class="' + cls + '" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode + ' </span>';
-
+                
                 var startDate, endDate;
 
                 var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
@@ -190,6 +200,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (startEndDiff < 86400000) {
                     endDate = moment.utc(endDate).endOf('day').format('YYYY-MM-DD HH:mm');
                 }
+                // if (initialEtaDotted != '') {
+                //     var updatedEta = moment.utc(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm');
+                //     var etd = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
+                //     initialEtaDotted = moment.utc(initialEtaDotted).format('YYYY-MM-DD HH:mm');
+                //     var updatedEtaInitialEtaDiff = moment(updatedEta) - moment(initialEtaDotted);
+                //     var etdIntialEtaDiff = moment(etd) - moment(initialEtaDotted);
+                //     var displayDottedLine = true;
+                //     if (updatedEtaInitialEtaDiff < 0) {
+                //         displayDottedLine = false;
+                //     }
+                // }
+               
 
                 var voyage = {
                     id: i,
@@ -198,7 +220,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     end: endDate,
                     style: 'background-color: ' + statusColor
                 };
-
+                // if (initialEtaDotted != '' && displayDottedLine == true) {
+                //     var voyage1 = {
+                //         id: numberVessels,
+                //         content: voyageContentDotted,
+                //         start: initialEtaDotted,
+                //         end: startDate,
+                //         style: 'border-width: 1.8px; border-style: dotted;  border-right-style: none;',
+                //         class: 'Ioana'
+                //     };
+                //     numberVessels += 1;
+                // }
                 if (ctrl.bunkerDetails.length > 0 && ctrl.bunkerDetails[vessels[i].voyageDetail.id].length > 0) {
                     if (ctrl.bunkerDetails[vessels[i].voyageDetail.id][0]) {
                         ctrl.bunkerDetails[vessels[i].voyageDetail.id][0].voyage = voyage;
@@ -249,6 +281,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 // Add voyage
                 voyages.push(voyage);
+                //  if (initialEtaDotted != '' && displayDottedLine == true) {
+                //     voyage1.group = groupId;
+                //     voyages.push(voyage1);
+                // }
+               
             }
             ctrl.vessels = vessels;
             return {
@@ -473,7 +510,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         async function getData(payload) {
             return await new Promise(resolve => {
-                scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters).then(function (response) {
+                scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, filtersDefault, {}, searchTextFilters).then(function (response) {
                     resolve(response);
                 });
             });
@@ -500,6 +537,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         $rootScope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
+
 
             if (!timeline) {
                 return;
@@ -859,9 +897,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             } else {
                 preHtml = "<p><b>";
                 preHtml += voyageStop[0].voyageDetail.request.requestDetail.location + " - ";
-                preHtml += " ETA : " + moment(voyageStop[0].voyageDetail.eta).format($scope.dateFormat) + " - ";
+                var eta =  $scope.formatDateUtc(voyageStop[0].voyageDetail.eta);
+                preHtml += " ETA : " + eta + " - ";
                 if (voyageStop[0].voyageDetail.etd) {
-                    preHtml += " ETD : " + moment(voyageStop[0].voyageDetail.etd).format($scope.dateFormat);
+                    var etd = $scope.formatDateUtc(voyageStop[0].voyageDetail.etd);
+                    preHtml += " ETD : " + etd;
                 }
                 if (voyageStop[0].voyageDetail.deliveryFrom && voyageStop[0].voyageDetail.deliveryTo) {
                     var deliveryFrom = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryFrom);
