@@ -34,7 +34,6 @@ export class QcReportDetailsUnsavedChangesGuard implements CanDeactivate<QcRepor
           }
         });
       });
-
     }
 
     return of(true);

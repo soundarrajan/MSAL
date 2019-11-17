@@ -41,3 +41,11 @@ export class LoadReportDetailsFailedAction {
     };
   }
 }
+
+
+export class ResetQcReportDetailsStateAction {
+  static readonly type = '[QC.Report.Details] Reset';
+
+  constructor() {
+  }
+}
