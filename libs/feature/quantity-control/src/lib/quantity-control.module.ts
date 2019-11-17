@@ -41,6 +41,7 @@ import {
 } from './views/qc-report/details/components/port-call-grid/view-model/number.format';
 import { RaiseClaimComponent } from './views/qc-report/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
+import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-u
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState])
+    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
+    NgxsResetPluginModule.forRoot()
   ],
   declarations: [
     MainQuantityControlComponent,

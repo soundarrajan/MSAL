@@ -12,6 +12,10 @@ export class ModuleError<T = any> extends AppError<T> {
     code: ErrorCode.LoadPortCallListFailed,
     message: 'Could not load events log. Please try again later.'
   });
+  static SaveReportDetailsFailed = new ModuleError({
+    code: ErrorCode.SaveReportDetailsFailed,
+    message: 'Could save report details. Please try again later.'
+  });
 
   static QcReportNotFound(reportId?: number): ModuleError {
     return new ModuleError({

@@ -204,7 +204,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
       new QcSaveReportDetailsAction(),
       response => new QcSaveReportDetailsSuccessfulAction(),
       new QcSaveReportDetailsFailedAction(),
-      ModuleError.LoadEventsLogFailed
+      ModuleError.SaveReportDetailsFailed
     );
   }
 

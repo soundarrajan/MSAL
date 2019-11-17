@@ -81,6 +81,7 @@
     "lodash": "^4.17.15",
     "ngx-cacheable": "^1.2.5",
     "ngx-toastr": "^10.0.4",
+    "ngxs-reset-plugin": "^1.2.0",
     "postal": "^2.0.5",
     "primeflex": "1.0.0-rc.1",
     "primeicons": "1.0.0",

@@ -9,7 +9,7 @@ import {
   QcVesselResponseSludgeStateItem
 } from '../../../store/report-view/details/qc-vessel-responses.state';
 import { QcReportDetailsService } from '../../../services/qc-report-details.service';
-import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 import _ from 'lodash';
 import {
   SwitchActiveBunkerResponseAction,
@@ -19,6 +19,7 @@ import { IQcReportDetailsState } from '../../../store/report-view/details/qc-rep
 import { ConfirmationService, DialogService, MessageService } from 'primeng/api';
 import { RaiseClaimComponent } from '../raise-claim/raise-claim.component';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
+import { ResetQcReportDetailsStateAction } from '../../../store/report-view/qc-report-details.actions';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -55,22 +56,32 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
       value: EntityStatus.Delivered
     });
 
-    this.sludgeVesselResponseCategories$ = this.store.select(QcReportState.getSludgeVesselResponse).pipe(map(sludge => _.values(sludge.categories)));
+    this.sludgeVesselResponseCategories$ = this.store.select(QcReportState.getSludgeVesselResponse).pipe(map(sludge => _.values(sludge.categories)), takeUntil(this._destroy$));
+
     this.sludgeVesselResponseActiveCategory$ = this.store.select(QcReportState.getSludgeVesselResponseActiveCategoryId)
       .pipe(
-        switchMap(id => this.store.select(QcReportState.getSludgeVesselResponse).pipe(
-          map(sludge => sludge.categories[id] || {} as QcVesselResponseBaseStateItem),
-          shareReplay()
-        )));
+        switchMap(id =>
+          this.store.select(QcReportState.getSludgeVesselResponse)
+            .pipe(
+              filter(sludge => !sludge),
+              map(sludge => sludge.categories[id] || {} as QcVesselResponseBaseStateItem),
+              shareReplay()
+            )),
+        takeUntil(this._destroy$)
+      );
 
+    this.bunkerVesselResponseCategories$ = this.store.select(QcReportState.getBunkerVesselResponse).pipe(map(bunker => _.values(bunker.categories)), takeUntil(this._destroy$));
 
-    this.bunkerVesselResponseCategories$ = this.store.select(QcReportState.getBunkerVesselResponse).pipe(map(bunker => _.values(bunker.categories)));
     this.bunkerVesselResponseActiveCategory$ = this.store.select(QcReportState.getBunkerVesselResponseActiveCategoryId)
       .pipe(
-        switchMap(id => this.store.select(QcReportState.getBunkerVesselResponse).pipe(
-          map(bunker => bunker.categories[id] || {} as QcVesselResponseSludgeStateItem),
-          shareReplay()
-        )));
+        switchMap(id => this.store.select(QcReportState.getBunkerVesselResponse)
+          .pipe(
+            filter(bunker => !bunker),
+            map(bunker => bunker.categories[id] || {} as QcVesselResponseSludgeStateItem),
+            shareReplay()
+          )),
+        takeUntil(this._destroy$)
+      );
   }
 
 
@@ -111,6 +122,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   save(): void {
     this.detailsService.saveReport$().pipe(
+      // TODO: Remove after backend is implemented
       tap(() => {
         this.messageService.add({
           severity: 'success',
@@ -125,7 +137,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
           detail: 'Vessel report changes were not saved'
         });
         return throwError(e);
-      })
+      }),
+      takeUntil(this._destroy$)
     ).subscribe();
   }
 
@@ -159,5 +172,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+
+    this.store.dispatch(ResetQcReportDetailsStateAction);
   }
 }

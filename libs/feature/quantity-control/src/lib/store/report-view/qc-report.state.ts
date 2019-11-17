@@ -4,7 +4,8 @@ import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
   LoadReportDetailsAction,
   LoadReportDetailsFailedAction,
-  LoadReportDetailsSuccessfulAction
+  LoadReportDetailsSuccessfulAction,
+  ResetQcReportDetailsStateAction
 } from './qc-report-details.actions';
 import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
@@ -25,7 +26,7 @@ import {
   UpdateActiveSludgeVesselResponseAction
 } from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
-import { IQcReportDetailsState } from './details/qc-report-details.model';
+import { IQcReportDetailsState, QcReportDetailsModel } from './details/qc-report-details.model';
 import { IQcUomState, QcUomStateModel } from './models/uom.state';
 import {
   SwitchUomForDeliveredQuantityAction,
@@ -62,7 +63,7 @@ export class QcReportState {
       state.details._isLoading,
       state.details.isSaving,
       state.details.isVerifying,
-      state.details.isRaisingClaim,
+      state.details.isRaisingClaim
     ];
     return isBusy.some(s => s);
   }
@@ -543,6 +544,13 @@ export class QcReportState {
         }
       });
     }
+  }
+
+  @Action(ResetQcReportDetailsStateAction)
+  resetQcReportDetailsStateAction({ patchState }: StateContext<IQcReportState>, action: ResetQcReportDetailsStateAction): void {
+    patchState({
+      details: new QcReportDetailsModel()
+    });
   }
 }
 
