@@ -7,7 +7,7 @@
 
     <div class="form_input">
         <!-- <pre></pre> -->
-        <select ng-model="selectedConfig" class="form-control bs-select" name="configurations_list" id="configurations_list" ng-options="item as item.name for item in filtersConfigurations track by item.id"
+        <select  tabindex="-1" ng-model="selectedConfig" class="form-control bs-select" name="configurations_list" id="configurations_list" ng-options="item as item.name for item in filtersConfigurations track by item.id"
             ng-change="loadSelectedConfig(true)">
             <option value="" disabled></option>
         </select>
@@ -17,14 +17,14 @@
 
     <div class=" form_input" ng-if="selectedConfig.id == 0">
 
-        <input type="text" id="configuration_name" class="form-control " ng-model="selectedConfig.name" name="configuration_name"
+        <input  tabindex="-1" type="text" id="configuration_name" class="form-control " ng-model="selectedConfig.name" name="configuration_name"
             placeholder="Configuration Name" ng-required="true" />
     </div>
     <div class=" form_input">
         <div class="text-center">
             <label class="mt-checkbox">
                 Is Default
-                <input type="checkbox" ng-model="selectedConfig.isDefault" name="isDefault" />
+                <input type="checkbox" tabindex="-1" ng-model="selectedConfig.isDefault" name="isDefault" />
                 <span></span>
             </label>
         </div>
