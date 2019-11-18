@@ -274,6 +274,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
+            $rootScope.timelineSaved = $scope.packedFilters;
             $scope.formatHeaders(data);
 
 
@@ -680,7 +681,9 @@ angular.module("shiptech.components").controller("FiltersController", [
                     } 
                     if ($scope.defaultConfiguration != null) {
                         retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
+                        $rootScope.savedDefaultFilters = $scope.defaultConfiguration.filters;
                         $scope.selectedConfig = $scope.defaultConfiguration;
+                        $rootScope.saveFiltersDefaultTimeline = $scope.defaultConfiguration.filtersList;
                         $scope.enableDisableDeleteLayout($scope.selectedConfig);
                         //selected != default
                         //but if default exists, set as selected initially
@@ -780,6 +783,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.deleteConfig = function(selectedConfig) {
             var data = selectedConfig.id;
 			$scope.filtersConfigurations = null;
+            $rootScope.timelineSaved =  null;
             filterConfigurationModel
                 .deleteConfiguration(data)
                 .then(function(response) {

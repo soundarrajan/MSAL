@@ -507,9 +507,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         async function getData(payload) {
             return await new Promise(resolve => {
+                if (typeof $rootScope.saveFiltersDefaultTimeline != "undefined") {
+                    if ($rootScope.saveFiltersDefaultTimeline.length != 0) {
+                        payload = $rootScope.saveFiltersDefaultTimeline;
+                    }
+                }
                 scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters).then(function (response) {
                     resolve(response);
+                    if (typeof $rootScope.timelineSaved != "undefined" && $rootScope.timelineSaved != null) {
+                        $scope.getDefaultFilters($rootScope.timelineSaved, false);
+                    }
                 });
+
             });
         }
 
@@ -532,6 +541,90 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         	})
         	console.log($scope.displayedColumns);
         }
+        $scope.getDefaultFilters = function(payload, isBreadcrumbFilter) {
+            $scope.filtersAppliedPayload = payload;
+            $rootScope.saveFiltersDefaultTimeline = [];
+
+            var conditions = $filtersData.filterConditions;
+
+            for(var i = 0; i < payload.length; i++) {
+                for(var j = 0; j < conditions.length; j++) {
+                    if(payload[i].ColumnType === conditions[j].conditionApplicable && payload[i].ConditionValue === conditions[j].conditionValue) {
+                        payload[i]['conditionName'] = conditions[j].conditionName;
+                        switch(payload[i].columnValue) {
+                            case 'ServiceBuyerName':
+                                payload[i]['displayName'] = 'Buyer of the Service';
+                                break;
+                            case 'BuyerName':
+                                payload[i]['displayName'] = 'Buyer of the Vessel';
+                                break;
+                            case 'VesselName':
+                                payload[i]['displayName'] = 'Vessel name';
+                                break;
+                            case 'ServiceName':
+                                payload[i]['displayName'] = 'Service';
+                                break;
+                            case 'VoyageDetail_Eta':
+                                payload[i]['displayName'] = 'ETA';
+                                break;
+                            case 'VoyageDetail_Etb':
+                                payload[i]['displayName'] = 'ETB';
+                                break;
+                            case 'VoyageDetail_Etd':
+                                payload[i]['displayName'] = 'ETD';
+                                break;
+                            case 'VoyageDetail_PortStatus_DisplayName':
+                                payload[i]['displayName'] = 'Port Status';
+                                break;
+                            case 'VoyageDetail_LocationName':
+                                payload[i]['displayName'] = 'Location';
+                                break;
+                            case 'CompanyName':
+                                payload[i]['displayName'] = 'Company'; 
+                                break;
+                        }
+                        if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {
+                            payload[i].displayName = 'Port Status';
+                        }
+                        if (payload[i].displayName) {
+                            if ($scope.tenantSettings.companyDisplayName == "Pool") {
+                                payload[i].displayName = payload[i].displayName.replace("Carrier", $scope.tenantSettings.companyDisplayName.name);
+                            }
+                            payload[i].displayName = payload[i].displayName.replace("Company", $scope.tenantSettings.companyDisplayName.name);
+                            payload[i].displayName = payload[i].displayName.replace("Service", $scope.tenantSettings.serviceDisplayName.name);                            
+                        }
+                    }
+                }
+            }
+
+            if (isBreadcrumbFilter) {
+                if ($scope.appFilters) {
+                    for (var i = 0; i < $scope.appFilters.length; i++) {
+                        if ($scope.appFilters[i].columnValue === "VoyageDetail_PortStatus_DisplayName" ||
+                            $scope.appFilters[i].ColumnValue === "VoyageDetail_PortStatus_DisplayName") {
+                                $scope.appFilters.splice(i, 1);
+                        }
+                    }
+                }
+                if (payload.length === 0) {
+                } else {
+                    if (!$scope.appFilters) {
+                        $scope.appFilters = [];
+                    }
+                    for (var i = 0; i < payload.length; i++) {
+                        if (payload[i].ColumnValue === 'VoyageDetail_PortStatus_DisplayName') {
+                            if ($rootScope.activeBreadcrumbFilters === payload[i].Values[0]) {
+                            }
+                        } else {
+                            $scope.appFilters.push(payload[i]);
+                        }
+                    }
+                }
+                return;
+            } else {
+                $scope.appFilters = payload;
+            }
+        }
 
         $rootScope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
 
@@ -541,6 +634,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
 
             $scope.filtersAppliedPayload = payload;
+            $rootScope.saveFiltersDefaultTimeline = [];
 
             getConfiguration().then(function(settings) {
                 getData(payload).then(function(response) {
