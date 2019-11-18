@@ -53,7 +53,10 @@ angular.module("shiptech.components").controller("FiltersController", [
         }; 
 
         $scope.$on('colModel', function(e, data) {
-          $scope.colModel = data;
+          	$scope.colModel = data;
+        });        
+        $scope.$on('applyRawFilters', function(e, data) {
+			$scope.applyFilters($rootScope.rawFilters);
         });
 
         $rootScope.$on("breadcrumbs-filter-applied", function(event, packedFilter) {

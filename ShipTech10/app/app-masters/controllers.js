@@ -7795,7 +7795,8 @@ APP_MASTERS.controller("Controller_Master", [
             });
 
             orderModel.verifyOrders(payload).then(function (responseData) {
-                }).catch(function (err) {
+            	$rootScope.$broadcast("applyRawFilters", true);
+                }).catch(function (err) { 
             });
 
 
