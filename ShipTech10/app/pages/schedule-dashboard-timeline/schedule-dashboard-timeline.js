@@ -226,7 +226,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
-                        style: 'border-width: 1.8px; border-style: dotted;  border-right-style: none;'
+                        style: 'border-width: 1.8px; border-style: dotted;  border-right-style: none; box-shadow: none; border-color: #97b0f8; '
                     };
                     numberVessels += 1;
                 }
