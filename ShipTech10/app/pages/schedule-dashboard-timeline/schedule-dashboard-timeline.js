@@ -185,9 +185,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             endDate = moment.utc(vessels[i].voyageDetail.eta).endOf('day').format('YYYY-MM-DD HH:mm');
                         }
                     }
-                } 
-
-                if (!displayScheduleBasedOn || displayScheduleBasedOn === 'ETA') {
+                } else  {
                     startDate = moment.utc(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm');
                     if (vessels[i].voyageDetail.etd) {
                         endDate = moment.utc(vessels[i].voyageDetail.etd).format('YYYY-MM-DD HH:mm');
@@ -198,7 +196,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 startEndDiff = moment(endDate) - moment(startDate);
                 if (startEndDiff < 86400000) {
-                    endDate = moment.utc(endDate).endOf('day').format('YYYY-MM-DD HH:mm');
+                    endDate = moment.utc(startDate).add('hours', 24).format('YYYY-MM-DD HH:mm');
                 }
                 if (initialEtaDotted != '') {
                     var updatedEta = moment.utc(vessels[i].voyageDetail.eta).format('YYYY-MM-DD HH:mm');
@@ -226,7 +224,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
-                        style: 'border-width: 1.8px; border-style: dotted;  border-right-style: none; box-shadow: none; border-color: #97b0f8; '
+                        style: 'border-width: 1.8px; border-style: dashed;  border-right-style: none; box-shadow: none; border-color: #97b0f8; '
                     };
                     numberVessels += 1;
                 }
