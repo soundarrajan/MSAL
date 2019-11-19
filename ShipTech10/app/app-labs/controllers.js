@@ -285,43 +285,46 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
             $state.params.title = lab + ' - ' + $scope.formValues.order.name + " - DEL " + del;
         }
         if (name == 'Product' && $scope.formValues.product) {
-        	if ($scope.formValues.isFromIntegration) { return }
-            if (typeof($scope.temp) != "undefined") {
-                filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
-                if (filteredSpecGroup) {
-                    filteredSpecGroup = filteredSpecGroup.specGroup;
-                }
-                if (filteredSpecGroup) {
-                    $scope.formValues.specGroup = filteredSpecGroup.name;
-                }
-            }
-            if (typeof($scope.formValues.labTestResults) != "undefined") {
-                for (var i = $scope.formValues.labTestResults.length - 1; i >= 0; i--) {              
-                    if ($scope.formValues.labTestResults[i].id != 0) {
-                        $scope.formValues.labTestResults[i].isDeleted = true;
-                    } else {
-                        $scope.formValues.labTestResults.splice(i,1);
-                    }
-                }               
+        	if (!$scope.formValues.isFromIntegration) { 
+	            if (typeof($scope.temp) != "undefined") {
+	                filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+	                if (filteredSpecGroup) {
+	                    filteredSpecGroup = filteredSpecGroup.specGroup;
+	                }
+	                if (filteredSpecGroup) {
+	                    $scope.formValues.specGroup = filteredSpecGroup.name;
+	                }
+	            }
+	            if (typeof($scope.formValues.labTestResults) != "undefined") {
+	                for (var i = $scope.formValues.labTestResults.length - 1; i >= 0; i--) {              
+	                    if ($scope.formValues.labTestResults[i].id != 0) {
+	                        $scope.formValues.labTestResults[i].isDeleted = true;
+	                    } else {
+	                        $scope.formValues.labTestResults.splice(i,1);
+	                    }
+	                }               
+	            }
             }
             vm.setorderProdId();
             if (typeof vm.changed == 'undefined') {
                 vm.changed = 0;
             }
             if (!$scope.formValues.order && !$scope.formValues.orderProductId) return;
-            setTimeout(function () {
-                data = {
-                    'orderId': $scope.formValues.order.id,
-                    'orderProductId': $scope.formValues.orderProductId,
-                    'deliveryProductId': $scope.formValues.deliveryProductId
-                };
-                console.log(data);
-                console.log($scope.formValues);
-                if ((vm.changed > 0 && vm.entity_id > 0) || (vm.changed >= 0 && vm.entity_id < 1)) {
-                    vm.getDataTable('spec', data, 'labTestResults');
-                }
+        	if (!$scope.formValues.isFromIntegration) { 
+	            setTimeout(function () {
+	                data = {
+	                    'orderId': $scope.formValues.order.id,
+	                    'orderProductId': $scope.formValues.orderProductId,
+	                    'deliveryProductId': $scope.formValues.deliveryProductId
+	                };
+	                console.log(data);
+	                console.log($scope.formValues);
+	                if ((vm.changed > 0 && vm.entity_id > 0) || (vm.changed >= 0 && vm.entity_id < 1)) {
+	                    vm.getDataTable('spec', data, 'labTestResults');
+	                }
 
-            }, 100);
+	            }, 100);
+        	}
             vm.changed++;
             vm.setPhysicalSupplier();
         }
