@@ -285,6 +285,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
             $state.params.title = lab + ' - ' + $scope.formValues.order.name + " - DEL " + del;
         }
         if (name == 'Product' && $scope.formValues.product) {
+        	if ($scope.formValues.isFromIntegration) { return }
             if (typeof($scope.temp) != "undefined") {
                 filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
                 if (filteredSpecGroup) {
