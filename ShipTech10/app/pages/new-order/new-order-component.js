@@ -3279,6 +3279,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             },1);   
         }
 
+        ctrl.verifyOrder = function(){
+        	payload = [{Id: ctrl.orderId}]
+	        orderModel.verifyOrders(payload).then(function (responseData) {
+	        	
+	        }).catch(function (err) { 
+            });
+        }
+
     }
 ]);
 angular.module("shiptech.pages").component("newOrder", {
