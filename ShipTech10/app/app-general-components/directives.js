@@ -316,6 +316,7 @@ window.increment = 0;
                                 });
                                 // concat
                                 matchedCol = matchedCol.concat(additionalCols);
+                                matchedCol = _.uniqBy(matchedCol, "name");
                                 // in matched we have matched col model, return it
                                 return matchedCol;
                             }
