@@ -65,7 +65,7 @@
 }
 
 .vis-item {
-	height: 32px;
+	height: 100%;
 	top: 0 !important;
 }
 
@@ -108,7 +108,8 @@ schedule-dashboard-timeline .vis-inner {
 }
 
 schedule-dashboard-timeline .vis-item.vis-selected {
-	box-shadow: 0px 0px 0px 3px #ffc200;
+	box-shadow: 0px 0px 0px 2px #ffc200 inset;
+	/*transform: scale(0.95);*/
 }
 
 .vis-voyage-content {

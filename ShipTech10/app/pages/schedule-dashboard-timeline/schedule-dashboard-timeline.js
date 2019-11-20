@@ -224,7 +224,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
-                        style: 'border-width: 1.8px; border-style: dashed;  border-right-style: none; box-shadow: none; border-color: #97b0f8; '
+                        style: 'border-width: 1.8px; border-style: dashed; pointer-events:none; border-right-style: none; box-shadow: none; border-color: #97b0f8; '
                     };
                     numberVessels += 1;
                 }
@@ -298,6 +298,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Disable red line
                 'showCurrentTime': false,
                 'stack': false,
+                'margin': {'axis':0,'item':{'horizontal':0,'vertical':1}},
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
                 'start': angular.copy(ctrl.startDate).format('YYYY-MM-DD'),
@@ -307,7 +308,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
                 'preferZoom': true,
-                /* 'zoomKey': 'altKey', */
+                'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
                     var serviceName = group.serviceName;
                     var vesselName = group.vesselName;
@@ -1108,6 +1109,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
+
+        jQuery(document).ready(function(){
+        	$(document).on("click", function(e){
+        		if(!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0){
+        			$(".vis-item").removeClass("vis-selected");
+        		}	
+        	})
+        })
 
 
     }
