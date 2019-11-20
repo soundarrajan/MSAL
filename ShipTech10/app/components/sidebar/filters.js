@@ -274,7 +274,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
-            $rootScope.timelineSaved = $scope.packedFilters;
+            if (defaultConf) {
+                $rootScope.timelineSaved = $scope.packedFilters;
+            }
             $scope.formatHeaders(data);
 
 
@@ -600,6 +602,8 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.clearFilters = function(noSlide) {
             $scope.globalFilters = [];
             $scope.selectedConfig = null;
+            $rootScope.timelineSaved =  null;
+            $rootScope.saveFiltersDefaultTimeline = null;
             $rootScope.activeBreadcrumbFilters = null;
             var data = {
                 clear: true
@@ -784,6 +788,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             var data = selectedConfig.id;
 			$scope.filtersConfigurations = null;
             $rootScope.timelineSaved =  null;
+            $rootScope.saveFiltersDefaultTimeline = null;
             filterConfigurationModel
                 .deleteConfiguration(data)
                 .then(function(response) {

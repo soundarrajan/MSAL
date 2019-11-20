@@ -507,7 +507,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         async function getData(payload) {
             return await new Promise(resolve => {
-                if (typeof $rootScope.saveFiltersDefaultTimeline != "undefined") {
+                if (typeof $rootScope.saveFiltersDefaultTimeline != "undefined" && $rootScope.saveFiltersDefaultTimeline != null) {
                     if ($rootScope.saveFiltersDefaultTimeline.length != 0) {
                         payload = $rootScope.saveFiltersDefaultTimeline;
                     }
@@ -543,7 +543,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
         $scope.getDefaultFilters = function(payload, isBreadcrumbFilter) {
             $scope.filtersAppliedPayload = payload;
-            $rootScope.saveFiltersDefaultTimeline = [];
 
             var conditions = $filtersData.filterConditions;
 
