@@ -170,3 +170,19 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 	display: block;
 	height: 32px;
 }
+
+.vis-item.estimatedRedeliveryDot {
+	position: relative;
+}
+.vis-item.estimatedRedeliveryDot:before {
+	content: "";
+    display: block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: red;
+    border-radius: 100%;
+}

@@ -134,6 +134,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         var computeData = function(data) {
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
+            var vesselDetails = data.payload.vesselDetails;
             ctrl.voyageData = angular.copy(vessels);
             // vessels = _.uniqBy(vessels, "voyageDetail.id");
 
@@ -226,7 +227,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
-                        style: 'border-width: 1.8px; border-style: dashed;  border-right-style: none; box-shadow: none; border-color: #97b0f8; '
+                        style: 'border-width: 1.8px; border-style: dashed; pointer-events:none; border-right-style: none; box-shadow: none; border-color: #97b0f8; '
                     };
                     numberVessels += 1;
                 }
@@ -257,6 +258,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     // Create new group
                     var group = {
                         id: groups.length + 1,
+                        vesselId: vessels[i].VesselId,
                         serviceName: vessels[i].ServiceName,
                         buyerName: vessels[i].BuyerName,
                         serviceBuyerName: vessels[i].ServiceBuyerName,
@@ -286,6 +288,37 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
                
             }
+
+            $.each(groups, function(k,v){
+            	currentGroupRedelivery = _.find(vesselDetails, {"id":v.vesselId});
+            	if (currentGroupRedelivery) {
+            		earliestRedelivery = currentGroupRedelivery.earliestRedelivery;
+            		latestRedelivery = currentGroupRedelivery.latestRedelivery;
+            		if (moment.utc(currentGroupRedelivery.earliestRedelivery) < ctrl.startDate) {
+            			earliestRedelivery = moment.utc(ctrl.startDate).startOf('day');
+            		}            		
+            		if (moment.utc(currentGroupRedelivery.latestRedelivery) < ctrl.endDate) {
+            			latestRedelivery = moment.utc(ctrl.endDate).endOf('day');
+            		}
+	            	if (currentGroupRedelivery.earliestRedelivery && currentGroupRedelivery.latestRedelivery && currentGroupRedelivery.estimatedRedelivery) {
+		                var redeliveryPeriod = {
+		                    group: 1,
+		                    start:  moment.utc(earliestRedelivery).format('YYYY-MM-DD HH:mm'),
+		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
+		                    style: 'background-color: none; border:2px solid red; pointer-events:none;'
+		                };
+		                var estimatedRedelivery = {
+		                    group: 1,
+		                    start:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
+		                    end:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
+		                    style: 'background-color: none; border:1px solid red; pointer-events:none;',
+		                    className: 'estimatedRedeliveryDot'
+		                };  
+		                voyages.push(redeliveryPeriod);            
+		                voyages.push(estimatedRedelivery);              	
+	            	}
+            	}
+            })
             ctrl.vessels = vessels;
             return {
                 'groups': groups,
@@ -299,6 +332,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // 'moveable': false,
                 // Disable red line
                 'showCurrentTime': false,
+                'margin': {'axis':0,'item':{'horizontal':0,'vertical':1}},
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
@@ -309,7 +343,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
                 'preferZoom': true,
-                /* 'zoomKey': 'altKey', */
+                'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
                     var serviceName = group.serviceName;
                     var vesselName = group.vesselName;
@@ -1130,6 +1164,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
+
+        jQuery(document).ready(function(){
+        	$(document).on("click", function(e){
+        		if(!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0){
+        			$(".vis-item").removeClass("vis-selected");
+        		}	
+        	})
+        })
 
 
     }
