@@ -4916,7 +4916,8 @@ APP_MASTERS.controller("Controller_Master", [
 	        		$('[ng-model="formValues.PaymentDateTo"]').next('.datePickerDayOfWeek').text("")
         		}
         		// try refresh datepicker
-        		
+        		$('[ng-model="formValues.PaymentDateFrom"]').parent().find("input").val("");
+                $('[ng-model="formValues.PaymentDateTo"]').parent().find("input").val("");
 				$scope.formValues.PaymentStatus = null;
 				$scope.formValues.PaymentDateFrom = null;
 				$scope.formValues.SellerWithInactive = null;
