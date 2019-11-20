@@ -10,6 +10,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         ctrl.endDate = null;
 
         var DEBUG = false;
+        var minDate = null;
+        var maxDate = null;
         if (window.location.hostname == 'localhost') {
             // DEBUG = true;
         }
@@ -224,7 +226,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
-                        style: 'border-width: 1.8px; border-style: dashed; pointer-events:none; border-right-style: none; box-shadow: none; border-color: #97b0f8; '
+                        style: 'border-width: 1.8px; border-style: dashed;  border-right-style: none; box-shadow: none; border-color: #97b0f8; '
                     };
                     numberVessels += 1;
                 }
@@ -298,17 +300,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Disable red line
                 'showCurrentTime': false,
                 'stack': false,
-                'margin': {'axis':0,'item':{'horizontal':0,'vertical':1}},
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
-                'start': angular.copy(ctrl.startDate).format('YYYY-MM-DD'),
-                'min': angular.copy(ctrl.startDate).subtract('days', 7).format('YYYY-MM-DD'),
+                'start': angular.copy(minDate.start),
+                'min': angular.copy(minDate.start),
                 'end': angular.copy(ctrl.endDate).format('YYYY-MM-DD'),
-                'max': angular.copy(ctrl.endDate).add('days', 7).format('YYYY-MM-DD'),
+                'max': angular.copy(maxDate.end),
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
                 'preferZoom': true,
-                'zoomKey': 'altKey', 
+                /* 'zoomKey': 'altKey', */
                 groupTemplate: function (group) {
                     var serviceName = group.serviceName;
                     var vesselName = group.vesselName;
@@ -316,11 +317,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var companyName = group.companyName;
                     var serviceBuyerName = group.serviceBuyerName;
 
-                    if (serviceName && serviceName.length > 12) {
-                        serviceName = serviceName.substr(0, 11) + ' ... ';
+                    if (serviceName && serviceName.length > 20) {
+                        serviceName = serviceName.substr(0, 15) + ' ... ';
                     }
 
-                    if (vesselName && vesselName.length > 12) {
+                    if (vesselName && vesselName.length > 20) {
                         vesselName = vesselName.substr(0, 11) + ' ... ';
                     }
 
@@ -360,7 +361,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var timelineData = computeData(data);
             var groups = new vis.DataSet(timelineData.groups);
             var voyages = new vis.DataSet(timelineData.voyages);
-
+            var voyagesArray = [];
+            for (var i = 0; i < timelineData.voyages.length; i++) {
+                voyagesArray.push(timelineData.voyages[i]);
+            }
+            var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
+            voyagesArray.push(startDateObject);
+            minDate = _.minBy(voyagesArray, function(item) {
+                timestamp = moment(item.start).format('X')
+                return timestamp;
+            });
+            maxDate =  _.maxBy(voyagesArray, function(item) {
+                timestamp = moment(item.end).format('X')
+                return timestamp;
+            });
+            minDate.start = moment(minDate.start).startOf('day');
+            maxDate.end = moment(maxDate.end).endOf('day');
             var container = document.getElementById('timeline');
 
             // Create a Timeline
@@ -423,11 +439,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 $('.vis-timeline').first().prepend(groupColumnsTitleElement);
                 $('#vis-custom-group-columns').width($('.vis-left').width());
+                //$('#timeline > div > div.vis-panel.vis-left.vis-vertical-scroll > div.vis-content > div > div > div > div > span:nth-child(1)').width('99px');
+                //$('#timeline > div > div.vis-panel.vis-left.vis-vertical-scroll > div.vis-content > div > div > div > div > span:nth-child(2)').width('69px');
                 $('#vis-custom-group-columns').height($('.vis-time-axis.vis-foreground').height());
                 $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
             }
 
             $scope.timelineLoaded = true;
+            setTimeout(function() {
+                timeline.moveTo(minDate.start);
+            });
 
         };
 
@@ -997,7 +1018,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (voyageStop[0].voyageDetail.deliveryFrom && voyageStop[0].voyageDetail.deliveryTo) {
                     var deliveryFrom = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryFrom);
                     var deliveryTo = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryTo);
-                    preHtml += " Delivery Window : " + deliveryFrom + " - " + deliveryTo;
+                    preHtml += "- Delivery Window : " + deliveryFrom + " - " + deliveryTo;
                 }               
                 preHtml += "</b></p>";
                 html = preHtml + html;              
@@ -1109,14 +1130,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
-
-        jQuery(document).ready(function(){
-        	$(document).on("click", function(e){
-        		if(!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0){
-        			$(".vis-item").removeClass("vis-selected");
-        		}	
-        	})
-        })
 
 
     }
