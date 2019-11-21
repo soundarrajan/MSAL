@@ -344,15 +344,15 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 }
             });
         }
-        function setCheckbox(){
-            if (typeof ctrl.data.isVerified != "undefined" && typeof ctrl.data != null){
-                if (ctrl.data.isVerified.name == "Yes") {
-                    $('#verifyCheckboxInput').trigger('click');
-                    $('#verifyCheckboxInput').attr('disabled', 'disabled');
+        // function setCheckbox(){
+        //     if (typeof ctrl.data.isVerified != "undefined" && typeof ctrl.data != null){
+        //         if (ctrl.data.isVerified.name == "Yes") {
+        //             $('#verifyCheckboxInput').trigger('click');
+        //             $('#verifyCheckboxInput').attr('disabled', 'disabled');
 
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
 
         //set all data mappings
         function loadData(data) {
@@ -471,11 +471,12 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             setOrderStatusHeader();
             calculateProductsAmountField();
             getOrderListForRequest();
-            setCheckbox();
+            // setCheckbox();
 
             for (var i = 0; i < ctrl.additionalCosts.length; i++) addPriceUomChg(ctrl.additionalCosts[i]);
             updateOrderSummary();
             ctrl.editableIMO();
+            ctrl.setIsVerifiedBool();
             ctrl.defaultMaxQtyFromConfirmed('init');
         }
         /**
@@ -3279,11 +3280,16 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             },1);   
         }
 
+        ctrl.setIsVerifiedBool = function(){
+        	ctrl.data.isVerified.name == 'Yes' ? ctrl.data.isVerifiedBool = true : ctrl.data.isVerifiedBool = false;
+        	console.log(ctrl.data.isVerifiedBool);
+        }
         ctrl.verifyOrder = function(){
         	payload = [{Id: ctrl.orderId}]
 	        orderModel.verifyOrders(payload).then(function (responseData) {
-	        	
+
 	        }).catch(function (err) { 
+	     		ctrl.data.isVerifiedBool = false;   	
             });
         }
 
