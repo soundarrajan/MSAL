@@ -176,15 +176,15 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 	position: relative;
 }
 .vis-item.estimatedRedeliveryDot:before {
-	content: "";
+    content: "";
     display: block;
     position: absolute;
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: red;
+    background: #b70000;
     border-radius: 100%;
 }
 span.newVessel {

@@ -309,12 +309,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    style: 'background-color: none; border:2px solid red; pointer-events:none; z-index:50'
 		                };
+		                estimatedRedeliveryStart = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
+		                estimatedRedeliveryEnd = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
+		                if (currentGroupRedelivery.estimatedRedelivery == earliestRedelivery || currentGroupRedelivery.estimatedRedelivery == latestRedelivery) {
+		                	estimatedRedeliveryStart = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 00:00";
+		                	estimatedRedeliveryEnd = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 00:00:01";
+		                }
 		                var estimatedRedelivery = {
 		                    group: v.id,
 		                    isRedelivery: true,
-		                    start:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
-		                    end:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
-		                    style: 'background-color: none; border:1px solid red; pointer-events:none; z-index:50',
+		                    start:  estimatedRedeliveryStart,
+		                    end:  estimatedRedeliveryEnd,
+		                    style: 'background-color: none; border:1px solid #b70000; pointer-events:none; z-index:51',
 		                    className: 'estimatedRedeliveryDot'
 		                };  
 		                voyages.push(redeliveryPeriod);            
