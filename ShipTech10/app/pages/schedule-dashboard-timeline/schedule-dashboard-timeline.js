@@ -307,14 +307,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    isRedelivery: true,
 		                    start:  moment.utc(earliestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
-		                    style: 'background-color: none; border:2px solid red; pointer-events:none;'
+		                    style: 'background-color: none; border:2px solid red; pointer-events:none; z-index:50'
 		                };
 		                var estimatedRedelivery = {
 		                    group: v.id,
 		                    isRedelivery: true,
 		                    start:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
 		                    end:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
-		                    style: 'background-color: none; border:1px solid red; pointer-events:none; z-index:2',
+		                    style: 'background-color: none; border:1px solid red; pointer-events:none; z-index:50',
 		                    className: 'estimatedRedeliveryDot'
 		                };  
 		                voyages.push(redeliveryPeriod);            
@@ -554,8 +554,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         }
                     }
                     // Create startDate and endDate base on startsBefore and endsAfter
-                    ctrl.startDate = moment().add('days', -ctrl.scheduleDashboardConfiguration.startsBefore);
-                    ctrl.endDate = moment().add('days', ctrl.scheduleDashboardConfiguration.endsAfter);
+                    ctrl.startDate = moment.utc().add('days', -ctrl.scheduleDashboardConfiguration.startsBefore);
+                    ctrl.endDate = moment.utc().add('days', ctrl.scheduleDashboardConfiguration.endsAfter);
                     $scope.startDateDisplay = ctrl.startDate.format('DD-MM-YYYY');
                     $scope.endDateDisplay = ctrl.endDate.format('DD-MM-YYYY');
     

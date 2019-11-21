@@ -110,6 +110,7 @@ schedule-dashboard-timeline .vis-inner {
 schedule-dashboard-timeline .vis-item.vis-selected {
 	box-shadow: 0px 0px 0px 2px #ffc200 inset;
 	/*transform: scale(0.95);*/
+	z-index: 99;
 }
 
 .vis-voyage-content {
