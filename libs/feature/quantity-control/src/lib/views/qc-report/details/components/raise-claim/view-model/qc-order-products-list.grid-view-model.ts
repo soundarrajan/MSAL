@@ -1,34 +1,27 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
-import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {
-  QcOrderProductsListColumns,
-  QcOrderProductsListColumnsLabels,
-  QcOrderProductsListItemProps
-} from './qc-order-products-list.columns';
+import { ColDef, GridOptions } from 'ag-grid-community';
+import { RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { QcOrderProductsListColumns, QcOrderProductsListColumnsLabels } from './qc-order-products-list.columns';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { Store } from '@ngxs/store';
-import { ModuleLoggerFactory } from '../../../../core/logging/module-logger-factory';
-import { QcReportDetailsService } from '../../../../services/qc-report-details.service';
+import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
+import { QcReportService } from '../../../../../../services/qc-report.service';
+import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
+import { IQcOrderProductsListItemDto } from '../../../../../../services/api/dto/qc-order-products-list-item.dto';
+
+
+function model(prop: keyof IQcOrderProductsListItemDto): string {
+  return prop;
+}
 
 @Injectable()
 export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
 
   gridOptions: GridOptions = {
-    groupHeaderHeight: 20,
-    headerHeight: 40,
-    rowHeight: 35,
-
-    rowModelType: RowModelType.ServerSide,
     rowSelection: RowSelection.Single,
-    pagination: true,
     animateRows: true,
-
-    deltaRowDataMode: false,
-    suppressPaginationPanel: false,
-    suppressColumnVirtualisation: false,
-
     multiSortKey: 'ctrl',
 
     enableBrowserTooltips: true,
@@ -42,34 +35,34 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
   orderNoCol: ColDef = {
     colId: QcOrderProductsListColumns.orderNo,
     headerName: QcOrderProductsListColumnsLabels.orderNo,
-    field: this.modelProps.orderNo,
+    field: model('orderNo'),
     hide: false,
-    headerCheckboxSelection: true,
+    headerCheckboxSelection: false,
     headerCheckboxSelectionFilteredOnly: true,
     checkboxSelection: true
   };
   counterpartyCol: ColDef = {
     colId: QcOrderProductsListColumns.counterpartyName,
     headerName: QcOrderProductsListColumnsLabels.counterpartyName,
-    field: this.modelProps.counterpartyName,
+    field: model('counterpartyName'),
     hide: false
   };
   productCol: ColDef = {
     colId: QcOrderProductsListColumns.productName,
     headerName: QcOrderProductsListColumnsLabels.productName,
-    field: this.modelProps.productName,
+    field: model('productName'),
     hide: false
   };
   confirmedQuantityCol: ColDef = {
     colId: QcOrderProductsListColumns.confirmedQuantity,
     headerName: QcOrderProductsListColumnsLabels.confirmedQuantity,
-    field: this.modelProps.confirmedQuantity,
+    field: model('confirmedQuantity'),
     hide: false
   };
   uomCol: ColDef = {
     colId: QcOrderProductsListColumns.uomName,
     headerName: QcOrderProductsListColumnsLabels.uomName,
-    field: this.modelProps.uomName,
+    field: model('uomName'),
     hide: false
   };
 
@@ -78,21 +71,34 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private store: Store,
-    private quantityControlService: QcReportDetailsService,
-    private modelProps: QcOrderProductsListItemProps
+    private reportService: QcReportService
   ) {
     super('qc-order-products-list', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
     this.initOptions(this.gridOptions);
+
+    this.gridReady$
+      .pipe(
+        first(),
+        tap(() => this.gridApi.showLoadingOverlay()),
+        // Note: No need for pagination or server-side filtering, everything is loaded in memory.
+        switchMap(() => this.reportService.getOrderProductsList()),
+        catchError(error => {
+          this.gridApi.hideOverlay();
+          return EMPTY$;
+        }),
+        map(response => response.items),
+        tap(items => {
+          if (!items || !items.length) {
+            this.gridApi.showNoRowsOverlay();
+          } else {
+            this.gridApi.setRowData(items);
+            this.gridApi.hideOverlay();
+          }
+        })
+      ).subscribe();
   }
 
   getColumnsDefs(): ColDef[] {
     return [this.orderNoCol, this.counterpartyCol, this.productCol, this.confirmedQuantityCol, this.uomCol];
-  }
-
-  //TODO: ADD loading overlay
-  public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getOrderProductsList().subscribe(
-      response => params.successCallback(response.items, response.totalItems),
-      () => params.failCallback());
   }
 }

@@ -9,7 +9,7 @@ import {
   QcSoundingReportListColumnsLabels
 } from './grid-column-constants';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
-import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
+import { QcReportService } from '../../../../../../services/qc-report.service';
 import { QcSoundingReportItemModel } from '../../../../../../services/models/qc-sounding-report-item.model';
 import { QcSoundingReportDetailsItemModel } from '../../../../../../services/models/qc-sounding-report-details-item.model';
 import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
@@ -230,7 +230,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private appErrorHandler: AppErrorHandler,
-    private quantityControlService: QcReportDetailsService
+    private quantityControlService: QcReportService
   ) {
     super('qc-sounding-report-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSoundingReportListGridViewModel.name));
     this.initOptions(this.gridOptions);

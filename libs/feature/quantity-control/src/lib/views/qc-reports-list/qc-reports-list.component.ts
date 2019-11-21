@@ -7,10 +7,9 @@ import { KnownQuantityControlRoutes } from '../../known-quantity-control.routes'
 import { QcReportsListState } from '../../store/reports-list/qc-reports-list.state';
 import { IQcReportListSummaryState } from '../../store/reports-list/qc-report-list-summary/qc-report-list-summary.state';
 import { Select } from '@ngxs/store';
-import { QcReportDetailsService } from '../../services/qc-report-details.service';
+import { QcReportService } from '../../services/qc-report.service';
 import { QcReportsListItemModel } from '../../services/models/qc-reports-list-item.model';
-import { MessageService } from 'primeng/api';
-import { tap } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -26,13 +25,13 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.Report}`;
   knownRoutes = KnownQuantityControlRoutes;
 
-  @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
+  @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
   constructor(public viewModel: QcReportsListViewModel,
               private messageBox: MessageBoxService,
-              private detailsService: QcReportDetailsService,
-              private messageService: MessageService) {
+              private reportService: QcReportService,
+              private toastr: ToastrService) {
   }
 
   onPageChange(page: number): void {
@@ -44,62 +43,26 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   }
 
   showModal(data: any): void {
-    this.messageBox.displayDialog({data, width: '500px', height: '600px'}, this.popupTemplate);
+    this.messageBox.displayDialog({ data, width: '500px', height: '600px' }, this.popupTemplate);
   }
 
   flagVesselForReport(reportId: number): void {
-    const gridApi = this.viewModel.gridViewModel.gridOptions.api;
-    this.detailsService.flagVesselForReport(reportId).pipe(
-      tap(() => {
-        gridApi.deselectAll();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `Vessel for report [${reportId}] has been flagged`
-        });
-      })
-    ).subscribe();
-  }
-
-  raiseClaim(): void {
-    const gridApi = this.viewModel.gridViewModel.gridOptions.api;
-
-    const selectedReports = gridApi.getSelectedNodes();
-    if (!selectedReports.length) {
-      return;
-    }
-    const reportIds = selectedReports.map((rowNode) => (<QcReportsListItemModel>rowNode.data).id);
-    this.detailsService.raiseClaim(reportIds).pipe(
-      tap(() => {
-        gridApi.deselectAll();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `Claim has been raised for reports: [${reportIds}]`
-        });
-      })
-    ).subscribe();
+    this.reportService.flagVesselForReport(reportId).subscribe(() => this.toastr.success(`Vessel for report [${reportId}] has been flagged`));
   }
 
   verifyVessels(): void {
     const gridApi = this.viewModel.gridViewModel.gridOptions.api;
 
-    const selectedReports = gridApi.getSelectedNodes();
+    const selectedReports = gridApi.getSelectedNodes() || [];
+
     if (!selectedReports.length) {
+      this.toastr.warning('Please select at least one report.');
       return;
     }
 
     const reportIds = selectedReports.map((rowNode) => (<QcReportsListItemModel>rowNode.data).id);
-    this.detailsService.verifyVesselReports(reportIds).pipe(
-      tap(() => {
-        gridApi.deselectAll();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `Reports [${reportIds}] has been varified`
-        });
-      })
-    ).subscribe();
+
+    this.reportService.verifyVesselReports(reportIds).subscribe(() => this.toastr.success(`Reports [${reportIds}] has been marked for verification.`));
   }
 
   ngOnInit(): void {

@@ -11,7 +11,7 @@ import { QcReportState } from '../../../../../../store/report-view/qc-report.sta
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
+import { QcReportService } from '../../../../../../services/qc-report.service';
 
 function model(prop: keyof IQcEventsLogItemState): string {
   return prop;
@@ -85,7 +85,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     store: Store,
-    private detailsService: QcReportDetailsService
+    private detailsService: QcReportService
   ) {
     super('quantity-control-events-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(EventsLogGridViewModel.name));
     this.initOptions(this.gridOptions);

@@ -55,8 +55,6 @@ export interface IQuantityControlApiService {
 
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse>;
 
-  raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse>;
-
   verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse>;
 
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse>;

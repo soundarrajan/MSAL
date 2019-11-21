@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { Observable, of, throwError } from 'rxjs';
+import { defer, Observable, of, throwError } from 'rxjs';
 import { ModuleError } from '../core/error-handling/module-error';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -44,19 +44,27 @@ import {
 } from '../store/report-view/details/actions/qc-events-log.action';
 import { IGetOrderProductsListResponse } from './api/request-response/claims-list.request-response';
 import {
-  QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction,
+  QcSaveReportDetailsAction,
+  QcSaveReportDetailsFailedAction,
   QcSaveReportDetailsSuccessfulAction
 } from '../store/report-view/details/actions/save-report.actions';
-import { QcReportState } from '../store/report-view/qc-report.state';
+import { UrlService } from '@shiptech/core/services/url/url.service';
+import { Router } from '@angular/router';
+import {
+  QcVerifyReportAction, QcVerifyReportFailedAction,
+  QcVerifyReportSuccessfulAction
+} from '../store/report-view/details/actions/verify-report.actions';
 
 @Injectable()
-export class QcReportDetailsService extends BaseStoreService implements OnDestroy {
+export class QcReportService extends BaseStoreService implements OnDestroy {
 
   constructor(
     protected store: Store,
+    private urlService: UrlService,
+    private router: Router,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
-    super(store, loggerFactory.createLogger(QcReportDetailsService.name));
+    super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
   protected get reportDetailsState(): IQcReportDetailsState {
@@ -112,19 +120,11 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   @ObservableException()
   updateActiveSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): Observable<unknown> {
-    // if (!_.keys(this.reportDetailsState.vesselResponse.sludge[categoryId]).some(vesselResponseKey => vesselResponseKey === key)) {
-    //   return throwError('Invalid argument provided for updateSludgeVesselResponse');
-    // }
-
     return this.store.dispatch(new UpdateActiveSludgeVesselResponseAction(key, value));
   }
 
   @ObservableException()
   updateActiveBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): Observable<unknown> {
-    // if (!_.keys(this.reportDetailsState.vesselResponse.bunker[categoryId]).some(vesselResponseKey => vesselResponseKey === key)) {
-    //   return throwError('Invalid argument provided for updateBunkerVesselResponse');
-    // }
-
     return this.store.dispatch(new UpdateActiveBunkerVesselResponseAction(key, value));
   }
 
@@ -140,17 +140,23 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   @ObservableException()
   verifyVesselReports(reportIds: number[]): Observable<unknown> {
-    return this.api.verifyReports({ reportIds });
+
+    return this.apiDispatch(
+      () => this.api.verifyReports({reportIds}),
+      QcVerifyReportAction,
+      response => new QcVerifyReportSuccessfulAction(),
+      QcVerifyReportFailedAction,
+      ModuleError.VerifyReportFailed
+    );
   }
 
   @ObservableException()
   getOrderProductsList(): Observable<IGetOrderProductsListResponse> {
-    return this.api.getOrderProductsList({});
+    return this.api.getOrderProductsList({ reportId: this.reportDetailsState.id });
   }
 
-  @ObservableException()
-  raiseClaim(reportIds: number[]): Observable<unknown> {
-    return this.api.raiseClaim({});
+  raiseClaim(orderId: number, productId: number): Observable<unknown> {
+    return defer(() => of(window.open(this.urlService.newClaim(orderId, productId), '_blank')));
   }
 
   @ObservableException()
@@ -172,7 +178,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   @ObservableException()
   addEventLog$(eventDetails?: string): Observable<unknown> {
-    return this.store.dispatch(new QcAddEventLogAction(eventDetails))
+    return this.store.dispatch(new QcAddEventLogAction(eventDetails));
   }
 
   removeEventLog(id: number): void {
@@ -181,7 +187,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
 
   @ObservableException()
   removeEventLog$(id: number): Observable<unknown> {
-    return this.store.dispatch(new QcRemoveEventLogAction(id))
+    return this.store.dispatch(new QcRemoveEventLogAction(id));
   }
 
   updateEventLog(id: number, newEventDetails: string): void {
@@ -189,8 +195,8 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   }
 
   @ObservableException()
-  updateEventLog$(id: number, newEventDetails: string):  Observable<unknown> {
-    return this.store.dispatch(new QcUpdateEventLogAction(id, newEventDetails))
+  updateEventLog$(id: number, newEventDetails: string): Observable<unknown> {
+    return this.store.dispatch(new QcUpdateEventLogAction(id, newEventDetails));
   }
 
   saveReport(): void {
@@ -200,7 +206,7 @@ export class QcReportDetailsService extends BaseStoreService implements OnDestro
   @ObservableException()
   saveReport$(): Observable<unknown> {
     return this.apiDispatch(
-      () => this.api.saveReportDetails({ }),
+      () => this.api.saveReportDetails({}),
       new QcSaveReportDetailsAction(),
       response => new QcSaveReportDetailsSuccessfulAction(),
       new QcSaveReportDetailsFailedAction(),

@@ -88,6 +88,7 @@ export class LegacyLookupsDatabase extends Dexie {
 
   private watchVersionChanges(): void {
     // TODO: Show popup that the database version has changed and the user should try to save work and close the tab.
+    // TODO: Detect if there were version changes
     // TODO: Implement proper logging here
     console.log(`IndexedDb ${this.name} version has been changed. Please reload tab`);
   }

@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { QcReportDetailsService } from '../../../services/qc-report-details.service';
+import { QcReportService } from '../../../services/qc-report.service';
 import { getShiptechFormatFilters } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-filters';
 import { getShiptechFormatSorts } from '../../../../../../../core/src/lib/grid/server-grid/mappers/shiptech-grid-sorts';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
@@ -218,7 +218,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private quantityControlService: QcReportDetailsService,
+    private quantityControlService: QcReportService,
     private modelProps: QcReportsListItemProps
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));

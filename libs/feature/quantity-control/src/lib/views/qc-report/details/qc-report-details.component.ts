@@ -3,23 +3,25 @@ import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report-view/qc-report.state';
-import { Observable, Subject, throwError } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   QcVesselResponseBaseStateItem,
   QcVesselResponseSludgeStateItem
 } from '../../../store/report-view/details/qc-vessel-responses.state';
-import { QcReportDetailsService } from '../../../services/qc-report-details.service';
-import { catchError, filter, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { QcReportService } from '../../../services/qc-report.service';
+import { filter, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 import _ from 'lodash';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction
 } from '../../../store/report-view/details/actions/qc-vessel-response.actions';
 import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
-import { ConfirmationService, DialogService, MessageService } from 'primeng/api';
-import { RaiseClaimComponent } from '../raise-claim/raise-claim.component';
+import { ConfirmationService, DialogService } from 'primeng/api';
+import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { ResetQcReportDetailsStateAction } from '../../../store/report-view/qc-report-details.actions';
+import { ToastrService } from 'ngx-toastr';
+import { AppBusyService } from '@shiptech/core/services/app-busy/app-busy.service';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -46,10 +48,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private entityStatus: EntityStatusService,
               private store: Store,
-              private detailsService: QcReportDetailsService,
+              private reportService: QcReportService,
               private dialogService: DialogService,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService
+              private toastrService: ToastrService
   ) {
     //TODO: after loading
     this.entityStatus.setStatus({
@@ -84,8 +86,6 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
       );
   }
 
-
-  // TODO: Remove after demo
   protected get reportDetailsState(): IQcReportDetailsState {
     // Note: Always get a fresh reference to the state.
     return (<IAppState>this.store.snapshot()).quantityControl.report.details;
@@ -105,15 +105,15 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): void {
-    this.detailsService.updateActiveSludgeVesselResponse(key, value).subscribe();
+    this.reportService.updateActiveSludgeVesselResponse(key, value).subscribe();
   }
 
   updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): void {
-    this.detailsService.updateActiveBunkerVesselResponse(key, value).subscribe();
+    this.reportService.updateActiveBunkerVesselResponse(key, value).subscribe();
   }
 
   updateComment(content: string): void {
-    this.detailsService.updateReportComment(content).subscribe();
+    this.reportService.updateReportComment(content).subscribe();
   }
 
   openEmailPreview(): void {
@@ -121,45 +121,19 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.detailsService.saveReport$().pipe(
-      // TODO: Remove after backend is implemented
-      tap(() => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Saved',
-          detail: 'Vessel report changes were saved'
-        });
-      }),
-      catchError(e => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Saving error',
-          detail: 'Vessel report changes were not saved'
-        });
-        return throwError(e);
-      }),
-      takeUntil(this._destroy$)
-    ).subscribe();
+    this.reportService.saveReport$()
+      .pipe(
+        tap(() => this.toastrService.success('Report saved successfully')),
+        takeUntil(this._destroy$)
+      ).subscribe();
   }
 
   verifyVessel(): void {
-    this.confirmationService.confirm({
-      header: 'Verify?',
-      message: 'Please confirm',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        this.messageService.clear();
-        this.messageService.add({ severity: 'success', summary: 'Verified', detail: 'Vessel report was verified' });
-      },
-      reject: () => {
-        this.messageService.clear();
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Verification canceled',
-          detail: 'Vessel report verification has been canceled'
-        });
-      }
-    });
+    // TODO: Verify should be disabled for New
+    this.reportService.verifyVesselReports([this.store.selectSnapshot(QcReportState.reportDetailsId)])
+      .pipe(
+        tap(() => this.toastrService.success('Report marked for verification.'))
+      ).subscribe();
   }
 
   raiseClaim(): void {

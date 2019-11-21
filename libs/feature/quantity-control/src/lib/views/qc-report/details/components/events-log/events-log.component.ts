@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventsLogGridViewModel } from './view-model/events-log-grid.view-model';
 import { IQcEventsLogItemState } from '../../../../../store/report-view/details/qc-events-log-state.model';
 import { Select, Store } from '@ngxs/store';
-import { QcReportDetailsService } from '../../../../../services/qc-report-details.service';
+import { QcReportService } from '../../../../../services/qc-report.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QcReportState } from '../../../../../store/report-view/qc-report.state';
@@ -19,7 +19,7 @@ export class EventsLogComponent implements OnInit, OnDestroy {
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
 
   constructor(public gridViewModel: EventsLogGridViewModel,
-              private detailsService: QcReportDetailsService) {
+              private detailsService: QcReportService) {
   }
 
   ngOnInit(): void {

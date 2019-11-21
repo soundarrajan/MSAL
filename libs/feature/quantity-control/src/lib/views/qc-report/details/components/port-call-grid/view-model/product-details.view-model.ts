@@ -6,7 +6,7 @@ import { QcReportState } from '../../../../../../store/report-view/qc-report.sta
 import { ProductTypeListItemViewModel, ProductTypeListItemViewModelBuilder } from './product-type-list-item.view-model';
 import { map, shareReplay } from 'rxjs/operators';
 import { Column } from 'ag-grid-community';
-import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
+import { QcReportService } from '../../../../../../services/qc-report.service';
 import { Omit } from '@shiptech/core/utils/type-definitions';
 import { QcProductTypeListItemStateModel } from '../../../../../../store/report-view/details/qc-product-type-list-item-state.model';
 import _ from 'lodash';
@@ -32,7 +32,7 @@ export class ProductDetailsViewModel {
   constructor(
     public gridViewModel: ProductDetailsGridViewModel,
     private store: Store,
-    private detailsService: QcReportDetailsService,
+    private detailsService: QcReportService,
     private viewModelBuilder: ProductTypeListItemViewModelBuilder,
     @Inject(LOOKUPS_API_SERVICE) private lookupsApi: ILookupsApiService
   ) {
