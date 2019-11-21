@@ -364,7 +364,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
 
                     if (vesselName && vesselName.length > 5 && isNew) {
-                        vesselName = vesselName.substr(0, 5) +  '...';
+                        vesselName = vesselName.substr(0, 6) +  '...';
                     } else if (vesselName && vesselName.length > 12 && !isNew) {
                         vesselName = vesselName.substr(0, 11) +  '...';
                     }
@@ -383,7 +383,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
-                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> NEW </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
                     } else {
                         tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
 
