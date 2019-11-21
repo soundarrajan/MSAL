@@ -13,14 +13,17 @@ import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.en
 export class UrlService {
   private logger: ILogger;
 
+  private readonly baseOrigin: string;
+
   constructor(private appConfig: AppConfig,
               loggerFactory: LoggerFactory,
               @Inject(APP_BASE_HREF) private baseHref: string) {
     this.logger = loggerFactory.createLogger(UrlService.name);
+    this.baseOrigin = new URL(window.location.href).origin;
   }
 
   public editRequest(requestId: string | number): string {
-    return `/#/edit-request/${(requestId)}`;
+    return `${this.baseOrigin}/#/edit-request/${(requestId)}`;
   }
 
   public getRuntimeSettings(): string {
@@ -32,15 +35,15 @@ export class UrlService {
   }
 
   public offer(requestId: string | number): string {
-    return `/#/group-of-requests/${(requestId)}`;
+    return `${this.baseOrigin}/#/group-of-requests/${(requestId)}`;
   }
 
   public editOrder(orderId: string | number): string {
-    return `/#/edit-order/${(orderId)}`;
+    return `${this.baseOrigin}/#/edit-order/${(orderId)}`;
   }
 
   public editDelivery(deliveryId: string | number): string {
-    return `/#/delivery/delivery/edit/${(deliveryId)}`;
+    return `${this.baseOrigin}/#/delivery/delivery/edit/${(deliveryId)}`;
   }
 
   public portCallDetails(portCallId: string | number): string {
@@ -48,18 +51,22 @@ export class UrlService {
   }
 
   public editLabResults(labId: string | number): string {
-    return `/#/labs/labresult/edit/${(labId)}`;
+    return `${this.baseOrigin}/#/labs/labresult/edit/${(labId)}`;
   }
 
   public editInvoice(invoiceId: string | number): string {
-    return `/#/invoices/invoice/edit/${(invoiceId)}`;
+    return `${this.baseOrigin}/#/invoices/invoice/edit/${(invoiceId)}`;
   }
 
   public editReconListOrder(orderId: string | number): string {
-    return `/#/recon/reconlist/edit/${(orderId)}`;
+    return `${this.baseOrigin}/#/recon/reconlist/edit/${(orderId)}`;
   }
 
   public editClaim(claimId: string | number): string {
-    return `/#/claims/edit/${claimId}`;
+    return `${this.baseOrigin}/#/claims/edit/${claimId}`;
+  }
+
+  public newClaim(orderId?: number, productId?: number): string {
+    return `${this.baseOrigin}/#/claims/edit/?orderId=${orderId}&productId=${productId}`;
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { QcReportDetailsService } from '../../../services/qc-report-details.service';
+import { QcReportService } from '../../../services/qc-report.service';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 import { catchError, map, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
@@ -12,7 +12,7 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
-    private portCallDetailsService: QcReportDetailsService) {
+    private portCallDetailsService: QcReportService) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {

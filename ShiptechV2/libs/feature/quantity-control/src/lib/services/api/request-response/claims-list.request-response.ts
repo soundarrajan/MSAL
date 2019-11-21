@@ -2,6 +2,7 @@ import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './req
 import { IQcOrderProductsListItemDto } from '../dto/qc-order-products-list-item.dto';
 
 export interface IGetOrderProductsListRequest extends IBaseQuantityControlRequest {
+  reportId: number;
 }
 
 export interface IGetOrderProductsListResponse extends IBaseQuantityControlResponse {

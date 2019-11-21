@@ -20,7 +20,7 @@ import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-de
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { QcReportDetailsService } from './services/qc-report-details.service';
+import { QcReportService } from './services/qc-report.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
 import { SoundingReportsComponent } from './views/qc-report/details/components/sounding-reports/sounding-reports.component';
@@ -39,7 +39,7 @@ import {
   NUMBER_FORMAT,
   NumberFormat
 } from './views/qc-report/details/components/port-call-grid/view-model/number.format';
-import { RaiseClaimComponent } from './views/qc-report/raise-claim/raise-claim.component';
+import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 
@@ -97,7 +97,7 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
       }
     },
     QcReportDetailsUnsavedChangesGuard,
-    QcReportDetailsService
+    QcReportService
   ]
 })
 export class QuantityControlModule {

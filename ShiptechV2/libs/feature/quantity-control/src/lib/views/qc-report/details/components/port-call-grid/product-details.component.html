@@ -68,11 +68,9 @@
              appAgCellTemplate
              let-model="data.model" let-value="value">
   <ng-container>
-    <!--    TODO: Add UOM conversion -->
     <div fxLayout="row" fxLayoutAlign="center center">
       <div class="row">
         <div class="col-6">{{value | number: viewModel.numberDisplayFormat}}</div>
-        <div class="col-6" style="border-left: 1px solid grey;">UOM</div>
       </div>
     </div>
   </ng-container>

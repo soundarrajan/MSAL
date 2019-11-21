@@ -12,7 +12,7 @@ import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enu
 import { QcSurveyHistoryListItemModel } from '../../../../../../services/models/qc-survey-history-list-item.model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
-import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
+import { QcReportService } from '../../../../../../services/qc-report.service';
 import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
 import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
 import { getShiptechFormatFilters } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
@@ -176,7 +176,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private store: Store,
-    private quantityControlService: QcReportDetailsService,
+    private quantityControlService: QcReportService,
     private modelProps: QcSurveyHistoryListItemProps
   ) {
     super('qc-survey-history-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSurveyHistoryListGridViewModel.name));

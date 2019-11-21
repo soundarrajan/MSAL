@@ -11,7 +11,7 @@ import {
   ProductDetailsProps
 } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
-import { QcReportDetailsService } from '../../../../../../services/qc-report-details.service';
+import { QcReportService } from '../../../../../../services/qc-report.service';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
@@ -212,7 +212,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private quantityControlService: QcReportDetailsService,
+    private quantityControlService: QcReportService,
     private modelProps: ProductDetailsProps,
     private store: Store
   ) {

@@ -16,7 +16,6 @@ import {
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
-import { IRaiseClaimRequest, IRaiseClaimResponse } from './request-response/raise-claim.request-response';
 import {
   IVerifyQcReportsRequest,
   IVerifyQcReportsResponse
@@ -110,23 +109,18 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  raiseClaim(request: IRaiseClaimRequest): Observable<IRaiseClaimResponse> {
-    return of(undefined);
-  }
-
-  @ApiCall()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
     return of({ items: getQcOrderProductsList(10), totalItems: 10 });
   }
 
   @ApiCall()
   verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
-    return of(undefined);
+    return of({});
   }
 
   @ApiCall()
   watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
-    return of(undefined);
+    return of({});
   }
 
   @ApiCall()

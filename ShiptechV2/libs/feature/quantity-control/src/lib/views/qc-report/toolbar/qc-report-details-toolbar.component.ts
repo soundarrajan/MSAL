@@ -22,7 +22,6 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
 
   @ViewChild(TabMenu, { static: true }) tabMenu: TabMenu;
 
-
   private _destroy$ = new Subject();
 
   constructor(private route: ActivatedRoute, private router: Router) {

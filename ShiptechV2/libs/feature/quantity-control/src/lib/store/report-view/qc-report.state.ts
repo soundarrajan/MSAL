@@ -48,6 +48,11 @@ import {
   QcSaveReportDetailsFailedAction,
   QcSaveReportDetailsSuccessfulAction
 } from './details/actions/save-report.actions';
+import {
+  QcVerifyReportAction,
+  QcVerifyReportFailedAction,
+  QcVerifyReportSuccessfulAction
+} from './details/actions/verify-report.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -62,8 +67,7 @@ export class QcReportState {
     const isBusy = [
       state.details._isLoading,
       state.details.isSaving,
-      state.details.isVerifying,
-      state.details.isRaisingClaim
+      state.details.isVerifying
     ];
     return isBusy.some(s => s);
   }
@@ -74,10 +78,17 @@ export class QcReportState {
   }
 
   @Selector()
+  static reportDetailsId(state: IQcReportState): number {
+    return state.details.id;
+  }
+
+  @Selector()
   static canSave(state: IQcReportState): boolean {
+    // TODO: implement validation, if necessary
     return true;
   }
 
+  // TODO: Refactor, this is should not be done
   @Selector()
   static getReportDetails(state: IQcReportState): IQcReportDetailsState {
     return state.details;
@@ -288,11 +299,7 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
-            robBeforeDeliveryUom: { ...action.uom },
-            productTypesById: ConvertProductTypeValues(
-              state.details.productTypesById,
-              ['robBeforeDeliveryLogBookROB', 'robBeforeDeliveryMeasuredROB'],
-              action.uom.conversionRate)
+            robBeforeDeliveryUom: { ...action.uom }
           }
         }
       );
@@ -302,10 +309,6 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
-            productTypesById: ConvertProductTypeValues(
-              state.details.productTypesById,
-              ['robAfterDeliveryLogBookROB', 'robAfterDeliveryMeasuredROB'],
-              action.uom.conversionRate),
             robAfterDeliveryUom: { ...action.uom }
           }
         }
@@ -316,10 +319,6 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
-            productTypesById: ConvertProductTypeValues(
-              state.details.productTypesById,
-              ['deliveredQuantityBdnQty', 'deliveredQuantityMessuredDeliveredQuantity'],
-              action.uom.conversionRate),
             deliveredQtyUom: { ...action.uom }
           }
         }
@@ -551,6 +550,22 @@ export class QcReportState {
     patchState({
       details: new QcReportDetailsModel()
     });
+  }
+
+  @Action([QcVerifyReportAction, QcVerifyReportSuccessfulAction, QcVerifyReportFailedAction])
+  verifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): void {
+    const state = getState();
+
+    if (isAction(action, QcVerifyReportAction)) {
+      patchState({
+        details: { ...state.details, isVerifying: true }
+      });
+    } else {
+      patchState({
+        details: { ...state.details, isVerifying: false }
+      });
+    }
+
   }
 }
 

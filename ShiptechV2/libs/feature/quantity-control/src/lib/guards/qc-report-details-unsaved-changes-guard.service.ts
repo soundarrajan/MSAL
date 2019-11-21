@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { QcReportDetailsComponent } from '../views/qc-report/details/qc-report-details.component';
 import { Observable, Observer, of } from 'rxjs';
-import { QcReportDetailsService } from '../services/qc-report-details.service';
+import { QcReportService } from '../services/qc-report.service';
 import { Store } from '@ngxs/store';
 import { QcReportState } from '../store/report-view/qc-report.state';
 import { ConfirmationService } from 'primeng/api';
 
 @Injectable()
 export class QcReportDetailsUnsavedChangesGuard implements CanDeactivate<QcReportDetailsComponent> {
-  constructor(private detailsService: QcReportDetailsService, private store: Store, private confirmationService: ConfirmationService) {
+  constructor(private detailsService: QcReportService, private store: Store, private confirmationService: ConfirmationService) {
   }
 
   canDeactivate(

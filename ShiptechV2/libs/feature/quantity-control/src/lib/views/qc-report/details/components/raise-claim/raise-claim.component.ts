@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef, MessageService } from 'primeng/api';
 import { QcOrderProductsListGridViewModel } from './view-model/qc-order-products-list.grid-view-model';
 import { QcOrderProductsListViewModel } from './view-model/qc-order-products-list.view-model';
-import { IQcOrderProductsListItemDto } from '../../../services/api/dto/qc-order-products-list-item.dto';
-import * as _ from 'lodash';
+import { IQcOrderProductsListItemDto } from '../../../../../services/api/dto/qc-order-products-list-item.dto';
+import { QcReportService } from '../../../../../services/qc-report.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'shiptech-raise-claim',
@@ -13,10 +14,11 @@ import * as _ from 'lodash';
 })
 export class RaiseClaimComponent implements OnInit {
 
-  constructor(public ref: DynamicDialogRef,
+  constructor(public dialogRef: DynamicDialogRef,
               public config: DynamicDialogConfig,
               public viewModel: QcOrderProductsListViewModel,
-              private messageService: MessageService) {
+              private reportDetails: QcReportService,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -24,25 +26,18 @@ export class RaiseClaimComponent implements OnInit {
 
   raiseClaim(): void {
     const gridApi = this.viewModel.gridViewModel.gridOptions.api;
-    const selectedNodes = gridApi.getSelectedNodes();
-    this.messageService.clear();
+    const selectedNodes = gridApi.getSelectedNodes() || [];
 
-    if (!selectedNodes.length) {
-      this.messageService.add({
-        severity: 'error',
-        detail: 'Please select a order product'
-      });
+    const orderProducts = selectedNodes.map(n => (<IQcOrderProductsListItemDto>n.data));
+
+    if (orderProducts.length !== 1) {
+      this.toastr.warning('Please select one order to raise claim for.');
       return;
     }
 
-    const selectedItem: IQcOrderProductsListItemDto = _.first(selectedNodes).data;
-
-    this.messageService.add({
-      severity: 'success',
-      detail: `Raise claim for orderId: ${selectedItem.orderId} and productId: ${selectedItem.productId}`
+    this.reportDetails.raiseClaim(orderProducts[0].orderId, orderProducts[0].productId).subscribe(() => {
+      gridApi.deselectAll();
+      this.dialogRef.close();
     });
-
-    gridApi.deselectAll();
   }
-
 }
