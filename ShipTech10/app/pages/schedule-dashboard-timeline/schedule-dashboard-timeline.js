@@ -295,23 +295,25 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             		earliestRedelivery = currentGroupRedelivery.earliestRedelivery;
             		latestRedelivery = currentGroupRedelivery.latestRedelivery;
             		if (moment.utc(currentGroupRedelivery.earliestRedelivery) < ctrl.startDate) {
-            			earliestRedelivery = moment.utc(ctrl.startDate).startOf('day');
+            			// earliestRedelivery = moment.utc(ctrl.startDate).startOf('day');
             		}            		
             		if (moment.utc(currentGroupRedelivery.latestRedelivery) < ctrl.endDate) {
-            			latestRedelivery = moment.utc(ctrl.endDate).endOf('day');
+            			// latestRedelivery = moment.utc(ctrl.endDate).endOf('day');
             		}
 	            	if (currentGroupRedelivery.earliestRedelivery && currentGroupRedelivery.latestRedelivery && currentGroupRedelivery.estimatedRedelivery) {
 		                var redeliveryPeriod = {
-		                    group: 1,
+		                    group: v.id,
+		                    isRedelivery: true,
 		                    start:  moment.utc(earliestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    style: 'background-color: none; border:2px solid red; pointer-events:none;'
 		                };
 		                var estimatedRedelivery = {
-		                    group: 1,
+		                    group: v.id,
+		                    isRedelivery: true,
 		                    start:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
 		                    end:  moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00",
-		                    style: 'background-color: none; border:1px solid red; pointer-events:none;',
+		                    style: 'background-color: none; border:1px solid red; pointer-events:none; z-index:2',
 		                    className: 'estimatedRedeliveryDot'
 		                };  
 		                voyages.push(redeliveryPeriod);            
@@ -338,7 +340,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'orientation': 'top',
                 'start': angular.copy(minDate.start),
                 'min': angular.copy(minDate.start),
-                'end': angular.copy(ctrl.endDate).format('YYYY-MM-DD'),
+                'end': angular.copy(maxDate.end),
                 'max': angular.copy(maxDate.end),
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
@@ -402,12 +404,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
             voyagesArray.push(startDateObject);
             minDate = _.minBy(voyagesArray, function(item) {
-                timestamp = moment(item.start).format('X')
-                return timestamp;
+                timestamp = moment(item.start).format('X');
+                if (!item.isRedelivery) {
+	                return timestamp;
+                }
             });
             maxDate =  _.maxBy(voyagesArray, function(item) {
-                timestamp = moment(item.end).format('X')
-                return timestamp;
+                timestamp = moment(item.end).format('X');
+                if (!item.isRedelivery) {
+	                return timestamp;
+                }
             });
             minDate.start = moment(minDate.start).startOf('day');
             maxDate.end = moment(maxDate.end).endOf('day');
