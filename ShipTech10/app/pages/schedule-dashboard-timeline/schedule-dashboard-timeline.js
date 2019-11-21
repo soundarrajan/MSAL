@@ -267,7 +267,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         defaultFuel: vessels[i].DefaultFuel,
                         defaultDistillate: vessels[i].DefaultDistillate,
                         // contentTemplate: 
-                        content: groupString
+                        content: groupString,
+                        isNew: false
                     };
 
                     // Add group to groups
@@ -319,7 +320,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                voyages.push(redeliveryPeriod);            
 		                voyages.push(estimatedRedelivery);              	
 	            	}
+                    isNew = currentGroupRedelivery.isNew;
+                    v.isNew = isNew;
+                    
             	}
+                
             })
             ctrl.vessels = vessels;
             return {
@@ -352,28 +357,37 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var buyerName = group.buyerName;
                     var companyName = group.companyName;
                     var serviceBuyerName = group.serviceBuyerName;
+                    var isNew = group.isNew;
 
                     if (serviceName && serviceName.length > 20) {
-                        serviceName = serviceName.substr(0, 15) + ' ... ';
+                        serviceName = serviceName.substr(0, 15) + '...';
                     }
 
-                    if (vesselName && vesselName.length > 20) {
-                        vesselName = vesselName.substr(0, 11) + ' ... ';
+                    if (vesselName && vesselName.length > 5 && isNew) {
+                        vesselName = vesselName.substr(0, 5) +  '...';
+                    } else if (vesselName && vesselName.length > 12 && !isNew) {
+                        vesselName = vesselName.substr(0, 11) +  '...';
                     }
+
 
                     if (buyerName && buyerName.length > 12) {
-                        buyerName = buyerName.substr(0, 11) + ' ... ';
+                        buyerName = buyerName.substr(0, 11) + '...';
                     }
                     if (serviceBuyerName && serviceBuyerName.length > 12) {
-                        serviceBuyerName = serviceBuyerName.substr(0, 11) + ' ... ';
+                        serviceBuyerName = serviceBuyerName.substr(0, 11) +  '...';
                     }                    
 
                     if (companyName && companyName.length > 12) {
-                        companyName = companyName.substr(0, 11) + ' ... ';
+                        companyName = companyName.substr(0, 11) + '...';
                     }
 
                     var tpl = '<div class="vis-custom-group">';
-                    tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                    if (isNew){
+                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> NEW </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                    } else {
+                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+
+                    }
                     if ($scope.displayedColumns["Service"]) {
                     	tpl += `<span class="vis-custom-group-column" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
                     }
