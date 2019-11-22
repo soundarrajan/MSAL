@@ -21,21 +21,21 @@
             <tr ng-repeat="(key, value) in formValues.productDetails" ng-if="value.isDeleted != true" class="ng-scope">
 				<td  style="min-width: 120px;" class="padding">{{value.orderedProduct.name}}</td>
                 <td  style="min-width: 120px;" ng-bind="getProductTypeById(value.productTypeId)" class="padding"></td>
-				<td  style="min-width: 140px;" class="">
+				<td  style="min-width: 200px;" class="">
                     <div class="formatter-uom-label pull-left">{{value.confirmedQuantityUom.name}}</div>
 					<div class="pull-left" style="padding: 8px;">{{value.confirmedQuantity | number:CM.tenantSetting.defaultValues.quantityPrecision}}</div>
 				</td>
-				<td style="min-width: 150px;" >
+				<td style="min-width: 200px;" >
 					<div class="formatter-uom-label pull-left">{{value.estimatedRateCurrency.code}}</div>
 					<div class="pull-left" style="padding: 8px;">{{value.estimatedRate | number:CM.tenantSetting.defaultValues.amountPrecision}}</div>
 					<div class="formatter-uom-label pull-right" style="margin: 0;">{{value.estimatedRateUom.name}}</div>
 				</td>
-				<td  style="min-width: 170px;" class="">
+				<td  style="min-width: 200px;" class="">
 					<div class="formatter-uom-label pull-left">{{value.estimatedRateCurrency.code}}</div>
 					<div class="pull-left" style="padding: 8px;">{{value.estimatedAmount | number:CM.tenantSetting.defaultValues.amountPrecision}}</div>
 				</td>
 				<td  style="min-width: 160px;" class="padding">{{value.product.name}}</td>
-				<td style="min-width: 140px;" class="">
+				<td style="min-width: 200px;" class="">
 					<div class="pull-left" style="padding: 8px;">{{value.deliveryQuantity | number:CM.tenantSetting.defaultValues.quantityPrecision}}</div>
 					<div class="formatter-uom-label pull-right" style="margin: 0;">{{value.deliveryQuantityUom.name}}</div>
 				</td>
