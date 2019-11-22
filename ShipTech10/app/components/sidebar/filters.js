@@ -32,7 +32,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         console.log("init");
         $scope.noDefault = null;
         ctrl = this;
-
+        $rootScope.isDefaultConfig = null;
         ctrl.isSellerPortal = window.location.hash.indexOf("supplier-portal") > 0;
         $scope.$on("savedLayout", function() {
             if ($scope.$$listenerCount["savedLayout"] > 1) {
@@ -601,8 +601,10 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.createFilters();
         $scope.clearFilters = function(noSlide) {
             $scope.globalFilters = [];
+            $rootScope.isDefaultConfig = $scope.selectedConfig;
             $scope.selectedConfig = null;
             $rootScope.timelineSaved =  null;
+            $rootScope.saveFiltersTimeline = $rootScope.saveFiltersDefaultTimeline;
             $rootScope.saveFiltersDefaultTimeline = null;
             $rootScope.activeBreadcrumbFilters = null;
             var data = {
@@ -684,9 +686,11 @@ angular.module("shiptech.components").controller("FiltersController", [
                     	$rootScope.$broadcast("filters-applied", []);
                     } 
                     if ($scope.defaultConfiguration != null) {
+                        $rootScope.clearDefaultFilters = true;
                         retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                         $rootScope.savedDefaultFilters = $scope.defaultConfiguration.filters;
                         $scope.selectedConfig = $scope.defaultConfiguration;
+                        $rootScope.isDefaultConfig = $scope.selectedConfig;
                         $rootScope.saveFiltersDefaultTimeline = $scope.defaultConfiguration.filtersList;
                         $scope.enableDisableDeleteLayout($scope.selectedConfig);
                         //selected != default

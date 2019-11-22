@@ -589,17 +589,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         async function getData(payload) {
             return await new Promise(resolve => {
+                var isDefault = true;
                 if (typeof $rootScope.saveFiltersDefaultTimeline != "undefined" && $rootScope.saveFiltersDefaultTimeline != null) {
                     if ($rootScope.saveFiltersDefaultTimeline.length != 0) {
                         payload = $rootScope.saveFiltersDefaultTimeline;
                     }
+                } else {
+                    isDefault = false;
                 }
                 scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters).then(function (response) {
                     resolve(response);
-                    if (typeof $rootScope.timelineSaved != "undefined" && $rootScope.timelineSaved != null) {
+                    if (typeof $rootScope.timelineSaved != "undefined" && $rootScope.timelineSaved != null && isDefault) {
                         $scope.getDefaultFilters($rootScope.timelineSaved, false);
                     }
                 });
+             
+            
 
             });
         }
@@ -707,7 +712,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
         }
 
-        $rootScope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
+        $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
 
 
             if (!timeline) {
@@ -807,7 +812,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
         });
 
-        $rootScope.$on(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, function (event, filter, no) {
+        $scope.$on(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, function (event, filter, no) {
             if (ctrl.breadcrumbsFilter == filter) {
                 filterPayload = [];
                 getData(filterPayload).then(function(response) {

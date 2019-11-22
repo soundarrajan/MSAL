@@ -89,6 +89,16 @@ angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$
         * Broadcast an event to reload the page data
         */
         $scope.broadcastRefreshData = function () {
+            if (typeof $rootScope.isDefaultConfig != "undefined" && $rootScope.isDefaultConfig != null) {
+                if ($rootScope.isDefaultConfig.isDefault) {
+                    if ($rootScope.saveFiltersTimeline) {
+                        $rootScope.saveFiltersDefaultTimeline = $rootScope.saveFiltersTimeline;
+                        $rootScope.saveFiltersTimeline = null;
+                    }
+                } else {
+                    $rootScope.saveFiltersDefaultTimeline = null;
+                }
+            }
         	$state.reload();
         	return;
             $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, status);
