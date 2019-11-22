@@ -349,10 +349,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
-                'start': angular.copy(minDate.start),
-                'min': angular.copy(minDate.start),
-                'end': angular.copy(maxDate.end),
-                'max': angular.copy(maxDate.end),
+                'start': angular.copy(ctrl.startDate),
+                'min': angular.copy(ctrl.startDate),
+                'end': angular.copy(ctrl.endDate),
+                'max': angular.copy(ctrl.endDate),
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
                 'preferZoom': true,
@@ -507,7 +507,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             $scope.timelineLoaded = true;
             setTimeout(function() {
-                timeline.moveTo(minDate.start);
+                timeline.moveTo(ctrl.startDate);
             });
 
         };
@@ -1201,7 +1201,19 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         			$(".vis-item").removeClass("vis-selected");
         		}	
         	})
+			$(window).bind('mousewheel DOMMouseScroll', function(event){
+				if ($(event.target).hasClass("vis-group")) {
+				    var currentScrollTop = timeline._getScrollTop();
+				    if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+				        timeline._setScrollTop(currentScrollTop + 100)
+				    }
+				    else {
+				        timeline._setScrollTop(currentScrollTop - 100)
+				    }
+				}
+			});
         })
+
 
 
     }
