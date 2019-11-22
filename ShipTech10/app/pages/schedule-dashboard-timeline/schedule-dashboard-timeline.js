@@ -593,6 +593,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (typeof $rootScope.saveFiltersDefaultTimeline != "undefined" && $rootScope.saveFiltersDefaultTimeline != null) {
                     if ($rootScope.saveFiltersDefaultTimeline.length != 0) {
                         payload = $rootScope.saveFiltersDefaultTimeline;
+                    } else {
+                        isDefault = false;
                     }
                 } else {
                     isDefault = false;
@@ -602,10 +604,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     if (typeof $rootScope.timelineSaved != "undefined" && $rootScope.timelineSaved != null && isDefault) {
                         $scope.getDefaultFilters($rootScope.timelineSaved, false);
                     }
-                });
-             
-            
-
+                });  
             });
         }
 
