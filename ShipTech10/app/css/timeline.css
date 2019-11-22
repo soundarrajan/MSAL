@@ -23,9 +23,34 @@
 	display: flex;
 	justify-content: space-between;
 }
+.vis-vessel {
+	width: 95px;
+}
+.vis-service {
+	width: 50px;
+}
+.vis-buyer-of-service {
+	width: 65px;
+}
+.vis-buyer-of-vessel {
+	width: 65px;
+}
+.vis-company {
+	width: 60px;
+}
+.vis-custom-group-column-header {
+	display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    border-right: 1px solid #bfbfbf;
+    text-align: center;
+    /* padding: 5px; */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 0.8em;
+}
 
 .vis-custom-group-column { 
-	width: 85px;
 	/* height: 100%; */
     display: flex;
     /* justify-content: center; */
@@ -37,7 +62,6 @@
     overflow: hidden;
     font-size: 0.8em;
 }
-
  .vis-custom-group-column-header {
 	justify-content: center;
 	text-align: center;

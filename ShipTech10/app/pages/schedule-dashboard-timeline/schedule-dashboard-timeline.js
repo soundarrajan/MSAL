@@ -365,12 +365,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var serviceBuyerName = group.serviceBuyerName;
                     var isNew = group.isNew;
 
-                    if (serviceName && serviceName.length > 20) {
-                        serviceName = serviceName.substr(0, 15) + '...';
+                    if (serviceName && serviceName.length > 5) {
+                        serviceName = serviceName.substr(0, 5) + '...';
                     }
 
                     if (vesselName && vesselName.length > 5 && isNew) {
-                        vesselName = vesselName.substr(0, 6) +  '...';
+                        vesselName = vesselName.substr(0, 5) +  '...';
                     } else if (vesselName && vesselName.length > 12 && !isNew) {
                         vesselName = vesselName.substr(0, 11) +  '...';
                     }
@@ -389,22 +389,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
-                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
                     } else {
-                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
 
                     }
                     if ($scope.displayedColumns["Service"]) {
-                    	tpl += `<span class="vis-custom-group-column" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
+                    	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
                     }
                     if ($scope.displayedColumns["Buyer of the Vessel"]) {
-	                    tpl += `<span class="vis-custom-group-column" tooltip title="${group.buyerName}"> <span class="vis-custom-group-column-content"> ${buyerName} </span></span>`;
+	                    tpl += `<span class="vis-custom-group-column vis-buyer-of-vessel" tooltip title="${group.buyerName}"> <span class="vis-custom-group-column-content"> ${buyerName} </span></span>`;
                     }
                     if ($scope.displayedColumns["Buyer of the Service"]) {
-                        tpl += `<span class="vis-custom-group-column" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content"> ${serviceBuyerName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column vis-buyer-of-service" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content"> ${serviceBuyerName} </span></span>`;
                     }                    
                     if ($scope.displayedColumns["Company"]) {
-                        tpl += `<span class="vis-custom-group-column last" tooltip title="${group.companyName}"> <span class="vis-custom-group-column-content"> ${companyName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column last vis-company" tooltip title="${group.companyName}"> <span class="vis-custom-group-column-content"> ${companyName} </span></span>`;
                     }
                     tpl += '</div>';
                     return tpl;
@@ -482,18 +482,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $('#vis-custom-group-columns').remove();
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
-                groupColumnsTitleElement += '<span class="vis-custom-group-column vis-custom-group-column-header"> Vessel </span>';
+                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> Vessel </span>';
                 if ($scope.displayedColumns["Service"]) {
-	                groupColumnsTitleElement += '<span class="vis-custom-group-column vis-custom-group-column-header"> Service </span>';
+	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service"> Service </span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Vessel"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column vis-custom-group-column-header"> Buyer of the Vessel </span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel"> Buyer of the Vessel </span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Service"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column vis-custom-group-column-header"> Buyer of the Service </span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> Buyer of the Service </span>';
                 }                
                 if ($scope.displayedColumns["Company"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column vis-custom-group-column-header last"> Company </span></div>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Company </span></div>';
                 }
                 groupColumnsTitleElement += '</div>';
 
