@@ -13,12 +13,7 @@ import {
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
-import {
-  IGetSurveyReportHistoryRequest,
-  IGetSurveyReportHistoryResponse
-} from './request-response/survey-report-history.request-response';
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
-import { IRaiseClaimRequest, IRaiseClaimResponse } from './request-response/raise-claim.request-response';
 import {
   IVerifyQcReportsRequest,
   IVerifyQcReportsResponse
