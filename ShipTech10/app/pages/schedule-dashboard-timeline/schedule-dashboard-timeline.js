@@ -349,10 +349,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
-                'start': angular.copy(ctrl.startDate),
-                'min': angular.copy(ctrl.startDate),
-                'end': angular.copy(ctrl.endDate),
-                'max': angular.copy(ctrl.endDate),
+                'start': ctrl.lastStartDate ? ctrl.lastStartDate : angular.copy(moment.utc(ctrl.startDate).startOf("day")),
+                'min': angular.copy(moment.utc(ctrl.startDate).startOf("day")),
+                'end': ctrl.lastEndDate ? ctrl.lastEndDate : angular.copy(moment.utc(ctrl.endDate).endOf("day")),
+                'max': angular.copy(moment.utc(ctrl.endDate).endOf("day")),
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
                 'preferZoom': true,
@@ -435,14 +435,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                return timestamp;
                 }
             });
-            minDate.start = moment(minDate.start).startOf('day');
-            maxDate.end = moment(maxDate.end).endOf('day');
+            // minDate.start = moment(minDate.start).startOf('day');
+            // maxDate.end = moment(maxDate.end).endOf('day');
             var container = document.getElementById('timeline');
 
             // Create a Timeline
             timeline = new vis.Timeline(container, null, getTimelineOptions());  
             timeline.setGroups(groups);
             timeline.setItems(voyages);
+
+			ctrl.lastStartDate = false;
+			ctrl.lastEndDate = false;
+			timeline.on("rangechanged", function(){
+				console.log(timeline.range.start, timeline.range.end)
+				ctrl.lastStartDate = moment(timeline.range.start);
+				ctrl.lastEndDate = moment(timeline.range.end);
+			})
 
             $scope.timelineItems = groups.length;
             
@@ -506,9 +514,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
 
             $scope.timelineLoaded = true;
-            setTimeout(function() {
-                timeline.moveTo(ctrl.startDate);
-            });
 
         };
 
@@ -1212,6 +1217,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 				    }
 				}
 			});
+
         })
 
 
