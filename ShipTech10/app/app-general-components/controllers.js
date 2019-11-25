@@ -786,7 +786,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             }
                         }
 
-                        if (options.colModel.name.indexOf("customStatus") != -1) {
+                        if (options.colModel.name.toLowerCase().indexOf("customstatus") != -1) {
                             return label;
                         }
 

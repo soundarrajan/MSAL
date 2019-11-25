@@ -3490,13 +3490,14 @@ ctrl.setProductData = function(data, loc) {
             requirementsFilteredWithoutSludgeProduct = []
     		hasSimpleProduct = false
     		hasSludgeProduct = false
+            var sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, {'name' : "Sludge"});
             $.each(ctrl.requirements, function(k,v){
-            	if (v.ProductTypeId != 4) {
-            		hasSimpleProduct = true
-            		requirementsFilteredWithoutSludgeProduct.push(v);
-            	} else {
-            		hasSludgeProduct = true
-            	}
+                    if (v.ProductTypeGroupId != sludgeProductTypeGroup.id) {
+                        requirementsFilteredWithoutSludgeProduct.push(v);
+                        hasSimpleProduct = true
+                    } else {
+                        hasSludgeProduct = true
+                    }
             })
 
             if (hasSimpleProduct && hasSludgeProduct) {
