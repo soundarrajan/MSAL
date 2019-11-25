@@ -230,3 +230,29 @@ span.newVessel {
 span.vesselName {
     margin-left: 13px;
 }
+.expand-voyages {
+	position: absolute;
+    left: 0;
+    bottom: 3px;
+    background: white;
+    display: block;
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    color: #000;
+    cursor: pointer;
+    border: 1px solid #d8d8d8;
+}
+
+.morePortsPopupTimeline {
+    position: fixed;
+    z-index: 99999;
+    display: block;
+    transform: translateX(-50%) translateY(10px);
+    background: #fff;
+    box-shadow: 4px 4px 0px rgba(72, 72, 72, 0.1);
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    top: 100px;
+    left: 500px;
+}

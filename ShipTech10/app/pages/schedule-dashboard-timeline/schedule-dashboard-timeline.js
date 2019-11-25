@@ -170,7 +170,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (initialEtaDotted != '') {
                     voyageContentDotted = '<span class="'+ clsDotted + '"> </span>';
                 } 
-                voyageContent += '<span class="' + cls + '" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode + ' </span>';
+                voyageContent += '<span class="' + cls + '" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode;
+                voyageContent += ' </span>';
                 
                 var startDate, endDate;
 
@@ -216,11 +217,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 var voyage = {
                     id: i,
+                    voyageId: vessels[i].voyageDetail.id,
+                    locationCode: vessels[i].voyageDetail.locationCode,
                     content: voyageContent,
                     start: startDate,
                     end: endDate,
                     style: 'background-color: ' + statusColor
                 };
+                
+
                 if (initialEtaDotted != '' && displayDottedLine == true) {
                     var voyage1 = {
                         id: numberVessels,
@@ -259,6 +264,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var group = {
                         id: groups.length + 1,
                         vesselId: vessels[i].VesselId,
+                        portCode: vessels[i].VesselId,
                         serviceName: vessels[i].ServiceName,
                         buyerName: vessels[i].BuyerName,
                         serviceBuyerName: vessels[i].ServiceBuyerName,
@@ -282,7 +288,29 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 voyage.group = groupId;
 
                 // Add voyage
-                voyages.push(voyage);
+                hasMultipleStops = false;
+                firstStopToday = _.find(voyages, function(obj){
+                	return obj.start == startDate && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
+                });
+                if (firstStopToday) {
+	                if (!firstStopToday.hasMultipleStops) {
+		                firstStopToday.content += '<span class="expand-voyages" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>'
+	                }
+                	hasMultipleStops = true;
+	                firstStopToday.hasMultipleStops = true;
+	                if (!firstStopToday.additionalStops) {
+	                	firstStopToday.additionalStops = [];
+	                }
+                }               
+                if (firstStopToday && firstStopToday.hasMultipleStops) {
+	                if (!_.find(firstStopToday.additionalStops, {'voyageId' : voyage.voyageId})) {
+		                firstStopToday.additionalStops.push(voyage);
+	                }
+                }               
+
+                if (!_.find(voyages, {'voyageId' : vessels[i].voyageDetail.id}) && !hasMultipleStops ) {
+	                voyages.push(voyage);
+                }
                  if (initialEtaDotted != '' && displayDottedLine == true) {
                     voyage1.group = groupId;
                     voyages.push(voyage1);
@@ -333,6 +361,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 
             })
             ctrl.vessels = vessels;
+            ctrl.voyages = voyages;
             return {
                 'groups': groups,
                 'voyages': voyages
@@ -834,6 +863,30 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
 	        	$scope.rightClickPopoverData = null;
 	        	$scope.$digest();
+	        }	        
+	        if ($(event.target).hasClass("expand-voyages")) {
+	        	$timeout(function(){
+		        	ctrl.additionalVoyages = null;
+	        	},100)
+	        	currentGroup = $(event.target).attr("group");
+	        	currentEta = $(event.target).attr("eta");
+	        	additionalVoyages = [];
+	        	$.each(ctrl.voyages, function(key,obj){
+	        		if (obj.additionalStops) {
+	        			$.each(obj.additionalStops, function(key2,obj2){
+	        				if (parseFloat(obj2.group) == parseFloat(currentGroup) && obj2.start == currentEta) {
+	        					additionalVoyages = obj.additionalStops;		
+	        				}
+	        			})
+	        		}
+	        	})
+	        	$timeout(function(){
+		        	ctrl.additionalVoyages = {
+		        		data : additionalVoyages,
+		        		offsetTop: event.clientY,
+		        		offsetLeft: event.clientX
+		        	}
+	        	},200)
 	        }
         });
 

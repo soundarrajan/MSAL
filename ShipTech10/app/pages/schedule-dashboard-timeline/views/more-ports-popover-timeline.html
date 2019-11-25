@@ -1,0 +1,16 @@
+
+<div class="morePortsPopupTimeline" ng-if="$ctrl.morePortsPopoverDataDisplay" style="top:{{morePortsPopoverOffsetTop}}px; left:{{morePortsPopoverOffsetLeft}}px"> 
+	<a class="close" aria-label="close" ng-click="$ctrl.morePortsPopoverDataDisplay = false" style="right: 0px;position: absolute;top: 0px; opacity:1"> × </a>
+    <table>
+        <tbody>
+            <tr>
+                <th class="border-grey-salsa border" style="padding: 5px;"> ETA </th>
+                <th class="border-grey-salsa border" style="padding: 5px;"> CODE </th>
+            </tr>
+			<tr ng-repeat="(key,val) in morePortsPopoverData">
+				<td class="border-grey-salsa border" style="padding: 5px;">{{val.start}}</td>
+				<td class="border-grey-salsa border" style="padding: 5px;">{{val.locationCode}}</td>
+			</tr>
+        </tbody>
+    </table>
+</div>
