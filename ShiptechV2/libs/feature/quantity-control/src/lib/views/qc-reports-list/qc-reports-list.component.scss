@@ -1,4 +1,10 @@
 ::ng-deep {
+  .ag-header-cell-label .ag-header-cell-text {
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+  }
+
   #wunderbar {
     margin: -5px -5px 10px -5px;
   }
