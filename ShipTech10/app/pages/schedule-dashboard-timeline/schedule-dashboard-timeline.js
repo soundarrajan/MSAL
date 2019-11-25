@@ -365,8 +365,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var serviceBuyerName = group.serviceBuyerName;
                     var isNew = group.isNew;
 
-                    if (serviceName && serviceName.length > 5) {
-                        serviceName = serviceName.substr(0, 5) + '...';
+                    if (serviceName && serviceName.length > 7) {
+                        serviceName = serviceName.substr(0, 6) + '...';
                     }
 
                     if (vesselName && vesselName.length > 5 && isNew) {
