@@ -349,10 +349,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'top',
-                'start': ctrl.lastStartDate ? ctrl.lastStartDate : angular.copy(moment.utc(ctrl.startDate).startOf("day")),
-                'min': angular.copy(moment.utc(ctrl.startDate).startOf("day")),
-                'end': ctrl.lastEndDate ? ctrl.lastEndDate : angular.copy(moment.utc(ctrl.endDate).endOf("day")),
-                'max': angular.copy(moment.utc(ctrl.endDate).endOf("day")),
+                'start': angular.copy(ctrl.startDate),
+                'min': angular.copy(ctrl.startDate),
+                'end': angular.copy(ctrl.endDate),
+                'max': angular.copy(ctrl.endDate),
                 'zoomMin': 1.728e+8,
                 'zoomMax': 2177280000,
                 'preferZoom': true,
@@ -365,8 +365,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var serviceBuyerName = group.serviceBuyerName;
                     var isNew = group.isNew;
 
-                    if (serviceName && serviceName.length > 7) {
-                        serviceName = serviceName.substr(0, 6) + '...';
+                    if (serviceName && serviceName.length > 5) {
+                        serviceName = serviceName.substr(0, 5) + '...';
                     }
 
                     if (vesselName && vesselName.length > 5 && isNew) {
@@ -435,22 +435,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                return timestamp;
                 }
             });
-            // minDate.start = moment(minDate.start).startOf('day');
-            // maxDate.end = moment(maxDate.end).endOf('day');
+            minDate.start = moment(minDate.start).startOf('day');
+            maxDate.end = moment(maxDate.end).endOf('day');
             var container = document.getElementById('timeline');
 
             // Create a Timeline
             timeline = new vis.Timeline(container, null, getTimelineOptions());  
             timeline.setGroups(groups);
             timeline.setItems(voyages);
-
-			ctrl.lastStartDate = false;
-			ctrl.lastEndDate = false;
-			timeline.on("rangechanged", function(){
-				console.log(timeline.range.start, timeline.range.end)
-				ctrl.lastStartDate = moment(timeline.range.start);
-				ctrl.lastEndDate = moment(timeline.range.end);
-			})
 
             $scope.timelineItems = groups.length;
             
@@ -506,14 +498,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 groupColumnsTitleElement += '</div>';
 
                 $('.vis-timeline').first().prepend(groupColumnsTitleElement);
-                $('#vis-custom-group-columns').width($('.vis-left').width());
-                //$('#timeline > div > div.vis-panel.vis-left.vis-vertical-scroll > div.vis-content > div > div > div > div > span:nth-child(1)').width('99px');
-                //$('#timeline > div > div.vis-panel.vis-left.vis-vertical-scroll > div.vis-content > div > div > div > div > span:nth-child(2)').width('69px');
                 $('#vis-custom-group-columns').height($('.vis-time-axis.vis-foreground').height());
-                $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
-            }
+                setTimeout(function() {
+                    var elem = $('.vis-left.vis-vertical-scroll');
+                    $('#vis-custom-group-columns').width($('.vis-left').width());
+                    if (elem.length) {
+                        $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
+                    } else {
 
+                    }
+                });
+            }
             $scope.timelineLoaded = true;
+            setTimeout(function() {
+                timeline.moveTo(ctrl.startDate);
+            });
 
         };
 
@@ -1217,7 +1216,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 				    }
 				}
 			});
-
         })
 
 
