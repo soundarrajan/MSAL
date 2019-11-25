@@ -1,4 +1,5 @@
 import { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import { BaseWithValueColDefParams, ValueFormatterParams } from 'ag-grid-community/dist/lib/entities/colDef';
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -9,8 +10,19 @@ export type ICellEditorParamsExtended<T> = T & ICellEditorParams;
 
 export type FilterConfig = Pick<ColDef, 'filter' | 'filterParams'>;
 
-export interface TypedColDef<TCellRendererParams = any> extends ColDef {
+export interface TypedCellRendererColDef<TCellRendererParams = any> extends ColDef {
   cellRendererParams?: TCellRendererParams;
+}
+
+export interface TypedValueFormatterParams<T> extends BaseWithValueColDefParams {
+  value: T;
+}
+
+export interface TypedColDef<TData = any, TField = any> extends ColDef {
+  valueFormatter?: (params: TypedValueFormatterParams<TField>) => string;
+  cellClassRules?: {
+    [cssClassName: string]: (((params: { data: TData}) => boolean) | string);
+  };
 }
 
 // export class TColDef {
@@ -19,7 +31,7 @@ export interface TypedColDef<TCellRendererParams = any> extends ColDef {
 // //   }
 // // }
 
-export function getColDef<T = any>(colDef: TypedColDef<T>): TypedColDef<T> {
+export function getColDef<T = any>(colDef: TypedCellRendererColDef<T>): TypedCellRendererColDef<T> {
   return colDef;
 }
 

@@ -14,9 +14,10 @@ export function getRandomInt(min: number, max: number): number {
 }
 
 export function truncateDecimals(value: number, decimals: number): number {
-  if (value === undefined) {
-    return;
+  if (!value) {
+    return value;
   }
+
   const isFloat = value.toString().includes('.');
 
   if (!isFloat) {
