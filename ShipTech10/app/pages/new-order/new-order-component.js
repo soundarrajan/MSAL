@@ -3287,9 +3287,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         ctrl.verifyOrder = function(){
         	payload = [{Id: ctrl.orderId}]
 	        orderModel.verifyOrders(payload).then(function (responseData) {
-
+                $state.reload();
 	        }).catch(function (err) { 
-	     		ctrl.data.isVerifiedBool = false;   	
+	     		ctrl.data.isVerifiedBool = false; 
             });
         }
 
