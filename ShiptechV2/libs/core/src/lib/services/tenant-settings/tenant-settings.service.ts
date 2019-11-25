@@ -15,6 +15,7 @@ import { BaseStoreService } from '../base-store.service';
 import { TenantSettingsModuleName } from '../../store/states/tenant/tenant-settings.interface';
 import { TENANT_SETTINGS_API } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
 import { ITenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 
 /*
 * // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
@@ -58,5 +59,14 @@ export class TenantSettingsService extends BaseStoreService {
 
       return shouldLoadTenantSettings ? apiDispatch$ : SKIP$;
     });
+  }
+
+  getGeneralTenantSettings(): IGeneralTenantSettings {
+    const generalSettings = this.appState.tenantSettings[TenantSettingsModuleName.General];
+
+    if (!generalSettings._hasLoaded)
+      throw AppError.GeneralTenantSettingsNotLoaded;
+
+    return generalSettings;
   }
 }

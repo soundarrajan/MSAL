@@ -15,10 +15,9 @@ import {
 } from './request-response/sounding-reports.request-response';
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import {
-  IVerifyQcReportsRequest,
-  IVerifyQcReportsResponse
+  IQcVerifyReportsRequest,
+  IQcVerifyReportsResponse
 } from './request-response/verify-port-calls.request-response';
-import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import {
   IGetQcSurveyHistoryListRequest,
   IGetQcSurveyHistoryListResponse
@@ -32,6 +31,10 @@ import {
   IGetOrderProductsListRequest,
   IGetOrderProductsListResponse
 } from './request-response/claims-list.request-response';
+import {
+  IQcMarkSludgeVerificationRequest,
+  IQcMarkSludgeVerificationResponse
+} from './request-response/qc-mark-sludge-verification.request-response';
 
 export interface IQuantityControlApiService {
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -50,9 +53,9 @@ export interface IQuantityControlApiService {
 
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse>;
 
-  verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse>;
+  verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse>;
 
-  watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse>;
+  markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse>;
 
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse>;
 }

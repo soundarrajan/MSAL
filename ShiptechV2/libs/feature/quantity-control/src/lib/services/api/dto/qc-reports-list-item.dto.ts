@@ -1,24 +1,34 @@
-import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
-export interface QcReportsListItemDto {
+export interface IQcReportsListItemDto {
   id: number;
+  nbOfMatched: number;
+  nbOfMatchedWithinLimit: number;
+  nbOfNotMatched: number;
   portCallId: string;
-  port: string;
+  portName: string;
   vesselName: string;
-  surveyDate: string;
-  surveyStatus: SurveyStatusEnum;
-  matchedQuantity: number;
+  surveyDate: Date | string;
+  surveyStatus: IDisplayLookupDto;
+  qtyMatchedStatus: IDisplayLookupDto;
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;
-  robBeforeDelivery: number;
+  diffRobBeforeDelivery: number;
+  qtyBeforeDeliveryUom: IDisplayLookupDto;
   bdnQuantity: number;
-  measuredDeliveredQuantity: number;
-  deliveredQuantity: number;
+  measuredDeliveredQty: number;
+  diffDeliveredQty: number;
+  qtyDeliveredUom: IDisplayLookupDto;
   logBookRobAfterDelivery: number;
   measuredRobAfterDelivery: number;
-  robAfterDelivery: number;
-  logBookSludgeBeforeDischarge: number;
+  diffRobAfterDelivery: number;
+  qtyAfterDeliveryUom: IDisplayLookupDto;
+  logBookSludgeRobBeforeDischarge: number;
   measuredSludgeRobBeforeDischarge: number;
-  sludgeDischargedQuantity: number;
-  comment: number;
+  diffSludgeRobBeforeDischarge: number;
+  sludgeDischargedQty: number;
+  qtySludgeDischargedUom: IDisplayLookupDto;
+  comment: string;
+  isVerifiedSludgeQty: boolean;
+  totalItems: number;
 }

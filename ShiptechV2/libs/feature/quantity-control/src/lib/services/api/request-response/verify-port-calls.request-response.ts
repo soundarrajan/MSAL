@@ -1,8 +1,8 @@
 import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
 
-export interface IVerifyQcReportsRequest extends IBaseQuantityControlRequest {
+export interface IQcVerifyReportsRequest extends IBaseQuantityControlRequest {
   reportIds: number[]
 }
 
-export interface IVerifyQcReportsResponse extends IBaseQuantityControlResponse {
+export interface IQcVerifyReportsResponse extends IBaseQuantityControlResponse {
 }

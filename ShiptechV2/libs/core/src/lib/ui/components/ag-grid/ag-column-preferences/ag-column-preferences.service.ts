@@ -3,12 +3,12 @@ import { GridOptions } from 'ag-grid-community';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, filter, groupBy, mergeMap, switchMap, tap, throttleTime } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { ColumnState } from 'ag-grid-community/src/ts/columnController/columnController';
 import { LocalPreferenceService } from '../../../../services/preference-storage/local-preference.service';
 import {
   IPreferenceStorage,
   PREFERENCE_STORAGE
 } from '../../../../services/preference-storage/preference-storage.interface';
+import { ColumnState } from 'ag-grid-community/dist/lib/columnController/columnController';
 
 interface IGridRegistration {
   name: string;

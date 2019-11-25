@@ -20,6 +20,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly product: Dexie.Table<ILookupDto, number>;
   readonly customer: Dexie.Table<ILookupDto, number>;
   readonly supplier: Dexie.Table<ILookupDto, number>;
+  readonly status: Dexie.Table<ILookupDto, number>;
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
   dbVersion: number;
@@ -45,6 +46,7 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('product')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('customer')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('supplier')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('status')]: lookupSchema,
     };
   }
 

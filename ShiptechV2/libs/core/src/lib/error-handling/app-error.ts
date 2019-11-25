@@ -16,22 +16,24 @@ export class AppError<T = any> implements IAppError {
   static readonly Unauthorized: AppError = new AppError({ message: 'You do not have sufficient privileges to perform the requested action.' });
   static readonly FailedToSaveUserSettings = new AppError({
     code: AppErrorCode.FailedToSaveUserSettings,
-    treatAsWarning: true,
     message: 'Could not save User Settings.'
   });
   static readonly FailedToLoadUserSettings = new AppError({
     code: AppErrorCode.FailedToLoadUserSettings,
-    treatAsWarning: true,
     message: 'Could not load User Settings.'
   });
   static readonly FailedToPurgeUserSettings = new AppError({
     code: AppErrorCode.FailedToPurgeUserSettings,
-    treatAsWarning: true,
     message: 'Could not purge User Settings.'
   });
+
   static readonly LoadUserProfileFailed = new AppError({
     code: AppErrorCode.LoadUserProfileFailed,
-    treatAsWarning: true,
+    message: 'Could not load user profile.'
+  });
+
+  static readonly GeneralTenantSettingsNotLoaded = new AppError({
+    code: AppErrorCode.GeneralTenantSettingsNotLoaded,
     message: 'Could not load user profile.'
   });
 

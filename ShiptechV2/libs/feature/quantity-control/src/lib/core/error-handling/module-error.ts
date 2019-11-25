@@ -9,6 +9,11 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not load port call list. Please try again later.'
   });
 
+  static readonly LoadReportListFailed = new ModuleError({
+    code: ErrorCode.LoadReportListFailed,
+    message: 'Could not load report list. Please try again later.'
+  });
+
   static readonly LoadEventsLogFailed = new ModuleError({
     code: ErrorCode.LoadPortCallListFailed,
     message: 'Could not load events log. Please try again later.'

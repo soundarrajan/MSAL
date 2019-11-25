@@ -1,6 +1,6 @@
 import * as faker from 'faker';
 import * as _ from 'lodash';
-import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
+import { SurveyStatusLabelEnum } from '../../../core/enums/survey-status.enum';
 import { QcSurveyHistoryListItemDto } from '../dto/qc-survey-history-list-item.dto';
 
 
@@ -19,7 +19,7 @@ export function getMockQcSurveyHistoryListItem(id: number): QcSurveyHistoryListI
     port: faker.random.alphaNumeric(5),
     vesselName: faker.random.word(),
     surveyDate: faker.date.past().toString(),
-    surveyStatus: <SurveyStatusEnum>faker.random.arrayElement(['New', 'Verified', 'Pending']),
+    surveyStatus: <SurveyStatusLabelEnum>faker.random.arrayElement(['New', 'Verified', 'Pending']),
 
     matchedQuantity: quantityBefore,
     measuredDeliveredQuantity: quantityBefore - rob - sludge,

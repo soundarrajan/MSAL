@@ -31,8 +31,6 @@ import {
   UpdateActiveSludgeVesselResponseAction
 } from '../store/report-view/details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from '../store/report-view/details/actions/qc-comment.action';
-import { tap } from 'rxjs/operators';
-import { UpdateQcReportsListSummaryAction } from '../store/reports-list/qc-report-list-summary/qc-report-list-summary.actions';
 import { IGetQcSurveyHistoryListResponse } from './api/request-response/qc-survey-history-list.request-response';
 import {
   QcAddEventLogAction,
@@ -51,9 +49,15 @@ import {
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
 import {
-  QcVerifyReportAction, QcVerifyReportFailedAction,
+  QcVerifyReportAction,
+  QcVerifyReportFailedAction,
   QcVerifyReportSuccessfulAction
 } from '../store/report-view/details/actions/verify-report.actions';
+import {
+  LoadReportListAction,
+  LoadReportListFailedAction,
+  LoadReportListSuccessfulAction
+} from '../store/reports-list/qc-report-list.actions';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -74,12 +78,12 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getReportsList(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
-    return this.api.getReportsList(gridRequest).pipe(
-      tap(({ nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched }) => this.store.dispatch(new UpdateQcReportsListSummaryAction({
-        nbOfMatched,
-        nbOfMatchedWithinLimit,
-        nbOfNotMatched
-      })))
+    return this.apiDispatch(
+      () => this.api.getReportsList(gridRequest),
+      new LoadReportListAction(gridRequest),
+      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
+      LoadReportListFailedAction,
+      ModuleError.LoadReportListFailed
     );
   }
 
@@ -134,20 +138,20 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  flagVesselForReport(reportId: number): Observable<unknown> {
-    return this.api.watchVessel({ reportId });
-  }
-
-  @ObservableException()
   verifyVesselReports(reportIds: number[]): Observable<unknown> {
 
     return this.apiDispatch(
-      () => this.api.verifyReports({reportIds}),
+      () => this.api.verifyReports({ reportIds }),
       QcVerifyReportAction,
       response => new QcVerifyReportSuccessfulAction(),
       QcVerifyReportFailedAction,
       ModuleError.VerifyReportFailed
     );
+  }
+
+  @ObservableException()
+  markSludgeVerification(reportId: number, verify: boolean): Observable<unknown> {
+    return this.api.markSludgeVerification({ id: reportId, IsVerifiedSludge: verify });
   }
 
   @ObservableException()

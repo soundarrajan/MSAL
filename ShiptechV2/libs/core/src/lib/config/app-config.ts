@@ -9,10 +9,10 @@ export class AppConfig implements IAppConfig {
   agGridLicense: string;
   loggingApi: string;
   userSettingsApi: string;
-  quantityControlApi: string;
   lookupApiUrl: string;
   // TODO: add this to config file,  check first if they are not in the infrastructure api
   tenantPublicApiUrl: string;
+  robApi: string;
 }
 
 // tslint:disable-next-line:no-empty-interface

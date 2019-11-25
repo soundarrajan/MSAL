@@ -4,12 +4,12 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import { QuantityControlApi } from './services/api/quantity-control-api';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { QuantityControlApi } from './services/api/quantity-control-api';
 
 @Injectable()
 export class QuantityControlRouteResolver implements Resolve<any> {
@@ -29,8 +29,8 @@ export class QuantityControlRouteResolver implements Resolve<any> {
       instance: mockApi,
       isRealService: false,
       localApiUrl: 'http://localhost:44398',
-      devApiUrl: appConfig.quantityControlApi,
-      qaApiUrl: appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
+      devApiUrl: appConfig.robApi,
+      qaApiUrl: appConfig.robApi
     });
   }
 

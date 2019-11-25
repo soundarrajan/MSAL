@@ -55,7 +55,12 @@
     &.matched {
       background-color: #72bcab;
     }
-
+    &.matched-withing-limit {
+      background-color: orange;
+    }
+    &.not-matched {
+      background-color: red;
+    }
   }
 
   .vessel-to-watch {
