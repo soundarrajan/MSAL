@@ -4,7 +4,7 @@
         <div class="portlet-body">
             <div class="row" id="reports_menu">
                 <!-- reports list -->
-                <div class="col_reports_list" ng-init="ctrl.toggled = false;$ctrl.showIframe = false">
+                <div class="col_reports_list" ng-init="ctrl.toggled = true;$ctrl.showIframe = false">
                     <div class="slide_menu" ng-class="{'slide_menu_toggled' : ctrl.toggled, 'slide_menu_collapsed' : !ctrl.toggled}">
                         <a class="right" ng-click="ctrl.toggled = true" ng-if="!ctrl.toggled">
                             <i class="fa fa-angle-right"></i>
@@ -16,16 +16,17 @@
                     </div>
                     <ul class="categories_menu animated fadeIn" ng-if="!$ctrl.reportsLoading && ctrl.toggled">
                         <!-- reports_custom_col -->
-                        <li class="nav-item" ng-repeat="(key, value) in $ctrl.standardReports">
-                            <a class="nav-link nav-toggle" ng-click="$ctrl.showIframe = true;$ctrl.selectIframe=null;$ctrl.showCateg=[]">
+                        <li class="nav-item" ng-repeat="(key, value) in $ctrl.standardReports" ng-click="$ctrl.showChilds(key)">
+                            <a class="nav-link nav-toggle">
                                 <span class="">
                                     {{value.categoryName}}
                                 </span>
-                                <i class="fa fa-angle-right pull-right"></i>
+                                <i class="fa fa-angle-right pull-right" ng-show="!value.active"></i>
+                                <i class="fa fa-angle-left pull-right"  ng-show="value.active"></i>
                             </a>
-                            <ul class="reports_names" ng-repeat="(key2,report2) in value.items" ng-if="$ctrl.showIframe">
-                                <li class="nav-item " ng-class="$ctrl.selectIframe.id == report2.id ? 'current' : '' ">
-                                    <a ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]">
+                            <ul class="reports_names"  ng-show="value.active">
+                                <li class="nav-item" ng-repeat="(key2,report2) in value.items">
+                                    <a style="background-color: #21282e">
                                         <span class="">
                                             {{report2.name}}
                                         </span>
@@ -33,7 +34,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item" ng-repeat="(key,category) in $ctrl.reports track by key" ng-class="$ctrl.showCateg[key] ? 'current' : ''"
+                       <!--  <li class="nav-item" ng-repeat="(key,category) in $ctrl.reports track by key" ng-class="$ctrl.showCateg[key] ? 'current' : ''"
                             ng-init="$ctrl.showCateg[key] = false">
                             <a class="nav-link nav-toggle" ng-click="$ctrl.clearSelected($ctrl.showCateg);$ctrl.showCateg[key] == false ? $ctrl.showCateg[key] = true : $ctrl.showCateg[key] = false;$ctrl.showIframe = false;$ctrl.selectIframe =null;$ctrl.customReports = false">
                                 <span class="">
@@ -50,7 +51,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                     <div class="loading_reports_spinner reports_custom_col" ng-if="$ctrl.reportsLoading && ctrl.toggled">
                         <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>

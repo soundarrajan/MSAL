@@ -201,6 +201,17 @@ angular.module("shiptech.pages").controller("ReportsController", [
                 obj[k] = false;
             });
         };
+        ctrl.showChilds = function(key) {
+            ctrl.standardReports[key].active = ! ctrl.standardReports[key].active;
+            collapseAnother(key);
+        }
+        var collapseAnother = function(index) {
+            for (var i=0; i< ctrl.standardReports.length; i++) {
+                if (i!=index) {
+                    ctrl.standardReports[i].active = false;
+                }
+            }
+        }
     }
 ]);
 angular.module("shiptech.pages").component("reports", {
