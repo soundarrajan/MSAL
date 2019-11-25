@@ -365,28 +365,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var serviceBuyerName = group.serviceBuyerName;
                     var isNew = group.isNew;
 
-                    if (serviceName && serviceName.length > 5) {
-                        serviceName = serviceName.substr(0, 5) + '...';
-                    }
-
-                    if (vesselName && vesselName.length > 5 && isNew) {
-                        vesselName = vesselName.substr(0, 5) +  '...';
-                    } else if (vesselName && vesselName.length > 12 && !isNew) {
-                        vesselName = vesselName.substr(0, 11) +  '...';
-                    }
-
-
-                    if (buyerName && buyerName.length > 12) {
-                        buyerName = buyerName.substr(0, 11) + '...';
-                    }
-                    if (serviceBuyerName && serviceBuyerName.length > 12) {
-                        serviceBuyerName = serviceBuyerName.substr(0, 11) +  '...';
-                    }                    
-
-                    if (companyName && companyName.length > 12) {
-                        companyName = companyName.substr(0, 11) + '...';
-                    }
-
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
                         tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
