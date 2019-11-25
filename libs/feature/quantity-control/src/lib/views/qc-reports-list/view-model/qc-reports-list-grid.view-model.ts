@@ -84,20 +84,23 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   portNameCol: TypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.portName,
     colId: QcReportsListColumns.portName,
-    field: model('portName')
+    field: model('portName'),
+    width: 106
   };
 
   vesselNameCol: TypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
-    field: model('vesselName')
+    field: model('vesselName'),
+    width: 129
   };
 
   surveyDateCol: TypedColDef<IQcReportsListItemDto, Date | string> = {
     headerName: QcReportsListColumnsLabels.surveyDate,
     colId: QcReportsListColumns.surveyDate,
     field: model('surveyDate'),
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
+    width: 150
   };
 
   surveyStatusCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -108,7 +111,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'cell-background pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
       'cell-background verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
-    }
+    },
+    width: 78
   };
 
   qtyMatchedStatusCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -120,13 +124,15 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       'cell-background matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
       'cell-background matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
       'cell-background not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
-    }
+    },
+    width: 96
   };
 
   logBookRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
+    width: 153,
     valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
   };
 
@@ -134,7 +140,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
+    width: 181,
   };
 
   diffRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -144,7 +151,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
     cellClassRules: {
       'cell-background red': params => params.data?.diffRobBeforeDelivery < 0
-    }
+    },
+    width: 128,
   };
 
   qtyBeforeDeliveryUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
