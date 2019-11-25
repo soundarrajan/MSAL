@@ -42,10 +42,6 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   @Select(QcReportState.getReportComment) comment$: Observable<string>;
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
 
-  eventsLogLoaded: boolean;
-  surveyHistoryLoaded: boolean;
-  soundingReportLoaded: boolean;
-
   constructor(private entityStatus: EntityStatusService,
               private store: Store,
               private reportService: QcReportService,

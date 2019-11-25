@@ -17,12 +17,10 @@ import {
 } from './request-response/sounding-reports.request-response';
 import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import {
-  IVerifyQcReportsRequest,
-  IVerifyQcReportsResponse
+  IQcVerifyReportsRequest,
+  IQcVerifyReportsResponse
 } from './request-response/verify-port-calls.request-response';
-import { IWatchVesselRequest, IWatchVesselResponse } from './request-response/watch-vessel.request-response';
 import { getMockQcReportsList } from './mock/qc-reports-list.mock';
-import { QcReportsListItemModel } from '../models/qc-reports-list-item.model';
 import { QuantityControlApi } from './quantity-control-api';
 import { getQcReportDetailsCall } from './mock/qc-report-details.mock';
 import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
@@ -35,7 +33,6 @@ import {
 } from './request-response/qc-survey-history-list.request-response';
 import { getMockQcSurveyHistoryList } from './mock/qc-survey-history-list.mock';
 import { QcSurveyHistoryListItemModel } from '../models/qc-survey-history-list-item.model';
-import * as faker from 'faker';
 import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
 import { getMockQcEventsLog } from './mock/qc-events-log.mock';
 import {
@@ -47,11 +44,18 @@ import {
   IGetOrderProductsListResponse
 } from './request-response/claims-list.request-response';
 import { getQcOrderProductsList } from './mock/qc-order-products-list.mock';
+import * as _ from 'lodash';
+import { IQcReportsListItemDto } from './dto/qc-reports-list-item.dto';
+import {
+  IQcMarkSludgeVerificationRequest,
+  IQcMarkSludgeVerificationResponse
+} from './request-response/qc-mark-sludge-verification.request-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApiMock implements IQuantityControlApiService {
+
   @ApiCallForwardTo() realService: QuantityControlApi;
 
   constructor(realService: QuantityControlApi) {
@@ -60,12 +64,15 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+    const items = getMockQcReportsList(request.pagination.take) || [];
+    const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
+
     return of({
-      items: getMockQcReportsList(request.pagination.take).map(item => new QcReportsListItemModel(item)),
-      totalItems: request.pagination.take * 5,
-      nbOfMatched: faker.random.number({ min: 5, max: 50 }),
-      nbOfNotMatched: faker.random.number({ min: 5, max: 50 }),
-      nbOfMatchedWithinLimit: faker.random.number({ min: 5, max: 50 })
+      items: items,
+      totalItems: items.length,
+      nbOfMatched: firstItem.nbOfMatched || 0,
+      nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
+      nbOfNotMatched: firstItem.nbOfNotMatched || 0
     });
   }
 
@@ -114,12 +121,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  verifyReports(request: IVerifyQcReportsRequest): Observable<IVerifyQcReportsResponse> {
-    return of({});
-  }
-
-  @ApiCall()
-  watchVessel(request: IWatchVesselRequest): Observable<IWatchVesselResponse> {
+  verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse> {
     return of({});
   }
 
@@ -128,5 +130,10 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
     return of({
       items: getMockQcEventsLog(3)
     });
+  }
+
+  @ApiCall()
+  markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse> {
+    return of({});
   }
 }

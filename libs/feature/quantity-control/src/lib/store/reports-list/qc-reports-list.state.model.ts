@@ -1,24 +1,17 @@
-import { IPageInfo, PageInfo } from '@shiptech/core/grid/page-info.interface';
-import { ISortInfo } from '@shiptech/core/grid/sort-info.interface';
-import {
-  IQcReportListSummaryState,
-  QcReportListSummaryStateModel
-} from './qc-report-list-summary/qc-report-list-summary.state';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 
 export class QcReportsListStateModel {
-  pageInfo: IPageInfo;
-  filter: any;
-  sortList: ISortInfo[];
-  isLoading: boolean;
-  isLoaded: boolean;
-  summary: IQcReportListSummaryState = new QcReportListSummaryStateModel();
+  gridInfo: IServerGridInfo = { pagination: { skip: 0, take: DefaultPageSize } };
+  _isLoading = false;
+  _hasLoaded = false;
+  nbOfMatched: number;
+  nbOfNotMatched: number;
+  nbOfMatchedWithinLimit: number;
+  totalItems: number;
 
   constructor(state: Partial<QcReportsListStateModel> = {}) {
-    this.filter = state.filter;
-    this.sortList = state.sortList;
-    this.pageInfo = new PageInfo();
-    this.isLoading = state.isLoading || false;
-    this.isLoaded = state.isLoaded || false;
+    Object.assign(this, state);
   }
 }
 

@@ -8,6 +8,7 @@ export enum AppErrorCode {
   FailedToSaveUserSettings = 102,
   FailedToLoadUserSettings = 103,
   FailedToPurgeUserSettings = 104,
+  GeneralTenantSettingsNotLoaded = 105,
 
   LoadUserProfileFailed = 200
 }

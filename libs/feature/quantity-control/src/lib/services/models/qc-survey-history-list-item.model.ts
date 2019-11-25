@@ -1,5 +1,5 @@
 import { QcSurveyHistoryListItemDto } from '../api/dto/qc-survey-history-list-item.dto';
-import { SurveyStatusEnum } from '../../core/enums/survey-status.enum';
+import { SurveyStatusLabelEnum } from '../../core/enums/survey-status.enum';
 
 export class QcSurveyHistoryListItemModel implements QcSurveyHistoryListItemDto{
   id: number;
@@ -7,7 +7,7 @@ export class QcSurveyHistoryListItemModel implements QcSurveyHistoryListItemDto{
   port: string;
   vesselName: string;
   surveyDate: string;
-  surveyStatus: SurveyStatusEnum;
+  surveyStatus: SurveyStatusLabelEnum;
   matchedQuantity: number;
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;

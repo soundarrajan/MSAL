@@ -13,6 +13,7 @@
       <div style="float:right">
         <shiptech-search-box AgGridExternalSearch [placeholder]="'Search something'" class="mr-1"
                              gridId="quantityControlGrid"></shiptech-search-box>
+        <button (click)="sendEmail()" class="ui-button mr-1" label="Send E-mail" pButton type="button"></button>
         <button (click)="verifyVessels()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
       </div>
     </div>
@@ -26,8 +27,8 @@
     <div class="col-md-6">
       <app-page-size-selector
         (selectedOptionChange)="onPageSizeChange($event)"
-        [options]="viewModel.gridViewModel.pageSizeOptions"
-        [selectedOption]="viewModel.gridViewModel.pageSize">
+        [options]="gridViewModel.pageSizeOptions"
+        [selectedOption]="gridViewModel.pageSize">
       </app-page-size-selector>
     </div>
     <div class="col-md-6">
@@ -38,7 +39,7 @@
             Matched:
           </span>
           <span class="value">
-            {{(summary$ | async).nbOfMatched}}
+            {{nbOfMatched$ | async}}
           </span>
         </div>
 
@@ -48,7 +49,7 @@
             Matched within limit:
           </span>
           <span class="value">
-            {{(summary$ | async).nbOfMatchedWithinLimit}}
+            {{nbOfMatchedWithinLimit$ | async}}
           </span>
         </div>
 
@@ -58,7 +59,7 @@
             Not matched:
           </span>
           <span class="value">
-            {{(summary$ | async).nbOfNotMatched}}
+            {{nbOfNotMatched$ | async}}
           </span>
         </div>
 
@@ -70,18 +71,18 @@
     appAgGridFilterPresets
     appAgGridSizeToFit
     AgGridExternalSearch
-    [onSearch]="viewModel.gridViewModel.onSearch.bind(viewModel.gridViewModel)"
+    [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
     groupId="quantityControlmain"
     id="quantityControlGrid"
     class="ag-theme-balham"
     style="height:500px"
-    [gridOptions]="viewModel.gridViewModel.gridOptions">
+    [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
 
   <div class="row mt-2">
     <div class="col-md-6">
-      Showing {{((viewModel.gridViewModel.page - 1) * viewModel.gridViewModel.pageSize) + 1}}
-      to {{viewModel.gridViewModel.page * viewModel.gridViewModel.pageSize}} of {{viewModel.gridViewModel.totalItems}} entries
+      Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}}
+      to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
     </div>
     <div class="col-md-6">
       <div style="float:right">
@@ -89,28 +90,28 @@
         <app-ag-paging style="width: 150px;"
                        [pagerLeftArrowIcon]="'fa fa-chevron-left'"
                        [pagerRightArrowIcon]="'fa fa-chevron-right'"
-                       [count]="viewModel.gridViewModel.totalItems"
-                       [page]="viewModel.gridViewModel.page"
-                       [size]="viewModel.gridViewModel.pageSize"
+                       [count]="gridViewModel.totalItems"
+                       [page]="gridViewModel.page"
+                       [size]="gridViewModel.pageSize"
                        [useInputAsPageSelect]="true"
                        (pageChange)="onPageChange($event.page)">
         </app-ag-paging>
-        of {{viewModel.gridViewModel.totalItems / viewModel.gridViewModel.pageSize}}
+        of {{gridViewModel.totalItems / gridViewModel.pageSize}}
       </div>
     </div>
   </div>
 </div>
 
 
-<ng-template [columnDef]="[viewModel.gridViewModel.callIdCol]" appAgCellTemplate let-data="data" let-value="value">
-  <ng-container>
-    <a *ngIf="data && data.id" [routerLink]="[reportDetailsRoutePath, data.id]" href="#"> View {{data?.id}} </a>
-  </ng-container>
+<ng-template [columnDef]="[gridViewModel.portCallId]" appAgCellTemplate let-data="data" let-value="value">
+  <a *ngIf="data && data.id" [routerLink]="[reportDetailsRoutePath, data.id]" href="#">{{data?.portCallId}}</a>
 </ng-template>
 
-<ng-template [columnDef]="viewModel.gridViewModel.vesselNameCol" appAgCellTemplate let-data="data" let-value="value">
-  <ng-container>
-    {{value}}
-    <i (click)="flagVesselForReport(data?.id)" *ngIf="data && data.id" class="fa fa-flag vessel-to-watch"></i>
-  </ng-container>
+
+<ng-template [columnDef]="[gridViewModel.isVerifiedSludgeQtyCol]" appAgCellTemplate let-data="data" let-value="value">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <p-checkbox binary="true" [(ngModel)]="data.isVerifiedSludgeQty"
+                (ngModelChange)="verifySludgeReport(data, $event)"></p-checkbox>
+  </div>
 </ng-template>
+

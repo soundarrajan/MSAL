@@ -8,7 +8,7 @@ import {
   QcSurveyHistoryListItemProps
 } from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
+import { SurveyStatusLabelEnum } from '../../../../../../core/enums/survey-status.enum';
 import { QcSurveyHistoryListItemModel } from '../../../../../../services/models/qc-survey-history-list-item.model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
@@ -75,8 +75,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.surveyStatus,
     field: this.modelProps.surveyStatus,
     cellClassRules: {
-      'cell-background pending': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusEnum.Pending,
-      'cell-background verified': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusEnum.Verified
+      'cell-background pending': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusLabelEnum.Pending,
+      'cell-background verified': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusLabelEnum.Verified
     }
   };
 
