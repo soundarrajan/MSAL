@@ -3,12 +3,15 @@ angular.module('shiptech.components')
         function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http) {
 
 	        var ctrl = this;
-		
-	        tenantService.tenantSettings.then(function (settings) {
-	            ctrl.numberPrecision = settings.payload.defaultValues;
-	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
-	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
-	        });
+			$scope.tenantSettings = $tenantSettings;
+
+	        // tenantService.tenantSettings.then(function (settings) {
+	        //     ctrl.numberPrecision = settings.payload.defaultValues;
+	        //     ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
+	        //     ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
+	        // });
+
+	        console.log($scope.tenantSettings.tenantFormats.dateFormat.name);
 
 		    ctrl.$onChanges = function (changes) {
 		    	$scope.morePortsPopoverData = changes.morePortsPopoverData.currentValue.data;
