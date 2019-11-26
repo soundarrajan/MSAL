@@ -1,15 +1,15 @@
 import { Attribute, Directive, Input, OnDestroy, Optional, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
-import { SearchBoxComponent } from '../components/search-box/search-box.component';
+import { SearchBoxComponent } from '../../search-box/search-box.component';
 import * as postal from 'postal';
-import { PostalChannelsEnum } from '../../../../../feature/quantity-control/src/lib/core/postal/channels.postal';
+import { PostalChannelsEnum } from '../../../../../../../feature/quantity-control/src/lib/core/postal/channels.postal';
 import { tap } from 'rxjs/operators';
 
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'shiptech-search-box[AgGridExternalSearch], ag-grid-angular[AgGridExternalSearch]'
+  selector: 'shiptech-search-box[appExternalSearch], ag-grid-angular[appExternalSearch]'
 })
 export class AgGridExternalSearchDirective implements OnDestroy {
   private _destroy$: Subject<any> = new Subject();

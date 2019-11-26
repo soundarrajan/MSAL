@@ -10,9 +10,10 @@ import { AgColumnGroupHeaderTemplateDirective } from '@shiptech/core/ui/componen
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { AgColumnHeaderTemplateDirective } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header-template.directive';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
-import { AgGridSizeToFitDirective } from '@shiptech/core/ui/components/ag-grid/directives/ag-grid-size-to-fit.directive';
-import { AgGridFirstColumnLockedDirective } from '@shiptech/core/ui/components/ag-grid/directives/ag-grid-first-column-locked.directive';
-import { AgGridDeselectFiltredRowsDirective } from '@shiptech/core/ui/components/ag-grid/directives/deselect-filtred-rows.directive';
+import { AgGridSizeToFitDirective } from '@shiptech/core/ui/components/ag-grid/directives/size-to-fit.directive';
+import { AgGridFirstColumnLockedDirective } from '@shiptech/core/ui/components/ag-grid/directives/first-column-locked.directive';
+import { AgGridDeselectFilteredRowsDirective } from '@shiptech/core/ui/components/ag-grid/directives/deselect-filtred-rows.directive';
+import { AgGridEmptyFilterOptionDirective } from '@shiptech/core/ui/components/ag-grid/directives/empty-filter-option';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -23,10 +24,11 @@ const COMPONENTS = [
   AgColumnHeaderTemplateDirective,
   AgGridSizeToFitDirective,
   AgGridFirstColumnLockedDirective,
-  AgGridDeselectFiltredRowsDirective,
+  AgGridDeselectFilteredRowsDirective,
+  AgGridEmptyFilterOptionDirective,
   PageSizeSelectorComponent,
   AgGridFirstColumnLockedDirective,
-  AgGridDeselectFiltredRowsDirective
+  AgGridDeselectFilteredRowsDirective
 ];
 
 @NgModule({

@@ -1,7 +1,12 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  AgGridConditionTypeEnum, BooleanFilterParams,
+  RowModelType,
+  RowSelection,
+  TypedColDef
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
@@ -18,6 +23,8 @@ import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import moment from 'moment';
 import { truncateDecimals } from '@shiptech/core/utils/math';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { first } from 'rxjs/operators';
+import { OptionsFactory } from 'ag-grid-community/dist/lib/filter/provided/optionsFactory';
 
 function model(prop: keyof IQcReportsListItemDto): string {
   return prop;
@@ -27,6 +34,13 @@ function model(prop: keyof IQcReportsListItemDto): string {
 export class QcReportsListGridViewModel extends BaseGridViewModel {
   private dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
   private quantityPrecision = 3;
+
+
+  private defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.quantityPrecision
+  };
 
   public searchText: string;
   gridOptions: GridOptions = {
@@ -49,7 +63,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      filterParams: this.defaultColFilterParams
     }
   };
 
@@ -66,7 +81,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressToolPanel: true,
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true,
     suppressCellFlash: true,
     suppressPaste: true,
     lockPosition: true,
@@ -133,32 +149,36 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
     width: 153,
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    filter: 'agNumberColumnFilter',
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
     headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
-    width: 181,
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    width: 181
   };
 
   diffRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffRobBeforeDelivery,
     colId: QcReportsListColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
       'cell-background red': params => params.data?.diffRobBeforeDelivery < 0
     },
-    width: 128,
+    width: 128
   };
 
   qtyBeforeDeliveryUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
+    filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.displayName
   };
 
@@ -166,21 +186,24 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.bdnQuantity,
     colId: QcReportsListColumns.bdnQuantity,
     field: model('bdnQuantity'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   measuredDeliveredQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredDeliveredQty,
     colId: QcReportsListColumns.measuredDeliveredQty,
     field: model('measuredDeliveredQty'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   diffDeliveredQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffDeliveredQty,
     colId: QcReportsListColumns.diffDeliveredQty,
     field: model('diffDeliveredQty'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
       'cell-background red': params => params.data?.diffDeliveredQty < 0
     }
@@ -190,6 +213,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
+    filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.displayName
   };
 
@@ -197,21 +221,24 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.logBookRobAfterDelivery,
     colId: QcReportsListColumns.logBookRobAfterDelivery,
     field: model('logBookRobAfterDelivery'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   measuredRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredRobAfterDelivery,
     colId: QcReportsListColumns.measuredRobAfterDelivery,
     field: model('measuredRobAfterDelivery'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   diffRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffRobAfterDelivery,
     colId: QcReportsListColumns.diffRobAfterDelivery,
     field: model('diffRobAfterDelivery'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
       'cell-background orange': params => params.data?.diffRobAfterDelivery < 0
     }
@@ -228,21 +255,24 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.logBookSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   measuredSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   diffSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString(),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
       'cell-background orange': params => params.data?.diffSludgeRobBeforeDischarge < 0
     }
@@ -252,7 +282,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.sludgeDischargedQty,
     colId: QcReportsListColumns.sludgeDischargedQty,
     field: model('sludgeDischargedQty'),
-    valueFormatter: params => truncateDecimals(params.value, this.quantityPrecision)?.toString()
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
   qtySludgeDischargedUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -272,7 +303,12 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.isVerifiedSludgeQty,
     colId: QcReportsListColumns.isVerifiedSludgeQty,
     field: model('isVerifiedSludgeQty'),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   constructor(

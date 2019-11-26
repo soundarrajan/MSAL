@@ -1,8 +1,8 @@
 export interface ServerGridFilter {
-  ColumnType: string;
-  ConditionValue: string;
-  FilterOperator?: number;
-  Values: any[];
+  columnType: string;
+  conditionValue: string;
+  filterOperator?: number;
+  values: any[];
   columnValue: string;
   isComputedColumn: boolean
 }

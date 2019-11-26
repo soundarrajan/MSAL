@@ -14,9 +14,9 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
   const rob: number = faker.random.number(200);
   const sludge: number = faker.random.number(20);
   const surveyStatuses = _.keys(SurveyStatusEnumMap);
-  const surveyStatus = Number(surveyStatuses[faker.random.number({ min: 0, max: surveyStatuses.length-1 })]);
+  const surveyStatus = surveyStatuses[faker.random.number({ min: 0, max: surveyStatuses.length-1 })];
   const qtyMatchValues = _.keys(QuantityMatchStatusEnumMap);
-  const qtyMatch = Number(qtyMatchValues[faker.random.number({ min: 0, max: qtyMatchValues.length-1 })]);
+  const qtyMatch = qtyMatchValues[faker.random.number({ min: 0, max: qtyMatchValues.length-1 })];
 
   return {
     id,
@@ -26,14 +26,14 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
     portCallId: faker.random.number({ min: Math.pow(10, 15), max: Math.pow(10, 16)-1}).toString(),
     portName: faker.name.lastName(),
     vesselName: faker.random.word(),
-    surveyDate: faker.date.past().toString(),
+    surveyDate: faker.date.past().toISOString(),
     surveyStatus: {
-      id: surveyStatus,
+      id: faker.random.number(),
       name: SurveyStatusEnumMap[surveyStatus],
       displayName: SurveyStatusEnumMap[surveyStatus],
     },
     qtyMatchedStatus: {
-      id: qtyMatch,
+      id: faker.random.number(),
       name: QuantityMatchStatusEnumMap[qtyMatch],
       displayName: QuantityMatchStatusEnumMap[qtyMatch]
     },
