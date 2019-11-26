@@ -4,14 +4,14 @@
       <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
       <app-filter-preferences
         appAgGridFilterPresets
-        groupId="quantityControlmain"
-        id="qualityControlModule"
+        groupId="qc-report-list-filter-presets"
+        id="qc-report-list"
         screenId="Main"
       ></app-filter-preferences>
     </div>
     <div class="col-6">
       <div style="float:right">
-        <shiptech-search-box AgGridExternalSearch [placeholder]="'Search something'" class="mr-1"
+        <shiptech-search-box appExternalSearch [placeholder]="'Search something'" class="mr-1"
                              gridId="quantityControlGrid"></shiptech-search-box>
         <button (click)="sendEmail()" class="ui-button mr-1" label="Send E-mail" pButton type="button"></button>
         <button (click)="verifyVessels()" class="ui-button-success mr-1" label="Verify" pButton type="button"></button>
@@ -70,10 +70,11 @@
   <ag-grid-angular
     appAgGridFilterPresets
     appAgGridSizeToFit
-    AgGridExternalSearch
+    appExternalSearch
+    appEmptyFilterOption
     [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
-    groupId="quantityControlmain"
-    id="quantityControlGrid"
+    groupId="qc-report-list-filter-presets"
+    id="qc-report-list-grid"
     class="ag-theme-balham"
     style="height:500px"
     [gridOptions]="gridViewModel.gridOptions">

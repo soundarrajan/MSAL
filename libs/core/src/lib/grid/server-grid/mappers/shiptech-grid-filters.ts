@@ -5,7 +5,18 @@ import { ServerGridFilter } from '@shiptech/core/grid/server-grid/server-grid.fi
 import { IServerGridDateFilter } from '@shiptech/core/grid/server-grid/server-grid-date.filter';
 import { IServerGridTextFilter } from '@shiptech/core/grid/server-grid/server-grid-text-filter';
 import { IServerGridNumberFilter } from '@shiptech/core/grid/server-grid/server-grid-number-filter';
-import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
+import {
+  AgGridConditionTypeToServer,
+  ShiptechGridFilterOperators
+} from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
+import {
+  AgGridConditionTypeEnum,
+  AgGridDateFilter,
+  AgGridFilter,
+  AgGridNumberFilter,
+  AgGridTextFilter,
+  knownFilterTypes
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 
 export function getShiptechFormatFilters(params: IServerSideGetRowsParams): ServerGridFilter[] {
   const filtersWithKeys = _.mapValues(params.request.filterModel, (value, key) => ({ ...value, key }));
@@ -14,18 +25,20 @@ export function getShiptechFormatFilters(params: IServerSideGetRowsParams): Serv
 }
 
 function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRowsParams): ServerGridFilter {
-  let result: Omit<ServerGridFilter, 'Values'> = {
-    ColumnType: filter.filterType,
-    ConditionValue: ServerGridConditionFilterEnum[filter.type],
-    columnValue: params.parentNode['gridApi'].getColumnDef(filter.key).field,
+  const colDef = params.parentNode['gridApi'].getColumnDef(filter.key);
+
+  let result: Omit<ServerGridFilter, 'values'> = {
+    columnType: filter.filterType,
+    conditionValue: AgGridConditionTypeToServer[filter.type],
+    columnValue: colDef.field.split('.').slice(-1)[0],
     isComputedColumn: false,
-    FilterOperator: ShiptechGridFilterOperators[filter.operator] || 0
+    filterOperator: ShiptechGridFilterOperators[filter.operator] || 0
   };
 
   if (filter.filterType === knownFilterTypes.Text) {
     result = <IServerGridTextFilter>{
       ...result,
-      Values: [(<AgGridTextFilter>filter).filter.toString()]
+      values: [(<AgGridTextFilter>filter).filter?.toString()]
     };
   }
 
@@ -33,23 +46,24 @@ function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRow
     result = <IServerGridDateFilter>{
       ...result,
       dateType: 'server',
-      Values: [(<AgGridDateFilter>filter).dateFrom.toString()]
+      values: [(<AgGridDateFilter>filter).dateFrom.toString()]
     };
   }
 
   if (filter.filterType === knownFilterTypes.Number) {
     const numberFilter = <AgGridNumberFilter>filter;
+    const precision = typeof colDef.filterParams?.precision === 'function' ? colDef.filterParams.precision() : typeof colDef.filterParams.precision === 'number' ? colDef.filterParams.precision : undefined;
 
     result = <IServerGridNumberFilter>{
       ...result,
-      // TODO: Temporary workaround to avoid backend crash on number value
-      ColumnType: 'Quantity',
-      Values: numberFilter.filterTo ? [numberFilter.filter, numberFilter.filterTo] : [numberFilter.filter]
+      precision: precision,
+      values: filter.type === AgGridConditionTypeEnum.YES ? [1] :
+        filter.type === AgGridConditionTypeEnum.NO ? [0] :
+          numberFilter.filterTo ? [numberFilter.filter, numberFilter.filterTo] : [numberFilter.filter]
     };
   }
 
   return <ServerGridFilter>result;
-
 }
 
 function flattenFilters(filters: AgGridFilter[]): AgGridFilter[] {
@@ -70,40 +84,5 @@ function flattenFilters(filters: AgGridFilter[]): AgGridFilter[] {
   });
 
   return result;
-}
-
-export interface AgGridFilter {
-  condition1?: AgGridDateFilter | AgGridTextFilter
-  condition2?: AgGridDateFilter | AgGridTextFilter
-  operator?: string;
-  filterType: knownFilterTypes;
-  key: string;
-  type: ServerGridConditionFilterEnum
-}
-
-export interface AgGridDateFilter extends AgGridFilter {
-  dateFrom: string;
-  dateTo: string;
-}
-
-export interface AgGridTextFilter extends AgGridFilter {
-  filter: string;
-}
-
-export interface AgGridNumberFilter extends AgGridFilter {
-  filter: number;
-  filterTo?: number;
-}
-
-export enum knownFilterTypes {
-  Text = 'text',
-  Date = 'date',
-  Number = 'number'
-
-}
-
-export enum ShiptechGridFilterOperators {
-  AND = 1,
-  OR = 2
 }
 

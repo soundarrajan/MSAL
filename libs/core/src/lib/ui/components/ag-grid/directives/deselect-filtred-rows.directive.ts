@@ -8,9 +8,10 @@ import { AgGridEventsEnum, fromGridEvent } from '@shiptech/core/ui/components/ag
 import { nameof } from '@shiptech/core/utils/type-definitions';
 
 @Directive({
-  selector: 'ag-grid-angular[appDeselectFiltredRows]'
+  // tslint:disable-next-line:directive-selector
+  selector: 'ag-grid-angular[appDeselectFilteredRows]'
 })
-export class AgGridDeselectFiltredRowsDirective implements OnDestroy {
+export class AgGridDeselectFilteredRowsDirective implements OnDestroy {
   private gridApi: GridApi;
   private _destroy$: Subject<any> = new Subject();
 
