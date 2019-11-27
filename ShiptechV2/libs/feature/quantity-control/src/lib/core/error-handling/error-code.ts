@@ -3,6 +3,7 @@ export enum ErrorCode {
 
   LoadReportListFailed = 100,
 
+
   LoadPortCallDetailsFailed = 1000,
   InvalidPortCallId = 1001,
   PortCallNotFound = 1002,
@@ -11,5 +12,5 @@ export enum ErrorCode {
 
   LoadPortCallListFailed = 3000,
   LoadEventsLogFailed = 3100,
-
+  LoadReportSurveyHistoryFailed = 3200,
 }

@@ -3,7 +3,7 @@ import { ProductDetailsViewModel } from './view-model/product-details.view-model
 import { ProductDetailsGridViewModel } from './view-model/product-details-grid.view-model';
 import { ProductTypeListItemViewModelBuilder } from './view-model/product-type-list-item.view-model';
 import { Select } from '@ngxs/store';
-import { QcReportState } from '../../../../../store/report-view/qc-report.state';
+import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,39 +1,43 @@
-import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { IQcVesselResponsesDto } from './qc-vessel-response.dto';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 export interface IQcReportDetailsDto {
-  id: number;
+  id: number
   portCallId: string;
   vesselName: string;
-  nbOfCliams: number;
+  vesselId: number;
+  voyageReference: string
+  nbOfClaims: number;
   nbOfDeliveries: number;
-  status: ILookupDto;
-  productTypes: IQcReportDetailsProductTypeDto[];
+  productTypeCategories: IQcReportDetailsProductTypeDto[];
+  status: IDisplayLookupDto;
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;
   comment: string;
 }
 
 export interface IQcReportDetailsProductTypeDto {
-  productTypeName: string;
-  productTypeId: number;
+  id: number;
+  productType: IDisplayLookupDto;
   robBeforeDelivery: IQcReportDetailsRob;
-  deliveredQty: IQcReportDetailsDeliveredQty;
   robAfterDelivery: IQcReportDetailsRob;
+  deliveredQty: IQcReportDetailsDeliveredQty;
 }
 
 export interface IQcReportDetailsDeliveredQty {
-  bdnQty: number;
-  messuredDeliveredQty: number;
+  bdnQuantity: number;
+  measuredQty: number;
 }
 
 export interface IQcReportDetailsRob {
   logBookROB: number;
   measuredROB: number;
+  difference: number;
 }
 
 export interface IQcReportDetailsUoms {
-  robBeforeDeliveryUom: ILookupDto,
-  robAfterDeliveryUom: ILookupDto,
-  deliveredQtyUom: ILookupDto
+  robBeforeDeliveryUom: IDisplayLookupDto,
+  robAfterDeliveryUom: IDisplayLookupDto,
+  deliveredQtyUom: IDisplayLookupDto
+  options: IDisplayLookupDto[]
 }

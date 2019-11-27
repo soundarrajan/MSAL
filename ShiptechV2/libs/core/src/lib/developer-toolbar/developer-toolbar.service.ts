@@ -15,6 +15,7 @@ import { UserProfileApiMock } from '@shiptech/core/services/user-profile/api/use
 import { UserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
 import { LookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service';
 import { LookupsApiServiceMock } from '@shiptech/core/services/lookups-api/lookups-api.service.mock';
+import 'reflect-metadata';
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 

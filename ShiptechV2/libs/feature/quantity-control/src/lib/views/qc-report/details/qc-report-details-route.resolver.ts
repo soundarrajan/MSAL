@@ -12,13 +12,13 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
-    private portCallDetailsService: QcReportService) {
+    private reportService: QcReportService) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     const reportIdParam = route.params[KnownQuantityControlRoutes.ReportIdParam];
 
-    return this.portCallDetailsService.loadReportDetails(reportIdParam)
+    return this.reportService.loadReportDetails(reportIdParam)
       .pipe(
         catchError(error => {
           // Note: If the user navigated directly to this route, we need to redirect to root and show and error

@@ -1,7 +1,8 @@
-import { QcProductTypeListItemStateModel } from '../../../../../../store/report-view/details/qc-product-type-list-item-state.model';
+import { QcProductTypeListItemStateModel } from '../../../../../../store/report/details/qc-product-type-list-item-state.model';
 import { INumberFormat, NUMBER_FORMAT } from './number.format';
 import { Inject, Injectable } from '@angular/core';
 import { truncateDecimals } from '@shiptech/core/utils/math';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 @Injectable()
 export class ProductTypeListItemViewModelBuilder {
@@ -14,26 +15,24 @@ export class ProductTypeListItemViewModelBuilder {
 }
 
 export class ProductTypeListItemViewModel {
-  productTypeName: string;
-  productTypeId: number;
+  productType: IDisplayLookupDto;
   robBeforeDeliveryLogBookROB: number;
   robBeforeDeliveryMeasuredROB: number;
-  deliveredQuantityBdnQty: number;
-  deliveredQuantityMessuredDeliveredQuantity: number;
+  bdnQty: number;
+  measuredDeliveredQty: number;
   robAfterDeliveryLogBookROB: number;
   robAfterDeliveryMeasuredROB: number;
 
 
   constructor(itemState: QcProductTypeListItemStateModel, numberFormat: INumberFormat) {
-    this.productTypeId = itemState.productTypeId;
-    this.productTypeName = itemState.productTypeName;
+    this.productType = itemState.productType;
 
-    this.robBeforeDeliveryLogBookROB = truncateDecimals(itemState.robBeforeDeliveryLogBookROB.toNumber(), numberFormat.maxFractionDigits);
-    this.robBeforeDeliveryMeasuredROB = truncateDecimals(itemState.robBeforeDeliveryMeasuredROB.toNumber(), numberFormat.maxFractionDigits);
-    this.deliveredQuantityBdnQty = truncateDecimals(itemState.deliveredQuantityBdnQty.toNumber(), numberFormat.maxFractionDigits);
-    this.deliveredQuantityMessuredDeliveredQuantity = truncateDecimals(itemState.deliveredQuantityMessuredDeliveredQuantity.toNumber(), numberFormat.maxFractionDigits);
-    this.robAfterDeliveryLogBookROB = truncateDecimals(itemState.robAfterDeliveryLogBookROB.toNumber(), numberFormat.maxFractionDigits);
-    this.robAfterDeliveryMeasuredROB = truncateDecimals(itemState.robAfterDeliveryMeasuredROB.toNumber(), numberFormat.maxFractionDigits);
+    this.robBeforeDeliveryLogBookROB = truncateDecimals(itemState.robBeforeDeliveryLogBookROB?.toNumber(), numberFormat.maxFractionDigits);
+    this.robBeforeDeliveryMeasuredROB = truncateDecimals(itemState.robBeforeDeliveryMeasuredROB?.toNumber(), numberFormat.maxFractionDigits);
+    this.bdnQty = truncateDecimals(itemState.deliveredQuantityBdnQty?.toNumber(), numberFormat.maxFractionDigits);
+    this.measuredDeliveredQty = truncateDecimals(itemState.deliveredQuantityMeasuredQty?.toNumber(), numberFormat.maxFractionDigits);
+    this.robAfterDeliveryLogBookROB = truncateDecimals(itemState.robAfterDeliveryLogBookROB?.toNumber(), numberFormat.maxFractionDigits);
+    this.robAfterDeliveryMeasuredROB = truncateDecimals(itemState.robAfterDeliveryMeasuredROB?.toNumber(), numberFormat.maxFractionDigits);
   }
 
 }

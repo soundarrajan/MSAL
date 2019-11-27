@@ -10,27 +10,23 @@ import {
   LoadReportDetailsAction,
   LoadReportDetailsFailedAction,
   LoadReportDetailsSuccessfulAction
-} from '../store/report-view/qc-report-details.actions';
+} from '../store/report/qc-report-details.actions';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
-import { IQcReportDetailsState } from '../store/report-view/details/qc-report-details.model';
+import { IQcReportDetailsState } from '../store/report/details/qc-report-details.model';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { IGetQcReportsListResponse } from './api/request-response/qc-reports-list.request-response';
 import {
   IGetSoundingReportDetailsResponse,
   IGetSoundingReportListResponse
 } from './api/request-response/sounding-reports.request-response';
-import { UpdateProductTypeAction } from '../store/report-view/details/actions/update-product-type.actions';
+import { UpdateProductTypeAction } from '../store/report/details/actions/update-product-type.actions';
 import { QcProductTypeEditableProps } from '../views/qc-report/details/components/port-call-grid/view-model/product-details.view-model';
-import {
-  QcVesselResponseBaseStateItem,
-  QcVesselResponseSludgeStateItem
-} from '../store/report-view/details/qc-vessel-responses.state';
 import {
   UpdateActiveBunkerVesselResponseAction,
   UpdateActiveSludgeVesselResponseAction
-} from '../store/report-view/details/actions/qc-vessel-response.actions';
-import { UpdateQcReportComment } from '../store/report-view/details/actions/qc-comment.action';
+} from '../store/report/details/actions/qc-vessel-response.actions';
+import { UpdateQcReportComment } from '../store/report/details/actions/qc-comment.action';
 import { IGetQcSurveyHistoryListResponse } from './api/request-response/qc-survey-history-list.request-response';
 import {
   QcAddEventLogAction,
@@ -39,25 +35,34 @@ import {
   QcLoadEventsLogSuccessfulAction,
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
-} from '../store/report-view/details/actions/qc-events-log.action';
+} from '../store/report/details/actions/qc-events-log.action';
 import { IGetOrderProductsListResponse } from './api/request-response/claims-list.request-response';
 import {
   QcSaveReportDetailsAction,
   QcSaveReportDetailsFailedAction,
   QcSaveReportDetailsSuccessfulAction
-} from '../store/report-view/details/actions/save-report.actions';
+} from '../store/report/details/actions/save-report.actions';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
 import {
   QcVerifyReportAction,
   QcVerifyReportFailedAction,
   QcVerifyReportSuccessfulAction
-} from '../store/report-view/details/actions/verify-report.actions';
+} from '../store/report/details/actions/verify-report.actions';
 import {
   LoadReportListAction,
   LoadReportListFailedAction,
   LoadReportListSuccessfulAction
 } from '../store/reports-list/qc-report-list.actions';
+import {
+  LoadReportSurveyHistoryAction,
+  LoadReportSurveyHistoryFailedAction,
+  LoadReportSurveyHistorySuccessfulAction
+} from '../store/report/qc-report-survey-history.actions';
+import {
+  QcVesselResponseBunkerStateModel,
+  QcVesselResponseSludgeStateModel
+} from '../store/report/details/qc-vessel-responses.state';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -79,7 +84,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getReportsList(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
     return this.apiDispatch(
-      () => this.api.getReportsList(gridRequest),
+      () => this.api.getReportList({ pageFilters: gridRequest }),
       new LoadReportListAction(gridRequest),
       response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
       LoadReportListFailedAction,
@@ -89,7 +94,13 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getSurveyHistoryList(portCallId: string, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
-    return this.api.getSurveyHistoryList({ portCallId, ...gridRequest });
+    return this.apiDispatch(
+      () => this.api.getSurveyHistoryList({ vesselId: portCallId, pageFilters: gridRequest }),
+      new LoadReportSurveyHistoryAction(gridRequest),
+      response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
+      LoadReportSurveyHistoryFailedAction,
+      ModuleError.LoadReportSurveyHistoryFailed
+    );
   }
 
   @ObservableException()
@@ -99,11 +110,11 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     }
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
-      () => this.api.getReportById({ reportId }),
+      () => this.api.getReportDetails({ id: reportId }),
       new LoadReportDetailsAction(reportId),
-      response => new LoadReportDetailsSuccessfulAction(reportId, response.report),
+      response => new LoadReportDetailsSuccessfulAction(reportId, response),
       new LoadReportDetailsFailedAction(reportId),
-      ModuleError.LoadQcReportDetailsFailed(reportId)
+      ModuleError.LoadReportDetailsFailed(reportId)
     );
   }
 
@@ -123,12 +134,12 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  updateActiveSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): Observable<unknown> {
+  updateActiveSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): Observable<unknown> {
     return this.store.dispatch(new UpdateActiveSludgeVesselResponseAction(key, value));
   }
 
   @ObservableException()
-  updateActiveBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): Observable<unknown> {
+  updateActiveBunkerVesselResponse(key: keyof QcVesselResponseBunkerStateModel, value: any): Observable<unknown> {
     return this.store.dispatch(new UpdateActiveBunkerVesselResponseAction(key, value));
   }
 
@@ -143,7 +154,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () => this.api.verifyReports({ reportIds }),
       QcVerifyReportAction,
-      response => new QcVerifyReportSuccessfulAction(),
+      QcVerifyReportSuccessfulAction,
       QcVerifyReportFailedAction,
       ModuleError.VerifyReportFailed
     );

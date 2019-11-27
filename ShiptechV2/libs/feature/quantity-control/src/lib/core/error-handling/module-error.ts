@@ -1,6 +1,6 @@
 import { ErrorCode } from './error-code';
 import { AppError, IAppError } from '@shiptech/core/error-handling/app-error';
-import { QcVerifyReportFailedAction } from '../../store/report-view/details/actions/verify-report.actions';
+import { QcVerifyReportFailedAction } from '../../store/report/details/actions/verify-report.actions';
 
 export class ModuleError<T = any> extends AppError<T> {
   // noinspection JSUnusedGlobalSymbols
@@ -12,6 +12,11 @@ export class ModuleError<T = any> extends AppError<T> {
   static readonly LoadReportListFailed = new ModuleError({
     code: ErrorCode.LoadReportListFailed,
     message: 'Could not load report list. Please try again later.'
+  });
+
+  static readonly LoadReportSurveyHistoryFailed = new ModuleError({
+    code: ErrorCode.LoadReportSurveyHistoryFailed,
+    message: 'Could not report survey history. Please try again later.'
   });
 
   static readonly LoadEventsLogFailed = new ModuleError({
@@ -45,7 +50,7 @@ export class ModuleError<T = any> extends AppError<T> {
     });
   }
 
-  static LoadQcReportDetailsFailed(reportId?: number): ModuleError {
+  static LoadReportDetailsFailed(reportId?: number): ModuleError {
     return new ModuleError({
       code: ErrorCode.LoadPortCallDetailsFailed,
       treatAsWarning: true,

@@ -2,7 +2,8 @@ import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './req
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { IQcReportsListItemDto } from '../dto/qc-reports-list-item.dto';
 
-export interface IGetQcReportsListRequest extends IBaseQuantityControlRequest, IServerGridInfo {
+export interface IGetQcReportsListRequest extends IBaseQuantityControlRequest {
+  pageFilters: IServerGridInfo;
 }
 
 export interface IGetQcReportsListResponse extends IBaseQuantityControlResponse {

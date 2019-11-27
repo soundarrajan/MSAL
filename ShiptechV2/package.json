@@ -62,6 +62,7 @@
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.136",
     "@types/postal": "^1.0.29",
+    "@types/reflect-metadata": "^0.1.0",
     "@types/url-parse": "^1.4.3",
     "adal-angular-wrapper": "1.0.3",
     "ag-grid-angular": "^22.0.0",

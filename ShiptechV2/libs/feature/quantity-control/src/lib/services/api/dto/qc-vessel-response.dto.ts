@@ -1,16 +1,19 @@
-import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 export interface IQcVesselResponsesDto {
-  sludge: IQcVesselSludgeResponseDto[];
-  bunker: IQcVesselResponseDto[];
+  categories: IDisplayLookupDto[];
+  sludge: IQcVesselSludgeResponseDto;
+  bunker: IQcVesselBunkerResponseDto;
 }
 
-export interface IQcVesselResponseDto {
-  category: ILookupDto;
+export interface IQcVesselBunkerResponseDto {
+  activeCategory: IDisplayLookupDto;
   description: string;
 }
 
-export interface IQcVesselSludgeResponseDto extends IQcVesselResponseDto {
+export interface IQcVesselSludgeResponseDto {
+  activeCategory: IDisplayLookupDto;
+  description: string;
   sludge?: number;
   sludgeVerified?: boolean;
 }

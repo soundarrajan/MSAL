@@ -6,8 +6,8 @@ import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logge
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { Store } from '@ngxs/store';
 import { EventsLogColumns, EventsLogColumnsLabels } from './events-log.columns';
-import { IQcEventsLogItemState } from '../../../../../../store/report-view/details/qc-events-log-state.model';
-import { QcReportState } from '../../../../../../store/report-view/qc-report.state';
+import { IQcEventsLogItemState } from '../../../../../../store/report/details/qc-events-log-state.model';
+import { QcReportState } from '../../../../../../store/report/qc-report.state';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -52,7 +52,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     hide: false,
     resizable: false,
     sortable: false,
-    suppressToolPanel: true,
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
     cellRendererSelector: params => (<IQcEventsLogItemState>params.data).isNew ? { component: nameof(AgCellTemplateComponent) } : null
   };

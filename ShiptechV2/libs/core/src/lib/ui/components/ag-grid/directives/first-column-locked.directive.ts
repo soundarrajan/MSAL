@@ -5,6 +5,7 @@ import { Column } from 'ag-grid-community';
 import { AgGridAngular } from 'ag-grid-angular';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: 'ag-grid-angular[appAgGridFirstColumnLocked]'
 })
 export class AgGridFirstColumnLockedDirective implements OnDestroy {

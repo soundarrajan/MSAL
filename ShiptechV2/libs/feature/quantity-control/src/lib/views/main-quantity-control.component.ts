@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { ResetQcModuleStateAction } from '../store/report-view/qc-module.actions';
+import { ResetQcModuleStateAction } from '../store/report/qc-module.actions';
 
 @Component({
   selector: 'shiptech-main-quantity-control',

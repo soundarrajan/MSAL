@@ -2,26 +2,25 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { Select, Store } from '@ngxs/store';
-import { QcReportState } from '../../../store/report-view/qc-report.state';
+import { QcReportState } from '../../../store/report/qc-report.state';
 import { Observable, Subject } from 'rxjs';
-import {
-  QcVesselResponseBaseStateItem,
-  QcVesselResponseSludgeStateItem
-} from '../../../store/report-view/details/qc-vessel-responses.state';
 import { QcReportService } from '../../../services/qc-report.service';
-import { filter, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
-import _ from 'lodash';
+import { takeUntil, tap } from 'rxjs/operators';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction
-} from '../../../store/report-view/details/actions/qc-vessel-response.actions';
-import { IQcReportDetailsState } from '../../../store/report-view/details/qc-report-details.model';
+} from '../../../store/report/details/actions/qc-vessel-response.actions';
 import { ConfirmationService, DialogService } from 'primeng/api';
 import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
-import { IAppState } from '@shiptech/core/store/states/app.state.interface';
-import { ResetQcReportDetailsStateAction } from '../../../store/report-view/qc-report-details.actions';
+import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
 import { ToastrService } from 'ngx-toastr';
-import { AppBusyService } from '@shiptech/core/services/app-busy/app-busy.service';
+import {
+  QcVesselResponseBunkerStateModel,
+  QcVesselResponseSludgeStateModel
+} from '../../../store/report/details/qc-vessel-responses.state';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IAppState } from '@shiptech/core/store/states/app.state.interface';
+import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -33,13 +32,20 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  public bunkerVesselResponseCategories$: Observable<QcVesselResponseBaseStateItem[]>;
-  public bunkerVesselResponseActiveCategory$: Observable<QcVesselResponseBaseStateItem>;
-  public sludgeVesselResponseCategories$: Observable<QcVesselResponseSludgeStateItem[]>;
-  public sludgeVesselResponseActiveCategory$: Observable<QcVesselResponseSludgeStateItem>;
+  categories$: Observable<IDisplayLookupDto[]>;
 
-  @Select(QcReportState.getReportDetails) reportDetailsState$: Observable<IQcReportDetailsState>;
-  @Select(QcReportState.getReportComment) comment$: Observable<string>;
+  bunkerSelectedCategory$: Observable<IDisplayLookupDto>;
+  bunkerDescription$: Observable<string>;
+
+  sludgeSelectedCategory$: Observable<IDisplayLookupDto>;
+  sludge$: Observable<number>;
+  sludgeVerified$: Observable<boolean>;
+  sludgeDescription$: Observable<string>;
+
+  nbOfClaims$: Observable<number>;
+  nbOfDeliveries$: Observable<number>;
+  comment$: Observable<string>;
+
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
 
   constructor(private entityStatus: EntityStatusService,
@@ -54,57 +60,42 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
       value: EntityStatus.Delivered
     });
 
-    this.sludgeVesselResponseCategories$ = this.store.select(QcReportState.getSludgeVesselResponse).pipe(map(sludge => _.values(sludge.categories)), takeUntil(this._destroy$));
 
-    this.sludgeVesselResponseActiveCategory$ = this.store.select(QcReportState.getSludgeVesselResponseActiveCategoryId)
-      .pipe(
-        switchMap(id =>
-          this.store.select(QcReportState.getSludgeVesselResponse)
-            .pipe(
-              filter(sludge => !sludge),
-              map(sludge => sludge.categories[id] || {} as QcVesselResponseBaseStateItem),
-              shareReplay()
-            )),
-        takeUntil(this._destroy$)
-      );
+    this.categories$ = this.selectReportDetails(state => state.vesselResponse.categories);
 
-    this.bunkerVesselResponseCategories$ = this.store.select(QcReportState.getBunkerVesselResponse).pipe(map(bunker => _.values(bunker.categories)), takeUntil(this._destroy$));
+    this.bunkerSelectedCategory$ = this.selectReportDetails(state => state.vesselResponse.bunker.activeCategory);
+    this.bunkerDescription$ = this.selectReportDetails(state => state.vesselResponse.bunker.description);
 
-    this.bunkerVesselResponseActiveCategory$ = this.store.select(QcReportState.getBunkerVesselResponseActiveCategoryId)
-      .pipe(
-        switchMap(id => this.store.select(QcReportState.getBunkerVesselResponse)
-          .pipe(
-            filter(bunker => !bunker),
-            map(bunker => bunker.categories[id] || {} as QcVesselResponseSludgeStateItem),
-            shareReplay()
-          )),
-        takeUntil(this._destroy$)
-      );
+    this.sludgeSelectedCategory$ = this.selectReportDetails(state => state.vesselResponse.sludge.activeCategory);
+    this.sludge$ = this.selectReportDetails(state => state.vesselResponse.sludge.sludge);
+    this.sludgeVerified$ = this.selectReportDetails(state => state.vesselResponse.sludge.sludgeVerified);
+    this.sludgeDescription$ = this.selectReportDetails(state => state.vesselResponse.sludge.description);
+
+    this.nbOfClaims$ = this.selectReportDetails(state => state.nbOfClaims);
+    this.nbOfDeliveries$ = this.selectReportDetails(state => state.nbOfDeliveries);
+    this.comment$ = this.selectReportDetails(state => state.comment);
   }
 
-  protected get reportDetailsState(): IQcReportDetailsState {
-    // Note: Always get a fresh reference to the state.
-    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
+  private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T>{
+    return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 
   ngOnInit(): void {
   }
 
-  changeActiveSludgeResponse(option: QcVesselResponseBaseStateItem): void {
-    // TODO: move to service method
-    this.store.dispatch(new SwitchActiveSludgeResponseAction(option.id));
+  changeActiveSludgeResponse(option: IDisplayLookupDto): void {
+    this.store.dispatch(new SwitchActiveSludgeResponseAction(option));
   }
 
-  changeActiveBunkerResponse(option: QcVesselResponseBaseStateItem): void {
-    // TODO: move to service method
-    this.store.dispatch(new SwitchActiveBunkerResponseAction(option.id));
+  changeActiveBunkerResponse(option: IDisplayLookupDto): void {
+    this.store.dispatch(new SwitchActiveBunkerResponseAction(option));
   }
 
-  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateItem, value: any): void {
+  updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): void {
     this.reportService.updateActiveSludgeVesselResponse(key, value).subscribe();
   }
 
-  updateBunkerVesselResponse(key: keyof QcVesselResponseBaseStateItem, value: any): void {
+  updateBunkerVesselResponse(key: keyof QcVesselResponseBunkerStateModel, value: any): void {
     this.reportService.updateActiveBunkerVesselResponse(key, value).subscribe();
   }
 

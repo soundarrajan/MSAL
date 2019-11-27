@@ -1,26 +1,3 @@
-import { Injectable } from '@angular/core';
-import { PropName } from '@shiptech/core/utils/decorators/method-name.decorator';
-import { QcProductTypeListItemStateModel } from '../../../../../../store/report-view/details/qc-product-type-list-item-state.model';
-import { Omit } from '@shiptech/core/utils/type-definitions';
-
-export interface IPortCallDetailsProps extends Omit<QcProductTypeListItemStateModel, 'original'> {
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ProductDetailsProps implements IPortCallDetailsProps {
-  @PropName productTypeName;
-  @PropName productTypeId;
-
-  @PropName robBeforeDeliveryLogBookROB;
-  @PropName robBeforeDeliveryMeasuredROB;
-  @PropName deliveredQuantityBdnQty;
-  @PropName deliveredQuantityMessuredDeliveredQuantity;
-  @PropName robAfterDeliveryLogBookROB;
-  @PropName robAfterDeliveryMeasuredROB;
-}
-
 export enum ProductDetailsColGroupsEnum {
   Products = 'Products',
   RobBeforeDelivery = 'RobBeforeDelivery',

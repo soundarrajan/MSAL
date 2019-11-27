@@ -1,0 +1,79 @@
+::ng-deep {
+  .ag-header-cell-label .ag-header-cell-text {
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+  }
+  .summary {
+    .summary-item {
+      padding: 5px 10px;
+      background-color: #f0f8ff;
+      color: #364150;
+
+      &.matched {
+        i {
+          color: green;
+        }
+      }
+
+      &.matched-withing-limit {
+        i {
+          color: orange;
+        }
+      }
+
+      &.not-matched {
+        i {
+          color: red;
+        }
+      }
+
+      .label {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .cell-background {
+    color: white;
+
+    &.red {
+      background-color: #e9585a;
+    }
+
+    &.orange {
+      background-color: #e98a46;
+    }
+
+    &.verified {
+      background-color: #26ae61;
+    }
+
+    &.pending {
+      background-color: #fdbf2c;
+    }
+
+    &.matched {
+      background-color: #72bcab;
+    }
+
+    &.matched-withing-limit {
+      background-color: orange;
+    }
+
+    &.not-matched {
+      background-color: red;
+    }
+  }
+
+  .vessel-to-watch {
+    background: #e98a46;
+    padding: 5px;
+    border-radius: 50%;
+    color: white;
+    float: right;
+    font-size: 8px;
+    cursor: pointer;
+  }
+
+}

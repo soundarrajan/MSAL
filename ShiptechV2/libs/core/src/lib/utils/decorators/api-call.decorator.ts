@@ -8,6 +8,7 @@ import { getRandomInt } from '../math';
 import { MethodDecoratorFactory } from '../type-definitions';
 import { environment } from '@shiptech/environment';
 import { ApiError } from '../../error-handling/api/api-error';
+import 'reflect-metadata';
 
 export const API_CALL_KEY = Symbol('_$apiCallMethod$');
 export const API_CALL_FORWARD_TO = Symbol('_$apiCallForwardTo$');

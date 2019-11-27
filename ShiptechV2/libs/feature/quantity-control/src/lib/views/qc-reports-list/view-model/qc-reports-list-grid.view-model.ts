@@ -2,7 +2,7 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import {
-  AgGridConditionTypeEnum, BooleanFilterParams,
+  BooleanFilterParams,
   RowModelType,
   RowSelection,
   TypedColDef
@@ -21,10 +21,7 @@ import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-stat
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import moment from 'moment';
-import { truncateDecimals } from '@shiptech/core/utils/math';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { first } from 'rxjs/operators';
-import { OptionsFactory } from 'ag-grid-community/dist/lib/filter/provided/optionsFactory';
 
 function model(prop: keyof IQcReportsListItemDto): string {
   return prop;
@@ -150,7 +147,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('logBookRobBeforeDelivery'),
     width: 153,
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
-    filter: 'agNumberColumnFilter',
+    filter: 'agNumberColumnFilter'
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {

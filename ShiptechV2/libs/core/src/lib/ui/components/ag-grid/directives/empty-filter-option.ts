@@ -7,7 +7,7 @@ import { AgGridConditionTypeEnum } from '@shiptech/core/ui/components/ag-grid/ty
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'ag-grid-angular[appEmptyFilterOption]'
+  selector: 'ag-grid-angular[appAgGridEmptyFilterOption]'
 })
 export class AgGridEmptyFilterOptionDirective implements OnDestroy {
 
@@ -39,8 +39,7 @@ export class AgGridEmptyFilterOptionDirective implements OnDestroy {
               displayKey: AgGridConditionTypeEnum.NULL,
               displayName: 'Is empty',
               hideFilterInput: true,
-              test: () => {
-              }
+              test: (filterValue: any, cellValue: any) => cellValue === undefined || cellValue === null
             }];
 
             // Note: Workaround bug in ag-grid where the filter dropdown are not cleared before setting new ones
