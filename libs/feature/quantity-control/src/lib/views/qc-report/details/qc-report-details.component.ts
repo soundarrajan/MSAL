@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
 import { Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
-import { takeUntil, tap } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction
@@ -57,13 +57,14 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   ) {
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status)
       .pipe(
+        filter(status => !!status),
         tap(status => {
           this.entityStatus.setStatus({
             value: <EntityStatus>status?.name
           });
         }),
         takeUntil(this._destroy$)
-      );
+      ).subscribe();
 
     this.categories$ = this.selectReportDetails(state => state.vesselResponse.categories);
 

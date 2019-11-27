@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
-import { ILookupDto } from '../lookups/lookup-dto.interface';
 import { nameof } from '../utils/type-definitions';
 import { ILegacyLookupVersion } from './legacy-lookup-version.interface';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LegacyLookupsDatabase extends Dexie {
 
-  readonly company: Dexie.Table<ILookupDto, number>;
-  readonly currency: Dexie.Table<ILookupDto, number>;
-  readonly uom: Dexie.Table<ILookupDto, number>;
-  readonly uomVolume: Dexie.Table<ILookupDto, number>;
-  readonly uomMass: Dexie.Table<ILookupDto, number>;
-  readonly location: Dexie.Table<ILookupDto, number>;
-  readonly product: Dexie.Table<ILookupDto, number>;
-  readonly customer: Dexie.Table<ILookupDto, number>;
-  readonly supplier: Dexie.Table<ILookupDto, number>;
-  readonly status: Dexie.Table<ILookupDto, number>;
+  readonly company: Dexie.Table<IDisplayLookupDto, number>;
+  readonly currency: Dexie.Table<IDisplayLookupDto, number>;
+  readonly uom: Dexie.Table<IDisplayLookupDto, number>;
+  readonly uomVolume: Dexie.Table<IDisplayLookupDto, number>;
+  readonly uomMass: Dexie.Table<IDisplayLookupDto, number>;
+  readonly location: Dexie.Table<IDisplayLookupDto, number>;
+  readonly product: Dexie.Table<IDisplayLookupDto, number>;
+  readonly customer: Dexie.Table<IDisplayLookupDto, number>;
+  readonly supplier: Dexie.Table<IDisplayLookupDto, number>;
+  readonly status: Dexie.Table<IDisplayLookupDto, number>;
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
   dbVersion: number;
@@ -30,8 +30,8 @@ export class LegacyLookupsDatabase extends Dexie {
   constructor() {
     super('Shiptech-UI.Lookups');
 
-    const lookupId = nameof<ILookupDto>('id');
-    const lookupName = nameof<ILookupDto>('name');
+    const lookupId = nameof<IDisplayLookupDto>('id');
+    const lookupName = nameof<IDisplayLookupDto>('name');
     const lookupSchema = `++${lookupId}, ${lookupName}`;
 
     // Note: Never change versions, always make changes by incrementing the version, the key of the following object.
@@ -46,7 +46,7 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('product')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('customer')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('supplier')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('status')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('status')]: lookupSchema
     };
   }
 

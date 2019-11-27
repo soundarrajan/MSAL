@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 import { HttpClient } from '@angular/common/http';
 import { nameof } from '../utils/type-definitions';
-import { ILookupDto } from '../lookups/lookup-dto.interface';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { LegacyLookupsDatabase } from './legacy-lookups-database.service';
 import { AppConfig } from '../config/app-config';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 interface ILegacyListStatus {
   name: string;
@@ -20,7 +20,7 @@ interface IHashListsLegacyResponse {
 
 interface IStaticListLegacy {
   name: string;
-  items: ILookupDto[]
+  items: IDisplayLookupDto[]
 }
 
 
@@ -96,7 +96,7 @@ export class LookupsCacheService {
 
         await lookupTable.clear();
 
-        const lookupItems = tableAndLookup.items.map(i => ({ id: i.id, name: i.name }));
+        const lookupItems = tableAndLookup.items.map(i => (<IDisplayLookupDto>{ id: i.id, name: i.name, displayName: i.displayName}));
         await lookupTable.bulkPut(lookupItems);
 
         return lookupItems;
