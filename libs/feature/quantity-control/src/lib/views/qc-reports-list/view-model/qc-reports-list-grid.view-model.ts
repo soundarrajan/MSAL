@@ -8,15 +8,17 @@ import {
   TypedColDef
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { QcReportsListColumns, QcReportsListColumnsLabels } from './qc-reports-list.columns';
+import {
+  QcReportsListColumns,
+  QcReportsListColumnServerKeys,
+  QcReportsListColumnsLabels
+} from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
-import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
-import { getShiptechFormatFilters } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import { serverGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { QcReportService } from '../../../services/qc-report.service';
-import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
 import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-status';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
@@ -361,12 +363,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getReportsList({
-      pagination: getShiptechFormatPagination(params),
-      sortList: getShiptechFormatSorts(params),
-      filters: getShiptechFormatFilters(params),
-      searchText: this.searchText
-    }).subscribe(
+    this.quantityControlService.getReportsList(serverGridInfo(params, QcReportsListColumnServerKeys)).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       () => params.failCallback());
   }
