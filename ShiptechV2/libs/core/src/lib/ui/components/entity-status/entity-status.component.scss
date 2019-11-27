@@ -1,6 +1,17 @@
-.entity-status{
-  color: white;
+.entity-status {
 }
-.entity-status.delivered{
+
+.entity-status.verified {
+  color: white;
   background-color: rgb(0, 181, 63);
+}
+
+.entity-status.new {
+  color: white;
+  background-color: #1a9cff;
+}
+
+.entity-status.pending {
+  color: white;
+  background-color: #ff9319;
 }

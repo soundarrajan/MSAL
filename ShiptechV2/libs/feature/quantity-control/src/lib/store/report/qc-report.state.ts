@@ -52,6 +52,9 @@ import {
   LoadReportSurveyHistoryFailedAction,
   LoadReportSurveyHistorySuccessfulAction
 } from './qc-report-survey-history.actions';
+import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -60,6 +63,12 @@ import {
 export class QcReportState {
 
   static default = new QcReportStateModel();
+
+  private verifiedStatus: Promise<IDisplayLookupDto>;
+
+  constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {
+    this.verifiedStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.Verified).first();
+  }
 
   @Selector()
   static isBusy(state: IQcReportState): boolean {
@@ -82,8 +91,7 @@ export class QcReportState {
   }
 
   @Selector()
-  static canSave(state: IQcReportState): boolean {
-    // TODO: implement validation, if necessary
+  static canSave(): boolean {
     return true;
   }
 
@@ -292,6 +300,7 @@ export class QcReportState {
           _isLoading: false,
           _hasLoaded: true,
           id: detailsDto.id,
+          status: detailsDto.status,
           portCallId: detailsDto.portCallId,
           productTypes: detailsDto.productTypeCategories.map(productType => productType.id),
           productTypesById: productTypesMap,
@@ -475,7 +484,7 @@ export class QcReportState {
   }
 
   @Action([QcVerifyReportAction, QcVerifyReportSuccessfulAction, QcVerifyReportFailedAction])
-  verifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): void {
+  async verifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): Promise<void> {
     const state = getState();
 
     if (isAction(action, QcVerifyReportAction)) {
@@ -484,7 +493,11 @@ export class QcReportState {
       });
     } else {
       patchState({
-        details: { ...state.details, isVerifying: false }
+        details: {
+          ...state.details,
+          status: await this.verifiedStatus,
+          isVerifying: false
+        }
       });
     }
 

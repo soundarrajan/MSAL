@@ -10,7 +10,6 @@ export class EntityStatusService {
   public currentStatus: IEntityStatus;
 
   constructor() {
-
   }
 
   public setStatus(newStatus: IEntityStatus): void{

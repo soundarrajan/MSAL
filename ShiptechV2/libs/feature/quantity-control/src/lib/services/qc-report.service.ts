@@ -154,7 +154,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () => this.api.verifyReports({ reportIds }),
       QcVerifyReportAction,
-      QcVerifyReportSuccessfulAction,
+      response => QcVerifyReportSuccessfulAction,
       QcVerifyReportFailedAction,
       ModuleError.VerifyReportFailed
     );
