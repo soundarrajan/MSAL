@@ -2,7 +2,17 @@ import { FormControl } from '@angular/forms';
 import { merge, Observable, of, Subject } from 'rxjs';
 import { ILookupDto } from './lookup-dto.interface';
 import { LookupDataSource } from './lookup-data-source.interface';
-import { catchError, debounceTime, defaultIfEmpty, filter, first, scan, startWith, tap } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  defaultIfEmpty,
+  exhaustMap,
+  filter,
+  first,
+  scan,
+  startWith, switchMap,
+  tap
+} from 'rxjs/operators';
 import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
 import { LookupFilter, LookupsDefaultPageSize } from './lookup-filter';
 import { OnDestroy } from '@angular/core';

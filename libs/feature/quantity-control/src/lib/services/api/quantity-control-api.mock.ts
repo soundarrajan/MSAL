@@ -6,8 +6,8 @@ import {
   IGetQcReportsListResponse
 } from './request-response/qc-reports-list.request-response';
 import {
-  IGetQcReportDetailsByIdRequest,
-  IGetQcReportDetailsByIdResponse
+  IQcReportDetailsRequest,
+  IQcReportDetailsResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
   IGetSoundingReportDetailsRequest,
@@ -32,7 +32,6 @@ import {
   IGetQcSurveyHistoryListResponse
 } from './request-response/qc-survey-history-list.request-response';
 import { getMockQcSurveyHistoryList } from './mock/qc-survey-history-list.mock';
-import { QcSurveyHistoryListItemModel } from '../models/qc-survey-history-list-item.model';
 import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
 import { getMockQcEventsLog } from './mock/qc-events-log.mock';
 import {
@@ -50,6 +49,7 @@ import {
   IQcMarkSludgeVerificationRequest,
   IQcMarkSludgeVerificationResponse
 } from './request-response/qc-mark-sludge-verification.request-response';
+import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +63,8 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
-    const items = getMockQcReportsList(request.pagination.take) || [];
+  getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+    const items = getMockQcReportsList(request.pageFilters.pagination.take) || [];
     const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
 
     return of({
@@ -78,15 +78,21 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
+    const items = getMockQcSurveyHistoryList(request.pageFilters.pagination.take) || [];
+    const firstItem = (_.first(items) || <IQcSurveyHistoryListItemDto>{});
+
     return of({
-      items: getMockQcSurveyHistoryList(request.pagination.take).map(item => new QcSurveyHistoryListItemModel(item)),
-      totalItems: request.pagination.take * 5
+      items: items,
+      totalItems: items.length,
+      nbOfMatched: firstItem.nbOfMatched || 0,
+      nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
+      nbOfNotMatched: firstItem.nbOfNotMatched || 0
     });
   }
 
   @ApiCall()
-  getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
-    return of({ report: getQcReportDetailsCall(request.reportId) });
+  getReportDetails(request: IQcReportDetailsRequest): Observable<IQcReportDetailsResponse> {
+    return of(getQcReportDetailsCall(request.id));
   }
 
   @ApiCall()

@@ -32,10 +32,11 @@ export class QcReportsListState {
   }
 
   @Action(LoadReportListAction)
-  loadReportListAction({ patchState }: StateContext<IQcReportsListState>, action: LoadReportListAction): void {
+  loadReportListAction({ patchState }: StateContext<IQcReportsListState>, { serverGridInfo}: LoadReportListAction): void {
     patchState({
       _isLoading: true,
-      _hasLoaded: false
+      _hasLoaded: false,
+      gridInfo: serverGridInfo
     });
   }
 

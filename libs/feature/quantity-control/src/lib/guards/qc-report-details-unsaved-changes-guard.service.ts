@@ -4,7 +4,7 @@ import { QcReportDetailsComponent } from '../views/qc-report/details/qc-report-d
 import { Observable, Observer, of } from 'rxjs';
 import { QcReportService } from '../services/qc-report.service';
 import { Store } from '@ngxs/store';
-import { QcReportState } from '../store/report-view/qc-report.state';
+import { QcReportState } from '../store/report/qc-report.state';
 import { ConfirmationService } from 'primeng/api';
 
 @Injectable()

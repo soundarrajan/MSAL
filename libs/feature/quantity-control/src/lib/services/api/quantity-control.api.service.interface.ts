@@ -4,8 +4,8 @@ import {
 } from './request-response/qc-reports-list.request-response';
 import { Observable } from 'rxjs';
 import {
-  IGetQcReportDetailsByIdRequest,
-  IGetQcReportDetailsByIdResponse
+  IQcReportDetailsRequest,
+  IQcReportDetailsResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
   IGetSoundingReportDetailsRequest,
@@ -37,11 +37,11 @@ import {
 } from './request-response/qc-mark-sludge-verification.request-response';
 
 export interface IQuantityControlApiService {
-  getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
+  getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
 
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse>;
 
-  getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse>;
+  getReportDetails(request: IQcReportDetailsRequest): Observable<IQcReportDetailsResponse>;
 
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse>;
 

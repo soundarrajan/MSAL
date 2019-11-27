@@ -1,11 +1,10 @@
 <ag-grid-angular
-        appExternalSearch
-  [gridOptions]="viewModel.gridViewModel.gridOptions"
-  [rowData]="viewModel.productTypes$ | async"
   appAgGridFirstColumnLocked
   appAgGridSizeToFit
+  [gridOptions]="viewModel.gridViewModel.gridOptions"
+  [rowData]="viewModel.productTypes$ | async"
   class="ag-theme-balham"
-  id="quantityControlProductsGrid"
+  id="quantity-control-product-details-grid"
   style="height:500px">
 </ag-grid-angular>
 
@@ -32,11 +31,10 @@
         <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
       </div>
       <div class="col-6">
-        <!--        // TODO: Implement switchable dataSource for relativeUom call-->
         <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
                                [selectedUom]="viewModel.gridViewModel.getSelectedUomValue$(groupDef.groupId) | async"
                                [disabled]="isBusy$ | async"
-                               [uoms]="viewModel.uomsLookup$ | async"></shiptech-uom-selector>
+                               [uoms]="viewModel.uoms$ | async"></shiptech-uom-selector>
       </div>
     </div>
   </div>

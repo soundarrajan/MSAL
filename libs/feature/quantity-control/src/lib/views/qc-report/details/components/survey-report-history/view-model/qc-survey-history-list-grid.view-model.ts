@@ -1,15 +1,14 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
-  QcSurveyHistoryListColumns,
-  QcSurveyHistoryListColumnsLabels,
-  QcSurveyHistoryListItemProps
-} from './qc-survey-history-list.columns';
+  BooleanFilterParams,
+  RowModelType,
+  RowSelection,
+  TypedColDef
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { SurveyStatusLabelEnum } from '../../../../../../core/enums/survey-status.enum';
-import { QcSurveyHistoryListItemModel } from '../../../../../../services/models/qc-survey-history-list-item.model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
@@ -17,13 +16,32 @@ import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/map
 import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
 import { getShiptechFormatFilters } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { Store } from '@ngxs/store';
-import { IQcReportDetailsState } from '../../../../../../store/report-view/details/qc-report-details.model';
+import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
+import moment from 'moment';
+import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
+import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
+import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
+
+function model(prop: keyof IQcSurveyHistoryListItemDto): string {
+  return prop;
+}
 
 @Injectable()
 export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
+  private dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
+  private quantityPrecision = 3;
 
-  public searchText: string;
+
+  private defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.quantityPrecision
+  };
+
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -33,186 +51,294 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     pagination: true,
     animateRows: true,
 
-    deltaRowDataMode: false,
-    suppressPaginationPanel: false,
-    suppressColumnVirtualisation: false,
+    rowSelection: RowSelection.Multiple,
+    suppressRowClickSelection: true,
 
     multiSortKey: 'ctrl',
 
     enableBrowserTooltips: true,
+    singleClickEdit: true,
+    getRowNodeId: (data: IQcSurveyHistoryListItemDto) => data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
       filter: 'agTextColumnFilter',
-      minWidth: 150
+      filterParams: this.defaultColFilterParams
     }
   };
 
-  callIdCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.callId,
-    colId: QcSurveyHistoryListColumns.callId,
-    field: this.modelProps.id,
-    hide: false,
-    width:100,
-    suppressToolPanel: true,
+  portCallId: TypedColDef<IQcSurveyHistoryListItemDto, string> = {
+    headerName: QcSurveyHistoryListColumnsLabels.portCallId,
+    colId: QcSurveyHistoryListColumns.portCallId,
+    field: model('portCallId'),
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  portCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.port,
-    colId: QcSurveyHistoryListColumns.port,
-    field: this.modelProps.port
+  portNameCol: TypedColDef<IQcSurveyHistoryListItemDto, string> = {
+    headerName: QcSurveyHistoryListColumnsLabels.portName,
+    colId: QcSurveyHistoryListColumns.portName,
+    field: model('portName'),
+    width: 106
   };
 
-  surveyDateCol: ColDef = {
+  vesselNameCol: TypedColDef<IQcSurveyHistoryListItemDto, string> = {
+    headerName: QcSurveyHistoryListColumnsLabels.vesselName,
+    colId: QcSurveyHistoryListColumns.vesselName,
+    field: model('vesselName'),
+    width: 129
+  };
+
+  surveyDateCol: TypedColDef<IQcSurveyHistoryListItemDto, Date | string> = {
     headerName: QcSurveyHistoryListColumnsLabels.surveyDate,
     colId: QcSurveyHistoryListColumns.surveyDate,
-    field: this.modelProps.surveyDate,
+    field: model('surveyDate'),
+    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
+    width: 150
   };
 
-  surveyStatusCol: ColDef = {
+  surveyStatusCol: TypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
     headerName: QcSurveyHistoryListColumnsLabels.surveyStatus,
     colId: QcSurveyHistoryListColumns.surveyStatus,
-    field: this.modelProps.surveyStatus,
+    field: model('surveyStatus'),
+    valueFormatter: params => params.value?.displayName,
     cellClassRules: {
-      'cell-background pending': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusLabelEnum.Pending,
-      'cell-background verified': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).surveyStatus === SurveyStatusLabelEnum.Verified
-    }
+      'cell-background pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
+      'cell-background verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
+    },
+    width: 78
   };
 
-  matchedQuantityCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.matchedQuantity,
-    colId: QcSurveyHistoryListColumns.matchedQuantity,
-    field: this.modelProps.matchedQuantity
+  qtyMatchedStatusCol: TypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
+    headerName: QcSurveyHistoryListColumnsLabels.qtyMatchedStatus,
+    colId: QcSurveyHistoryListColumns.qtyMatchedStatus,
+    field: model('qtyMatchedStatus'),
+    valueFormatter: params => params.value?.displayName,
+    cellClassRules: {
+      'cell-background matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
+      'cell-background matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
+      'cell-background not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
+    },
+    width: 96
   };
 
-  logBookRobBeforeDeliveryCol: ColDef = {
+  logBookRobBeforeDeliveryCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
     headerName: QcSurveyHistoryListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.logBookRobBeforeDelivery,
-    field: this.modelProps.logBookRobBeforeDelivery
+    field: model('logBookRobBeforeDelivery'),
+    width: 153,
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    filter: 'agNumberColumnFilter'
   };
 
   measuredRobBeforeDeliveryCol: ColDef = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.measuredRobBeforeDelivery,
-    field: this.modelProps.measuredRobBeforeDelivery
+    field: model('measuredRobBeforeDelivery'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    width: 181
   };
 
-  robBeforeDeliveryCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.robBeforeDelivery,
-    colId: QcSurveyHistoryListColumns.robBeforeDelivery,
-    field: this.modelProps.robBeforeDelivery,
+  diffRobBeforeDeliveryCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.diffRobBeforeDelivery,
+    colId: QcSurveyHistoryListColumns.diffRobBeforeDelivery,
+    field: model('diffRobBeforeDelivery'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
-      'cell-background red': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).robBeforeDelivery < 0
-    }
+      'cell-background red': params => params.data?.diffRobBeforeDelivery < 0
+    },
+    width: 128
   };
 
-  bdnQuantityCol: ColDef = {
+  qtyBeforeDeliveryUomCol: TypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
+    headerName: QcSurveyHistoryListColumnsLabels.qtyBeforeDeliveryUom,
+    colId: QcSurveyHistoryListColumns.qtyBeforeDeliveryUom,
+    field: model('qtyBeforeDeliveryUom'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.displayName
+  };
+
+  bdnQuantityCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
     headerName: QcSurveyHistoryListColumnsLabels.bdnQuantity,
     colId: QcSurveyHistoryListColumns.bdnQuantity,
-    field: this.modelProps.bdnQuantity
+    field: model('bdnQuantity'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
-  measuredDeliveredQuantityCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.measuredDeliveredQuantity,
-    colId: QcSurveyHistoryListColumns.measuredDeliveredQuantity,
-    field: this.modelProps.measuredDeliveredQuantity
+  measuredDeliveredQtyCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.measuredDeliveredQty,
+    colId: QcSurveyHistoryListColumns.measuredDeliveredQty,
+    field: model('measuredDeliveredQty'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
-  deliveredQuantityCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.deliveredQuantity,
-    colId: QcSurveyHistoryListColumns.deliveredQuantity,
-    field: this.modelProps.deliveredQuantity,
+  diffDeliveredQtyCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.diffDeliveredQty,
+    colId: QcSurveyHistoryListColumns.diffDeliveredQty,
+    field: model('diffDeliveredQty'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
-      'cell-background red': params => ((<QcSurveyHistoryListItemModel>params.data) || {} as QcSurveyHistoryListItemModel).deliveredQuantity < 0
+      'cell-background red': params => params.data?.diffDeliveredQty < 0
     }
   };
 
-  logBookRobAfterDeliveryCol: ColDef = {
+  qtyDeliveredUomCol: TypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
+    headerName: QcSurveyHistoryListColumnsLabels.qtyDeliveredUom,
+    colId: QcSurveyHistoryListColumns.qtyDeliveredUom,
+    field: model('qtyDeliveredUom'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.displayName
+  };
+
+  logBookRobAfterDeliveryCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
     headerName: QcSurveyHistoryListColumnsLabels.logBookRobAfterDelivery,
     colId: QcSurveyHistoryListColumns.logBookRobAfterDelivery,
-    field: this.modelProps.logBookRobAfterDelivery
+    field: model('logBookRobAfterDelivery'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
-  measuredRobAfterDeliveryCol: ColDef = {
+  measuredRobAfterDeliveryCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredRobAfterDelivery,
     colId: QcSurveyHistoryListColumns.measuredRobAfterDelivery,
-    field: this.modelProps.measuredRobAfterDelivery
+    field: model('measuredRobAfterDelivery'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
-  robAfterDeliveryCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.robAfterDelivery,
-    colId: QcSurveyHistoryListColumns.robAfterDelivery,
-    field: this.modelProps.robAfterDelivery
+  diffRobAfterDeliveryCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.diffRobAfterDelivery,
+    colId: QcSurveyHistoryListColumns.diffRobAfterDelivery,
+    field: model('diffRobAfterDelivery'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    cellClassRules: {
+      'cell-background orange': params => params.data?.diffRobAfterDelivery < 0
+    }
   };
 
-  logBookSludgeBeforeDischargeCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.logBookSludgeBeforeDischarge,
-    colId: QcSurveyHistoryListColumns.logBookSludgeBeforeDischarge,
-    field: this.modelProps.logBookSludgeBeforeDischarge
+  qtyAfterDeliveryUomCol: TypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
+    headerName: QcSurveyHistoryListColumnsLabels.qtyAfterDeliveryUom,
+    colId: QcSurveyHistoryListColumns.qtyAfterDeliveryUom,
+    field: model('qtyAfterDeliveryUom'),
+    valueFormatter: params => params.value?.displayName
   };
 
-  measuredSludgeRobBeforeDischargeCol: ColDef = {
+  logBookSludgeRobBeforeDischargeCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.logBookSludgeRobBeforeDischarge,
+    colId: QcSurveyHistoryListColumns.logBookSludgeRobBeforeDischarge,
+    field: model('logBookSludgeRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+  };
+
+  measuredSludgeRobBeforeDischargeCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcSurveyHistoryListColumns.measuredSludgeRobBeforeDischarge,
-    field: this.modelProps.measuredSludgeRobBeforeDischarge
+    field: model('measuredSludgeRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
   };
 
-  sludgeDischargedQuantityCol: ColDef = {
-    headerName: QcSurveyHistoryListColumnsLabels.sludgeDischargedQuantity,
-    colId: QcSurveyHistoryListColumns.sludgeDischargedQuantity,
-    field: this.modelProps.sludgeDischargedQuantity
+  diffSludgeRobBeforeDischargeCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.diffSludgeRobBeforeDischarge,
+    colId: QcSurveyHistoryListColumns.diffSludgeRobBeforeDischarge,
+    field: model('diffSludgeRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    cellClassRules: {
+      'cell-background orange': params => params.data?.diffSludgeRobBeforeDischarge < 0
+    }
   };
 
-  commentCol: ColDef = {
+  sludgeDischargedQtyCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
+    headerName: QcSurveyHistoryListColumnsLabels.sludgeDischargedQty,
+    colId: QcSurveyHistoryListColumns.sludgeDischargedQty,
+    field: model('sludgeDischargedQty'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+  };
+
+  qtySludgeDischargedUomCol: TypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
+    headerName: QcSurveyHistoryListColumnsLabels.qtySludgeDischargedUom,
+    colId: QcSurveyHistoryListColumns.qtySludgeDischargedUom,
+    field: model('qtySludgeDischargedUom'),
+    valueFormatter: params => params.value?.displayName
+  };
+
+  commentCol: TypedColDef<IQcSurveyHistoryListItemDto, string> = {
     headerName: QcSurveyHistoryListColumnsLabels.comment,
     colId: QcSurveyHistoryListColumns.comment,
-    field: this.modelProps.comment
+    field: model('comment')
   };
 
+  isVerifiedSludgeQtyCol: TypedColDef<IQcSurveyHistoryListItemDto, string> = {
+    headerName: QcSurveyHistoryListColumnsLabels.isVerifiedSludgeQty,
+    colId: QcSurveyHistoryListColumns.isVerifiedSludgeQty,
+    field: model('isVerifiedSludgeQty'),
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
+  };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
+    tenantSettings: TenantSettingsService,
     private store: Store,
-    private quantityControlService: QcReportService,
-    private modelProps: QcSurveyHistoryListItemProps
+    private quantityControlService: QcReportService
   ) {
     super('qc-survey-history-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSurveyHistoryListGridViewModel.name));
     this.initOptions(this.gridOptions);
+
+    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+
+    this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
+    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
   getColumnsDefs(): ColDef[] {
     return [
-      this.callIdCol,
-      this.portCol,
+      this.portCallId,
+      this.portNameCol,
+      this.vesselNameCol,
       this.surveyDateCol,
       this.surveyStatusCol,
-      this.matchedQuantityCol,
+      this.qtyMatchedStatusCol,
       this.logBookRobBeforeDeliveryCol,
       this.measuredRobBeforeDeliveryCol,
-      this.robBeforeDeliveryCol,
+      this.diffRobBeforeDeliveryCol,
+      this.qtyBeforeDeliveryUomCol,
       this.bdnQuantityCol,
-      this.measuredDeliveredQuantityCol,
-      this.deliveredQuantityCol,
+      this.measuredDeliveredQtyCol,
+      this.diffDeliveredQtyCol,
+      this.qtyDeliveredUomCol,
       this.logBookRobAfterDeliveryCol,
       this.measuredRobAfterDeliveryCol,
-      this.robAfterDeliveryCol,
-      this.logBookSludgeBeforeDischargeCol,
+      this.diffRobAfterDeliveryCol,
+      this.qtyAfterDeliveryUomCol,
+      this.logBookSludgeRobBeforeDischargeCol,
       this.measuredSludgeRobBeforeDischargeCol,
-      this.sludgeDischargedQuantityCol,
-      this.commentCol
+      this.diffSludgeRobBeforeDischargeCol,
+      this.sludgeDischargedQtyCol,
+      this.qtySludgeDischargedUomCol,
+      this.commentCol,
+      this.isVerifiedSludgeQtyCol
     ];
   }
 
-  //TODO: ADD loading overlay
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.quantityControlService.getSurveyHistoryList(this.reportDetailsState.portCallId, {
       pagination: getShiptechFormatPagination(params),
       sortList: getShiptechFormatSorts(params),
-      filters: getShiptechFormatFilters(params),
-      searchText: this.searchText
+      filters: getShiptechFormatFilters(params)
     }).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       () => params.failCallback());

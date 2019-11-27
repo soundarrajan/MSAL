@@ -4,7 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { Select } from '@ngxs/store';
-import { QcReportState } from '../../../store/report-view/qc-report.state';
+import { QcReportState } from '../../../store/report/qc-report.state';
 import { Observable, Subject } from 'rxjs';
 import { TabMenu } from 'primeng/primeng';
 import { filter, takeUntil } from 'rxjs/operators';

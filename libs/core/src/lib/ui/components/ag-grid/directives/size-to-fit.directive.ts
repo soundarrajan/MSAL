@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: 'ag-grid-angular[appAgGridSizeToFit]'
 })
 export class AgGridSizeToFitDirective implements OnDestroy {

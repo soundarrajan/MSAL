@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 @Component({
   selector: 'shiptech-uom-selector',
@@ -11,20 +12,20 @@ export class UomSelectorComponent {
   public options: SelectItem[];
   public selectedOptionId: number;
 
-  private originalOptions: ILookupDto[];
+  private originalOptions: IDisplayLookupDto[];
 
-  @Output() public selectionChanged = new EventEmitter<ILookupDto>();
+  @Output() public selectionChanged = new EventEmitter<IDisplayLookupDto>();
   @Input() public disabled = false;
 
-  @Input('uoms') set _options(options: ILookupDto[]) {
+  @Input('uoms') set _options(options: IDisplayLookupDto[]) {
     if (!options) {
       return;
     }
-    this.options = options.map(value => ({ label: value.name, value: value.id }));
+    this.options = options.map(value => ({ label: value.displayName, value: value.id }));
     this.originalOptions = options;
   }
 
-  @Input('selectedUom') set _selectedOption(option: ILookupDto) {
+  @Input('selectedUom') set _selectedOption(option: IDisplayLookupDto) {
     if (!option) {
       return;
     }

@@ -68,10 +68,11 @@
   </div>
 
   <ag-grid-angular
+    appAgGridFirstColumnLocked
     appAgGridFilterPresets
     appAgGridSizeToFit
     appExternalSearch
-    appEmptyFilterOption
+    appAgGridEmptyFilterOption
     [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
     groupId="qc-report-list-filter-presets"
     id="qc-report-list-grid"

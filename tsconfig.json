@@ -27,7 +27,10 @@
       "@shiptech/feature/lazy-load-poc": ["libs/feature/lazy-load-poc/src/index.ts"]
     },
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": [
+      "reflect-metadata"
+    ]
   },
   "exclude": [
     "node_modules",
@@ -35,6 +38,7 @@
   ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "disableTypeScriptVersionCheck": true
+    "disableTypeScriptVersionCheck": true,
+    "enableIvy": true
   }
 }

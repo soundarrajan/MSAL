@@ -1,5 +1,13 @@
 import { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
-import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
+import {
+  BaseColDefParams,
+  BaseWithValueColDefParams,
+  ValueGetterParams
+} from 'ag-grid-community/dist/lib/entities/colDef';
+import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
+import { Column } from 'ag-grid-community/dist/lib/entities/column';
+import { GridApi } from 'ag-grid-community/dist/lib/gridApi';
+import { ColumnApi } from 'ag-grid-community/dist/lib/columnController/columnApi';
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -18,10 +26,19 @@ export interface TypedValueFormatterParams<T> extends BaseWithValueColDefParams 
   value: T;
 }
 
+export interface TypedBaseColDefParams<TData>  extends BaseColDefParams {
+  data: TData;
+}
+
+export interface TypedValueGetterParams<T> extends ValueGetterParams {
+  value: T;
+}
+
 export interface TypedColDef<TData = any, TField = any> extends ColDef {
   valueFormatter?: (params: TypedValueFormatterParams<TField>) => string;
+  valueGetter?: ((params: TypedBaseColDefParams<TData>) => any) | string
   cellClassRules?: {
-    [cssClassName: string]: (((params: { data: TData }) => boolean) | string);
+    [cssClassName: string]: (((params: { data: TData, value: TField }) => boolean) | string);
   };
 }
 
@@ -106,13 +123,11 @@ export const BooleanFilterParams = {
       displayKey: AgGridConditionTypeEnum.YES,
       displayName: 'Yes',
       hideFilterInput: true,
-      test: () => {
-      }
+      test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null && (cellValue.toString() .toLowerCase() === "1" || cellValue.toString().toLowerCase() === "true")
     }, {
       displayKey: AgGridConditionTypeEnum.NO,
       displayName: 'No',
       hideFilterInput: true,
-      test: () => {
-      }
+      test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null && (cellValue.toString() .toLowerCase() === "0" || cellValue?.toString().toLowerCase() === "false")
     }]
 };

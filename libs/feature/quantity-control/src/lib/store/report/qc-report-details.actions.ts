@@ -1,5 +1,6 @@
 import { nullable } from '@shiptech/core/utils/nullable';
 import { IQcReportDetailsDto } from '../../services/api/dto/qc-report-details.dto';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 export class LoadReportDetailsAction {
   static readonly type = '[QC.Report.Details] Load Report Details';
@@ -49,3 +50,4 @@ export class ResetQcReportDetailsStateAction {
   constructor() {
   }
 }
+

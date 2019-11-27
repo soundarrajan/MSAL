@@ -13,7 +13,7 @@ import { QuantityControlGridModule } from './quantity-control-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
 import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportState } from './store/report-view/qc-report.state';
+import { QcReportState } from './store/report/qc-report.state';
 import { QuantityControlRoutingModule } from './quantity-control-routing.module';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
 import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';

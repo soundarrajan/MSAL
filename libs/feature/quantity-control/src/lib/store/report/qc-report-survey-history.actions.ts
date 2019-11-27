@@ -1,8 +1,8 @@
 import { nullable } from '@shiptech/core/utils/nullable';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
-export class LoadReportListAction {
-  static readonly type = '[QC.Report.List] Load Report List';
+export class LoadReportSurveyHistoryAction {
+  static readonly type = '[QC.Report.History] Load Report History';
 
   constructor(public serverGridInfo: IServerGridInfo) {
   }
@@ -17,8 +17,8 @@ export class LoadReportListAction {
   }
 }
 
-export class LoadReportListSuccessfulAction {
-  static readonly type = '[QC.Report.List] Load Report List Successful';
+export class LoadReportSurveyHistorySuccessfulAction {
+  static readonly type = '[QC.Report.History] Load Report History Successful';
 
   constructor(public nbOfMatched: number, public nbOfNotMatched: number, public nbOfMatchedWithinLimit: number, public totalItems: number) {
   }
@@ -33,8 +33,8 @@ export class LoadReportListSuccessfulAction {
   }
 }
 
-export class LoadReportListFailedAction {
-  static readonly type = '[QC.Report.List] Load Report List Failed';
+export class LoadReportSurveyHistoryFailedAction {
+  static readonly type = '[QC.Report.List] Load Report History Failed';
 
   constructor() {
   }
@@ -43,3 +43,4 @@ export class LoadReportListFailedAction {
     return {};
   }
 }
+

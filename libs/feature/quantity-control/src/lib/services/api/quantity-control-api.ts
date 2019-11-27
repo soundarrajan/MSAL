@@ -7,8 +7,8 @@ import {
   IGetQcReportsListResponse
 } from './request-response/qc-reports-list.request-response';
 import {
-  IGetQcReportDetailsByIdRequest,
-  IGetQcReportDetailsByIdResponse
+  IQcReportDetailsRequest,
+  IQcReportDetailsResponse
 } from './request-response/qc-report-details-by-id.request-response';
 import {
   IGetSoundingReportDetailsRequest,
@@ -44,10 +44,14 @@ import {
   IQcMarkSludgeVerificationRequest,
   IQcMarkSludgeVerificationResponse
 } from './request-response/qc-mark-sludge-verification.request-response';
+import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
+import { IBaseQuantityControlResponse } from './request-response/request-response.quantity-control.model';
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
   export const getReportsList = () => `api/quantityControlReport/list`;
+  export const getReportDetails = () => `api/quantityControlReport/details`;
+  export const getSurveyHistoryList = () => `api/quantityControlReport/history`;
   export const verifySludge = () => `api/quantityControlReport/verifySludge`;
   export const verify = () => `api/quantityControlReport/verify`;
 }
@@ -63,7 +67,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getReportsList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+  getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return this.http.post<IQcReportsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: { pageFilters: request } })
       .pipe(map(r => {
         const items = r || [];
@@ -81,12 +85,24 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
-    return throwError('Not implemented');
+    return this.http.post<IQcSurveyHistoryListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getSurveyHistoryList()}`, { payload: request })
+      .pipe(map(r => {
+        const items = r || [];
+        const firstItem = (_.first(items) || <IQcSurveyHistoryListItemDto>{});
+
+        return {
+          items: items,
+          totalItems: items.length,
+          nbOfMatched: firstItem.nbOfMatched || 0,
+          nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
+          nbOfNotMatched: firstItem.nbOfNotMatched || 0
+        };
+      }));
   }
 
   @ObservableException()
-  getReportById(request: IGetQcReportDetailsByIdRequest): Observable<IGetQcReportDetailsByIdResponse> {
-    return throwError('Not implemented');
+  getReportDetails(request: IQcReportDetailsRequest): Observable<IQcReportDetailsResponse> {
+    return this.http.post<IQcReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getReportDetails()}`, { payload: request })
   }
 
   @ObservableException()

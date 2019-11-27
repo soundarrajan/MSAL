@@ -1,8 +1,8 @@
 import { Action, State, StateContext } from '@ngxs/store';
 import { QcReportsListState } from './reports-list/qc-reports-list.state';
-import { QcReportState } from './report-view/qc-report.state';
-import { IQcReportState } from './report-view/qc-report.state.model';
-import { ResetQcModuleStateAction } from './report-view/qc-module.actions';
+import { QcReportState } from './report/qc-report.state';
+import { IQcReportState } from './report/qc-report.state.model';
+import { ResetQcModuleStateAction } from './report/qc-module.actions';
 import { StateReset } from 'ngxs-reset-plugin';
 
 @State<IQuantityControlState>({
