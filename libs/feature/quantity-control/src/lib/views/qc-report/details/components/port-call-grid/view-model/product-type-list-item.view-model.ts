@@ -34,5 +34,4 @@ export class ProductTypeListItemViewModel {
     this.robAfterDeliveryLogBookROB = truncateDecimals(itemState.robAfterDeliveryLogBookROB?.toNumber(), numberFormat.maxFractionDigits);
     this.robAfterDeliveryMeasuredROB = truncateDecimals(itemState.robAfterDeliveryMeasuredROB?.toNumber(), numberFormat.maxFractionDigits);
   }
-
 }

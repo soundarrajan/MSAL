@@ -4,8 +4,9 @@ import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 export enum EntityStatus {
-  Delivered,
-  Pending,
+  New = 'New',
+  Pending = 'Pending',
+  Verified = 'Verified',
 }
 
 export interface IEntityStatusConfig {
@@ -22,13 +23,17 @@ export interface IEntityStatus {
 
 const emptyStatus: IEntityStatus = { value: undefined };
 const entityStatusMapping: Record<EntityStatus, IEntityStatusConfig> = {
-  [EntityStatus.Delivered]: {
-    name: 'Delivered',
-    cssClass: 'delivered'
+  [EntityStatus.New]: {
+    name: 'New',
+    cssClass: 'new'
   },
   [EntityStatus.Pending]: {
     name: 'Pending',
     cssClass: 'pending'
+  },
+  [EntityStatus.Verified]: {
+    name: 'Verified',
+    cssClass: 'verified'
   }
 };
 
