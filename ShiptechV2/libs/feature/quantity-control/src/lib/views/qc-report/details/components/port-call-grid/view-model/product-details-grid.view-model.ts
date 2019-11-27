@@ -17,7 +17,6 @@ import { ProductTypeListItemViewModel } from './product-type-list-item.view-mode
 import { Decimal } from 'decimal.js';
 import { Store } from '@ngxs/store';
 import { Observable, throwError } from 'rxjs';
-import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import {
   SwitchUomForDeliveredQuantityAction,
   SwitchUomForRobAfterDelivery,
@@ -41,22 +40,17 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     groupHeaderHeight: 40,
     headerHeight: 40,
     rowHeight: 35,
-
     rowModelType: RowModelType.ClientSide,
-    pagination: true,
-
+    pagination: false,
     animateRows: true,
-
     deltaRowDataMode: true,
     suppressPaginationPanel: false,
     suppressColumnVirtualisation: true,
     rowSelection: RowSelection.Multiple,
     rowDragManaged: true,
     suppressRowClickSelection: true,
-
     multiSortKey: 'ctrl',
     getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
-
     enableBrowserTooltips: true,
     singleClickEdit: true,
     defaultColDef: {
@@ -229,11 +223,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 
-  getDifference(minuend: number, suptrahend: number): number {
-    if(minuend === null || minuend === undefined || suptrahend === null || suptrahend === undefined)
+  getDifference(minuend: number, suprahend: number): number {
+    if (minuend === null || minuend === undefined || suprahend === null || suprahend === undefined)
       return undefined;
 
-    return new Decimal(minuend).sub(new Decimal(suptrahend)).toNumber();
+    return new Decimal(minuend).sub(new Decimal(suprahend)).toNumber();
   }
 
   getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IDisplayLookupDto> {

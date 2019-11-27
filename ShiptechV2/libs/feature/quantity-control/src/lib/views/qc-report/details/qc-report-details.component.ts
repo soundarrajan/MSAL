@@ -55,11 +55,15 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
               private confirmationService: ConfirmationService,
               private toastrService: ToastrService
   ) {
-    //TODO: after loading
-    this.entityStatus.setStatus({
-      value: EntityStatus.Delivered
-    });
-
+    this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status)
+      .pipe(
+        tap(status => {
+          this.entityStatus.setStatus({
+            value: <EntityStatus>status?.name
+          });
+        }),
+        takeUntil(this._destroy$)
+      );
 
     this.categories$ = this.selectReportDetails(state => state.vesselResponse.categories);
 
@@ -76,7 +80,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     this.comment$ = this.selectReportDetails(state => state.comment);
   }
 
-  private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T>{
+  private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 
