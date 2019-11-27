@@ -691,7 +691,9 @@ angular.module("shiptech.components").controller("FiltersController", [
                         $rootScope.savedDefaultFilters = $scope.defaultConfiguration.filters;
                         $scope.selectedConfig = $scope.defaultConfiguration;
                         $rootScope.isDefaultConfig = $scope.selectedConfig;
-                        $rootScope.saveFiltersDefaultTimeline = $scope.defaultConfiguration.filtersList;
+                        if ($state.current.name == "default.dashboard-timeline" || $state.current.name == "default.dashboard-calendar") {
+                            $rootScope.saveFiltersDefaultTimeline = $scope.defaultConfiguration.filtersList;
+                        }
                         $scope.enableDisableDeleteLayout($scope.selectedConfig);
                         //selected != default
                         //but if default exists, set as selected initially
