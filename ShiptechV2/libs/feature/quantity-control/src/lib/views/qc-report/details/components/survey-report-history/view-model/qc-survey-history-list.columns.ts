@@ -53,3 +53,34 @@ export enum QcSurveyHistoryListColumnsLabels {
   comment = 'Comment',
   isVerifiedSludgeQty = 'Verify Sludge Qty'
 }
+
+/**
+ * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
+ */
+export const QcSurveyHistoryListColumnServerKeys: Record<QcSurveyHistoryListColumns, string> = {
+  [QcSurveyHistoryListColumns.portCallId]: 'id',
+  [QcSurveyHistoryListColumns.portName]: 'portName',
+  [QcSurveyHistoryListColumns.vesselName]: 'vesselName',
+  [QcSurveyHistoryListColumns.surveyDate]: 'surveyDate',
+  [QcSurveyHistoryListColumns.surveyStatus]: 'surveyStatus',
+  [QcSurveyHistoryListColumns.qtyMatchedStatus]: 'qtyMatchedStatus',
+  [QcSurveyHistoryListColumns.logBookRobBeforeDelivery]: 'logBookRobBeforeDelivery',
+  [QcSurveyHistoryListColumns.measuredRobBeforeDelivery]: 'measuredRobBeforeDelivery',
+  [QcSurveyHistoryListColumns.diffRobBeforeDelivery]: 'diffRobBeforeDelivery',
+  [QcSurveyHistoryListColumns.qtyBeforeDeliveryUom]: 'qtyBeforeDeliveryUom',
+  [QcSurveyHistoryListColumns.bdnQuantity]: 'bdnQuantity',
+  [QcSurveyHistoryListColumns.measuredDeliveredQty]: 'measuredDeliveredQty',
+  [QcSurveyHistoryListColumns.diffDeliveredQty]: 'diffDeliveredQty',
+  [QcSurveyHistoryListColumns.qtyDeliveredUom]: 'qtyDeliveredUom',
+  [QcSurveyHistoryListColumns.logBookRobAfterDelivery]: 'logBookRobAfterDelivery',
+  [QcSurveyHistoryListColumns.measuredRobAfterDelivery]: 'measuredRobAfterDelivery',
+  [QcSurveyHistoryListColumns.diffRobAfterDelivery]: 'diffRobAfterDelivery',
+  [QcSurveyHistoryListColumns.qtyAfterDeliveryUom]: 'qtyAfterDeliveryUom',
+  [QcSurveyHistoryListColumns.logBookSludgeRobBeforeDischarge]: 'logBookSludgeRobBeforeDischarge',
+  [QcSurveyHistoryListColumns.measuredSludgeRobBeforeDischarge]: 'measuredSludgeRobBeforeDischarge',
+  [QcSurveyHistoryListColumns.diffSludgeRobBeforeDischarge]: 'diffSludgeRobBeforeDischarge',
+  [QcSurveyHistoryListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
+  [QcSurveyHistoryListColumns.qtySludgeDischargedUom]: 'qtySludgeDischargedUom',
+  [QcSurveyHistoryListColumns.comment]: 'comment',
+  [QcSurveyHistoryListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
+};

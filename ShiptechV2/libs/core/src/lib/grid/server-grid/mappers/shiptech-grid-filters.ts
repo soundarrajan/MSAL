@@ -17,20 +17,24 @@ import {
   AgGridTextFilter,
   knownFilterTypes
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
+import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
-export function getShiptechFormatFilters(params: IServerSideGetRowsParams): ServerGridFilter[] {
+export function getShiptechFormatFilters(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): ServerGridFilter[] {
   const filtersWithKeys = _.mapValues(params.request.filterModel, (value, key) => ({ ...value, key }));
-  const filters = flattenFilters(_.values(filtersWithKeys)).map(f => getShiptechFormatFilter(f, params));
+  const filters = flattenFilters(_.values(filtersWithKeys)).map(f => getShiptechFormatFilter(f, params, serverColumnKeyMap));
   return filters || [];
 }
 
-function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRowsParams): ServerGridFilter {
+function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): ServerGridFilter {
+  // Note: TODO Temporary workaround to avoid providing gridApi as argument
   const colDef = params.parentNode['gridApi'].getColumnDef(filter.key);
 
   let result: Omit<ServerGridFilter, 'values'> = {
     columnType: filter.filterType,
     conditionValue: AgGridConditionTypeToServer[filter.type],
-    columnValue: colDef.field.split('.').slice(-1)[0],
+    columnValue: serverColumnKeyMap[colDef.field.split('.').slice(-1)[0]],
     isComputedColumn: false,
     filterOperator: ShiptechGridFilterOperators[filter.operator] || 0
   };
@@ -86,3 +90,10 @@ function flattenFilters(filters: AgGridFilter[]): AgGridFilter[] {
   return result;
 }
 
+export function serverGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): IServerGridInfo {
+  return {
+    pagination: getShiptechFormatPagination(params),
+    sortList: getShiptechFormatSorts(params, serverColumnKeyMap),
+    filters: getShiptechFormatFilters(params, serverColumnKeyMap)
+  };
+}

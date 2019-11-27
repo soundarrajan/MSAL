@@ -7,14 +7,16 @@ import {
   RowSelection,
   TypedColDef
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
+import {
+  QcSurveyHistoryListColumns,
+  QcSurveyHistoryListColumnServerKeys,
+  QcSurveyHistoryListColumnsLabels
+} from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
-import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
-import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
-import { getShiptechFormatFilters } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import { serverGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { Store } from '@ngxs/store';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
@@ -335,11 +337,10 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getSurveyHistoryList(this.reportDetailsState.portCallId, {
-      pagination: getShiptechFormatPagination(params),
-      sortList: getShiptechFormatSorts(params),
-      filters: getShiptechFormatFilters(params)
-    }).subscribe(
+    this.quantityControlService.getSurveyHistoryList(
+      this.reportDetailsState.portCallId,
+      serverGridInfo(params, QcSurveyHistoryListColumnServerKeys)
+    ).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       () => params.failCallback());
   }

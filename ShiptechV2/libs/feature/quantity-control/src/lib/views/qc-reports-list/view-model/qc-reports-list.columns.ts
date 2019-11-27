@@ -27,7 +27,6 @@ export enum QcReportsListColumns {
   isVerifiedSludgeQty = 'isVerifiedSludgeQty'
 }
 
-
 export enum QcReportsListColumnsLabels {
   portCallId = 'Call ID',
   portName = 'Port call',
@@ -55,3 +54,35 @@ export enum QcReportsListColumnsLabels {
   comment = 'Comment',
   isVerifiedSludgeQty = 'Verify Sludge Qty'
 }
+
+/**
+ * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
+ */
+export const QcReportsListColumnServerKeys: Record<QcReportsListColumns, string> = {
+  [QcReportsListColumns.selection]: undefined,
+  [QcReportsListColumns.portCallId]: 'id',
+  [QcReportsListColumns.portName]: 'portName',
+  [QcReportsListColumns.vesselName]: 'vesselName',
+  [QcReportsListColumns.surveyDate]: 'surveyDate',
+  [QcReportsListColumns.surveyStatus]: 'surveyStatus',
+  [QcReportsListColumns.qtyMatchedStatus]: 'qtyMatchedStatus',
+  [QcReportsListColumns.logBookRobBeforeDelivery]: 'logBookRobBeforeDelivery',
+  [QcReportsListColumns.measuredRobBeforeDelivery]: 'measuredRobBeforeDelivery',
+  [QcReportsListColumns.diffRobBeforeDelivery]: 'diffRobBeforeDelivery',
+  [QcReportsListColumns.qtyBeforeDeliveryUom]: 'qtyBeforeDeliveryUom',
+  [QcReportsListColumns.bdnQuantity]: 'bdnQuantity',
+  [QcReportsListColumns.measuredDeliveredQty]: 'measuredDeliveredQty',
+  [QcReportsListColumns.diffDeliveredQty]: 'diffDeliveredQty',
+  [QcReportsListColumns.qtyDeliveredUom]: 'qtyDeliveredUom',
+  [QcReportsListColumns.logBookRobAfterDelivery]: 'logBookRobAfterDelivery',
+  [QcReportsListColumns.measuredRobAfterDelivery]: 'measuredRobAfterDelivery',
+  [QcReportsListColumns.diffRobAfterDelivery]: 'diffRobAfterDelivery',
+  [QcReportsListColumns.qtyAfterDeliveryUom]: 'qtyAfterDeliveryUom',
+  [QcReportsListColumns.logBookSludgeRobBeforeDischarge]: 'logBookSludgeRobBeforeDischarge',
+  [QcReportsListColumns.measuredSludgeRobBeforeDischarge]: 'measuredSludgeRobBeforeDischarge',
+  [QcReportsListColumns.diffSludgeRobBeforeDischarge]: 'diffSludgeRobBeforeDischarge',
+  [QcReportsListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
+  [QcReportsListColumns.qtySludgeDischargedUom]: 'qtySludgeDischargedUom',
+  [QcReportsListColumns.comment]: 'comment',
+  [QcReportsListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
+};
