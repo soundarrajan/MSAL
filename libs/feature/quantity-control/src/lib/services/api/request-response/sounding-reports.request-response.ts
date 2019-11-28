@@ -3,8 +3,10 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from '../dto/qc-report-sounding.dto';
 
 
-export interface IGetSoundingReportListRequest extends IBaseQuantityControlRequest, IServerGridInfo {
-  portCallId: number;
+export interface IGetSoundingReportListRequest extends IBaseQuantityControlRequest {
+  id: number;
+  reference: string;
+  pageFilters: IServerGridInfo
 }
 
 export interface IGetSoundingReportListResponse extends IBaseQuantityControlResponse {
@@ -13,7 +15,7 @@ export interface IGetSoundingReportListResponse extends IBaseQuantityControlResp
 }
 
 export interface IGetSoundingReportDetailsRequest extends IBaseQuantityControlRequest, IServerGridInfo {
-  soundingReportId: number;
+  id: number;
 }
 
 export interface IGetSoundingReportDetailsResponse extends IBaseQuantityControlResponse {

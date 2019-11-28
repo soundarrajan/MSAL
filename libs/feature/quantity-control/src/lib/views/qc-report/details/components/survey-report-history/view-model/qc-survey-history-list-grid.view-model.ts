@@ -338,7 +338,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.quantityControlService.getSurveyHistoryList(
-      this.reportDetailsState.portCallId,
+      this.reportDetailsState.vesselId,
       serverGridInfo(params, QcSurveyHistoryListColumnServerKeys)
     ).subscribe(
       response => params.successCallback(response.items, response.totalItems),
