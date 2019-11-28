@@ -256,3 +256,23 @@ span.vesselName {
     top: 100px;
     left: 500px;
 }
+.st-btn-icon-zoom {
+	color: lightgrey;
+    background-color: #d3d3d3;
+    padding: 1px 4px;
+    font-size: 14px;
+    border: 1px solid #b1b1b1;
+    display: block;
+    float: left;
+    width: 30px;
+}
+.st-btn-icon-zoom a {
+    color: #848586;
+
+}
+.st-btn-icon-zoom-out  {
+	border-radius: 7px 0 0 7px !important;
+}
+.st-btn-icon-zoom-in  {
+	border-radius: 0 7px 7px 0 !important;
+}
