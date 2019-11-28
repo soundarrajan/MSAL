@@ -4840,15 +4840,13 @@ APP_API.factory("$Api_Service", [
                         var scheduleDashboardVesselVoyages = JSON.parse(localStorage.getItem("scheduleDashboardVesselVoyages"));
                  
                         if (scheduleDashboardVesselVoyages) {
-                            voyageFilter = "";
+                            voyageFilter = [];
                             $.each(scheduleDashboardVesselVoyages, function(k, v) {
                                 if(v.voyageDetail){
-                                    voyageFilter += v.voyageDetail.id + ",";
+                                    voyageFilter.psuh(v.voyageDetail.id);
                                 }
                             });
-                            if (voyageFilter.charAt(voyageFilter.length - 1) == ",") {
-                                voyageFilter = voyageFilter.substr(0, voyageFilter.length - 1);
-                            }
+                            voyageFilter = voyageFilter.join();
                             if (!param.params.filters || typeof param.params.filters == "undefined") {
                                 param.params.filters = [];
                             }

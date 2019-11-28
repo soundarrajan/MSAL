@@ -1,61 +1,77 @@
-<div class="newStatusColoured contextmenu fade in" style="background-color: #fff"> 
-	<div class="popover-header" style="{{ rightClickPopoverData.vsVal.style }}">
-		<a href="#" class="close" aria-label="close"> &times; </a> 
-		<span>{{ rightClickPopoverData.vsVal.request.vesselName }}</span>
+<div class="newStatusColoured contextmenu fade in" style="background-color: #fff;"> 
+	<div class="popover-header">
+		<i class="fa fa-location-arrow">
+			&nbsp;&nbsp;
+		</i><span>{{$ctrl.vesselName}}</span>
 	</div>
 	<div class="content">
-	
-	<div class="voyageDetailSection" ng-repeat="(key,voyage) in rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId">
-		<hr ng-if="$index > 0" style="margin: 5px 0;" >
-		<table>
-			<thead>
-				<tr ng-if="!voyage.id">
-					<th>
-						<span >
-							{{voyage[0].portCode}}
-						</span>
-					</th>
-					<th ng-repeat="(key2, bunkerPlan) in voyage">
-						{{bunkerPlan.productType}}
-					</th>
-				</tr>
-				<tr ng-if="voyage.id">
-					<th>
-						{{voyage.portCode}}
-					</th>
-				</tr>				
-			</thead>
-			<tbody>
-				<tr ng-if="!voyage.id">
-					<td class="font-blue">
-						{{key}}
-					</td>
-					<td class="cancelBunkerStrategyCell" ng-repeat="(key2, bunkerPlan) in voyage" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
-						{{bunkerPlan.supplyQuantity | number:numberPrecision.quantityPrecision}}
-						<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="confirmCancelBunkerStrategy(bunkerPlan, rightClickPopoverData.vsVal)" ><i class="fa fa-times"></i></span>
-					</td>
-				</tr>				
+		<div class="voyageDetailSection" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.uniqueVoyages">
+			<hr ng-if="$index > 0" style="margin: 5px 0;" >
+			<div ng-init="voyageStatus = $ctrl.getPriorityStatus(voyage)">
+				Port: <b>{{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode}}</b>
+				<span style="background: {{voyageStatus.color}}; color:{{voyageStatus.fontColor}}; padding: 0px 5px; border-radius: 200px !important;">{{voyageStatus.name}}</span>
+			</div>
+			<table ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder" style="border-spacing: 5px 5px;border-collapse: separate;">
+				<thead>
+					<tr>
+						<th>
+						</th>
+						<th ng-repeat="(key2, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]">
+							{{productType}}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan">
+						<td>
+							{{voyage}}
+						</td>
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" class="cancelBunkerStrategyCell" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+							<span ng-repeat="(ptkey,ptval) in $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]" ng-init="bunkerPlan = ptval[productType][0].voyageDetail.bunkerPlan">
+								{{bunkerPlan.supplyQuantity}}
+								<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>
+							</span>
+						</td>
+					</tr>
+					<tr ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequest[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest">
+						<td>
+							<a href="/#/edit-request/{{key2}}" target="_blank">
+								REQ{{key2}}
+							</a>
+						</td>
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+							<span ng-repeat="(ptkey,ptval) in requests" ng-if="ptkey == productType">
+								{{ptval ? ptval : "-"}}
+							</span>
+						</td>						
+					</tr>
+					<tr ng-repeat="(key2, orders) in $ctrl.groupedVoyages.groupedVoyagesOrder[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasOrder">
+						<td>
+							<a href="/#/edit-order/{{key2}}" target="_blank">
+								ORD{{key2}}
+							</a>
+						</td>
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+							<span ng-repeat="(ptkey,ptval) in orders" ng-if="ptkey == productType">
+								{{ptval ? ptval : "-"}}
+							</span>
+						</td>						
+					</tr>
+		
+				</tbody>			
+			</table>
 
-				<tr ng-if="voyage.id">
-					<td class="font-blue">
-						{{key}}
-					</td>
-					<td><a class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a></td>
-				</tr>
-
-			</tbody>			
-		</table>
-		<a ng-if="!voyage.id" class="action-btn btn btn-sm btn-default" href="#/new-request/{{key}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a>
+			<div ng-if="!$ctrl.groupedVoyages.hasEntity[voyage].hasRequest">
+				<span class="action-btn btn btn-sm btn-default" href="#/new-request/{{voyage}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</span>
+				<span class="action-btn btn btn-sm btn-default" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage)"> <i class="fa fa-pencil"></i> Add to Contract Planning </span>
+			</div>
+		</div>
 	</div>
 
-	<!-- {{rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId}} -->
-
-	</div>
-	<div class="hidden">
-		{{rightClickPopoverData}}
-	</div>
 
 </div>
+
+
 
 <div class="cancelStrategyModal fade bs-modal hide" tabindex="-1" role="dialog" style="transform: translateY(50%);" aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog" role="document">
@@ -65,12 +81,12 @@
 				<h4 class="modal-title" id="gridSystemModalLabel"><i class="fa fa-warning"></i> Warning</h4>
 			</div>
 			<div class="modal-body">
-				<div>Vessel: <b>{{cancelStrategyModalData.vesselName}}</b></div> 
-				<div>Port: <b>{{cancelStrategyModalData.portCode}}</b></div> 
-				<div>ETA: <b>{{cancelStrategyModalData.eta}}</b></div>
+				<div>Vessel: <b>{{$ctrl.cancelStrategyModalData.vesselName}}</b></div> 
+				<div>Port: <b>{{$ctrl.cancelStrategyModalData.portCode}}</b></div> 
+				<div>ETA: <b>{{$ctrl.cancelStrategyModalData.eta}}</b></div>
 				<br>
 				<div>
-					You expect to cancel <b>{{cancelStrategyModalData.fuelType}}</b> strategy to supply <b>{{cancelStrategyModalData.quantity}}</b> <b>{{cancelStrategyModalData.uom}}</b> in this port
+					You expect to cancel <b>{{$ctrl.cancelStrategyModalData.fuelType}}</b> strategy to supply <b>{{$ctrl.cancelStrategyModalData.quantity}}</b> <b>{{$ctrl.cancelStrategyModalData.uom}}</b> in this port
 				</div> 
 				<br>
 				<div>
@@ -82,7 +98,7 @@
 			<div class="modal-footer">
 				<div class="row">
 					<div class="col-sm-6">
-						<button style="display: block; width: 100%" type="button" class="btn orange btn-outline confirmAction" data-dismiss="modal" ng-click="$ctrl.cancelStrategy(cancelStrategyModalData.bunkerPlanId)">Yes</button>
+						<button style="display: block; width: 100%" type="button" class="btn orange btn-outline confirmAction" data-dismiss="modal" ng-click="$ctrl.cancelStrategy($ctrl.cancelStrategyModalData.bunkerPlanId)">Yes</button>
 					</div>
 					<div class="col-sm-6">
 						<button style="display: block; width: 100%" type="button" class="btn  default" data-dismiss="modal">No</button>

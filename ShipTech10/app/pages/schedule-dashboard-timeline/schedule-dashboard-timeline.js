@@ -303,7 +303,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Add voyage
                 hasMultipleStops = false;
                 firstStopToday = _.find(voyages, function(obj){
-                	return obj.start == startDate && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
+                	// return moment(obj.start).isSame(startDate, 'day') && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
+                	return obj.start.split(" ")[0] == startDate.split(" ")[0] && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
                 });
                 if (firstStopToday) {
 	                if (!firstStopToday.hasMultipleStops) {
@@ -942,7 +943,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // object = _.filter(ctrl.voyageData, function(el){
                 //     return el.voyageDetail.id == voyageDetailId;
                 // }); 
-                object = _.uniqBy(object, 'voyageDetail.request.id');
+                // object = _.uniqBy(object, 'voyageDetail.request.id');
 
                 removePopups();
 
@@ -985,34 +986,36 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 } catch (TypeError) {
                     rightClickPopoverData.vsVal.style = '';
                 }
-                if (!hasRequest && hasBunkerPlan) { 
-                    groupedByVoyageDetailId = {};
-                    groupedByVoyageDetailIdVoyageStops = {};
-                    $.each(object, function(k,v){
-                        if (typeof(groupedByVoyageDetailId[v.voyageDetail.id]) == 'undefined') {
-                            groupedByVoyageDetailId[v.voyageDetail.id] = [];
-                        }
-                        var item = angular.copy(ctrl.bunkerDetails[v.voyageDetail.id]);
-                        if (typeof(item) == 'undefined') {
-                            item = v.voyageDetail;
-                        }
-                        groupedByVoyageDetailId[v.voyageDetail.id] = item;
-                        _.uniqBy(groupedByVoyageDetailId[v.voyageDetail.id], 'id');
-                        if ((v.voyageDetail.request == null || v.voyageDetail.request.id == 0) && moment.utc(v.voyageDetail.eta) >= moment()) {
-                            groupedByVoyageDetailIdVoyageStops[v.voyageDetail.id] = v.voyageDetail; 
-                        }
-                    });
-                    rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
-                    rightClickPopoverData.groupedByVoyageDetailIdVoyageStops = groupedByVoyageDetailIdVoyageStops;
-                    $scope.rightClickPopoverData = rightClickPopoverData;
-                } else {
-                    $scope.rightClickPopoverData = null;
-                }
+
+                // groupedByVoyageDetailId = {};
+                // groupedByVoyageDetailIdVoyageStops = {};
+                // $.each(object, function(k,v){
+                //     if (typeof(groupedByVoyageDetailId[v.voyageDetail.id]) == 'undefined') {
+                //         groupedByVoyageDetailId[v.voyageDetail.id] = [];
+                //     }
+                //     var item = angular.copy(ctrl.bunkerDetails[v.voyageDetail.id]);
+                //     if (typeof(item) == 'undefined') {
+                //         item = v.voyageDetail;
+                //     }
+                //     groupedByVoyageDetailId[v.voyageDetail.id] = item;
+                //     _.uniqBy(groupedByVoyageDetailId[v.voyageDetail.id], 'id');
+                //     if ((v.voyageDetail.request == null || v.voyageDetail.request.id == 0) && moment.utc(v.voyageDetail.eta) >= moment()) {
+                //         groupedByVoyageDetailIdVoyageStops[v.voyageDetail.id] = v.voyageDetail; 
+                //     }
+                // });
+                // rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
+                // rightClickPopoverData.groupedByVoyageDetailIdVoyageStops = groupedByVoyageDetailIdVoyageStops;
+                rightClickPopoverData = {};
+                rightClickPopoverData.todayVoyages = object;
+                $scope.rightClickPopoverData = rightClickPopoverData;
                 $scope.$apply();
-                if (!hasBunkerPlan) {
-                    $('schedule-dashboard-timeline').append(html);
-                    $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
-                }
+
+                // if (!hasBunkerPlan) {
+                //     $('schedule-dashboard-timeline').append(html);
+                //     $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
+                // }
+                $('.contextmenu').css("left", "initial");
+                $('.contextmenu').css("right", "initial");
                 if (window.innerWidth / 2 > $(currentElem).offset().left) {
                     $('.contextmenu').css("left", $(currentElem).offset().left);
                 } else {
