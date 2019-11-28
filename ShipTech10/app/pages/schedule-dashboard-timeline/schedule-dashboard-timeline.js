@@ -303,8 +303,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Add voyage
                 hasMultipleStops = false;
                 firstStopToday = _.find(voyages, function(obj){
-                	// return moment(obj.start).isSame(startDate, 'day') && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
-                	return obj.start.split(" ")[0] == startDate.split(" ")[0] && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
+                    // return moment(obj.start).isSame(startDate, 'day') && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
+                    return obj.start.split(" ")[0] == startDate.split(" ")[0] && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
                 });
                 if (firstStopToday) {
 	                if (!firstStopToday.hasMultipleStops) {
@@ -1139,46 +1139,51 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 return el && allStops.indexOf(el.voyageDetail.id) != -1;
             });            
             voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
-
+     
+            voyageStopGroup = _.groupBy(voyageStop, "voyageDetail.request.id" );
             html = "";
-            html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
-            $.each(voyageStop, function(k,v){
-                var voyage = v.voyageDetail;
-                if (voyage.request && voyage.request.id != 0) {
-                    hasRequest = true;
-                    row_requestName = voyage.request.requestName || '-';
-                    row_vesselName = voyage.request.vesselName || '-';
-                    //row_location = voyage.request.requestDetail.location || '-';
-                    row_fuelOilOfRequest = voyage.request.requestDetail.fuelOilOfRequest || '-';
-                    row_uom = voyage.request.requestDetail.uom || '-';
-                    row_fuelMinQuantity = $filter('number')(voyage.request.requestDetail.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
-                    row_fuelMaxQuantity = $filter('number')(voyage.request.requestDetail.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
-                    row_agreementType = voyage.request.requestDetail.agreementType || '-';
-                    row_statusCode = voyage.request.requestDetail.statusCode || '-';
-                    if (voyage.request.requestDetail.fuelOilOfRequest) {
-                        html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+            $.each(voyageStopGroup, function(k1,v1){
+                if (v1.length) {
+                    preHtml = "<p><b>";
+                    preHtml += v1[0].voyageDetail.request.requestDetail.location + " - ";
+                    var eta =  $scope.formatDateUtc(v1[0].voyageDetail.eta);
+                    preHtml += " ETA : " + eta + " - ";
+                    if (v1[0].voyageDetail.etd) {
+                        var etd = $scope.formatDateUtc(v1[0].voyageDetail.etd);
+                        preHtml += " ETD : " + etd;
                     }
+                    if (v1[0].voyageDetail.deliveryFrom && v1[0].voyageDetail.deliveryTo) {
+                        var deliveryFrom = $scope.formatDateUtc(v1[0].voyageDetail.deliveryFrom);
+                        var deliveryTo = $scope.formatDateUtc(v1[0].voyageDetail.deliveryTo);
+                        preHtml += "- Delivery Window : " + deliveryFrom + " - " + deliveryTo;
+                    }               
+                    preHtml += "</b></p>";
+                    html =  html + preHtml;
                 }
+                html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+                $.each(v1, function(k,v) {
+                    var voyage = v.voyageDetail;
+                    if (voyage.request && voyage.request.id != 0) {
+                        hasRequest = true;
+                        row_requestName = voyage.request.requestName || '-';
+                        row_vesselName = voyage.request.vesselName || '-';
+                        //row_location = voyage.request.requestDetail.location || '-';
+                        row_fuelOilOfRequest = voyage.request.requestDetail.fuelOilOfRequest || '-';
+                        row_uom = voyage.request.requestDetail.uom || '-';
+                        row_fuelMinQuantity = $filter('number')(voyage.request.requestDetail.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
+                        row_fuelMaxQuantity = $filter('number')(voyage.request.requestDetail.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
+                        row_agreementType = voyage.request.requestDetail.agreementType || '-';
+                        row_statusCode = voyage.request.requestDetail.statusCode || '-';
+                        if (voyage.request.requestDetail.fuelOilOfRequest) {
+                            html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+                        }
+                    }
+                });
+                html += '</tbody> </table>';
             });
-            html += '</tbody> </table>';
+
             if (voyageStop.length == 0 || !hasRequest) {
                 html = "";
-            } else {
-                preHtml = "<p><b>";
-                preHtml += voyageStop[0].voyageDetail.request.requestDetail.location + " - ";
-                var eta =  $scope.formatDateUtc(voyageStop[0].voyageDetail.eta);
-                preHtml += " ETA : " + eta + " - ";
-                if (voyageStop[0].voyageDetail.etd) {
-                    var etd = $scope.formatDateUtc(voyageStop[0].voyageDetail.etd);
-                    preHtml += " ETD : " + etd;
-                }
-                if (voyageStop[0].voyageDetail.deliveryFrom && voyageStop[0].voyageDetail.deliveryTo) {
-                    var deliveryFrom = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryFrom);
-                    var deliveryTo = $scope.formatDateUtc(voyageStop[0].voyageDetail.deliveryTo);
-                    preHtml += "- Delivery Window : " + deliveryFrom + " - " + deliveryTo;
-                }               
-                preHtml += "</b></p>";
-                html = preHtml + html;              
             }
             return html;
         };
