@@ -42,13 +42,8 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', ['sc
 
             // Hardcodes dates
              // TODO: Remove when ready
-            if (!startDate || !endDate) {
-                startDate = moment('2019-04-23').startOf('day').toISOString();
-                endDate = moment('2019-06-09').endOf('day').toISOString();
-            } else {
-                startDate = moment(startDate).startOf('day').toISOString();
-                endDate = moment(endDate).endOf('day').toISOString();
-            }
+            startDate = moment(startDate).startOf('day').toISOString();
+            endDate = moment(endDate).endOf('day').toISOString();
 
             payload.Start = startDate;
             payload.End = endDate;

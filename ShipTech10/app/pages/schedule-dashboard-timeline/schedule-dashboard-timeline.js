@@ -137,6 +137,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var vesselDetails = data.payload.vesselDetails;
             ctrl.voyageData = angular.copy(vessels);
             // vessels = _.uniqBy(vessels, "voyageDetail.id");
+            groupVoyageId = _.groupBy(vessels, "voyageDetail.id");
+            var arrayHeighestPriority = [];
+            $.each(groupVoyageId, function(k, v) {
+                heighestPriority = _.maxBy(v, "voyageDetail.portStatusPriority");
+                if (heighestPriority) {
+                    arrayHeighestPriority.push(heighestPriority);
+                }
+            })
+
 
             var groups = [];
             var voyages = [];
@@ -153,6 +162,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Create voyage object
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
 
+                var findHeighestPriority = _.find(arrayHeighestPriority, ['voyageDetail.id', vessels[i].voyageDetail.id]);
+                if (findHeighestPriority) {
+                    statusColor = statusColors.getColorCodeFromLabels(findHeighestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
+                } 
                 var voyageContent = '';
                 var voyageContentDotted = '';
                 var initialEtaDotted = '';
