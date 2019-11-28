@@ -396,7 +396,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : angular.copy(moment.utc(ctrl.endDate).endOf("day")),
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': 2.592e+8,
-                'zoomMax': 2177280000,
+                'zoomMax': 2.592e+9,
                 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
