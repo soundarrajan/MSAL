@@ -7,6 +7,9 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 export class QcReportDetailsModel {
   id: number;
   portCallId: string;
+  vesselId: number;
+  vesselName: string;
+  voyageReference: string;
   status: IDisplayLookupDto;
 
   uoms: IDisplayLookupDto[];

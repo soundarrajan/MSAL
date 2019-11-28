@@ -3,7 +3,7 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { IQcSurveyHistoryListItemDto } from '../dto/qc-survey-history-list-item.dto';
 
 export interface IGetQcSurveyHistoryListRequest extends IBaseQuantityControlRequest {
-  vesselId: string;
+  id: number;
   pageFilters: IServerGridInfo;
 }
 

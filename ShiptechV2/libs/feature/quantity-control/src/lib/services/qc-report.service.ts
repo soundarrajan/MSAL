@@ -93,9 +93,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getSurveyHistoryList(portCallId: string, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
+  getSurveyHistoryList(vesselId: number, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
     return this.apiDispatch(
-      () => this.api.getSurveyHistoryList({ vesselId: portCallId, pageFilters: gridRequest }),
+      () => this.api.getSurveyHistoryList({ id: vesselId, pageFilters: gridRequest }),
       new LoadReportSurveyHistoryAction(gridRequest),
       response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
       LoadReportSurveyHistoryFailedAction,
@@ -120,12 +120,16 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getSoundingReportList(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
-    return this.api.getSoundingReportList({ ...gridRequest, portCallId: this.reportDetailsState.id });
+    return this.api.getSoundingReportList({
+      id: this.reportDetailsState.vesselId,
+      reference: this.reportDetailsState.voyageReference,
+      pageFilters: gridRequest
+    });
   }
 
   @ObservableException()
   getSoundingReportListItemDetails(soundingReportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
-    return this.api.getSoundingReportDetails({ ...gridRequest, soundingReportId });
+    return this.api.getSoundingReportDetails({ ...gridRequest, id: soundingReportId });
   }
 
   @ObservableException()

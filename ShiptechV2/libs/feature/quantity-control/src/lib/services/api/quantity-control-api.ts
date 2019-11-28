@@ -51,6 +51,8 @@ export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
   export const getReportsList = () => `api/quantityControlReport/list`;
   export const getReportDetails = () => `api/quantityControlReport/details`;
+  export const getSoundingReportList = () => `api/soundingReport/list`;
+  export const getSoundingReportDetails= () => `api/soundingReport/details`;
   export const getSurveyHistoryList = () => `api/quantityControlReport/history`;
   export const verifySludge = () => `api/quantityControlReport/verifySludge`;
   export const verify = () => `api/quantityControlReport/verify`;
@@ -113,12 +115,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
-    return throwError('Not implemented');
+    return this.http.post<IGetSoundingReportListResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, { payload: request })
   }
 
   @ObservableException()
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
-    return throwError('Not implemented');
+    return this.http.post<IGetSoundingReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, { payload: request })
   }
 
   @ObservableException()
