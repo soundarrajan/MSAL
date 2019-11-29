@@ -70,7 +70,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
-    return this.http.post<IQcReportsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: { pageFilters: request } })
+    return this.http.post<IQcReportsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request})
       .pipe(map(r => {
         const items = r || [];
         const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
