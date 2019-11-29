@@ -67,13 +67,16 @@ angular.module('shiptech.components')
 						if (value == value2.voyageDetail.id) {
 							if (value2.voyageDetail.request) {
 								if (value2.voyageDetail.request.id) {
-									if (!value2.voyageDetail.request.requestDetail.orderId || typeof(value2.voyageDetail.request.requestDetail.orderId) == "undefined" ) {
+									if (!value2.voyageDetail.request.requestDetail.orderId || typeof(value2.voyageDetail.request.requestDetail.orderId) == "undefined") {
 										groupedVoyagesAllRequestProductsAreStemmed[value] = false;
 									}
 								}
 							}							
 						}
 					});										
+					if (!hasEntity[value].hasOrder) {
+						groupedVoyagesAllRequestProductsAreStemmed[value] = false;
+					}
 				});
 
 				_.forEach(groupedVoyagesBunker, function(value, key) {
