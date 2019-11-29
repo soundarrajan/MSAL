@@ -4869,3 +4869,7 @@ table.energyCalculationBlade tr.border-green-jungle{
 #orderVerificationReq {
     width: 96.9%;
 }
+
+.vis-timeline .earliestEtaDashed .expand-voyages {
+	display: none;
+}

@@ -245,6 +245,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         content: voyageContentDotted,
                         start: initialEtaDotted,
                         end: startDate,
+                        className: 'earliestEtaDashed',
                         style: 'border-width: 1.8px; border-style: dashed; pointer-events:none; border-right-style: none; box-shadow: none; border-color: #97b0f8; '
                     };
                     numberVessels += 1;
@@ -391,14 +392,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'margin': {'axis':0,'item':{'horizontal':0,'vertical':1}},
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
-                'orientation': 'top',
+                'orientation': 'both',
                 'start': ctrl.lastStartDate ? ctrl.lastStartDate : angular.copy(moment.utc(ctrl.startDate).startOf("day")),
                 'min': angular.copy(moment(ctrl.startDate).format("YYYY-MM-DD")),
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : angular.copy(moment.utc(ctrl.endDate).endOf("day")),
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': 2.592e+8,
                 'zoomMax': 2.592e+9,
-                'preferZoom': true,
+                // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
                     var serviceName = group.serviceName;
@@ -510,6 +511,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var setLayoutAfterTimelineLoad = function() {
             // Add group columns header
             $('#vis-custom-group-columns').remove();
+            $('.vis-panel.vis-bottom').remove();
+            timeline._setScrollTop(0);
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
                 groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> Vessel </span>';
@@ -1299,17 +1302,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         			$(".vis-item").removeClass("vis-selected");
         		}	
         	})
-			$(window).bind('mousewheel DOMMouseScroll', function(event){
-				if ($(event.target).hasClass("vis-group")) {
-				    var currentScrollTop = timeline._getScrollTop();
-				    if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
-				        timeline._setScrollTop(currentScrollTop + 100)
-				    }
-				    else {
-				        timeline._setScrollTop(currentScrollTop - 100)
-				    }
-				}
-			});
+			// $(window).bind('mousewheel DOMMouseScroll', function(event){
+			// 	if ($(event.target).hasClass("vis-group")) {
+			// 	    var currentScrollTop = timeline._getScrollTop();
+			// 	    if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+			// 	        timeline._setScrollTop(currentScrollTop + 100);
+			// 	    }
+			// 	    else {
+			// 	        timeline._setScrollTop(currentScrollTop - 100);
+			// 	    }
+			// 	}
+			// });
         })
 
 

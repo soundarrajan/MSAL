@@ -22,7 +22,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan">
+					<tr ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan; !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
 						<td>
 							{{voyage}}
 						</td>
@@ -33,7 +33,7 @@
 							</span>
 						</td>
 					</tr>
-					<tr ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequest[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest">
+					<tr ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequest[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest; !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
 						<td>
 							<a href="/#/edit-request/{{key2}}" target="_blank">
 								REQ{{key2}}

@@ -29,6 +29,7 @@ angular.module('shiptech.components')
 		    	groupedVoyagesBunker = angular.copy(groupedVoyages);
 		    	groupedVoyagesRequest = angular.copy(groupedVoyages);
 		    	groupedVoyagesOrder = angular.copy(groupedVoyages);
+		    	groupedVoyagesAllRequestProductsAreStemmed = [];
 		    	allProductTypes = {};
 
 		    	uniqueVoyages = [];
@@ -58,6 +59,22 @@ angular.module('shiptech.components')
 			    		}
 			    	})
 		    	})
+
+
+				$.each(uniqueVoyages, function(key, value) {
+					groupedVoyagesAllRequestProductsAreStemmed[value] = true;
+					$.each(voyages, function(key2, value2) {
+						if (value == value2.voyageDetail.id) {
+							if (value2.voyageDetail.request) {
+								if (value2.voyageDetail.request.id) {
+									if (!value2.voyageDetail.request.requestDetail.orderId || typeof(value2.voyageDetail.request.requestDetail.orderId) == "undefined" ) {
+										groupedVoyagesAllRequestProductsAreStemmed[value] = false;
+									}
+								}
+							}							
+						}
+					});										
+				});
 
 				_.forEach(groupedVoyagesBunker, function(value, key) {
 					groupedVoyagesBunker[key] = _.groupBy(groupedVoyagesBunker[key], function(item) {
@@ -142,6 +159,7 @@ angular.module('shiptech.components')
 				ctrl.groupedVoyages = {
 					'hasEntity' : hasEntity,
 					'allProductTypes' : allProductTypes,
+					'groupedVoyagesAllRequestProductsAreStemmed' : groupedVoyagesAllRequestProductsAreStemmed,
 					'groupedVoyagesBunker' : groupedVoyagesBunker,
 					'groupedVoyagesRequest' : groupedVoyagesRequest,
 					'groupedVoyagesOrder' : groupedVoyagesOrder,
