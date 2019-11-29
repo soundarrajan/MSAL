@@ -1126,8 +1126,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         });
 
         var buildHoverPopoverMarkup = function(voyageDetailId) {
-            var hasRequest = false;
-
+            var hasNoRequest = false;
             allStops = [parseFloat(voyageDetailId)];
             $.each(ctrl.voyages, function(k,v){
             	if (v.voyageId == voyageDetailId) {
@@ -1146,7 +1145,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             voyageStopGroup = _.groupBy(voyageStop, "voyageDetail.request.id" );
             html = "";
             $.each(voyageStopGroup, function(k1,v1){
-                if (v1.length) {
+                var hasRequest = false;
+                $.each(v1, function(k,v) {
+                    var voyage = v.voyageDetail;
+                    if (voyage.request && voyage.request.id != 0) {
+                        hasRequest = true;
+                    }
+                });
+                if (hasRequest) {
                     preHtml = "<p><b>";
                     preHtml += v1[0].voyageDetail.request.requestDetail.location + " - ";
                     var eta =  $scope.formatDateUtc(v1[0].voyageDetail.eta);
@@ -1162,12 +1168,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }               
                     preHtml += "</b></p>";
                     html =  html + preHtml;
+                    html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+
                 }
-                html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
                 $.each(v1, function(k,v) {
                     var voyage = v.voyageDetail;
                     if (voyage.request && voyage.request.id != 0) {
-                        hasRequest = true;
+                        hasNoRequest = true;
                         row_requestName = voyage.request.requestName || '-';
                         row_vesselName = voyage.request.vesselName || '-';
                         //row_location = voyage.request.requestDetail.location || '-';
@@ -1185,7 +1192,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 html += '</tbody> </table>';
             });
 
-            if (voyageStop.length == 0 || !hasRequest) {
+            if (voyageStop.length == 0 || !hasNoRequest) {
                 html = "";
             }
             return html;
