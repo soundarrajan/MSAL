@@ -1140,9 +1140,9 @@ window.increment = 0;
                                             					rowID = rowObject.voyageDetail.request.id;
                                                                 if (Elements.settings[table_id].source.table_name == "Table Schedule Dashboard") {
                                                                     if (rowID != 0) {
-                                                                        return '<a style="margin-left: 5px;" href="/#/edit-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
+                                                                        return '<a  href="/#/edit-request/' + rowID + '"><span style="display: block; margin-left: 7px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
                                                                     } else  {
-                                                                        return '<a disabled="true" style="display: block; height: 35px; width: 30px; margin-left: 5px;" href="/#/edit-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>'
+                                                                        return '<a disabled="true" style="display: block; height: 35px; width: 30px;" href="/#/edit-request/' + rowID + '"><span style="position: relative; display: block; margin-left: 7px !important; top: 6px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>'
                                                                     }
                                                                 } else {
                                                                     return '<a href="/#/edit-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
