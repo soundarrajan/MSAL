@@ -4243,7 +4243,7 @@ Uncomment to see border around all .col-*
 
 
 a[disabled]{
-    background-color: #eee !important;
+    background-color: #faf8f8 !important;
     pointer-events: none;
     cursor: not-allowed;
 }

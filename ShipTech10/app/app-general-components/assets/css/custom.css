@@ -495,6 +495,10 @@ th#master_list_table_cb .cbox, th#master_list_table_cb .s-ico {
     padding-left: 10px;
 }
 
+.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td:nth-child(2) {
+    padding: 0px;
+}
+
 .ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td[aria-describedby*="_cb"] {
     /*padding-left: 0px;*/
     margin: 0 -2px;
