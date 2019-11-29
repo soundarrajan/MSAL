@@ -229,6 +229,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                     ctrl.vesselDetailsFields = normalizeArrayToHash(ctrl.ui.vesselDetails.fields, "name");
                     ctrl.productInfoFields = normalizeArrayToHash(ctrl.ui.Locations.fields, "name");
                     ctrl.productInfoColumns = normalizeArrayToHash(ctrl.ui.Locations.columns, "name");
+                    $.each(ctrl.productInfoColumns, function(k, v) {
+                        if (v.name == "ProductType") {
+                            if (ctrl.requestTenantSettings.productTypeInRequest.id == 2) {
+                                 delete ctrl.productInfoColumns[k];                           
+                            }
+                        }
+                    })
+                    ctrl.ui.Locations.columns  = ctrl.productInfoColumns;
                     ctrl.footerSectionFields = normalizeArrayToHash(ctrl.ui.FooterSection.fields, "name");
                         $timeout(function() {
                             ctrl.agentCounterpartyTypeId = [IDS.AGENT_COUNTERPARTY_ID];
