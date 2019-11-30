@@ -148,7 +148,8 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   vesselNameCol: TypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.vesselName,
     colId: QcSoundingReportListColumns.vesselName,
-    field: model('vesselName')
+    field: model('vesselName'),
+    cellRenderer: 'agGroupCellRenderer'
   };
 
   vesselCodeCol: TypedColDef<IQcSoundingReportItemDto, string> = {
