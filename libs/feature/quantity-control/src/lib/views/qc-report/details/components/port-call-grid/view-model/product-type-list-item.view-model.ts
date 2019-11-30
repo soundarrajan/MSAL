@@ -15,6 +15,7 @@ export class ProductTypeListItemViewModelBuilder {
 }
 
 export class ProductTypeListItemViewModel {
+  id: number;
   productType: IDisplayLookupDto;
   robBeforeDeliveryLogBookROB: number;
   robBeforeDeliveryMeasuredROB: number;
@@ -25,6 +26,7 @@ export class ProductTypeListItemViewModel {
 
 
   constructor(itemState: QcProductTypeListItemStateModel, numberFormat: INumberFormat) {
+    this.id = itemState.id;
     this.productType = itemState.productType;
 
     this.robBeforeDeliveryLogBookROB = truncateDecimals(itemState.robBeforeDeliveryLogBookROB?.toNumber(), numberFormat.maxFractionDigits);

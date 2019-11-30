@@ -45,7 +45,7 @@ import {
   IQcMarkSludgeVerificationResponse
 } from './request-response/qc-mark-sludge-verification.request-response';
 import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
-import { IBaseQuantityControlResponse } from './request-response/request-response.quantity-control.model';
+import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from './dto/qc-report-sounding.dto';
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -112,15 +112,22 @@ export class QuantityControlApi implements IQuantityControlApiService {
     return throwError('Not implemented');
   }
 
-
   @ObservableException()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
-    return this.http.post<IGetSoundingReportListResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, { payload: request })
+    return this.http.post<IQcSoundingReportItemDto[]>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, { payload: request })
+      .pipe(map(r => ({
+        items: r || [],
+        totalItems: (r || []).length
+      })));
   }
 
   @ObservableException()
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
-    return this.http.post<IGetSoundingReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, { payload: request })
+    return this.http.post<IQcSoundingReportDetailsItemDto[]>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, { payload: request })
+      .pipe(map(r => ({
+        items: r || [],
+        totalItems: (r || []).length
+      })));
   }
 
   @ObservableException()

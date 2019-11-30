@@ -1,4 +1,4 @@
-import { ColDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import {
   BaseColDefParams,
   BaseWithValueColDefParams,
@@ -8,6 +8,7 @@ import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
 import { Column } from 'ag-grid-community/dist/lib/entities/column';
 import { GridApi } from 'ag-grid-community/dist/lib/gridApi';
 import { ColumnApi } from 'ag-grid-community/dist/lib/columnController/columnApi';
+import { ComponentSelectorResult } from 'ag-grid-community/dist/lib/components/framework/userComponentFactory';
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -34,12 +35,23 @@ export interface TypedValueGetterParams<T> extends ValueGetterParams {
   value: T;
 }
 
-export interface TypedColDef<TData = any, TField = any> extends ColDef {
+export interface TypedCellRendererParams<TData, TField> extends Omit<ICellRendererParams, 'data' | 'value'>  {
+  data: TData;
+  value: TField;
+}
+
+export interface TypedColDef<TData = any, TField = any> extends Omit<ColDef, 'field'> {
   valueFormatter?: (params: TypedValueFormatterParams<TField>) => string;
   valueGetter?: ((params: TypedBaseColDefParams<TData>) => any) | string
   cellClassRules?: {
     [cssClassName: string]: (((params: { data: TData, value: TField }) => boolean) | string);
   };
+  field?: keyof TData,
+  cellRendererSelector?: (params: TypedCellRendererParams<TData, TField>) => ComponentSelectorResult;
+}
+
+export interface TypedColGroupDef extends Omit<ColGroupDef, 'children'>{
+  children: (TypedColGroupDef | TypedColDef)[];
 }
 
 export function getColDef<T = any>(colDef: TypedCellRendererColDef<T>): TypedCellRendererColDef<T> {

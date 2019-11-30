@@ -10,7 +10,7 @@ export function getMockQcEventsLogItem(id: number): QcEventLogListItemDto {
   return {
     id: faker.random.number(),
     eventDetails: faker.lorem.lines(faker.random.number({ min: 1, max: 3 })),
-    created: faker.date.recent().toString(),
+    created: faker.date.recent().toISOString(),
     createdBy: faker.internet.email()
   };
 }

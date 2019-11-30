@@ -1,6 +1,6 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
+import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import {
   BooleanFilterParams,
   RowModelType,
@@ -25,7 +25,7 @@ import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import moment from 'moment';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
-function model(prop: keyof IQcReportsListItemDto): string {
+function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
 }
 
@@ -152,7 +152,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  measuredRobBeforeDeliveryCol: ColDef = {
+  measuredRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
@@ -326,7 +326,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
-  getColumnsDefs(): ColDef[] {
+  getColumnsDefs(): TypedColDef[] {
     return [
       this.selectCol,
       this.portCallId,

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
-import { ColDef, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
+import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import {
   BooleanFilterParams,
   RowModelType,
@@ -28,14 +28,14 @@ import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/
 import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
 import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
 
-function model(prop: keyof IQcSurveyHistoryListItemDto): string {
+function model(prop: keyof IQcSurveyHistoryListItemDto): keyof IQcSurveyHistoryListItemDto {
   return prop;
 }
 
 @Injectable()
 export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
-  private dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
-  private quantityPrecision = 3;
+  private readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
+  private readonly quantityPrecision: number = 3;
 
 
   private defaultColFilterParams = {
@@ -49,6 +49,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerHeight: 40,
     rowHeight: 35,
 
+    domLayout: 'autoHeight',
     rowModelType: RowModelType.ServerSide,
     pagination: true,
     animateRows: true,
@@ -132,7 +133,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  measuredRobBeforeDeliveryCol: ColDef = {
+  measuredRobBeforeDeliveryCol: TypedColDef<IQcSurveyHistoryListItemDto, number> = {
     headerName: QcSurveyHistoryListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
@@ -306,7 +307,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
-  getColumnsDefs(): ColDef[] {
+  getColumnsDefs(): TypedColDef[] {
     return [
       this.portCallId,
       this.portNameCol,

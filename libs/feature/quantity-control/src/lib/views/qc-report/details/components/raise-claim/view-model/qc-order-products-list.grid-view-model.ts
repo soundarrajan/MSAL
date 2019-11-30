@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
-import { ColDef, GridOptions } from 'ag-grid-community';
-import { RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { GridOptions } from 'ag-grid-community';
+import { RowSelection, TypedColDef, TypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QcOrderProductsListColumns, QcOrderProductsListColumnsLabels } from './qc-order-products-list.columns';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { Store } from '@ngxs/store';
@@ -12,7 +12,7 @@ import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { IQcOrderProductsListItemDto } from '../../../../../../services/api/dto/qc-order-products-list-item.dto';
 
 
-function model(prop: keyof IQcOrderProductsListItemDto): string {
+function model(prop: keyof IQcOrderProductsListItemDto): keyof IQcOrderProductsListItemDto {
   return prop;
 }
 
@@ -32,38 +32,33 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  orderNoCol: ColDef = {
+  orderNoCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
     colId: QcOrderProductsListColumns.orderNo,
     headerName: QcOrderProductsListColumnsLabels.orderNo,
     field: model('orderNo'),
-    hide: false,
     headerCheckboxSelection: false,
     headerCheckboxSelectionFilteredOnly: true,
     checkboxSelection: true
   };
-  counterpartyCol: ColDef = {
+  counterpartyCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
     colId: QcOrderProductsListColumns.counterpartyName,
     headerName: QcOrderProductsListColumnsLabels.counterpartyName,
-    field: model('counterpartyName'),
-    hide: false
+    field: model('counterpartyName')
   };
-  productCol: ColDef = {
+  productCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
     colId: QcOrderProductsListColumns.productName,
     headerName: QcOrderProductsListColumnsLabels.productName,
-    field: model('productName'),
-    hide: false
+    field: model('productName')
   };
-  confirmedQuantityCol: ColDef = {
+  confirmedQuantityCol: TypedColDef<IQcOrderProductsListItemDto, number> = {
     colId: QcOrderProductsListColumns.confirmedQuantity,
     headerName: QcOrderProductsListColumnsLabels.confirmedQuantity,
-    field: model('confirmedQuantity'),
-    hide: false
+    field: model('confirmedQuantity')
   };
-  uomCol: ColDef = {
+  uomCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
     colId: QcOrderProductsListColumns.uomName,
     headerName: QcOrderProductsListColumnsLabels.uomName,
-    field: model('uomName'),
-    hide: false
+    field: model('uomName')
   };
 
   constructor(
@@ -82,7 +77,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
         tap(() => this.gridApi.showLoadingOverlay()),
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
         switchMap(() => this.reportService.getOrderProductsList()),
-        catchError(error => {
+        catchError(() => {
           this.gridApi.hideOverlay();
           return EMPTY$;
         }),
@@ -98,7 +93,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
       ).subscribe();
   }
 
-  getColumnsDefs(): ColDef[] {
+  getColumnsDefs(): (TypedColDef | TypedColGroupDef)[] {
     return [this.orderNoCol, this.counterpartyCol, this.productCol, this.confirmedQuantityCol, this.uomCol];
   }
 }

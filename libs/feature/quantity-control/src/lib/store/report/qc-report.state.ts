@@ -36,7 +36,6 @@ import {
   QcUpdateEventLogAction
 } from './details/actions/qc-events-log.action';
 import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
-import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import {
   QcSaveReportDetailsAction,
   QcSaveReportDetailsFailedAction,
@@ -95,12 +94,20 @@ export class QcReportState {
     return true;
   }
 
-  @Selector([
-    (state: IAppState) => state.quantityControl.report.details.eventsLog.itemsById,
-    (state: IAppState) => state.quantityControl.report.details.eventsLog.items
-  ])
+
+  @Selector()
+  static eventLogsItemsById(state: IQcReportState): Record<number, IQcEventsLogItemState> {
+    return state.details?.eventsLog?.itemsById;
+  }
+
+  @Selector()
+  static eventLogsItemIds(state: IQcReportState): number[] {
+    return state.details?.eventsLog?.items;
+  }
+
+  @Selector([QcReportState.eventLogsItemsById, QcReportState.eventLogsItemIds])
   static eventLogsItems(itemsById: Record<number, IQcEventsLogItemState>, items: number[]): IQcEventsLogItemState[] {
-    return (items || []).map(i => (itemsById || {})[i]);
+    return (items || []).map(i => itemsById?.[i]);
   }
 
   static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemStateModel {
@@ -389,7 +396,7 @@ export class QcReportState {
         hasChanges: true,
         eventsLog: {
           ...state.details.eventsLog,
-          items: [...state.details.eventsLog.items, newEventLogId],
+          items: [...(state.details.eventsLog.items || []), newEventLogId],
           itemsById: {
             ...state.details.eventsLog.itemsById,
             [newEventLogId]: new QcEventsLogItemStateModel({
