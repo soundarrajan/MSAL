@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig, DynamicDialogRef, MessageService } from 'primeng/api';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/api';
 import { QcOrderProductsListGridViewModel } from './view-model/qc-order-products-list.grid-view-model';
-import { QcOrderProductsListViewModel } from './view-model/qc-order-products-list.view-model';
 import { IQcOrderProductsListItemDto } from '../../../../../services/api/dto/qc-order-products-list-item.dto';
 import { QcReportService } from '../../../../../services/qc-report.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,13 +9,13 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'shiptech-raise-claim',
   templateUrl: './raise-claim.component.html',
   styleUrls: ['./raise-claim.component.css'],
-  providers: [QcOrderProductsListGridViewModel, QcOrderProductsListViewModel, MessageService]
+  providers: [QcOrderProductsListGridViewModel]
 })
 export class RaiseClaimComponent implements OnInit {
 
   constructor(public dialogRef: DynamicDialogRef,
               public config: DynamicDialogConfig,
-              public viewModel: QcOrderProductsListViewModel,
+              public gridViewModel: QcOrderProductsListGridViewModel,
               private reportDetails: QcReportService,
               private toastr: ToastrService) {
   }
@@ -25,7 +24,7 @@ export class RaiseClaimComponent implements OnInit {
   }
 
   raiseClaim(): void {
-    const gridApi = this.viewModel.gridViewModel.gridOptions.api;
+    const gridApi = this.gridViewModel.gridOptions.api;
     const selectedNodes = gridApi.getSelectedNodes() || [];
 
     const orderProducts = selectedNodes.map(n => (<IQcOrderProductsListItemDto>n.data));

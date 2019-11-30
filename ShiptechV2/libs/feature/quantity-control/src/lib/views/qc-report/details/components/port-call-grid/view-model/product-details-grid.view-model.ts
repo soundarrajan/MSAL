@@ -2,7 +2,12 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColDef, ColGroupDef, GridOptions } from 'ag-grid-community';
-import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  RowModelType,
+  RowSelection,
+  TypedColDef,
+  TypedColGroupDef
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   ProductDetailsColGroupsEnum,
   ProductDetailsColGroupsLabels,
@@ -27,7 +32,7 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
-function model(prop: keyof ProductTypeListItemViewModel): string {
+function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel{
   return prop;
 }
 
@@ -50,7 +55,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     rowDragManaged: true,
     suppressRowClickSelection: true,
     multiSortKey: 'ctrl',
-    getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
+    getRowNodeId: (data: ProductTypeListItemViewModel) => data?.id?.toString(),
     enableBrowserTooltips: true,
     singleClickEdit: true,
     defaultColDef: {
@@ -202,7 +207,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     this.initOptions(this.gridOptions);
 
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
     this.robUomBeforeDelivery$ = this.selectReportDetails(state => state.robBeforeDeliveryUom);
@@ -219,7 +223,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 
-  getColumnsDefs(): ColDef[] {
+  getColumnsDefs(): TypedColDef[] {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 

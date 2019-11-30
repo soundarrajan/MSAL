@@ -9,6 +9,7 @@ import { defaultComparer } from './ag-grid.comparators';
 import { AgGridEventsEnum } from './ag-grid.events';
 import { AppError } from '../../../error-handling/app-error';
 import { nameof } from '@shiptech/core/utils/type-definitions';
+import { TypedColDef, TypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 
 export const PageSizeOptions = [25, 50, 75, 100];
 export const DefaultPageSize = 25;
@@ -175,7 +176,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
     };
   }
 
-  public getColumnsDefs(): ColDef[] {
+  public getColumnsDefs(): (TypedColDef | TypedColGroupDef)[] {
     // Note: To be overridden in derived class
     throw Error(`${nameof<BaseGridViewModel>('getColumnsDefs')} was not overridden in derived class`);
   }
@@ -228,7 +229,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
     this.gridApi = this.gridOptions.api;
     this.gridColumnApi = this.gridOptions.columnApi;
 
-    this.gridApi.setColumnDefs(this.getColumnsDefs());
+    this.gridApi.setColumnDefs(<ColDef[]>this.getColumnsDefs());
     this._isReady = true;
 
     // Note: It's important to set pagination before setting the datasource otherwise multiple call to the dataSource will be made

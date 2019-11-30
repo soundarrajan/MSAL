@@ -1,11 +1,11 @@
 export interface IQcSoundingReportItemDto {
-  soundingReportId: number;
+  id: number;
   vesselName: string;
   vesselCode: string;
-  imoNo: number;
+  imoNo: string;
   reportId: number;
   voyageReference: string;
-  soundedOn: string;
+  soundedOn: Date | string;
   soundingReason: string;
   computedRobHsfo: number;
   measuredRobHsfo: number;
@@ -19,15 +19,15 @@ export interface IQcSoundingReportItemDto {
 }
 
 export interface IQcSoundingReportDetailsItemDto {
-  reportId: number;
+  id: number;
   tankId: number;
   tankName: string;
-  fuelDescription: string;
+  fuelDescriptor: string;
   fuelVolume: number;
   tankCapacity: number;
-  fuelTemp: number;
+  fuelTemperature: number;
   tankUnpumpableVolume: number;
   fuelMass: number;
+  measuredVesselReportId: number;
 }
-
 

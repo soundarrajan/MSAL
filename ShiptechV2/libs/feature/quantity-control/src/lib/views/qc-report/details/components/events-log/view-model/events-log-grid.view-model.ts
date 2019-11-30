@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable, OnDestroy } from '@angular/core';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { GridOptions } from 'ag-grid-community';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { Store } from '@ngxs/store';
@@ -10,17 +10,22 @@ import { IQcEventsLogItemState } from '../../../../../../store/report/details/qc
 import { QcReportState } from '../../../../../../store/report/qc-report.state';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { nameof } from '@shiptech/core/utils/type-definitions';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, first, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { QcReportService } from '../../../../../../services/qc-report.service';
+import { TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
+import moment from 'moment';
+import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
-function model(prop: keyof IQcEventsLogItemState): string {
+function model(prop: keyof IQcEventsLogItemState): keyof IQcEventsLogItemState {
   return prop;
 }
 
-const a = AgCellTemplateComponent.name.toString();
-
 @Injectable()
 export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestroy {
+
+  private readonly dateFormat: string;
 
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
@@ -46,7 +51,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     }
   };
 
-  actionsColumn: ColDef = {
+  actionsColumn: TypedColDef<IQcEventsLogItemState> = {
     colId: EventsLogColumns.Actions,
     width: 50,
     hide: false,
@@ -55,29 +60,30 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressColumnsToolPanel: true,
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
-    cellRendererSelector: params => (<IQcEventsLogItemState>params.data).isNew ? { component: nameof(AgCellTemplateComponent) } : null
+    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
   };
 
-  eventDetailsCol: ColDef = {
+  eventDetailsCol: TypedColDef<IQcEventsLogItemState, string> = {
     headerName: EventsLogColumnsLabels.EventDetails,
     colId: EventsLogColumns.EventDetails,
     field: model('eventDetails'),
     width: 800,
     autoHeight: true,
-    cellRendererSelector: params => (<IQcEventsLogItemState>params.data).isNew ? { component: nameof(AgCellTemplateComponent) } : null
+    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
   };
 
-  createdByCol: ColDef = {
+  createdByCol: TypedColDef<IQcEventsLogItemState, string> = {
     headerName: EventsLogColumnsLabels.CreatedBy,
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
     width: 400
   };
 
-  createdCol: ColDef = {
+  createdCol: TypedColDef<IQcEventsLogItemState, Date | string> = {
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
     field: model('created'),
+    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
     width: 400
   };
 
@@ -86,20 +92,40 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     store: Store,
+    tenantSettings: TenantSettingsService,
     private detailsService: QcReportService
   ) {
     super('quantity-control-events-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(EventsLogGridViewModel.name));
     this.initOptions(this.gridOptions);
 
-    this.gridReady$.pipe(
-      switchMap(() => this.detailsService.loadEventsLog()),
-      switchMap(() => store.select(QcReportState.eventLogsItems)),
-      tap(eventLogsItems => this.gridApi.setRowData(eventLogsItems)),
-      takeUntil(this.destroy$)
-    ).subscribe();
+
+    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+    this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
+
+    this.gridReady$
+      .pipe(
+        first(),
+        tap(() => this.gridApi.showLoadingOverlay()),
+        switchMap(() => this.detailsService.loadEventsLog()),
+        // Note: No need for pagination or server-side filtering, everything is loaded in memory.
+        switchMap(() => store.select(QcReportState.eventLogsItems)),
+        catchError(() => {
+          this.gridApi.hideOverlay();
+          return EMPTY$;
+        }),
+        tap(items => {
+          if (!items || !items.length) {
+            this.gridApi.showNoRowsOverlay();
+          } else {
+            this.gridApi.setRowData(items);
+            this.gridApi.hideOverlay();
+          }
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe();
   }
 
-  getColumnsDefs(): ColDef[] {
+  getColumnsDefs(): TypedColDef[] {
     return [this.actionsColumn, this.eventDetailsCol, this.createdByCol, this.createdCol];
   }
 }

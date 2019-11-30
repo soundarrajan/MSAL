@@ -3,7 +3,7 @@ import { ProductDetailsGridViewModel } from './product-details-grid.view-model';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ProductTypeListItemViewModel, ProductTypeListItemViewModelBuilder } from './product-type-list-item.view-model';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Column } from 'ag-grid-community';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { Omit } from '@shiptech/core/utils/type-definitions';
@@ -11,10 +11,10 @@ import { QcProductTypeListItemStateModel } from '../../../../../../store/report/
 import _ from 'lodash';
 import { LOOKUPS_API_SERVICE } from '@shiptech/core/services/lookups-api/lookups-api.service';
 import { ILookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service.interface';
-import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productType'>;
 
@@ -29,17 +29,24 @@ export class ProductDetailsViewModel {
   private minFractionDigits: number = 3;
   private maxFractionDigits: number = 5;
   public numberDisplayFormat: string = `${this.minIntegerDigits}.${this.minFractionDigits}-${this.maxFractionDigits}`;
+  private quantityPrecision: number = 3;
 
   constructor(
     public gridViewModel: ProductDetailsGridViewModel,
     private store: Store,
     private detailsService: QcReportService,
     private viewModelBuilder: ProductTypeListItemViewModelBuilder,
+    private tenantSettings: TenantSettingsService,
     @Inject(LOOKUPS_API_SERVICE) private lookupsApi: ILookupsApiService
   ) {
     this.productTypes$ = this.selectReportDetails(state => state.productTypesById).pipe(
       map(productTypes => _.values(productTypes).map(productType => viewModelBuilder.build(productType)))
     );
+
+
+    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
+
 
     this.uoms$ = this.selectReportDetails(state => state.uoms);
   }
@@ -50,7 +57,7 @@ export class ProductDetailsViewModel {
 
   getNumberMaskFormat(options: { integerDigits?: number, fractionDigits?: number, delimiter?: string } = {
     integerDigits: 3,
-    fractionDigits: 5,
+    fractionDigits: this.quantityPrecision,
     delimiter: '.'
   }): string {
     return '9'.repeat(options.integerDigits) + options.delimiter + '9'.repeat(options.fractionDigits);
