@@ -27,7 +27,7 @@ export interface TypedValueFormatterParams<T> extends BaseWithValueColDefParams 
   value: T;
 }
 
-export interface TypedBaseColDefParams<TData>  extends BaseColDefParams {
+export interface TypedBaseColDefParams<TData = any>  extends BaseColDefParams {
   data: TData;
 }
 

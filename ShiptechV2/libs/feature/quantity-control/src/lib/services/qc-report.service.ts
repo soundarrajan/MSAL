@@ -198,7 +198,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     );
   }
 
-  addEventLog(eventDetails?: string): void {
+  addEventLog(): void {
     this.addEventLog$().subscribe();
   }
 
@@ -251,13 +251,13 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
           details: _.values(reportDetailsState.productTypesById).map(s => ({
             id: s.id,
             productTypeId: s.productType.id,
-            logBookRobQtyBeforeDelivery: s.robBeforeDeliveryLogBookROB?.toNumber(),
-            measuredRobQtyBeforeDelivery: s.robBeforeDeliveryMeasuredROB?.toNumber(),
+            logBookRobQtyBeforeDelivery: s.robBeforeDeliveryLogBookROB,
+            measuredRobQtyBeforeDelivery: s.robBeforeDeliveryMeasuredROB,
             beforeDeliveryQtyUomId: reportDetailsState.robBeforeDeliveryUom.id,
-            measuredRobDeliveredQty: s.measuredDeliveredQty?.toNumber(),
+            measuredRobDeliveredQty: s.measuredDeliveredQty,
             deliveredQtyUomId: reportDetailsState.deliveredQtyUom.id,
-            logBookRobQtyAfterDelivery: s.robAfterDeliveryLogBookROB?.toNumber(),
-            measuredRobQtyAfterDelivery: s.robAfterDeliveryMeasuredROB?.toNumber(),
+            logBookRobQtyAfterDelivery: s.robAfterDeliveryLogBookROB,
+            measuredRobQtyAfterDelivery: s.robAfterDeliveryMeasuredROB,
             afterDeliveryQtyUomId: reportDetailsState.robAfterDeliveryUom.id
           })),
           notes: [
@@ -273,7 +273,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
         });
       },
       new QcSaveReportDetailsAction(),
-      response => new QcSaveReportDetailsSuccessfulAction(),
+      __ => new QcSaveReportDetailsSuccessfulAction(),
       new QcSaveReportDetailsFailedAction(),
       ModuleError.SaveReportDetailsFailed);
   }
