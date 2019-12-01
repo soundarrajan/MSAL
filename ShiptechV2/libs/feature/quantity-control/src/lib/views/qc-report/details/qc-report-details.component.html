@@ -23,11 +23,7 @@
           <div style="float:right">
             <span class="badge red">Not Matched</span> |
             <span class="badge blue">Claims: {{nbOfClaims$ | async}}</span> |
-            <span class="badge blue">Deliveries: {{nbOfDeliveries$ | async}}</span> |
-            <span class="badge info">Vessel to Watch
-              <!-- add  [disabled]="isBusy$ | async" on the button/checkbox that will trigger flagging the vessel -->
-              <i class="fa fa-flag"></i>
-            </span>
+            <span class="badge blue">Deliveries: {{nbOfDeliveries$ | async}}</span>
           </div>
         </p-header>
 
@@ -53,7 +49,7 @@
                          [min]="0"
                          [max]="100"
                          [size]="2"
-                         [ngModel]="sludge$ | async" [step]="1" decimalSeparator="."></p-spinner>
+                         [ngModel]="sludge$ | async" [step]="0.25" thousandSeparator="," decimalSeparator="."></p-spinner>
 
               <p-checkbox (ngModelChange)="updateSludgeVesselResponse('sludgeVerified', $event)"
                           [disabled]="isBusy$ | async"

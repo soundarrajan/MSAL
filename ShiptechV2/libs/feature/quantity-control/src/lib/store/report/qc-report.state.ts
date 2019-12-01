@@ -287,7 +287,7 @@ export class QcReportState {
       details: {
         ...state.details,
         hasChanges: true,
-        comment
+        comment: comment
       }
     });
   }
@@ -311,6 +311,7 @@ export class QcReportState {
           vesselId: detailsDto.vesselId,
           vesselName: detailsDto.vesselName,
           voyageReference: detailsDto.voyageReference,
+          vesselVoyageDetailId: detailsDto.vesselVoyageDetailId,
           portCallId: detailsDto.portCallId,
           productTypes: detailsDto.productTypeCategories.map(productType => productType.id),
           productTypesById: productTypesMap,
@@ -424,6 +425,7 @@ export class QcReportState {
         eventsLog: {
           ...state.details.eventsLog,
           items: items,
+          deletedItemIds: [...(state.details.eventsLog.deletedItemIds ?? []), id],
           itemsById: itemsById
         }
       }

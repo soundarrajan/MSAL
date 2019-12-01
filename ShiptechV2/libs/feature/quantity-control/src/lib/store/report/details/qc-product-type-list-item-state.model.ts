@@ -1,6 +1,7 @@
 import { IQcReportDetailsProductTypeDto } from '../../../services/api/dto/qc-report-details.dto';
 import { Decimal } from 'decimal.js';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { safeDecimal } from '@shiptech/core/utils/math';
 
 export class QcProductTypeListItemStateModel {
   id: number;
@@ -8,7 +9,7 @@ export class QcProductTypeListItemStateModel {
   robBeforeDeliveryLogBookROB: Decimal;
   robBeforeDeliveryMeasuredROB: Decimal;
   deliveredQuantityBdnQty: Decimal;
-  deliveredQuantityMeasuredQty: Decimal;
+  measuredDeliveredQty: Decimal;
   robAfterDeliveryLogBookROB: Decimal;
   robAfterDeliveryMeasuredROB: Decimal;
 
@@ -16,15 +17,15 @@ export class QcProductTypeListItemStateModel {
     this.id = productType.id;
     this.productType = productType.productType;
 
-    this.robBeforeDeliveryLogBookROB = productType.robBeforeDelivery.logBookROB ? new Decimal(productType.robBeforeDelivery.logBookROB): undefined;
-    this.robBeforeDeliveryMeasuredROB = productType.robBeforeDelivery.measuredROB ? new Decimal(productType.robBeforeDelivery.measuredROB): undefined;
-    this.deliveredQuantityBdnQty = productType.deliveredQty.bdnQuantity ? new Decimal(productType.deliveredQty.bdnQuantity): undefined;
-    this.deliveredQuantityMeasuredQty = productType.deliveredQty.measuredQty ? new Decimal(productType.deliveredQty.measuredQty) : undefined;
-    this.robAfterDeliveryLogBookROB = productType.robAfterDelivery.logBookROB ? new Decimal(productType.robAfterDelivery.logBookROB): undefined;
-    this.robAfterDeliveryMeasuredROB = productType.robAfterDelivery.measuredROB ?new Decimal(productType.robAfterDelivery.measuredROB) : undefined;
+    this.robBeforeDeliveryLogBookROB = safeDecimal(productType.robBeforeDelivery?.logBookROB);
+    this.robBeforeDeliveryMeasuredROB = safeDecimal(productType.robBeforeDelivery?.measuredROB);
+    this.deliveredQuantityBdnQty = safeDecimal(productType.deliveredQty?.bdnQuantity);
+    this.measuredDeliveredQty = safeDecimal(productType.deliveredQty?.measuredQty);
+    this.robAfterDeliveryLogBookROB = safeDecimal(productType.robAfterDelivery?.logBookROB);
+    this.robAfterDeliveryMeasuredROB = safeDecimal(productType.robAfterDelivery?.measuredROB);
   }
 }
 
-export interface IQcProductTypeListItemState extends  QcProductTypeListItemStateModel{
+export interface IQcProductTypeListItemState extends QcProductTypeListItemStateModel {
 
 }

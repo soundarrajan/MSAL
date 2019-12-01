@@ -1,13 +1,8 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { ColDef, ColGroupDef, GridOptions } from 'ag-grid-community';
-import {
-  RowModelType,
-  RowSelection,
-  TypedColDef,
-  TypedColGroupDef
-} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ColGroupDef, GridOptions } from 'ag-grid-community';
+import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   ProductDetailsColGroupsEnum,
   ProductDetailsColGroupsLabels,
@@ -32,14 +27,14 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
-function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel{
+function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
   return prop;
 }
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
-  private quantityPrecision = 3;
+  private readonly quantityPrecision;
 
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
@@ -105,7 +100,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   bdnDeliveredQuantityCol: TypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
-    field: model('bdnQty'),
+    field: model('deliveredQuantityBdnQty'),
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellRendererFramework: AgCellTemplateComponent
   };
@@ -123,7 +118,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     cellRendererFramework: AgCellTemplateComponent,
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
-    valueGetter: params => this.getDifference(params.data.bdnQty, params.data.measuredDeliveredQty),
+    valueGetter: params => this.getDifference(params.data.deliveredQuantityBdnQty, params.data.measuredDeliveredQty),
     cellClassRules: {
       'cell-background red': params => params.value < 0,
       'cell-background orange': params => params.value > 0 && params.value < 100

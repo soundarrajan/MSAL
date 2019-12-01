@@ -363,7 +363,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getReportsList(serverGridInfo(params, QcReportsListColumnServerKeys)).subscribe(
+    this.quantityControlService.getReportsList$(serverGridInfo(params, QcReportsListColumnServerKeys)).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       () => params.failCallback());
   }

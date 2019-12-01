@@ -21,6 +21,8 @@ import {
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
+import { roundDecimals } from '@shiptech/core/utils/math';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -47,14 +49,19 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   comment$: Observable<string>;
 
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
+  private quantityPrecision: number;
 
   constructor(private entityStatus: EntityStatusService,
               private store: Store,
               private reportService: QcReportService,
               private dialogService: DialogService,
               private confirmationService: ConfirmationService,
-              private toastrService: ToastrService
+              private toastrService: ToastrService,
+              private tenantSettings: TenantSettingsService
   ) {
+    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
+
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status)
       .pipe(
         filter(status => !!status),
@@ -97,15 +104,18 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): void {
-    this.reportService.updateActiveSludgeVesselResponse(key, value).subscribe();
+    this.reportService.updateActiveSludgeVesselResponse$(key,
+      typeof value === 'number'
+        ? roundDecimals(value, this.quantityPrecision)
+        : value).subscribe();
   }
 
   updateBunkerVesselResponse(key: keyof QcVesselResponseBunkerStateModel, value: any): void {
-    this.reportService.updateActiveBunkerVesselResponse(key, value).subscribe();
+    this.reportService.updateActiveBunkerVesselResponse$(key, value).subscribe();
   }
 
   updateComment(content: string): void {
-    this.reportService.updateReportComment(content).subscribe();
+    this.reportService.updateReportComment$(content).subscribe();
   }
 
   openEmailPreview(): void {
@@ -113,19 +123,13 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.reportService.saveReport$()
-      .pipe(
-        tap(() => this.toastrService.success('Report saved successfully')),
-        takeUntil(this._destroy$)
-      ).subscribe();
+    this.reportService.saveReport$().subscribe(() => this.toastrService.success('Report saved successfully'));
   }
 
   verifyVessel(): void {
     // TODO: Verify should be disabled for New
-    this.reportService.verifyVesselReports([this.store.selectSnapshot(QcReportState.reportDetailsId)])
-      .pipe(
-        tap(() => this.toastrService.success('Report marked for verification.'))
-      ).subscribe();
+    this.reportService.verifyVesselReports$([this.store.selectSnapshot(QcReportState.reportDetailsId)])
+      .subscribe(() => this.toastrService.success('Report marked for verification.'));
   }
 
   raiseClaim(): void {
