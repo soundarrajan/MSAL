@@ -63,17 +63,25 @@ import {
   QcVesselResponseBunkerStateModel,
   QcVesselResponseSludgeStateModel
 } from '../store/report/details/qc-vessel-responses.state';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import _ from 'lodash';
+import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from './api/dto/qc-event-log-list-item.dto';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
+  private quantityPrecision: number = 3;
 
   constructor(
     protected store: Store,
     private urlService: UrlService,
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
+    tenantSettings: TenantSettingsService,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
+
+    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
   protected get reportDetailsState(): IQcReportDetailsState {
@@ -82,7 +90,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getReportsList(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
+  getReportsList$(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
     return this.apiDispatch(
       () => this.api.getReportList({ pageFilters: gridRequest }),
       new LoadReportListAction(gridRequest),
@@ -93,7 +101,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getSurveyHistoryList(vesselId: number, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
+  getSurveyHistoryList$(vesselId: number, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
     return this.apiDispatch(
       () => this.api.getSurveyHistoryList({ id: vesselId, pageFilters: gridRequest }),
       new LoadReportSurveyHistoryAction(gridRequest),
@@ -104,7 +112,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  loadReportDetails(reportId: number): Observable<unknown> {
+  loadReportDetails$(reportId: number): Observable<unknown> {
     if (!reportId) {
       return throwError(ModuleError.InvalidQcReportId(reportId));
     }
@@ -119,7 +127,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getSoundingReportList(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
+  getSoundingReportList$(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
     return this.api.getSoundingReportList({
       id: this.reportDetailsState.vesselId,
       reference: this.reportDetailsState.voyageReference,
@@ -128,62 +136,61 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getSoundingReportListItemDetails(soundingReportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
+  getSoundingReportListItemDetails$(soundingReportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
     return this.api.getSoundingReportDetails({ ...gridRequest, id: soundingReportId });
   }
 
   @ObservableException()
-  updateProductType(productTypeId: number, prop: QcProductTypeEditableProps, value: number): Observable<unknown> {
+  updateProductType$(productTypeId: number, prop: QcProductTypeEditableProps, value: number): Observable<unknown> {
     return this.store.dispatch(new UpdateProductTypeAction(productTypeId, prop, value));
   }
 
   @ObservableException()
-  updateActiveSludgeVesselResponse(key: keyof QcVesselResponseSludgeStateModel, value: any): Observable<unknown> {
+  updateActiveSludgeVesselResponse$(key: keyof QcVesselResponseSludgeStateModel, value: any): Observable<unknown> {
     return this.store.dispatch(new UpdateActiveSludgeVesselResponseAction(key, value));
   }
 
   @ObservableException()
-  updateActiveBunkerVesselResponse(key: keyof QcVesselResponseBunkerStateModel, value: any): Observable<unknown> {
+  updateActiveBunkerVesselResponse$(key: keyof QcVesselResponseBunkerStateModel, value: any): Observable<unknown> {
     return this.store.dispatch(new UpdateActiveBunkerVesselResponseAction(key, value));
   }
 
   @ObservableException()
-  updateReportComment(content: string): Observable<unknown> {
+  updateReportComment$(content: string): Observable<unknown> {
     return this.store.dispatch(new UpdateQcReportComment(content));
   }
 
   @ObservableException()
-  verifyVesselReports(reportIds: number[]): Observable<unknown> {
-
+  verifyVesselReports$(reportIds: number[]): Observable<unknown> {
     return this.apiDispatch(
       () => this.api.verifyReports({ reportIds }),
       QcVerifyReportAction,
-      response => QcVerifyReportSuccessfulAction,
+      __ => QcVerifyReportSuccessfulAction,
       QcVerifyReportFailedAction,
       ModuleError.VerifyReportFailed
     );
   }
 
   @ObservableException()
-  markSludgeVerification(reportId: number, verify: boolean): Observable<unknown> {
+  markSludgeVerification$(reportId: number, verify: boolean): Observable<unknown> {
     return this.api.markSludgeVerification({ id: reportId, IsVerifiedSludge: verify });
   }
 
   @ObservableException()
-  getOrderProductsList(): Observable<IGetOrderProductsListResponse> {
+  getOrderProductsList$(): Observable<IGetOrderProductsListResponse> {
     return this.api.getOrderProductsList({ reportId: this.reportDetailsState.id });
   }
 
-  raiseClaim(orderId: number, productId: number): Observable<unknown> {
+  raiseClaim$(orderId: number, productId: number): Observable<unknown> {
     return defer(() => of(window.open(this.urlService.newClaim(orderId, productId), '_blank')));
   }
 
   @ObservableException()
-  loadEventsLog(): Observable<unknown> {
+  loadEventsLog$(): Observable<unknown> {
     const reportId = this.reportDetailsState.id;
 
     return this.apiDispatch(
-      () => this.api.getEventsLog({ reportId }),
+      () => this.api.getEventsLog({ id: reportId }),
       new QcLoadEventsLogAction(),
       response => new QcLoadEventsLogSuccessfulAction(response.items),
       new QcLoadEventsLogFailedAction(),
@@ -224,13 +231,51 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   saveReport$(): Observable<unknown> {
+
+
     return this.apiDispatch(
-      () => this.api.saveReportDetails({}),
+      () => {
+        const reportDetailsState = this.reportDetailsState;
+        const vesselResponse = reportDetailsState.vesselResponse;
+
+        return this.api.saveReportDetails({
+          id: reportDetailsState.id,
+          vesselVoyageDetailId: reportDetailsState.vesselVoyageDetailId,
+          isVerifiedSludgeQty: vesselResponse.sludge.sludgeVerified,
+          sludgePercentage: vesselResponse.sludge.sludge,
+          comments: reportDetailsState.comment,
+          sludgeVesselResponseDescription: vesselResponse.sludge.description,
+          bunkerVesselResponseDescription: vesselResponse.bunker.description,
+          bunkerVesselResponseCategory: vesselResponse.bunker.activeCategory.id,
+          sludgeVesselResponseCategory: vesselResponse.sludge.activeCategory.id,
+          details: _.values(reportDetailsState.productTypesById).map(s => ({
+            id: s.id,
+            productTypeId: s.productType.id,
+            logBookRobQtyBeforeDelivery: s.robBeforeDeliveryLogBookROB?.toNumber(),
+            measuredRobQtyBeforeDelivery: s.robBeforeDeliveryMeasuredROB?.toNumber(),
+            beforeDeliveryQtyUomId: reportDetailsState.robBeforeDeliveryUom.id,
+            measuredRobDeliveredQty: s.measuredDeliveredQty?.toNumber(),
+            deliveredQtyUomId: reportDetailsState.deliveredQtyUom.id,
+            logBookRobQtyAfterDelivery: s.robAfterDeliveryLogBookROB?.toNumber(),
+            measuredRobQtyAfterDelivery: s.robAfterDeliveryMeasuredROB?.toNumber(),
+            afterDeliveryQtyUomId: reportDetailsState.robAfterDeliveryUom.id
+          })),
+          notes: [
+            ..._.values(reportDetailsState.eventsLog.itemsById).filter(s => s.isNew).map(s => (<IQcEventLogAddedListItemDto>{
+              ...s,
+              id: undefined
+            })),
+            ...(reportDetailsState.eventsLog.deletedItemIds ?? []).map(s => (<IQcEventLogDeletedListItemDto>{
+              id: s,
+              isDeleted: true
+            }))
+          ]
+        });
+      },
       new QcSaveReportDetailsAction(),
       response => new QcSaveReportDetailsSuccessfulAction(),
       new QcSaveReportDetailsFailedAction(),
-      ModuleError.SaveReportDetailsFailed
-    );
+      ModuleError.SaveReportDetailsFailed);
   }
 
   ngOnDestroy(): void {

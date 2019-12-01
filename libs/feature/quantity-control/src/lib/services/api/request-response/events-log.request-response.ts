@@ -1,11 +1,14 @@
 import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
-import { QcEventLogListItemDto } from '../dto/qc-event-log-list-item.dto';
+import { IQcEventLogListItemDto } from '../dto/qc-event-log-list-item.dto';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 
 export interface IGetEventsLogRequest extends IBaseQuantityControlRequest {
-  reportId: number;
+  id: number;
+  pageFilters?: IServerGridInfo
 }
 
 export interface IGetEventsLogResponse extends IBaseQuantityControlResponse {
-  items: QcEventLogListItemDto[];
+  items: IQcEventLogListItemDto[];
+  totalItems: number;
 }

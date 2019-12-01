@@ -10,6 +10,7 @@ export class QcReportDetailsModel {
   vesselId: number;
   vesselName: string;
   voyageReference: string;
+  vesselVoyageDetailId: number;
   status: IDisplayLookupDto;
 
   uoms: IDisplayLookupDto[];

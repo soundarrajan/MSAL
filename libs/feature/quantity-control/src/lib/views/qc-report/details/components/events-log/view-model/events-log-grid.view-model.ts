@@ -17,6 +17,8 @@ import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 
 function model(prop: keyof IQcEventsLogItemState): keyof IQcEventsLogItemState {
   return prop;
@@ -60,7 +62,10 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressColumnsToolPanel: true,
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
-    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
+    cellRendererSelector: params =>
+      params.data?.isNew || params.data?.createdBy?.name?.toLowerCase() === this.store.selectSnapshot(UserProfileState.username)?.toLowerCase()
+        ? { component: nameof(AgCellTemplateComponent) }
+        : null
   };
 
   eventDetailsCol: TypedColDef<IQcEventsLogItemState, string> = {
@@ -72,17 +77,18 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
   };
 
-  createdByCol: TypedColDef<IQcEventsLogItemState, string> = {
+  createdByCol: TypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
     headerName: EventsLogColumnsLabels.CreatedBy,
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
+    valueFormatter: params => params.value?.displayName ?? params.value?.name,
     width: 400
   };
 
   createdCol: TypedColDef<IQcEventsLogItemState, Date | string> = {
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
-    field: model('created'),
+    field: model('createdOn'),
     valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
     width: 400
   };
@@ -91,13 +97,12 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    store: Store,
+    private store: Store,
     tenantSettings: TenantSettingsService,
     private detailsService: QcReportService
   ) {
     super('quantity-control-events-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(EventsLogGridViewModel.name));
     this.initOptions(this.gridOptions);
-
 
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
@@ -106,7 +111,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       .pipe(
         first(),
         tap(() => this.gridApi.showLoadingOverlay()),
-        switchMap(() => this.detailsService.loadEventsLog()),
+        switchMap(() => this.detailsService.loadEventsLog$()),
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
         switchMap(() => store.select(QcReportState.eventLogsItems)),
         catchError(() => {

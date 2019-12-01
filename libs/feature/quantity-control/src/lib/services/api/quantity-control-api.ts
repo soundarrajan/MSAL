@@ -16,7 +16,6 @@ import {
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
-import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import {
   IQcVerifyReportsRequest,
   IQcVerifyReportsResponse
@@ -32,7 +31,7 @@ import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/
 import {
   ISaveReportDetailsRequest,
   ISaveReportDetailsResponse
-} from './request-response/report-details.request-response';
+} from './request-response/report-details-save.request-response';
 import {
   IGetOrderProductsListRequest,
   IGetOrderProductsListResponse
@@ -46,13 +45,16 @@ import {
 } from './request-response/qc-mark-sludge-verification.request-response';
 import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
 import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from './dto/qc-report-sounding.dto';
+import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
   export const getReportsList = () => `api/quantityControlReport/list`;
   export const getReportDetails = () => `api/quantityControlReport/details`;
+  export const saveReport = () => `api/quantityControlReport/save`;
+  export const getReportEventNotes = () => `api/quantityControlReport/notes`;
   export const getSoundingReportList = () => `api/soundingReport/list`;
-  export const getSoundingReportDetails= () => `api/soundingReport/details`;
+  export const getSoundingReportDetails = () => `api/soundingReport/details`;
   export const getSurveyHistoryList = () => `api/quantityControlReport/history`;
   export const verifySludge = () => `api/quantityControlReport/verifySludge`;
   export const verify = () => `api/quantityControlReport/verify`;
@@ -70,7 +72,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
-    return this.http.post<IQcReportsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request})
+    return this.http.post<IQcReportsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request })
       .pipe(map(r => {
         const items = r || [];
         const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
@@ -104,12 +106,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getReportDetails(request: IQcReportDetailsRequest): Observable<IQcReportDetailsResponse> {
-    return this.http.post<IQcReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getReportDetails()}`, { payload: request })
+    return this.http.post<IQcReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getReportDetails()}`, { payload: request });
   }
 
   @ObservableException()
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
-    return throwError('Not implemented');
+    return this.http.post<ISaveReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.saveReport()}`, { payload: request });
   }
 
   @ObservableException()
@@ -131,11 +133,6 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
-    return throwError('Not implemented');
-  }
-
-  @ObservableException()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
     return of(undefined);
   }
@@ -148,7 +145,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
-    return throwError('Not implemented');
+    return this.http.post<IQcEventLogListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportEventNotes()}`,
+      { payload: request })
+      .pipe(map(r => ({
+        items: r || [],
+        totalItems: (r || []).length
+      })));
   }
 
   @ObservableException()

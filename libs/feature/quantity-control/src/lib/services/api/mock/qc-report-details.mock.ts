@@ -26,6 +26,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     voyageReference: faker.random.alphaNumeric(9).toUpperCase(),
     portCallId: faker.finance.bitcoinAddress(),
     vesselName: faker.commerce.color(),
+    vesselVoyageDetailId: faker.random.number(),
     nbOfClaims: faker.random.number(),
     nbOfDeliveries: faker.random.number(),
     status: _.sample(PortCallStatuses),

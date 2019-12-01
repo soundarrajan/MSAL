@@ -1,9 +1,10 @@
 import { BaseModel } from '../models/base.sub-state';
-import { QcEventLogListItemDto } from '../../../services/api/dto/qc-event-log-list-item.dto';
+import { IQcEventLogListItemDto } from '../../../services/api/dto/qc-event-log-list-item.dto';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
-export class QcEventsLogItemStateModel implements QcEventLogListItemDto {
-  created: string;
-  createdBy: string;
+export class QcEventsLogItemStateModel implements IQcEventLogListItemDto {
+  createdOn: string;
+  createdBy: IDisplayLookupDto;
   eventDetails: string;
   id: number;
   isNew = false;
@@ -17,7 +18,8 @@ export interface IQcEventsLogItemState extends QcEventsLogItemStateModel {
 }
 
 export class QcEventsLogStateModel extends BaseModel {
-  items: number[];
+  items: number[] = [];
+  deletedItemIds: number[] = [];
   itemsById: Record<number, IQcEventsLogItemState>;
 }
 

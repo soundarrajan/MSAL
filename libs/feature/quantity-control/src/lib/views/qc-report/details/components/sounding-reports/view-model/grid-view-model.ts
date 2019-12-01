@@ -269,7 +269,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
         first(),
         tap(() => this.gridApi.showLoadingOverlay()),
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
-        switchMap(() => this.quantityControlService.getSoundingReportList({})),
+        switchMap(() => this.quantityControlService.getSoundingReportList$({})),
         catchError(() => {
           this.gridApi.hideOverlay();
           return EMPTY$;
@@ -309,7 +309,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   }
 
   protected detailServerSideGetRows(params: any): void {
-    this.quantityControlService.getSoundingReportListItemDetails((<IQcSoundingReportItemDto>params.data).id, {}).subscribe(
+    this.quantityControlService.getSoundingReportListItemDetails$((<IQcSoundingReportItemDto>params.data).id, {}).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       error => {
         this.appErrorHandler.handleError(error);

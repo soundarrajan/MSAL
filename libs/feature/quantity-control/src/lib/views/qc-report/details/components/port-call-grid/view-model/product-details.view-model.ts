@@ -15,6 +15,7 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { roundDecimals } from '@shiptech/core/utils/math';
 
 export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productType'>;
 
@@ -46,7 +47,8 @@ export class ProductDetailsViewModel {
 
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
-
+    this.minFractionDigits = this.quantityPrecision;
+    this.maxFractionDigits = this.quantityPrecision;
 
     this.uoms$ = this.selectReportDetails(state => state.uoms);
   }
@@ -64,6 +66,6 @@ export class ProductDetailsViewModel {
   }
 
   public updateProductType(column: Column, model: ProductTypeListItemViewModel, value: number): void {
-    this.detailsService.updateProductType(model.productType.id, <QcProductTypeEditableProps>column.getUserProvidedColDef().field, value);
+    this.detailsService.updateProductType$(model.id, <QcProductTypeEditableProps>column.getUserProvidedColDef().field, roundDecimals(value, this.quantityPrecision));
   }
 }

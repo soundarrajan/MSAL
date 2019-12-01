@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   IGetQcReportsListRequest,
   IGetQcReportsListResponse
@@ -15,7 +15,6 @@ import {
   IGetSoundingReportListRequest,
   IGetSoundingReportListResponse
 } from './request-response/sounding-reports.request-response';
-import { ISendEmailsRequest, ISendEmailsResponse } from './request-response/send-emails.request-response';
 import {
   IQcVerifyReportsRequest,
   IQcVerifyReportsResponse
@@ -37,7 +36,7 @@ import { getMockQcEventsLog } from './mock/qc-events-log.mock';
 import {
   ISaveReportDetailsRequest,
   ISaveReportDetailsResponse
-} from './request-response/report-details.request-response';
+} from './request-response/report-details-save.request-response';
 import {
   IGetOrderProductsListRequest,
   IGetOrderProductsListResponse
@@ -117,11 +116,6 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse> {
-    return throwError('Not implemented');
-  }
-
-  @ApiCall()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
     return of({ items: getQcOrderProductsList(10), totalItems: 10 });
   }
@@ -133,8 +127,10 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
+    const items = getMockQcEventsLog(3);
     return of({
-      items: getMockQcEventsLog(3)
+      items: items,
+      totalItems: items.length
     });
   }
 

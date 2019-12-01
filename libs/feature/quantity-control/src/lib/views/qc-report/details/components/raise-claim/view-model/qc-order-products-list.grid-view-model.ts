@@ -76,7 +76,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
         first(),
         tap(() => this.gridApi.showLoadingOverlay()),
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
-        switchMap(() => this.reportService.getOrderProductsList()),
+        switchMap(() => this.reportService.getOrderProductsList$()),
         catchError(() => {
           this.gridApi.hideOverlay();
           return EMPTY$;

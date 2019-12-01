@@ -1,4 +1,4 @@
-import { QcEventLogListItemDto } from '../../../../services/api/dto/qc-event-log-list-item.dto';
+import { IQcEventLogListItemDto } from '../../../../services/api/dto/qc-event-log-list-item.dto';
 
 export class QcLoadEventsLogAction {
   static readonly type = '[Qc.Report.Details] - Load Events Log';
@@ -14,7 +14,7 @@ export class QcLoadEventsLogAction {
 export class QcLoadEventsLogSuccessfulAction {
   static readonly type = '[Qc.Report.Details] - Load Events Log Successful';
 
-  constructor(public items: QcEventLogListItemDto[]) {
+  constructor(public items: IQcEventLogListItemDto[]) {
   }
 
   public log(): any {

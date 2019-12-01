@@ -26,7 +26,7 @@ import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/
 import {
   ISaveReportDetailsRequest,
   ISaveReportDetailsResponse
-} from './request-response/report-details.request-response';
+} from './request-response/report-details-save.request-response';
 import {
   IGetOrderProductsListRequest,
   IGetOrderProductsListResponse
@@ -48,8 +48,6 @@ export interface IQuantityControlApiService {
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse>;
 
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse>;
-
-  sendEmails(request: ISendEmailsRequest): Observable<ISendEmailsResponse>;
 
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse>;
 

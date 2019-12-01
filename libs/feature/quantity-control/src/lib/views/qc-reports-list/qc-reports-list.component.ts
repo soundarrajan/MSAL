@@ -58,7 +58,7 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
 
     const reportIds = selectedReports.map((rowNode) => (<IQcReportsListItemDto>rowNode.data).id);
 
-    this.reportService.verifyVesselReports(reportIds).subscribe(() => this.toastr.success(`Report(s) have been marked for verification.`));
+    this.reportService.verifyVesselReports$(reportIds).subscribe(() => this.toastr.success(`Report(s) have been marked for verification.`));
   }
 
   sendEmail(): void {
@@ -78,7 +78,7 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   }
 
   verifySludgeReport(item: IQcReportsListItemDto, isChecked: boolean): void {
-    this.reportService.markSludgeVerification(item.id, isChecked).subscribe();
+    this.reportService.markSludgeVerification$(item.id, isChecked).subscribe();
   }
 
   ngOnDestroy(): void {

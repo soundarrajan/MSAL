@@ -6,7 +6,8 @@ export interface IQcReportDetailsDto {
   portCallId: string;
   vesselName: string;
   vesselId: number;
-  voyageReference: string
+  voyageReference: string;
+  vesselVoyageDetailId: number;
   nbOfClaims: number;
   nbOfDeliveries: number;
   productTypeCategories: IQcReportDetailsProductTypeDto[];
