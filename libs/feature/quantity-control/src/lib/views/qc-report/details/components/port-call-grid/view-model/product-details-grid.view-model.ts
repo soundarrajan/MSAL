@@ -14,7 +14,6 @@ import { QcReportService } from '../../../../../../services/qc-report.service';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
-import { Decimal } from 'decimal.js';
 import { Store } from '@ngxs/store';
 import { Observable, throwError } from 'rxjs';
 import {
@@ -26,6 +25,7 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { roundDecimals } from '@shiptech/core/utils/math';
 
 function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
   return prop;
@@ -222,11 +222,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 
-  getDifference(minuend: number, suprahend: number): number {
-    if (minuend === null || minuend === undefined || suprahend === null || suprahend === undefined)
+  getDifference(left: number, right: number): number {
+    if (left === null || left === undefined || right === null || right === undefined)
       return undefined;
 
-    return new Decimal(minuend).sub(new Decimal(suprahend)).toNumber();
+    return left - right;
   }
 
   getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IDisplayLookupDto> {

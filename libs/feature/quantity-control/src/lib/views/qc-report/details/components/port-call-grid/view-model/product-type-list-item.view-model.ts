@@ -28,11 +28,11 @@ export class ProductTypeListItemViewModel {
     this.id = itemState.id;
     this.productType = itemState.productType;
 
-    this.robBeforeDeliveryLogBookROB = itemState.robBeforeDeliveryLogBookROB?.toNumber();
-    this.robBeforeDeliveryMeasuredROB = itemState.robBeforeDeliveryMeasuredROB?.toNumber();
-    this.deliveredQuantityBdnQty = itemState.deliveredQuantityBdnQty?.toNumber();
-    this.measuredDeliveredQty = itemState.measuredDeliveredQty?.toNumber();
-    this.robAfterDeliveryLogBookROB = itemState.robAfterDeliveryLogBookROB?.toNumber();
-    this.robAfterDeliveryMeasuredROB = itemState.robAfterDeliveryMeasuredROB?.toNumber();
+    this.robBeforeDeliveryLogBookROB = itemState.robBeforeDeliveryLogBookROB;
+    this.robBeforeDeliveryMeasuredROB = itemState.robBeforeDeliveryMeasuredROB;
+    this.deliveredQuantityBdnQty = itemState.deliveredQuantityBdnQty;
+    this.measuredDeliveredQty = itemState.measuredDeliveredQty;
+    this.robAfterDeliveryLogBookROB = itemState.robAfterDeliveryLogBookROB;
+    this.robAfterDeliveryMeasuredROB = itemState.robAfterDeliveryMeasuredROB;
   }
 }

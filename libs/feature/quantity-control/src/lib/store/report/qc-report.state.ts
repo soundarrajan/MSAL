@@ -162,7 +162,7 @@ export class QcReportState {
           ...state.details.productTypesById,
           [productTypeId]: {
             ...productType,
-            [prop]: new Decimal(value)
+            [prop]: value
           }
         }
       }
