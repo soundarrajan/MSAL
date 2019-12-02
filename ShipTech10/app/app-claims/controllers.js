@@ -331,7 +331,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                                 if (!$scope.formValues.deliveryDate || !$scope.formValues.orderDetails.deliveryNo) {
                                     $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
                                 }
-                                $scope.formValues.deliveryDate = response.deliveryDate;
+                                $scope.formValues.deliveryDate = $scope.formValues.deliveryDate ? $scope.formValues.deliveryDate : response.deliveryDate;
                             })
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
