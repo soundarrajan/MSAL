@@ -40,13 +40,13 @@ angular.module('shiptech.components')
 
 		    	hasEntity = {};
 		    	$.each(uniqueVoyages, function(k,v){
+	    			hasEntity[v] = {
+	    				hasBunkerPlan : false,
+	    				hasRequest : false,
+	    				hasOrder : false
+	    			};
 			    	$.each(voyages, function(k1,v1){
 			    		if (v == v1.voyageDetail.id) {
-			    			hasEntity[v1.voyageDetail.id] = {
-			    				hasBunkerPlan : false,
-			    				hasRequest : false,
-			    				hasOrder : false
-			    			};
 			    			if (v1.voyageDetail.bunkerPlan) {
 			    				hasEntity[v1.voyageDetail.id].hasBunkerPlan = true;
 			    			}

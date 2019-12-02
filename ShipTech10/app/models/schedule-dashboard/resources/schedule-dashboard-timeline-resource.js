@@ -4,6 +4,7 @@ return $resource(API.BASE_URL_DATA_PROCUREMENT + '/api/procurement/scheduledashb
     {
     	//TODO: all methods to POST
         'fetch': { method:'POST',  params:{verb:'get'}},
+        'getWSeparateBunkerPlan': { method:'POST',  params:{verb:'getWSeparateBunkerPlan'}},
         'getTable': { method:'POST', params:{verb:'getTable'}},
     });
 }]);

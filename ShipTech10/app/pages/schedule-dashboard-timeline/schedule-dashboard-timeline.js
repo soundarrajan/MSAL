@@ -134,17 +134,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         var computeData = function(data) {
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
+            var bunkerPlans = JSON.parse('{ "bunkerPlans": [' + data.payload.bunkerPlans + "]}").bunkerPlans;
             var vesselDetails = data.payload.vesselDetails;
             ctrl.voyageData = angular.copy(vessels);
             // vessels = _.uniqBy(vessels, "voyageDetail.id");
             groupVoyageId = _.groupBy(vessels, "voyageDetail.id");
-            var arrayHeighestPriority = [];
+            var arrayHighestPriority = [];
             $.each(groupVoyageId, function(k, v) {
-                heighestPriority = _.maxBy(v, "voyageDetail.portStatusPriority");
-                if (heighestPriority) {
-                    arrayHeighestPriority.push(heighestPriority);
+                highestPriority = _.maxBy(v, "voyageDetail.portStatusPriority");
+                if (highestPriority) {
+	                arrayHighestPriority[v[0].voyageDetail.id] = highestPriority
+                    // arrayHighestPriority.push(highestPriority);
                 }
             })
+
+            bunkerPlansGroupedByVoyage = _.groupBy(bunkerPlans, "voyageDetailId");
 
 
             var groups = [];
@@ -162,9 +166,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Create voyage object
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
 
-                var findHeighestPriority = _.find(arrayHeighestPriority, ['voyageDetail.id', vessels[i].voyageDetail.id]);
-                if (findHeighestPriority) {
-                    statusColor = statusColors.getColorCodeFromLabels(findHeighestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
+                var findHighestPriority = arrayHighestPriority[vessels[i].voyageDetail.id];
+                if (findHighestPriority) {
+                    statusColor = statusColors.getColorCodeFromLabels(findHighestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
                 } 
                 var voyageContent = '';
                 var voyageContentDotted = '';
@@ -172,6 +176,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 var cls = "vis-voyage-content";
                 var clsDotted ="vis-voyage-dotted";
+
+				vessels[i].voyageDetail.hasStrategy = false;
+                if (bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id]) {
+	                if (bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id].length > 0) {
+						vessels[i].voyageDetail.hasStrategy  = bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id][0].hasStrategy;
+	                }
+                }
+
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
                 }
