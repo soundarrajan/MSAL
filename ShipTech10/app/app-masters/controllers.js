@@ -3891,6 +3891,7 @@ APP_MASTERS.controller("Controller_Master", [
             $scope.droppedDoc = $rootScope.droppedDoc;
             if (typeof $scope.formValues.documentType != "undefined") {
                 if ($scope.formValues.documentType.name != "") {
+                    $rootScope.formValues.documentType = $scope.formValues.documentType;
                     $scope.uploadDocument("#fileUpload");
                 }
             } else {
