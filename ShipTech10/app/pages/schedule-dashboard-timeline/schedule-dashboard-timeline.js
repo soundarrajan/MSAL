@@ -435,7 +435,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         var buildTimeline = function(data) {
-
             var timelineData = computeData(data);
             var groups = new vis.DataSet(timelineData.groups);
             var voyages = new vis.DataSet(timelineData.voyages);
@@ -448,13 +447,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             minDate = _.minBy(voyagesArray, function(item) {
                 timestamp = moment(item.start).format('X');
                 if (!item.isRedelivery) {
-	                return timestamp;
+                    return timestamp;
                 }
             });
             maxDate =  _.maxBy(voyagesArray, function(item) {
                 timestamp = moment(item.end).format('X');
                 if (!item.isRedelivery) {
-	                return timestamp;
+                    return timestamp;
                 }
             });
             minDate.start = moment(minDate.start).startOf('day');
@@ -467,18 +466,27 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             timeline.setItems(voyages);
 
 
-			ctrl.lastStartDate = false;
-			ctrl.lastEndDate = false;
-			timeline.on("rangechanged", function(){
-				console.log(timeline.range.start, timeline.range.end)
-				ctrl.lastStartDate = moment(timeline.range.start);
-				ctrl.lastEndDate = moment(timeline.range.end);
-			})
+            ctrl.lastStartDate = false;
+            ctrl.lastEndDate = false;
+            timeline.on("rangechanged", function(){
+                console.log(timeline.range.start, timeline.range.end)
+                ctrl.lastStartDate = moment(timeline.range.start);
+                ctrl.lastEndDate = moment(timeline.range.end);
+            })
 
             $scope.timelineItems = groups.length;
             
             setLayoutAfterTimelineLoad();
             $rootScope.clc_loaded = true;
+            if (data.payload.scheduleDashboardView == null) {
+                $("#timeline > .vis-timeline").css("display", "none"); 
+                $(".vis-timeline-zoom-container").css("display", "none");
+                $(".schedule-dashboard-timeline-footer").css("display","none");
+                $("#timeline").append('<div class="noDataFound"> No Results Found</div>');
+            } else {
+                $(".schedule-dashboard-timeline-footer").css("display", "block");
+                $(".vis-timeline-zoom-container").css("display", "block");
+            }
         };
 
         var updateTimeline = function(data) {

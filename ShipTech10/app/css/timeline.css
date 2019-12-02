@@ -276,3 +276,10 @@ span.vesselName {
 .st-btn-icon-zoom-in  {
 	border-radius: 0 7px 7px 0 !important;
 }
+.noDataFound {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	background: #f0f8ff;
+	border: 1px solid #bfbfbf;
+}
