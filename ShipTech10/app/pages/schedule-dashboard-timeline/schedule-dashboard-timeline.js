@@ -778,13 +778,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $scope.filtersAppliedPayload = payload;
             $rootScope.saveFiltersDefaultTimeline = [];
 
-            getConfiguration().then(function(settings) {
-                getData(payload).then(function(response) {
-                    updateTimeline(response);
-                    $timeout(function() {
-                        $scope.getTimelineStatus();
-                    })
-                });
+            getData(payload).then(function(response) {
+                updateTimeline(response);
+                $timeout(function() {
+                    $scope.getTimelineStatus();
+                })
             });
 
             var conditions = $filtersData.filterConditions;
