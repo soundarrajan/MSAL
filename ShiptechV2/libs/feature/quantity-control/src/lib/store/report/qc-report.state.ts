@@ -316,7 +316,7 @@ export class QcReportState {
           productTypes: detailsDto.productTypeCategories.map(productType => productType.id),
           productTypesById: productTypesMap,
           uoms: detailsDto.uoms.options,
-          comment: detailsDto.comment,
+          comment: detailsDto.comments,
           vesselResponse: new QcVesselResponsesStateModel(detailsDto.vesselResponses),
           nbOfClaims: detailsDto.nbOfClaims,
           nbOfDeliveries: detailsDto.nbOfDeliveries,

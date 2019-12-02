@@ -28,7 +28,7 @@ export class UserProfileApi extends ApiServiceBase implements IUserProfileApi {
 
   @ObservableException()
   public get(): Observable<IUserProfileApiResponse> {
-    return this.http.post<IUserProfileApiResponse>(`${this._apiUrl}/${this.get()}`, {
+    return this.http.post<IUserProfileApiResponse>(`${this._apiUrl}/${UserProfileApiPaths.get()}`, {
       payload: true
     });
   }

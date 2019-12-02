@@ -4,6 +4,7 @@ import {
   IQcVesselResponsesDto,
   IQcVesselSludgeResponseDto
 } from '../../../services/api/dto/qc-vessel-response.dto';
+import _ from 'lodash';
 
 export class QcVesselResponseSludgeStateModel {
 
@@ -47,6 +48,9 @@ export class QcVesselResponsesStateModel {
 
     this.sludge = new QcVesselResponseSludgeStateModel(vesselResponsesDto.sludge);
     this.bunker = new QcVesselResponseBunkerStateModel(vesselResponsesDto.bunker);
+
+    this.sludge.activeCategory = this.sludge.activeCategory ?? _.first(this.categories);
+    this.bunker.activeCategory = this.bunker.activeCategory ?? _.first(this.categories);
   }
 }
 
