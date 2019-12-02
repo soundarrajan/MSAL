@@ -1,6 +1,5 @@
 import { ErrorCode } from './error-code';
 import { AppError, IAppError } from '@shiptech/core/error-handling/app-error';
-import { QcVerifyReportFailedAction } from '../../store/report/details/actions/verify-report.actions';
 
 export class ModuleError<T = any> extends AppError<T> {
   // noinspection JSUnusedGlobalSymbols
@@ -32,6 +31,11 @@ export class ModuleError<T = any> extends AppError<T> {
   static VerifyReportFailed = new ModuleError({
     code: ErrorCode.VerifyReportFailed,
     message: 'Mark report for verification has failed. Please try again later.'
+  });
+
+  static RevertVerifyReportFailed = new ModuleError({
+    code: ErrorCode.RevertVerifyReportFailed,
+    message: 'Revert report for verification has failed. Please try again later.'
   });
 
   static QcReportNotFound(reportId?: number): ModuleError {

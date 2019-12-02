@@ -32,6 +32,7 @@ export class QcReportDetailsModel {
   isSaving = false;
   isRaisingClaim: boolean;
   isVerifying: boolean;
+  isRevertVerifying: boolean;
   hasChanges: boolean;
 
   _hasLoaded: boolean;

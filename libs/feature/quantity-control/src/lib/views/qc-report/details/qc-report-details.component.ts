@@ -49,6 +49,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   comment$: Observable<string>;
 
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
+
+  hasVerifiedStatus: boolean;
+  hasNewStatus: boolean;
+
   private quantityPrecision: number;
 
   constructor(private entityStatus: EntityStatusService,
@@ -62,16 +66,17 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
-    this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status)
-      .pipe(
-        filter(status => !!status),
-        tap(status => {
-          this.entityStatus.setStatus({
-            value: <EntityStatus>status?.name
-          });
-        }),
-        takeUntil(this._destroy$)
-      ).subscribe();
+    this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
+
+      this.hasVerifiedStatus = status.name === EntityStatus.Verified;
+      this.hasNewStatus = status.name === EntityStatus.New;
+
+        this.entityStatus.setStatus({
+          value: <EntityStatus>status.name
+        });
+      }),
+      takeUntil(this._destroy$)
+    ).subscribe();
 
     this.categories$ = this.selectReportDetails(state => state.vesselResponse.categories);
 
@@ -130,6 +135,12 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     // TODO: Verify should be disabled for New
     this.reportService.verifyVesselReports$([this.store.selectSnapshot(QcReportState.reportDetailsId)])
       .subscribe(() => this.toastrService.success('Report marked for verification.'));
+  }
+
+  revertVerifyVessel(): void {
+    // TODO: RevertVerify should be disabled for New
+    this.reportService.revertVerifyVessel$([this.store.selectSnapshot(QcReportState.reportDetailsId)])
+      .subscribe(() => this.toastrService.success('Verification reverted successfully.'));
   }
 
   raiseClaim(): void {

@@ -35,6 +35,10 @@ import {
   IQcMarkSludgeVerificationRequest,
   IQcMarkSludgeVerificationResponse
 } from './request-response/qc-mark-sludge-verification.request-response';
+import {
+  IQcRevertVerifyReportsRequest,
+  IQcRevertVerifyReportsResponse
+} from './request-response/revert-verify-port-calls.request-response';
 
 export interface IQuantityControlApiService {
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -52,6 +56,8 @@ export interface IQuantityControlApiService {
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse>;
 
   verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse>;
+
+  revertVerifyVessel(request: IQcRevertVerifyReportsRequest): Observable<IQcRevertVerifyReportsResponse>;
 
   markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse>;
 

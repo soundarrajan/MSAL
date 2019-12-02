@@ -49,6 +49,10 @@ import {
   IQcMarkSludgeVerificationResponse
 } from './request-response/qc-mark-sludge-verification.request-response';
 import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
+import {
+  IQcRevertVerifyReportsRequest,
+  IQcRevertVerifyReportsResponse
+} from './request-response/revert-verify-port-calls.request-response';
 
 @Injectable({
   providedIn: 'root'
@@ -122,6 +126,11 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse> {
+    return of({});
+  }
+
+  @ApiCall()
+  revertVerifyVessel(request: IQcRevertVerifyReportsRequest): Observable<IQcRevertVerifyReportsResponse> {
     return of({});
   }
 
