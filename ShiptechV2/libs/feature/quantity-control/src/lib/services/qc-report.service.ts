@@ -246,8 +246,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
           comments: reportDetailsState.comment,
           sludgeVesselResponseDescription: vesselResponse.sludge.description,
           bunkerVesselResponseDescription: vesselResponse.bunker.description,
-          bunkerVesselResponseCategory: vesselResponse.bunker.activeCategory.id,
-          sludgeVesselResponseCategory: vesselResponse.sludge.activeCategory.id,
+          bunkerVesselResponseCategory: vesselResponse.bunker.activeCategory,
+          sludgeVesselResponseCategory: vesselResponse.sludge.activeCategory,
           details: _.values(reportDetailsState.productTypesById).map(s => ({
             id: s.id,
             productTypeId: s.productType.id,
