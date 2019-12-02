@@ -25,7 +25,6 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { roundDecimals } from '@shiptech/core/utils/math';
 
 function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
   return prop;
