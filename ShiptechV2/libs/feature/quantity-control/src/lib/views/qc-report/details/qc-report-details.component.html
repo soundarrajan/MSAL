@@ -7,7 +7,9 @@
               type="button"></button>
       <button (click)="raiseClaim()" [disabled]="isBusy$ | async" class="ui-button-warning mr-1" label="Raise Caim"
               pButton type="button"></button>
-      <button (click)="verifyVessel()" [disabled]="isBusy$ | async" class="ui-button-success mr-1" label="Verify"
+      <button (click)="verifyVessel()" [disabled]="isBusy$ | async" *ngIf="hasNewStatus" class="ui-button-success mr-1" label="Verify"
+              pButton type="button"></button>
+      <button (click)="revertVerifyVessel()" [disabled]="isBusy$ | async" *ngIf="hasVerifiedStatus" class="ui-button-success mr-1" label="Revert Verify"
               pButton type="button"></button>
     </div>
   </div>

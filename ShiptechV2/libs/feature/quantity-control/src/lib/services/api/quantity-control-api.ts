@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { IQuantityControlApiService } from './quantity-control.api.service.interface';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   IGetQcReportsListRequest,
@@ -46,6 +46,10 @@ import {
 import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
 import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from './dto/qc-report-sounding.dto';
 import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
+import {
+  IQcRevertVerifyReportsRequest,
+  IQcRevertVerifyReportsResponse
+} from './request-response/revert-verify-port-calls.request-response';
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -58,6 +62,7 @@ export namespace RobApiPaths {
   export const getSurveyHistoryList = () => `api/quantityControlReport/history`;
   export const verifySludge = () => `api/quantityControlReport/verifySludge`;
   export const verify = () => `api/quantityControlReport/verify`;
+  export const revertVerify = () => `api/quantityControlReport/revertVerify`;
 }
 
 @Injectable({
@@ -140,7 +145,13 @@ export class QuantityControlApi implements IQuantityControlApiService {
   @ObservableException()
   verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse> {
     return this.http.post<IQcMarkSludgeVerificationResponse>(`${this._apiUrl}/${RobApiPaths.verify()}`,
-      { payload: { quantityReportControlList: request.reportIds } });
+      { payload: request });
+  }
+
+  @ObservableException()
+  revertVerifyVessel(request: IQcRevertVerifyReportsRequest): Observable<IQcRevertVerifyReportsResponse> {
+    return this.http.post<IQcMarkSludgeVerificationResponse>(`${this._apiUrl}/${RobApiPaths.revertVerify()}`,
+      { payload: request });
   }
 
   @ObservableException()

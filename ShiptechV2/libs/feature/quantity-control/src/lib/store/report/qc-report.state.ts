@@ -54,6 +54,10 @@ import {
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction,
+  QcRevertVerifyReportSuccessfulAction
+} from './details/actions/revert-verify-report.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -63,10 +67,12 @@ export class QcReportState {
 
   static default = new QcReportStateModel();
 
-  private verifiedStatus: Promise<IDisplayLookupDto>;
+  private readonly verifiedStatus: Promise<IDisplayLookupDto>;
+  private readonly newStatus: Promise<IDisplayLookupDto>;
 
   constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {
     this.verifiedStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.Verified).first();
+    this.newStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.New).first();
   }
 
   @Selector()
@@ -74,7 +80,8 @@ export class QcReportState {
     const isBusy = [
       state.details._isLoading,
       state.details.isSaving,
-      state.details.isVerifying
+      state.details.isVerifying,
+      state.details.isRevertVerifying,
     ];
     return isBusy.some(s => s);
   }
@@ -93,7 +100,6 @@ export class QcReportState {
   static canSave(): boolean {
     return true;
   }
-
 
   @Selector()
   static eventLogsItemsById(state: IQcReportState): Record<number, IQcEventsLogItemState> {
@@ -512,7 +518,24 @@ export class QcReportState {
         }
       });
     }
+  }
+  @Action([QcRevertVerifyReportAction, QcRevertVerifyReportSuccessfulAction, QcRevertVerifyReportFailedAction])
+  async revertVerifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): Promise<void> {
+    const state = getState();
 
+    if (isAction(action, QcVerifyReportAction)) {
+      patchState({
+        details: { ...state.details, isRevertVerifying: true }
+      });
+    } else {
+      patchState({
+        details: {
+          ...state.details,
+          status: await this.newStatus,
+          isRevertVerifying: false
+        }
+      });
+    }
   }
 
   @Action(LoadReportSurveyHistoryAction)

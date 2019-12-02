@@ -9,6 +9,7 @@ export enum ErrorCode {
   PortCallNotFound = 1002,
   SaveReportDetailsFailed = 1003,
   VerifyReportFailed = 1004,
+  RevertVerifyReportFailed = 1005,
 
   LoadPortCallListFailed = 3000,
   LoadEventsLogFailed = 3100,

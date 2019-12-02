@@ -66,6 +66,11 @@ import {
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import _ from 'lodash';
 import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from './api/dto/qc-event-log-list-item.dto';
+import {
+  QcRevertVerifyReportAction,
+  QcRevertVerifyReportFailedAction,
+  QcRevertVerifyReportSuccessfulAction
+} from '../store/report/details/actions/revert-verify-report.actions';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -168,6 +173,17 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       __ => QcVerifyReportSuccessfulAction,
       QcVerifyReportFailedAction,
       ModuleError.VerifyReportFailed
+    );
+  }
+
+  @ObservableException()
+  revertVerifyVessel$(reportIds: number[]): Observable<unknown> {
+    return this.apiDispatch(
+      () => this.api.revertVerifyVessel({ reportIds }),
+      QcRevertVerifyReportAction,
+      __ => QcRevertVerifyReportSuccessfulAction,
+      QcRevertVerifyReportFailedAction,
+      ModuleError.RevertVerifyReportFailed
     );
   }
 
