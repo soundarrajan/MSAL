@@ -14,7 +14,7 @@ export interface IQcReportDetailsDto {
   status: IDisplayLookupDto;
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;
-  comment: string;
+  comments: string;
 }
 
 export interface IQcReportDetailsProductTypeDto {

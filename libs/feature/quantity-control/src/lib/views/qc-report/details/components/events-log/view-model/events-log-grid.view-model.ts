@@ -62,8 +62,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressColumnsToolPanel: true,
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
-    cellRendererSelector: params =>
-      params.data?.isNew || params.data?.createdBy?.name?.toLowerCase() === this.store.selectSnapshot(UserProfileState.username)?.toLowerCase()
+    cellRendererSelector: params => params.data?.isNew || params.data?.createdBy?.name?.toLowerCase() === this.store.selectSnapshot(UserProfileState.username)?.toLowerCase()
         ? { component: nameof(AgCellTemplateComponent) }
         : null
   };
