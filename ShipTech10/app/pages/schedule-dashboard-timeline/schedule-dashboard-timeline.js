@@ -133,8 +133,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         };
 
         var computeData = function(data) {
+        	console.log(Date.now());
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
             var bunkerPlans = JSON.parse('{ "bunkerPlans": [' + data.payload.bunkerPlans + "]}").bunkerPlans;
+        	console.log(Date.now());
             var vesselDetails = data.payload.vesselDetails;
             ctrl.voyageData = angular.copy(vessels);
             // vessels = _.uniqBy(vessels, "voyageDetail.id");
@@ -148,15 +150,19 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
             })
 
-            bunkerPlansGroupedByVoyage = _.groupBy(bunkerPlans, "voyageDetailId");
+            ctrl.bunkerPlansGroupedByVoyage = _.groupBy(bunkerPlans, "voyageDetailId");
 
 
             var groups = [];
             var voyages = [];
             var groupStrings = [];
             var numberVessels = vessels.length;
+            startFor = Date.now();
+            performanceLog = [];
             for (var i = 0; i < vessels.length; i++) {
-
+            	if (i%10 == 0) {
+	            	performanceLog.push(Date.now() - startFor )
+            	}
                 if (!vessels[i]) {
                     continue;
                 }
@@ -178,9 +184,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var clsDotted ="vis-voyage-dotted";
 
 				vessels[i].voyageDetail.hasStrategy = false;
-                if (bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id]) {
-	                if (bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id].length > 0) {
-						vessels[i].voyageDetail.hasStrategy  = bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id][0].hasStrategy;
+                if (ctrl.bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id]) {
+	                if (ctrl.bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id].length > 0) {
+						vessels[i].voyageDetail.hasStrategy  = ctrl.bunkerPlansGroupedByVoyage[vessels[i].voyageDetail.id][0].hasStrategy;
 	                }
                 }
 
@@ -344,6 +350,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
                
             }
+            console.log("***");
+            console.log(vessels.length);
+            console.log(performanceLog);
+            console.log("***");
 
             $.each(groups, function(k,v){
             	currentGroupRedelivery = _.find(vesselDetails, {"id":v.vesselId});
@@ -481,7 +491,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             ctrl.lastStartDate = false;
             ctrl.lastEndDate = false;
             timeline.on("rangechanged", function(){
-                console.log(timeline.range.start, timeline.range.end)
                 ctrl.lastStartDate = moment(timeline.range.start);
                 ctrl.lastEndDate = moment(timeline.range.end);
             })
@@ -920,10 +929,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        			$.each(obj.additionalStops, function(key2,obj2){
 	        				if (parseFloat(obj2.group) == parseFloat(currentGroup) && obj2.start == currentEta) {
 	        					additionalVoyages = obj.additionalStops;		
+			        			additionalVoyages.push(obj);
 	        				}
 	        			})
 	        		}
 	        	})
+	        	additionalVoyages = _.uniqBy(additionalVoyages, "voyageId");
+	        	additionalVoyages = _.orderBy(additionalVoyages, "start");
 	        	$timeout(function(){
 		        	ctrl.additionalVoyages = {
 		        		data : additionalVoyages,
@@ -1026,8 +1038,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // });
                 // rightClickPopoverData.bunkerPlansGroupedByVoaygeDetailId = groupedByVoyageDetailId;
                 // rightClickPopoverData.groupedByVoyageDetailIdVoyageStops = groupedByVoyageDetailIdVoyageStops;
+                todaysBunkerDetails = [];
+                $.each(allStops, function(k,v){
+                	if (ctrl.bunkerPlansGroupedByVoyage[v]) {
+                		$.each(ctrl.bunkerPlansGroupedByVoyage[v], function(k2,v2){
+		                	todaysBunkerDetails.push(v2);
+                		})
+                	}
+                })
                 rightClickPopoverData = {};
                 rightClickPopoverData.todayVoyages = object;
+                rightClickPopoverData.bunkerDetails = todaysBunkerDetails;
                 $scope.rightClickPopoverData = rightClickPopoverData;
                 $scope.$apply();
 

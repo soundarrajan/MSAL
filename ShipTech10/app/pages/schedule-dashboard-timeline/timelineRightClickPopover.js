@@ -14,11 +14,36 @@ angular.module('shiptech.components')
 		    	$scope.test = new Date();
 		    	$scope.rightClickPopoverData = changes.rightClickPopoverData.currentValue;
 		    	$timeout(function(){
-			    	groupVoyages(changes.rightClickPopoverData.currentValue.todayVoyages);
+		    		todayVoyages = changes.rightClickPopoverData.currentValue.todayVoyages;
+		    		if (changes.rightClickPopoverData.currentValue.bunkerDetails) {
+			    		$scope.todaysBunkerDetails = normalizeBunkerDetails(changes.rightClickPopoverData.currentValue.bunkerDetails);
+			    		$.each($scope.todaysBunkerDetails, function(k,v){
+			    			todayVoyages.push(v);	
+			    		})
+		    		}
+			    	groupVoyages(todayVoyages);
 		    	})
 		    	ctrl.vesselName = changes.rightClickPopoverData.currentValue.todayVoyages[0].VesselName;
 		    	
 		    };
+
+		    normalizeBunkerDetails = function(bunkerDetails) {
+		    	normalizedBunkerDetails = [];
+		    	$.each(bunkerDetails, function(k,v){
+		    		itemStructure = {
+					    "voyageDetail": {
+					    	"request": {
+					    		"requestDetail" : {}
+					    	},
+					        "id": v.voyageDetailId,
+					        "hasStrategy": v.hasStrategy,
+					        "bunkerPlan": v.bunkerPlan
+					    },
+					}
+					normalizedBunkerDetails.push(itemStructure);
+		    	})
+		    	return normalizedBunkerDetails;
+		    }
 
 		    groupVoyages = function(voyages) {
 		    	
@@ -127,9 +152,11 @@ angular.module('shiptech.components')
 						groupedVoyagesRequest[item][item2] = _.uniqBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.Id');
 						groupedVoyagesRequest[item][item2] = _.groupBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.fuelType.name'); 
 						Object.keys(groupedVoyagesRequest[item][item2]).forEach(function (item3) {
-							groupedVoyagesRequest[item][item2][item3] = _.sumBy(groupedVoyagesRequest[item][item2][item3], 'voyageDetail.request.requestDetail.fuelMaxQuantity');
 							if (item3 != "undefined") {
+								groupedVoyagesRequest[item][item2][item3] = _.sumBy(groupedVoyagesRequest[item][item2][item3], 'voyageDetail.request.requestDetail.fuelMaxQuantity');
 								allProductTypes[item].push(item3);
+							} else {
+								delete groupedVoyagesRequest[item][item2];
 							}
 							
 						});
@@ -142,8 +169,8 @@ angular.module('shiptech.components')
 							groupedVoyagesOrder[item][item2] = _.uniqBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.orderId');
 							groupedVoyagesOrder[item][item2] = _.groupBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.fuelType.name'); 
 							Object.keys(groupedVoyagesOrder[item][item2]).forEach(function (item3) {
-								groupedVoyagesOrder[item][item2][item3] = _.sumBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.orderProductQuantity');
 								if (item3 != "undefined") {
+									groupedVoyagesOrder[item][item2][item3] = _.sumBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.orderProductQuantity');
 									allProductTypes[item].push(item3);
 								}
 								
