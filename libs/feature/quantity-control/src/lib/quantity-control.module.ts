@@ -42,6 +42,7 @@ import {
 import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { SurveyStatusLookups } from './services/survey-status-lookups';
 
 @NgModule({
   imports: [
@@ -84,6 +85,7 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
   ],
   providers: [
     ModuleLoggerFactory,
+    SurveyStatusLookups,
     QuantityControlRouteResolver,
     QcReportDetailsRouteResolver,
     {

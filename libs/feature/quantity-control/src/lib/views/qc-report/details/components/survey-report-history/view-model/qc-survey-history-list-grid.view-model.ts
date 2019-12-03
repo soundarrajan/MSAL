@@ -95,6 +95,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.surveyDate,
     colId: QcSurveyHistoryListColumns.surveyDate,
     field: model('surveyDate'),
+    filter: 'agDateColumnFilter',
     valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
     width: 150
   };
