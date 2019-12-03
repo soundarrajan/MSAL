@@ -81,4 +81,11 @@ export class AppError<T = any> implements IAppError {
       message: `Lookup '${lookupType}' is missing key '${key}'.`
     });
   }
+
+  static ModuleTenantSettingsNotLoaded<T = any>(moduleName: TenantSettingsModuleName): AppError<T> {
+    return new AppError({
+      code: AppErrorCode.ModuleTenantSettingsNotLoaded,
+      message: `Tenant settings failed to load for ${moduleName} module.`
+    });
+  };
 }
