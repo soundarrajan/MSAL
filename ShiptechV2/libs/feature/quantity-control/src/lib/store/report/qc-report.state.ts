@@ -13,7 +13,6 @@ import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponsesStateModel } from './details/qc-vessel-responses.state';
 import { QcProductTypeListItemStateModel } from './details/qc-product-type-list-item-state.model';
 import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
-import { Decimal } from 'decimal.js';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction,
@@ -51,13 +50,12 @@ import {
   LoadReportSurveyHistoryFailedAction,
   LoadReportSurveyHistorySuccessfulAction
 } from './qc-report-survey-history.actions';
-import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
-import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import {
-  QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction,
+  QcRevertVerifyReportAction,
+  QcRevertVerifyReportFailedAction,
   QcRevertVerifyReportSuccessfulAction
 } from './details/actions/revert-verify-report.actions';
+import { SurveyStatusLookups } from '../../services/survey-status-lookups';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -67,12 +65,7 @@ export class QcReportState {
 
   static default = new QcReportStateModel();
 
-  private readonly verifiedStatus: Promise<IDisplayLookupDto>;
-  private readonly newStatus: Promise<IDisplayLookupDto>;
-
-  constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {
-    this.verifiedStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.Verified).first();
-    this.newStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.New).first();
+  constructor(private surveyStatusLookups: SurveyStatusLookups) {
   }
 
   @Selector()
@@ -81,7 +74,7 @@ export class QcReportState {
       state.details._isLoading,
       state.details.isSaving,
       state.details.isVerifying,
-      state.details.isRevertVerifying,
+      state.details.isRevertVerifying
     ];
     return isBusy.some(s => s);
   }
@@ -513,12 +506,13 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: await this.verifiedStatus,
+          status: await this.surveyStatusLookups.verified,
           isVerifying: false
         }
       });
     }
   }
+
   @Action([QcRevertVerifyReportAction, QcRevertVerifyReportSuccessfulAction, QcRevertVerifyReportFailedAction])
   async revertVerifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): Promise<void> {
     const state = getState();
@@ -531,7 +525,7 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: await this.newStatus,
+          status: await this.surveyStatusLookups.new,
           isRevertVerifying: false
         }
       });

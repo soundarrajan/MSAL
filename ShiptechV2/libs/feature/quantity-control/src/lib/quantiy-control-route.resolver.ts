@@ -2,7 +2,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { combineLatest, Observable, throwError } from 'rxjs';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { AppConfig } from '@shiptech/core/config/app-config';
@@ -10,6 +10,8 @@ import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/develo
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { QuantityControlApi } from './services/api/quantity-control-api';
+import { SurveyStatusLookups } from './services/survey-status-lookups';
+import { fromPromise } from 'rxjs/internal-compatibility';
 
 @Injectable()
 export class QuantityControlRouteResolver implements Resolve<any> {
@@ -17,6 +19,7 @@ export class QuantityControlRouteResolver implements Resolve<any> {
     private router: Router,
     private appErrorHandler: AppErrorHandler,
     private tenantService: TenantSettingsService,
+    private surveyStatusLookups: SurveyStatusLookups,
     mockApi: QuantityControlApiMock,
     appConfig: AppConfig,
     devService: DeveloperToolbarService
@@ -35,7 +38,11 @@ export class QuantityControlRouteResolver implements Resolve<any> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    return this.tenantService.loadModule(TenantSettingsModuleName.Delivery).pipe(
+    // Note: Before this module can be used/opened, we need to load module settings and cached lookups first.
+    return combineLatest(
+      this.tenantService.loadModule(TenantSettingsModuleName.Delivery),
+      fromPromise(this.surveyStatusLookups.load())
+    ).pipe(
       catchError(error => {
         // Note: If the user navigated directly to this route, we need to redirect to root and show and error
         if (!state.root.component) {

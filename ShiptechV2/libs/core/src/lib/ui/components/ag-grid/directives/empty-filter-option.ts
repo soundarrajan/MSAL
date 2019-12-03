@@ -30,21 +30,44 @@ export class AgGridEmptyFilterOptionDirective implements OnDestroy {
             const filterApi = <{
               providedFilterParams: { filterOptions: (string | object)[] },
               setParams: Function,
-              eType1: HTMLSelectElement,
-              eType2: HTMLSelectElement,
+              eType1: HTMLElement,
+              eType2: HTMLElement,
+              ePanelFrom1: HTMLElement,
+              ePanelFrom2: HTMLElement,
+              ePanelTo1: HTMLElement,
+              ePanelTo2: HTMLElement,
               optionsFactory: OptionsFactory
             }>(this.agGrid.api.getFilterInstance(col) as unknown);
 
-            filterApi.providedFilterParams.filterOptions = [...(filterApi.providedFilterParams.filterOptions ?? filterApi.optionsFactory.getFilterOptions()), {
-              displayKey: AgGridConditionTypeEnum.NULL,
-              displayName: 'Is empty',
-              hideFilterInput: true,
-              test: (filterValue: any, cellValue: any) => cellValue === undefined || cellValue === null
-            }];
 
-            // Note: Workaround bug in ag-grid where the filter dropdown are not cleared before setting new ones
-            filterApi.eType1.innerHTML = '';
-            filterApi.eType2.innerHTML = '';
+            filterApi.providedFilterParams.filterOptions = [...(filterApi.providedFilterParams.filterOptions ?? filterApi.optionsFactory.getFilterOptions()),
+              {
+                displayKey: AgGridConditionTypeEnum.NULL,
+                displayName: 'Is empty',
+                hideFilterInput: true,
+                test: (filterValue: any, cellValue: any) => cellValue === undefined || cellValue === null
+              },
+              {
+                displayKey: AgGridConditionTypeEnum.NOT_NULL,
+                displayName: 'Is not empty',
+                hideFilterInput: true,
+                test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null
+              }
+            ];
+
+            // Note: Workaround bug in ag-grid where the filter ui elements are not cleared before setting new ones (every time you setParams it appends)
+            if (filterApi.eType1)
+              filterApi.eType1.innerHTML = '';
+            if (filterApi.eType2)
+              filterApi.eType2.innerHTML = '';
+            if (filterApi.ePanelFrom1)
+              filterApi.ePanelFrom1.innerHTML = '';
+            if (filterApi.ePanelFrom2)
+              filterApi.ePanelFrom2.innerHTML = '';
+            if (filterApi.ePanelTo1)
+              filterApi.ePanelTo1.innerHTML = '';
+            if (filterApi.ePanelTo2)
+              filterApi.ePanelTo2.innerHTML = '';
 
             filterApi.setParams(filterApi.providedFilterParams);
           });
