@@ -696,6 +696,9 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                         if(vm.entity_id){
                             screenLoader.showLoader();
                         }
+                        if (window.location.href.indexOf("invoices/invoice/documents") != -1) {
+                        	return;
+                        }
                         Factory_Master.get_master_entity(
                             vm.entity_id,
                             vm.screen_id,
@@ -703,8 +706,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                             function(callback) {
                                 screenLoader.hideLoader();
                                 if (callback) {
-                                    
-                                    $scope.formValues = callback;
+	                                    $scope.formValues = callback;
                                     if(vm.screen_id === 'emaillogs') {
                                         if($scope.formValues.to && typeof($scope.formValues.to) === 'string') {
                                           $scope.formValues.to = $scope.formValues.to.replace(/,/g, ';');
