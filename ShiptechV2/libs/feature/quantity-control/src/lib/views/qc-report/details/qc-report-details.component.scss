@@ -15,9 +15,19 @@
   -moz-border-radius: 9px;
   border-radius: 9px;
 
-  &.red {
+  &.NotMatched {
     color: black;
-    background-color: #ff7f80;
+    background-color: #e9585b;
+  }
+
+  &.WithinLimit {
+    color: black;
+    background-color: #e98b46;
+  }
+
+  &.Matched {
+    color: black;
+    background-color: #27ae60;
   }
 
   &.blue {

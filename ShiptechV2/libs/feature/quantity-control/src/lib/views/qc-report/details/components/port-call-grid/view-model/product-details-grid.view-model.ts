@@ -25,6 +25,9 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
 
 function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
   return prop;
@@ -34,6 +37,8 @@ function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListI
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
   private readonly quantityPrecision;
+  private readonly minToleranceLimit;
+  private readonly maxToleranceLimit;
 
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
@@ -87,14 +92,16 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     cellRendererFramework: AgCellTemplateComponent,
+    field: model('robBeforeDiff'),
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
-    valueGetter: params => this.getDifference(params.data.robBeforeDeliveryLogBookROB, params.data.robBeforeDeliveryMeasuredROB),
     cellClassRules: {
-      'cell-background red': params => params.value < 0,
-      'cell-background orange': params => params.value > 0 && params.value < 100
+      'cell-background red': params => {
+        const b = params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.NotMatched;
+        return b;
+      },
+      'cell-background orange': params =>params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.WithinLimit,
     }
   };
-
 
   bdnDeliveredQuantityCol: TypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.BdnQty,
@@ -115,12 +122,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   differenceDeliveredQuantityCol: TypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
+    field: model('deliveredDiff'),
     cellRendererFramework: AgCellTemplateComponent,
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
-    valueGetter: params => this.getDifference(params.data.deliveredQuantityBdnQty, params.data.measuredDeliveredQty),
     cellClassRules: {
-      'cell-background red': params => params.value < 0,
-      'cell-background orange': params => params.value > 0 && params.value < 100
+      'cell-background red': params => params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
+      'cell-background orange': params =>params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.WithinLimit,
     }
   };
 
@@ -144,12 +151,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   differenceRobAfterDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.RobAfterDeliveryDifference,
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
+    field: model('robAfterDiff'),
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellRendererFramework: AgCellTemplateComponent,
-    valueGetter: params => this.getDifference(params.data.robAfterDeliveryLogBookROB, params.data.robAfterDeliveryMeasuredROB),
     cellClassRules: {
-      'cell-background red': params => params.value < 0,
-      'cell-background orange': params => params.value > 0 && params.value < 100
+      'cell-background red': params => params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
+      'cell-background orange': params =>params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.WithinLimit,
     }
   };
   robAfterDeliveryColGroup: ColGroupDef = {
@@ -203,6 +210,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
+    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
+    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
+    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
+
     this.robUomBeforeDelivery$ = this.selectReportDetails(state => state.robBeforeDeliveryUom);
     this.robUomAfterDelivery$ = this.selectReportDetails(state => state.robAfterDeliveryUom);
     this.deliveredQtyUom$ = this.selectReportDetails(state => state.deliveredQtyUom);
@@ -221,12 +232,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 
-  getDifference(left: number, right: number): number {
-    if (left === null || left === undefined || right === null || right === undefined)
-      return undefined;
 
-    return left - right;
-  }
 
   getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IDisplayLookupDto> {
     switch (groupId) {

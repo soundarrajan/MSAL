@@ -12,6 +12,7 @@ import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
 import { ITenantSettingsState } from './tenant-settings.state.interface';
+import { IQcReportState } from '../../../../../../feature/quantity-control/src/lib/store/report/qc-report.state.model';
 
 // @dynamic
 @State<ITenantSettingsState>({
@@ -27,7 +28,7 @@ export class TenantSettingsState {
     this.logger = logger.createLogger(TenantSettingsState.name);
   }
 
-  @Selector()
+  @Selector([TenantSettingsState])
   static byModule<T extends IModuleTenantSettings>(module: TenantSettingsModuleName): (...args: any[]) => T {
     return createSelector(
       [TenantSettingsState],

@@ -1,4 +1,4 @@
-import { ITenantSettingsState } from '../../store/states/tenant/tenant-settings.state.interface';
+import { IModuleTenantSettings } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 export interface IShiptechDateFormat {
   name: string;
@@ -13,7 +13,7 @@ export interface ITenantDefaultValuesSettings {
   quantityPrecision: number;
 }
 
-export interface IGeneralTenantSettings extends ITenantSettingsState {
+export interface IGeneralTenantSettings extends IModuleTenantSettings {
   tenantFormats: ITenantFormatsSettings;
   defaultValues: ITenantDefaultValuesSettings;
 }

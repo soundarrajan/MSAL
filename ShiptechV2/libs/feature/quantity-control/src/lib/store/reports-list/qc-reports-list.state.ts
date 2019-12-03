@@ -16,17 +16,17 @@ import {
 export class QcReportsListState {
   public static default: QcReportsListStateModel = new QcReportsListStateModel();
 
-  @Selector()
+  @Selector([QcReportsListState])
   static nbOfMatched(state: IQcReportsListState): number {
     return state.nbOfMatched;
   }
 
-  @Selector()
+  @Selector([QcReportsListState])
   static nbOfMatchedWithinLimit(state: IQcReportsListState): number {
     return state.nbOfMatchedWithinLimit;
   }
 
-  @Selector()
+  @Selector([QcReportsListState])
   static nbOfNotMatched(state: IQcReportsListState): number {
     return state.nbOfNotMatched;
   }

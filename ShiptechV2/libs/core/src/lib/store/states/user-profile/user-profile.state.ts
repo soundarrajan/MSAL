@@ -26,12 +26,12 @@ export class UserProfileState {
     this.logger = logger.createLogger(UserProfileState.name);
   }
 
-  @Selector()
+  @Selector([UserProfileState])
   static displayName(state: IUserProfileState): string {
     return state.displayName;
   }
 
-  @Selector()
+  @Selector([UserProfileState])
   static username(state: IUserProfileState): string {
     return state.username;
   }

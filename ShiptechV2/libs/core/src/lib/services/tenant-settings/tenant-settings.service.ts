@@ -12,10 +12,11 @@ import { SKIP$ } from '../../utils/rxjs-operators';
 import { IAppState } from '../../store/states/app.state.interface';
 import { LoggerFactory } from '../../logging/logger-factory.service';
 import { BaseStoreService } from '../base-store.service';
-import { TenantSettingsModuleName } from '../../store/states/tenant/tenant-settings.interface';
+import { IModuleTenantSettings, TenantSettingsModuleName } from '../../store/states/tenant/tenant-settings.interface';
 import { TENANT_SETTINGS_API } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
 import { ITenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
+import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
 
 /*
 * // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
@@ -62,11 +63,20 @@ export class TenantSettingsService extends BaseStoreService {
   }
 
   getGeneralTenantSettings(): IGeneralTenantSettings {
-    const generalSettings = this.appState.tenantSettings[TenantSettingsModuleName.General];
+    const generalSettings = this.store.selectSnapshot(TenantSettingsState.byModule<IGeneralTenantSettings>(TenantSettingsModuleName.General));
 
     if (!generalSettings._hasLoaded)
       throw AppError.GeneralTenantSettingsNotLoaded;
 
     return generalSettings;
+  }
+
+  getModuleTenantSettings<T extends IModuleTenantSettings>(moduleName: TenantSettingsModuleName): T {
+    const moduleSettings = this.store.selectSnapshot(TenantSettingsState.byModule<T>(moduleName));
+
+    if (!moduleSettings._hasLoaded)
+      throw AppError.ModuleTenantSettingsNotLoaded(moduleName);
+
+    return moduleSettings;
   }
 }
