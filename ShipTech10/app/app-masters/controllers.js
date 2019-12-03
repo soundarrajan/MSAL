@@ -3944,7 +3944,9 @@ APP_MASTERS.controller("Controller_Master", [
                 $rootScope.formValues.documentType = {
                     "id": $state.params.entity_id
                 }
-            }       
+            }  
+            documentTypeScope = angular.element($(".form_input_DocumentType")).scope(); 
+            $rootScope.formValues.documentType = documentTypeScope.formValues.documentType;
             data.request.Payload.documentType = $rootScope.formValues.documentType;
             data.request.Payload.isVerified = false; // default false
             if (!$rootScope.formValues.documentType) {
