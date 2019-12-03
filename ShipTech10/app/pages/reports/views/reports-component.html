@@ -16,8 +16,8 @@
                     </div>
                     <ul class="categories_menu animated fadeIn" ng-if="!$ctrl.reportsLoading && ctrl.toggled">
                         <!-- reports_custom_col -->
-                        <li class="nav-item" ng-repeat="(key, value) in $ctrl.standardReports" ng-click="$ctrl.showChilds(key)">
-                            <a class="nav-link nav-toggle">
+                        <li class="nav-item" ng-repeat="(key, value) in $ctrl.standardReports" >
+                            <a class="nav-link nav-toggle" ng-click="$ctrl.showChilds(key)">
                                 <span class="">
                                     {{value.categoryName}}
                                 </span>
@@ -26,7 +26,7 @@
                             </a>
                             <ul class="reports_names"  ng-show="value.active">
                                 <li class="nav-item" ng-repeat="(key2,report2) in value.items">
-                                    <a style="background-color: #21282e">
+                                    <a ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]" style="background-color: #21282e">
                                         <span class="">
                                             {{report2.name}}
                                         </span>
