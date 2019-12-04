@@ -326,12 +326,12 @@ APP_CLAIMS.controller("Controller_Claims", [
                             // $scope.formValues.orderDetails.orderStatusName = response.status.name;
                             $scope.formValues.orderDetails.orderStatusName = response.status.displayName;
                         }
-                        if (response.deliveryDate) {
+                        if (response.deliveryDate && !$("#OrderOrderID").hasClass("ng-pristine")) {
                             $timeout(function(){
                                 if (!$scope.formValues.deliveryDate || !$scope.formValues.orderDetails.deliveryNo) {
                                     $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
                                 }
-                                $scope.formValues.deliveryDate = $scope.formValues.deliveryDate ? $scope.formValues.deliveryDate : response.deliveryDate;
+                                $scope.formValues.deliveryDate = response.deliveryDate;
                             })
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
@@ -385,7 +385,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     if (field) vm.getOptions(field);
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
                     $scope.options.Product = [];
-                    deliveryDateFromDelivery = _.find($scope.options['deliveryNumber'], {id:$scope.formValues.orderDetails.deliveryNo.id}).payload.deliveryDate; 
+                    deliveryDateFromDelivery = _.find($scope.options['deliveryNumber'], {id:$scope.formValues.orderDetails.deliveryNo.id}).payload.orderDetails.deliveryDate; 
 
                     if (deliveryDateFromDelivery) {
                         $timeout(function(){
