@@ -2,7 +2,6 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import {
-  BooleanFilterParams,
   RowModelType,
   RowSelection,
   TypedColDef
@@ -24,6 +23,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import moment from 'moment';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;

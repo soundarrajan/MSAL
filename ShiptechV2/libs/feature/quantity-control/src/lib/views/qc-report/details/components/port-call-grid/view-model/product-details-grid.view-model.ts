@@ -47,9 +47,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     rowModelType: RowModelType.ClientSide,
     pagination: false,
     animateRows: true,
-    deltaRowDataMode: true,
+    domLayout: 'autoHeight',
+    // Note: With deltaRowDataMode=true the cellClassRules do not work, values changes, handlers are evaluated, but the css classes are not removed. This is a bug in ag-grid.
+    deltaRowDataMode: false,
     suppressPaginationPanel: false,
-    suppressColumnVirtualisation: true,
     rowSelection: RowSelection.Multiple,
     rowDragManaged: true,
     suppressRowClickSelection: true,
@@ -95,11 +96,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: model('robBeforeDiff'),
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
-      'cell-background red': params => {
-        const b = params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.NotMatched;
-        return b;
-      },
-      'cell-background orange': params =>params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.WithinLimit,
+      'cell-background red': params => params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
+      'cell-background orange': params => params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
 
@@ -124,13 +122,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     field: model('deliveredDiff'),
     cellRendererFramework: AgCellTemplateComponent,
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
       'cell-background red': params => params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
-      'cell-background orange': params =>params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.WithinLimit,
+      'cell-background orange': params => params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
-
 
   logBookAfterDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
@@ -156,7 +152,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent,
     cellClassRules: {
       'cell-background red': params => params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
-      'cell-background orange': params =>params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.WithinLimit,
+      'cell-background orange': params => params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
   robAfterDeliveryColGroup: ColGroupDef = {
@@ -231,7 +227,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): TypedColDef[] {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
-
 
 
   getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IDisplayLookupDto> {
