@@ -1,0 +1,140 @@
+.menu-toggler-icon {
+    width: 16px !important;
+    height: 13px !important;
+    background-image: url(../../global/menutogglericon.png);
+    border-radius: 0 !important;
+    background-repeat: no-repeat;
+    margin-left: 20px;
+    line-height: 40px !important;
+  
+  }
+
+  .mail-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url(../../global/mailicon.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  }
+  .pdf-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url(../../global/export-pdf.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  }
+  
+  .csv-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url(../../global/export-csv.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  
+  }
+  
+  .print-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url(../../global/print.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  
+  }
+  
+  .xl-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url(../../global/export-xls.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  
+  }
+
+  .save-icon {
+    width: 24px;
+    height: 23px;
+    background-image: url(../../global/save.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  
+  }
+  
+  .trash-icon {
+    width: 24px;
+    height: 23px;
+    background-image: url(../../global/trash.png);
+    margin-top: 13px;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  
+    span {
+      margin-top: -8px;
+    }
+  
+    &.ui-button:enabled:focus {
+      box-shadow: none !important;
+    }
+  
+  }

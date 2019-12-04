@@ -1,0 +1,533 @@
+@import "shiptech-variables";
+@import "skinning-general";
+@import "skinning-primeng-components";
+@import "shiptech-grid";
+@import "shiptech-icons";
+
+body {
+  font-family: 'Roboto';
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.footer-color {
+  color: $footertext;
+}
+
+//Bread Scrum Designs
+
+.ui-related-links {
+  padding: 0px !important;
+
+  ul {
+    li {
+      margin: 0px !important;
+
+      a {
+        display: inline-block;
+        line-height: 58px;
+        height: 58px;
+        vertical-align: middle;
+        padding: 0px 16px 0px 16px;
+
+      }
+
+    }
+  }
+}
+
+.breadcrumbs-container {
+  height: 58px;
+}
+
+//PRIME NG COMPONENTS 
+
+.accordionheader-blue {
+
+  color: $panelheadertextcolor !important;
+  font-size: $font-xlarge;
+  line-height: 24px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.shiptech-blue-accordion {
+  .ui-accordion-header {
+    margin-bottom: 4px !important;
+
+    &:hover {
+      a {
+        background-color: $bg-white !important;
+      }
+    }
+
+    a {
+      border: none !important;
+    }
+
+    .ui-accordion-toggle-icon {
+      margin-top: -7px;
+    }
+
+    .pi-chevron-down:before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 600;
+      color: $panelheadertextcolor !important;
+      content: "\f103" !important;
+    }
+
+    .pi-chevron-right:before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 600;
+      color: $panelheadertextcolor !important;
+      content: "\f102" !important;
+    }
+  }
+
+  :focus {
+    outline: none !important;
+  }
+
+  .ui-accordion-content {
+    border: none !important;
+    margin-top: -18px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 4px;
+  }
+}
+
+.blue-box {
+  width: 25px;
+  height: 25px;
+  border: 1px solid $shiptech-blue;
+  padding: 3px;
+  margin-top: 1px;
+
+  .ui-chkbox .ui-chkbox-box {
+    width: 17px !important;
+    height: 17px !important;
+    border: 1px solid $line-graycolor !important;
+  }
+}
+
+.checkbox-label {
+  padding-left: 10px;
+  padding-top: 5px;
+  margin-right: -11px;
+}
+
+.ui-spinner-input {
+  padding-right: 1em !important;
+}
+
+.pi-chevron-down:before {
+  content: "\e906" !important;
+}
+
+
+
+//status
+shiptech-entity-status {
+  span {
+    vertical-align: middle;
+  }
+}
+
+
+//tab styles
+
+.shiptech-tab {
+
+  .ui-state-default {
+    background-color: $bg-white-shade !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    padding-top: 3px !important;
+    padding-bottom: 1px !important;
+  }
+
+  .ui-state-active {
+    background-color: $bg-white-shade !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-bottom: 3px solid $shiptech-blue !important;
+    padding-top: 3px !important;
+    padding-bottom: 1px !important;
+  }
+
+  .ui-menuitem-link .ui-menuitem-text {
+    color: $default-textcolor !important;
+    font-size: $font-small !important;
+    font-family: Roboto !important;
+  }
+}
+
+//other components
+//buttons
+.event-add {
+  button {
+    height: 15px;
+    width: 15px !important;
+    background-color: $graybutton-bgcolor !important;
+    border: none !important;
+    margin-left: 5px !important;
+
+    &.ui-button:enabled:focus {
+      box-shadow: none;
+    }
+
+    span {
+      font-size: $font-xsmall;
+    }
+  }
+}
+
+.event-minus {
+  button {
+    height: 15px;
+    width: 15px !important;
+    background-color: $graybutton-bgcolor !important;
+    border: none !important;
+    margin-top: 8px !important;
+
+    &.ui-button:enabled:focus {
+      box-shadow: none;
+    }
+
+    span {
+      font-size: $font-xsmall;
+    }
+  }
+}
+
+.editable-textarea {
+
+  margin-bottom: 3px !important;
+  margin-top: 3px !important;
+}
+
+button:focus {
+  outline: none;
+}
+
+.btn-i-yellow {
+  color: $yellowbutton-bordercolor !important;
+  border: 1px solid $yellowbutton-textcolor !important;
+  background-color: $bg-white !important;
+  margin-right: 10px;
+  height: 30px;
+  min-width: 85px;
+}
+
+.btn-i-success {
+  color: $greenbutton-bordercolor !important;
+  border: 1px solid $greenbutton-textcolor !important;
+  background-color: $bg-white !important;
+  margin-right: 10px;
+  height: 30px;
+  min-width: 80px;
+
+}
+
+//search component -start
+.search-box {
+  border: 1px solid $searchcolor !important;
+  border-radius: 15px 0px 0px 15px !important;
+  padding-left: 10px !important;
+  border-right: none !important;
+}
+
+.searchButton {
+  border: 1px solid $searchcolor;
+  border-left: none;
+  background: $bg-white;
+  text-align: center;
+  color: $searchicon;
+  border-radius: 0 15px 15px 0;
+  cursor: pointer;
+  font-size: $font-medium;
+  padding-bottom: 6px;
+  padding-right: 9px;
+  padding-top: 5.5px;
+  margin-right: 10px;
+}
+
+//search component -end
+
+//Quality Control Main Page
+.select-option {
+  height: 28px;
+  margin-top: 2px;
+}
+
+.widget-title {
+  font-weight: 500;
+  font-size: $font-medium;
+  line-height: 24px !important;
+  color: black !important;
+}
+
+.summary {
+  .summary-item {
+    padding: 5px 10px;
+    background-color: $label-bgcolor;
+    color: $label-textcolor;
+
+    i {
+      margin-right: 8px;
+      font-size: $font-ml;
+    }
+
+    &.matched {
+      i {
+        color: $icon-green !important;
+
+      }
+    }
+
+    &.matched-withing-limit {
+      i {
+        color: $icon-orange !important;
+
+      }
+    }
+
+    &.not-matched {
+      i {
+        color: $icon-red !important;
+
+      }
+    }
+
+    .label {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500 !important;
+      font-size:$font-large ;
+      line-height: 24px;
+      color: $label-textcolor;
+    }
+
+    .value {
+      font-weight: 400 !important;
+      font-size: $font-large;
+      line-height: 24px;
+    }
+
+  }
+}
+
+.ui-inputtext:enabled:focus {
+  box-shadow: none !important;
+}
+
+.pager {
+  .arrowicon {
+    background-color: $arrowiconbgcolor !important;
+    padding: 8px 9px !important;
+    border-radius: 0px !important;
+  }
+}
+
+//Port CALL ID Vesselpage
+.portcallbadge {
+  .badge {
+    text-align: center;
+    border-radius: 21px !important;
+  }
+
+  div {
+    span {
+      margin-left: 10px;
+      line-height: 20px;
+      height: 20px;
+      vertical-align: middle;
+      display: inline-block;
+      padding: 0px 7px;
+
+      &:after {
+        position: relative;
+        left: 12px;
+        top: 1px;
+        margin: auto;
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 11px;
+        background: $afterelementcolor;
+
+      }
+
+      &:last-child {
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.badge {
+  font-family: Roboto;
+  font-style: normal;
+  font-size: $font-small;
+
+  &.red {
+    background: $label-bgcolor-danger !important;
+    color: $default-textcolor !important;
+    font-weight: 500;
+  }
+
+  &.blue {
+    background: $label-bgcolor !important;
+    color: $shiptech-blue !important;
+    font-weight: bold;
+  }
+
+  &.info {
+    background: $label-bgcolor !important;
+    color: $default-textcolor !important;
+    font-weight: bold;
+  }
+}
+
+.ui-panel .ui-panel-titlebar {
+  border: none !important;
+  padding: 1em !important;
+}
+
+.ui-panel .ui-panel-content {
+  border: none !important;
+}
+
+.line {
+  border-top: 1px solid $line-graycolor !important;
+  border-width: 0px;
+}
+
+.line-margin-left {
+  margin-top: -14px;
+  margin-bottom: 15px
+}
+
+.line-margin-right {
+  margin-top: -7px !important;
+  margin-bottom: 16.5px;
+}
+
+p-panel {
+  &.headerh1 {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $font-xlarge;
+
+    &.blue {
+      color: $panelheadertextcolor !important;
+
+      .ui-panel .ui-panel-titlebar {
+        color: $panelheadertextcolor !important;
+        font-size: $font-xlarge;
+      }
+    }
+  }
+}
+
+.header-subtext {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: $font-medium;
+  line-height: 16px;
+}
+
+.headerh1 {
+  font-family: Roboto !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: $font-xlarge;
+
+  &.blue {
+    color: $panelheadertextcolor !important;
+  }
+}
+
+.dropdown-text {
+  .ui-dropdown {
+    border: 1px solid $searchcolor;
+  }
+
+  .ui-inputtext {
+    font-family: Open Sans;
+    font-size: $font-xsmall !important;
+  }
+}
+
+//icons position
+
+.mail-icon-position {
+  float: left;
+  margin-top: 7px !important;
+
+  span {
+    &:after {
+      position: absolute;
+      right: -16px;
+      top: 6px;
+      margin: auto;
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 10px;
+      background: $afterelementcolor;
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+
+    :last-child {
+
+      &:after {
+        display: none;
+      }
+    }
+  }
+
+}
+
+.send-icon-position {
+  float: left;
+  margin-top: 10px !important;
+}
+
+.trash-icon {
+  background-color: transparent !important;
+  border-color: transparent !important;
+ 
+
+}
+
+//24's styles
+.layout-content {
+  padding: 0px !important;
+}
+
+#wunderbar {
+  margin: -5px -5px 8px -5px !important;
+  border-bottom: 2px solid $wunderbar-bottomcolor !important;
+}
+
+.st-main-content-menu {
+  border-bottom: 0px !important;
+}
+
+.navbar-text {
+  display: inline-block;
+  margin: 10px 10px 0px 10px !important;
+  position: relative;
+  top: 4px;
+}

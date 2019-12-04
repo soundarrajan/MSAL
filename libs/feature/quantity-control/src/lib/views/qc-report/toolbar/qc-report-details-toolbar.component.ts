@@ -43,7 +43,7 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
         routerLinkActiveOptions: { exact: true }
       },
       {
-        label: 'E-mail Log',
+        label: 'Email Log',
         routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportEmailLogPath],
         routerLinkActiveOptions: { exact: true }
       },
