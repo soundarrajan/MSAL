@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ProductDetailsGridViewModel } from './product-details-grid.view-model';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { ProductTypeListItemViewModel, ProductTypeListItemViewModelBuilder } from './product-type-list-item.view-model';
+import { ProductTypeListItemViewModel, ProductTypeListItemViewModelFactory } from './product-type-list-item.view-model';
 import { map } from 'rxjs/operators';
 import { Column } from 'ag-grid-community';
 import { QcReportService } from '../../../../../../services/qc-report.service';
@@ -36,7 +36,7 @@ export class ProductDetailsViewModel {
     public gridViewModel: ProductDetailsGridViewModel,
     private store: Store,
     private detailsService: QcReportService,
-    private viewModelBuilder: ProductTypeListItemViewModelBuilder,
+    private viewModelBuilder: ProductTypeListItemViewModelFactory,
     private tenantSettings: TenantSettingsService,
     @Inject(LOOKUPS_API_SERVICE) private lookupsApi: ILookupsApiService
   ) {

@@ -183,6 +183,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     headerName: QcSoundingReportListColumnsLabels.soundedOn,
     colId: QcSoundingReportListColumns.soundedOn,
     field: model('soundedOn'),
+    filter: 'agDateColumnFilter',
     valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
   };
 

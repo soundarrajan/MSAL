@@ -9,6 +9,7 @@ import { Column } from 'ag-grid-community/dist/lib/entities/column';
 import { GridApi } from 'ag-grid-community/dist/lib/gridApi';
 import { ColumnApi } from 'ag-grid-community/dist/lib/columnController/columnApi';
 import { ComponentSelectorResult } from 'ag-grid-community/dist/lib/components/framework/userComponentFactory';
+import { RowNodeBlockBeans } from 'ag-grid-community/dist/lib/modules/rowNodeCache/rowNodeBlock';
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -52,6 +53,10 @@ export interface TypedColDef<TData = any, TField = any> extends Omit<ColDef, 'fi
 
 export interface TypedColGroupDef extends Omit<ColGroupDef, 'children'>{
   children: (TypedColGroupDef | TypedColDef)[];
+}
+
+export interface TypedRowNode<TData = any> extends Omit<RowNode, 'data'>{
+  data: TData
 }
 
 export function getColDef<T = any>(colDef: TypedCellRendererColDef<T>): TypedCellRendererColDef<T> {

@@ -9,6 +9,8 @@ export enum AppErrorCode {
   FailedToLoadUserSettings = 103,
   FailedToPurgeUserSettings = 104,
   GeneralTenantSettingsNotLoaded = 105,
+  ModuleTenantSettingsNotLoaded = 106,
+  MissingLookupKey = 107,
 
   LoadUserProfileFailed = 200
 }

@@ -89,6 +89,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
     field: model('createdOn'),
+    filter: 'agDateColumnFilter',
     valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
     width: 400
   };
