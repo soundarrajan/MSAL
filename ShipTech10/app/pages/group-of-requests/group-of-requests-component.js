@@ -3226,26 +3226,11 @@ ctrl.setProductData = function(data, loc) {
             }
         };
         ctrl.setLatestOfferProduct = function (product, locations, seller) {
-            var theLocation = locations[0];
-            for (var i = 0; i < locations.length; i++) {
-                if (locations[i].requestId === product.requestId) {
-                    var theLocation = locations[i];
-                    break;
-                }
-            }
-            var productList = $filter("filter")(theLocation.products, {
-                product: {
-                    id: product.product.id
-                }
-            });
-            if (productList.length > 0) {
-                product = productList[0];
-                seller = $filter("filter")(product.sellers, {
-                    sellerCounterparty : {
-                        id: seller.sellerCounterparty.id
-                    } 
-                })[0];
-            }
+            seller = $filter("filter")(product.sellers, {
+                sellerCounterparty : {
+                    id: seller.sellerCounterparty.id
+                } 
+            })[0];
             ctrl.latestOfferProduct = product;
             ctrl.latestOfferSeller = seller;
         };
