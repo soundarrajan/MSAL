@@ -36,7 +36,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   private readonly quantityPrecision;
 
   gridOptions: GridOptions = {
-    groupHeaderHeight: 40,
+    groupHeaderHeight: 25,
     headerHeight: 40,
     rowHeight: 35,
     rowModelType: RowModelType.ClientSide,

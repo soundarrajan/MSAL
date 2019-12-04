@@ -8,7 +8,7 @@
         z-index: 999;
         padding: 0 20px;
         @include clearfix();
-        @include shadow(0 2px 10px 0 rgba(0, 0, 0, 0.16));
+      //  @include shadow(0 2px 10px 0 rgba(0, 0, 0, 0.16));
 
         .layout-menu-button {
             display: inline-block;
@@ -44,10 +44,13 @@
         .layout-topbar-logo {
             display: inline-block;
             vertical-align: middle;
+            line-height:40px;
             //margin-left: 1.5em;
 
             img {
                 height: $logoHeight;
+                line-height: 16px;
+                vertical-align: middle;
             }
         }
 

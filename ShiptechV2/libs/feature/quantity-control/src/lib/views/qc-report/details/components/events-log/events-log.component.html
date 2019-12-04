@@ -2,15 +2,15 @@
   [gridOptions]="gridViewModel.gridOptions"
   appAgGridFirstColumnLocked
   appAgGridSizeToFit
-  class="ag-theme-balham"
+  class="ag-theme-balham  shiptech-blue-header"
   id="quantityControlEventsLog">
 </ag-grid-angular>
 
 <ng-template [columnDef]="[gridViewModel.actionsColumn]"
              appAgColumnHeaderTemplate>
   <ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <p-button (onClick)="add()" icon="pi pi-plus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
+    <div fxLayout="row" fxLayoutAlign="center center " class="event-add">
+      <p-button (onClick)="add()" icon="fa fa-plus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
     </div>
   </ng-container>
 </ng-template>
@@ -19,8 +19,8 @@
 <ng-template [columnDef]="[gridViewModel.actionsColumn]"
              appAgCellTemplate let-item="data">
   <ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <p-button (onClick)="remove(item)" icon="pi pi-minus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
+    <div fxLayout="row" fxLayoutAlign="center center"  class="event-minus">
+      <p-button (onClick)="remove(item)" icon="fa fa-minus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
     </div>
   </ng-container>
 </ng-template>
@@ -35,6 +35,7 @@
                 [ngModelOptions]="{updateOn: 'blur'}"
                 [ngModel]="value"
                 [disabled]="isBusy$ | async"
+                class="editable-textarea"
       ></textarea>
     </div>
 

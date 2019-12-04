@@ -1,0 +1,114 @@
+//general styles
+.textarea-input {
+    border: 1px solid $searchcolor;
+    font-family: Open Sans;
+    font-size: $font-xsmall !important;
+  }
+  
+  .text-right {
+    text-align: right;
+  }
+  
+  .text-left {
+    text-align: left;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .flex-vertical-center {
+    display: flex;
+    align-items: center;
+  }
+  
+  .p-l-1 {
+    padding-left: 1px !important;
+  }
+  
+  .p-r-5 {
+    padding-right: 5px !important;
+  }
+  
+  .m-t-m-15 {
+    margin-top: -15px;
+  }
+  
+  .m-t-m-2 {
+    margin-top: -2px;
+  }
+  
+  .m-t-7 {
+    margin-top: 7px;
+  }
+  
+  .m-b-0 {
+    margin-bottom: 0px;
+  }
+  
+  .m-t-m-20 {
+    margin-top: -20px;
+  }
+  
+  .m-b-4 {
+    margin-bottom: 4px;
+  }
+  
+  .m-b-7 {
+    margin-bottom: 7px;
+  }
+  
+  .m-b-14 {
+    margin-bottom: 14px !important;
+  }
+  
+  .mr-15 {
+    margin-right: 15px !important;
+  }
+  
+  .m-r-5 {
+    margin-right: 5px;
+  }
+  
+  .color-gray {
+    color: $line-graycolor;
+  }
+    
+  .f-s-14 {
+    font-size: $font-medium;
+  }
+  
+  .f-s-14-roboto {
+    font-size: $font-medium;
+    font-family: Roboto;
+  }
+  
+  .f-s-10-Open-Sans {
+    font-family: Open Sans;
+    font-size: $font-xsmall !important;
+  }
+  
+  .f-s-10 {
+    font-size: $font-xsmall;
+    color: $default-textcolor;
+    line-height: 12px;
+  }
+  
+  .float-right {
+    float: right;
+  }
+  
+  .m-r-1 {
+    margin-right: 1em !important;
+  }
+  
+  .left-align {
+    margin-left: 0;
+    margin-right: auto;
+  }
+  
+  .right-align {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  

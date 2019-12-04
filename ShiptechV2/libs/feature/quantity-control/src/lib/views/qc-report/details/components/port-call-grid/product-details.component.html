@@ -3,9 +3,9 @@
   appAgGridSizeToFit
   [gridOptions]="viewModel.gridViewModel.gridOptions"
   [rowData]="viewModel.productTypes$ | async"
-  class="ag-theme-balham"
+  class="ag-theme-balham shiptech-blue-group-header"
   id="quantity-control-product-details-grid"
-  style="height:500px">
+  style="height:435px">
 </ag-grid-angular>
 
 
@@ -26,11 +26,11 @@
              agGroupHeaderTemplate
              let-groupDef="groupDef" let-title="title">
   <div class="ag-header-group-cell-label p-2" ref="agContainer">
-    <div class="row" style="width: 100%">
-      <div class="col-6">
+    <div class="row flex-vertical-center" style="width: 100%">
+      <div class="col-10">
         <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
       </div>
-      <div class="col-6">
+      <div class="col-2">
         <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
                                [selectedUom]="viewModel.gridViewModel.getSelectedUomValue$(groupDef.groupId) | async"
                                [disabled]="isBusy$ | async"

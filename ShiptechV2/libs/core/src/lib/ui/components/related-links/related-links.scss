@@ -32,7 +32,10 @@
 .ui-related-links .ui-menuitem-text {
   vertical-align: middle;
   text-transform: uppercase;
-  color:#fff
+  color:#fff;
+  font-size: 12px;
+  font-family: Roboto;
+  font-weight: bold;
 }
 
 .ui-related-links ul li .ui-menuitem-link.previous-active {
@@ -40,5 +43,10 @@
 }
 
 .ui-related-links ul li .ui-menuitem-link.active {
- background-color: rgb(179, 180, 183);;
+ background-color: rgb(179, 180, 183);
+ background-color:  #B3B4B7;
+ .ui-menuitem-text {
+ color: #4D79BC;
+ font-weight: bold;
+ }
 }
