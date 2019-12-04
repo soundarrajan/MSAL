@@ -31,7 +31,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
 
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
-    headerHeight: 40,
+    headerHeight: 25,
+    rowHeight:35,
 
     domLayout: 'autoHeight',
     pagination: false,

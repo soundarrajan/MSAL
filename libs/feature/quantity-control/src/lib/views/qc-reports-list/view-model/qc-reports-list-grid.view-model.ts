@@ -45,7 +45,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
-    rowHeight: 35,
+    rowHeight: 40,
 
     rowModelType: RowModelType.ServerSide,
     pagination: true,
