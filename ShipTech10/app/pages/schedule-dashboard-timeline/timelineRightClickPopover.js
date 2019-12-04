@@ -166,7 +166,7 @@ angular.module('shiptech.components')
 				Object.keys(groupedVoyagesOrder).forEach(function (item) {
 					Object.keys(groupedVoyagesOrder[item]).forEach(function (item2) {
 						if (item2 != "undefined") {
-							groupedVoyagesOrder[item][item2] = _.uniqBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.orderId');
+							// groupedVoyagesOrder[item][item2] = _.uniqBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.orderId');
 							groupedVoyagesOrder[item][item2] = _.groupBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.fuelType.name'); 
 							Object.keys(groupedVoyagesOrder[item][item2]).forEach(function (item3) {
 								if (item3 != "undefined") {
