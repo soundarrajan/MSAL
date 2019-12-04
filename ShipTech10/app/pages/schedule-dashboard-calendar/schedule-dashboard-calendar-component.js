@@ -529,6 +529,23 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         //      * @param {Integer} startDate - A Unix timestamp representing the start date of the displayed dates.
         //      * @param {Integer} dayCount - The number of days to display.
         //      */
+        $scope.formatDateToMomentFormat = function( dateFormat ){
+            dbFormat = dateFormat;
+            hasDayOfWeek = false;
+            currentFormat = angular.copy(dateFormat);
+            if (currentFormat.startsWith("DDD ")) {
+                hasDayOfWeek = true;
+                currentFormat = currentFormat.split("DDD ")[1];
+            }           
+            currentFormat = currentFormat.replace(/d/g, "D");
+            currentFormat = currentFormat.replace(/y/g, "Y");
+            if (hasDayOfWeek) {
+                currentFormat = "ddd " + currentFormat;
+            }
+            return currentFormat;
+        };
+
+        $scope.dateFormat = $scope.formatDateToMomentFormat($scope.tenantSettings.tenantFormats.dateFormat.name);
         function initializeCalendarDefault(startDate, dayCount, unit) {
             // IMPORTANT!
             // Must use angular.merge (instead of simple attribution) in order to preserve
@@ -537,10 +554,15 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             // since Angular loses the bound array.
             angular.merge(ctrl.calendarDates, generateCalendarDates(startDate, dayCount, unit));
             //Set up start and end dates of the timeframe. Get them from the generated array of dates.
+            var date = $scope.dateFormat.split(" ");
+            var dateFormat = "";
+            for (var i=0; i < date.length - 1; i++) {
+                dateFormat += " " + date[i];
+            }
             ctrl.startDate = ctrl.calendarDates[0];
-            ctrl.startDateString = moment.unix(ctrl.startDate.timestamp).format('DD-MMM-YYYY'); // Solely for printing in the timeframe selector (template).
+            ctrl.startDateString = moment.unix(ctrl.startDate.timestamp).format(dateFormat); // Solely for printing in the timeframe selector (template).
             ctrl.endDate = ctrl.calendarDates[ctrl.calendarDates.length - 1];
-            ctrl.endDateString = moment.unix(ctrl.endDate.timestamp).format('DD-MMM-YYYY'); // Idem.
+            ctrl.endDateString = moment.unix(ctrl.endDate.timestamp).format(dateFormat); // Idem.
         	
         	if (localStorage.getItem("scheduleDatesTable")) {
 	        	lSscheduleDatesTable = JSON.parse(localStorage.getItem("scheduleDatesTable"));

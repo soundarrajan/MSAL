@@ -599,8 +599,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 ctrl.endDate = ctrl.endDate.add('days', daysDifference);
             }
 
-            $scope.startDateDisplay = ctrl.startDate.format('DD-MM-YYYY');
-            $scope.endDateDisplay = ctrl.endDate.format('DD-MM-YYYY');
+            var date = $scope.dateFormat.split(" ");
+            var dateFormat = "";
+            for (var i=0; i < date.length - 1; i++) {
+                dateFormat += " " + date[i];
+            }
+
+            $scope.startDateDisplay = moment.unix(moment(ctrl.startDate).format('X')).format(dateFormat);
+            $scope.endDateDisplay = moment.unix(moment(ctrl.endDate).format('X')).format(dateFormat);
 
             getData($scope.filtersAppliedPayload).then(function(response) {
                 updateTimeline(response);
@@ -628,8 +634,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     // Create startDate and endDate base on startsBefore and endsAfter
                     ctrl.startDate = moment.utc().add('days', -ctrl.scheduleDashboardConfiguration.startsBefore);
                     ctrl.endDate = moment.utc().add('days', ctrl.scheduleDashboardConfiguration.endsAfter);
-                    $scope.startDateDisplay = ctrl.startDate.format('DD-MM-YYYY');
-                    $scope.endDateDisplay = ctrl.endDate.format('DD-MM-YYYY');
+                    
+                    var date = $scope.dateFormat.split(" ");
+                    var dateFormat = "";
+                    for (var i=0; i < date.length - 1; i++) {
+                        dateFormat += " " + date[i];
+                    }
+
+                    $scope.startDateDisplay = moment.unix(moment(ctrl.startDate).format('X')).format(dateFormat);
+                    $scope.endDateDisplay = moment.unix(moment(ctrl.endDate).format('X')).format(dateFormat);
     
                     //DEBUG
                     // ctrl.startDate = moment().add('days', -60);
