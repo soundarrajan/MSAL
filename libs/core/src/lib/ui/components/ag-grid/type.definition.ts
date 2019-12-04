@@ -1,15 +1,18 @@
-import { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import {
+  CellClassParams,
+  ColDef,
+  ColGroupDef,
+  ICellEditorParams,
+  ICellRendererParams,
+  NewValueParams
+} from 'ag-grid-community';
 import {
   BaseColDefParams,
   BaseWithValueColDefParams,
   ValueGetterParams
 } from 'ag-grid-community/dist/lib/entities/colDef';
 import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
-import { Column } from 'ag-grid-community/dist/lib/entities/column';
-import { GridApi } from 'ag-grid-community/dist/lib/gridApi';
-import { ColumnApi } from 'ag-grid-community/dist/lib/columnController/columnApi';
 import { ComponentSelectorResult } from 'ag-grid-community/dist/lib/components/framework/userComponentFactory';
-import { RowNodeBlockBeans } from 'ag-grid-community/dist/lib/modules/rowNodeCache/rowNodeBlock';
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -28,7 +31,7 @@ export interface TypedValueFormatterParams<T> extends BaseWithValueColDefParams 
   value: T;
 }
 
-export interface TypedBaseColDefParams<TData = any>  extends BaseColDefParams {
+export interface TypedBaseColDefParams<TData = any> extends BaseColDefParams {
   data: TData;
 }
 
@@ -36,7 +39,21 @@ export interface TypedValueGetterParams<T> extends ValueGetterParams {
   value: T;
 }
 
-export interface TypedCellRendererParams<TData, TField> extends Omit<ICellRendererParams, 'data' | 'value'>  {
+export interface TypedCellRendererParams<TData = any, TField = any> extends Omit<ICellRendererParams, 'data' | 'value'> {
+  data: TData;
+  value: TField;
+}
+
+export interface TypedBaseColDefParams<TData = any, TField = any> extends Omit<BaseColDefParams, 'data' | 'value'> {
+  data: TData;
+}
+
+export interface TypedNewValueParams<TData = any, TField = any> extends Omit<NewValueParams, 'data' | 'value' | 'oldValue' | 'newValue'> {
+  oldValue: TField;
+  newValue: TField;
+}
+
+export interface TypedNewValueParams<TData = any, TField = any> extends Omit<CellClassParams, 'data' | 'value'> {
   data: TData;
   value: TField;
 }
@@ -45,17 +62,18 @@ export interface TypedColDef<TData = any, TField = any> extends Omit<ColDef, 'fi
   valueFormatter?: (params: TypedValueFormatterParams<TField>) => string;
   valueGetter?: ((params: TypedBaseColDefParams<TData>) => any) | string
   cellClassRules?: {
-    [cssClassName: string]: (((params: { data: TData, value: TField }) => boolean) | string);
+    [cssClassName: string]: ((params: TypedNewValueParams<TData, TField>) => boolean) | string;
   };
   field?: keyof TData,
   cellRendererSelector?: (params: TypedCellRendererParams<TData, TField>) => ComponentSelectorResult;
+  onCellValueChanged?: (params: TypedNewValueParams<TData, TField>) => void;
 }
 
-export interface TypedColGroupDef extends Omit<ColGroupDef, 'children'>{
+export interface TypedColGroupDef extends Omit<ColGroupDef, 'children'> {
   children: (TypedColGroupDef | TypedColDef)[];
 }
 
-export interface TypedRowNode<TData = any> extends Omit<RowNode, 'data'>{
+export interface TypedRowNode<TData = any> extends Omit<RowNode, 'data'> {
   data: TData
 }
 
@@ -128,23 +146,3 @@ export enum knownFilterTypes {
   Date = 'date',
   Number = 'number'
 }
-
-/**
- * To be used in combination with  colDef.filter: 'agNumberColumnFilter'
- */
-export const BooleanFilterParams = {
-  suppressAndOrCondition: true,
-  filterOptions: [
-    'empty',
-    {
-      displayKey: AgGridConditionTypeEnum.YES,
-      displayName: 'Yes',
-      hideFilterInput: true,
-      test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null && (cellValue.toString() .toLowerCase() === "1" || cellValue.toString().toLowerCase() === "true")
-    }, {
-      displayKey: AgGridConditionTypeEnum.NO,
-      displayName: 'No',
-      hideFilterInput: true,
-      test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null && (cellValue.toString() .toLowerCase() === "0" || cellValue?.toString().toLowerCase() === "false")
-    }]
-};

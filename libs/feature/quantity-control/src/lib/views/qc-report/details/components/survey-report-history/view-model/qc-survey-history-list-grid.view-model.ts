@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import {
-  BooleanFilterParams,
   RowModelType,
   RowSelection,
   TypedColDef
@@ -27,6 +26,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
 import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
 import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(prop: keyof IQcSurveyHistoryListItemDto): keyof IQcSurveyHistoryListItemDto {
   return prop;
