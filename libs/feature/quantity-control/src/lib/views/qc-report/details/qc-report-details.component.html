@@ -23,9 +23,9 @@
       <p-panel class="headerh1 blue" header="PORT CALL ID - VESSEL NAME">
         <p-header class="portcallbadge">
           <div style="float:right">
-            <span class="badge red">Not Matched</span> 
-            <span class="badge blue">Claims: {{nbOfClaims$ | async}}</span> 
-            <span class="badge blue">Deliveries: {{nbOfDeliveries$ | async}}</span>
+            <span class="badge" [ngClass]="(matchStatus$ | async).name">{{ (matchStatus$ | async).displayName }}</span>
+            <span class="badge">Claims: {{nbOfClaims$ | async}}</span>
+            <span class="badge">Deliveries: {{nbOfDeliveries$ | async}}</span>
           </div>
         </p-header>
         <hr class="line m-t-m-15">
