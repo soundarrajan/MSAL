@@ -23,6 +23,7 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-status';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -48,6 +49,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   nbOfDeliveries$: Observable<number>;
   comment$: Observable<string>;
 
+  @Select(QcReportState.matchStatus) matchStatus$: Observable<IDisplayLookupDto>;
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
 
   hasVerifiedStatus: boolean;

@@ -1,4 +1,4 @@
-import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { IQuantityControlState } from '../quantity-control.state';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
@@ -11,9 +11,11 @@ import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponsesStateModel } from './details/qc-vessel-responses.state';
-import { QcProductTypeListItemStateModel } from './details/qc-product-type-list-item-state.model';
+import {
+  IQcProductTypeListItemState,
+  QcProductTypeListItemStateModel
+} from './details/qc-product-type-list-item-state.model';
 import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
-import { Decimal } from 'decimal.js';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction,
@@ -51,13 +53,21 @@ import {
   LoadReportSurveyHistoryFailedAction,
   LoadReportSurveyHistorySuccessfulAction
 } from './qc-report-survey-history.actions';
-import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
-import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import {
-  QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction,
+  QcRevertVerifyReportAction,
+  QcRevertVerifyReportFailedAction,
   QcRevertVerifyReportSuccessfulAction
 } from './details/actions/revert-verify-report.actions';
+import { SurveyStatusLookups } from '../../services/survey-status-lookups';
+import {
+  MatchedQuantityStatus,
+  NotMatchedQuantityStatus,
+  WithinLimitQuantityStatus
+} from '../../core/enums/quantity-match-status';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -67,46 +77,43 @@ export class QcReportState {
 
   static default = new QcReportStateModel();
 
-  private readonly verifiedStatus: Promise<IDisplayLookupDto>;
-  private readonly newStatus: Promise<IDisplayLookupDto>;
-
-  constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {
-    this.verifiedStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.Verified).first();
-    this.newStatus = this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.New).first();
+  constructor(
+    private surveyStatusLookups: SurveyStatusLookups
+  ) {
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static isBusy(state: IQcReportState): boolean {
     const isBusy = [
       state.details._isLoading,
       state.details.isSaving,
       state.details.isVerifying,
-      state.details.isRevertVerifying,
+      state.details.isRevertVerifying
     ];
     return isBusy.some(s => s);
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static hasUnsavedChanges(state: IQcReportState): boolean {
     return state.details.hasChanges;
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static reportDetailsId(state: IQcReportState): number {
     return state.details.id;
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static canSave(): boolean {
     return true;
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static eventLogsItemsById(state: IQcReportState): Record<number, IQcEventsLogItemState> {
     return state.details?.eventsLog?.itemsById;
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static eventLogsItemIds(state: IQcReportState): number[] {
     return state.details?.eventsLog?.items;
   }
@@ -116,26 +123,74 @@ export class QcReportState {
     return (items || []).map(i => itemsById?.[i]);
   }
 
-  static getPortCallsProductTypeById(productTypeId: string): (...args: any[]) => QcProductTypeListItemStateModel {
-    return createSelector(
-      [QcReportState],
-      (state: IQcReportState) => state.details.productTypesById[productTypeId]
-    );
+  @Selector([QcReportState])
+  static productTypesById(state: IQcReportState): Record<number, IQcProductTypeListItemState> {
+    return state.details?.productTypesById;
   }
 
-  @Selector()
+  @Selector([QcReportState])
+  static productTypesIds(state: IQcReportState): number[] {
+    return state.details?.productTypes;
+  }
+
+  @Selector([QcReportState.productTypesById, QcReportState.productTypesIds])
+  static productTypes(itemsById: Record<number, IQcProductTypeListItemState>, items: number[]): IQcProductTypeListItemState[] {
+    return (items || []).map(i => itemsById?.[i]);
+  }
+
+  @Selector([QcReportState])
   static nbOfMatched(state: IQcReportState): number {
     return state.details.surveyHistory.nbOfMatched;
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static nbOfMatchedWithinLimit(state: IQcReportState): number {
     return state.details.surveyHistory.nbOfMatchedWithinLimit;
   }
 
-  @Selector()
+  @Selector([QcReportState])
   static nbOfNotMatched(state: IQcReportState): number {
     return state.details.surveyHistory.nbOfNotMatched;
+  }
+
+  static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): IDisplayLookupDto {
+    if (left === null || left === undefined || right === null || right === undefined)
+      return NotMatchedQuantityStatus;
+
+    const diff = Math.abs(left - right);
+
+    if (diff > maxTolerance)
+      return NotMatchedQuantityStatus;
+
+    if (diff < minTolerance)
+      return MatchedQuantityStatus;
+
+    return WithinLimitQuantityStatus;
+  }
+
+  @Selector([QcReportState.productTypes, TenantSettingsState.byModule<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery)])
+  static matchStatus(items: IQcProductTypeListItemState[], deliverySettings: IDeliveryTenantSettings): IDisplayLookupDto {
+    // Note: This method is called very often, so we specifically use another selector and we don't insert state!!
+
+    const minToleranceLimit = deliverySettings.minToleranceLimit;
+    const maxToleranceLimit = deliverySettings.maxToleranceLimit;
+
+    let hasWithinLimit = false;
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const robBeforeDiff = QcReportState.getMatchStatus(item.robBeforeDeliveryLogBookROB, item.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
+      const deliveredDiff = QcReportState.getMatchStatus(item.deliveredQuantityBdnQty, item.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
+      const robAfterDiff = QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
+
+      if (robBeforeDiff.id === NotMatchedQuantityStatus.id || deliveredDiff.id === NotMatchedQuantityStatus.id || robAfterDiff.id === NotMatchedQuantityStatus.id)
+        return NotMatchedQuantityStatus;
+
+      if (robBeforeDiff.id === WithinLimitQuantityStatus.id || deliveredDiff.id === WithinLimitQuantityStatus.id || robAfterDiff.id === WithinLimitQuantityStatus.id)
+        hasWithinLimit = true;
+    }
+
+    return hasWithinLimit ? WithinLimitQuantityStatus : MatchedQuantityStatus;
   }
 
   @Action(LoadReportDetailsAction)
@@ -513,12 +568,13 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: await this.verifiedStatus,
+          status: await this.surveyStatusLookups.verified,
           isVerifying: false
         }
       });
     }
   }
+
   @Action([QcRevertVerifyReportAction, QcRevertVerifyReportSuccessfulAction, QcRevertVerifyReportFailedAction])
   async revertVerifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): Promise<void> {
     const state = getState();
@@ -531,7 +587,7 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: await this.newStatus,
+          status: await this.surveyStatusLookups.new,
           isRevertVerifying: false
         }
       });

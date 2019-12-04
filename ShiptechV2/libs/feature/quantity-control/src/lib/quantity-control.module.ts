@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoggingModule } from '../../../../core/src/lib/logging/logging.module';
+import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApi } from './services/api/quantity-control-api';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
@@ -35,13 +35,10 @@ import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-re
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
-import {
-  NUMBER_FORMAT,
-  NumberFormat
-} from './views/qc-report/details/components/port-call-grid/view-model/number.format';
 import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { SurveyStatusLookups } from './services/survey-status-lookups';
 
 @NgModule({
   imports: [
@@ -84,17 +81,12 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
   ],
   providers: [
     ModuleLoggerFactory,
+    SurveyStatusLookups,
     QuantityControlRouteResolver,
     QcReportDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
-    },
-    {
-      provide: NUMBER_FORMAT,
-      useValue: {
-        ...new NumberFormat()
-      }
     },
     QcReportDetailsUnsavedChangesGuard,
     QcReportService
