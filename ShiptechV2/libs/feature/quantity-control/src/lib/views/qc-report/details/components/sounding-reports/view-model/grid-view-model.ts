@@ -98,9 +98,9 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   };
 
   detailsGridOptions: GridOptions = {
-    groupHeaderHeight: 20,
-    headerHeight: 40,
-    rowHeight: 35,
+    groupHeaderHeight: 40,
+    headerHeight: 25,
+    rowHeight: 21,
     pagination: false,
     animateRows: true,
     multiSortKey: 'ctrl',
@@ -123,6 +123,9 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   };
 
   gridOptions: GridOptions = {
+    groupHeaderHeight: 40,
+    headerHeight: 25,
+    rowHeight: 21,
     pagination: false,
     suppressPaginationPanel: true,
 

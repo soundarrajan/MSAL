@@ -60,7 +60,7 @@ const routes: Routes = [
           {
             path: KnownQuantityControlRoutes.ReportEmailLogPath,
             component: QcReportDetailsEmailLogComponent,
-            data: { title: 'Quantity Control - E-mail Log', breadcrumb: 'E-mail Log' }
+            data: { title: 'Quantity Control - Email Log', breadcrumb: 'Email Log' }
           },
           {
             path: KnownQuantityControlRoutes.ReportAuditPath,

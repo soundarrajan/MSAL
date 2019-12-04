@@ -41,7 +41,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   private readonly maxToleranceLimit;
 
   gridOptions: GridOptions = {
-    groupHeaderHeight: 40,
+    groupHeaderHeight: 25,
     headerHeight: 40,
     rowHeight: 35,
     rowModelType: RowModelType.ClientSide,
