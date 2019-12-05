@@ -155,9 +155,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
             $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
-            	var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
-                return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
-            })
+            	if (obj != null) {
+                    var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
+                    return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
+                }
+            });
 
 
             var groups = [];
