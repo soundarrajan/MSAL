@@ -133,6 +133,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         };
 
         var computeData = function(data) {
+            startComputeData = Date.now();
         	console.log(Date.now());
             var vessels = JSON.parse('{ "vessels": [' + data.payload.scheduleDashboardView + "]}").vessels;
             var bunkerPlans = JSON.parse('{ "bunkerPlans": [' + data.payload.bunkerPlans + "]}").bunkerPlans;
@@ -152,16 +153,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             ctrl.bunkerPlansGroupedByVoyage = _.groupBy(bunkerPlans, "voyageDetailId");
 
+            $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
+            $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
+            	var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
+                return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
+            })
+
 
             var groups = [];
             var voyages = [];
             var groupStrings = [];
             var numberVessels = vessels.length;
-            startFor = Date.now();
             performanceLog = [];
             for (var i = 0; i < vessels.length; i++) {
             	if (i%10 == 0) {
-	            	performanceLog.push(Date.now() - startFor )
+	            	performanceLog.push(Date.now() - startComputeData )
             	}
                 if (!vessels[i]) {
                     continue;
@@ -321,27 +327,42 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 // Add voyage
                 hasMultipleStops = false;
-                firstStopToday = _.find(voyages, function(obj){
-                    // return moment(obj.start).isSame(startDate, 'day') && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
-                    return obj.start.split(" ")[0] == startDate.split(" ")[0] && obj.voyageId != voyage.voyageId && obj.group == voyage.group;
+                // $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]
+                firstStopToday = _.find($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString], function(obj){
+					if (displayScheduleBasedOn === 'Delivery Date'){
+						objStart = obj.voyageDetail.deliveryFrom
+					} else {
+						objStart = obj.voyageDetail.eta
+					}
+                    return obj.voyageDetail.id != voyage.voyageId;
                 });
-                if (firstStopToday) {
-	                if (!firstStopToday.hasMultipleStops) {
-		                firstStopToday.content += '<span class="expand-voyages" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>'
+                isExtraStop = false;
+                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString].length > 1) {
+                	uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
+                	if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
+		                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
+		                voyage.additionalStops = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
+	                } else {
+		                isExtraStop = true;
 	                }
-                	hasMultipleStops = true;
-	                firstStopToday.hasMultipleStops = true;
-	                if (!firstStopToday.additionalStops) {
-	                	firstStopToday.additionalStops = [];
-	                }
-                }               
-                if (firstStopToday && firstStopToday.hasMultipleStops) {
-	                if (!_.find(firstStopToday.additionalStops, {'voyageId' : voyage.voyageId})) {
-		                firstStopToday.additionalStops.push(voyage);
-	                }
-                }               
+                } 
+                // if (firstStopToday) {
+	               //  if (!firstStopToday.hasMultipleStops) {
+		              //   firstStopToday.content += '<span class="expand-voyages" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>'
+	               //  }
+                // 	hasMultipleStops = true;
+	               //  firstStopToday.hasMultipleStops = true;
+	               //  if (!firstStopToday.additionalStops) {
+	               //  	firstStopToday.additionalStops = [];
+	               //  }
+                // }               
+                // if (firstStopToday && firstStopToday.hasMultipleStops) {
+	               //  if (!_.find(firstStopToday.additionalStops, {'voyageId' : voyage.voyageId})) {
+		              //   firstStopToday.additionalStops.push(voyage);
+	               //  }
+                // }               
 
-                if (!_.find(voyages, {'voyageId' : vessels[i].voyageDetail.id}) && !hasMultipleStops ) {
+                if (!_.find(voyages, {'voyageId' : vessels[i].voyageDetail.id}) && !isExtraStop) {
 	                voyages.push(voyage);
                 }
                  if (initialEtaDotted != '' && displayDottedLine == true) {
@@ -406,6 +427,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         };
 
         var getTimelineOptions = function() {
+        	if (ctrl.scheduleDashboardConfiguration.startsBefore >= 15) {
+	        	computedStartDate = moment().subtract(15, "days").format("YYYY-MM-DD");
+	        	computedEndDate = angular.copy(moment(computedStartDate).add(30,"days").format("YYYY-MM-DD"));
+        		// if ( (ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter) % 2 == 1) {
+		        // 	computedEndDate = angular.copy(moment(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
+        		// } else {
+		        // 	computedEndDate = angular.copy(moment(ctrl.endDate).format("YYYY-MM-DD"));
+        		// }
+        	} else {
+	        	computedStartDate = angular.copy(moment(ctrl.startDate).format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
+        	}
             return {
                 'verticalScroll': true,
                 // 'moveable': false,
@@ -415,9 +448,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'stack': false,
                 'maxHeight': Math.max(570, $(window).height() - 167),
                 'orientation': 'both',
-                'start': ctrl.lastStartDate ? ctrl.lastStartDate : angular.copy(moment.utc(ctrl.startDate).startOf("day")),
+                'start': ctrl.lastStartDate ? ctrl.lastStartDate : computedStartDate,
                 'min': angular.copy(moment(ctrl.startDate).format("YYYY-MM-DD")),
-                'end': ctrl.lastEndDate ? ctrl.lastEndDate : angular.copy(moment.utc(ctrl.endDate).endOf("day")),
+                'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': 2.592e+8,
                 'zoomMax': 2.592e+9,
@@ -936,19 +969,24 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        	},100)
 	        	currentGroup = $(event.target).attr("group");
 	        	currentEta = $(event.target).attr("eta");
-	        	additionalVoyages = [];
-	        	$.each(ctrl.voyages, function(key,obj){
-	        		if (obj.additionalStops) {
-	        			$.each(obj.additionalStops, function(key2,obj2){
-	        				if (parseFloat(obj2.group) == parseFloat(currentGroup) && obj2.start == currentEta) {
-	        					additionalVoyages = obj.additionalStops;		
-			        			additionalVoyages.push(obj);
-	        				}
-	        			})
-	        		}
+	        	currentCellIdentifier = $(event.target).attr("cell-identifier");
+	        	additionalVoyages = $scope.stopsGroupedByDayAndGroup[currentCellIdentifier];
+
+	        	// $.each(ctrl.voyages, function(key,obj){
+	        	// 	if (obj.additionalStops) {
+	        	// 		$.each(obj.additionalStops, function(key2,obj2){
+	        	// 			if (parseFloat(obj2.group) == parseFloat(currentGroup) && obj2.start == currentEta) {
+	        	// 				additionalVoyages = obj.additionalStops;		
+			       //  			additionalVoyages.push(obj);
+	        	// 			}
+	        	// 		})
+	        	// 	}
+	        	// })
+	        	// additionalVoyages = _.uniqBy(additionalVoyages, "voyageId");
+	        	additionalVoyages = _.orderBy(additionalVoyages, "voyageDetail.eta");
+	        	$.each(additionalVoyages, function(k,v){
+	        		v.voyageDetail.formattedEta = moment(v.voyageDetail.eta).format($scope.dateFormat)
 	        	})
-	        	additionalVoyages = _.uniqBy(additionalVoyages, "voyageId");
-	        	additionalVoyages = _.orderBy(additionalVoyages, "start");
 	        	$timeout(function(){
 		        	ctrl.additionalVoyages = {
 		        		data : additionalVoyages,

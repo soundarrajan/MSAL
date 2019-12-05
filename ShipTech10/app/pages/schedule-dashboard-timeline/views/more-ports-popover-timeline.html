@@ -8,8 +8,8 @@
                 <th class="border-grey-salsa border" style="padding: 5px;"> CODE </th>
             </tr>
 			<tr ng-repeat="(key,val) in morePortsPopoverData">
-				<td class="border-grey-salsa border" style="padding: 5px;">{{val.start}}</td>
-				<td class="border-grey-salsa border" style="padding: 5px;">{{val.locationCode}}</td>
+				<td class="border-grey-salsa border" style="padding: 5px;">{{val.voyageDetail.formattedEta}}</td>
+				<td class="border-grey-salsa border" style="padding: 5px;">{{val.voyageDetail.locationCode}}</td>
 			</tr>
         </tbody>
     </table>
