@@ -3476,7 +3476,7 @@ ctrl.setProductData = function(data, loc) {
     		hasSimpleProduct = false
     		hasSludgeProduct = false
             var sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, {'name' : "Sludge"});
-            $.each(ctrl.requirements, function(k,v){
+            $.each(rowRequirements, function(k,v){
                     if (v.ProductTypeGroupId != sludgeProductTypeGroup.id) {
                         requirementsFilteredWithoutSludgeProduct.push(v);
                         hasSimpleProduct = true
