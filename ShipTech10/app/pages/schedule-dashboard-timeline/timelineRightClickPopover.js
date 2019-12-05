@@ -56,6 +56,7 @@ angular.module('shiptech.components')
 		    	groupedVoyagesOrder = angular.copy(groupedVoyages);
 		    	groupedVoyagesAllRequestProductsAreStemmed = [];
 		    	allProductTypes = {};
+	    		orderProductTypes = {};
 
 		    	uniqueVoyages = [];
 		    	$.each(voyages, function(k,v){
@@ -132,6 +133,7 @@ angular.module('shiptech.components')
 
 				$.each(uniqueVoyages, function(k,v){
 					allProductTypes[v] = []
+					orderProductTypes[v] = []
 				})
 
 				Object.keys(groupedVoyagesBunker).forEach(function (item) {
@@ -163,6 +165,7 @@ angular.module('shiptech.components')
 					});
 				});
 
+
 				Object.keys(groupedVoyagesOrder).forEach(function (item) {
 					Object.keys(groupedVoyagesOrder[item]).forEach(function (item2) {
 						if (item2 != "undefined") {
@@ -172,6 +175,7 @@ angular.module('shiptech.components')
 								if (item3 != "undefined") {
 									groupedVoyagesOrder[item][item2][item3] = _.sumBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.orderProductQuantity');
 									allProductTypes[item].push(item3);
+									orderProductTypes[item].push(item3);
 								}
 								
 							});
@@ -184,6 +188,12 @@ angular.module('shiptech.components')
 				Object.keys(allProductTypes).forEach(function (item) {
 					allProductTypes[item] = _.uniq(allProductTypes[item]);
 				});				
+
+				$.each(uniqueVoyages, function(k,v){
+					if (groupedVoyagesAllRequestProductsAreStemmed[v]) {
+						allProductTypes[v] = orderProductTypes[v]
+					}
+				})
 
 
 				ctrl.groupedVoyages = {

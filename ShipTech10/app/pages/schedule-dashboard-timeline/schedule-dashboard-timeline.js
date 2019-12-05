@@ -207,9 +207,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (initialEtaDotted != '') {
                     voyageContentDotted = '<span class="'+ clsDotted + '"> </span>';
                 } 
-                voyageContent += '<span class="' + cls + '" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode;
-                voyageContent += ' </span>';
-                
+
+
                 var startDate, endDate;
 
                 var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
@@ -251,6 +250,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                 }
                
+                uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
+                voyageContent += '<span class="' + cls + '" cell-identifier="'+uniqueCellIdentifier+'" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode;
+                voyageContent += ' </span>';
 
                 var voyage = {
                     id: i,
@@ -1218,17 +1220,30 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var buildHoverPopoverMarkup = function(voyageDetailId) {
             var hasNoRequest = false;
             allStops = [parseFloat(voyageDetailId)];
-            $.each(ctrl.voyages, function(k,v){
-            	if (v.voyageId == voyageDetailId) {
-            		if (v.additionalStops) {
-	            		$.each(v.additionalStops, function(k2,v2){
-		            		allStops.push(v2.voyageId)
-	            		})
-            		}
-            	}
-            })
+
+            currentCellIdentifier = $("span[voyage-detail-id='"+voyageDetailId+"']").attr("cell-identifier");
+			voyagesToday = $scope.stopsGroupedByDayAndGroup[currentCellIdentifier];
+			voyageStopsToday = []
+			$.each(voyagesToday, function(k,v){
+				voyageStopsToday.push(v.voyageDetail.id)
+			})
+
+			// allStops = _.find(ctrl.voyages, function(obj){
+			// 	return	voyageStopsToday.indexOf(obj.voyageId) != -1
+			// })
+
+
+            // $.each(ctrl.voyages, function(k,v){
+            // 	if (v.voyageId == voyageDetailId) {
+            // 		if (v.additionalStops) {
+	           //  		$.each(v.additionalStops, function(k2,v2){
+		          //   		allStops.push(v2.voyageId)
+	           //  		})
+            // 		}
+            // 	}
+            // })
             voyageStop = _.filter(ctrl.voyageData, function(el){
-                return el && allStops.indexOf(el.voyageDetail.id) != -1;
+                return el && voyageStopsToday.indexOf(el.voyageDetail.id) != -1;
             });            
             voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
      
