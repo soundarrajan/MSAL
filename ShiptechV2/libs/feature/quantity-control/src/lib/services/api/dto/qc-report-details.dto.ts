@@ -15,6 +15,7 @@ export interface IQcReportDetailsDto {
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;
   comments: string;
+  hasEmailSent: boolean;
 }
 
 export interface IQcReportDetailsProductTypeDto {

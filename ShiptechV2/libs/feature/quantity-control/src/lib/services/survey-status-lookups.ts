@@ -17,8 +17,14 @@ export class SurveyStatusLookups {
     return this._verified;
   }
 
+  get pending(): IDisplayLookupDto {
+    //TODO: check if entities have been loaded
+    return this._pending;
+  }
+
   private _verified: IDisplayLookupDto;
   private _new: IDisplayLookupDto;
+  private _pending: IDisplayLookupDto;
 
   constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {
 
@@ -34,5 +40,9 @@ export class SurveyStatusLookups {
     this._new = await this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.New).first();
     if (!this._new)
       throw AppError.MissingLookupKey('status', EntityStatus.New);
+
+    this._pending = await this.legacyLookupsDatabase.status.filter(s => s.name === EntityStatus.Pending).first();
+    if (!this._pending)
+      throw AppError.MissingLookupKey('status', EntityStatus.Pending);
   }
 }

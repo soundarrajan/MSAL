@@ -50,7 +50,8 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
         sludgeVerified: faker.random.boolean()
       }
     },
-    comments: faker.random.words(faker.random.number({ min: 10, max: 40 }))
+    comments: faker.random.words(faker.random.number({ min: 10, max: 40 })),
+    hasEmailSent: faker.random.boolean()
   };
 }
 

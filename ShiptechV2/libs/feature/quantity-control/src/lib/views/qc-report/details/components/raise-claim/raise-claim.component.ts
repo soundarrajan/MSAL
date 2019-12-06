@@ -34,7 +34,7 @@ export class RaiseClaimComponent implements OnInit {
       return;
     }
 
-    this.reportDetails.raiseClaim$(orderProducts[0].orderId, orderProducts[0].productId).subscribe(() => {
+    this.reportDetails.raiseClaim$(orderProducts[0].id, orderProducts[0].order.id).subscribe(() => {
       gridApi.deselectAll();
       this.dialogRef.close();
     });

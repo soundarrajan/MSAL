@@ -50,6 +50,7 @@ import {
   IQcRevertVerifyReportsRequest,
   IQcRevertVerifyReportsResponse
 } from './request-response/revert-verify-port-calls.request-response';
+import { IQcOrderProductsListItemDto } from './dto/qc-order-products-list-item.dto';
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -63,6 +64,7 @@ export namespace RobApiPaths {
   export const verifySludge = () => `api/quantityControlReport/verifySludge`;
   export const verify = () => `api/quantityControlReport/verify`;
   export const revertVerify = () => `api/quantityControlReport/revertVerify`;
+  export const getRelatedVoyageOrders = () => `api/quantityControlReport/getRelatedVoyageOrders`;
 }
 
 @Injectable({
@@ -139,7 +141,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
-    return of(undefined);
+    return this.http.post<IQcOrderProductsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getRelatedVoyageOrders()}`, { payload: request.vesselVoyageDetailId })
+      .pipe(map(r => ({
+        items: r || [],
+        totalItems: (r || []).length
+      })));
   }
 
   @ObservableException()
