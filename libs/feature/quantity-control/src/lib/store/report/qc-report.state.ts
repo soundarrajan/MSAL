@@ -557,7 +557,7 @@ export class QcReportState {
   }
 
   @Action([QcVerifyReportAction, QcVerifyReportSuccessfulAction, QcVerifyReportFailedAction])
-  async verifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): Promise<void> {
+  verifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): void {
     const state = getState();
 
     if (isAction(action, QcVerifyReportAction)) {
@@ -568,7 +568,7 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: await this.surveyStatusLookups.verified,
+          status: this.surveyStatusLookups.verified,
           isVerifying: false
         }
       });
@@ -576,7 +576,7 @@ export class QcReportState {
   }
 
   @Action([QcRevertVerifyReportAction, QcRevertVerifyReportSuccessfulAction, QcRevertVerifyReportFailedAction])
-  async revertVerifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): Promise<void> {
+  revertVerifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): void {
     const state = getState();
 
     if (isAction(action, QcVerifyReportAction)) {
@@ -587,7 +587,7 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: await this.surveyStatusLookups.new,
+          status: state.details.hasChanges ? this.surveyStatusLookups.pending : this.surveyStatusLookups.new,
           isRevertVerifying: false
         }
       });

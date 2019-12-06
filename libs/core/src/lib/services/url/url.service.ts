@@ -66,7 +66,7 @@ export class UrlService {
     return `${this.baseOrigin}/#/claims/edit/${claimId}`;
   }
 
-  public newClaim(orderId?: number, productId?: number): string {
-    return `${this.baseOrigin}/#/claims/edit/?orderId=${orderId}&productId=${productId}`;
+  public newClaim(orderProductId?: number, orderId?: number): string {
+    return `${this.baseOrigin}/#/claims/edit/?orderId=${orderId}&orderProductId=${orderProductId}`;
   }
 }

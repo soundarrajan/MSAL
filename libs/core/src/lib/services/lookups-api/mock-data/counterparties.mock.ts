@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import { ILookupDto } from '../../../lookups/lookup-dto.interface';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
-export interface ICounterpartyLookupDto extends ILookupDto {
+export interface ICounterpartyLookupDto extends IDisplayLookupDto {
   contactId: number;
   contact: string;
   phone: string;
@@ -11,7 +11,8 @@ export interface ICounterpartyLookupDto extends ILookupDto {
 export const MockCounterparties: ICounterpartyLookupDto[] = [
   {
     id: 1,
-    name: 'Dumitru',
+    name: 'Developer',
+    displayName: 'Developer',
     contactId: 1,
     contact: 'John Doe 24S',
     phone: '+40 766 320 59',
@@ -19,7 +20,8 @@ export const MockCounterparties: ICounterpartyLookupDto[] = [
   },
   ..._.range(3000).map(i => ({
     id: i,
-    name: 'Name' + i,
+    name: `Person ${i}`,
+    displayName: `Person ${i}`,
     contactId: Math.floor(Math.random() * 100000000),
     contact: 'Contact Name' + i,
     phone: (10000000 + Math.floor(Math.random() * 100000000)).toString(),

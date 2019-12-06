@@ -194,11 +194,11 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getOrderProductsList$(): Observable<IGetOrderProductsListResponse> {
-    return this.api.getOrderProductsList({ reportId: this.reportDetailsState.id });
+    return this.api.getOrderProductsList({ vesselVoyageDetailId: this.reportDetailsState.vesselVoyageDetailId });
   }
 
-  raiseClaim$(orderId: number, productId: number): Observable<unknown> {
-    return defer(() => of(window.open(this.urlService.newClaim(orderId, productId), '_blank')));
+  raiseClaim$(orderProductId: number, orderId: number): Observable<unknown> {
+    return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), '_blank')));
   }
 
   @ObservableException()

@@ -10,6 +10,8 @@ import { QcReportService } from '../../../../../../services/qc-report.service';
 import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { IQcOrderProductsListItemDto } from '../../../../../../services/api/dto/qc-order-products-list-item.dto';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 
 function model(prop: keyof IQcOrderProductsListItemDto): keyof IQcOrderProductsListItemDto {
@@ -18,6 +20,7 @@ function model(prop: keyof IQcOrderProductsListItemDto): keyof IQcOrderProductsL
 
 @Injectable()
 export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
+  private quantityPrecision: number;
 
   gridOptions: GridOptions = {
     rowSelection: RowSelection.Single,
@@ -32,44 +35,55 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  orderNoCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
+  orderNoCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.orderNo,
     headerName: QcOrderProductsListColumnsLabels.orderNo,
-    field: model('orderNo'),
+    field: model('order'),
+    valueFormatter: params => params.value?.displayName,
     headerCheckboxSelection: false,
     headerCheckboxSelectionFilteredOnly: true,
-    checkboxSelection: true
+    checkboxSelection: true,
+    filter: 'agNumberColumnFilter',
   };
-  counterpartyCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
+  counterpartyCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.counterpartyName,
     headerName: QcOrderProductsListColumnsLabels.counterpartyName,
-    field: model('counterpartyName')
+    field: model('counterparty'),
+    valueFormatter: params => params.value?.displayName,
   };
-  productCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
+  productCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.productName,
     headerName: QcOrderProductsListColumnsLabels.productName,
-    field: model('productName')
+    field: model('product'),
+    valueFormatter: params => params.value?.displayName,
   };
   confirmedQuantityCol: TypedColDef<IQcOrderProductsListItemDto, number> = {
     colId: QcOrderProductsListColumns.confirmedQuantity,
     headerName: QcOrderProductsListColumnsLabels.confirmedQuantity,
-    field: model('confirmedQuantity')
+    field: model('confirmedQty'),
+    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    filter: 'agNumberColumnFilter',
   };
-  uomCol: TypedColDef<IQcOrderProductsListItemDto, string> = {
+  uomCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.uomName,
     headerName: QcOrderProductsListColumnsLabels.uomName,
-    field: model('uomName')
+    field: model('uom'),
+    valueFormatter: params => params.value?.displayName,
   };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
+    tenantSettings: TenantSettingsService,
     private store: Store,
     private reportService: QcReportService
   ) {
     super('qc-order-products-list', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
     this.initOptions(this.gridOptions);
+
+    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
     this.gridReady$
       .pipe(

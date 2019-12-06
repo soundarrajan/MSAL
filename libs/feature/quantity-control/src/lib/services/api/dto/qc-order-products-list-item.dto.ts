@@ -1,10 +1,10 @@
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+
 export interface IQcOrderProductsListItemDto {
-  orderId: number;
-  orderNo: string;
-  counterpartyId: number;
-  counterpartyName: string;
-  productId: number;
-  productName: string;
-  confirmedQuantity: number;
-  uomName: string;
+  id: number;
+  order: IDisplayLookupDto;
+  counterparty: IDisplayLookupDto;
+  product: IDisplayLookupDto;
+  uom: IDisplayLookupDto;
+  confirmedQty: number;
 }
