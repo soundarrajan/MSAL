@@ -628,7 +628,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $(".st-btn-icon-zoom-in").css("background-color", "#f7f5f5");
 
                 } 
-                if (zoomOutCount == 13 || zoomInCount == 0) {
+                if (zoomOutCount == 13) {
                     $(".st-btn-icon-zoom-out").css("background-color", "#d3d3d3");
                 }
         	}
@@ -1035,7 +1035,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             event.preventDefault();
             if (event.which == 3) {
                 voyageDetailId = $(this).attr("voyage-detail-id");
-
+                $(".contextmenu").css("display", "block");
 	            
 	            allStops = [parseFloat(voyageDetailId)];
 	            $.each(ctrl.voyages, function(k,v){
@@ -1433,6 +1433,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
+        document.addEventListener('scroll', function (e) {
+           if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
+                $(".contextmenu").css("display", "none");
+            }   
+        }, true);
 
         jQuery(document).ready(function(){
         	$(document).on("click", function(e){
