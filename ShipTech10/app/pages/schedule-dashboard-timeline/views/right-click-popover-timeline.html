@@ -28,7 +28,7 @@
 						</td>
 						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" class="cancelBunkerStrategyCell" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
 							<span ng-repeat="(ptkey,ptval) in $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]" ng-init="bunkerPlan = ptval[productType][0].voyageDetail.bunkerPlan">
-								{{bunkerPlan.supplyQuantity}}
+								{{( (!bunkerPlan.supplyQuantity) ? ("") : (bunkerPlan.supplyQuantity | number : $ctrl.numberPrecision.amountPrecision))}}
 								<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>
 							</span>
 						</td>
@@ -41,7 +41,7 @@
 						</td>
 						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
 							<span ng-repeat="(ptkey,ptval) in requests" ng-if="ptkey == productType">
-								{{ptval ? ptval : "-"}}
+								{{( (!ptval) ? ("-") : (ptval | number : $ctrl.numberPrecision.amountPrecision))}}
 							</span>
 						</td>						
 					</tr>
@@ -53,7 +53,8 @@
 						</td>
 						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
 							<span ng-repeat="(ptkey,ptval) in orders" ng-if="ptkey == productType">
-								{{ptval ? ptval : "-"}}
+								{{( (!ptval) ? ("-") : (ptval | number : $ctrl.numberPrecision.amountPrecision))}}
+								
 							</span>
 						</td>						
 					</tr>
