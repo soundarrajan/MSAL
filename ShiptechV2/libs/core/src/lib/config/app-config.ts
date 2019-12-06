@@ -13,6 +13,7 @@ export class AppConfig implements IAppConfig {
   // TODO: add this to config file,  check first if they are not in the infrastructure api
   tenantPublicApiUrl: string;
   robApi: string;
+  baseOrigin: string;
 }
 
 // tslint:disable-next-line:no-empty-interface
