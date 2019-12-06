@@ -151,7 +151,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
             })
 
-            ctrl.bunkerPlansGroupedByVoyage = _.groupBy(bunkerPlans, "voyageDetailId");
+            if (data.payload.bunkerPlans) {
+	            ctrl.bunkerPlansGroupedByVoyage = _.groupBy(bunkerPlans, "voyageDetailId");
+            } else {
+            	ctrl.bunkerPlansGroupedByVoyage = [];
+            }
 
             $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
             $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
