@@ -326,13 +326,19 @@ APP_CLAIMS.controller("Controller_Claims", [
                             // $scope.formValues.orderDetails.orderStatusName = response.status.name;
                             $scope.formValues.orderDetails.orderStatusName = response.status.displayName;
                         }
-                        if (response.deliveryDate && !$("#OrderOrderID").hasClass("ng-pristine")) {
+                        if (response.deliveryDate && (!$("#OrderOrderID").hasClass("ng-pristine") || window.location.href.indexOf("?orderId") != -1)) {
                             $timeout(function(){
                                 if (!$scope.formValues.deliveryDate || !$scope.formValues.orderDetails.deliveryNo) {
                                     $scope.triggerChangeFieldsAppSpecific("deliveryNumber", "orderDetails.deliveryNo")
                                 }
                                 $scope.formValues.deliveryDate = response.deliveryDate;
                             })
+                            if (window.location.href.indexOf("?orderId") != -1) {
+                            	newUrl = window.location.href.split("#")[1];
+                            	newUrl = newUrl.split("?")[0];
+                            	window.location.replace(window.location.href.split("?")[0]);
+                            	// window.history.pushState({}, document.title, "#" + newUrl);
+                            }
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
                         if (response.vessel) {

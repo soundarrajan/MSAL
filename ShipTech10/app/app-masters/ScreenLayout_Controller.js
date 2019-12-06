@@ -540,6 +540,28 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 	                $scope.formValues.dmaUom = $scope.tenantSetting.tenantFormats.uom;
 	                $scope.formValues.lsfoUom = $scope.tenantSetting.tenantFormats.uom;
 	            }
+	            if (vm.app_id == "claims" && vm.screen_id == "claims" && window.location.href.indexOf("?orderId") != -1) {
+	            	params = window.location.href.split("?")[1];
+	            	params = params.split("&");
+	            	objParams = {} 
+	            	$.each(params, function(k,v){
+	            		key = v.split("=")[0]
+	            		val = parseFloat(v.split("=")[1])
+	            		objParams[key] = val;
+	            	})
+	            	$timeout(function(){
+		            	$scope.formValues.orderDetails = {
+		            		"order" : {
+		            			"id":objParams.orderId,
+		            			"name":objParams.orderId
+		            		},
+		            		"product" : {
+		            			"id":objParams.productId,
+		            		}
+		            	}
+		            	$scope.triggerChangeFields("OrderID");
+	            	})
+	            }
         	}
 
             if (vm.entity_id == "0") {
