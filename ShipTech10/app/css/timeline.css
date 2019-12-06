@@ -44,6 +44,7 @@
     align-items: center;
     border-right: 1px solid #bfbfbf;
     text-align: center;
+    font-weight: bold;
     /* padding: 5px; */
     text-overflow: ellipsis;
     overflow: hidden;
@@ -258,7 +259,7 @@ span.vesselName {
 }
 .st-btn-icon-zoom {
 	color: lightgrey;
-    background-color: #d3d3d3;
+    background-color: #f7f5f5;
     padding: 1px 4px;
     font-size: 14px;
     border: 1px solid #b1b1b1;
@@ -272,6 +273,7 @@ span.vesselName {
 }
 .st-btn-icon-zoom-out  {
 	border-radius: 7px 0 0 7px !important;
+	background-color: #d3d3d3;
 }
 .st-btn-icon-zoom-in  {
 	border-radius: 0 7px 7px 0 !important;

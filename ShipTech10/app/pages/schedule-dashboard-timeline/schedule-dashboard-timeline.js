@@ -614,13 +614,36 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             // });
 
         };
+        var zoomInCount = 0;
+        var zoomOutCount = 0;
 
         $scope.changeZoomLevel = function(direction) {
         	if (direction === 0) {
         		timeline.zoomOut(0.2);
+                if (zoomOutCount < 13) {
+                    zoomOutCount +=1;
+                    if (zoomInCount > 0) {
+                        zoomInCount -=1;
+                    }
+                    $(".st-btn-icon-zoom-in").css("background-color", "#f7f5f5");
+
+                } 
+                if (zoomOutCount == 13 || zoomInCount == 0) {
+                    $(".st-btn-icon-zoom-out").css("background-color", "#d3d3d3");
+                }
         	}
         	if (direction === 1) {
         		timeline.zoomIn(0.2);
+                if (zoomInCount < 13) {
+                    zoomInCount +=1;
+                    if (zoomOutCount > 0) {
+                        zoomOutCount -=1;
+                    }
+                    $(".st-btn-icon-zoom-out").css("background-color", "#f7f5f5");
+                } 
+                if (zoomInCount == 13) {
+                    $(".st-btn-icon-zoom-in").css("background-color", "#d3d3d3");
+                }
         	}
         }
 
@@ -966,7 +989,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
 	        	$scope.rightClickPopoverData = null;
 	        	$scope.$digest();
-	        }	        
+	        }      
 	        if ($(event.target).hasClass("expand-voyages")) {
 	        	$timeout(function(){
 		        	ctrl.additionalVoyages = null;
@@ -1012,6 +1035,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             event.preventDefault();
             if (event.which == 3) {
                 voyageDetailId = $(this).attr("voyage-detail-id");
+
 	            
 	            allStops = [parseFloat(voyageDetailId)];
 	            $.each(ctrl.voyages, function(k,v){
