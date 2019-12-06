@@ -18,7 +18,7 @@ function mergeSettings(outputDir = './assets/config', outputFile = 'settings.run
   let customSettings = {};
 
   if (!process.env.ANGULAR_ENVIRONMENT) {
-    console.info('Using default settings.json file. No environment variable set.');
+    console.info('Using default settings.json file. ANGULAR_ENVIRONMENT environment variable not set.');
   } else {
     customSettings = readJsonFile(customSettingsPath, false);
   }

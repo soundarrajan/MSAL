@@ -5,6 +5,7 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { APP_BASE_HREF } from '@angular/common';
 import { KnownQuantityControlRoutes } from '../../../../../feature/quantity-control/src/lib/known-quantity-control.routes';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { environment } from '@shiptech/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,12 @@ export class UrlService {
               loggerFactory: LoggerFactory,
               @Inject(APP_BASE_HREF) private baseHref: string) {
     this.logger = loggerFactory.createLogger(UrlService.name);
-    this.baseOrigin = new URL(window.location.href).origin;
+
+    if (!environment.production) {
+      this.baseOrigin = appConfig.baseOrigin || new URL(window.location.href).origin;
+    } else {
+      this.baseOrigin = new URL(window.location.href).origin;
+    }
   }
 
   public editRequest(requestId: string | number): string {
