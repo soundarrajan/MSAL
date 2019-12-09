@@ -630,9 +630,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         zoomInCount -=1;
                     }
                     $(".st-btn-icon-zoom-in").css("background-color", "#f7f5f5");
-
+                    $(".st-btn-icon-zoom-in").css("pointer-events", "auto");
                 } 
-                if (zoomOutCount == 13) {
+                if (zoomOutCount == 13 || zoomInCount == 0) {
+                    $(".st-btn-icon-zoom-out").css("pointer-events", "none");
                     $(".st-btn-icon-zoom-out").css("background-color", "#d3d3d3");
                 }
         	}
@@ -642,11 +643,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     zoomInCount +=1;
                     if (zoomOutCount > 0) {
                         zoomOutCount -=1;
+                        if (zoomOutCount == 0) {
+                            $(".st-btn-icon-zoom-out").css("pointer-events", "none");
+                        } else {
+                            $(".st-btn-icon-zoom-out").css("pointer-events", "auto");
+                        }
                     }
                     $(".st-btn-icon-zoom-out").css("background-color", "#f7f5f5");
-                } 
+                }
+                if (zoomOutCount == 0) {
+                    $(".st-btn-icon-zoom-out").css("pointer-events", "auto");
+                }
                 if (zoomInCount == 13) {
                     $(".st-btn-icon-zoom-in").css("background-color", "#d3d3d3");
+                    $(".st-btn-icon-zoom-in").css("pointer-events", "none");
                 }
         	}
         }

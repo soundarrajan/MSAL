@@ -274,6 +274,7 @@ span.vesselName {
 .st-btn-icon-zoom-out  {
 	border-radius: 7px 0 0 7px !important;
 	background-color: #d3d3d3;
+	pointer-events: none;
 }
 .st-btn-icon-zoom-in  {
 	border-radius: 0 7px 7px 0 !important;
