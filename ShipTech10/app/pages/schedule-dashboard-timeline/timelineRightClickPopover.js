@@ -35,7 +35,7 @@ angular.module('shiptech.components')
 					    	"request": {
 					    		"requestDetail" : {}
 					    	},
-					        "id": v.voyageDetail.id,
+					        "id": v.voyageDetailId,
 					        "hasStrategy": v.hasStrategy,
 					        "bunkerPlan": v.bunkerPlan
 					    },
