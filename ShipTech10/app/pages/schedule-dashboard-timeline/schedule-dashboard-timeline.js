@@ -436,7 +436,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         var getTimelineOptions = function() {
         	if (ctrl.scheduleDashboardConfiguration.startsBefore >= 15) {
-	        	computedStartDate = moment().subtract(15, "days").format("YYYY-MM-DD");
+	        	computedStartDate = moment().subtract(15, "days").subtract(2, "hours").format("YYYY-MM-DD");
 	        	computedEndDate = angular.copy(moment(computedStartDate).add(30,"days").format("YYYY-MM-DD"));
         		// if ( (ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter) % 2 == 1) {
 		        // 	computedEndDate = angular.copy(moment(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
@@ -461,7 +461,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': 2.592e+8,
-                'zoomMax': 2.592e+9,
+                'zoomMax': 2.592e+9 - 7.2e+6,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
