@@ -259,25 +259,28 @@ span.vesselName {
 }
 .st-btn-icon-zoom {
 	color: lightgrey;
-    background-color: #f7f5f5;
+    background-color: #E7ECF1;
     padding: 1px 4px;
     font-size: 14px;
-    border: 1px solid #b1b1b1;
+    border: 2px solid #E0E0E1;
     display: block;
     float: left;
-    width: 30px;
+    width: 35px;
 }
-.st-btn-icon-zoom a {
-    color: #848586;
+.st-btn-icon-zoom-in a {
+    color: #555555;
+}
+.st-btn-icon-zoom-out a {
+    color: #C1C1C1;
 
 }
 .st-btn-icon-zoom-out  {
+	border-right: 1px solid #E0E0E1;
 	border-radius: 7px 0 0 7px !important;
-	background-color: #d3d3d3;
-	pointer-events: none;
 }
 .st-btn-icon-zoom-in  {
 	border-radius: 0 7px 7px 0 !important;
+	border-left: 1px solid #E0E0E1;
 }
 .noDataFound {
 	font-size: 14px;

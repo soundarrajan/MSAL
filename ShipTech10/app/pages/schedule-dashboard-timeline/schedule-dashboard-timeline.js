@@ -531,10 +531,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             ctrl.lastStartDate = false;
             ctrl.lastEndDate = false;
-            timeline.on("rangechanged", function(){
+            timeline.on("rangechange", function(){
                 ctrl.lastStartDate = moment(timeline.range.start);
                 ctrl.lastEndDate = moment(timeline.range.end);
-            })
+                var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
+                if (diff == 2.592e+9) {
+                    $(".st-btn-icon-zoom-in a").css("color", "#555555");
+                     $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
+                } else if (diff == 2.592e+8) {
+                    $(".st-btn-icon-zoom-in a").css("color", "#C1C1C1");
+                    $(".st-btn-icon-zoom-out a").css("color", "#555555");
+                } else {
+                    $(".st-btn-icon-zoom-in a").css("color", "#555555");
+                    $(".st-btn-icon-zoom-out a").css("color", "#555555");
+                }
+            });
 
             $scope.timelineItems = groups.length;
             
@@ -618,46 +629,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             // });
 
         };
-        var zoomInCount = 0;
-        var zoomOutCount = 0;
-
         $scope.changeZoomLevel = function(direction) {
         	if (direction === 0) {
         		timeline.zoomOut(0.2);
-                if (zoomOutCount < 13) {
-                    zoomOutCount +=1;
-                    if (zoomInCount > 0) {
-                        zoomInCount -=1;
-                    }
-                    $(".st-btn-icon-zoom-in").css("background-color", "#f7f5f5");
-                    $(".st-btn-icon-zoom-in").css("pointer-events", "auto");
-                } 
-                if (zoomOutCount == 13 || zoomInCount == 0) {
-                    $(".st-btn-icon-zoom-out").css("pointer-events", "none");
-                    $(".st-btn-icon-zoom-out").css("background-color", "#d3d3d3");
-                }
         	}
         	if (direction === 1) {
         		timeline.zoomIn(0.2);
-                if (zoomInCount < 13) {
-                    zoomInCount +=1;
-                    if (zoomOutCount > 0) {
-                        zoomOutCount -=1;
-                        if (zoomOutCount == 0) {
-                            $(".st-btn-icon-zoom-out").css("pointer-events", "none");
-                        } else {
-                            $(".st-btn-icon-zoom-out").css("pointer-events", "auto");
-                        }
-                    }
-                    $(".st-btn-icon-zoom-out").css("background-color", "#f7f5f5");
-                }
-                if (zoomOutCount == 0) {
-                    $(".st-btn-icon-zoom-out").css("pointer-events", "auto");
-                }
-                if (zoomInCount == 13) {
-                    $(".st-btn-icon-zoom-in").css("background-color", "#d3d3d3");
-                    $(".st-btn-icon-zoom-in").css("pointer-events", "none");
-                }
         	}
         }
 
@@ -1447,6 +1424,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
+        
+
         document.addEventListener('scroll', function (e) {
            if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
                 $(".contextmenu").css("display", "none");
