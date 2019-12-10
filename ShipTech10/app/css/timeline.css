@@ -11,6 +11,7 @@
 
 .vis-label {
 	height: 32px !important;
+	border-color: #e7ecf1 !important;
 }
 
 .vis-group {
@@ -42,7 +43,7 @@
 	display: flex;
     /* justify-content: center; */
     align-items: center;
-    border-right: 1px solid #bfbfbf;
+    border-right: 1px solid #e7ecf1;
     text-align: center;
     font-weight: bold;
     /* padding: 5px; */
@@ -56,12 +57,12 @@
     display: flex;
     /* justify-content: center; */
     align-items: center;
-    border-right: 1px solid #bfbfbf;
+    border-right: 1px solid #e7ecf1;
     text-align: center;
     /* padding: 5px; */
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 0.8em;
+    font-size: 12px;
 }
  .vis-custom-group-column-header {
 	justify-content: center;
@@ -95,8 +96,9 @@
 }
 
 .vis-item {
-	height: 100%;
+	height: calc(100% + 1px);
 	top: 0 !important;
+	border-color: #E7ECF1;
 }
 
 .vis-item-content {
@@ -120,13 +122,13 @@
 .vis-text.vis-minor.vis-wednesday,
 .vis-text.vis-minor.vis-thursday,
 .vis-text.vis-minor.vis-friday {
-	background: #f0f8ff;
-	color: #7ab0dc;
+    background: none;
+    color: #333;
 }
 
 .vis-saturday,
 .vis-sunday {
-	background: #d3d3d3;
+	background: #E4E4E4;
 }
 
 schedule-dashboard-timeline .vis-inner {
@@ -145,8 +147,7 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 
 .vis-voyage-content {
 	height: 32px;
-	color: darkslateblue;
-	font-weight: bold;
+	/*color: darkslateblue;*/
 	font-size: 1em;
     display: flex;
     justify-content: center;
@@ -191,11 +192,12 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 }
 
 .schedule-dashboard-timeline-footer {
-	padding: 0.2em;
-	background: #f0f8ff;
-	border: 1px solid #bfbfbf;
-	text-align: center;
-	margin-bottom: 1em;
+    padding: 0.2em;
+    background: #ffffff;
+    border: 1px solid #bfbfbf;
+    text-align: left;
+    margin-bottom: 1em;
+	padding: 5px; 
 }
 .vis-voyage-dotted {
 	display: block;
@@ -234,7 +236,7 @@ span.vesselName {
 .expand-voyages {
 	position: absolute;
     left: 0;
-    bottom: 3px;
+    bottom: 2px;
     background: white;
     display: block;
     width: 10px;
@@ -243,6 +245,7 @@ span.vesselName {
     color: #000;
     cursor: pointer;
     border: 1px solid #d8d8d8;
+    transition: 0.1s;
 }
 
 .morePortsPopupTimeline {
@@ -286,4 +289,49 @@ span.vesselName {
 	text-align: center;
 	background: #f0f8ff;
 	border: 1px solid #bfbfbf;
+}
+.vis-time-axis .vis-grid.vis-minor {
+    border-color: #E7ECF1;
+}
+
+.vis-foreground .vis-group {
+    border-bottom: 1px solid #E7ECF1;
+}
+
+#timeline, .vis-timeline-timeselect-container, .timeline-popover-hover {
+	font-family: "Roboto";
+	font-weight: 600;
+}
+.timeline-popover-hover {
+	padding: 0 !important;
+}
+.timeline-popover-hover p.stop-details {
+	padding: 0 10px; 
+    margin-bottom: 10px;
+}
+
+.timeline-popover-hover .table.table-bordered thead>tr>th {
+    border-bottom: 2px solid #D7D7D7;
+    vertical-align: middle;
+    border-left: 0;
+    border-right: 0;
+    font-weight: 300;
+    padding: 5px 10px;
+}
+.timeline-popover-hover .table {
+    border-bottom: 8px solid #E7ECF1;
+    margin-bottom: 0px;
+}
+.timeline-popover-hover .request-section {
+    margin-bottom: 10px;
+    border-bottom: 2px solid #D7D7D7;
+}
+.timeline-popover-hover .request-section:last-child {
+    border-bottom: none;
+}
+
+.vis-item-content:hover .expand-voyages{
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
 }

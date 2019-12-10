@@ -267,7 +267,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     content: voyageContent,
                     start: startDate,
                     end: endDate,
-                    style: 'background-color: ' + statusColor
+                    style: 'background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor)
                 };
                 
 
@@ -535,7 +535,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 ctrl.lastStartDate = moment(timeline.range.start);
                 ctrl.lastEndDate = moment(timeline.range.end);
                 var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
-                if (diff == 2.592e+9) {
+                
+                if (diff == 2.592e+9 - 7.2e+6) {
                     $(".st-btn-icon-zoom-in a").css("color", "#555555");
                      $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
                 } else if (diff == 2.592e+8) {
@@ -596,18 +597,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             timeline._setScrollTop(0);
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
-                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> Vessel </span>';
+                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> <b>Vessel </b></span>';
                 if ($scope.displayedColumns["Service"]) {
-	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service"> Service </span>';
+	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service"> <b>Service </b></span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Vessel"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel"> Buyer of the Vessel </span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel"> <b>Buyer of the Vessel </b></span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Service"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> Buyer of the Service </span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> <b>Buyer of the Service </b></span>';
                 }                
                 if ($scope.displayedColumns["Company"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Company </span></div>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> <b>Company </b></span></div>';
                 }
                 groupColumnsTitleElement += '</div>';
 
@@ -1275,7 +1276,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                 });
                 if (hasRequest) {
-                    preHtml = "<p><b>";
+                    preHtml = "<div class='request-section'>";
+                    preHtml += "<p class='stop-details'><b>";
                     preHtml += v1[0].voyageDetail.request.requestDetail.location + " - ";
                     var eta =  $scope.formatDateUtc(v1[0].voyageDetail.eta);
                     preHtml += " ETA : " + eta + " - ";
@@ -1292,26 +1294,27 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     html =  html + preHtml;
                     html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
 
+	                $.each(v1, function(k,v) {
+	                    var voyage = v.voyageDetail;
+	                    if (voyage.request && voyage.request.id != 0) {
+	                        hasNoRequest = true;
+	                        row_requestName = voyage.request.requestName || '-';
+	                        row_vesselName = voyage.request.vesselName || '-';
+	                        //row_location = voyage.request.requestDetail.location || '-';
+	                        row_fuelOilOfRequest = voyage.request.requestDetail.fuelOilOfRequest || '-';
+	                        row_uom = voyage.request.requestDetail.uom || '-';
+	                        row_fuelMinQuantity = $filter('number')(voyage.request.requestDetail.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
+	                        row_fuelMaxQuantity = $filter('number')(voyage.request.requestDetail.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
+	                        row_agreementType = voyage.request.requestDetail.agreementType || '-';
+	                        row_statusCode = voyage.request.requestDetail.statusCode || '-';
+	                        if (voyage.request.requestDetail.fuelOilOfRequest) {
+	                            html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+	                        }
+	                    }
+	                });
+	                html += '</tbody> </table>';
+	                html += '</div>';
                 }
-                $.each(v1, function(k,v) {
-                    var voyage = v.voyageDetail;
-                    if (voyage.request && voyage.request.id != 0) {
-                        hasNoRequest = true;
-                        row_requestName = voyage.request.requestName || '-';
-                        row_vesselName = voyage.request.vesselName || '-';
-                        //row_location = voyage.request.requestDetail.location || '-';
-                        row_fuelOilOfRequest = voyage.request.requestDetail.fuelOilOfRequest || '-';
-                        row_uom = voyage.request.requestDetail.uom || '-';
-                        row_fuelMinQuantity = $filter('number')(voyage.request.requestDetail.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
-                        row_fuelMaxQuantity = $filter('number')(voyage.request.requestDetail.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
-                        row_agreementType = voyage.request.requestDetail.agreementType || '-';
-                        row_statusCode = voyage.request.requestDetail.statusCode || '-';
-                        if (voyage.request.requestDetail.fuelOilOfRequest) {
-                            html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
-                        }
-                    }
-                });
-                html += '</tbody> </table>';
             });
 
             if (voyageStop.length == 0 || !hasNoRequest) {
@@ -1451,6 +1454,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 			// });
         })
 
+		function getContrastYIQ(hexcolor){
+		    hexcolor = hexcolor.replace("#", "");
+		    var r = parseInt(hexcolor.substr(0,2),16);
+		    var g = parseInt(hexcolor.substr(2,2),16);
+		    var b = parseInt(hexcolor.substr(4,2),16);
+		    var yiq = ((r*299)+(g*587)+(b*114))/1000;
+		    return (yiq >= 128) ? 'black' : 'white';
+		}
 
 
     }

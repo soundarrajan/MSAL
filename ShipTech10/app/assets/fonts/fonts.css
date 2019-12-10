@@ -37,3 +37,29 @@
        url('open-sans-v15-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
        url('open-sans-v15-latin-600.svg#OpenSans') format('svg'); /* Legacy iOS */
 }
+
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  src: url('Roboto-Regular.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Regular.ttf'), local('Roboto-Regular.ttf'),
+       url('Roboto-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('Roboto-Bold.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Bold.ttf'), local('Roboto-Bold.ttf'),
+       url('Roboto-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('Roboto-Light.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Light.ttf'), local('Roboto-Light.ttf'),
+       url('Roboto-Light.ttf') format('truetype'), /* Safari, Android, iOS */
+}
