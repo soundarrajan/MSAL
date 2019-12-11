@@ -154,6 +154,8 @@ window.increment = 0;
 			                                            });
                                                         $rootScope.$broadcast("tableLayoutLoaded", initialLayout);
                                                         Layout = layout.clc;
+                                                        Layout.rowActions = Layout.rowActions.concat(callback.clc.rowActions);
+                                                        Layout.rowActions = _.uniqBy(Layout.rowActions, "label");
                                                         Layout.table_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase();
                                                         Layout.pager_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase() + "_pager";
                                                         Layout.defaultColumnList = callback.clc.colModel;
@@ -687,6 +689,18 @@ window.increment = 0;
 
                                         // apply hstyle
                                         $.each(Elements.settings[table_id].source.colModel, function(key, obj) {
+                                        	if (obj.formatter.name == "order_list_checkbox") {
+                                        		$('th[id*="' + obj.name + '"]').addClass("order_list_checkbox");
+                        		            	if (procurementSettings.order.orderVerificationReq.id == 1) {
+									            		// $rootScope.selectedOrderListRows = [];
+									            		// $scope.selectOrders = []
+									            		$('.order_list_checkbox').html('<i id="selectAllOrderList"' +
+									            			' style="font-size: 25px !important; color: #d9d9d9;"' +
+									            			' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
+								            		// $timeout(function(){
+								            		// })
+								            	}
+                                        	}
                                             if (obj.hstyle) {
                                                 $('th[id*="' + obj.name + '"]').addClass("hstyle-color-" + obj.hstyle.color);
                                                 $('th[id*="' + obj.name + '"]').addClass("hstyle-background-" + obj.hstyle.background);

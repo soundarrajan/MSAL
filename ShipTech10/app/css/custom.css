@@ -4422,13 +4422,15 @@ table#new_order_products td {
 #selectAllOrderList {
     background: white;
     content: none;
-    /*font-family: initial;*/
+    /* font-family: initial; */
     content: none;
     width: 19px;
     height: 19px;
     border: 1px solid #d5d5d5;
     position: relative;
-    left: -6px;
+    /* left: 9px; */
+    margin: 0 auto;
+    display: block;
 }
 #selectAllOrderList:before {
     content: none;
