@@ -234,10 +234,10 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
         };
 
         ctrl.gotoNewRequest = function() {
-        	if ($rootScope.selectedScheduleTableRows.length != 1 ) {
-        		toastr.error("You have to select one row to proceed to request")
-        		return;
-        	}
+            if (typeof ($rootScope.selectedScheduleTableRows) == "undefined" || $rootScope.selectedScheduleTableRows.length != 1 ) {
+                toastr.error("You have to select one row to proceed to request");
+                return;
+            }
         	ctrl.newRequest($rootScope.selectedScheduleTableRows[0].voyageDetail.id);
         	return;
             var href = $state.href(STATE.NEW_REQUEST);
