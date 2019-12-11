@@ -590,7 +590,14 @@ var Cfg = {
                             value = dates.join(' - ');
                         }
                     }
-                    if (v.column.columnType == "Bool") {
+                    if (v.column.columnType == "Bool" && v.column.columnValue == "IsDeleted") {
+                         if (value === "1") {
+                            value = "Inactive";
+                        }
+                        if (value === "0") {
+                            value = "Active";
+                        }   
+                    } else if (v.column.columnType == "Bool") {
 	                    if (value === "1") {
 	                        value = "Yes";
 	                    }
