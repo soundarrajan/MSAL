@@ -26,7 +26,7 @@
 						<td>
 							{{voyage}}
 						</td>
-						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" class="cancelBunkerStrategyCell" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" class="cancelBunkerStrategyCell" style="border: 0.5px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important; ">
 							<span ng-repeat="(ptkey,ptval) in $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]" ng-init="bunkerPlan = ptval[productType][0].voyageDetail.bunkerPlan" class="amountRightPopover">
 								{{( (!bunkerPlan.supplyQuantity) ? ("") : (bunkerPlan.supplyQuantity | number : $ctrl.numberPrecision.amountPrecision))}}
 								<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>
@@ -39,7 +39,7 @@
 								REQ{{key2}}
 							</a>
 						</td>
-						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 0.5px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important;">
 							<span ng-repeat="(ptkey,ptval) in requests" ng-if="ptkey == productType" class="amountRightPopover">
 								{{( (!ptval) ? ("-") : (ptval | number : $ctrl.numberPrecision.amountPrecision))}}
 							</span>
@@ -51,7 +51,7 @@
 								ORD{{key2}}
 							</a>
 						</td>
-						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 1px solid gainsboro;padding: 3px; position: relative;">
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" style="border: 0.5px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important;">
 							<span ng-repeat="(ptkey,ptval) in orders" ng-if="ptkey == productType" class="amountRightPopover">
 								{{( (!ptval) ? ("-") : (ptval | number : $ctrl.numberPrecision.amountPrecision))}}
 								

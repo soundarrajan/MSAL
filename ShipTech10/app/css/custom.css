@@ -4790,6 +4790,11 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .newStatusColoured.contextmenu .content .cancelBunkerStrategyCell:hover .cancelBunkerStrategy {
 	display: block;
 }
+.newStatusColoured {
+    font-family: "Roboto";
+    font-weight: 600;
+
+}
 .productType {
     width: 18px;
     height: 16px;
