@@ -140,7 +140,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         	console.log(Date.now());
             var vesselDetails = data.payload.vesselDetails;
             ctrl.voyageData = angular.copy(vessels);
-            // vessels = _.uniqBy(vessels, "voyageDetail.id");
+            vessels = _.orderBy(vessels, "voyageDetail.eta");
             groupVoyageId = _.groupBy(vessels, "voyageDetail.id");
             var arrayHighestPriority = [];
             $.each(groupVoyageId, function(k, v) {
