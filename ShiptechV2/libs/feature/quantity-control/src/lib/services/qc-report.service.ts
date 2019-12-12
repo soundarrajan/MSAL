@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { defer, Observable, of, throwError } from 'rxjs';
+import { defer, Observable, of } from 'rxjs';
 import { ModuleError } from '../core/error-handling/module-error';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -71,6 +71,12 @@ import {
   QcRevertVerifyReportFailedAction,
   QcRevertVerifyReportSuccessfulAction
 } from '../store/report/details/actions/revert-verify-report.actions';
+import { IQcReportState } from '../store/report/qc-report.state.model';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { UpdateQcReportPortCall, UpdateQcReportVessel } from '../store/report/details/actions/qc-vessel.action';
+import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IQcVesselPortCall } from '../guards/qc-vessel-port-call.interface';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -94,10 +100,15 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return (<IAppState>this.store.snapshot()).quantityControl.report.details;
   }
 
+  protected get reportState(): IQcReportState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report;
+  }
+
   @ObservableException()
   getReportsList$(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
     return this.apiDispatch(
-      () => this.api.getReportList({ pageFilters: gridRequest }),
+      () => this.api.getReportList({ ...gridRequest }),
       new LoadReportListAction(gridRequest),
       response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
       LoadReportListFailedAction,
@@ -108,7 +119,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getSurveyHistoryList$(vesselId: number, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
     return this.apiDispatch(
-      () => this.api.getSurveyHistoryList({ id: vesselId, pageFilters: gridRequest }),
+      () => this.api.getSurveyHistoryList({ id: vesselId, ...gridRequest }),
       new LoadReportSurveyHistoryAction(gridRequest),
       response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
       LoadReportSurveyHistoryFailedAction,
@@ -116,11 +127,12 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     );
   }
 
+  /**
+   * Load report details for e specific or new report
+   * @param reportId reportId in case of editing or falsy in case of new
+   */
   @ObservableException()
   loadReportDetails$(reportId: number): Observable<unknown> {
-    if (!reportId) {
-      return throwError(ModuleError.InvalidQcReportId(reportId));
-    }
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
       () => this.api.getReportDetails({ id: reportId }),
@@ -134,9 +146,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getSoundingReportList$(gridRequest: IServerGridInfo): Observable<IGetSoundingReportListResponse> {
     return this.api.getSoundingReportList({
-      id: this.reportDetailsState.vesselId,
-      reference: this.reportDetailsState.voyageReference,
-      pageFilters: gridRequest
+      id: this.reportDetailsState.vessel.id,
+      reference: this.reportDetailsState.portCall.voyageReference,
+      ...gridRequest
     });
   }
 
@@ -166,7 +178,20 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
+  updateVessel$(vessel: IDisplayLookupDto): Observable<unknown> {
+    return this.store.dispatch(new UpdateQcReportVessel(vessel));
+  }
+
+  @ObservableException()
+  updatePortCallId$(portCall: IQcVesselPortCall): Observable<unknown> {
+    return this.store.dispatch(new UpdateQcReportPortCall(portCall));
+  }
+
+  @ObservableException()
   verifyVesselReports$(reportIds: number[]): Observable<unknown> {
+    if (this.reportState.isNew)
+      return EMPTY$;
+
     return this.apiDispatch(
       () => this.api.verifyReports({ reportIds }),
       QcVerifyReportAction,
@@ -178,6 +203,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   revertVerifyVessel$(reportIds: number[]): Observable<unknown> {
+    if (this.reportState.isNew)
+      return EMPTY$;
+
     return this.apiDispatch(
       () => this.api.revertVerifyVessel({ reportIds }),
       QcRevertVerifyReportAction,
@@ -194,16 +222,22 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getOrderProductsList$(): Observable<IGetOrderProductsListResponse> {
-    return this.api.getOrderProductsList({ vesselVoyageDetailId: this.reportDetailsState.vesselVoyageDetailId });
+    return this.api.getOrderProductsList({ vesselVoyageDetailId: this.reportDetailsState.portCall.vesselVoyageDetailId });
   }
 
   raiseClaim$(orderProductId: number, orderId: number): Observable<unknown> {
+    if (this.reportState.isNew)
+      return EMPTY$;
+
     return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), '_blank')));
   }
 
   @ObservableException()
   loadEventsLog$(): Observable<unknown> {
     const reportId = this.reportDetailsState.id;
+
+    if (this.reportState.isNew)
+      return EMPTY$;
 
     return this.apiDispatch(
       () => this.api.getEventsLog({ id: reportId }),
@@ -248,6 +282,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   saveReport$(): Observable<unknown> {
 
+    // TODO: Implement validation
 
     return this.apiDispatch(
       () => {
@@ -256,7 +291,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
         return this.api.saveReportDetails({
           id: reportDetailsState.id,
-          vesselVoyageDetailId: reportDetailsState.vesselVoyageDetailId,
+          portCall: reportDetailsState.portCall,
           isVerifiedSludgeQty: vesselResponse.sludge.sludgeVerified,
           sludgePercentage: vesselResponse.sludge.sludge,
           comments: reportDetailsState.comment,

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SelectItem } from 'primeng/api';
-import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { SelectItem } from 'primeng';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 @Component({

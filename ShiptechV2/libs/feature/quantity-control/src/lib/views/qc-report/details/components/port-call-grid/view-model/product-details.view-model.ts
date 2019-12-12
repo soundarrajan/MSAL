@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ProductDetailsGridViewModel } from './product-details-grid.view-model';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -9,8 +9,6 @@ import { QcReportService } from '../../../../../../services/qc-report.service';
 import { Omit } from '@shiptech/core/utils/type-definitions';
 import { QcProductTypeListItemStateModel } from '../../../../../../store/report/details/qc-product-type-list-item-state.model';
 import _ from 'lodash';
-import { LOOKUPS_API_SERVICE } from '@shiptech/core/services/lookups-api/lookups-api.service';
-import { ILookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -37,8 +35,7 @@ export class ProductDetailsViewModel {
     private store: Store,
     private detailsService: QcReportService,
     private viewModelBuilder: ProductTypeListItemViewModelFactory,
-    private tenantSettings: TenantSettingsService,
-    @Inject(LOOKUPS_API_SERVICE) private lookupsApi: ILookupsApiService
+    private tenantSettings: TenantSettingsService
   ) {
     this.productTypes$ = this.selectReportDetails(state => state.productTypesById).pipe(
       map(productTypes => _.values(productTypes).map(productType => viewModelBuilder.build(productType)))
@@ -66,6 +63,6 @@ export class ProductDetailsViewModel {
   }
 
   public updateProductType(column: Column, model: ProductTypeListItemViewModel, value: number): void {
-    this.detailsService.updateProductType$(model.id, <QcProductTypeEditableProps>column.getUserProvidedColDef().field, roundDecimals(value, this.quantityPrecision));
+    this.detailsService.updateProductType$(model.productType.id, <QcProductTypeEditableProps>column.getUserProvidedColDef().field, roundDecimals(value, this.quantityPrecision));
   }
 }

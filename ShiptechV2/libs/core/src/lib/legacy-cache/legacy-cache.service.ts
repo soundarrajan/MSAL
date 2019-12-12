@@ -96,7 +96,7 @@ export class LookupsCacheService {
 
         await lookupTable.clear();
 
-        const lookupItems = tableAndLookup.items.map(i => (<IDisplayLookupDto>{ id: i.id, name: i.name, displayName: i.displayName}));
+        const lookupItems = tableAndLookup.items.map(i => (<IDisplayLookupDto>{ id: i.id, name: i.name, displayName: i.displayName ?? i.name}));
         await lookupTable.bulkPut(lookupItems);
 
         return lookupItems;

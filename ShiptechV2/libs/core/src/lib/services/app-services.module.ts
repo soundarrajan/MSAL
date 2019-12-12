@@ -17,8 +17,9 @@ import { AppRouteReuseStrategy } from '../route/app-route-reuse.strategy';
 import { ROUTES_TO_CACHE } from '@shiptech/core/route/routes-to-reuse.token';
 import { USER_PROFILE_API, UserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
 import { UserProfileApiMock } from '@shiptech/core/services/user-profile/api/user-profile-api-mock.service';
-import { LOOKUPS_API_SERVICE, LookupsApiService } from '@shiptech/core/services/lookups-api/lookups-api.service';
-import { LookupsApiServiceMock } from '@shiptech/core/services/lookups-api/lookups-api.service.mock';
+import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel-masters-api.service.mock';
+import { VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import { VesselMastersApi } from '@shiptech/core/services/masters-api/vessel-masters-api.service';
 
 @NgModule({
   imports: [],
@@ -52,8 +53,8 @@ export class AppServicesModule {
           useClass: environment.production ? UserProfileApi : UserProfileApiMock
         },
         {
-          provide: LOOKUPS_API_SERVICE,
-          useClass: environment.production ? LookupsApiService : LookupsApiServiceMock
+          provide: VESSEL_MASTERS_API_SERVICE,
+          useClass: environment.production ? VesselMastersApi : VesselMastersApiMock
         },
         {
           provide: RouteReuseStrategy,

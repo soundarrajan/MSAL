@@ -3,7 +3,7 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 
 export class QcSurveyHistoryStateModel extends BaseModel {
-  gridInfo: IServerGridInfo = { pagination: { skip: 0, take: DefaultPageSize } };
+  gridInfo: IServerGridInfo = {  };
   nbOfMatched: number;
   nbOfNotMatched: number;
   nbOfMatchedWithinLimit: number;

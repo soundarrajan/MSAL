@@ -1,21 +1,19 @@
 import { IQcVesselResponsesDto } from './qc-vessel-response.dto';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
 
 export interface IQcReportDetailsDto {
   id: number
-  portCallId: string;
-  vesselName: string;
-  vesselId: number;
-  voyageReference: string;
-  vesselVoyageDetailId: number;
+  portCall?: IQcVesselPortCall;
+  vessel?: IDisplayLookupDto,
   nbOfClaims: number;
   nbOfDeliveries: number;
   productTypeCategories: IQcReportDetailsProductTypeDto[];
   status: IDisplayLookupDto;
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;
-  comments: string;
-  hasEmailSent: boolean;
+  comments?: string;
+  hasEmailSent?: boolean;
 }
 
 export interface IQcReportDetailsProductTypeDto {
@@ -38,8 +36,8 @@ export interface IQcReportDetailsRob {
 }
 
 export interface IQcReportDetailsUoms {
-  robBeforeDeliveryUom: IDisplayLookupDto,
-  robAfterDeliveryUom: IDisplayLookupDto,
-  deliveredQtyUom: IDisplayLookupDto
+  robBeforeDeliveryUom?: IDisplayLookupDto,
+  robAfterDeliveryUom?: IDisplayLookupDto,
+  deliveredQtyUom?: IDisplayLookupDto
   options: IDisplayLookupDto[]
 }

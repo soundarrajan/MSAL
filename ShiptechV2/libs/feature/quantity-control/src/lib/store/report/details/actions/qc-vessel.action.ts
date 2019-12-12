@@ -1,0 +1,28 @@
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IQcVesselPortCall } from '../../../../guards/qc-vessel-port-call.interface';
+
+export class UpdateQcReportVessel {
+  static readonly type = '[Qc.Report.Details] - Update report vessel';
+
+  constructor(public vessel: IDisplayLookupDto) {
+  }
+
+  public log(): any {
+    return {
+      vessel: this.vessel?.displayName
+    };
+  }
+}
+
+export class UpdateQcReportPortCall {
+  static readonly type = '[Qc.Report.Details] - Update report port call';
+
+  constructor(public portCall: IQcVesselPortCall) {
+  }
+
+  public log(): any {
+    return {
+      portCall: this.portCall?.portCallId
+    };
+  }
+}

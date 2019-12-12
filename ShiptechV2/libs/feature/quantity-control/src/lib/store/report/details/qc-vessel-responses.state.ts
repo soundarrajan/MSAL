@@ -13,11 +13,11 @@ export class QcVesselResponseSludgeStateModel {
   sludge?: number;
   sludgeVerified?: boolean;
 
-  constructor(sludge: IQcVesselSludgeResponseDto) {
-    this.activeCategory = sludge.activeCategory;
-    this.description = sludge.description;
-    this.sludge = sludge.sludge;
-    this.sludgeVerified = sludge.sludgeVerified;
+  constructor(sludge?: IQcVesselSludgeResponseDto) {
+    this.activeCategory = sludge?.activeCategory;
+    this.description = sludge?.description;
+    this.sludge = sludge?.sludge;
+    this.sludgeVerified = sludge?.sludgeVerified;
   }
 }
 
@@ -28,9 +28,9 @@ export class QcVesselResponseBunkerStateModel {
   activeCategory: IDisplayLookupDto;
   description: string;
 
-  constructor(bunker: IQcVesselBunkerResponseDto) {
-    this.activeCategory = bunker.activeCategory;
-    this.description = bunker.description;
+  constructor(bunker?: IQcVesselBunkerResponseDto) {
+    this.activeCategory = bunker?.activeCategory;
+    this.description = bunker?.description;
   }
 }
 

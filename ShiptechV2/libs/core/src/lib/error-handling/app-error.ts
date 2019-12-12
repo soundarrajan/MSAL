@@ -88,4 +88,11 @@ export class AppError<T = any> implements IAppError {
       message: `Tenant settings failed to load for ${moduleName} module.`
     });
   };
+
+  static FailedToLoadMastersData<T = any>(masterName: string): AppError<T> {
+    return new AppError({
+      code: AppErrorCode.FailedToLoadMastersData,
+      message: `Could not load ${masterName} master data. Please retry.`
+    });
+  };
 }

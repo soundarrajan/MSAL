@@ -34,7 +34,7 @@ export namespace UserSettingsApiPaths {
 // noinspection JSUnusedGlobalSymbols
 export class UserSettingsApiService implements IUserSettingsApiService, IPreferenceStorage, OnDestroy {
   @ApiCallUrl()
-  protected _apiUrl = this.appConfig.userSettingsApi;
+  protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
   private _destroy$ = new Subject();
 
   constructor(private appConfig: AppConfig, private http: HttpClient) {

@@ -68,11 +68,14 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
+import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
+import { Injectable } from '@angular/core';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
   defaults: QcReportState.default
 })
+@Injectable()
 export class QcReportState {
 
   static default = new QcReportStateModel();
@@ -94,18 +97,23 @@ export class QcReportState {
   }
 
   @Selector([QcReportState])
-  static hasUnsavedChanges(state: IQcReportState): boolean {
+  static isNew(state: IQcReportState): boolean {
+    return state.isNew;
+  }
+
+  @Selector([QcReportState])
+  static hasChanges(state: IQcReportState): boolean {
     return state.details.hasChanges;
+  }
+
+  @Selector([QcReportState.hasChanges, QcReportState.isNew])
+  static hasUnsavedChanges(hasChanges: boolean, isNew: boolean): boolean {
+    return hasChanges || isNew;
   }
 
   @Selector([QcReportState])
   static reportDetailsId(state: IQcReportState): number {
     return state.details.id;
-  }
-
-  @Selector([QcReportState])
-  static canSave(): boolean {
-    return true;
   }
 
   @Selector([QcReportState])
@@ -153,7 +161,10 @@ export class QcReportState {
     return state.details.surveyHistory.nbOfNotMatched;
   }
 
-  static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): IDisplayLookupDto {
+  static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): IDisplayLookupDto | undefined {
+    if ((left === null || left === undefined) && (right === null || right === undefined))
+      return undefined;
+
     if (left === null || left === undefined || right === null || right === undefined)
       return NotMatchedQuantityStatus;
 
@@ -176,6 +187,7 @@ export class QcReportState {
     const maxToleranceLimit = deliverySettings.maxToleranceLimit;
 
     let hasWithinLimit = false;
+    let atleastOneItemHasStatus = false;
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
@@ -183,12 +195,21 @@ export class QcReportState {
       const deliveredDiff = QcReportState.getMatchStatus(item.deliveredQuantityBdnQty, item.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
       const robAfterDiff = QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
 
-      if (robBeforeDiff.id === NotMatchedQuantityStatus.id || deliveredDiff.id === NotMatchedQuantityStatus.id || robAfterDiff.id === NotMatchedQuantityStatus.id)
+      if (!robBeforeDiff && !deliveredDiff && !robAfterDiff)
+        continue;
+
+      atleastOneItemHasStatus = true;
+
+      if (robBeforeDiff?.id === NotMatchedQuantityStatus.id || deliveredDiff?.id === NotMatchedQuantityStatus.id || robAfterDiff?.id === NotMatchedQuantityStatus.id)
         return NotMatchedQuantityStatus;
 
-      if (robBeforeDiff.id === WithinLimitQuantityStatus.id || deliveredDiff.id === WithinLimitQuantityStatus.id || robAfterDiff.id === WithinLimitQuantityStatus.id)
+      if (robBeforeDiff?.id === WithinLimitQuantityStatus.id || deliveredDiff?.id === WithinLimitQuantityStatus.id || robAfterDiff?.id === WithinLimitQuantityStatus.id)
         hasWithinLimit = true;
     }
+
+    // Note: For new, there is nothing yet filled in so we don't show a status.
+    if (!atleastOneItemHasStatus)
+      return undefined;
 
     return hasWithinLimit ? WithinLimitQuantityStatus : MatchedQuantityStatus;
   }
@@ -360,21 +381,19 @@ export class QcReportState {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
       const detailsDto = success.dto;
-      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productType => new QcProductTypeListItemStateModel(productType)), s => s.id);
+      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productType => new QcProductTypeListItemStateModel(productType)), s => s.productType.id);
 
       patchState({
+        isNew: !success.reportId,
         details: {
           ...state.details,
           _isLoading: false,
           _hasLoaded: true,
           id: detailsDto.id,
           status: detailsDto.status,
-          vesselId: detailsDto.vesselId,
-          vesselName: detailsDto.vesselName,
-          voyageReference: detailsDto.voyageReference,
-          vesselVoyageDetailId: detailsDto.vesselVoyageDetailId,
-          portCallId: detailsDto.portCallId,
-          productTypes: detailsDto.productTypeCategories.map(productType => productType.id),
+          vessel: detailsDto.vessel,
+          portCall: detailsDto.portCall,
+          productTypes: detailsDto.productTypeCategories.map(c => c.productType.id),
           productTypesById: productTypesMap,
           uoms: detailsDto.uoms.options,
           comment: detailsDto.comments,
@@ -607,6 +626,31 @@ export class QcReportState {
             _isLoading: false,
             _hasLoaded: true
           }
+        }
+      });
+  }
+
+  @Action(UpdateQcReportVessel)
+  updateQcReportVessel({ getState, patchState }: StateContext<IQcReportState>, { vessel }: UpdateQcReportVessel): void {
+    const state = getState();
+    patchState(
+      {
+        details: {
+          ...state.details,
+          vessel: vessel,
+          portCall: undefined
+        }
+      });
+  }
+
+  @Action(UpdateQcReportPortCall)
+  updateQcReportPortCall({ getState, patchState }: StateContext<IQcReportState>, { portCall }: UpdateQcReportPortCall): void {
+    const state = getState();
+    patchState(
+      {
+        details: {
+          ...state.details,
+          portCall: portCall
         }
       });
   }

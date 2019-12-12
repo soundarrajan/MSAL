@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MenuItem } from 'primeng/api';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { SidebarComponent } from '../sidebar.component';
+import { MenuItem } from 'primeng';
 
 @Component({
   /* tslint:disable:component-selector */

@@ -13,16 +13,18 @@ import {
   CheckboxModule,
   ChipsModule,
   CodeHighlighterModule,
-  ColorPickerModule, ConfirmationService,
+  ColorPickerModule,
+  ConfirmationService,
   ConfirmDialogModule,
   ContextMenuModule,
+  DataViewModule,
   DialogService,
   DropdownModule,
+  DynamicDialogModule,
   EditorModule,
   FieldsetModule,
   FileUploadModule,
   GalleriaModule,
-  GrowlModule,
   InplaceModule,
   InputMaskModule,
   InputSwitchModule,
@@ -56,21 +58,19 @@ import {
   SpinnerModule,
   SplitButtonModule,
   StepsModule,
+  TableModule,
   TabMenuModule,
   TabViewModule,
   TerminalModule,
   TieredMenuModule,
+  ToastModule,
   ToggleButtonModule,
   ToolbarModule,
   TooltipModule,
   TreeModule,
-  TreeTableModule
-} from 'primeng/primeng';
-import { DataViewModule } from 'primeng/dataview';
-import { TableModule } from 'primeng/table';
-import { ToastModule } from 'primeng/toast';
-import { VirtualScrollerModule } from 'primeng/virtualscroller';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+  TreeTableModule,
+  VirtualScrollerModule
+} from 'primeng';
 
 
 const MODULES = [
@@ -96,7 +96,6 @@ const MODULES = [
   FieldsetModule,
   FileUploadModule,
   GalleriaModule,
-  GrowlModule,
   InplaceModule,
   InputMaskModule,
   InputSwitchModule,

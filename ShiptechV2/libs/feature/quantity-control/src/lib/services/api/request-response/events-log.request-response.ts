@@ -3,9 +3,8 @@ import { IQcEventLogListItemDto } from '../dto/qc-event-log-list-item.dto';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 
-export interface IGetEventsLogRequest extends IBaseQuantityControlRequest {
+export interface IGetEventsLogRequest extends IBaseQuantityControlRequest, IServerGridInfo {
   id: number;
-  pageFilters?: IServerGridInfo
 }
 
 export interface IGetEventsLogResponse extends IBaseQuantityControlResponse {

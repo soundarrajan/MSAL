@@ -10,7 +10,7 @@ import {
 } from './grid-column-constants';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
-import { catchError, first, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import {
@@ -21,6 +21,10 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
+import { combineLatest, Observable, of } from 'rxjs';
+import { IAppState } from '@shiptech/core/store/states/app.state.interface';
+import { Store } from '@ngxs/store';
 
 function model(prop: keyof IQcSoundingReportItemDto): keyof IQcSoundingReportItemDto {
   return prop;
@@ -256,7 +260,8 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
     private appErrorHandler: AppErrorHandler,
-    private quantityControlService: QcReportService
+    private reportService: QcReportService,
+    private store: Store
   ) {
     super('qc-sounding-report-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSoundingReportListGridViewModel.name));
     this.initOptions(this.gridOptions);
@@ -268,22 +273,33 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
 
     // Note: Do note use async pipe to load data directly in template because angular ag-grid first sets rowData to undefined, which shows no-rows and then triggers loading the data.
     // Note: This would show a glimpse of NoRowsOverlay before actually loading data.
-    this.gridReady$
+    combineLatest(
+      this.gridReady$,
+      this.selectReportDetails(state => state.portCall) // Note: When portCall changes we need to reload the grid,
+    )
       .pipe(
-        first(),
         tap(() => this.gridApi.showLoadingOverlay()),
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
-        switchMap(() => this.quantityControlService.getSoundingReportList$({})),
+        switchMap(([_, portCallId]) => {
+          if (!portCallId)
+            return of({
+              items: [],
+              totalItems: 0
+            });
+
+          return this.reportService.getSoundingReportList$({});
+        }),
         catchError(() => {
           this.gridApi.hideOverlay();
           return EMPTY$;
         }),
         map(response => response.items),
         tap(items => {
+          this.gridApi.setRowData(items);
+
           if (!items || !items.length) {
             this.gridApi.showNoRowsOverlay();
           } else {
-            this.gridApi.setRowData(items);
             this.gridApi.hideOverlay();
           }
         }),
@@ -313,11 +329,20 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   }
 
   protected detailServerSideGetRows(params: any): void {
-    this.quantityControlService.getSoundingReportListItemDetails$((<IQcSoundingReportItemDto>params.data).id, {}).subscribe(
+    this.reportService.getSoundingReportListItemDetails$((<IQcSoundingReportItemDto>params.data).id, {}).subscribe(
       response => params.successCallback(response.items, response.totalItems),
       error => {
         this.appErrorHandler.handleError(error);
       });
+  }
+
+  private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
+    return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
+  }
+
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
   }
 }
 

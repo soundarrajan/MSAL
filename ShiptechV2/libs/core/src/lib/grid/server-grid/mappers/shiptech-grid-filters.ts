@@ -15,7 +15,7 @@ import {
   AgGridFilter,
   AgGridNumberFilter,
   AgGridTextFilter,
-  knownFilterTypes
+  KnownFilterTypes
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
 import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
@@ -39,14 +39,14 @@ function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRow
     filterOperator: ShiptechGridFilterOperators[filter.operator] || 0
   };
 
-  if (filter.filterType === knownFilterTypes.Text) {
+  if (filter.filterType === KnownFilterTypes.Text) {
     result = <IServerGridTextFilter>{
       ...result,
       values: [(<AgGridTextFilter>filter).filter?.toString()]
     };
   }
 
-  if (filter.filterType === knownFilterTypes.Date) {
+  if (filter.filterType === KnownFilterTypes.Date) {
     result = <IServerGridDateFilter>{
       ...result,
       dateType: 'server',
@@ -54,7 +54,7 @@ function getShiptechFormatFilter(filter: AgGridFilter, params: IServerSideGetRow
     };
   }
 
-  if (filter.filterType === knownFilterTypes.Number) {
+  if (filter.filterType === KnownFilterTypes.Number) {
     const numberFilter = <AgGridNumberFilter>filter;
     const precision = typeof colDef.filterParams?.precision === 'function' ? colDef.filterParams.precision() : typeof colDef.filterParams.precision === 'number' ? colDef.filterParams.precision : undefined;
 
@@ -90,10 +90,13 @@ function flattenFilters(filters: AgGridFilter[]): AgGridFilter[] {
   return result;
 }
 
-export function serverGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): IServerGridInfo {
+export function transformLocalToServeGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string): IServerGridInfo {
   return {
     pagination: getShiptechFormatPagination(params),
     sortList: getShiptechFormatSorts(params, serverColumnKeyMap),
-    filters: getShiptechFormatFilters(params, serverColumnKeyMap)
+    pageFilters: {
+      filters: getShiptechFormatFilters(params, serverColumnKeyMap)
+    },
+    searchText: searchText
   };
 }

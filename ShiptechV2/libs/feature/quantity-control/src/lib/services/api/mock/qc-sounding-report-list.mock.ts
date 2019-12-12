@@ -21,7 +21,7 @@ export function getMockQcSoundingReportListItem(id: number): IQcSoundingReportIt
     robDogoDiff: faker.random.number({ min: 1000, max: 3000 }),
     robHsfoDiff: faker.random.number({ min: 1000, max: 3000 }),
     robLsfoDiff: faker.random.number({ min: 1000, max: 3000 }),
-    soundedOn: faker.date.recent(30).toString(),
+    soundedOn: faker.date.recent(30).toISOString(),
     soundingReason: `Request frok ${faker.commerce.department()}`,
     vesselCode: faker.random.alphaNumeric(4),
     vesselName: `${faker.name.firstName()}`,

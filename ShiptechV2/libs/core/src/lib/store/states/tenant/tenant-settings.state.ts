@@ -13,12 +13,14 @@ import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
 import { ITenantSettingsState } from './tenant-settings.state.interface';
 import { IQcReportState } from '../../../../../../feature/quantity-control/src/lib/store/report/qc-report.state.model';
+import { Injectable } from '@angular/core';
 
 // @dynamic
 @State<ITenantSettingsState>({
   name: nameof<IAppState>('tenantSettings'),
   defaults: TenantSettingsState.default
 })
+@Injectable()
 export class TenantSettingsState {
   // noinspection TsLint
   static default = new TenantSettingsModel();
