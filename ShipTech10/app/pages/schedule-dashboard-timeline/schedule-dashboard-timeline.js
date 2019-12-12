@@ -140,7 +140,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         	console.log(Date.now());
             var vesselDetails = data.payload.vesselDetails;
             ctrl.voyageData = angular.copy(vessels);
-            vessels = _.orderBy(vessels, "voyageDetail.eta");
+            // vessels = _.orderBy(vessels, "voyageDetail.eta");
             groupVoyageId = _.groupBy(vessels, "voyageDetail.id");
             var arrayHighestPriority = [];
             $.each(groupVoyageId, function(k, v) {
@@ -345,15 +345,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return obj.voyageDetail.id != voyage.voyageId;
                 });
                 isExtraStop = false;
-                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString].length > 1) {
-                	uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
-                	if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
-		                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
-		                voyage.additionalStops = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
-	                } else {
-		                isExtraStop = true;
-	                }
-                } 
+                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]) {
+	                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString].length > 1) {
+	                	uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
+	                	if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
+			                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
+			                voyage.additionalStops = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
+		                } else {
+			                isExtraStop = true;
+		                }
+	                } 
+                }
                 // if (firstStopToday) {
 	               //  if (!firstStopToday.hasMultipleStops) {
 		              //   firstStopToday.content += '<span class="expand-voyages" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>'
@@ -436,16 +438,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         var getTimelineOptions = function() {
         	if (ctrl.scheduleDashboardConfiguration.startsBefore >= 15) {
-	        	computedStartDate = moment().subtract(15, "days").subtract(2, "hours").format("YYYY-MM-DD");
-	        	computedEndDate = angular.copy(moment(computedStartDate).add(30,"days").format("YYYY-MM-DD"));
+	        	computedStartDate = moment.utc().subtract(15, "days").format("YYYY-MM-DD");
+	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(30,"days").format("YYYY-MM-DD"));
         		// if ( (ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter) % 2 == 1) {
-		        // 	computedEndDate = angular.copy(moment(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
+		        // 	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
         		// } else {
-		        // 	computedEndDate = angular.copy(moment(ctrl.endDate).format("YYYY-MM-DD"));
+		        // 	computedEndDate = angular.copy(moment.utc(ctrl.endDate).format("YYYY-MM-DD"));
         		// }
         	} else {
-	        	computedStartDate = angular.copy(moment(ctrl.startDate).format("YYYY-MM-DD"));
-	        	computedEndDate = angular.copy(moment(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
+	        	computedStartDate = angular.copy(moment.utc(ctrl.startDate).format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
         	}
             return {
                 'verticalScroll': true,
@@ -461,7 +463,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': 2.592e+8,
-                'zoomMax': 2.592e+9 - 7.2e+6,
+                'zoomMax': 2.592e+9,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
@@ -536,7 +538,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 ctrl.lastEndDate = moment(timeline.range.end);
                 var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
                 
-                if (diff == 2.592e+9 - 7.2e+6) {
+                if (diff == 2.592e+9) {
                     $(".st-btn-icon-zoom-in a").css("color", "#555555");
                      $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
                 } else if (diff == 2.592e+8) {
@@ -687,14 +689,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     ctrl.startDate = moment.utc().add('days', -ctrl.scheduleDashboardConfiguration.startsBefore);
                     ctrl.endDate = moment.utc().add('days', ctrl.scheduleDashboardConfiguration.endsAfter);
                     
-                    var date = $scope.dateFormat.split(" ");
-                    var dateFormat = "";
-                    for (var i=0; i < date.length - 1; i++) {
-                        dateFormat += " " + date[i];
-                    }
+                    currentFormat = angular.copy($scope.dateFormat);
+                    if (currentFormat.startsWith("ddd ")) {
+	                    hasDayOfWeek = true
+	                    currentFormat = currentFormat.split("ddd ")[1];
+	                    currentFormat = "ddd " + currentFormat.split(" ")[0];
+	                } else {
+	                    currentFormat = currentFormat.split(" ")[0];
+	                }
 
-                    $scope.startDateDisplay = moment.unix(moment(ctrl.startDate).format('X')).format(dateFormat);
-                    $scope.endDateDisplay = moment.unix(moment(ctrl.endDate).format('X')).format(dateFormat);
+                    $scope.startDateDisplay = moment.utc(ctrl.startDate).format(currentFormat);
+                    $scope.endDateDisplay =moment.utc(ctrl.endDate).format(currentFormat);
     
                     //DEBUG
                     // ctrl.startDate = moment().add('days', -60);
