@@ -2,9 +2,13 @@ import { IQcReportDetailsDto, IQcReportDetailsProductTypeDto } from '../dto/qc-r
 import * as faker from 'faker';
 import { QcReportStatusEnum, QcReportStatusLabelEnum } from '../../../core/enums/qc-report-status.enum';
 import * as _ from 'lodash';
-import { mockUomsLookup } from '@shiptech/core/services/lookups-api/mock-data/uoms.mock';
-import { MockProductsLookup } from '@shiptech/core/services/lookups-api/mock-data/products.mock';
+import { mockUomsLookup } from '@shiptech/core/services/masters-api/mock-data/uoms.mock';
+import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-data/products.mock';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
+import { roundDecimals } from '@shiptech/core/utils/math';
+
+const mockDecimals = 3;
 
 export const mockCategoriesLookup: IDisplayLookupDto[] = [
   {
@@ -20,13 +24,36 @@ export const mockCategoriesLookup: IDisplayLookupDto[] = [
 ];
 
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
+  const isNew = !id;
+
+  if (isNew) {
+    return {
+      id: 0,
+      nbOfClaims: 0,
+      nbOfDeliveries: 0,
+      status: {
+        id: 1,
+        name: QcReportStatusEnum.New,
+        displayName: QcReportStatusLabelEnum.New
+      },
+      uoms: {
+        options: mockUomsLookup
+      },
+      productTypeCategories: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 5 }), true),
+      vesselResponses: {
+        categories: mockCategoriesLookup
+      }
+    };
+  }
+
   return {
     id: id,
-    vesselId: faker.random.number(),
-    voyageReference: faker.random.alphaNumeric(9).toUpperCase(),
-    portCallId: faker.finance.bitcoinAddress(),
-    vesselName: faker.commerce.color(),
-    vesselVoyageDetailId: faker.random.number(),
+    vessel: _.sample(MockVesselsLookup),
+    portCall: {
+      portCallId: faker.random.alphaNumeric(5).toUpperCase(),
+      voyageReference: faker.random.alphaNumeric(9).toUpperCase(),
+      vesselVoyageDetailId: faker.random.number()
+    },
     nbOfClaims: faker.random.number(),
     nbOfDeliveries: faker.random.number(),
     status: _.sample(PortCallStatuses),
@@ -36,7 +63,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       robBeforeDeliveryUom: _.sample(mockUomsLookup),
       options: mockUomsLookup
     },
-    productTypeCategories: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 30 })),
+    productTypeCategories: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 10 })),
     vesselResponses: {
       categories: mockCategoriesLookup,
       bunker: {
@@ -73,25 +100,25 @@ export const PortCallStatuses: IDisplayLookupDto<number, QcReportStatusEnum>[] =
   }
 ];
 
-export function getMockQcReportProductTypes(n: number): IQcReportDetailsProductTypeDto[] {
+export function getMockQcReportProductTypes(n: number, isNew: boolean = false): IQcReportDetailsProductTypeDto[] {
   return _.range(1, n).map(id => {
     const product = _.sample(MockProductsLookup);
     return {
       id,
       productType: product,
       deliveredQty: {
-        bdnQuantity: faker.random.number(500) + Math.random(),
-        measuredQty: faker.random.number(400) + Math.random(),
+        bdnQuantity: !isNew ? roundDecimals(faker.random.number(500) + Math.random(), mockDecimals) : undefined,
+        measuredQty: !isNew ? roundDecimals(faker.random.number(400) + Math.random(), mockDecimals) : undefined,
         difference: 0
       },
       robAfterDelivery: {
-        logBookROB: faker.random.number(500) + Math.random(),
-        measuredROB: faker.random.number(500) + Math.random(),
+        logBookROB: !isNew ? roundDecimals(faker.random.number(500) + Math.random(), mockDecimals) : undefined,
+        measuredROB: !isNew ? roundDecimals(faker.random.number(500) + Math.random(), mockDecimals) : undefined,
         difference: 0
       },
       robBeforeDelivery: {
-        logBookROB: faker.random.number(500) + Math.random(),
-        measuredROB: faker.random.number(500) + Math.random(),
+        logBookROB: !isNew ? roundDecimals(faker.random.number(500) + Math.random(), mockDecimals) : undefined,
+        measuredROB: !isNew ? roundDecimals(faker.random.number(500) + Math.random(), mockDecimals) : undefined,
         difference: 0
       }
     };

@@ -1,11 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import {
-  RowModelType,
-  RowSelection,
-  TypedColDef
-} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import {
   QcReportsListColumns,
@@ -16,7 +12,7 @@ import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
-import { serverGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { QcReportService } from '../../../services/qc-report.service';
 import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-status';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
@@ -24,6 +20,8 @@ import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import moment from 'moment';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { AppError } from '@shiptech/core/error-handling/app-error';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -31,8 +29,8 @@ function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
 
 @Injectable()
 export class QcReportsListGridViewModel extends BaseGridViewModel {
-  private dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
-  private quantityPrecision = 3;
+  private readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
+  private readonly quantityPrecision: number = 3;
 
 
   private defaultColFilterParams = {
@@ -124,9 +122,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
-      'cell-background verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
+      'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
+      'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
     },
     width: 78
   };
@@ -136,10 +135,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
     valueFormatter: params => params.value?.displayName,
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
-      'cell-background matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-      'cell-background not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
+      'matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
+      'matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
+      'not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
     },
     width: 96
   };
@@ -167,9 +167,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
+    cellClass: 'cell-background',
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
     cellClassRules: {
-      'cell-background red': params => params.data?.diffRobBeforeDelivery < 0
+      'not-matched': params => params.data?.diffRobBeforeDelivery < 0 // TODO: Wrong calculation, needs tolerance
     },
     width: 128
   };
@@ -178,7 +179,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
-    filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.displayName
   };
 
@@ -204,8 +204,9 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background red': params => params.data?.diffDeliveredQty < 0
+      'not-matched': params => params.data?.diffDeliveredQty < 0 // TODO: Wrong calculation, needs tolerance
     }
   };
 
@@ -213,7 +214,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
-    filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.displayName
   };
 
@@ -239,8 +239,9 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background orange': params => params.data?.diffRobAfterDelivery < 0
+      'matched-withing-limit': params => params.data?.diffRobAfterDelivery < 0 // TODO: Wrong calculation, needs tolerance
     }
   };
 
@@ -273,8 +274,9 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background orange': params => params.data?.diffSludgeRobBeforeDischarge < 0
+      'matched-withing-limit': params => params.data?.diffSludgeRobBeforeDischarge < 0 // TODO: Wrong calculation, needs tolerance
     }
   };
 
@@ -316,7 +318,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
-    private quantityControlService: QcReportService
+    private quantityControlService: QcReportService,
+    private appErrorHandler: AppErrorHandler
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
     this.initOptions(this.gridOptions);
@@ -364,8 +367,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getReportsList$(serverGridInfo(params, QcReportsListColumnServerKeys)).subscribe(
+    this.quantityControlService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
       response => params.successCallback(response.items, response.totalItems),
-      () => params.failCallback());
+      () => {
+        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
+        params.failCallback();
+      });
   }
 }

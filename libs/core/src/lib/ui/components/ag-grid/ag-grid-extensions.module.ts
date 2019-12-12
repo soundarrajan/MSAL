@@ -5,7 +5,7 @@ import { AgCellTemplateDirective } from './ag-cell-template/ag-cell-template.dir
 import { PageSizeSelectorComponent } from '../page-size-selector/page-size-selector.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgPagingModule } from '../ag-paging/ag-paging.module';
-import { ListboxModule } from 'primeng/listbox';
+import { ListboxModule } from 'primeng';
 import { AgColumnGroupHeaderTemplateDirective } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header-template.directive';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { AgColumnHeaderTemplateDirective } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header-template.directive';
@@ -47,5 +47,5 @@ const COMPONENTS = [
     ...COMPONENTS
   ]
 })
-export class AgGridComponentsModule {
+export class AgGridExtensionsModule {
 }

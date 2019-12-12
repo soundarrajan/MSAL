@@ -2,8 +2,8 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 
 export interface IQcVesselResponsesDto {
   categories: IDisplayLookupDto[];
-  sludge: IQcVesselSludgeResponseDto;
-  bunker: IQcVesselBunkerResponseDto;
+  sludge?: IQcVesselSludgeResponseDto;
+  bunker?: IQcVesselBunkerResponseDto;
 }
 
 export interface IQcVesselBunkerResponseDto {

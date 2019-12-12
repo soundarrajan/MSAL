@@ -11,12 +11,14 @@ import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
 import { patch } from '@ngxs/store/operators';
+import { Injectable } from '@angular/core';
 
 // @dynamic
 @State<IUserProfileState>({
   name: nameof<IAppState>('userProfile'),
   defaults: UserProfileState.default
 })
+@Injectable()
 export class UserProfileState {
   // noinspection TsLint
   static default = new UserProfileModel();

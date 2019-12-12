@@ -3,8 +3,8 @@ import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/
 import { filter, takeUntil } from 'rxjs/operators';
 import { IBreadcrumb } from './breadcrumbs.model';
 import { BreadcrumbsService } from './breadcrumbs.service';
-import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
+import { MenuItem } from 'primeng';
 
 
 @Component({

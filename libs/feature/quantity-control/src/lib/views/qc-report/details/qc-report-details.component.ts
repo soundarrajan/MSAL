@@ -6,24 +6,20 @@ import { QcReportState } from '../../../store/report/qc-report.state';
 import { Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
 import { filter, takeUntil, tap } from 'rxjs/operators';
-import {
-  SwitchActiveBunkerResponseAction,
-  SwitchActiveSludgeResponseAction
-} from '../../../store/report/details/actions/qc-vessel-response.actions';
-import { ConfirmationService, DialogService } from 'primeng/api';
+import { SwitchActiveBunkerResponseAction, SwitchActiveSludgeResponseAction } from '../../../store/report/details/actions/qc-vessel-response.actions';
 import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
 import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
 import { ToastrService } from 'ngx-toastr';
-import {
-  QcVesselResponseBunkerStateModel,
-  QcVesselResponseSludgeStateModel
-} from '../../../store/report/details/qc-vessel-responses.state';
+import { QcVesselResponseBunkerStateModel, QcVesselResponseSludgeStateModel } from '../../../store/report/details/qc-vessel-responses.state';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-status';
+import { ConfirmationService, DialogService } from 'primeng';
+import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -32,7 +28,6 @@ import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-stat
   providers: [ConfirmationService]
 })
 export class QcReportDetailsComponent implements OnInit, OnDestroy {
-
   private _destroy$ = new Subject();
 
   categories$: Observable<IDisplayLookupDto[]>;
@@ -49,8 +44,12 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   nbOfDeliveries$: Observable<number>;
   comment$: Observable<string>;
 
+  vessel$: Observable<IDisplayLookupDto>;
+  portCall$: Observable<IQcVesselPortCall>;
+
   @Select(QcReportState.matchStatus) matchStatus$: Observable<IDisplayLookupDto>;
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
+  @Select(QcReportState.isNew) isNew$: Observable<boolean>;
 
   hasVerifiedStatus: boolean;
   hasNewStatus: boolean;
@@ -68,10 +67,12 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
-    this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
+    this.vessel$ = this.selectReportDetails(state => state.vessel);
+    this.portCall$ = this.selectReportDetails(state => state.portCall);
 
-      this.hasVerifiedStatus = status.name === EntityStatus.Verified;
-      this.hasNewStatus = status.name === EntityStatus.New;
+    this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
+        this.hasVerifiedStatus = status.name === EntityStatus.Verified;
+        this.hasNewStatus = status.name === EntityStatus.New;
 
         this.entityStatus.setStatus({
           value: <EntityStatus>status.name
@@ -123,6 +124,24 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   updateComment(content: string): void {
     this.reportService.updateReportComment$(content).subscribe();
+  }
+
+  updateVessel(vessel: IVesselMasterDto): void {
+    // Note: Workaround p-autocomplete which send empty text instead of object when you clear the textbox
+    const newVessel = typeof vessel === 'object' ? vessel : undefined;
+
+    this.reportService.updateVessel$(newVessel ? { id: vessel.id, name: vessel.name, displayName: vessel.displayName } : undefined).subscribe();
+  }
+
+  updatePortCall(portCall: IVesselPortCallMasterDto): void {
+    // Note: Workaround p-autocomplete which send empty text instead of null when you clear the textbox
+    const newPortCall = portCall ? portCall : undefined;
+
+    this.reportService.updatePortCallId$(newPortCall ? {
+      portCallId: newPortCall.portCallId,
+      voyageReference: newPortCall.voyageReference,
+      vesselVoyageDetailId: newPortCall.id
+    } : undefined).subscribe();
   }
 
   openEmailPreview(): void {

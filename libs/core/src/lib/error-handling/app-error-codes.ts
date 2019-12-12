@@ -11,6 +11,7 @@ export enum AppErrorCode {
   GeneralTenantSettingsNotLoaded = 105,
   ModuleTenantSettingsNotLoaded = 106,
   MissingLookupKey = 107,
+  FailedToLoadMastersData = 108,
 
   LoadUserProfileFailed = 200
 }

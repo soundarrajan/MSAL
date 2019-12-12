@@ -3,14 +3,13 @@ import { IQcEventsLogState, QcEventsLogStateModel } from './qc-events-log-state.
 import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from './qc-product-type-list-item-state.model';
 import { IQcSurveyHistoryState, QcSurveyHistoryStateModel } from './qc-survey-history-state.model';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
 
 export class QcReportDetailsModel {
   id: number;
-  portCallId: string;
-  vesselId: number;
-  vesselName: string;
-  voyageReference: string;
-  vesselVoyageDetailId: number;
+  portCall: IQcVesselPortCall;
+  vessel: IDisplayLookupDto;
   status: IDisplayLookupDto;
 
   uoms: IDisplayLookupDto[];

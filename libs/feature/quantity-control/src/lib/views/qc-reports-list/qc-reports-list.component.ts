@@ -11,6 +11,7 @@ import { IQcReportsListItemDto } from '../../services/api/dto/qc-reports-list-it
 import { TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { SurveyStatusLookups } from '../../services/survey-status-lookups';
 import { RowNode } from 'ag-grid-community';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -35,7 +36,9 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
               private messageBox: MessageBoxService,
               private reportService: QcReportService,
               private toastr: ToastrService,
-              private surveyStatusLookups: SurveyStatusLookups) {
+              private surveyStatusLookups: SurveyStatusLookups,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
 
   onPageChange(page: number): void {
@@ -48,6 +51,10 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
 
   showModal(data: any): void {
     this.messageBox.displayDialog({ data, width: '500px', height: '600px' }, this.popupTemplate);
+  }
+
+  newReport(): void {
+    this.router.navigate([this.reportDetailsRoutePath, 0], {relativeTo: this.activatedRoute});
   }
 
   verifyVessels(): void {

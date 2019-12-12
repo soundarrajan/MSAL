@@ -2,9 +2,8 @@ import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './req
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { IQcSurveyHistoryListItemDto } from '../dto/qc-survey-history-list-item.dto';
 
-export interface IGetQcSurveyHistoryListRequest extends IBaseQuantityControlRequest {
+export interface IGetQcSurveyHistoryListRequest extends IBaseQuantityControlRequest, IServerGridInfo {
   id: number;
-  pageFilters: IServerGridInfo;
 }
 
 export interface IGetQcSurveyHistoryListResponse extends IBaseQuantityControlResponse {

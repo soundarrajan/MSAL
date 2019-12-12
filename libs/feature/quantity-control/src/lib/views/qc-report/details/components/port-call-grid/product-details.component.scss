@@ -2,11 +2,11 @@
   .cell-background {
     color: white;
 
-    &.red {
+    &.not-matched {
       background-color: #e9585a;
     }
 
-    &.orange {
+    &.matched-withing-limit {
       background-color: #e98a46;
     }
 
@@ -52,7 +52,11 @@
   }
 
   .ui-dropdown-items-wrapper {
-   // overflow: visible !important;
+    // overflow: visible !important;
     z-index: 9999
+  }
+
+  button.ui-spinner-button {
+    display: none;
   }
 }

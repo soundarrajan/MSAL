@@ -11,7 +11,7 @@ export class LoadReportListAction {
     return {
       serverGridInfo: nullable(this.serverGridInfo).pagination,
       searchText: nullable(this.serverGridInfo).searchText,
-      hasFilters: (nullable(this.serverGridInfo).filters || []).length,
+      hasFilters: (nullable(this.serverGridInfo).pageFilters?.filters ?? []).length,
       hasSorts: (nullable(this.serverGridInfo).sortList || []).length
     };
   }

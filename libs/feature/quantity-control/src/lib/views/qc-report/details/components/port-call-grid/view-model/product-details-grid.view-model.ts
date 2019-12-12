@@ -2,7 +2,7 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColGroupDef, GridOptions } from 'ag-grid-community';
-import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   ProductDetailsColGroupsEnum,
   ProductDetailsColGroupsLabels,
@@ -44,21 +44,20 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     groupHeaderHeight: 25,
     headerHeight: 40,
     rowHeight: 35,
-    rowModelType: RowModelType.ClientSide,
     pagination: false,
     animateRows: true,
     domLayout: 'autoHeight',
-    // Note: With deltaRowDataMode=true the cellClassRules do not work, values changes, handlers are evaluated, but the css classes are not removed. This is a bug in ag-grid.
-    deltaRowDataMode: false,
+    deltaRowDataMode: true,
     suppressPaginationPanel: false,
     rowSelection: RowSelection.Multiple,
     rowDragManaged: true,
     suppressRowClickSelection: true,
     multiSortKey: 'ctrl',
-    getRowNodeId: (data: ProductTypeListItemViewModel) => data?.id?.toString(),
+    getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
     enableBrowserTooltips: true,
-    singleClickEdit: true,
+
     defaultColDef: {
+      editable: false,
       sortable: true,
       filter: false,
       suppressColumnsToolPanel: true,
@@ -92,12 +91,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
   differenceRobBeforeDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
-    cellRendererFramework: AgCellTemplateComponent,
     field: model('robBeforeDiff'),
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background red': params => params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
-      'cell-background orange': params => params.data.robBeforeDiffStatus.name === QuantityMatchStatusEnum.WithinLimit
+      'not-matched': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
+      'matched-withing-limit': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
 
@@ -121,10 +120,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     field: model('deliveredDiff'),
-    cellRendererFramework: AgCellTemplateComponent,
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background red': params => params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
-      'cell-background orange': params => params.data.deliveredDiffStatus.name === QuantityMatchStatusEnum.WithinLimit
+      'not-matched': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
+      'matched-withing-limit': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
 
@@ -149,10 +148,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     field: model('robAfterDiff'),
     valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
-    cellRendererFramework: AgCellTemplateComponent,
+    cellClass: 'cell-background',
     cellClassRules: {
-      'cell-background red': params => params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.NotMatched,
-      'cell-background orange': params => params.data.robAfterDiffStatus.name === QuantityMatchStatusEnum.WithinLimit
+      'not-matched': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
+      'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
   robAfterDeliveryColGroup: ColGroupDef = {

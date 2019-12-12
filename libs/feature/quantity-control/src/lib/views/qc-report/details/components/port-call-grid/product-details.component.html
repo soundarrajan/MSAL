@@ -51,22 +51,6 @@
       <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)"
                  [disabled]="isBusy$ | async"
                  [ngModelOptions]="{updateOn: 'blur'}"
-                 [ngModel]="value" [step]="0.001" [formatInput]="true" thousandSeparator="," decimalSeparator="."></p-spinner>
+                 [ngModel]="value" [step]="0" [formatInput]="true" thousandSeparator="," decimalSeparator="."></p-spinner>
     </div>
-</ng-template>
-
-
-<ng-template [columnDef]="[
-             viewModel.gridViewModel.differenceDeliveredQuantityCol,
-             viewModel.gridViewModel.differenceRobBeforeDeliveryCol,
-             viewModel.gridViewModel.differenceRobAfterDeliveryCol]"
-             appAgCellTemplate
-             let-model="data.model" let-value="value">
-  <ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <div class="row">
-        <div class="col-6">{{value | number: viewModel.numberDisplayFormat}}</div>
-      </div>
-    </div>
-  </ng-container>
 </ng-template>

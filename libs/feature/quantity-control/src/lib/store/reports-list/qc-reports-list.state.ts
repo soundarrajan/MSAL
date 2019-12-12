@@ -8,11 +8,13 @@ import {
   LoadReportListFailedAction,
   LoadReportListSuccessfulAction
 } from './qc-report-list.actions';
+import { Injectable } from '@angular/core';
 
 @State<IQcReportsListState>({
   name: nameof<IQuantityControlState>('reportsList'),
   defaults: QcReportsListState.default
 })
+@Injectable()
 export class QcReportsListState {
   public static default: QcReportsListStateModel = new QcReportsListStateModel();
 

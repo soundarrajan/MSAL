@@ -10,7 +10,7 @@ import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directi
 @NgModule({
   imports: [
     MaterialModule,
-    LayoutMainModule
+    LayoutMainModule,
   ],
   declarations: [
     CopyToClipboardDirective,

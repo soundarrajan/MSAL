@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import {
 } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
 import { Omit } from '../../../utils/type-definitions';
+import { MenuItem } from 'primeng';
 
 export interface IRelatedLinksRouteData {
   relatedLinksOptions?: IRelatedLinksOptions,

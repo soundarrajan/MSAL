@@ -42,11 +42,11 @@
   .cell-background {
     color: white;
 
-    &.red {
+    &.not-matched {
       background-color: #e9585a;
     }
 
-    &.orange {
+    &.matched-withing-limit {
       background-color: #e98a46;
     }
 
@@ -60,12 +60,6 @@
 
     &.matched {
       background-color: #72bcab;
-    }
-    &.matched-withing-limit {
-      background-color: orange;
-    }
-    &.not-matched {
-      background-color: red;
     }
   }
 

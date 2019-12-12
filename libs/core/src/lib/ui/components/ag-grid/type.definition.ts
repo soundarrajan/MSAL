@@ -122,7 +122,7 @@ export interface AgGridFilter {
   condition1?: AgGridDateFilter | AgGridTextFilter
   condition2?: AgGridDateFilter | AgGridTextFilter
   operator?: string;
-  filterType: knownFilterTypes;
+  filterType: KnownFilterTypes;
   key: string;
   type: AgGridConditionTypeEnum
 }
@@ -141,7 +141,7 @@ export interface AgGridNumberFilter extends AgGridFilter {
   filterTo?: number;
 }
 
-export enum knownFilterTypes {
+export enum KnownFilterTypes {
   Text = 'text',
   Date = 'date',
   Number = 'number'

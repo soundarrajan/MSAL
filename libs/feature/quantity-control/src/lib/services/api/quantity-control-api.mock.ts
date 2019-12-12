@@ -67,7 +67,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
-    const items = getMockQcReportsList(request.pageFilters.pagination.take) || [];
+    const items = getMockQcReportsList(request.pagination.take) || [];
     const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
 
     return of({
@@ -81,7 +81,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
-    const items = getMockQcSurveyHistoryList(request.pageFilters.pagination.take) || [];
+    const items = getMockQcSurveyHistoryList(request.pagination.take) || [];
     const firstItem = (_.first(items) || <IQcSurveyHistoryListItemDto>{});
 
     return of({
@@ -106,8 +106,8 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
     return of({
-      items: getMockQcSoundingReportList(nullable(request.pageFilters.pagination).take || 10),
-      totalItems: (nullable(request.pageFilters.pagination).take || 10) * 5
+      items: getMockQcSoundingReportList(nullable(request.pagination).take || 10),
+      totalItems: (nullable(request.pagination).take || 10) * 5
     });
   }
 
