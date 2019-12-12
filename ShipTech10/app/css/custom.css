@@ -3070,6 +3070,7 @@ Uncomment to see border around all .col-*
 			    top: 100%;
 			    transform: translateY(-100%);
 			    font-weight: bold;
+                color: black
             }
 
             td.voyageStopCell .voyageStopItem {
