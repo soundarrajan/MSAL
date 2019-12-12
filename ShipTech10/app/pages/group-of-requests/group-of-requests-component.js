@@ -1579,7 +1579,11 @@ ctrl.setProductData = function(data, loc) {
                                                 $.each(locV.products, function (prodK, prodV) {
                                                     var foundSeller = _.find(prodV.sellers, function(o) { return o.randUniquePkg === currentRequirement.randUniquePkg; });
                                                     if (foundSeller) {
-                                                        fakeSellerObj = foundSeller;
+                                                        fakeSellerObj = angular.copy(foundSeller);
+                                                    	if (!currentRequirement.RequestSellerId) {
+                                                    		fakeSellerObj.rfq = null;	
+                                                    		fakeSellerObj.offers = [];	
+                                                    	}
                                                         return;
                                                     }
                                                 });
@@ -2282,6 +2286,10 @@ ctrl.setProductData = function(data, loc) {
                     isCorrect = false;
                     break;
                 }
+                if (requirement.productStatus.name == "Amended") {
+                    isCorrect = false;
+                    break;
+                }
                 if (typeof requirement.requestOffer.price == "undefined" || requirement.requestOffer.price === null) {
                     isCorrect = false;
                     break;
@@ -2513,6 +2521,7 @@ ctrl.setProductData = function(data, loc) {
                         //create confirmation requirements
                         ctrl.requirementRequestProductIds.push({
                             requestProductId: product.id,
+                            productStatus: product.productStatus,
                             requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
                             productSellerId: seller.sellerCounterparty.id,
                             requestOffer: productOffer,
@@ -2684,6 +2693,7 @@ ctrl.setProductData = function(data, loc) {
                 //create confirmation requirements
                 ctrl.requirementRequestProductIds.push({
                     requestProductId: product.id,
+                    productStatus: product.productStatus,
                     requestOfferId: productOffer !== null ? productOffer.id : null,
                     productSellerId: seller.sellerCounterparty.id,
                     requestOffer: productOffer,
