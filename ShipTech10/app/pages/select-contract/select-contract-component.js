@@ -348,6 +348,11 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
             console.log("ctrl.contractHasProduct", ctrl.contractHasProduct);
         }
 
+	    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
+			ctrl.contractHasProduct = false;
+	    });
+
+
         ctrl.goBack = function() {
             $window.history.back();
         };
