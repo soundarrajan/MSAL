@@ -4757,7 +4757,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 	padding: 10px !important;
 }
 .newStatusColoured.contextmenu .content .voyageDetailSection table{
-	width: 100%;
+	/*width: 100%;*/
 }
 .newStatusColoured.contextmenu .content .voyageDetailSection{
     overflow: hidden;

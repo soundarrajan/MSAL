@@ -33,7 +33,7 @@ angular.module('shiptech.pages').directive('newDatePicker', ['tenantModel', '$wi
                 },
                 DD: {
                     mask: IMask.MaskedRange,
-                    from: 1,
+                    from: 1, 
                     to: 99
                 },
                 HH: {

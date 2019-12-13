@@ -14,7 +14,7 @@
 			<table ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder" style="border-spacing: 5px 5px;border-collapse: separate;">
 				<thead>
 					<tr>
-						<th>
+						<th style="width: 90px;max-width: 100px">
 						</th>
 						<th ng-repeat="(key2, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" class="productType">
 							{{productType}}
@@ -23,7 +23,7 @@
 				</thead>
 				<tbody>
 					<tr ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
-						<td>
+						<td style="width: 90px;max-width: 100px">
 							{{voyage}}
 						</td>
 						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage]" class="cancelBunkerStrategyCell" style="border: 0.5px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important; ">
@@ -34,7 +34,7 @@
 						</td>
 					</tr>
 					<tr ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequest[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
-						<td>
+						<td style="width: 90px;max-width: 100px">
 							<a href="/#/edit-request/{{key2}}" target="_blank">
 								REQ{{key2}}
 							</a>
@@ -46,7 +46,7 @@
 						</td>						
 					</tr>
 					<tr ng-repeat="(key2, orders) in $ctrl.groupedVoyages.groupedVoyagesOrder[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasOrder">
-						<td>
+						<td style="width: 90px;max-width: 100px">
 							<a href="/#/edit-order/{{key2}}" target="_blank">
 								ORD{{key2}}
 							</a>

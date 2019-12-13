@@ -1051,7 +1051,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	            	if (v.voyageId == voyageDetailId) {
 	            		if (v.additionalStops) {
 		            		$.each(v.additionalStops, function(k2,v2){
-			            		allStops.push(v2.voyageId)
+			            		allStops.push(v2.voyageDetail.id)
 		            		})
 	            		}
 	            	}
