@@ -76,8 +76,10 @@ angular.module('shiptech.components')
 			    			if (v1.voyageDetail.bunkerPlan) {
 			    				hasEntity[v1.voyageDetail.id].hasBunkerPlan = true;
 			    			}
-			    			if (v1.voyageDetail.request.id != 0) {
-			    				hasEntity[v1.voyageDetail.id].hasRequest = true;
+			    			if (typeof (v1.voyageDetail.request) != "{}") {
+			    				if (v1.voyageDetail.request.id != 0 && v1.voyageDetail.request.requestDetail.Id) {
+			    					hasEntity[v1.voyageDetail.id].hasRequest = true;
+			    				}
 			    			}
 			    			if (v1.voyageDetail.request.requestDetail.orderId) {
 			    				hasEntity[v1.voyageDetail.id].hasOrder = true;
