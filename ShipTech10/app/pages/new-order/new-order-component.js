@@ -130,6 +130,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                         ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
                         // console.log(ctrl.additionalCostTypes);
                         // Get the order data from server. Replace hardcoded order ID with $scope parameter.
+                        
                         orderModel.get(ctrl.orderId).then(function (data) {
                             loadData(data);
                             $timeout(function () {
@@ -138,7 +139,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                                 ctrl.defaultMaxQtyFromConfirmed('init');
 
                             });
-                        });
+                         });
                     });
                     lookupModel.getSellerAutocompleteList([IDS.BARGE_COUNTERPARTY_ID]).then(function (data) {
                         ctrl.lists.bargeCounterparties = data.payload;
@@ -455,12 +456,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 if(ctrl.data.mailSent[i].emailTemplate.name === 'OrderConfirmationToSurveyorEmail') {
                     ctrl.data.emailToSurvSent = true;
                 }
-                if(ctrl.data.mailSent[i].emailTemplate.name === 'SpotOrderConfirmationToSellerEmail' || 
-                    ctrl.data.mailSent[i].emailTemplate.name === 'ContractOrderConfirmationToSellerEmail') {
+               if(ctrl.data.mailSent[i].emailTemplate.name === 'ContractOrderConfirmationToSellerEmail' || ctrl.data.mailSent[i].emailTemplate.name.indexOf("SpotOrderConfirmationToSellerEmail") != -1) {
                     ctrl.data.emailToSellerSent = true;
                 }
-                if(ctrl.data.mailSent[i].emailTemplate.name === 'SpotOrderConfirmationToVesselEmail' || 
-                 ctrl.data.mailSent[i].emailTemplate.name === 'ContractOrderConfirmationToVesselEmail') {
+                if(ctrl.data.mailSent[i].emailTemplate.name === 'ContractOrderConfirmationToVesselEmail' || ctrl.data.mailSent[i].emailTemplate.name.indexOf("SpotOrderConfirmationToVesselEmail") != -1) {
                     ctrl.data.emailToVesselSent = true;
                 }
             }
