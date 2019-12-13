@@ -161,14 +161,16 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 }
 
 .vis-voyage-content-sap::before {
-	content: 'SAP';
+    content: '';
     color: white;
-    background: gray;
+    background: white;
     position: absolute;
     left: 0;
     top: 0;
-    height: 16px;
+    height: 8px;
     padding: 0.1em;
+    width: 100%;
+    box-shadow: 0px -4px 0px -1px inset #000, 1px 4px 0px -1px inset #000;
 }
 
 .vis-timeline-filters-container {
