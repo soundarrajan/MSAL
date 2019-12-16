@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ContentChild, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { AutoComplete } from 'primeng';
+import { AutoComplete } from 'primeng/primeng';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';

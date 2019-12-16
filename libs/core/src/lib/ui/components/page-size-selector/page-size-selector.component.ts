@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SelectItem } from 'primeng';
+import { SelectItem } from 'primeng/primeng';
 
 export interface IPageSizeOption {
   size: number;
@@ -7,6 +7,7 @@ export interface IPageSizeOption {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-page-size-selector',
   templateUrl: './page-size-selector.component.html',
   styleUrls: ['./page-size-selector.component.scss']

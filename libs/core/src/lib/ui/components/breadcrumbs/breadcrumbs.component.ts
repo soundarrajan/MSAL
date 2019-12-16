@@ -4,7 +4,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { IBreadcrumb } from './breadcrumbs.model';
 import { BreadcrumbsService } from './breadcrumbs.service';
 import { Subject } from 'rxjs';
-import { MenuItem } from 'primeng';
+import { MenuItem } from 'primeng/primeng';
 
 
 @Component({

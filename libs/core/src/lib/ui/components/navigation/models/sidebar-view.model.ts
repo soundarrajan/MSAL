@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Omit } from '@shiptech/core/utils/type-definitions';
-import { MenuItem } from 'primeng';
+import { MenuItem } from 'primeng/primeng';
+
 
 export interface OrderedMenuItem extends MenuItem {
   order?: number;

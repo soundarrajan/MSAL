@@ -17,10 +17,8 @@ import {
   ConfirmationService,
   ConfirmDialogModule,
   ContextMenuModule,
-  DataViewModule,
   DialogService,
   DropdownModule,
-  DynamicDialogModule,
   EditorModule,
   FieldsetModule,
   FileUploadModule,
@@ -58,20 +56,22 @@ import {
   SpinnerModule,
   SplitButtonModule,
   StepsModule,
-  TableModule,
   TabMenuModule,
   TabViewModule,
   TerminalModule,
   TieredMenuModule,
-  ToastModule,
   ToggleButtonModule,
   ToolbarModule,
   TooltipModule,
   TreeModule,
-  TreeTableModule,
-  VirtualScrollerModule
-} from 'primeng';
+  TreeTableModule
+} from 'primeng/primeng';
 import { PortalModule } from '@angular/cdk/portal';
+import { TableModule } from 'primeng/table';
+import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { ToastModule } from 'primeng/toast';
+import { DataViewModule } from 'primeng/dataview';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 
 const MODULES = [

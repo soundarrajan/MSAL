@@ -10,7 +10,7 @@ import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { VesselPortCallsMasterSelectorComponent } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/vessel-port-calls-master-selector.component';
-import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
+import { PrimeNGModule } from '../../primeng.module';
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;

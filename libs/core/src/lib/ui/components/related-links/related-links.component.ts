@@ -8,7 +8,7 @@ import {
 } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
 import { Omit } from '../../../utils/type-definitions';
-import { MenuItem } from 'primeng';
+import { MenuItem } from 'primeng/primeng';
 
 export interface IRelatedLinksRouteData {
   relatedLinksOptions?: IRelatedLinksOptions,
@@ -103,7 +103,7 @@ export class RelatedLinksComponent implements OnInit, OnDestroy {
 
   }
 
-  itemClick(event, item: MenuItem) {
+  itemClick(event: any, item: MenuItem):void {
     if (item.disabled) {
       event.preventDefault();
       return;

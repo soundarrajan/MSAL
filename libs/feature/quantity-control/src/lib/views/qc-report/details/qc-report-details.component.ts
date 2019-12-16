@@ -16,7 +16,7 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { ConfirmationService, DialogService } from 'primeng';
+import { ConfirmationService, DialogService } from 'primeng/primeng';
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
-import { MenuItem, TabMenu } from 'primeng';
+import { MenuItem, TabMenu } from 'primeng/primeng';
 import { ActivatedRoute, NavigationCancel, NavigationError, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { Select } from '@ngxs/store';
