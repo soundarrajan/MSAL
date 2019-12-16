@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ContentChild, EventEmitter, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { AutoComplete } from 'primeng';
+import { AutoComplete } from 'primeng/primeng';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
