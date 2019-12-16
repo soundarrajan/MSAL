@@ -5,8 +5,10 @@ import { IQcSurveyHistoryState, QcSurveyHistoryStateModel } from './qc-survey-hi
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
+import * as faker from "faker";
 
 export class QcReportDetailsModel {
+  isNew: boolean;
   id: number;
   portCall: IQcVesselPortCall;
   vessel: IDisplayLookupDto;
@@ -27,6 +29,8 @@ export class QcReportDetailsModel {
 
   comment: string;
   vesselResponse: IQcVesselResponsesState;
+
+  emailTransactionTypeId: number;
 
   isSaving = false;
   isRaisingClaim: boolean;

@@ -4,7 +4,6 @@ import { IQcEmailLogState, QcEmailLogModel } from './email-log/qc-email-log.mode
 import { IQcDocumentsState, QcDocumentsModel } from './documents/qc-documents.model';
 
 export class QcReportStateModel {
-  isNew: boolean;
   details: IQcReportDetailsState = new QcReportDetailsModel();
   auditLog: IQcAuditLogState = new QcAuditLogStateModel();
   emailLog: IQcEmailLogState = new QcEmailLogModel();

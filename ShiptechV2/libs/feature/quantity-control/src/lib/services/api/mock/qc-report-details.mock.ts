@@ -42,7 +42,8 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       productTypeCategories: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 5 }), true),
       vesselResponses: {
         categories: mockCategoriesLookup
-      }
+      },
+      emailTransactionTypeId: faker.random.number()
     };
   }
 
@@ -78,7 +79,8 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       }
     },
     comments: faker.random.words(faker.random.number({ min: 10, max: 40 })),
-    hasEmailSent: faker.random.boolean()
+    hasEmailSent: faker.random.boolean(),
+    emailTransactionTypeId: faker.random.number()
   };
 }
 

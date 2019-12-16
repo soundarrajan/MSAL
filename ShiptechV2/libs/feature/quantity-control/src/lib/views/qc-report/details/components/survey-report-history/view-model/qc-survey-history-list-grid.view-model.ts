@@ -2,11 +2,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {
-  QcSurveyHistoryListColumns,
-  QcSurveyHistoryListColumnServerKeys,
-  QcSurveyHistoryListColumnsLabels
-} from './qc-survey-history-list.columns';
+import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnServerKeys, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
@@ -357,7 +353,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
       return;
     }
 
-    if (this.reportState.isNew) {
+    if (this.reportDetailsState.isNew) {
       params.successCallback([], 0);
     }
 
