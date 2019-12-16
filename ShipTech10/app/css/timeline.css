@@ -23,6 +23,7 @@
 	height: 100%;
 	display: flex;
 	justify-content: space-between;
+    line-height: initial;
 }
 .vis-vessel {
 	width: 95px;
@@ -65,8 +66,8 @@
     font-size: 14px;
 }
  .vis-custom-group-column-header {
-	justify-content: center;
-	text-align: center;
+	/*justify-content: center;*/
+	text-align: left;
  }
 
 .vis-custom-group-column.last { 
