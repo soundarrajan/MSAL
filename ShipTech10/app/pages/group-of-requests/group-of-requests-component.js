@@ -7133,10 +7133,10 @@ ctrl.setProductData = function(data, loc) {
 	                	currentLocation = locV;
 	                    $.each(locV.products, function (prodK, prodV) {
 	                        if (productId == prodV.product.id) {
-	                        	if (product.orderId) {
+	                        	if (prodV.orderId) {
 	                        		data = {
 	                        			"eta" : currentLocation.eta,
-	                        			"orderId" : product.orderId
+	                        			"orderId" : prodV.orderId
 	                        		}
 	                        		foundOffers.push(data);
 	                        	}
@@ -7163,10 +7163,10 @@ ctrl.setProductData = function(data, loc) {
 	                	currentLocation = locV;
 	                    $.each(locV.products, function (prodK, prodV) {
 	                        if (productId == prodV.product.id) {
-	                        	if (product.orderId) {
+	                        	if (prodV.orderId) {
 	                        		data = {
 	                        			"eta" : currentLocation.eta,
-	                        			"orderId" : product.orderId
+	                        			"orderId" : prodV.orderId
 	                        		}
 	                        		foundOffers.push(data);
 	                        	}
