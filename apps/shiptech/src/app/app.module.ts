@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { bootstrapApplication, BootstrapService } from '@shiptech/core/bootstrap.service';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
-import { environment } from '../environments/environment.prod';
+import { environment } from '@shiptech/environment';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -44,7 +44,7 @@ export function getAppBaseHref(doc: Document): string {
     CoreModule,
     PrimeNGModule,
     AuthenticationModule.forRoot(),
-    LoggingModule.forRoot({ developmentMode: environment.production }),
+    LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
     NgxsModule.forRoot([], { developmentMode: !environment.production , selectorOptions: { injectContainerState: false, suppressErrors: false}}),
     NgxsLoggerPluginModule.forRoot(),
