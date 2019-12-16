@@ -6,6 +6,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { KnownQuantityControlRoutes } from '../../../../../feature/quantity-control/src/lib/known-quantity-control.routes';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { environment } from '@shiptech/environment';
+import { toQueryString } from '@shiptech/core/utils/QueryString';
 
 @Injectable({
   providedIn: 'root'
@@ -74,5 +75,9 @@ export class UrlService {
 
   public newClaim(orderProductId?: number, orderId?: number): string {
     return `${this.baseOrigin}/#/claims/edit/?orderId=${orderId}&orderProductId=${orderProductId}`;
+  }
+
+  previewEmail(queryParams: Record<string, any>): string {
+    return `${this.baseOrigin}/#/preview-email?${toQueryString(queryParams)}`;
   }
 }

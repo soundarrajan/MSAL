@@ -5,14 +5,12 @@ import { MasterSelectorHostComponent } from '@shiptech/core/ui/components/master
 import { MasterSelectorTriggerDirective } from '@shiptech/core/ui/components/master-selector/master-selector-trigger.directive';
 import { VesselMasterSelectorComponent } from '@shiptech/core/ui/components/master-selector/known-masters/vessel/vessel-master-selector.component';
 import { UIModule } from '@shiptech/core/ui/ui.module';
-import { PortalModule } from '@angular/cdk/portal';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AgGridModule } from 'ag-grid-angular';
-import { Button, ButtonModule, DynamicDialogModule } from 'primeng';
-import { VesselPortCallsAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/vessel-port-calls/vessel-port-calls-autocomplete.component';
 import { VesselPortCallsMasterSelectorComponent } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/vessel-port-calls-master-selector.component';
+import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -24,13 +22,11 @@ export function getDefaultStorage(defaultStorage: any): any {
     FormsModule,
     ReactiveFormsModule,
     UIModule,
-    PortalModule,
+    PrimeNGModule,
     FilterPresetsModule,
     SearchBoxModule,
     AgGridExtensionsModule,
-    AgGridModule,
-    DynamicDialogModule,
-    ButtonModule,
+    AgGridModule
   ],
   declarations: [
     MasterSelectorHostComponent,

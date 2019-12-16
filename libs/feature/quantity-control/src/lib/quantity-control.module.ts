@@ -51,7 +51,6 @@ import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-au
     AuthenticationModule.forFeature(),
     SearchBoxModule,
     UIModule,
-    PortalModule,
     FilterPresetsModule,
     MasterAutocompleteModule,
     PrimeNGModule,

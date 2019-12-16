@@ -19,7 +19,6 @@ export function getDefaultStorage(defaultStorage: any): any {
     ReactiveFormsModule,
     UIModule,
     PrimeNGModule,
-    PortalModule,
     MasterSelectorModule
   ],
   declarations: [

@@ -98,7 +98,7 @@ export class QcReportState {
 
   @Selector([QcReportState])
   static isNew(state: IQcReportState): boolean {
-    return state.isNew;
+    return state.details.isNew;
   }
 
   @Selector([QcReportState])
@@ -384,9 +384,9 @@ export class QcReportState {
       const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productType => new QcProductTypeListItemStateModel(productType)), s => s.productType.id);
 
       patchState({
-        isNew: !success.reportId,
         details: {
           ...state.details,
+          isNew: !success.reportId,
           _isLoading: false,
           _hasLoaded: true,
           id: detailsDto.id,
@@ -402,7 +402,8 @@ export class QcReportState {
           nbOfDeliveries: detailsDto.nbOfDeliveries,
           robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom,
           robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom,
-          deliveredQtyUom: detailsDto.uoms.deliveredQtyUom
+          deliveredQtyUom: detailsDto.uoms.deliveredQtyUom,
+          emailTransactionTypeId: detailsDto.emailTransactionTypeId
         }
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {

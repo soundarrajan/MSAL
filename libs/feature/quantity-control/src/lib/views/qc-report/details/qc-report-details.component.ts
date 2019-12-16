@@ -145,7 +145,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   openEmailPreview(): void {
-    alert('Oh, such an email preview');
+    this.reportService.previewEmail$().subscribe();
   }
 
   save(): void {
