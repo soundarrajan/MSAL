@@ -188,6 +188,16 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
         }          	
         ctrl.loadTemplateList = function() {
             var templateFilter;
+
+            if (window.location.href.indexOf("reportId")) {
+            	getParams = window.location.href.split("?")[1];
+            	if (getParams) {
+	            	ctrl.emailTransactionTypeId = getParams.split("&")[0].split("=")[1];
+	            	ctrl.reportId = getParams.split("&")[1].split("=")[1];
+	            	ctrl.transaction = "QuantityControl";
+            	}
+            }
+
             // Get the template list for the template dropdown
             if (ctrl.transaction === EMAIL_TRANSACTION.ORDER) {
                 return orderModel.getTemplates(ctrl.emailTransactionTypeId, ctrl.data.orderId).then(function(data) {
@@ -286,6 +296,9 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         }
                         break;
                     case EMAIL_TRANSACTION.ORDER:
+	                    ctrl.defaultTemplate = ctrl.templateList[0];
+                        break;
+                    case "QuantityControl":
 	                    ctrl.defaultTemplate = ctrl.templateList[0];
                         break;
                     case EMAIL_TRANSACTION.ORDER_CONFIRM:
@@ -446,6 +459,28 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                     	ctrl.email = {};
                     }).finally(function(){setTimeout(function(){screenLoader.hideLoader()},1500)});
                     break;
+                case "QuantityControl":
+	                payload = {
+						"Filters": [{
+							"ColumnName": "ReportId",
+							"Value": ctrl.reportId
+						}, {
+							"ColumnName": "TemplateId",
+							"Value": ctrl.template.id
+						}, {
+							"ColumnName": "TemplateName",
+							"Value": ctrl.template.name
+						}]
+					}
+	                $http.post(API.BASE_URL_DATA_ROB + "/api/quantityControlReport/preview", {
+	                	"Payload": payload
+	                }).then(function successCallback(response) {
+	                	ctrl.email = response.data.payload;
+	                	ctrl.data = {};
+	                	ctrl.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
+	                	ctrl.initOthers();
+	                });
+                    break;                    
                 case EMAIL_TRANSACTION.VIEW_RFQ:
                       screenLoader.showLoader();
                     groupOfRequestsModel
@@ -566,6 +601,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                         businessId: ctrl.data.rfqId
                     };
                     break;
+                case "QuantityControl":
+                    emailData = {
+                        businessId: ctrl.email.businessId
+                    };
+                    break;
                 case "OrderNoBDNToVesselEmail":
                 case EMAIL_TRANSACTION.ORDER:
                     emailData = {
@@ -657,7 +697,7 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 			        	}
     	        	}
                     $state.defaultTemplate = ctrl.template;
-                   if(refreshAfter){
+                   if(refreshAfter && ctrl.transaction != "QuantityControl"){
                         $state.reload();
                     }
                     if (ctrl.state.current.name == "default.group-of-requests") {
@@ -731,11 +771,19 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                 return;
             }
 
+
             // console.log(email);
             if (ctrl.transaction == EMAIL_TRANSACTION.GROUP_OF_REQUESTS) {
             	if (!ctrl.email.businessId) {
             		ctrl.email.businessId = ctrl.data.groupId;
             	}
+            }            
+
+            if (ctrl.transaction == "QuantityControl") {
+            	if (!ctrl.email.businessId) {
+            		ctrl.email.businessId = ctrl.reportId;
+            	}
+            	remainOnSamePage = true;
             }
             if (ctrl.transaction == EMAIL_TRANSACTION.ORDER && ctrl.email.comment.emailTemplate.name != "SludgeConfirmationToVesselEmail") {
         		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
@@ -885,7 +933,9 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                	return;
 	                }
 	            	ctrl.buttonsDisabled = false;
-	            	$state.reload()
+	            	if (ctrl.transaction != "QuantityControl") {
+		            	$state.reload()
+	            	}
 	            });
             }
 

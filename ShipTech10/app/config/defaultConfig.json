@@ -69,6 +69,7 @@
     "BASE_URL_DATA_ALERTS": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.BusinessAlerts",
     "BASE_URL_DATA_HANGFIRE": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Hangfire",
     "BASE_URL_DATA_MAIL": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Mail",
+    "BASE_URL_DATA_ROB": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Rob",
     "BASE_URL_DATA_IMPORTEXPORT": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.ImportExport",
     "BASE_URL_UI": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
     "BASE_URL_OPEN_SERVER": "http://shiptech10.24software.ro:8160",
