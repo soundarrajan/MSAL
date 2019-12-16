@@ -164,17 +164,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
                 }
             });
-            $.each($scope.stopsGroupedByDayAndGroup, function(k, v) {
-                var minVoyageEta =  _.minBy(v, function(item) {
-                        if (typeof (item.voyageDetail) != "undefined") {
-                            timestamp = moment(item.voyageDetail.eta).format('X');
-                            return timestamp;
-                        }
+            if (!$scope.stopsGroupedByDayAndGroup["undefined"]) {
+                $.each($scope.stopsGroupedByDayAndGroup, function(k, v) {
+                    var minVoyageEta =  _.minBy(v, function(item) {
+                            if (typeof (item.voyageDetail) != "undefined") {
+                                timestamp = moment(item.voyageDetail.eta).format('X');
+                                return timestamp;
+                            }
+                    });
+                    var index = _.indexOf(v, minVoyageEta);
+                    v[index] = v[0];
+                    v[0] = minVoyageEta;
                 });
-                var index = _.indexOf(v, minVoyageEta);
-                v[index] = v[0];
-                v[0] = minVoyageEta;
-            });
+
+            }
 
 
 
