@@ -217,6 +217,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
                 }
+                // if (!vessels[i].voyageDetail.portStatus.id) {
+                //     cls += " no-request";
+                // }
                 if (vessels[i].voyageDetail.originalEta) {
                     initialEtaDotted =  vessels[i].voyageDetail.originalEta;
                     //voyageContent += '<span class="' + clsDotted + '" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"  style="background-color: blue"> ' + originalEtaDotted + ' </span>';
@@ -279,7 +282,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     content: voyageContent,
                     start: startDate,
                     end: endDate,
-                    style: 'background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor)
+                    style: 'background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; border-color: #9E9E9E" : " "  )
                 };
                 
 

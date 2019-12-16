@@ -49,7 +49,7 @@
     /* padding: 5px; */
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 0.8em;
+    font-size: 14px;
 }
 
 .vis-custom-group-column { 
@@ -62,7 +62,7 @@
     /* padding: 5px; */
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 12px;
+    font-size: 14px;
 }
  .vis-custom-group-column-header {
 	justify-content: center;
