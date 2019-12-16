@@ -3060,7 +3060,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             	if (procurementSettings.order.orderVerificationReq.id == 1) {
 	            		$rootScope.selectedOrderListRows = [];
 	            		$scope.selectOrders = []
-	            		$('.order_list_checkbox').html('<i id="selectAllOrderList"' +
+	            		$('.order_list_checkbox > div' ).html('<i id="selectAllOrderList"' +
 	            			' style="font-size: 25px !important; color: #d9d9d9;"' +
 	            			' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
             		// $timeout(function(){
