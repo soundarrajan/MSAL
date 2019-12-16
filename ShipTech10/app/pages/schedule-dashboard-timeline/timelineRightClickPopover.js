@@ -8,6 +8,7 @@ angular.module('shiptech.components')
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;
 	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
+	            ctrl.dateFormat = $scope.formatDateToMomentFormat(settings.payload.tenantFormats.dateFormat.name);
 	        });
 
 		    ctrl.$onChanges = function (changes) {
@@ -26,6 +27,21 @@ angular.module('shiptech.components')
 		    	ctrl.vesselName = changes.rightClickPopoverData.currentValue.todayVoyages[0].VesselName;
 		    	
 		    };
+		    $scope.formatDateToMomentFormat = function( dateFormat ){
+	            dbFormat = dateFormat;
+	            hasDayOfWeek = false;
+	            currentFormat = angular.copy(dateFormat);
+	            if (currentFormat.startsWith("DDD ")) {
+	                hasDayOfWeek = true;
+	                currentFormat = currentFormat.split("DDD ")[1];
+	            }           
+	            currentFormat = currentFormat.replace(/d/g, "D");
+	            currentFormat = currentFormat.replace(/y/g, "Y");
+	            if (hasDayOfWeek) {
+	                currentFormat = "ddd " + currentFormat;
+	            }
+	            return currentFormat;
+      		 };
 
 		    normalizeBunkerDetails = function(bunkerDetails) {
 		    	normalizedBunkerDetails = [];
@@ -33,7 +49,11 @@ angular.module('shiptech.components')
 		    		itemStructure = {
 					    "voyageDetail": {
 					    	"request": {
-					    		"requestDetail" : {}
+					    		"requestDetail" : {
+					    						"vesselName": v.vesselName,
+					    						"locationCode": v.portCode,
+					    						"eta": v.eta
+					    							}
 					    	},
 					        "id": v.voyageDetailId,
 					        "hasStrategy": v.hasStrategy,
@@ -256,9 +276,9 @@ angular.module('shiptech.components')
 				$(".cancelStrategyModal").modal();
 				$(".cancelStrategyModal").removeClass("hide");
 				ctrl.cancelStrategyModalData = {};
-				ctrl.cancelStrategyModalData.vesselName = vsVal.request.vesselName;
-				ctrl.cancelStrategyModalData.portCode = vsVal.locationCode;
-				ctrl.cancelStrategyModalData.eta = vsVal.eta;
+				ctrl.cancelStrategyModalData.vesselName = vsVal.request.requestDetail.vesselName;
+				ctrl.cancelStrategyModalData.portCode = vsVal.request.requestDetail.locationCode;
+				ctrl.cancelStrategyModalData.eta = ctrl.formatDateUtc(vsVal.request.requestDetail.eta);
 				ctrl.cancelStrategyModalData.fuelType = bunkerPlan.productType;
 				ctrl.cancelStrategyModalData.quantity = bunkerPlan.supplyQuantity;
 				ctrl.cancelStrategyModalData.uom = bunkerPlan.supplyUomName;
@@ -281,6 +301,33 @@ angular.module('shiptech.components')
 	            });
 	            $scope.cancelStrategyModalData = null;
 			}
+
+			ctrl.formatDateUtc = function (cellValue) {
+	            var dateFormat = ctrl.dateFormat;
+	            var hasDayOfWeek = false;                  
+	            dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+	            formattedDate = moment(cellValue).format(ctrl.dateFormat);
+	            if (formattedDate) {
+	                var array = formattedDate.split(" ");
+	                var format = [];
+	                $.each(array, function(k,v) {
+	                    if (array[k] != "00:00") {
+	                        format = format + array[k] + " ";
+	                    }
+	                });
+	                formattedDate = format;
+	            }
+	     
+	            if (formattedDate) {
+	                if (formattedDate.indexOf("0001") != -1) {
+	                    formattedDate = "";
+	                }
+	            }
+	            if (cellValue != null) {
+	                return formattedDate;
+	            }
+	            return "";
+       		}
 		}
 	]	
 );
