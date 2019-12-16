@@ -4778,8 +4778,8 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .newStatusColoured.contextmenu .content .cancelBunkerStrategy {
 	display: none;
     position: absolute;
-    right: 0px;
-    top: 0;
+    left: 40.5px;
+    bottom: 16.5px;
     cursor: pointer;
     line-height: 14px;
     width: 15px;
