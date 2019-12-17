@@ -2792,12 +2792,24 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 return;
             }
             canReconfirm = true;
+            hasFormula = false;
+            hasContract = false;
             $.each(ctrl.data.products, function (k, v) {
-                if (!v.isPriceFinal) {
+                if (v.formula) {
+                    hasFormula = true;
+                }
+                if (v.contract) {
+		            hasContract = true;
+                }
+                if (v.formula && !v.isPriceFinal) {
                     canReconfirm = false;
                 }
             })
-            return canReconfirm
+            if (hasContract && hasFormula) {
+	            return canReconfirm
+            } else {
+            	return false;
+            }
         }
         ctrl.validateMinMaxQuantity = function (min, max) {
             if(typeof min == "string") min = parseFloat(min);
