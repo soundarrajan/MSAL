@@ -48,7 +48,6 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     if (this.router.navigated) {
       this.generateBreadcrumbTrail();
     }
-    ;
 
     // subscribe to the NavigationEnd event
     this.router.events.pipe(
@@ -61,67 +60,67 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   private generateBreadcrumbTrail(): void {
-    // reset currentBreadcrumbs
-    this.currentBreadcrumbs = [];
-
-    // get the root of the current route
-    let currentRoute: ActivatedRoute = this.activatedRoute.root;
-
-    // set the url to an empty string
-    let url: string = '';
-
-    // iterate from activated route to children
-    while (currentRoute.children.length > 0) {
-      const childrenRoutes: ActivatedRoute[] = currentRoute.children;
-      let breadCrumbLabel: string = '';
-
-      // iterate over each children
-      childrenRoutes.forEach(route => {
-        // Set currentRoute to this route
-        currentRoute = route;
-        // Verify this is the primary route
-        if (route.outlet !== PRIMARY_OUTLET) {
-          return;
-        }
-        const hasData = (route.routeConfig && route.routeConfig.data);
-        const hasDynamicBreadcrumb: boolean = route.snapshot.params.hasOwnProperty(this.ROUTE_PARAM_BREADCRUMB);
-
-        if (hasData || hasDynamicBreadcrumb) {
-          /*
-          Verify the custom data property "breadcrumb"
-          is specified on the route or in its parameters.
-
-          Route parameters take precedence over route data
-          attributes.
-          */
-          if (hasDynamicBreadcrumb) {
-            breadCrumbLabel = route.snapshot.params[this.ROUTE_PARAM_BREADCRUMB].replace(/_/g, ' ');
-          } else if (route.snapshot.data.hasOwnProperty(this.ROUTE_DATA_BREADCRUMB)) {
-            breadCrumbLabel = route.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
-          }
-          // Get the route's URL segment
-          const routeURL: string = route.snapshot.url.map(segment => segment.path).join('/');
-          url += `/${routeURL}`;
-          // Cannot have parameters on a root route
-          if (routeURL.length === 0) {
-            route.snapshot.params = {};
-          }
-          // Add breadcrumb
-          const breadcrumb: IBreadcrumb = {
-            label: breadCrumbLabel,
-            params: route.snapshot.params,
-            url: url
-          };
-          // Add the breadcrumb as 'prefixed'. It will appear before all breadcrumbs
-          if (route.snapshot.data.hasOwnProperty(this.PREFIX_BREADCRUMB)) {
-            this.breadcrumbService.storePrefixed(breadcrumb);
-          } else {
-            this.currentBreadcrumbs.push(breadcrumb);
-          }
-        }
-      });
-      this.breadcrumbService.store(this.currentBreadcrumbs);
-    }
+    // // reset currentBreadcrumbs
+    // this.currentBreadcrumbs = [];
+    //
+    // // get the root of the current route
+    // let currentRoute: ActivatedRoute = this.activatedRoute.root;
+    //
+    // // set the url to an empty string
+    // let url: string = '';
+    //
+    // // iterate from activated route to children
+    // while (currentRoute.children.length > 0) {
+    //   const childrenRoutes: ActivatedRoute[] = currentRoute.children;
+    //   let breadCrumbLabel: string = '';
+    //
+    //   // iterate over each children
+    //   childrenRoutes.forEach(route => {
+    //     // Set currentRoute to this route
+    //     currentRoute = route;
+    //     // Verify this is the primary route
+    //     if (route.outlet !== PRIMARY_OUTLET) {
+    //       return;
+    //     }
+    //     const hasData = (route.routeConfig && route.routeConfig.data);
+    //     const hasDynamicBreadcrumb: boolean = route.snapshot.params.hasOwnProperty(this.ROUTE_PARAM_BREADCRUMB);
+    //
+    //     if (hasData || hasDynamicBreadcrumb) {
+    //       /*
+    //       Verify the custom data property "breadcrumb"
+    //       is specified on the route or in its parameters.
+    //
+    //       Route parameters take precedence over route data
+    //       attributes.
+    //       */
+    //       if (hasDynamicBreadcrumb) {
+    //         breadCrumbLabel = route.snapshot.params[this.ROUTE_PARAM_BREADCRUMB].replace(/_/g, ' ');
+    //       } else if (route.snapshot.data.hasOwnProperty(this.ROUTE_DATA_BREADCRUMB)) {
+    //         breadCrumbLabel = route.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
+    //       }
+    //       // Get the route's URL segment
+    //       const routeURL: string = route.snapshot.url.map(segment => segment.path).join('/');
+    //       url += `/${routeURL}`;
+    //       // Cannot have parameters on a root route
+    //       if (routeURL.length === 0) {
+    //         route.snapshot.params = {};
+    //       }
+    //       // Add breadcrumb
+    //       const breadcrumb: IBreadcrumb = {
+    //         label: breadCrumbLabel,
+    //         params: route.snapshot.params,
+    //         url: url
+    //       };
+    //       // Add the breadcrumb as 'prefixed'. It will appear before all breadcrumbs
+    //       if (route.snapshot.data.hasOwnProperty(this.PREFIX_BREADCRUMB)) {
+    //         this.breadcrumbService.storePrefixed(breadcrumb);
+    //       } else {
+    //         this.currentBreadcrumbs.push(breadcrumb);
+    //       }
+    //     }
+    //   });
+    //   this.breadcrumbService.store(this.currentBreadcrumbs);
+    // }
   }
 
   ngOnDestroy(): void {

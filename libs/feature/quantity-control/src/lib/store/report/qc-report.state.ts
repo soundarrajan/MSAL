@@ -164,11 +164,8 @@ export class QcReportState {
   }
 
   static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): IDisplayLookupDto | undefined {
-    if ((left === null || left === undefined) && (right === null || right === undefined))
-      return undefined;
-
     if (left === null || left === undefined || right === null || right === undefined)
-      return NotMatchedQuantityStatus;
+      return undefined;
 
     const diff = Math.abs(left - right);
 
