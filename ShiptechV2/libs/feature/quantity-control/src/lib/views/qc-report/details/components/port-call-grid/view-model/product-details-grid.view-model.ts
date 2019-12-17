@@ -227,7 +227,6 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 
-
   getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IDisplayLookupDto> {
     switch (groupId) {
       case ProductDetailsColGroupsEnum.RobBeforeDelivery: {

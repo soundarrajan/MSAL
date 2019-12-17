@@ -4,7 +4,6 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
 
 export interface IQcReportSaveProductDetailsDto {
-  id: number;
   productTypeId: number;
   logBookRobQtyBeforeDelivery: number;
   measuredRobQtyBeforeDelivery: number;

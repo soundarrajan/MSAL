@@ -64,10 +64,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     // reset currentBreadcrumbs
     this.currentBreadcrumbs = [];
 
-
     // get the root of the current route
     let currentRoute: ActivatedRoute = this.activatedRoute.root;
-
 
     // set the url to an empty string
     let url: string = '';
