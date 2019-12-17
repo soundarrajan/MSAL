@@ -1,4 +1,5 @@
 import { IModuleTenantSettings } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 export interface IShiptechDateFormat {
   name: string;
@@ -6,6 +7,7 @@ export interface IShiptechDateFormat {
 
 export interface ITenantFormatsSettings {
   dateFormat: IShiptechDateFormat;
+  uom: IDisplayLookupDto;
 }
 
 export interface ITenantDefaultValuesSettings {

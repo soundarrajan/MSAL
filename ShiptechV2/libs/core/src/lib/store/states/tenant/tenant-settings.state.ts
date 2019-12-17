@@ -14,6 +14,7 @@ import { isAction } from '../../../utils/ngxs-utils';
 import { ITenantSettingsState } from './tenant-settings.state.interface';
 import { IQcReportState } from '../../../../../../feature/quantity-control/src/lib/store/report/qc-report.state.model';
 import { Injectable } from '@angular/core';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 
 // @dynamic
 @State<ITenantSettingsState>({
@@ -38,8 +39,13 @@ export class TenantSettingsState {
     );
   }
 
+  @Selector([TenantSettingsState])
+  static general(state: ITenantSettingsState): IGeneralTenantSettings {
+    return state[TenantSettingsModuleName.General];
+  }
+
   @Action(LoadTenantSettingsAction)
-  loadTenantState({ getState, patchState }: StateContext<TenantSettingsState>, { moduleName }: LoadTenantSettingsAction): void {
+  loadTenantState({ getState, patchState }: StateContext<ITenantSettingsState>, { moduleName }: LoadTenantSettingsAction): void {
     patchState({
       [moduleName]: {
         _isLoading: true,
