@@ -557,9 +557,14 @@ export class QcReportState {
   saveReportDetailsSuccessfulAction({ getState, patchState }: StateContext<IQcReportState>, action: QcSaveReportDetailsSuccessfulAction | QcSaveReportDetailsFailedAction): void {
     const state = getState();
     if (isAction(action, QcSaveReportDetailsSuccessfulAction)) {
+
+      const success = <QcSaveReportDetailsSuccessfulAction>action;
+
       patchState({
         details: {
           ...state.details,
+          id: success.reportId,
+          isNew: false,
           hasChanges: false,
           isSaving: false
         }

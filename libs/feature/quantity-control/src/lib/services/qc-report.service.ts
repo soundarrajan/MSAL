@@ -43,6 +43,7 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { UpdateQcReportPortCall, UpdateQcReportVessel } from '../store/report/details/actions/qc-vessel.action';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { IQcVesselPortCall } from '../guards/qc-vessel-port-call.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -257,7 +258,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  saveReport$(): Observable<unknown> {
+  saveReport$(): Observable<number> {
 
     // TODO: Implement validation
 
@@ -300,9 +301,10 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
         });
       },
       new QcSaveReportDetailsAction(),
-      __ => new QcSaveReportDetailsSuccessfulAction(),
+      response => new QcSaveReportDetailsSuccessfulAction(response.reportId),
       new QcSaveReportDetailsFailedAction(),
-      ModuleError.SaveReportDetailsFailed);
+      ModuleError.SaveReportDetailsFailed)
+      .pipe(map(response => response.reportId));
   }
 
   ngOnDestroy(): void {

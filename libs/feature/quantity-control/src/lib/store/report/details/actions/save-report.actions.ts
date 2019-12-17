@@ -12,11 +12,13 @@ export class QcSaveReportDetailsAction {
 export class QcSaveReportDetailsSuccessfulAction {
   static readonly type = '[Qc.Report.Details] - Save Successful';
 
-  constructor() {
+  constructor(public reportId: number) {
   }
 
   public log(): any {
-    return {};
+    return {
+      reportId: this.reportId
+    };
   }
 }
 
