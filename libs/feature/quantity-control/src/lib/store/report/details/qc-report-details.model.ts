@@ -36,6 +36,7 @@ export class QcReportDetailsModel {
   isRaisingClaim: boolean;
   isVerifying: boolean;
   isRevertVerifying: boolean;
+  isUpdatingPortCallBtn: boolean;
   hasChanges: boolean;
 
   _hasLoaded: boolean;

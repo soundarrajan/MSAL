@@ -1,20 +1,12 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { IQuantityControlState } from '../quantity-control.state';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
-import {
-  LoadReportDetailsAction,
-  LoadReportDetailsFailedAction,
-  LoadReportDetailsSuccessfulAction,
-  ResetQcReportDetailsStateAction
-} from './qc-report-details.actions';
+import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction, ResetQcReportDetailsStateAction } from './qc-report-details.actions';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import _ from 'lodash';
 import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
 import { QcVesselResponsesStateModel } from './details/qc-vessel-responses.state';
-import {
-  IQcProductTypeListItemState,
-  QcProductTypeListItemStateModel
-} from './details/qc-product-type-list-item-state.model';
+import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from './details/qc-product-type-list-item-state.model';
 import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
 import {
   SwitchActiveBunkerResponseAction,
@@ -24,11 +16,7 @@ import {
 } from './details/actions/qc-vessel-response.actions';
 import { UpdateQcReportComment } from './details/actions/qc-comment.action';
 import { QcReportDetailsModel } from './details/qc-report-details.model';
-import {
-  SwitchUomForDeliveredQuantityAction,
-  SwitchUomForRobAfterDelivery,
-  SwitchUomForRobBeforeDeliveryAction
-} from './details/actions/qc-uom.actions';
+import { SwitchUomForDeliveredQuantityAction, SwitchUomForRobAfterDelivery, SwitchUomForRobBeforeDeliveryAction } from './details/actions/qc-uom.actions';
 import {
   QcAddEventLogAction,
   QcLoadEventsLogAction,
@@ -38,32 +26,12 @@ import {
   QcUpdateEventLogAction
 } from './details/actions/qc-events-log.action';
 import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
-import {
-  QcSaveReportDetailsAction,
-  QcSaveReportDetailsFailedAction,
-  QcSaveReportDetailsSuccessfulAction
-} from './details/actions/save-report.actions';
-import {
-  QcVerifyReportAction,
-  QcVerifyReportFailedAction,
-  QcVerifyReportSuccessfulAction
-} from './details/actions/verify-report.actions';
-import {
-  LoadReportSurveyHistoryAction,
-  LoadReportSurveyHistoryFailedAction,
-  LoadReportSurveyHistorySuccessfulAction
-} from './qc-report-survey-history.actions';
-import {
-  QcRevertVerifyReportAction,
-  QcRevertVerifyReportFailedAction,
-  QcRevertVerifyReportSuccessfulAction
-} from './details/actions/revert-verify-report.actions';
+import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from './details/actions/save-report.actions';
+import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from './details/actions/verify-report.actions';
+import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from './qc-report-survey-history.actions';
+import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from './details/actions/revert-verify-report.actions';
 import { SurveyStatusLookups } from '../../services/survey-status-lookups';
-import {
-  MatchedQuantityStatus,
-  NotMatchedQuantityStatus,
-  WithinLimitQuantityStatus
-} from '../../core/enums/quantity-match-status';
+import { MatchedQuantityStatus, NotMatchedQuantityStatus, WithinLimitQuantityStatus } from '../../core/enums/quantity-match-status';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -71,6 +39,7 @@ import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-s
 import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
 import { Injectable } from '@angular/core';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
+import { QcClearPortCallBdnAction, QcUpdatePortCallBdnAction, QcUpdatePortCallBdnFailedAction, QcUpdatePortCallBdnSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -93,7 +62,8 @@ export class QcReportState {
       state.details._isLoading,
       state.details.isSaving,
       state.details.isVerifying,
-      state.details.isRevertVerifying
+      state.details.isRevertVerifying,
+      state.details.isUpdatingPortCallBtn
     ];
     return isBusy.some(s => s);
   }
@@ -377,7 +347,7 @@ export class QcReportState {
   loadReportDetailsFinished({ getState, patchState }: StateContext<IQcReportState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
     const state = getState();
     // Note: We could have use also TenantSettingService
-    const defaultUom  = fromLegacyLookup(this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom);
+    const defaultUom = fromLegacyLookup(this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom);
 
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const success = <LoadReportDetailsSuccessfulAction>action;
@@ -692,6 +662,66 @@ export class QcReportState {
             _isLoading: false,
             _hasLoaded: false
           }
+        }
+      });
+    }
+  }
+
+  @Action([QcClearPortCallBdnAction])
+  clearPortCallBdnAction({ getState, patchState }: StateContext<IQcReportState>, action: QcClearPortCallBdnAction): void {
+    const state = getState();
+
+    const productTypesById = { ...state.details.productTypesById };
+
+    _.values(productTypesById).forEach(p => {
+      const productType = productTypesById[p.productType.id];
+
+      productTypesById[p.productType.id] = { ...productType, deliveredQuantityBdnQty: undefined };
+    });
+
+    patchState({
+      details: {
+        ...state.details,
+        productTypesById: productTypesById
+      }
+    });
+  }
+
+  @Action([QcUpdatePortCallBdnAction, QcUpdatePortCallBdnSuccessfulAction, QcUpdatePortCallBdnFailedAction])
+  updatePortCallBdnActionFinished({ getState, patchState }: StateContext<IQcReportState>, action: QcUpdatePortCallBdnAction | QcUpdatePortCallBdnSuccessfulAction | QcUpdatePortCallBdnFailedAction): void {
+    const state = getState();
+
+    if (isAction(action, QcUpdatePortCallBdnSuccessfulAction)) {
+      const success = <QcUpdatePortCallBdnSuccessfulAction>action;
+
+      const productTypesById = { ...state.details.productTypesById };
+
+      (success.productTypes ?? []).forEach(p => {
+        const productType = productTypesById[p.productType.id];
+        if (!productType) return;
+
+        productTypesById[p.productType.id] = { ...productType, deliveredQuantityBdnQty: p.bdnQuantity };
+      });
+
+      patchState({
+        details: {
+          ...state.details,
+          isUpdatingPortCallBtn: false,
+          productTypesById: productTypesById
+        }
+      });
+    } else if (isAction(action, QcUpdatePortCallBdnAction)) {
+      patchState({
+        details: {
+          ...state.details,
+          isUpdatingPortCallBtn: true
+        }
+      });
+    } else if (isAction(action, QcUpdatePortCallBdnFailedAction)) {
+      patchState({
+        details: {
+          ...state.details,
+          isUpdatingPortCallBtn: false
         }
       });
     }

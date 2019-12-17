@@ -39,6 +39,7 @@ import {
   IQcRevertVerifyReportsRequest,
   IQcRevertVerifyReportsResponse
 } from './request-response/revert-verify-port-calls.request-response';
+import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
 
 export interface IQuantityControlApiService {
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -52,6 +53,8 @@ export interface IQuantityControlApiService {
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse>;
 
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse>;
+
+  loadPortCallBdn(request: IQcLoadPortCallBdnRequest): Observable<IQcLoadPortCallBdnResponse>;
 
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse>;
 
