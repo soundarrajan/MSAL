@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { IQuantityControlState } from '../quantity-control.state';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
@@ -70,6 +70,7 @@ import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/ten
 import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
 import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
 import { Injectable } from '@angular/core';
+import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -81,6 +82,7 @@ export class QcReportState {
   static default = new QcReportStateModel();
 
   constructor(
+    private store: Store,
     private surveyStatusLookups: SurveyStatusLookups
   ) {
   }
@@ -377,6 +379,9 @@ export class QcReportState {
   @Action([LoadReportDetailsSuccessfulAction, LoadReportDetailsFailedAction])
   loadReportDetailsFinished({ getState, patchState }: StateContext<IQcReportState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
     const state = getState();
+    // Note: We could have use also TenantSettingService
+    const defaultUom  = fromLegacyLookup(this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom);
+
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
@@ -400,9 +405,9 @@ export class QcReportState {
           vesselResponse: new QcVesselResponsesStateModel(detailsDto.vesselResponses),
           nbOfClaims: detailsDto.nbOfClaims,
           nbOfDeliveries: detailsDto.nbOfDeliveries,
-          robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom,
-          robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom,
-          deliveredQtyUom: detailsDto.uoms.deliveredQtyUom,
+          robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
+          robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
+          deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
           emailTransactionTypeId: detailsDto.emailTransactionTypeId
         }
       });
