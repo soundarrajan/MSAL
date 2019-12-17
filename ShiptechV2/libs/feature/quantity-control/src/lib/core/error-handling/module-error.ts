@@ -28,6 +28,11 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could save report details. Please try again later.'
   });
 
+  static LoadPortCallBtnFailed = new ModuleError({
+    code: ErrorCode.LoadPortCallBtnFailed,
+    message: 'Could load port call BDN values. Please try again later.'
+  });
+
   static VerifyReportFailed = new ModuleError({
     code: ErrorCode.VerifyReportFailed,
     message: 'Mark report for verification has failed. Please try again later.'

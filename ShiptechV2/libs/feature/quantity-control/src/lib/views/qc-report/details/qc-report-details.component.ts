@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
 import { Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { SwitchActiveBunkerResponseAction, SwitchActiveSludgeResponseAction } from '../../../store/report/details/actions/qc-vessel-response.actions';
 import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
 import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
@@ -75,6 +75,11 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
     this.vessel$ = this.selectReportDetails(state => state.vessel);
     this.portCall$ = this.selectReportDetails(state => state.portCall);
+
+    this.portCall$.pipe(
+      switchMap(portCall => this.reportService.loadPortCallBdn$(portCall)),
+      takeUntil(this._destroy$)
+    ).subscribe();
 
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
         this.hasVerifiedStatus = status.name === EntityStatus.Verified;

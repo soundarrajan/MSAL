@@ -10,6 +10,7 @@ export enum ErrorCode {
   SaveReportDetailsFailed = 1003,
   VerifyReportFailed = 1004,
   RevertVerifyReportFailed = 1005,
+  LoadPortCallBtnFailed = 1006,
 
   LoadPortCallListFailed = 3000,
   LoadEventsLogFailed = 3100,

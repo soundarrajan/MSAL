@@ -44,6 +44,12 @@ import { UpdateQcReportPortCall, UpdateQcReportVessel } from '../store/report/de
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { IQcVesselPortCall } from '../guards/qc-vessel-port-call.interface';
 import { map } from 'rxjs/operators';
+import {
+  QcClearPortCallBdnAction,
+  QcUpdatePortCallBdnAction,
+  QcUpdatePortCallBdnFailedAction,
+  QcUpdatePortCallBdnSuccessfulAction
+} from '../store/report/details/actions/update-port-call-bdn.actions';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -305,6 +311,19 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       new QcSaveReportDetailsFailedAction(),
       ModuleError.SaveReportDetailsFailed)
       .pipe(map(response => response.reportId));
+  }
+
+  @ObservableException()
+  loadPortCallBdn$(portCall: IQcVesselPortCall): Observable<unknown> {
+    if(!portCall){
+      return this.store.dispatch(QcClearPortCallBdnAction)
+    }
+
+    return this.apiDispatch(() => this.api.loadPortCallBdn({ portCallId: portCall.portCallId }),
+      new QcUpdatePortCallBdnAction(),
+      response => new QcUpdatePortCallBdnSuccessfulAction(response.portCallId, response.productTypes),
+      new QcUpdatePortCallBdnFailedAction(),
+      ModuleError.LoadPortCallBtnFailed);
   }
 
   ngOnDestroy(): void {
