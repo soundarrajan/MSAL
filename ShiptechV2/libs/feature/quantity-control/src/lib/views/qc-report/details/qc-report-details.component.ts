@@ -20,6 +20,10 @@ import { ConfirmationService, DialogService } from 'primeng/primeng';
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -58,6 +62,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private entityStatus: EntityStatusService,
               private store: Store,
+              private router: Router,
+              private location: Location,
               private reportService: QcReportService,
               private dialogService: DialogService,
               private confirmationService: ConfirmationService,
@@ -149,7 +155,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.reportService.saveReport$().subscribe(() => this.toastrService.success('Report saved successfully'));
+    this.reportService.saveReport$().subscribe(reportId => {
+      this.location.replaceState(this.router.createUrlTree([KnownPrimaryRoutes.QuantityControl, `${KnownQuantityControlRoutes.Report}`, reportId, KnownQuantityControlRoutes.ReportDetails]).toString());
+      this.toastrService.success('Report saved successfully');
+    });
   }
 
   verifyVessel(): void {

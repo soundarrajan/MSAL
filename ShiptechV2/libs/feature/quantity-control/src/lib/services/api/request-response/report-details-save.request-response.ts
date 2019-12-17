@@ -30,4 +30,5 @@ export interface ISaveReportDetailsRequest extends IBaseQuantityControlRequest {
 }
 
 export interface ISaveReportDetailsResponse extends IBaseQuantityControlResponse {
+  reportId: number;
 }
