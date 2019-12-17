@@ -54,7 +54,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   hasVerifiedStatus: boolean;
   hasNewStatus: boolean;
 
-  private quantityPrecision: number;
+  public quantityPrecision: number;
 
   constructor(private entityStatus: EntityStatusService,
               private store: Store,

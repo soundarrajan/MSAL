@@ -69,6 +69,8 @@
               <span class="mr-1 header-subtext">Sludge %</span>
               <p-spinner (ngModelChange)="updateSludgeVesselResponse('sludge', $event)" [formatInput]="true"
                          [disabled]="isBusy$ | async"
+                         disable-keys-spin
+                         [precision]="quantityPrecision"
                          [ngModelOptions]="{updateOn: 'blur'}"
                          [min]="0"
                          [max]="100"

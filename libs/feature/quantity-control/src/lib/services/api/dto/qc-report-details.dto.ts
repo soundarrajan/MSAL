@@ -18,7 +18,6 @@ export interface IQcReportDetailsDto {
 }
 
 export interface IQcReportDetailsProductTypeDto {
-  id: number;
   productType: IDisplayLookupDto;
   robBeforeDelivery: IQcReportDetailsRob;
   robAfterDelivery: IQcReportDetailsRob;

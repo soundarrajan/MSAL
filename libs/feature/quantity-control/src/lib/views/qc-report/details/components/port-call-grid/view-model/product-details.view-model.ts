@@ -14,6 +14,7 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { roundDecimals } from '@shiptech/core/utils/math';
+import { QcReportState } from '../../../../../../store/report/qc-report.state';
 
 export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateModel, 'productType'>;
 
@@ -23,12 +24,7 @@ export class ProductDetailsViewModel {
   productTypes$: Observable<ProductTypeListItemViewModel[]>;
   uoms$: Observable<IDisplayLookupDto[]>;
 
-  public numberMaskFormat: string = this.getNumberMaskFormat();
-  private minIntegerDigits: number = 1;
-  private minFractionDigits: number = 3;
-  private maxFractionDigits: number = 5;
-  public numberDisplayFormat: string = `${this.minIntegerDigits}.${this.minFractionDigits}-${this.maxFractionDigits}`;
-  private quantityPrecision: number = 3;
+  public readonly quantityPrecision: number = 3;
 
   constructor(
     public gridViewModel: ProductDetailsGridViewModel,
@@ -37,15 +33,12 @@ export class ProductDetailsViewModel {
     private viewModelBuilder: ProductTypeListItemViewModelFactory,
     private tenantSettings: TenantSettingsService
   ) {
-    this.productTypes$ = this.selectReportDetails(state => state.productTypesById).pipe(
+    this.productTypes$ = this.store.select(QcReportState.productTypes).pipe(
       map(productTypes => _.values(productTypes).map(productType => viewModelBuilder.build(productType)))
     );
 
-
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
-    this.minFractionDigits = this.quantityPrecision;
-    this.maxFractionDigits = this.quantityPrecision;
 
     this.uoms$ = this.selectReportDetails(state => state.uoms);
   }
@@ -54,13 +47,6 @@ export class ProductDetailsViewModel {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 
-  getNumberMaskFormat(options: { integerDigits?: number, fractionDigits?: number, delimiter?: string } = {
-    integerDigits: 3,
-    fractionDigits: this.quantityPrecision,
-    delimiter: '.'
-  }): string {
-    return '9'.repeat(options.integerDigits) + options.delimiter + '9'.repeat(options.fractionDigits);
-  }
 
   public updateProductType(column: Column, model: ProductTypeListItemViewModel, value: number): void {
     this.detailsService.updateProductType$(model.productType.id, <QcProductTypeEditableProps>column.getUserProvidedColDef().field, roundDecimals(value, this.quantityPrecision));
