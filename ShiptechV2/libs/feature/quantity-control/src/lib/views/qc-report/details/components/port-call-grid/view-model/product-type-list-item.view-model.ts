@@ -62,7 +62,7 @@ export class ProductTypeListItemViewModel {
   }
 
   private safeDiff(left: number, right: number): number {
-    if ((left === null || left === undefined) && (right === null || right === undefined))
+    if ((left === null || left === undefined) || (right === null || right === undefined))
       return undefined;
 
     return roundDecimals(roundDecimals(left ?? 0, this.quantityPrecision) - (right ?? 0), this.quantityPrecision);
