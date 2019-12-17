@@ -450,18 +450,18 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 ctrl.data.barge = {};
             }
             for(var i = 0; i < ctrl.data.mailSent.length; i++) {
-                if(ctrl.data.mailSent[i].emailTemplate.name === 'OrderConfirmationToLabEmail') {
-                    ctrl.data.emailToLabsSent = true;
-                }
-                if(ctrl.data.mailSent[i].emailTemplate.name === 'OrderConfirmationToSurveyorEmail') {
-                    ctrl.data.emailToSurvSent = true;
-                }
-               if(ctrl.data.mailSent[i].emailTemplate.name === 'ContractOrderConfirmationToSellerEmail' || ctrl.data.mailSent[i].emailTemplate.name.indexOf("SpotOrderConfirmationToSellerEmail") != -1) {
+				if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
                     ctrl.data.emailToSellerSent = true;
-                }
-                if(ctrl.data.mailSent[i].emailTemplate.name === 'ContractOrderConfirmationToVesselEmail' || ctrl.data.mailSent[i].emailTemplate.name.indexOf("SpotOrderConfirmationToVesselEmail") != -1) {
+				}
+				if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToVessel') != -1) {
                     ctrl.data.emailToVesselSent = true;
-                }
+				}
+				if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToLab') != -1) {
+                    ctrl.data.emailToLabsSent = true;
+				}
+				if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSurveyor') != -1) {
+                    ctrl.data.emailToSurvSent = true;
+				}
             }
 
             addFirstAdditionalCost();
