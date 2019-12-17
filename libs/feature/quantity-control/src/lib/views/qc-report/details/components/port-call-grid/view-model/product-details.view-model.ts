@@ -20,10 +20,8 @@ export type QcProductTypeEditableProps = keyof Omit<QcProductTypeListItemStateMo
 
 @Injectable()
 export class ProductDetailsViewModel {
-
   productTypes$: Observable<ProductTypeListItemViewModel[]>;
   uoms$: Observable<IDisplayLookupDto[]>;
-
   public readonly quantityPrecision: number = 3;
 
   constructor(
@@ -46,7 +44,6 @@ export class ProductDetailsViewModel {
   private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
-
 
   public updateProductType(column: Column, model: ProductTypeListItemViewModel, value: number): void {
     this.detailsService.updateProductType$(model.productType.id, <QcProductTypeEditableProps>column.getUserProvidedColDef().field, roundDecimals(value, this.quantityPrecision));
