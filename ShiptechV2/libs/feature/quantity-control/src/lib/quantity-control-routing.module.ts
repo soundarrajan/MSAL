@@ -72,7 +72,8 @@ const routes: Routes = [
             outlet: KnownNamedRouterOutlets.topbar,
             component: EntityStatusComponent
           },
-          relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
+          // Note: Left here just for reference, QC does not have related links.
+          // relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
         ]
       }
     ]
