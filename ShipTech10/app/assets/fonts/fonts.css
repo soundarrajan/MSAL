@@ -42,10 +42,10 @@
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 600;
-  src: url('Roboto-Regular.ttf'); /* IE9 Compat Modes */
-  src: local('Roboto-Regular.ttf'), local('Roboto-Regular.ttf'),
-       url('Roboto-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+  font-weight: 800;
+  src: url('Roboto-Black.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Black.ttf'), local('Roboto-Black.ttf'),
+       url('Roboto-Black.ttf') format('truetype'), /* Safari, Android, iOS */
 }
 @font-face {
   font-family: 'Roboto';
@@ -58,8 +58,32 @@
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 600;
+  src: url('Roboto-Medium.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Medium.ttf'), local('Roboto-Medium.ttf'),
+       url('Roboto-Medium.ttf') format('truetype'), /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('Roboto-Regular.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Regular.ttf'), local('Roboto-Regular.ttf'),
+       url('Roboto-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
   src: url('Roboto-Light.ttf'); /* IE9 Compat Modes */
   src: local('Roboto-Light.ttf'), local('Roboto-Light.ttf'),
        url('Roboto-Light.ttf') format('truetype'), /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('Roboto-Thin.ttf'); /* IE9 Compat Modes */
+  src: local('Roboto-Thin.ttf'), local('Roboto-Thin.ttf'),
+       url('Roboto-Thin.ttf') format('truetype'), /* Safari, Android, iOS */
 }

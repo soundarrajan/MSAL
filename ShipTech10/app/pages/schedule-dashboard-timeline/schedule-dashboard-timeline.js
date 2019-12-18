@@ -617,18 +617,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             timeline._setScrollTop(0);
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
-                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> <b>Vessel </b></span>';
+                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> Vessel </span>';
                 if ($scope.displayedColumns["Service"]) {
-	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service"> <b>Service </b></span>';
+	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service"> Service </span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Vessel"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel"> <b>Buyer of the Vessel </b></span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel"> Buyer of the Vessel </span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Service"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> <b>Buyer of the Service </b></span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> Buyer of the Service </span>';
                 }                
                 if ($scope.displayedColumns["Company"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> <b>Company </b></span></div>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Company </span></div>';
                 }
                 groupColumnsTitleElement += '</div>';
 
