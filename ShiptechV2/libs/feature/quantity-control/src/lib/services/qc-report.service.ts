@@ -45,9 +45,9 @@ import { IQcVesselPortCall } from '../guards/qc-vessel-port-call.interface';
 import { map } from 'rxjs/operators';
 import {
   QcClearPortCallBdnAction,
-  QcUpdatePortCallBdnAction,
-  QcUpdatePortCallBdnFailedAction,
-  QcUpdatePortCallBdnSuccessfulAction
+  QcUpdatePortCallAction,
+  QcUpdatePortCallFailedAction,
+  QcUpdatePortCallSuccessfulAction
 } from '../store/report/details/actions/update-port-call-bdn.actions';
 
 @Injectable()
@@ -316,9 +316,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     }
 
     return this.apiDispatch(() => this.api.loadPortCallBdn({ vesselVoyageDetailsId: portCall.vesselVoyageDetailId }),
-      new QcUpdatePortCallBdnAction(),
-      response => new QcUpdatePortCallBdnSuccessfulAction(response.vesselVoyageDetailsId, response.productTypes),
-      new QcUpdatePortCallBdnFailedAction(),
+      new QcUpdatePortCallAction(),
+      response => new QcUpdatePortCallSuccessfulAction(response.vesselVoyageDetailsId, response.productTypes, response.nbOfClaims, response.nbOfDeliveries),
+      new QcUpdatePortCallFailedAction(),
       ModuleError.LoadPortCallBtnFailed);
   }
 

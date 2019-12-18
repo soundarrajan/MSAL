@@ -39,7 +39,7 @@ import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-s
 import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
 import { Injectable } from '@angular/core';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
-import { QcClearPortCallBdnAction, QcUpdatePortCallBdnAction, QcUpdatePortCallBdnFailedAction, QcUpdatePortCallBdnSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
+import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -682,17 +682,19 @@ export class QcReportState {
     patchState({
       details: {
         ...state.details,
-        productTypesById: productTypesById
+        productTypesById: productTypesById,
+        nbOfClaims: undefined,
+        nbOfDeliveries: undefined,
       }
     });
   }
 
-  @Action([QcUpdatePortCallBdnAction, QcUpdatePortCallBdnSuccessfulAction, QcUpdatePortCallBdnFailedAction])
-  updatePortCallBdnActionFinished({ getState, patchState }: StateContext<IQcReportState>, action: QcUpdatePortCallBdnAction | QcUpdatePortCallBdnSuccessfulAction | QcUpdatePortCallBdnFailedAction): void {
+  @Action([QcUpdatePortCallAction, QcUpdatePortCallSuccessfulAction, QcUpdatePortCallFailedAction])
+  updatePortCallBdnActionFinished({ getState, patchState }: StateContext<IQcReportState>, action: QcUpdatePortCallAction | QcUpdatePortCallSuccessfulAction | QcUpdatePortCallFailedAction): void {
     const state = getState();
 
-    if (isAction(action, QcUpdatePortCallBdnSuccessfulAction)) {
-      const success = <QcUpdatePortCallBdnSuccessfulAction>action;
+    if (isAction(action, QcUpdatePortCallSuccessfulAction)) {
+      const success = <QcUpdatePortCallSuccessfulAction>action;
 
       const productTypesById = { ...state.details.productTypesById };
 
@@ -707,17 +709,19 @@ export class QcReportState {
         details: {
           ...state.details,
           isUpdatingPortCallBtn: false,
-          productTypesById: productTypesById
+          productTypesById: productTypesById,
+          nbOfClaims: success.nbOfClaims,
+          nbOfDeliveries: success.nbOfDeliveries,
         }
       });
-    } else if (isAction(action, QcUpdatePortCallBdnAction)) {
+    } else if (isAction(action, QcUpdatePortCallAction)) {
       patchState({
         details: {
           ...state.details,
           isUpdatingPortCallBtn: true
         }
       });
-    } else if (isAction(action, QcUpdatePortCallBdnFailedAction)) {
+    } else if (isAction(action, QcUpdatePortCallFailedAction)) {
       patchState({
         details: {
           ...state.details,

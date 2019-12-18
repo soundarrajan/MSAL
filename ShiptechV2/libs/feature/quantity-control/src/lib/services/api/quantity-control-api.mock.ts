@@ -30,6 +30,7 @@ import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } f
 import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
+import * as faker from 'faker';
 
 @Injectable({
   providedIn: 'root'
@@ -129,7 +130,9 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   loadPortCallBdn(request: IQcLoadPortCallBdnRequest): Observable<IQcLoadPortCallBdnResponse> {
     return of({
       vesselVoyageDetailsId: request.vesselVoyageDetailsId,
-      productTypes: getQcReportDetailsCall(1).productTypeCategories.map(p => ({ productType: p.productType, bdnQuantity: p.deliveredQty.bdnQuantity }))
+      productTypes: getQcReportDetailsCall(1).productTypeCategories.map(p => ({ productType: p.productType, bdnQuantity: p.deliveredQty.bdnQuantity })),
+      nbOfClaims: faker.random.number({ min: 0, max:50}),
+      nbOfDeliveries: faker.random.number({ min: 0, max:50}),
     });
   }
 }

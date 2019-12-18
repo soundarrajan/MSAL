@@ -29,7 +29,8 @@
             <div fxLayout="row" fxLayoutGap="20px">
               <span>QUANTITY CONTROL REPORT</span>
               <shiptech-vessel-master-autocomplete [disabled]="(isBusy$ | async) || !(isNew$ | async)" field="name" dataKey="id">
-                <p-autoComplete (onSelect)="updateVessel($event)" (onClear)="updateVessel(undefined)" [ngModel]="vessel$ | async" [size]="30" [forceSelection]="true" [minLength]="1" placeholder="Vessel Name"
+                <p-autoComplete (onSelect)="updateVessel($event)" (onClear)="updateVessel(undefined)" [ngModel]="vessel$ | async" [size]="30" [forceSelection]="true" [minLength]="1"
+                                placeholder="Vessel Name"
                 ></p-autoComplete>
               </shiptech-vessel-master-autocomplete>
               <shiptech-vessel-port-calls-master-autocomplete [vesselId]="(vessel$ | async)?.id"
@@ -41,10 +42,9 @@
               </shiptech-vessel-port-calls-master-autocomplete>
             </div>
             <div style="margin-left: auto">
-               <span class="badge" *ngIf="(matchStatus$ | async) !== undefined"
-                     [ngClass]="(matchStatus$ | async)?.name">{{ (matchStatus$ | async)?.displayName }}</span>
-              <span class="badge">Claims: {{nbOfClaims$ | async}}</span>
-              <span class="badge">Deliveries: {{nbOfDeliveries$ | async}}</span>
+              <span class="badge" *ngIf="matchStatus$ | async" [ngClass]="(matchStatus$ | async)?.name">{{ (matchStatus$ | async)?.displayName }}</span>
+              <span class="badge" *ngIf="nbOfClaims$ | async">Claims: {{nbOfClaims$ | async}}</span>
+              <span class="badge" *ngIf="nbOfDeliveries$ | async">Deliveries: {{nbOfDeliveries$ | async}}</span>
             </div>
           </div>
 
