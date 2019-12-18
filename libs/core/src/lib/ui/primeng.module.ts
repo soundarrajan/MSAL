@@ -73,7 +73,7 @@ import { ToastModule } from 'primeng/toast';
 import { DataViewModule } from 'primeng/dataview';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p-spinner-disable-keys-spin.directive';
-import { PSpinnerPrecisionDirective } from '@shiptech/core/ui/directives/p-spinner-precision.directive';
+import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
 
 
 const MODULES = [
@@ -155,11 +155,11 @@ const MODULES = [
     MessageService,
     ConfirmationService
   ],
-  declarations: [PSpinnerDisableKeysSpinDirective, PSpinnerPrecisionDirective],
+  declarations: [PSpinnerDisableKeysSpinDirective, PSpinnerTenantFormatDirective],
   exports: [
     ...MODULES,
     PSpinnerDisableKeysSpinDirective,
-    PSpinnerPrecisionDirective
+    PSpinnerTenantFormatDirective
   ]
 })
 export class PrimeNGModule {

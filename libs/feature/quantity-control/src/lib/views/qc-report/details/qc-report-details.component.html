@@ -70,7 +70,7 @@
               <p-spinner (ngModelChange)="updateSludgeVesselResponse('sludge', $event)" [formatInput]="true"
                          [disabled]="isBusy$ | async"
                          disable-keys-spin
-                         [precision]="quantityPrecision"
+                         tenant-format="quantity"
                          [ngModelOptions]="{updateOn: 'blur'}"
                          [min]="0"
                          [max]="100"

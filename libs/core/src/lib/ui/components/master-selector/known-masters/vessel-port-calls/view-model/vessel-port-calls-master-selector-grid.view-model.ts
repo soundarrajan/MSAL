@@ -3,11 +3,8 @@ import { ChangeDetectorRef, Inject, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
-import moment from 'moment';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import {
@@ -16,6 +13,7 @@ import {
   VesselPortCallsMasterListColumnsLabels
 } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/view-model/vessel-port-calls-master-list.columns';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof IVesselPortCallMasterDto): keyof IVesselPortCallMasterDto {
   return prop;
@@ -23,14 +21,11 @@ function model(prop: keyof IVesselPortCallMasterDto): keyof IVesselPortCallMaste
 
 @Injectable()
 export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewModel {
-  private readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
-  private readonly quantityPrecision: number = 3;
-
 
   private defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
-    precision: () => this.quantityPrecision
+    precision: () => this.format.quantityPrecision
   };
 
   public searchText: string;
@@ -93,28 +88,28 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
-  etaCol: TypedColDef<IVesselPortCallMasterDto, Date | string> = {
+  etaCol: TypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.eta,
     colId: VesselPortCallsMasterListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
-  etbCol: TypedColDef<IVesselPortCallMasterDto, Date | string> = {
+  etbCol: TypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.etb,
     colId: VesselPortCallsMasterListColumns.etb,
     field: model('etb'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
-  etdCol: TypedColDef<IVesselPortCallMasterDto, Date | string> = {
+  etdCol: TypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.etd,
     colId: VesselPortCallsMasterListColumns.etd,
     field: model('etd'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
   portCallIdCol: TypedColDef<IVesselPortCallMasterDto, string> = {
@@ -136,16 +131,11 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
-    tenantSettings: TenantSettingsService,
+    private format: TenantFormattingService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi
   ) {
     super('vessel-port-calls-master-selector-grid', columnPreferences, changeDetector, loggerFactory.createLogger(VesselPortCallsMasterSelectorGridViewModel.name));
     this.initOptions(this.gridOptions);
-
-    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-
-    this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
   getColumnsDefs(): TypedColDef[] {

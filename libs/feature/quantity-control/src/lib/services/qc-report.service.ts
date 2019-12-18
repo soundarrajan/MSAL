@@ -34,7 +34,6 @@ import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccess
 import { LoadReportListAction, LoadReportListFailedAction, LoadReportListSuccessfulAction } from '../store/reports-list/qc-report-list.actions';
 import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from '../store/report/qc-report-survey-history.actions';
 import { QcVesselResponseBunkerStateModel, QcVesselResponseSludgeStateModel } from '../store/report/details/qc-vessel-responses.state';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import _ from 'lodash';
 import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from './api/dto/qc-event-log-list-item.dto';
 import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from '../store/report/details/actions/revert-verify-report.actions';
@@ -53,19 +52,13 @@ import {
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
-  private quantityPrecision: number = 3;
-
   constructor(
     protected store: Store,
     private urlService: UrlService,
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
-    tenantSettings: TenantSettingsService,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
-
-    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
   protected get reportDetailsState(): IQcReportDetailsState {
@@ -315,8 +308,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   loadPortCallBdn$(portCall: IQcVesselPortCall): Observable<unknown> {
-    if(!portCall){
-      return this.store.dispatch(QcClearPortCallBdnAction)
+    if (!portCall) {
+      return this.store.dispatch(QcClearPortCallBdnAction);
     }
 
     return this.apiDispatch(() => this.api.loadPortCallBdn({ portCallId: portCall.portCallId }),
