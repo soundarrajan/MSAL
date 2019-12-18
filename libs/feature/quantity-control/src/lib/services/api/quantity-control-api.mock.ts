@@ -128,7 +128,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   loadPortCallBdn(request: IQcLoadPortCallBdnRequest): Observable<IQcLoadPortCallBdnResponse> {
     return of({
-      portCallId: request.portCallId,
+      vesselVoyageDetailsId: request.vesselVoyageDetailsId,
       productTypes: getQcReportDetailsCall(1).productTypeCategories.map(p => ({ productType: p.productType, bdnQuantity: p.deliveredQty.bdnQuantity }))
     });
   }
