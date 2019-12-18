@@ -5,10 +5,10 @@ import { MockLocationsLookup } from '@shiptech/core/services/masters-api/mock-da
 import { MockServicesLookup } from '@shiptech/core/services/masters-api/mock-data/services.mock';
 
 export function getMockVesselPortCallsEventsLog(n: number): IVesselPortCallMasterDto[] {
-  return _.range(1, n).map(id => getMockVesselPortCallsItem(id));
+  return _.range(1, n).map(id => getMockVesselPortCallsItem(id, n));
 }
 
-export function getMockVesselPortCallsItem(id: number): IVesselPortCallMasterDto {
+export function getMockVesselPortCallsItem(id: number, total: number): IVesselPortCallMasterDto {
   const name = faker.name.firstName();
   return {
     id: id,
@@ -22,6 +22,7 @@ export function getMockVesselPortCallsItem(id: number): IVesselPortCallMasterDto
     service: _.sample(MockServicesLookup),
     voyageId: faker.random.number({ min: Math.pow(10, 15), max: Math.pow(10, 16) - 1 }),
     voyageReference: faker.random.alphaNumeric(5).toUpperCase(),
+    totalCount: total,
   };
 }
 

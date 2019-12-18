@@ -10,6 +10,7 @@ export interface IVesselPortCallMasterDto extends IDisplayLookupDto {
   etd: string;
   portCallId: string;
   service: IDisplayLookupDto;
+  totalCount: number;
 }
 
 export interface IVesselPortCallMasterRequest extends IServerGridInfo {

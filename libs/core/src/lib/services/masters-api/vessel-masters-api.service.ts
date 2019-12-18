@@ -10,6 +10,7 @@ import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { IVesselMasterDto, IVesselMasterRequest, IVesselMasterResponse } from '@shiptech/core/services/masters-api/dtos/vessel';
 import { map } from 'rxjs/operators';
 import { IVesselPortCallMasterDto, IVesselPortCallMasterRequest, IVesselPortCallMasterResponse } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import _ from 'lodash';
 
 enum VesselMastersApiPaths {
   vesselsList = 'api/masters/vessels/list',
@@ -33,7 +34,7 @@ export class VesselMastersApi extends ApiServiceBase implements IVesselMastersAp
     return this.http.post<{ payload: IVesselMasterDto[]}>(`${this._apiUrl}/${VesselMastersApiPaths.vesselsList}`, { payload: request })
       .pipe(map(r => ({
         items: r.payload || [],
-        totalItems: (r.payload || []).length
+        totalItems: _.first(r.payload || [])?.totalCount ?? 0
       })));
   }
 
@@ -41,7 +42,7 @@ export class VesselMastersApi extends ApiServiceBase implements IVesselMastersAp
     return this.http.post<IVesselPortCallMasterDto[]>(`${this._apiUrl}/${VesselMastersApiPaths.listPortCalls}`, { payload: request })
       .pipe(map(r => ({
         items: r || [],
-        totalItems: (r || []).length
+        totalItems: _.first(r || []).totalCount ?? 0
       })));
   }
 }
