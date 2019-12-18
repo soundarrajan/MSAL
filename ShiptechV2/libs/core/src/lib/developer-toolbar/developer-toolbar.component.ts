@@ -7,10 +7,7 @@ import { Router } from '@angular/router';
 import { takeUntil, tap } from 'rxjs/operators';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { ServiceStatusesEnum } from '@shiptech/core/developer-toolbar/api-service-settings/service-statuses.enum';
-import {
-  IPreferenceStorage,
-  PREFERENCE_STORAGE
-} from '@shiptech/core/services/preference-storage/preference-storage.interface';
+import { IPreferenceStorage, PREFERENCE_STORAGE } from '@shiptech/core/services/preference-storage/preference-storage.interface';
 
 @Component({
   // tslint:disable-next-line:component-selector

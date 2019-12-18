@@ -3,11 +3,7 @@ import { IQuantityControlState } from '../quantity-control.state';
 import { IQcReportsListState, QcReportsListStateModel } from './qc-reports-list.state.model';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { isAction } from '@shiptech/core/utils/ngxs-utils';
-import {
-  LoadReportListAction,
-  LoadReportListFailedAction,
-  LoadReportListSuccessfulAction
-} from './qc-report-list.actions';
+import { LoadReportListAction, LoadReportListFailedAction, LoadReportListSuccessfulAction } from './qc-report-list.actions';
 import { Injectable } from '@angular/core';
 
 @State<IQcReportsListState>({

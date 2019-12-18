@@ -1,4 +1,3 @@
-import { ILookupDto } from '../../../lookups/lookup-dto.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 export const MockProductsLookup: IDisplayLookupDto[] = [

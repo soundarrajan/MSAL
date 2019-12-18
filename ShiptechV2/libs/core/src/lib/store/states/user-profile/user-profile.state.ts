@@ -2,15 +2,10 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { nameof } from '../../../utils/type-definitions';
 import { IUserProfileState, UserProfileModel } from './user-profile.model';
 import { IAppState } from '../app.state.interface';
-import {
-  LoadUserProfileAction,
-  LoadUserProfileFailedAction,
-  LoadUserProfileSuccessfulAction
-} from './load-user-profile.actions';
+import { LoadUserProfileAction, LoadUserProfileFailedAction, LoadUserProfileSuccessfulAction } from './load-user-profile.actions';
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
-import { patch } from '@ngxs/store/operators';
 import { Injectable } from '@angular/core';
 
 // @dynamic

@@ -2,12 +2,7 @@ import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-l
 import { Inject, Injectable } from '@angular/core';
 import { ENTITY_RELATED_LINKS_API } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
 import { Observable } from 'rxjs';
-import {
-  AllEntityTypes,
-  EntityToEntityIdFieldMap,
-  EntityType,
-  IEntityRelatedLink
-} from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
+import { AllEntityTypes, EntityToEntityIdFieldMap, EntityType, IEntityRelatedLink } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { ModuleLoggerFactory } from '../../../../../feature/quantity-control/src/lib/core/logging/module-logger-factory';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { Store } from '@ngxs/store';

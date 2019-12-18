@@ -10,11 +10,7 @@ import { map } from 'rxjs/operators';
 import { nullable } from '@shiptech/core/utils/nullable';
 import { USER_PROFILE_API } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
 import { IUserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.interface';
-import {
-  LoadUserProfileAction,
-  LoadUserProfileFailedAction,
-  LoadUserProfileSuccessfulAction
-} from '@shiptech/core/store/states/user-profile/load-user-profile.actions';
+import { LoadUserProfileAction, LoadUserProfileFailedAction, LoadUserProfileSuccessfulAction } from '@shiptech/core/store/states/user-profile/load-user-profile.actions';
 import { UserProfileModel } from '@shiptech/core/store/states/user-profile/user-profile.model';
 
 ;

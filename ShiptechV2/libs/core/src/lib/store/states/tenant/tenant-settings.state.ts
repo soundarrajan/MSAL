@@ -2,17 +2,12 @@ import { Action, createSelector, Selector, State, StateContext } from '@ngxs/sto
 import { nameof } from '../../../utils/type-definitions';
 import { TenantSettingsModel } from './tenant-settings.model';
 import { IAppState } from '../app.state.interface';
-import {
-  LoadTenantSettingsAction,
-  LoadTenantSettingsFailedAction,
-  LoadTenantSettingsSuccessfulAction
-} from './load-tenant.actions';
+import { LoadTenantSettingsAction, LoadTenantSettingsFailedAction, LoadTenantSettingsSuccessfulAction } from './load-tenant.actions';
 import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant-settings.interface';
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
 import { ITenantSettingsState } from './tenant-settings.state.interface';
-import { IQcReportState } from '../../../../../../feature/quantity-control/src/lib/store/report/qc-report.state.model';
 import { Injectable } from '@angular/core';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 

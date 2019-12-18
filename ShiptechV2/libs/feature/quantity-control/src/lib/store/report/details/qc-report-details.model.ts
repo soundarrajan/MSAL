@@ -1,11 +1,9 @@
 import { IQcVesselResponsesState } from './qc-vessel-responses.state';
 import { IQcEventsLogState, QcEventsLogStateModel } from './qc-events-log-state.model';
-import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from './qc-product-type-list-item-state.model';
+import { IQcProductTypeListItemState } from './qc-product-type-list-item-state.model';
 import { IQcSurveyHistoryState, QcSurveyHistoryStateModel } from './qc-survey-history-state.model';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
-import * as faker from "faker";
 
 export class QcReportDetailsModel {
   isNew: boolean;

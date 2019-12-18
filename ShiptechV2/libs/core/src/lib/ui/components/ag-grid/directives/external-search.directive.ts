@@ -1,4 +1,4 @@
-import { Attribute, Directive, Input, OnDestroy, Optional, ViewChild } from '@angular/core';
+import { Attribute, Directive, Input, OnDestroy, Optional } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { SearchBoxComponent } from '../../search-box/search-box.component';

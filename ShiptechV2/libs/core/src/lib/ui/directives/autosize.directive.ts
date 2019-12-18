@@ -1,15 +1,4 @@
-import {
-  AfterContentChecked,
-  Directive,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Input,
-  NgZone,
-  OnChanges,
-  OnDestroy,
-  Output
-} from '@angular/core';
+import { AfterContentChecked, Directive, ElementRef, EventEmitter, HostListener, Input, NgZone, OnChanges, OnDestroy, Output } from '@angular/core';
 import { fromEvent, ReplaySubject } from 'rxjs';
 
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';

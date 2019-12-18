@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, tap, throttleTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ag-paging',

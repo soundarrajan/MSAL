@@ -7,11 +7,7 @@ import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { AppConfig } from '../../../config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
 import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
-import {
-  EntityRelatedLinksRequest,
-  EntityRelatedLinksResponse, EntityTypeIdField
-} from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
-import { EntityType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
+import { EntityRelatedLinksRequest, EntityRelatedLinksResponse, EntityTypeIdField } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 
 export const EntityRelatedLinksApiPaths = {
   get: () => `api/infrastructure/navbar/navbaridslist`

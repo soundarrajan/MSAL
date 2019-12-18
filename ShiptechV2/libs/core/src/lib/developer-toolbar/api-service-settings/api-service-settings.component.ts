@@ -1,16 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import {
-  API_CALL_KEY,
-  getApiCallUrlValue,
-  IMethodApiCallSettings
-} from '../../../../../../libs/core/src/lib/utils/decorators/api-call.decorator';
+import { getApiCallUrlValue, IMethodApiCallSettings } from '../../../../../../libs/core/src/lib/utils/decorators/api-call.decorator';
 import { MatCheckboxChange } from '@angular/material';
 import { RANDOM_DELAY } from '../../../../../../libs/core/src/lib/utils/decorators/api-call-settings';
 import { Observable, Subscription } from 'rxjs';
 import { ILookupDto } from '../../../../../../libs/core/src/lib/lookups/lookup-dto.interface';
-import {
-  DeveloperToolbarService
-} from '@shiptech/core/developer-toolbar/developer-toolbar.service';
+import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { IApiService } from '@shiptech/core/developer-toolbar/api-service-settings/api-service.interface';
 import { IApiServiceSettings } from '@shiptech/core/developer-toolbar/api-service-settings/api-service-settings.inteface';
 import { ServiceStatusesEnum } from '@shiptech/core/developer-toolbar/api-service-settings/service-statuses.enum';

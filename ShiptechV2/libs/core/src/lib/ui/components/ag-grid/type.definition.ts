@@ -1,16 +1,5 @@
-import {
-  CellClassParams,
-  ColDef,
-  ColGroupDef,
-  ICellEditorParams,
-  ICellRendererParams,
-  NewValueParams
-} from 'ag-grid-community';
-import {
-  BaseColDefParams,
-  BaseWithValueColDefParams,
-  ValueGetterParams
-} from 'ag-grid-community/dist/lib/entities/colDef';
+import { CellClassParams, ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams, NewValueParams } from 'ag-grid-community';
+import { BaseColDefParams, BaseWithValueColDefParams, ValueGetterParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
 import { ComponentSelectorResult } from 'ag-grid-community/dist/lib/components/framework/userComponentFactory';
 

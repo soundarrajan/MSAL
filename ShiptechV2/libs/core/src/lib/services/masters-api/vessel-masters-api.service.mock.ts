@@ -5,10 +5,7 @@ import { Injectable } from '@angular/core';
 import { IVesselMastersApi } from './vessel-masters-api.service.interface';
 import { IVesselMasterRequest, IVesselMasterResponse } from '@shiptech/core/services/masters-api/dtos/vessel';
 import getVesselsResponseMock from './mock-data/get-vessels-response.mock.json';
-import {
-  IVesselPortCallMasterRequest,
-  IVesselPortCallMasterResponse
-} from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterRequest, IVesselPortCallMasterResponse } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
 import { getMockVesselPortCallsEventsLog } from '@shiptech/core/services/masters-api/mock-data/vessel-port-calls.mock';
 
 const mockVesselPortCallsEventsLog = getMockVesselPortCallsEventsLog(30);
