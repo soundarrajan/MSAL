@@ -23,6 +23,18 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not load events log. Please try again later.'
   });
 
+  static readonly PortCallIsRequired = new ModuleError({
+    code: ErrorCode.PortCallIsRequired,
+    treatAsWarning:true,
+    message: 'Port Call is required.'
+  });
+
+  static readonly VesselIsRequired = new ModuleError({
+    code: ErrorCode.VesselIsRequired,
+    treatAsWarning:true,
+    message: 'Vessel is required.'
+  });
+
   static SaveReportDetailsFailed = new ModuleError({
     code: ErrorCode.SaveReportDetailsFailed,
     message: 'Could save report details. Please try again later.'

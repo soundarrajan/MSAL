@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
 import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { defer, Observable, of } from 'rxjs';
+import { defer, Observable, of, throwError } from 'rxjs';
 import { ModuleError } from '../core/error-handling/module-error';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -258,8 +258,11 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   saveReport$(): Observable<number> {
+    if(!this.reportDetailsState.vessel)
+      return throwError(ModuleError.VesselIsRequired);
 
-    // TODO: Implement validation
+    if(!this.reportDetailsState.portCall)
+      return throwError(ModuleError.PortCallIsRequired);
 
     return this.apiDispatch(
       () => {
