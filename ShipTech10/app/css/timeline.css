@@ -23,8 +23,10 @@
 	height: 100%;
 	display: flex;
 	justify-content: space-between;
-	font-weight: 600;
     line-height: initial;
+}
+.vis-custom-group .vis-custom-group-column-header{ 
+	font-weight: 600;
 }
 .vis-vessel {
 	width: 95px;
@@ -190,7 +192,7 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 }
 
 .vis-timeline-timeselect {
-	font-weight: 500;
+	font-weight: 400;
 	text-align: center;
 	margin: auto;
 }
@@ -306,7 +308,7 @@ span.vesselName {
 
 #timeline, .vis-timeline-timeselect-container, .timeline-popover-hover {
 	font-family: "Roboto";
-	font-weight: 500;
+	font-weight: 400;
 }
 .timeline-popover-hover {
 	padding: 0 !important;
@@ -321,7 +323,7 @@ span.vesselName {
     vertical-align: middle;
     border-left: 0;
     border-right: 0;
-    font-weight: 300;
+    font-weight: 400;
     padding: 5px 10px;
 }
 .timeline-popover-hover .table {
