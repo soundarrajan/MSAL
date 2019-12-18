@@ -24,6 +24,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
+import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -137,17 +138,11 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     this.reportService.updateReportComment$(content).subscribe();
   }
 
-  updateVessel(vessel: IVesselMasterDto): void {
-    // Note: Workaround p-autocomplete which send empty text instead of object when you clear the textbox
-    const newVessel = typeof vessel === 'object' ? vessel : undefined;
-
-    this.reportService.updateVessel$(newVessel ? { id: vessel.id, name: vessel.name, displayName: vessel.displayName } : undefined).subscribe();
+  updateVessel(newVessel: IVesselMasterDto): void {
+    this.reportService.updateVessel$(fromLegacyLookup(newVessel)).subscribe();
   }
 
-  updatePortCall(portCall: IVesselPortCallMasterDto): void {
-    // Note: Workaround p-autocomplete which send empty text instead of null when you clear the textbox
-    const newPortCall = portCall ? portCall : undefined;
-
+  updatePortCall(newPortCall: IVesselPortCallMasterDto): void {
     this.reportService.updatePortCallId$(newPortCall ? {
       portCallId: newPortCall.portCallId,
       voyageReference: newPortCall.voyageReference,

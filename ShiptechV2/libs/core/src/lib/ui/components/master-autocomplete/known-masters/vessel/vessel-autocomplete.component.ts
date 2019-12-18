@@ -4,10 +4,13 @@ import { nameof } from '@shiptech/core/utils/type-definitions';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
 import { KnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+
+const nameField = nameof<IDisplayLookupDto>('name');
 
 @Component({
   selector: 'shiptech-vessel-master-autocomplete',
@@ -62,18 +65,18 @@ export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDes
     }
 
     this.autoComplete.completeMethod.pipe(
-      switchMap((event: { query: string }) =>
-        fromPromise(this.legacyLookupsDatabase.vessel.filter(v => {
-          const fieldValue = this.field !== null && this.field!== undefined ? v?.[this.field] : v;
-          switch (this.filterOp) {
-            case ServerGridConditionFilterEnum.CONTAINS:
-              return fieldValue?.toLowerCase()?.indexOf(event.query.toLowerCase()) >= 0;
-            case ServerGridConditionFilterEnum.STARTS_WITH:
-              return fieldValue?.toLowerCase()?.startsWith(event.query.toLowerCase());
-            default:
-              throw Error(`${VesselAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH}, ${ServerGridConditionFilterEnum.CONTAINS} values for ${nameof<VesselAutocompleteComponent>('filterField')}`);
-          }
-        }).toArray())),
+      // tslint:disable-next-line:no-console
+      tap(() => console.time('vessel')),
+      switchMap((event: { query: string }) => {
+        // Note: Dexie.js is not efficient with filter or contains like, because it executes the lambda for each row.
+        return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH
+          ? fromPromise(this.legacyLookupsDatabase.vessel.where(nameField).startsWithIgnoreCase(event.query).toArray())
+          : throwError(`${VesselAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<VesselAutocompleteComponent>('filterField')}`);
+      }),
+      tap(() => {
+        // tslint:disable-next-line:no-console
+        console.timeEnd('vessel');
+      }),
       tap(results => this.autoComplete.suggestions = results || []),
       takeUntil(this._destroy$)
     ).subscribe();
