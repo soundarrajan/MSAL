@@ -315,9 +315,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       return this.store.dispatch(QcClearPortCallBdnAction);
     }
 
-    return this.apiDispatch(() => this.api.loadPortCallBdn({ portCallId: portCall.portCallId }),
+    return this.apiDispatch(() => this.api.loadPortCallBdn({ vesselVoyageDetailsId: portCall.vesselVoyageDetailId }),
       new QcUpdatePortCallBdnAction(),
-      response => new QcUpdatePortCallBdnSuccessfulAction(response.portCallId, response.productTypes),
+      response => new QcUpdatePortCallBdnSuccessfulAction(response.vesselVoyageDetailsId, response.productTypes),
       new QcUpdatePortCallBdnFailedAction(),
       ModuleError.LoadPortCallBtnFailed);
   }

@@ -3,10 +3,10 @@ import { IQcPortCallProductTypeBdnDto } from '../dto/qc-port-call-product-type-b
 
 
 export interface IQcLoadPortCallBdnRequest extends IBaseQuantityControlRequest {
-  portCallId: string,
+  vesselVoyageDetailsId: number,
 }
 
 export interface IQcLoadPortCallBdnResponse extends IBaseQuantityControlResponse {
-  portCallId: string;
+  vesselVoyageDetailsId: number;
   productTypes: IQcPortCallProductTypeBdnDto[];
 }
