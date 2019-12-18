@@ -3275,6 +3275,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
 			if (duplicateDestination) {
 				toastr.warning("The same Destination cannot be added more than once!");
+				ctrl.getLowestEtaForDestinationInLocation(locationIdx)											
 				return;
 			}
 

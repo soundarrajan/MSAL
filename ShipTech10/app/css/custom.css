@@ -4796,7 +4796,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 }
 .newStatusColoured {
     font-family: "Roboto";
-    font-weight: 600;
+    font-weight: initial;
 
 }
 .productType {
@@ -4811,7 +4811,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .amountRightPopover {
     font-style: normal;
     line-height: 16px;
-    font-weight: bold;
+    font-weight: 500;
     color: #333333;
 }
 

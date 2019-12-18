@@ -300,6 +300,7 @@ span.vesselName {
     border-top: 1px solid #E7ECF1;
 }
 .vis-time-axis .vis-major {
+	background: #fff;
     font-weight: 600;
 }
 .vis-foreground .vis-group {
