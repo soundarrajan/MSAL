@@ -3,18 +3,17 @@ import { ChangeDetectorRef, Inject, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
 import {
-  VesselMasterListColumns, VesselMasterListColumnServerKeys,
+  VesselMasterListColumns,
+  VesselMasterListColumnServerKeys,
   VesselMasterListColumnsLabels
 } from '@shiptech/core/ui/components/master-selector/known-masters/vessel/view-model/vessel-master-list.columns';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
-import moment from 'moment';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof IVesselMasterDto): keyof IVesselMasterDto {
   return prop;
@@ -22,14 +21,10 @@ function model(prop: keyof IVesselMasterDto): keyof IVesselMasterDto {
 
 @Injectable()
 export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
-  private readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
-  private readonly quantityPrecision: number = 3;
-
-
   private defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
-    precision: () => this.quantityPrecision
+    precision: () => this.format.quantityPrecision
   };
 
   public searchText: string;
@@ -129,42 +124,42 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.defaultHfo,
     colId: VesselMasterListColumns.defaultHfo,
     field: model('fuel'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   hfoSpecsCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.hfoSpecs,
     colId: VesselMasterListColumns.hfoSpecs,
     field: model('fuelSpecGroup'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   defaultMgoCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.defaultMgo,
     colId: VesselMasterListColumns.defaultMgo,
     field: model('distillate'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   mgoSpecsCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.mgoSpecs,
     colId: VesselMasterListColumns.mgoSpecs,
     field: model('distillateSpecGroup'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   defaultUlsfoCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.defaultUlsfo,
     colId: VesselMasterListColumns.defaultUlsfo,
     field: model('lsfo'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   ulsfoSpecsCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.ulsfoSpecs,
     colId: VesselMasterListColumns.ulsfoSpecs,
     field: model('lsfoSpecsGroup'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   serviceCol: TypedColDef<IVesselMasterDto, string> = {
@@ -197,44 +192,44 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     field: model('chartererName')
   };
 
-  deliveryDateCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  deliveryDateCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.deliveryDate,
     colId: VesselMasterListColumns.deliveryDate,
     field: model('deliveryDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
-  expiryDateCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  expiryDateCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.expiryDate,
     colId: VesselMasterListColumns.expiryDate,
     field: model('expiryDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
-  earliestRedeliveryDateCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  earliestRedeliveryDateCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.earliestRedeliveryDate,
     colId: VesselMasterListColumns.earliestRedeliveryDate,
     field: model('earliestRedeliveryDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
-  estimatedRedeliveryDateCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  estimatedRedeliveryDateCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.estimatedRedeliveryDate,
     colId: VesselMasterListColumns.estimatedRedeliveryDate,
     field: model('estimatedRedeliveryDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
-  latestRedeliveryDateCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  latestRedeliveryDateCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.latestRedeliveryDate,
     colId: VesselMasterListColumns.latestRedeliveryDate,
     field: model('latestRedeliveryDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
   redeliveryPortCol: TypedColDef<IVesselMasterDto, string> = {
@@ -336,12 +331,12 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  voyageUpdatedDateCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  voyageUpdatedDateCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.voyageUpdatedDate,
     colId: VesselMasterListColumns.voyageUpdatedDate,
     field: model('updatedDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
   statusCol: TypedColDef<IVesselMasterDto, boolean> = {
@@ -356,50 +351,45 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     }
   };
 
-  createdOnCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  createdOnCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.createdOn,
     colId: VesselMasterListColumns.createdOn,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
   createdByCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.createdBy,
     colId: VesselMasterListColumns.createdBy,
     field: model('createdBy'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
-  lastModifiedOnCol: TypedColDef<IVesselMasterDto, Date | string> = {
+  lastModifiedOnCol: TypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.lastModifiedOn,
     colId: VesselMasterListColumns.lastModifiedOn,
     field: model('lastModifiedOn'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
   lastModifiedByCol: TypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.lastModifiedBy,
     colId: VesselMasterListColumns.lastModifiedBy,
     field: model('lastModifiedBy'),
-    valueFormatter: params =>  params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
-    tenantSettings: TenantSettingsService,
+    private format: TenantFormattingService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi
   ) {
     super('vessel-master-selector-grid', columnPreferences, changeDetector, loggerFactory.createLogger(VesselMasterSelectorGridViewModel.name));
     this.initOptions(this.gridOptions);
-
-    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-
-    this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
   getColumnsDefs(): TypedColDef[] {

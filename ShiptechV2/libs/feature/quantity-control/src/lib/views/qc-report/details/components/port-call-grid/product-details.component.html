@@ -10,7 +10,7 @@
 
 <ng-template [columnDef]="viewModel.gridViewModel.bdnDeliveredQuantityCol"
              appAgCellTemplate
-             let-model="data.model" let-value="value">
+             let-model="data.model" let-value="valueFormatted">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <a href="#">{{value}}</a>
@@ -46,13 +46,13 @@
               viewModel.gridViewModel.measuredDeliveredQuantityCol,
               viewModel.gridViewModel.logBookAfterDeliveryCol,
               viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
-             appAgCellTemplate let-column="column" let-model="data" let-value="value">
+             appAgCellTemplate let-column="column" let-model="data" let-value="valueFormatted">
     <div fxLayout="row" fxLayoutAlign="center center">
       <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)"
                  disable-keys-spin
-                 [precision]="viewModel.quantityPrecision"
+                 tenant-format="quantity"
                  [disabled]="isBusy$ | async"
                  [ngModelOptions]="{updateOn: 'blur'}"
-                 [ngModel]="value" [step]="0" [formatInput]="true" thousandSeparator="," decimalSeparator="."></p-spinner>
+                 [ngModel]="value"></p-spinner>
     </div>
 </ng-template>

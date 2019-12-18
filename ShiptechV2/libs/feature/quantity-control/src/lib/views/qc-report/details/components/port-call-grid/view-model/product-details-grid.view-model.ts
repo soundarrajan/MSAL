@@ -3,12 +3,7 @@ import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColGroupDef, GridOptions } from 'ag-grid-community';
 import { RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {
-  ProductDetailsColGroupsEnum,
-  ProductDetailsColGroupsLabels,
-  ProductDetailsColumns,
-  ProductDetailsColumnsLabels
-} from './product-details.columns';
+import { ProductDetailsColGroupsEnum, ProductDetailsColGroupsLabels, ProductDetailsColumns, ProductDetailsColumnsLabels } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
@@ -16,11 +11,7 @@ import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-gr
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
 import { Store } from '@ngxs/store';
 import { Observable, throwError } from 'rxjs';
-import {
-  SwitchUomForDeliveredQuantityAction,
-  SwitchUomForRobAfterDelivery,
-  SwitchUomForRobBeforeDeliveryAction
-} from '../../../../../../store/report/details/actions/qc-uom.actions';
+import { SwitchUomForDeliveredQuantityAction, SwitchUomForRobAfterDelivery, SwitchUomForRobBeforeDeliveryAction } from '../../../../../../store/report/details/actions/qc-uom.actions';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -28,6 +19,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
   return prop;
@@ -36,7 +28,6 @@ function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListI
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
-  private readonly quantityPrecision;
   private readonly minToleranceLimit;
   private readonly maxToleranceLimit;
 
@@ -76,7 +67,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: model('robBeforeDeliveryLogBookROB'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent
   };
 
@@ -84,7 +75,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: model('robBeforeDeliveryMeasuredROB'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent
   };
 
@@ -92,7 +83,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     field: model('robBeforeDiff'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
@@ -104,7 +95,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
     field: model('deliveredQuantityBdnQty'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent
   };
 
@@ -112,7 +103,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: model('measuredDeliveredQty'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent
   };
 
@@ -131,7 +122,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: model('robAfterDeliveryLogBookROB'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent
   };
 
@@ -139,7 +130,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: model('robAfterDeliveryMeasuredROB'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent
   };
 
@@ -147,13 +138,14 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.RobAfterDeliveryDifference,
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     field: model('robAfterDiff'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
     }
   };
+
   robAfterDeliveryColGroup: ColGroupDef = {
     groupId: ProductDetailsColGroupsEnum.RobAfterDelivery,
     headerTooltip: ProductDetailsColGroupsLabels.RobAfterDelivery,
@@ -197,13 +189,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
+    public format: TenantFormattingService,
     private quantityControlService: QcReportService,
     private store: Store) {
     super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
     this.initOptions(this.gridOptions);
-
-    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;

@@ -2,29 +2,19 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import {
-  QcSoundingReportDetailsColumns,
-  QcSoundingReportDetailsColumnsLabels,
-  QcSoundingReportListColumns,
-  QcSoundingReportListColumnsLabels
-} from './grid-column-constants';
+import { QcSoundingReportDetailsColumns, QcSoundingReportDetailsColumnsLabels, QcSoundingReportListColumns, QcSoundingReportListColumnsLabels } from './grid-column-constants';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
-import {
-  IQcSoundingReportDetailsItemDto,
-  IQcSoundingReportItemDto
-} from '../../../../../../services/api/dto/qc-report-sounding.dto';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import moment from 'moment';
-import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
+import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from '../../../../../../services/api/dto/qc-report-sounding.dto';
 import { TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { combineLatest, Observable, of } from 'rxjs';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { Store } from '@ngxs/store';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof IQcSoundingReportItemDto): keyof IQcSoundingReportItemDto {
   return prop;
@@ -65,7 +55,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelVolume,
     colId: QcSoundingReportDetailsColumns.fuelVolume,
     field: detailsModel('fuelVolume'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
@@ -73,7 +63,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     headerName: QcSoundingReportDetailsColumnsLabels.tankCapacity,
     colId: QcSoundingReportDetailsColumns.tankCapacity,
     field: detailsModel('tankCapacity'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
@@ -81,7 +71,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelTemp,
     colId: QcSoundingReportDetailsColumns.fuelTemp,
     field: detailsModel('fuelTemperature'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
@@ -89,7 +79,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     headerName: QcSoundingReportDetailsColumnsLabels.tankUnpumpableVolume,
     colId: QcSoundingReportDetailsColumns.tankUnpumpableVolume,
     field: detailsModel('tankUnpumpableVolume'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
@@ -97,7 +87,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelMass,
     colId: QcSoundingReportDetailsColumns.fuelMass,
     field: detailsModel('fuelMass'),
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
@@ -183,12 +173,12 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     field: model('voyageReference')
   };
 
-  soundedOnCol: TypedColDef<IQcSoundingReportItemDto, Date | string> = {
+  soundedOnCol: TypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.soundedOn,
     colId: QcSoundingReportListColumns.soundedOn,
     field: model('soundedOn'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined
+    valueFormatter: params => this.format.date(params.value)
   };
 
   soundingReasonCol: TypedColDef<IQcSoundingReportItemDto, string> = {
@@ -251,25 +241,17 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     field: model('robDogoDiff')
   };
 
-  private readonly dateFormat: string;
-  private readonly quantityPrecision: number;
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    tenantSettings: TenantSettingsService,
+    private format: TenantFormattingService,
     private appErrorHandler: AppErrorHandler,
     private reportService: QcReportService,
     private store: Store
   ) {
     super('qc-sounding-report-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSoundingReportListGridViewModel.name));
     this.initOptions(this.gridOptions);
-
-    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-
-    this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
 
     // Note: Do note use async pipe to load data directly in template because angular ag-grid first sets rowData to undefined, which shows no-rows and then triggers loading the data.
     // Note: This would show a glimpse of NoRowsOverlay before actually loading data.

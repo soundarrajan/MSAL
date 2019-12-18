@@ -3,11 +3,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import {
-  QcReportsListColumns,
-  QcReportsListColumnServerKeys,
-  QcReportsListColumnsLabels
-} from './qc-reports-list.columns';
+import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
 import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
@@ -15,13 +11,11 @@ import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { QcReportService } from '../../../services/qc-report.service';
 import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-status';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
-import moment from 'moment';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { AppError } from '@shiptech/core/error-handling/app-error';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -29,14 +23,11 @@ function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
 
 @Injectable()
 export class QcReportsListGridViewModel extends BaseGridViewModel {
-  private readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
-  private readonly quantityPrecision: number = 3;
-
 
   private defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
-    precision: () => this.quantityPrecision
+    precision: () => this.format.quantityPrecision
   };
 
   public searchText: string;
@@ -108,12 +99,12 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 129
   };
 
-  surveyDateCol: TypedColDef<IQcReportsListItemDto, Date | string> = {
+  surveyDateCol: TypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.surveyDate,
     colId: QcReportsListColumns.surveyDate,
     field: model('surveyDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
+    valueFormatter: params => this.format.date(params.value),
     width: 150
   };
 
@@ -149,7 +140,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
     width: 153,
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
@@ -158,7 +149,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     width: 181
   };
 
@@ -168,7 +159,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     cellClass: 'cell-background',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellClassRules: {
       'not-matched': params => params.data?.diffRobBeforeDelivery < 0 // TODO: Wrong calculation, needs tolerance
     },
@@ -187,7 +178,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.bdnQuantity,
     field: model('bdnQuantity'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   measuredDeliveredQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -195,7 +186,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.measuredDeliveredQty,
     field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   diffDeliveredQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -203,7 +194,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.diffDeliveredQty,
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => params.data?.diffDeliveredQty < 0 // TODO: Wrong calculation, needs tolerance
@@ -222,7 +213,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.logBookRobAfterDelivery,
     field: model('logBookRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   measuredRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -230,7 +221,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.measuredRobAfterDelivery,
     field: model('measuredRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   diffRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -238,7 +229,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.diffRobAfterDelivery,
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
       'matched-withing-limit': params => params.data?.diffRobAfterDelivery < 0 // TODO: Wrong calculation, needs tolerance
@@ -257,7 +248,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   measuredSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -265,7 +256,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   diffSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
@@ -273,7 +264,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision),
+    valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
       'matched-withing-limit': params => params.data?.diffSludgeRobBeforeDischarge < 0 // TODO: Wrong calculation, needs tolerance
@@ -285,7 +276,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.sludgeDischargedQty,
     field: model('sludgeDischargedQty'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.toFixed(this.quantityPrecision)
+    valueFormatter: params => this.format.quantity(params.value)
   };
 
   qtySludgeDischargedUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -317,17 +308,13 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    tenantSettings: TenantSettingsService,
+    private format: TenantFormattingService,
     private quantityControlService: QcReportService,
     private appErrorHandler: AppErrorHandler
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
     this.initOptions(this.gridOptions);
 
-    const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
-
-    this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
   }
 
   getColumnsDefs(): TypedColDef[] {
