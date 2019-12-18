@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { IEntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 
 @Injectable({

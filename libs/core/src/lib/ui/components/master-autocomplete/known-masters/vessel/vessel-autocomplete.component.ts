@@ -65,17 +65,11 @@ export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDes
     }
 
     this.autoComplete.completeMethod.pipe(
-      // tslint:disable-next-line:no-console
-      tap(() => console.time('vessel')),
       switchMap((event: { query: string }) => {
         // Note: Dexie.js is not efficient with filter or contains like, because it executes the lambda for each row.
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH
           ? fromPromise(this.legacyLookupsDatabase.vessel.where(nameField).startsWithIgnoreCase(event.query).toArray())
           : throwError(`${VesselAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<VesselAutocompleteComponent>('filterField')}`);
-      }),
-      tap(() => {
-        // tslint:disable-next-line:no-console
-        console.timeEnd('vessel');
       }),
       tap(results => this.autoComplete.suggestions = results || []),
       takeUntil(this._destroy$)

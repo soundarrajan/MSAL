@@ -363,8 +363,8 @@ export class QcReportState {
           _hasLoaded: true,
           id: detailsDto.id,
           status: detailsDto.status,
-          vessel: detailsDto.vessel,
-          portCall: detailsDto.portCall,
+          vessel: detailsDto.vessel || undefined,// Note: BE returns null, we want to stay consistent and not trigger any selectors
+          portCall: detailsDto.portCall || undefined, // Note: BE returns null, we want to stay consistent and not trigger any selectors
           productTypes: detailsDto.productTypeCategories.map(c => c.productType.id),
           productTypesById: productTypesMap,
           uoms: detailsDto.uoms.options,

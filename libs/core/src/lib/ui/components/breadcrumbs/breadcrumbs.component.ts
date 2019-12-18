@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { IBreadcrumb } from './breadcrumbs.model';
 import { BreadcrumbsService } from './breadcrumbs.service';

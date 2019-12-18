@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable, throwError } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
-import { catchError, map, mapTo } from 'rxjs/operators';
+import { catchError, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 

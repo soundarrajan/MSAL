@@ -1,4 +1,5 @@
-import {Params} from "@angular/router";
+import { Params } from '@angular/router';
+
 export interface IBreadcrumbStepper {
     label: string;
     params: Params;

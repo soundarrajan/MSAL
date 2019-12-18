@@ -39,7 +39,6 @@ import { RaiseClaimComponent } from './views/qc-report/details/components/raise-
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { SurveyStatusLookups } from './services/survey-status-lookups';
-import { PortalModule } from '@angular/cdk/portal';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 
 @NgModule({

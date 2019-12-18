@@ -6,10 +6,7 @@ import { ApiCallUrl } from '../../../utils/decorators/api-call.decorator';
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { AppConfig } from '../../../config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
-import {
-  ITenantSettingsApi,
-  ITenantSettingsApiResponse
-} from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
+import { ITenantSettingsApi, ITenantSettingsApiResponse } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { AppError } from '@shiptech/core/error-handling/app-error';
 

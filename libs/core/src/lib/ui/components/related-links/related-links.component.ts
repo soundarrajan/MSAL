@@ -2,10 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import {
-  EntityType,
-  IEntityRelatedLink
-} from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
+import { EntityType, IEntityRelatedLink } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
 import { Omit } from '../../../utils/type-definitions';
 import { MenuItem } from 'primeng/primeng';

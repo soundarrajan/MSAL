@@ -1,6 +1,6 @@
 import { Component, TemplateRef } from '@angular/core';
-import { IHeaderAngularComp, IHeaderGroupAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams, IHeaderGroupParams } from 'ag-grid-community';
+import { IHeaderAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams } from 'ag-grid-community';
 import { HeaderRendererConfig } from '@shiptech/core/ui/components/ag-grid/type.definition';
 
 export interface IAgColumnHeaderParams extends Partial<ICellRendererParams> {

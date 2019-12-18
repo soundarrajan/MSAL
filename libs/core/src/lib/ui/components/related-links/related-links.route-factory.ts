@@ -1,8 +1,4 @@
-import {
-  IRelatedLinkItem,
-  IRelatedLinksRouteData,
-  RelatedLinksComponent
-} from '@shiptech/core/ui/components/related-links/related-links.component';
+import { IRelatedLinkItem, IRelatedLinksRouteData, RelatedLinksComponent } from '@shiptech/core/ui/components/related-links/related-links.component';
 import { Route } from '@angular/router';
 import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
 import { EntityType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';

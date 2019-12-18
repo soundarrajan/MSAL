@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Subject } from 'rxjs';

@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventsLogGridViewModel } from './view-model/events-log-grid.view-model';
 import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { QcReportService } from '../../../../../services/qc-report.service';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
 
 @Component({

@@ -1,11 +1,5 @@
 import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
-import {
-  ILoggerSettings,
-  LOGGER_SETTINGS,
-  LoggerFactory,
-  LoggerSettings,
-  RootLogger
-} from '../logging/logger-factory.service';
+import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory, LoggerSettings, RootLogger } from '../logging/logger-factory.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Logger } from '../logging/logger';
 import { JL } from 'jsnlog';

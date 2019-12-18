@@ -1,9 +1,5 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import {
-  IQcVesselBunkerResponseDto,
-  IQcVesselResponsesDto,
-  IQcVesselSludgeResponseDto
-} from '../../../services/api/dto/qc-vessel-response.dto';
+import { IQcVesselBunkerResponseDto, IQcVesselResponsesDto, IQcVesselSludgeResponseDto } from '../../../services/api/dto/qc-vessel-response.dto';
 import _ from 'lodash';
 
 export class QcVesselResponseSludgeStateModel {

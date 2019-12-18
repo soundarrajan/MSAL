@@ -5,18 +5,8 @@ import { ServerGridFilter } from '@shiptech/core/grid/server-grid/server-grid.fi
 import { IServerGridDateFilter } from '@shiptech/core/grid/server-grid/server-grid-date.filter';
 import { IServerGridTextFilter } from '@shiptech/core/grid/server-grid/server-grid-text-filter';
 import { IServerGridNumberFilter } from '@shiptech/core/grid/server-grid/server-grid-number-filter';
-import {
-  AgGridConditionTypeToServer,
-  ShiptechGridFilterOperators
-} from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
-import {
-  AgGridConditionTypeEnum,
-  AgGridDateFilter,
-  AgGridFilter,
-  AgGridNumberFilter,
-  AgGridTextFilter,
-  KnownFilterTypes
-} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { AgGridConditionTypeToServer, ShiptechGridFilterOperators } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
+import { AgGridConditionTypeEnum, AgGridDateFilter, AgGridFilter, AgGridNumberFilter, AgGridTextFilter, KnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
 import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';

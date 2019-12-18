@@ -3,10 +3,7 @@ import { Observable, of } from 'rxjs';
 import { ApiCall, ApiCallForwardTo } from '../../../utils/decorators/api-call.decorator';
 import { ObservableException } from '../../../utils/decorators/observable-exception.decorator';
 import { Store } from '@ngxs/store';
-import {
-  ITenantSettingsApi,
-  ITenantSettingsApiResponse
-} from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
+import { ITenantSettingsApi, ITenantSettingsApiResponse } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
 import { TenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import generalTenantSettings from './general-tenant-settings.mock.json';

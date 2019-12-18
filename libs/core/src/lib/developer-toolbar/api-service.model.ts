@@ -1,4 +1,4 @@
-import { ApiServiceSettingsComponent} from './api-service-settings/api-service-settings.component';
+import { ApiServiceSettingsComponent } from './api-service-settings/api-service-settings.component';
 import { IApiService } from '@shiptech/core/developer-toolbar/api-service-settings/api-service.interface';
 
 export enum ApiServiceState {

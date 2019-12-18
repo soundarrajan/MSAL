@@ -5,10 +5,7 @@ import { ObservableException } from '../../../utils/decorators/observable-except
 import { Store } from '@ngxs/store';
 import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
 import { EntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
-import {
-  EntityRelatedLinksResponse,
-  EntityTypeIdField
-} from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+import { EntityRelatedLinksResponse, EntityTypeIdField } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 
 @Injectable({
   providedIn: 'root'

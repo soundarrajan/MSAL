@@ -6,10 +6,7 @@ import { ApiCallUrl } from '../../../utils/decorators/api-call.decorator';
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { AppConfig } from '../../../config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
-import {
-  IUserProfileApi,
-  IUserProfileApiResponse
-} from '@shiptech/core/services/user-profile/api/user-profile-api.interface';
+import { IUserProfileApi, IUserProfileApiResponse } from '@shiptech/core/services/user-profile/api/user-profile-api.interface';
 
 export namespace UserProfileApiPaths {
   export const get = () => `api/admin/user/info`;

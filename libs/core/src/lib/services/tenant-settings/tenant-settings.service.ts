@@ -2,11 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { defer, Observable } from 'rxjs';
 import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
 import { Store } from '@ngxs/store';
-import {
-  LoadTenantSettingsAction,
-  LoadTenantSettingsFailedAction,
-  LoadTenantSettingsSuccessfulAction
-} from '../../store/states/tenant/load-tenant.actions';
+import { LoadTenantSettingsAction, LoadTenantSettingsFailedAction, LoadTenantSettingsSuccessfulAction } from '../../store/states/tenant/load-tenant.actions';
 import { AppError } from '../../error-handling/app-error';
 import { SKIP$ } from '../../utils/rxjs-operators';
 import { IAppState } from '../../store/states/app.state.interface';
