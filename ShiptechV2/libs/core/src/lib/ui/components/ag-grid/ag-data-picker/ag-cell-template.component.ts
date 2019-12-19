@@ -12,7 +12,7 @@ import { IDateParams } from 'ag-grid-community';
 })
 export class AgDatePickerComponent implements IDateAngularComp {
 
-  private date: Date;
+  public date: Date;
   private params: IDateParams;
   private picker: any;
 
