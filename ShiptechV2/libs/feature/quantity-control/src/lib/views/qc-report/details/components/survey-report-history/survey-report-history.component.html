@@ -49,7 +49,7 @@
     appAgGridEmptyFilterOption
     id="qc-survey-history-grid"
     class="ag-theme-balham  ag-shiptech-theme"
-    
+
     [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
 
@@ -70,7 +70,7 @@
                        [useInputAsPageSelect]="true"
                        (pageChange)="onPageChange($event.page)">
         </app-ag-paging>
-        of {{gridViewModel.totalItems / gridViewModel.pageSize}}
+        of {{ gridViewModel.totalItems }}
       </div>
     </div>
   </div>

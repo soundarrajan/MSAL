@@ -6,7 +6,7 @@ import { catchError, filter, finalize, first, takeUntil, tap } from 'rxjs/operat
 import { AgColumnPreferencesService } from './ag-column-preferences/ag-column-preferences.service';
 import { Logger } from '../../../logging/logger';
 import { defaultComparer } from './ag-grid.comparators';
-import { AgGridEventsEnum } from './ag-grid.events';
+import { AgGridEventsEnum, fromGridEvent } from './ag-grid.events';
 import { AppError } from '../../../error-handling/app-error';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { TypedColDef, TypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
@@ -88,7 +88,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
   }
 
   get totalItems(): number {
-    return this.gridApi ? this.pageSize * this.totalPages : undefined;
+    return this.gridApi ? this.gridApi.paginationGetRowCount() : undefined;
   }
 
   public syncPagination(): void {
