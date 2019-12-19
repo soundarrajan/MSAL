@@ -16,7 +16,7 @@ import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-gri
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { AppError } from '@shiptech/core/error-handling/app-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-cell-template.component';
+import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;

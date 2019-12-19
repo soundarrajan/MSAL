@@ -1,16 +1,19 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { IDateAngularComp } from 'ag-grid-angular';
 import { IDateParams } from 'ag-grid-community';
+import { Calendar } from 'primeng/calendar';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'ag-date-picker',
   template: `
-    <p-calendar [(ngModel)]="date" showTime="true" hourFormat="24" showButtonBar="true" appendTo="body" panelStyleClass="ag-custom-component-popup" [locale]="locale"></p-calendar>
+    <p-calendar [(ngModel)]="date" (onSelect)="calendar.toggle()" #calendar showTime="true" hourFormat="24" appendTo="body" panelStyleClass="ag-custom-component-popup" [locale]="locale"></p-calendar>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AgDatePickerComponent implements IDateAngularComp {
+export class AgDatePickerComponent implements IDateAngularComp, AfterViewInit {
+
+  @ViewChild(Calendar, { static: false }) calendar: Calendar;
 
   public date: Date;
   private params: IDateParams;
@@ -47,5 +50,9 @@ export class AgDatePickerComponent implements IDateAngularComp {
 
   setDate(date: Date): void {
     this.date = date || null;
+    this.calendar.toggle();
+  }
+
+  ngAfterViewInit(): void {
   }
 }
