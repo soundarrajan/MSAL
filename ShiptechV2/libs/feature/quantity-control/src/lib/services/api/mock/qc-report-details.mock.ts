@@ -106,6 +106,7 @@ export function getMockQcReportProductTypes(n: number, isNew: boolean = false): 
   return _.range(1, n).map(id => {
     const product = MockProductsLookup.find(s => s.id === id) ?? { ..._.sample(MockProductsLookup), id: id};
     return {
+      id: product.id, // Note: Only used for BE
       productType: product,
       deliveredQty: {
         bdnQuantity: !isNew ? roundDecimals(faker.random.number(500) + Math.random(), mockDecimals) : undefined,

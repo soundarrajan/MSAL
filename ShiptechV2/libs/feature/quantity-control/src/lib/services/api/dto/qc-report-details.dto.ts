@@ -18,6 +18,7 @@ export interface IQcReportDetailsDto {
 }
 
 export interface IQcReportDetailsProductTypeDto {
+  id: number; // Note: Only used for BE
   productType: IDisplayLookupDto;
   robBeforeDelivery: IQcReportDetailsRob;
   robAfterDelivery: IQcReportDetailsRob;

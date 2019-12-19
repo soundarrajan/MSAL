@@ -77,7 +77,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     this.vessel$ = this.selectReportDetails(state => state.vessel);
     this.portCall$ = this.selectReportDetails(state => state.portCall);
 
+    // Note: Since the PortCall can change multiple times (autocomplete) we want to load BDN / nbOfClaims / ndOfDeliveries just for the last call and cancel previous.
+    // Note: That's why we update it here, via an observable, instead of on UpdatePortCall.
     this.portCall$.pipe(
+      filter(s => this.store.selectSnapshot(QcReportState.isNew)), // Note: PortCalls can be updated only on New Reports. We don't want to loadPortCallBdn$ when editing
       switchMap(portCall => this.reportService.loadPortCallBdn$(portCall)),
       takeUntil(this._destroy$)
     ).subscribe();
@@ -143,6 +146,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   updatePortCall(newPortCall: IVesselPortCallMasterDto): void {
+    // Note: Since the PortCall can change multiple times (autocomplete) we want to load BDN / nbOfClaims / ndOfDeliveries just for the last call and cancel previous.
+    // Note: So we can't do it here, look into the ctor for a pipe on $portCall.
+
     this.reportService.updatePortCallId$(newPortCall ? {
       portCallId: newPortCall.portCallId,
       voyageReference: newPortCall.voyageReference,

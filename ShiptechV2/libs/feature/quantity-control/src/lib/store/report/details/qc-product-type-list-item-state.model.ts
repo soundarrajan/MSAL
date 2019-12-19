@@ -2,6 +2,7 @@ import { IQcReportDetailsProductTypeDto } from '../../../services/api/dto/qc-rep
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 export class QcProductTypeListItemStateModel {
+  id: number; // Note: Only used for BE
   productType: IDisplayLookupDto;
   robBeforeDeliveryLogBookROB: number;
   robBeforeDeliveryMeasuredROB: number;
@@ -11,6 +12,7 @@ export class QcProductTypeListItemStateModel {
   robAfterDeliveryMeasuredROB: number;
 
   constructor(productType: IQcReportDetailsProductTypeDto) {
+    this.id = productType.id;
     this.productType = productType.productType;
 
     this.robBeforeDeliveryLogBookROB = productType.robBeforeDelivery?.logBookROB;

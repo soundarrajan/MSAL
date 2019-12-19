@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 export const RANDOM_DELAY = -1;
 export const defaultCannnedResponse: ICannedResponse = { name: 'Default', response: undefined };
-const DefaultForwardToRead = false;
+const DefaultForwardToRead = true;
 
 export class ApiCallSettings {
   delay = 0;

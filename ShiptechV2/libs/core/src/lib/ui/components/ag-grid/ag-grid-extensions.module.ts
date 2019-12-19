@@ -14,6 +14,7 @@ import { AgGridFirstColumnLockedDirective } from '@shiptech/core/ui/components/a
 import { AgGridDeselectFilteredRowsDirective } from '@shiptech/core/ui/components/ag-grid/directives/deselect-filtred-rows.directive';
 import { AgGridEmptyFilterOptionDirective } from '@shiptech/core/ui/components/ag-grid/directives/empty-filter-option';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
+import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-cell-template.component';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -28,7 +29,8 @@ const COMPONENTS = [
   AgGridEmptyFilterOptionDirective,
   PageSizeSelectorComponent,
   AgGridFirstColumnLockedDirective,
-  AgGridDeselectFilteredRowsDirective
+  AgGridDeselectFilteredRowsDirective,
+  AgDatePickerComponent
 ];
 
 @NgModule({
