@@ -122,6 +122,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             }
         }
 
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+            ctrl.contractHasProduct = false;
+        });
+
         ctrl.defaultProductsTooltip = function () {
             var ret = '';
             if (ctrl.selectedVessel && ctrl.selectedVessel.defaultDistillateProduct && ctrl.selectedVessel.distillateSpecGroup) {
