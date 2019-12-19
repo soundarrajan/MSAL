@@ -63,7 +63,7 @@ export class DeveloperToolbarService implements OnDestroy {
         id: UserSettingsApiService.name,
         displayName: 'User Settings Api',
         instance: this.userSettingsApiServiceMock,
-        isRealService: false,
+        isRealService: true,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE
@@ -74,7 +74,7 @@ export class DeveloperToolbarService implements OnDestroy {
         id: VesselMastersApi.name,
         displayName: 'Vessel Masters Api',
         instance: this.vesselMastersApiServiceMock,
-        isRealService: false,
+        isRealService: true,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS
@@ -96,7 +96,7 @@ export class DeveloperToolbarService implements OnDestroy {
         id: TenantSettingsService.name,
         displayName: 'Tenant Settings Api',
         instance: this.tenantSettingsApiMock,
-        isRealService: false,
+        isRealService: true,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
@@ -107,7 +107,7 @@ export class DeveloperToolbarService implements OnDestroy {
         id: UserProfileApi.name,
         displayName: 'User Profile Api',
         instance: this.userProfileApiMock,
-        isRealService: false,
+        isRealService: true,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN

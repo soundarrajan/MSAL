@@ -64,7 +64,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
         return {
           items: items,
-          totalItems: items.length,
+          totalItems: firstItem?.totalCount ?? 0,
           nbOfMatched: firstItem.nbOfMatched || 0,
           nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
           nbOfNotMatched: firstItem.nbOfNotMatched || 0

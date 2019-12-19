@@ -30,5 +30,5 @@ export interface IQcReportsListItemDto {
   qtySludgeDischargedUom: IDisplayLookupDto;
   comment: string;
   isVerifiedSludgeQty: boolean;
-  totalItems: number;
+  totalCount: number;
 }

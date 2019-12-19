@@ -16,6 +16,7 @@ import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-gri
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { AppError } from '@shiptech/core/error-handling/app-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-cell-template.component';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -53,7 +54,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
-    }
+    },
+    frameworkComponents: { agDateInput: AgDatePickerComponent }
   };
 
   selectCol: TypedColDef<IQcReportsListItemDto> = {
