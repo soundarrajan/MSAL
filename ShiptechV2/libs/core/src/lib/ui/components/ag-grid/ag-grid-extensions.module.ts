@@ -14,7 +14,17 @@ import { AgGridFirstColumnLockedDirective } from '@shiptech/core/ui/components/a
 import { AgGridDeselectFilteredRowsDirective } from '@shiptech/core/ui/components/ag-grid/directives/deselect-filtred-rows.directive';
 import { AgGridEmptyFilterOptionDirective } from '@shiptech/core/ui/components/ag-grid/directives/empty-filter-option';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
-import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-cell-template.component';
+import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
+import { Utils } from 'ag-grid-community';
+import moment from 'moment';
+
+Utils.serializeDateToYyyyMmDd = (date: Date, separator: string) : string => {
+  return date?.toISOString();
+};
+
+Utils.parseYyyyMmDdToDate = (yyyyMmDdstring, separatorstr): Date => {
+  return moment(yyyyMmDdstring).toDate();
+};
 
 const COMPONENTS = [
   AgCellTemplateComponent,
