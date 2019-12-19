@@ -273,6 +273,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         displayDottedLine = false;
                     }
                 }
+                // Create unique group string to be used to find the group
+                var groupString = vessels[i].ServiceName + ' <> ' + vessels[i].BuyerName + ' <> ' +  vessels[i].VesselName + ' <> ' + vessels[i].CompanyName;
                
                 uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
                 voyageContent += '<span class="' + cls + '" cell-identifier="'+uniqueCellIdentifier+'" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode;
@@ -306,10 +308,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                 }
 
-                var groupId = 0;
 
-                // Create unique group string to be used to find the group
-                var groupString = vessels[i].ServiceName + ' <> ' + vessels[i].BuyerName + ' <> ' +  vessels[i].VesselName + ' <> ' + vessels[i].CompanyName;
+                var groupId = 0;
 
                 // If group exists, find group id
                 if (groupStrings.indexOf(groupString) > -1) {
