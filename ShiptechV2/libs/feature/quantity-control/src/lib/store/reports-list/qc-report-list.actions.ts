@@ -20,7 +20,7 @@ export class LoadReportListAction {
 export class LoadReportListSuccessfulAction {
   static readonly type = '[QC.Report.List] Load Report List Successful';
 
-  constructor(public nbOfMatched: number, public nbOfNotMatched: number, public nbOfMatchedWithinLimit: number, public totalItems: number) {
+  constructor(public nbOfMatched: number, public nbOfNotMatched: number, public nbOfMatchedWithinLimit: number, public totalCount: number) {
   }
 
   public log(): any {
@@ -28,7 +28,7 @@ export class LoadReportListSuccessfulAction {
       nbOfMatched: this.nbOfMatched,
       nbOfNotMatched: this.nbOfNotMatched,
       nbOfMatchedWithinLimit: this.nbOfMatchedWithinLimit,
-      totalItems: this.totalItems
+      totalCount: this.totalCount
     };
   }
 }

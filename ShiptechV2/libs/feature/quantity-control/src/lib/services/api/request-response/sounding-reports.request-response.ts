@@ -10,7 +10,7 @@ export interface IGetSoundingReportListRequest extends IBaseQuantityControlReque
 
 export interface IGetSoundingReportListResponse extends IBaseQuantityControlResponse {
   items: IQcSoundingReportItemDto[],
-  totalItems: number;
+  totalCount: number;
 }
 
 export interface IGetSoundingReportDetailsRequest extends IBaseQuantityControlRequest, IServerGridInfo {
@@ -19,5 +19,5 @@ export interface IGetSoundingReportDetailsRequest extends IBaseQuantityControlRe
 
 export interface IGetSoundingReportDetailsResponse extends IBaseQuantityControlResponse {
   items: IQcSoundingReportDetailsItemDto[],
-  totalItems: number;
+  totalCount: number;
 }

@@ -6,7 +6,7 @@ export class QcSurveyHistoryStateModel extends BaseModel {
   nbOfMatched: number;
   nbOfNotMatched: number;
   nbOfMatchedWithinLimit: number;
-  totalItems: number;
+  totalCount: number;
 
   constructor(state: Partial<QcSurveyHistoryStateModel> = {}) {
     super();

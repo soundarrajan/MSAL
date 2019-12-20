@@ -91,8 +91,8 @@
       <div style="float:right">
         <span class="f-s-10">Page</span>
         <app-ag-paging style="width: 150px;" [pagerLeftArrowIcon]="'fa fa-chevron-left'"
-          [pagerRightArrowIcon]="'fa fa-chevron-right'" [count]="gridViewModel.totalItems" [page]="gridViewModel.page"
-          [size]="gridViewModel.pageSize" [useInputAsPageSelect]="true" (pageChange)="onPageChange($event.page)">
+                       [pagerRightArrowIcon]="'fa fa-chevron-right'" [count]="gridViewModel.totalItems" [page]="gridViewModel.page"
+                       [size]="gridViewModel.pageSize" [useInputAsPageSelect]="true" (pageChange)="onPageChange($event.page)">
         </app-ag-paging>
         <span class="f-s-10">
         of {{ gridViewModel.totalItems }}

@@ -54,5 +54,5 @@ export interface IVesselMasterRequest extends IServerGridInfo {
 
 export interface IVesselMasterResponse {
   items: IVesselMasterDto[];
-  totalItems: number;
+  totalCount: number;
 }

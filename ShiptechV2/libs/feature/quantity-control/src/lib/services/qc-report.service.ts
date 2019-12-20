@@ -76,7 +76,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () => this.api.getReportList({ ...gridRequest }),
       new LoadReportListAction(gridRequest),
-      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
+      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalCount),
       LoadReportListFailedAction,
       ModuleError.LoadReportListFailed
     );
@@ -87,7 +87,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () => this.api.getSurveyHistoryList({ id: vesselId, ...gridRequest }),
       new LoadReportSurveyHistoryAction(gridRequest),
-      response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalItems),
+      response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalCount),
       LoadReportSurveyHistoryFailedAction,
       ModuleError.LoadReportSurveyHistoryFailed
     );

@@ -41,14 +41,14 @@ export class QcReportsListState {
   @Action([LoadReportListSuccessfulAction, LoadReportListFailedAction])
   loadReportListActionFinished({ getState, patchState }: StateContext<IQcReportsListState>, action: LoadReportListSuccessfulAction | LoadReportListFailedAction): void {
     if (isAction(action, LoadReportListSuccessfulAction)) {
-      const { nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalItems } = <LoadReportListSuccessfulAction>action;
+      const { nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalCount } = <LoadReportListSuccessfulAction>action;
       patchState({
         _isLoading: false,
         _hasLoaded: true,
         nbOfMatched,
         nbOfMatchedWithinLimit,
         nbOfNotMatched,
-        totalItems
+        totalCount: totalCount
       });
     } else if (isAction(action, LoadReportListFailedAction)) {
       patchState({

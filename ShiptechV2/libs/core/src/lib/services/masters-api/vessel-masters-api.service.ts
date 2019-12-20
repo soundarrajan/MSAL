@@ -34,7 +34,7 @@ export class VesselMastersApi extends ApiServiceBase implements IVesselMastersAp
     return this.http.post<{ payload: IVesselMasterDto[]}>(`${this._apiUrl}/${VesselMastersApiPaths.vesselsList}`, { payload: request })
       .pipe(map(r => ({
         items: r.payload || [],
-        totalItems: _.first(r.payload || [])?.totalCount ?? 0
+        totalCount: _.first(r.payload || [])?.totalCount ?? 0
       })));
   }
 
@@ -42,7 +42,7 @@ export class VesselMastersApi extends ApiServiceBase implements IVesselMastersAp
     return this.http.post<IVesselPortCallMasterDto[]>(`${this._apiUrl}/${VesselMastersApiPaths.listPortCalls}`, { payload: request })
       .pipe(map(r => ({
         items: r || [],
-        totalItems: _.first(r || [])?.totalCount ?? 0
+        totalCount: _.first(r || [])?.totalCount ?? 0
       })));
   }
 }

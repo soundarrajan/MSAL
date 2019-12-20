@@ -56,6 +56,5 @@ export function getMockQcSurveyHistoryListItem(id: number): IQcSurveyHistoryList
     qtySludgeDischargedUom: { id: 1, name: 'MT', displayName: 'MT' },
     comment: faker.lorem.sentence(),
     isVerifiedSludgeQty: faker.random.boolean(),
-    totalItems: faker.random.number(20)
   };
 }

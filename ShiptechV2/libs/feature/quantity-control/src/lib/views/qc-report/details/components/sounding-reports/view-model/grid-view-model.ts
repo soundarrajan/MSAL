@@ -15,6 +15,7 @@ import { combineLatest, Observable, of } from 'rxjs';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { Store } from '@ngxs/store';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { IGetSoundingReportListResponse } from '../../../../../../services/api/request-response/sounding-reports.request-response';
 
 function model(prop: keyof IQcSoundingReportItemDto): keyof IQcSoundingReportItemDto {
   return prop;
@@ -264,9 +265,9 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
         switchMap(([_, portCallId]) => {
           if (!portCallId)
-            return of({
+            return of(<IGetSoundingReportListResponse>{
               items: [],
-              totalItems: 0
+              totalCount: 0
             });
 
           return this.reportService.getSoundingReportList$({});
@@ -312,7 +313,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
 
   protected detailServerSideGetRows(params: any): void {
     this.reportService.getSoundingReportListItemDetails$((<IQcSoundingReportItemDto>params.data).id, {}).subscribe(
-      response => params.successCallback(response.items, response.totalItems),
+      response => params.successCallback(response.items, response.totalCount),
       error => {
         this.appErrorHandler.handleError(error);
       });

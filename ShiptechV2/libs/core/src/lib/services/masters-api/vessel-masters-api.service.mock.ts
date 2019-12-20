@@ -24,7 +24,7 @@ export class VesselMastersApiMock implements IVesselMastersApi {
   getVessels(request: IVesselMasterRequest): Observable<IVesselMasterResponse> {
     return of({
       items: getVesselsResponseMock,
-      totalItems: getVesselsResponseMock.length
+      totalCount: getVesselsResponseMock.length
     });
   }
 
@@ -33,7 +33,7 @@ export class VesselMastersApiMock implements IVesselMastersApi {
 
     return of({
       items: mockVesselPortCallsEventsLog,
-      totalItems: mockVesselPortCallsEventsLog.length
+      totalCount: mockVesselPortCallsEventsLog.length
     });
   }
 }

@@ -19,5 +19,5 @@ export interface IVesselPortCallMasterRequest extends IServerGridInfo {
 
 export interface IVesselPortCallMasterResponse {
   items: IVesselPortCallMasterDto[];
-  totalItems: number;
+  totalCount: number;
 }

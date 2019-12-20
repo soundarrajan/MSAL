@@ -7,5 +7,5 @@ export interface IGetOrderProductsListRequest extends IBaseQuantityControlReques
 
 export interface IGetOrderProductsListResponse extends IBaseQuantityControlResponse {
   items: IQcOrderProductsListItemDto[];
-  totalItems: number;
+  totalCount: number;
 }
