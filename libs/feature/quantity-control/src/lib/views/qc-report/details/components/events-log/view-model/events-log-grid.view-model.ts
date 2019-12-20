@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Injectable, OnDestroy } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { Store } from '@ngxs/store';
+import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { EventsLogColumns, EventsLogColumnsLabels } from './events-log.columns';
 import { IQcEventsLogItemState } from '../../../../../../store/report/details/qc-events-log-state.model';
 import { QcReportState } from '../../../../../../store/report/qc-report.state';
@@ -14,11 +14,12 @@ import { catchError, first, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
-import moment from 'moment';
-import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { QcSaveReportDetailsSuccessfulAction } from '../../../../../../store/report/details/actions/save-report.actions';
+import { merge } from 'rxjs';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof IQcEventsLogItemState): keyof IQcEventsLogItemState {
   return prop;
@@ -32,7 +33,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
     headerHeight: 25,
-    rowHeight:35,
+    rowHeight: 35,
 
     domLayout: 'autoHeight',
     pagination: false,
@@ -64,8 +65,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
     cellRendererSelector: params => params.data?.isNew || params.data?.createdBy?.name?.toLowerCase() === this.store.selectSnapshot(UserProfileState.username)?.toLowerCase()
-        ? { component: nameof(AgCellTemplateComponent) }
-        : null
+      ? { component: nameof(AgCellTemplateComponent) }
+      : null
   };
 
   eventDetailsCol: TypedColDef<IQcEventsLogItemState, string> = {
@@ -82,15 +83,18 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
     valueFormatter: params => params.value?.displayName ?? params.value?.name,
-    width: 400
+    width: 400,
+    filterParams: {
+      valueGetter: rowModel => rowModel.data?.createdBy?.displayName ?? rowModel.data?.createdBy?.name
+    }
   };
 
-  createdCol: TypedColDef<IQcEventsLogItemState, Date | string> = {
+  createdCol: TypedColDef<IQcEventsLogItemState, string> = {
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => params.value ? moment(params.value).format(dateTimeAdapter.fromDotNet(this.dateFormat)) : undefined,
+    valueFormatter: params => this.format.date(params.value),
     width: 400
   };
 
@@ -98,8 +102,10 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    private store: Store,
     tenantSettings: TenantSettingsService,
+    actions$: Actions,
+    private store: Store,
+    private format: TenantFormattingService,
     private detailsService: QcReportService
   ) {
     super('quantity-control-events-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(EventsLogGridViewModel.name));
@@ -108,27 +114,29 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
 
-    this.gridReady$
-      .pipe(
-        first(),
-        tap(() => this.gridApi.showLoadingOverlay()),
-        switchMap(() => this.detailsService.loadEventsLog$()),
-        // Note: No need for pagination or server-side filtering, everything is loaded in memory.
-        switchMap(() => store.select(QcReportState.eventLogsItems)),
-        catchError(() => {
+    merge(
+      this.gridReady$.pipe(first()),
+      // Note: After save we want to reload event notes, because we don't have saved ids, so we can't actually delete them.
+      actions$.pipe(ofActionSuccessful(QcSaveReportDetailsSuccessfulAction))
+    ).pipe(
+      tap(() => this.gridApi.showLoadingOverlay()),
+      switchMap(() => this.detailsService.loadEventsLog$()),
+      // Note: No need for pagination or server-side filtering, everything is loaded in memory.
+      switchMap(() => store.select(QcReportState.eventLogsItems)),
+      catchError(() => {
+        this.gridApi.hideOverlay();
+        return EMPTY$;
+      }),
+      tap(items => {
+        if (!items || !items.length) {
+          this.gridApi.showNoRowsOverlay();
+        } else {
+          this.gridApi.setRowData(items);
           this.gridApi.hideOverlay();
-          return EMPTY$;
-        }),
-        tap(items => {
-          if (!items || !items.length) {
-            this.gridApi.showNoRowsOverlay();
-          } else {
-            this.gridApi.setRowData(items);
-            this.gridApi.hideOverlay();
-          }
-        }),
-        takeUntil(this.destroy$)
-      ).subscribe();
+        }
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
   getColumnsDefs(): TypedColDef[] {

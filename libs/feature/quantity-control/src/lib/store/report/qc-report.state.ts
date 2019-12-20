@@ -469,7 +469,7 @@ export class QcReportState {
     const state = getState();
 
     const { [id]: __, ...itemsById } = state.details.eventsLog.itemsById;
-    const items = _.remove(state.details.eventsLog.items, i => i !== id);
+    const items = _.filter(state.details.eventsLog.items, i => i !== id);
 
     patchState({
       details: {
@@ -533,7 +533,11 @@ export class QcReportState {
           id: success.reportId,
           isNew: false,
           hasChanges: false,
-          isSaving: false
+          isSaving: false,
+          eventsLog: {
+            ...state.details.eventsLog,
+            itemsById: _.keyBy(_.values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id)
+          }
         }
       });
     } else if (isAction(action, QcSaveReportDetailsFailedAction)) {
@@ -684,7 +688,7 @@ export class QcReportState {
         ...state.details,
         productTypesById: productTypesById,
         nbOfClaims: undefined,
-        nbOfDeliveries: undefined,
+        nbOfDeliveries: undefined
       }
     });
   }
@@ -711,7 +715,7 @@ export class QcReportState {
           isUpdatingPortCallBtn: false,
           productTypesById: productTypesById,
           nbOfClaims: success.nbOfClaims,
-          nbOfDeliveries: success.nbOfDeliveries,
+          nbOfDeliveries: success.nbOfDeliveries
         }
       });
     } else if (isAction(action, QcUpdatePortCallAction)) {

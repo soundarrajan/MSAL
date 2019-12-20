@@ -1,7 +1,8 @@
-import { CellClassParams, ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams, NewValueParams } from 'ag-grid-community';
+import { CellClassParams, ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams, IFilterParams, NewValueParams } from 'ag-grid-community';
 import { BaseColDefParams, BaseWithValueColDefParams, ValueGetterParams } from 'ag-grid-community/dist/lib/entities/colDef';
 import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
 import { ComponentSelectorResult } from 'ag-grid-community/dist/lib/components/framework/userComponentFactory';
+import { IRowModel } from 'ag-grid-community/dist/lib/interfaces/iRowModel';
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -47,7 +48,21 @@ export interface TypedNewValueParams<TData = any, TField = any> extends Omit<Cel
   value: TField;
 }
 
-export interface TypedColDef<TData = any, TField = any> extends Omit<ColDef, 'field'> {
+export interface TypedRowModel<TData = any> extends Omit<IRowModel, 'getRow' | 'getRowNode'> {
+  getRow(index: number): TypedRowNode<TData> | null;
+  /** Returns the rowNode for given id. */
+  getRowNode(id: string): TypedRowNode<TData>  | null;
+}
+
+export interface TypedFilterParams <TData = any, TField = any> extends Omit<Partial<IFilterParams>, 'colDef' | 'rowModel' | 'valueGetter'>   {
+  colDef?: TypedColDef<TData, TField>;
+  rowModel?: TypedRowModel<TData>;
+  clearButton?: boolean;
+  applyButton?:  boolean;
+  valueGetter?: (rowNode:  TypedRowNode<TData>) => any;
+}
+
+export interface TypedColDef<TData = any, TField = any> extends Omit<ColDef, 'field' | 'filterParams'> {
   valueFormatter?: (params: TypedValueFormatterParams<TField>) => string;
   valueGetter?: ((params: TypedBaseColDefParams<TData>) => any) | string
   cellClassRules?: {
@@ -56,6 +71,7 @@ export interface TypedColDef<TData = any, TField = any> extends Omit<ColDef, 'fi
   field?: keyof TData,
   cellRendererSelector?: (params: TypedCellRendererParams<TData, TField>) => ComponentSelectorResult;
   onCellValueChanged?: (params: TypedNewValueParams<TData, TField>) => void;
+  filterParams?: TypedFilterParams<TData, TField>;
 }
 
 export interface TypedColGroupDef extends Omit<ColGroupDef, 'children'> {
