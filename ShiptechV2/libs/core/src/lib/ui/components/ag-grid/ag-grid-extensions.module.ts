@@ -18,14 +18,6 @@ import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-d
 import { Utils } from 'ag-grid-community';
 import moment from 'moment';
 
-Utils.serializeDateToYyyyMmDd = (date: Date, separator: string) : string => {
-  return date?.toISOString();
-};
-
-Utils.parseYyyyMmDdToDate = (yyyyMmDdstring, separatorstr): Date => {
-  return moment(yyyyMmDdstring).toDate();
-};
-
 const COMPONENTS = [
   AgCellTemplateComponent,
   AgCellTemplateDirective,
