@@ -5,6 +5,7 @@ import { Select } from '@ngxs/store';
 import { QcReportService } from '../../../../../services/qc-report.service';
 import { Observable, Subject } from 'rxjs';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'shiptech-events-log',
@@ -18,7 +19,8 @@ export class EventsLogComponent implements OnInit, OnDestroy {
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
 
   constructor(public gridViewModel: EventsLogGridViewModel,
-              private detailsService: QcReportService) {
+              private detailsService: QcReportService,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -33,6 +35,10 @@ export class EventsLogComponent implements OnInit, OnDestroy {
   }
 
   add(): void {
+    if (this.gridViewModel.gridOptions.api.isAnyFilterPresent()) {
+      this.toastr.info('Events grid has an active filter, new rows may not appear.');
+    }
+
     this.detailsService.addEventLog();
   }
 
