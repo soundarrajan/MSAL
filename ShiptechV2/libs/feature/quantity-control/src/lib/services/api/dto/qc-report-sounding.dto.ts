@@ -20,6 +20,7 @@ export interface IQcSoundingReportItemDto {
 
 export interface IQcSoundingReportDetailsItemDto {
   id: number;
+  reportId: number;
   tankId: number;
   tankName: string;
   fuelDescriptor: string;

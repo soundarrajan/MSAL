@@ -31,7 +31,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   detailsReportIdCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.reportId,
     colId: QcSoundingReportDetailsColumns.reportId,
-    field: detailsModel('id')
+    field: detailsModel('reportId')
   };
 
   tankIdCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
