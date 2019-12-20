@@ -18,15 +18,9 @@ import { IGetQcSurveyHistoryListRequest, IGetQcSurveyHistoryListResponse } from 
 import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
 import { ISaveReportDetailsRequest, ISaveReportDetailsResponse } from './request-response/report-details-save.request-response';
 import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './request-response/claims-list.request-response';
-import { map } from 'rxjs/operators';
-import { IQcReportsListItemDto } from './dto/qc-reports-list-item.dto';
-import * as _ from 'lodash';
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
-import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.dto';
-import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from './dto/qc-report-sounding.dto';
 import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
-import { IQcOrderProductsListItemDto } from './dto/qc-order-products-list-item.dto';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
 
 export namespace RobApiPaths {
@@ -57,36 +51,12 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
-    return this.http.post<IQcReportsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request })
-      .pipe(map(r => {
-        const items = r || [];
-        const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
-
-        return {
-          items: items,
-          totalItems: firstItem?.totalCount ?? 0,
-          nbOfMatched: firstItem.nbOfMatched || 0,
-          nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
-          nbOfNotMatched: firstItem.nbOfNotMatched || 0
-        };
-      }));
+    return this.http.post<IGetQcReportsListResponse>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request });
   }
 
   @ObservableException()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
-    return this.http.post<IQcSurveyHistoryListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getSurveyHistoryList()}`, { payload: request })
-      .pipe(map(r => {
-        const items = r || [];
-        const firstItem = (_.first(items) || <IQcSurveyHistoryListItemDto>{});
-
-        return {
-          items: items,
-          totalItems: items.length,
-          nbOfMatched: firstItem.nbOfMatched || 0,
-          nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
-          nbOfNotMatched: firstItem.nbOfNotMatched || 0
-        };
-      }));
+    return this.http.post<IGetQcSurveyHistoryListResponse>(`${this._apiUrl}/${RobApiPaths.getSurveyHistoryList()}`, { payload: request });
   }
 
   @ObservableException()
@@ -101,29 +71,17 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
-    return this.http.post<IQcSoundingReportItemDto[]>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, { payload: request })
-      .pipe(map(r => ({
-        items: r || [],
-        totalItems: (r || []).length
-      })));
+    return this.http.post<IGetSoundingReportListResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, { payload: request });
   }
 
   @ObservableException()
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
-    return this.http.post<IQcSoundingReportDetailsItemDto[]>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, { payload: request })
-      .pipe(map(r => ({
-        items: r || [],
-        totalItems: (r || []).length
-      })));
+    return this.http.post<IGetSoundingReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, { payload: request });
   }
 
   @ObservableException()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
-    return this.http.post<IQcOrderProductsListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getRelatedVoyageOrders()}`, { payload: request.vesselVoyageDetailId })
-      .pipe(map(r => ({
-        items: r || [],
-        totalItems: (r || []).length
-      })));
+    return this.http.post<IGetOrderProductsListResponse>(`${this._apiUrl}/${RobApiPaths.getRelatedVoyageOrders()}`, { payload: request.vesselVoyageDetailId });
   }
 
   @ObservableException()
@@ -140,12 +98,7 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
-    return this.http.post<IQcEventLogListItemDto[]>(`${this._apiUrl}/${RobApiPaths.getReportEventNotes()}`,
-      { payload: request })
-      .pipe(map(r => ({
-        items: r || [],
-        totalItems: (r || []).length
-      })));
+    return this.http.post<IGetEventsLogResponse>(`${this._apiUrl}/${RobApiPaths.getReportEventNotes()}`, { payload: request });
   }
 
   @ObservableException()

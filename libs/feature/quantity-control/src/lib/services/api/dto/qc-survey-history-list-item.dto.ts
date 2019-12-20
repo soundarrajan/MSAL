@@ -30,5 +30,4 @@ export interface IQcSurveyHistoryListItemDto {
   qtySludgeDischargedUom: IDisplayLookupDto;
   comment: string;
   isVerifiedSludgeQty: boolean;
-  totalItems: number;
 }

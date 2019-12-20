@@ -50,7 +50,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
     return of({
       items: items,
-      totalItems: items.length,
+      totalCount: items.length,
       nbOfMatched: firstItem.nbOfMatched || 0,
       nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
       nbOfNotMatched: firstItem.nbOfNotMatched || 0
@@ -64,7 +64,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
     return of({
       items: items,
-      totalItems: items.length,
+      totalCount: items.length,
       nbOfMatched: firstItem.nbOfMatched || 0,
       nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
       nbOfNotMatched: firstItem.nbOfNotMatched || 0
@@ -85,7 +85,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
     return of({
       items: getMockQcSoundingReportList(nullable(request.pagination).take || 10),
-      totalItems: (nullable(request.pagination).take || 10) * 5
+      totalCount: (nullable(request.pagination).take || 10) * 5
     });
   }
 
@@ -93,13 +93,13 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
     return of({
       items: getMockQcSoundingReportDetails(nullable(request.pagination).take || 10),
-      totalItems: (nullable(request.pagination).take || 10) * 5
+      totalCount: (nullable(request.pagination).take || 10) * 5
     });
   }
 
   @ApiCall()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
-    return of({ items: getQcOrderProductsList(10), totalItems: 10 });
+    return of({ items: getQcOrderProductsList(10), totalCount: 10 });
   }
 
   @ApiCall()
@@ -117,7 +117,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
     const items = getMockQcEventsLog(3);
     return of({
       items: items,
-      totalItems: items.length
+      totalCount: items.length
     });
   }
 

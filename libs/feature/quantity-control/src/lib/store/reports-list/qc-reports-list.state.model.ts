@@ -8,7 +8,7 @@ export class QcReportsListStateModel extends BaseModel{
   nbOfMatched: number;
   nbOfNotMatched: number;
   nbOfMatchedWithinLimit: number;
-  totalItems: number;
+  totalCount: number;
 
   constructor(state: Partial<QcReportsListStateModel> = {}) {
     super();

@@ -638,7 +638,7 @@ export class QcReportState {
     const state = getState();
 
     if (isAction(action, LoadReportSurveyHistorySuccessfulAction)) {
-      const { nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalItems } = <LoadReportSurveyHistorySuccessfulAction>action;
+      const { nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalCount } = <LoadReportSurveyHistorySuccessfulAction>action;
       patchState({
         details: {
           ...state.details,
@@ -649,7 +649,7 @@ export class QcReportState {
             nbOfMatched,
             nbOfMatchedWithinLimit,
             nbOfNotMatched,
-            totalItems
+            totalCount: totalCount
           }
         }
       });

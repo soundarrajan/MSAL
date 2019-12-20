@@ -7,7 +7,12 @@ import { Calendar } from 'primeng/calendar';
   // tslint:disable-next-line:component-selector
   selector: 'ag-date-picker',
   template: `
-    <p-calendar [(ngModel)]="date" (onSelect)="calendar.toggle()" #calendar showTime="true" hourFormat="24" appendTo="body" panelStyleClass="ag-custom-component-popup" [locale]="locale"></p-calendar>
+    <div style="margin: auto">
+        <p-calendar [(ngModel)]="date" (onSelect)="calendar.hideOverlay(); onSelect($event)" #calendar showTime="true" hourFormat="24" appendTo="body" panelStyleClass="ag-custom-component-popup"
+                    [showIcon]="true"
+                    [locale]="locale"></p-calendar>
+
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -50,9 +55,15 @@ export class AgDatePickerComponent implements IDateAngularComp, AfterViewInit {
 
   setDate(date: Date): void {
     this.date = date || null;
-    this.calendar.toggle();
+    this.calendar.hideOverlay();
+
+    this.changeDetector.markForCheck();
   }
 
   ngAfterViewInit(): void {
+  }
+
+  onSelect(date: Date): void {
+    this.params.onDateChanged();
   }
 }

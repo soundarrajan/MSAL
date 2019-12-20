@@ -9,5 +9,5 @@ export interface IGetEventsLogRequest extends IBaseQuantityControlRequest, IServ
 
 export interface IGetEventsLogResponse extends IBaseQuantityControlResponse {
   items: IQcEventLogListItemDto[];
-  totalItems: number;
+  totalCount: number;
 }

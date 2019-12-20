@@ -8,7 +8,7 @@ export interface IGetQcSurveyHistoryListRequest extends IBaseQuantityControlRequ
 
 export interface IGetQcSurveyHistoryListResponse extends IBaseQuantityControlResponse {
   items: IQcSurveyHistoryListItemDto[];
-  totalItems: number;
+  totalCount: number;
   nbOfMatched: number;
   nbOfMatchedWithinLimit: number;
   nbOfNotMatched: number;

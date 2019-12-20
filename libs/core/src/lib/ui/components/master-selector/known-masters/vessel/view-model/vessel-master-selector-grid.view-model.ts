@@ -449,7 +449,7 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.mastersApi.getVessels(transformLocalToServeGridInfo(params, VesselMasterListColumnServerKeys, this.searchText)).subscribe(
-      response => params.successCallback(response.items, response.totalItems),
+      response => params.successCallback(response.items, response.totalCount),
       () => params.failCallback());
   }
 }

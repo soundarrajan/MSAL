@@ -54,8 +54,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
-    },
-    frameworkComponents: { agDateInput: AgDatePickerComponent }
+    }
   };
 
   selectCol: TypedColDef<IQcReportsListItemDto> = {
@@ -357,7 +356,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.quantityControlService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
-      response => params.successCallback(response.items, response.totalItems),
+      response => params.successCallback(response.items, response.totalCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
         params.failCallback();

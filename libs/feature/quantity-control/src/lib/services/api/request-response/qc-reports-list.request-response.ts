@@ -7,7 +7,7 @@ export interface IGetQcReportsListRequest extends IBaseQuantityControlRequest, I
 
 export interface IGetQcReportsListResponse extends IBaseQuantityControlResponse {
   items: IQcReportsListItemDto[];
-  totalItems: number;
+  totalCount: number;
   nbOfMatched: number;
   nbOfMatchedWithinLimit: number;
   nbOfNotMatched: number;

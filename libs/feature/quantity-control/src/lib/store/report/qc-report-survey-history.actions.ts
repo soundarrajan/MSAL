@@ -20,7 +20,7 @@ export class LoadReportSurveyHistoryAction {
 export class LoadReportSurveyHistorySuccessfulAction {
   static readonly type = '[QC.Report.History] Load Report History Successful';
 
-  constructor(public nbOfMatched: number, public nbOfNotMatched: number, public nbOfMatchedWithinLimit: number, public totalItems: number) {
+  constructor(public nbOfMatched: number, public nbOfNotMatched: number, public nbOfMatchedWithinLimit: number, public totalCount: number) {
   }
 
   public log(): any {
@@ -28,7 +28,7 @@ export class LoadReportSurveyHistorySuccessfulAction {
       nbOfMatched: this.nbOfMatched,
       nbOfNotMatched: this.nbOfNotMatched,
       nbOfMatchedWithinLimit: this.nbOfMatchedWithinLimit,
-      totalItems: this.totalItems
+      totalCount: this.totalCount
     };
   }
 }

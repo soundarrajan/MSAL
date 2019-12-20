@@ -158,7 +158,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.mastersApi.getVesselPortCalls({ id: this.vesselId, ...transformLocalToServeGridInfo(params, VesselPortCallsMasterListColumnServerKeys, this.searchText) }).subscribe(
-      response => params.successCallback(response.items, response.totalItems),
+      response => params.successCallback(response.items, response.totalCount),
       () => params.failCallback());
   }
 }
