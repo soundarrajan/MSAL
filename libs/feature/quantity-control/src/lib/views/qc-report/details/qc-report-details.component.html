@@ -36,7 +36,7 @@
               <shiptech-vessel-port-calls-master-autocomplete [vesselId]="(vessel$ | async)?.id"
                                                               [disabled]="(isBusy$ | async) || !(isNew$ | async) || !(vessel$ | async)"
                                                               field="portCallId" dataKey="id">
-                <p-autoComplete (onSelect)="updatePortCall($event)" (onClear)="updateVessel(undefined)"
+                <p-autoComplete (onSelect)="updatePortCall($event)" (onClear)="updatePortCall(undefined)"
                                 [ngModel]="portCall$ | async" placeholder="Port Call ID"
                                 [size]="30" [forceSelection]="true" [minLength]="1"></p-autoComplete>
               </shiptech-vessel-port-calls-master-autocomplete>
