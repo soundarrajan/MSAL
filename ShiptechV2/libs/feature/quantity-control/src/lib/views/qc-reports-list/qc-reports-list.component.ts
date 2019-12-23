@@ -80,17 +80,17 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  sendEmail(): void {
+  openEmailPreview(): void {
     const gridApi = this.gridViewModel.gridOptions.api;
 
-    const selectedReports = gridApi.getSelectedNodes() || [];
+    const selectedReports: TypedRowNode<IQcReportsListItemDto>[] = (gridApi.getSelectedNodes() || []);
 
     if (selectedReports.length !== 1) {
       this.toastr.warning('Please select one report.');
       return;
     }
 
-    alert('Redirect to E-mail Preview');
+    this.reportService.previewEmail$(selectedReports[0].data.id, selectedReports[0].data.emailTransactionTypeId).subscribe();
   }
 
   ngOnInit(): void {

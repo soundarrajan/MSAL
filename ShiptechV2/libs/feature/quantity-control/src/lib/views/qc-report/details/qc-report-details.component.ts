@@ -157,7 +157,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   openEmailPreview(): void {
-    this.reportService.previewEmail$().subscribe();
+    const detailsState =  (<IAppState>this.store.snapshot()).quantityControl.report.details;
+
+    this.reportService.previewEmail$(detailsState.id, detailsState.emailTransactionTypeId).subscribe();
   }
 
   save(): void {

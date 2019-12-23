@@ -87,7 +87,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () => this.api.getSurveyHistoryList({ id: vesselId, ...gridRequest }),
       new LoadReportSurveyHistoryAction(gridRequest),
-      response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalCount),
+      response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
       LoadReportSurveyHistoryFailedAction,
       ModuleError.LoadReportSurveyHistoryFailed
     );
@@ -198,14 +198,11 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), '_blank')));
   }
 
-  previewEmail$(): Observable<unknown> {
-    if (this.reportDetailsState.isNew)
-      return EMPTY$;
-
+  previewEmail$(reportId: number, emailTransactionTypeId: number): Observable<unknown> {
     return defer(() =>
       window.location.href = this.urlService.previewEmail({
-        reportId: this.reportState.details.id,
-        emailTransactionTypeId: this.reportState.details.emailTransactionTypeId
+        reportId: reportId,
+        emailTransactionTypeId: emailTransactionTypeId
       }));
   }
 
@@ -304,7 +301,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
         });
       },
       new QcSaveReportDetailsAction(),
-      response => new QcSaveReportDetailsSuccessfulAction(response.reportId),
+      response => new QcSaveReportDetailsSuccessfulAction(response.reportId, response.emailTransactionTypeId),
       new QcSaveReportDetailsFailedAction(),
       ModuleError.SaveReportDetailsFailed)
       .pipe(map(response => response.reportId));
