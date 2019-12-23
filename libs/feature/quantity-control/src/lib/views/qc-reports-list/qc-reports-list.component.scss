@@ -40,25 +40,28 @@
   }
 
   .cell-background {
-    color: white !important;
-
     &.not-matched {
+      color: white !important;
       background-color: #e9585a;
     }
 
     &.matched-withing-limit {
+      color: white !important;
       background-color: #e98a46;
     }
 
     &.verified {
+      color: white !important;
       background-color: #26ae61;
     }
 
     &.pending {
+      color: white !important;
       background-color: #fdbf2c;
     }
 
     &.matched {
+      color: white !important;
       background-color: #72bcab;
     }
   }
