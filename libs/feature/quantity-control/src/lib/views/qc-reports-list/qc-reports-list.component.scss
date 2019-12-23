@@ -17,19 +17,19 @@
 
       &.matched {
         i {
-          color: green;
+          color: #72bcab;
         }
       }
 
       &.matched-withing-limit {
         i {
-          color: orange;
+          color: #e98a46;
         }
       }
 
       &.not-matched {
         i {
-          color: red;
+          color: #e9585a;
         }
       }
 
@@ -40,7 +40,7 @@
   }
 
   .cell-background {
-    color: white;
+    color: white !important;
 
     &.not-matched {
       background-color: #e9585a;

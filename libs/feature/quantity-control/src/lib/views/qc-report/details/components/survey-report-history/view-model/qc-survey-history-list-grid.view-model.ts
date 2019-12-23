@@ -20,6 +20,9 @@ import { IQcReportState } from '../../../../../../store/report/qc-report.state.m
 import { combineLatest, Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 function model(prop: keyof IQcSurveyHistoryListItemDto): keyof IQcSurveyHistoryListItemDto {
   return prop;
@@ -143,7 +146,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
-      'not-matched': params => params.data?.diffRobBeforeDelivery < 0 // TODO: Wrong calculation, needs tolerance
+      'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit,
     },
     width: 128
   };
@@ -180,7 +184,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
-      'not-matched': params => params.data?.diffDeliveredQty < 0 // TODO: Wrong calculation, needs tolerance
+      'not-matched': params => Math.abs(params.data?.diffDeliveredQty) > this.maxToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit,
     }
   };
 
@@ -216,7 +221,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
-      'matched-withing-limit': params => params.data?.diffRobAfterDelivery < 0 // TODO: Wrong calculation, needs tolerance
+      'not-matched': params => Math.abs(params.data?.diffRobAfterDelivery) > this.maxToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit,
     }
   };
 
@@ -287,16 +293,24 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     }
   };
 
+  private readonly minToleranceLimit;
+  private readonly maxToleranceLimit;
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
+    tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
     private store: Store,
     private quantityControlService: QcReportService
   ) {
     super('qc-survey-history-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSurveyHistoryListGridViewModel.name));
     this.initOptions(this.gridOptions);
+
+    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
+    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
+    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
 
     combineLatest(
       this.gridReady$,

@@ -3,7 +3,7 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 export enum QuantityMatchStatusEnum {
   Matched = 'Matched',
   WithinLimit = 'WithinLimit',
-  NotMatched = 'NotMatched'
+  NotMatched = 'Unmatched'
 }
 
 export enum QuantityMatchStatusLabelEnum {
