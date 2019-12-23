@@ -5,8 +5,38 @@
     white-space: normal;
   }
 
+  .summary {
+    .summary-item {
+      padding: 5px 10px;
+      background-color: #f0f8ff;
+      color: #364150;
+
+      &.matched {
+        i {
+          color: #72bcab;
+        }
+      }
+
+      &.matched-withing-limit {
+        i {
+          color: #e98a46;
+        }
+      }
+
+      &.not-matched {
+        i {
+          color: #e9585a;
+        }
+      }
+
+      .label {
+        font-weight: bold;
+      }
+    }
+  }
+
   .cell-background {
-    color: white;
+    color: white !important;
 
     &.not-matched {
       background-color: #e9585a;
