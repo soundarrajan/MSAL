@@ -608,13 +608,16 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         function normalizeCalendarData(calendarData, calendarDates, calendarUnit, statusFilter) {
             if (typeof(ctrl.calendarData.scheduleDashboardView) == "string"){
             	if (ctrl.calendarData.scheduleDashboardView == '') {
-            		toastr.warning("No element found");
+            		toastr.warning("No Voyages available for the selected period");
             	}
                 return normalizeCalendarDataFlat(calendarData, calendarDates, calendarUnit, statusFilter);
             }
             console.warn("normalizeCalendarData start :", (new Date()).getTime() - window.scheduleDashboardCalendarModelGetEndTime );
             console.log(ctrl.calendarData)
             data = angular.copy(ctrl.calendarData.scheduleDashboardView);
+            if (!data) {
+            	toastr.error("No Voyages available for the selected period");
+            }
             dates = angular.copy(calendarDates);
             var result = [],
                 dataRow,
@@ -733,6 +736,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         	console.warn("normalizeCalendarDataFlat start :", (new Date()).getTime() - window.scheduleDashboardCalendarModelGetEndTime );
             //console.log(ctrl.calendarData)
             data = (angular.copy(ctrl.calendarData.scheduleDashboardView));
+            if (!data) {
+            	toastr.warning("No Voyages available for the selected period");
+            }
             dataJSON = JSON.parse('{ "vessels": [' + data + "]}");
             dates = angular.copy(calendarDates);
             var result = [],
