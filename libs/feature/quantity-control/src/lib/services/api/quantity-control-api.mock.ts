@@ -78,7 +78,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
-    return of({ reportId: 2 });
+    return of({ reportId: 2, emailTransactionTypeId: 1 });
   }
 
   @ApiCall()
