@@ -192,8 +192,8 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
             if (window.location.href.indexOf("reportId")) {
             	getParams = window.location.href.split("?")[1];
             	if (getParams) {
-	            	ctrl.emailTransactionTypeId = getParams.split("&")[0].split("=")[1];
-	            	ctrl.reportId = getParams.split("&")[1].split("=")[1];
+	            	ctrl.emailTransactionTypeId = getParams.split("&")[1].split("=")[1];
+	            	ctrl.reportId = getParams.split("&")[0].split("=")[1];
 	            	ctrl.transaction = "QuantityControl";
             	}
             }
