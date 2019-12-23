@@ -76,7 +76,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () => this.api.getReportList({ ...gridRequest }),
       new LoadReportListAction(gridRequest),
-      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfMatchedWithinLimit, response.nbOfNotMatched, response.totalCount),
+      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
       LoadReportListFailedAction,
       ModuleError.LoadReportListFailed
     );

@@ -49,7 +49,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
 
     defaultColDef: {
       editable: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       suppressColumnsToolPanel: true,
       suppressFiltersToolPanel: true

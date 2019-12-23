@@ -30,6 +30,12 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
 
   private readonly dateFormat: string;
 
+  private defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.format.quantityPrecision
+  };
+
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
     headerHeight: 25,
@@ -51,7 +57,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     defaultColDef: {
       resizable: true,
       sortable: true,
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      filterParams: this.defaultColFilterParams
     }
   };
 
