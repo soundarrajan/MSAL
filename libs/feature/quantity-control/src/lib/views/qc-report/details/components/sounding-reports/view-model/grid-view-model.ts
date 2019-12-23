@@ -105,6 +105,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     pagination: false,
     animateRows: true,
     multiSortKey: 'ctrl',
+    domLayout: 'autoHeight',
     columnDefs: [
       this.detailsReportIdCol,
       this.tankIdCol,

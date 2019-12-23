@@ -69,4 +69,10 @@
     cursor: pointer;
   }
 
+  .ag-layout-auto-height {
+    height: 100%;
+  }
+  .ag-details-grid > .ag-layout-auto-height {
+    height: inherit;
+  }
 }

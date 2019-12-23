@@ -41,7 +41,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     headerHeight: 25,
     rowHeight: 35,
 
-    domLayout: 'autoHeight',
+   domLayout: 'autoHeight',
     pagination: false,
     animateRows: true,
 
