@@ -31,4 +31,5 @@ export interface IQcReportsListItemDto {
   comment: string;
   isVerifiedSludgeQty: boolean;
   totalCount: number;
+  emailTransactionTypeId: number;
 }

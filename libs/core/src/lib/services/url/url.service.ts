@@ -70,11 +70,11 @@ export class UrlService {
   }
 
   public editClaim(claimId: string | number): string {
-    return `${this.baseOrigin}/#/claims/edit/${claimId}`;
+    return `${this.baseOrigin}/#/claims/claim/edit/${claimId}`;
   }
 
   public newClaim(orderProductId?: number, orderId?: number): string {
-    return `${this.baseOrigin}/#/claims/edit/?orderId=${orderId}&orderProductId=${orderProductId}`;
+    return `${this.baseOrigin}/#/claims/claim/edit/?orderId=${orderId}&orderProductId=${orderProductId}`;
   }
 
   previewEmail(queryParams: Record<string, any>): string {

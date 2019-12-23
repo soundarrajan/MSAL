@@ -5,36 +5,6 @@
     white-space: normal;
   }
 
-  .summary {
-    .summary-item {
-      padding: 5px 10px;
-      background-color: #f0f8ff;
-      color: #364150;
-
-      &.matched {
-        i {
-          color: green;
-        }
-      }
-
-      &.matched-withing-limit {
-        i {
-          color: orange;
-        }
-      }
-
-      &.not-matched {
-        i {
-          color: red;
-        }
-      }
-
-      .label {
-        font-weight: bold;
-      }
-    }
-  }
-
   .cell-background {
     color: white;
 
@@ -57,22 +27,5 @@
     &.matched {
       background-color: #72bcab;
     }
-  }
-
-  .vessel-to-watch {
-    background: #e98a46;
-    padding: 5px;
-    border-radius: 50%;
-    color: white;
-    float: right;
-    font-size: 8px;
-    cursor: pointer;
-  }
-
-  .ag-layout-auto-height {
-    height: 100%;
-  }
-  .ag-details-grid > .ag-layout-auto-height {
-    height: inherit;
   }
 }

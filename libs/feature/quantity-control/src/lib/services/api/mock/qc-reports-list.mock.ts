@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import { SurveyStatusEnumMap } from '../../../core/enums/survey-status.enum';
 import { QuantityMatchStatusEnumMap } from '../../../core/enums/quantity-match-status';
 
-
 export function getMockQcReportsList(n: number): IQcReportsListItemDto[] {
   return _.range(1, n).map(id => getMockQcReportsListItem(id));
 }
@@ -56,6 +55,7 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
     qtySludgeDischargedUom: { id: 1, name: 'MT', displayName: 'MT' },
     comment: faker.lorem.sentence(),
     isVerifiedSludgeQty: faker.random.boolean(),
-    totalCount: faker.random.number(20)
+    totalCount: faker.random.number(20),
+    emailTransactionTypeId: faker.random.number(500)
   };
 }

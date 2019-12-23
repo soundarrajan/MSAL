@@ -532,6 +532,7 @@ export class QcReportState {
           ...state.details,
           id: success.reportId,
           isNew: false,
+          emailTransactionTypeId: success.emailTransactionTypeId,
           hasChanges: false,
           isSaving: false,
           eventsLog: {
