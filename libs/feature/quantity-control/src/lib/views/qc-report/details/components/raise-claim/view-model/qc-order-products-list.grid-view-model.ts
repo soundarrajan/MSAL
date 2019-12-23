@@ -20,6 +20,13 @@ function model(prop: keyof IQcOrderProductsListItemDto): keyof IQcOrderProductsL
 
 @Injectable()
 export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
+
+  private defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.format.quantityPrecision
+  };
+
   gridOptions: GridOptions = {
     rowSelection: RowSelection.Single,
     animateRows: true,
@@ -29,7 +36,8 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      filterParams: this.defaultColFilterParams
     }
   };
 

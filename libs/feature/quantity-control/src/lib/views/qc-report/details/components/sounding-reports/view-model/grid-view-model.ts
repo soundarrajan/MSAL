@@ -28,6 +28,12 @@ function detailsModel(prop: keyof IQcSoundingReportDetailsItemDto): keyof IQcSou
 @Injectable()
 export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
 
+  private defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.format.quantityPrecision
+  };
+
   detailsReportIdCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.reportId,
     colId: QcSoundingReportDetailsColumns.reportId,
@@ -113,7 +119,8 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      filterParams: this.defaultColFilterParams
     }
   };
 
@@ -139,7 +146,8 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter'
+      filter: 'agTextColumnFilter',
+      filterParams: this.defaultColFilterParams
     }
   };
 

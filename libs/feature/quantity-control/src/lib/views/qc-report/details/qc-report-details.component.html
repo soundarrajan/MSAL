@@ -42,7 +42,7 @@
               </shiptech-vessel-port-calls-master-autocomplete>
             </div>
             <div style="margin-left: auto">
-              <span class="badge" *ngIf="(matchStatus$ | async)?.id >= 0" [ngClass]="(matchStatus$ | async)?.name">{{ (matchStatus$ | async)?.displayName }}</span>
+              <span class="badge" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined" [ngClass]="(matchStatus$ | async)?.name">{{ (matchStatus$ | async)?.displayName }}</span>
               <span class="badge" *ngIf="(nbOfClaims$ | async) >= 0">Claims: {{nbOfClaims$ | async}}</span>
               <span class="badge" *ngIf="(nbOfDeliveries$ | async) >= 0">Deliveries: {{nbOfDeliveries$ | async}}</span>
             </div>

@@ -1,6 +1,6 @@
 export enum QcReportsListColumns {
   selection = 'selection',
-  portCallId = 'id',
+  portCallId = 'portCallId',
   portName = 'portName',
   vesselName = 'vesselName',
   surveyDate = 'surveyDate',
@@ -60,7 +60,7 @@ export enum QcReportsListColumnsLabels {
  */
 export const QcReportsListColumnServerKeys: Record<QcReportsListColumns, string> = {
   [QcReportsListColumns.selection]: undefined,
-  [QcReportsListColumns.portCallId]: 'id',
+  [QcReportsListColumns.portCallId]: 'portCallId',
   [QcReportsListColumns.portName]: 'portName',
   [QcReportsListColumns.vesselName]: 'vesselName',
   [QcReportsListColumns.surveyDate]: 'surveyDate',
