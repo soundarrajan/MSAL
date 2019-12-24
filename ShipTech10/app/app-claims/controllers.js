@@ -334,9 +334,23 @@ APP_CLAIMS.controller("Controller_Claims", [
                                 $scope.formValues.deliveryDate = response.deliveryDate;
                             })
                             if (window.location.href.indexOf("?orderId") != -1) {
+				            	params = window.location.href.split("?")[1];
+				            	params = params.split("&");
+				            	objParams = {} 
+				            	$.each(params, function(k,v){
+				            		key = v.split("=")[0]
+				            		val = parseFloat(v.split("=")[1])
+				            		objParams[key] = val;
+				            	})
+				            	$.each(response.products, function(k,v){
+				            		if (v.id == objParams["orderProductId"]) {
+				            			$scope.formValues.orderDetails.product = v.product;
+				            		}
+				            	})
+
                             	newUrl = window.location.href.split("#")[1];
                             	newUrl = newUrl.split("?")[0];
-                            	window.location.replace(window.location.href.split("?")[0]);
+                            	// window.location.replace(window.location.href.split("?")[0]);
                             	// window.history.pushState({}, document.title, "#" + newUrl);
                             }
                             // $scope.formValues.deliveryDate = response.deliveryDate;
