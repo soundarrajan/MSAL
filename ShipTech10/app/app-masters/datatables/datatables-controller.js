@@ -2452,13 +2452,13 @@ APP_MASTERS.controller("Controller_Datatables", [
                     },
                     {
                         name: "isBunkerwireDefault",
-                        displayName: "Is Bunker Wire",
+                        displayName: "Reference price 1",
                         cellTemplate: $scope.dataTableTemplates.checkbox,
                         category: "2"
                     },
                     {
                         name: "isCargoDefault",
-                        displayName: "Is Default Cargo",
+                        displayName: "Reference price 2",
                         cellTemplate: $scope.dataTableTemplates.checkbox,
                         category: "2"
                     }
