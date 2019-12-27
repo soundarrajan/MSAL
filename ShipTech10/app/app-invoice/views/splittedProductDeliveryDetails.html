@@ -12,7 +12,6 @@
             	<td class="padding bg-blue-madison"><b>Deliv. Qty</b></td>
             	<td class="padding bg-blue-madison"><b>Sulphur Content</b></td>
             	<td class="padding bg-blue-madison"><b>Physical Supplier</b></td>
-            	<td class="padding bg-blue-madison"><b>Deliv. MFM</b></td>
             	<td class="padding bg-blue-madison"><b>Deliv. No</b></td>
             </tr>
         </thead>
@@ -57,9 +56,6 @@
                                 	</a>
                                 </span>
                             </div>
-				</td>
-				<td style="min-width: 120px;" >
-					<select name="" id="deliveryMFM_{{ $index }}" class="form-control" ng-model="value.deliveryMFM" ng-options="item as item.name for item in CM.listsCache.DeliveryFeedback track by item.id"></select>
 				</td>
 				<td  style="min-width: 120px;" class="padding"><a href="#/delivery/delivery/edit/{{value.deliveryId}}" target="_blank">{{value.deliveryNo}}</a></td>
             </tr>
