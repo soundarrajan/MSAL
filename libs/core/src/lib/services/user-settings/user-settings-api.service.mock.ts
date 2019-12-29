@@ -58,23 +58,28 @@ export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPre
     });
   }
 
+  @ApiCall()
   get<T>(key: string): Observable<T> {
     return this.getByKey({ key }).pipe(map(response => <T>response.value[key]));
   }
 
+  @ApiCall()
   // NOTE: this need further testing
   getMultiple<T>(keys: string[]): Observable<T[]> {
     return this.getList({ keys }).pipe(map(response => <T[]>response.value));
   }
 
+  @ApiCall()
   remove(key: string): Observable<any> {
     return this.delete({ key });
   }
 
+  @ApiCall()
   removeAll(): Observable<any> {
     return this.purge({});
   }
 
+  @ApiCall()
   set(key: string, value: any): Observable<any> {
     return this.save({ key, value: typeof value === 'string' ? value : JSON.stringify(value) });
   }

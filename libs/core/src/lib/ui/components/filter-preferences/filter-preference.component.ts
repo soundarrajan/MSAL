@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FilterPreferenceViewModel } from '../../../services/user-settings/filter-preference.interface';
 import { distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material';
@@ -7,12 +7,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { AvailableFiltersComponent } from './available-filters/available-filters.component';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultPreferenceLoaded, FiltersArNotLoaded, PreferenceAlreadyExists, PreferenceCleared, PreferenceLoaded, ToastPosition } from './filter-preferences-messages';
+import { ChangeDetection } from '@angular/cli/lib/config/schema';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'app-filter-preferences',
   templateUrl: './filter-preferences.component.html',
-  styleUrls: ['./filter-preferences.component.scss']
+  styleUrls: ['./filter-preferences.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterPreferencesComponent implements OnDestroy {
   public preferenceNameFormControl = new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern('^([?=_0-9a-zA-Z ]+)')]);
@@ -36,13 +38,14 @@ export class FilterPreferencesComponent implements OnDestroy {
   @ViewChild('createPreset', {static: false}) createFilterTemplate: TemplateRef<any>;
   private _destroy$: Subject<any> = new Subject();
 
-  constructor(public matDialog: MatDialog, private toastr: ToastrService) {}
+  constructor(public matDialog: MatDialog, private toastr: ToastrService, private changeDetector: ChangeDetectorRef) {}
 
   // NOTE: This occurs when a modification occurs on a filter item to set the has changes property true
-  @Input('isDirty') set isDirty(isDirty: boolean) {
+  isDirty(isDirty: boolean): void {
     const currentFilter = this.filterPresets.find(preset => preset.isActive);
     if (currentFilter) {
       currentFilter.hasChanges = isDirty;
+      this.changeDetector.markForCheck();
     }
   }
 
@@ -81,6 +84,8 @@ export class FilterPreferencesComponent implements OnDestroy {
     // NOTE: We are telling the presets directive the active preset was changed
     // NOTE: The presets directive will tell the service to update the presets store and set the selected preset to the grid
     this.activePresetChange$.next(this.filterPresets);
+
+    this.changeDetector.markForCheck();
   }
 
   public createNewFilter(): void {
@@ -141,6 +146,8 @@ export class FilterPreferencesComponent implements OnDestroy {
 
     // NOTE: Closing the create new preset dialog
     this.presetsDialog.close();
+
+    this.changeDetector.markForCheck();
   }
 
   // NOTE: Opening the create new filter dialog
@@ -174,11 +181,18 @@ export class FilterPreferencesComponent implements OnDestroy {
           this.filterPresets = updatedPresetsList;
           this.hasActiveFilterPresets = updatedPresetsList.some(item => !item.isDefault && !item.isClear);
           this.filterPresetsUpdate$.next(this.filterPresets);
+
+          this.changeDetector.markForCheck();
         }),
         tap(() => this.savePresets$.next()),
         takeUntil(this._destroy$)
       )
       .subscribe();
+  }
+
+  public refresh(): void{
+    // Note: The whole filter component is a mess, this component is "managed" by the directive, so we need to trigger somehow the change detection.
+    this.changeDetector.markForCheck();
   }
 
   public ngOnDestroy(): void {

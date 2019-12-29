@@ -1,19 +1,23 @@
-import { Attribute, Directive, OnDestroy, Optional } from '@angular/core';
-import { combineLatest, merge, of, Subject, throwError } from 'rxjs';
-import { debounceTime, filter, finalize, map, mergeMap, retry, takeUntil, tap } from 'rxjs/operators';
+import { Attribute, Directive, Input, OnDestroy, OnInit, Optional } from '@angular/core';
+import { merge, of, Subject, throwError } from 'rxjs';
+import { concatMap, debounceTime, filter, finalize, map, mergeMap, retry, takeUntil, tap } from 'rxjs/operators';
 import { FilterChangedEvent } from 'ag-grid-community';
 import * as _ from 'lodash';
 import { first } from 'rxjs/internal/operators/first';
 import { FilterPreferencesComponent } from './filter-preference.component';
 import { AgGridFilterPresetsService } from './ag-filter-presets-service/ag-filter-presets.service';
 import { AgGridAngular } from 'ag-grid-angular';
+import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
   selector: 'app-filter-preferences[appAgGridFilterPresets], ag-grid-angular[appAgGridFilterPresets]'
 })
-export class AgGridFilterPresetsDirective implements OnDestroy {
+export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   private _destroy$: Subject<any> = new Subject();
+
+  @Input() postPresetsLoad$: Subject<any>;
 
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
@@ -22,16 +26,21 @@ export class AgGridFilterPresetsDirective implements OnDestroy {
     @Optional() private agGrid: AgGridAngular,
     @Optional() private filterComponent: FilterPreferencesComponent
   ) {
-    if (filterComponent) {
-      this.processFilterComponentEvents(groupId);
+
+  }
+
+  ngOnInit(): void {
+    if (this.filterComponent) {
+      this.processFilterComponentEvents(this.groupId);
     }
-    if (agGrid) {
+    if (this.agGrid) {
       this.processAgGridEvents();
     }
   }
 
   processFilterComponentEvents(groupId: string): void {
     this.filterComponent.isLoading = true;
+    this.filterComponent.refresh();
     // NOTE: Loading the saved filter presets and setting the value to the filter component
     // NOTE: Also updating the hasActiveFilterPresets variable so we can decide if we display the chip for available filters pop-up
     this.filterPresetsService
@@ -41,7 +50,11 @@ export class AgGridFilterPresetsDirective implements OnDestroy {
           this.filterComponent.filterPresets = [...filterPresets];
           this.filterComponent.hasActiveFilterPresets = filterPresets.some(item => !item.isDefault && !item.isClear);
         }),
-        finalize(() => (this.filterComponent.isLoading = false)),
+        finalize(() => {
+          this.filterComponent.isLoading = false;
+          this.filterComponent.refresh();
+          this.postPresetsLoad$?.next();
+        }),
         takeUntil(this._destroy$)
       )
       .subscribe();
@@ -61,7 +74,7 @@ export class AgGridFilterPresetsDirective implements OnDestroy {
     this.filterPresetsService.filtersChanged$
       .pipe(
         filter(event => event.groupId === groupId && !this.filterComponent.isLoading),
-        tap(() => (this.filterComponent.isDirty = true)),
+        tap(() => this.filterComponent.isDirty(true)),
         takeUntil(this._destroy$)
       )
       .subscribe();
@@ -105,7 +118,7 @@ export class AgGridFilterPresetsDirective implements OnDestroy {
       .subscribe();
 
     // NOTE: When the active preset changes the presets service will be notified to:
-    // - set the curent preset filter models to the grid
+    // - set the current preset filter models to the grid
     // - save the presets to keep the selected one as active on refresh
     this.filterComponent.activePresetChange$
       .pipe(
@@ -118,7 +131,9 @@ export class AgGridFilterPresetsDirective implements OnDestroy {
         }),
         // NOTE: Consider using retry when
         retry(2),
-        tap(presets => this.filterPresetsService.setFilterModel(groupId, presets)),
+        tap(presets => {
+          this.filterPresetsService.setFilterModel(groupId, presets);
+        }),
         debounceTime(1000),
         tap(() => this.filterPresetsService.emitSaveFilterPreset()),
         takeUntil(this._destroy$)
@@ -152,12 +167,15 @@ export class AgGridFilterPresetsDirective implements OnDestroy {
 
     const processFilterChange$ = this.agGrid.filterChanged.pipe(
       filter((val, index) => index >= _.values(this.filterPresetsService.gridApis[this.groupId]).length),
-      tap(filterChangedEvent => this.onGridFilterChanged(<FilterChangedEvent>filterChangedEvent))
+      tap(filterChangedEvent => this.onGridFilterChanged(<FilterChangedEvent>filterChangedEvent)),
+      takeUntil(this._destroy$)
     );
 
     // Note: To start processing grid filter events we have to wait for the grid to be ready and initial data to be rendered
-    combineLatest(this.agGrid.gridReady, this.agGrid.firstDataRendered)
+    // Note: If you don't wait for firstDataRendered, the filter won't take effect.. this was ag-grid's support team recommendation (this is for client-side row-model)
+    this.agGrid.gridReady
       .pipe(
+        concatMap(() => this.agGrid.gridOptions.rowModelType === RowModelType.ClientSide ? this.agGrid.firstDataRendered.pipe(first()) : SKIP$),
         // Note: We are registering the the grid apis so we can use them in the service to get the filter model or set the filter model
         tap(() => this.filterPresetsService.registerGrid(this.groupId, this.elementId, () => this.agGrid.api)),
         // Note: Using common stream to process initial filter set events and filter change events a

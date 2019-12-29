@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Subject } from 'rxjs';
@@ -10,7 +10,8 @@ import { FilterPreferenceViewModel } from '../../../../services/user-settings/fi
   // tslint:disable-next-line:component-selector
   selector: 'app-available-filters',
   templateUrl: './available-filters.component.html',
-  styleUrls: ['./available-filters.component.scss']
+  styleUrls: ['./available-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvailableFiltersComponent implements OnInit, OnDestroy {
   _destroy$: Subject<any> = new Subject();
@@ -25,7 +26,7 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   maxPinnedItems: number;
   filterToBeDeleted: FilterPreferenceViewModel;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private toastr: ToastrService, public matDialog: MatDialog, public dialogRef: MatDialogRef<AvailableFiltersComponent>) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private toastr: ToastrService, public matDialog: MatDialog, public dialogRef: MatDialogRef<AvailableFiltersComponent>, private changeDetector: ChangeDetectorRef) {}
 
   updateAllFilters(): void {
     if (this.validateFilterItems()) {
@@ -78,6 +79,8 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
     }
 
     presetToUpdate.isPinned = !presetToUpdate.isPinned;
+
+    this.changeDetector.markForCheck();
   }
 
   openDeleteFilterDialog(id: string): void {
@@ -97,6 +100,7 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
     this.hasAvailableFilterItems = !this.filterItems.some(item => !item.isDefault && !item.isClear);
 
     this.deleteFilterDialog.close();
+    this.changeDetector.markForCheck();
   }
 
   ngOnInit(): void {

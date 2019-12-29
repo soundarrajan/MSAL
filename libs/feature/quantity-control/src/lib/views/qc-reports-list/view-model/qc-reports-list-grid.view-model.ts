@@ -323,7 +323,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     private appErrorHandler: AppErrorHandler
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions, true);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;

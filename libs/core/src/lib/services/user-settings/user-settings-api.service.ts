@@ -71,18 +71,22 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
     return this.http.post<IPurgeUserSettingsResponse>(requestUrl, { payload: false}).pipe(catchError(error => throwError(AppError.FailedToPurgeUserSettings)));
   }
 
+  @ObservableException()
   get<T>(key: string): Observable<T> {
     return this.getByKey({ key }).pipe(map(response => response.value));
   }
 
+  @ObservableException()
   remove(key: string): Observable<any> {
     return this.delete({ key });
   }
 
+  @ObservableException()
   removeAll(): Observable<any> {
     return this.purge({});
   }
 
+  @ObservableException()
   set(key: string, value: any): Observable<any> {
     return this.save({ key, value: typeof value === 'string' ? value as string : JSON.stringify(value) });
   }

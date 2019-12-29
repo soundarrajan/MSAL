@@ -596,23 +596,6 @@ export class QcReportState {
     }
   }
 
-  @Action(LoadReportSurveyHistoryAction)
-  loadReportSurveyHistoryAction({ getState, patchState }: StateContext<IQcReportState>, { serverGridInfo }: LoadReportSurveyHistoryAction): void {
-    const state = getState();
-    patchState(
-      {
-        details: {
-          ...state.details,
-          surveyHistory: {
-            ...state.details.surveyHistory,
-            gridInfo: serverGridInfo,
-            _isLoading: false,
-            _hasLoaded: true
-          }
-        }
-      });
-  }
-
   @Action(UpdateQcReportVessel)
   updateQcReportVessel({ getState, patchState }: StateContext<IQcReportState>, { vessel }: UpdateQcReportVessel): void {
     const state = getState();
@@ -634,6 +617,23 @@ export class QcReportState {
         details: {
           ...state.details,
           portCall: portCall
+        }
+      });
+  }
+
+  @Action(LoadReportSurveyHistoryAction)
+  loadReportSurveyHistoryAction({ getState, patchState }: StateContext<IQcReportState>, { serverGridInfo }: LoadReportSurveyHistoryAction): void {
+    const state = getState();
+    patchState(
+      {
+        details: {
+          ...state.details,
+          surveyHistory: {
+            ...state.details.surveyHistory,
+            gridInfo: serverGridInfo,
+            _isLoading: true,
+            _hasLoaded: false
+          }
         }
       });
   }

@@ -18,7 +18,7 @@ import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-m
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { IQcReportState } from '../../../../../../store/report/qc-report.state.model';
 import { combineLatest, Observable } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -306,16 +306,18 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     private quantityControlService: QcReportService
   ) {
     super('qc-survey-history-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSurveyHistoryListGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
     this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
 
+    // Note: When portCall changes we need to reload the grid,
     combineLatest(
       this.gridReady$,
-      this.selectReportDetails(state => state.portCall) // Note: When portCall changes we need to reload the grid,
+      this.selectReportDetails(state => state.portCall),
     ).pipe(
+      filter(() => !!this.selectReportDetailsSnapshot(s => s.surveyHistory?._hasLoaded)),
       tap(() => this.gridApi.purgeServerSideCache()),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -381,5 +383,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
   private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
+  }
+  private selectReportDetailsSnapshot<T>(select: ((state: IQcReportDetailsState) => T)): T {
+    return this.store.selectSnapshot((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 }
