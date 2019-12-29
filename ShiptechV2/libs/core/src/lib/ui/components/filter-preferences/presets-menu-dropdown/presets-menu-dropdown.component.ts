@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AgGridFilterPresetsService } from '../ag-filter-presets-service/ag-filter-presets.service';
 
 @Component({
   selector: 'shiptech-presets-menu-dropdown',
   templateUrl: './presets-menu-dropdown.component.html',
-  styleUrls: ['./presets-menu-dropdown.component.scss']
+  styleUrls: ['./presets-menu-dropdown.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresetsMenuDropdownComponent implements OnInit {
 
-  constructor(private filterPresetsService: AgGridFilterPresetsService,) { }
+  constructor(private filterPresetsService: AgGridFilterPresetsService, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -25,5 +26,4 @@ export class PresetsMenuDropdownComponent implements OnInit {
   exportExcel(): void {
     alert('Wait for it...')
   }
-
 }

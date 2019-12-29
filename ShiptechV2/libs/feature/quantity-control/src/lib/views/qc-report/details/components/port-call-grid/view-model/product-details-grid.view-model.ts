@@ -193,7 +193,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     private quantityControlService: QcReportService,
     private store: Store) {
     super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;

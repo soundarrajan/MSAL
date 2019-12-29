@@ -261,7 +261,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     private store: Store
   ) {
     super('qc-sounding-report-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSoundingReportListGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions);
 
     // Note: Do note use async pipe to load data directly in template because angular ag-grid first sets rowData to undefined, which shows no-rows and then triggers loading the data.
     // Note: This would show a glimpse of NoRowsOverlay before actually loading data.

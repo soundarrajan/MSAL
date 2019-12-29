@@ -86,7 +86,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     private reportService: QcReportService
   ) {
     super('qc-order-products-list', columnPreferences, changeDetector, loggerFactory.createLogger(QcOrderProductsListGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions);
 
     this.gridReady$
       .pipe(

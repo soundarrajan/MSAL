@@ -389,7 +389,7 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi
   ) {
     super('vessel-master-selector-grid', columnPreferences, changeDetector, loggerFactory.createLogger(VesselMasterSelectorGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions, true);
   }
 
   getColumnsDefs(): TypedColDef[] {

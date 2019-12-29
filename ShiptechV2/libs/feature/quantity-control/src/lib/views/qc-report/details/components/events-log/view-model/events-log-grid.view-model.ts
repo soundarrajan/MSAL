@@ -116,7 +116,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     private detailsService: QcReportService
   ) {
     super('quantity-control-events-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(EventsLogGridViewModel.name));
-    this.initOptions(this.gridOptions);
+    this.init(this.gridOptions);
 
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
