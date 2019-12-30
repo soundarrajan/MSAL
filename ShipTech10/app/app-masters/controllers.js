@@ -2657,6 +2657,7 @@ APP_MASTERS.controller("Controller_Master", [
                             if (callback) {
                                 $scope.options[field.Name] = callback;
                                 if (vm.app_id == "masters" && vm.screen_id == "vessel") vm.checkSpecGroup(field);
+                                if (vm.app_id == "masters" && vm.screen_id == "currency" && field.Name == "CurrencyCode") vm.getCurrencyCodeFiltered();
                                 $scope.$watchGroup([$scope.formValues, $scope.options], function() {
                                     // $timeout(function() {
 	                                    // console.log(' ***** $watchGroup([$scope.formValues, $scope.options]')	
@@ -7716,6 +7717,34 @@ APP_MASTERS.controller("Controller_Master", [
                 });
             }
             return enabledEmailToVessel;
+        }
+        vm.getCurrencyCodeFiltered = function() {
+            console.log("getCurrencyCodeFiltered");  
+            
+            var data = {
+                app: "masters",
+                screen: "currencylist",
+                clc_id: "masters_currencylist",
+                params: {
+                    UIFilters: {},
+                    col: "",
+                    filters: {},
+                    page: 1,
+                    query: "",
+                    rows: 25,
+                    shrinkToFit: true,
+                    sort: "",
+                    modal: true
+                }
+            };
+
+
+            $Api_Service.entity.list(data, function(result) {
+                console.log(result);
+                $scope.options["CurrencyCode"] = result.rows;
+            });
+
+
         }
 
         vm.getDocumentTypesFiltered = function() {

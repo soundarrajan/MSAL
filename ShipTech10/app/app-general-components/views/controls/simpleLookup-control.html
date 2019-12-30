@@ -1,4 +1,4 @@
-<div class="form-group row" data-hide="{{ field.HideWhen }}" ng-init="options[field.Name] ? return : CM.getOptions(field)" tooltip tooltiptrigger="hover"
+<div class="form-group row" data-hide="{{ field.HideWhen }}" ng-init="options[field.Name] ? return : CM.getOptions(field);" tooltip tooltiptrigger="hover"
 data-original-title="{{ field.Unique_ID ==	'product' || field.Unique_ID ==	'Product' ? getProductTooltipByProductId(formValues[field.Unique_ID].id) : '' }}">
 
 
@@ -9,7 +9,15 @@ data-original-title="{{ field.Unique_ID ==	'product' || field.Unique_ID ==	'Prod
         </span>
     </label>
     <!-- If lookup should display the name -->
-    <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''" ng-if='field.Label.indexOf("CODE")>-1'>
+    <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''" ng-if='field.Label.indexOf("CODE")>-1 && field.Name == "CurrencyCode"'>
+        <input dynamic-model="'formValues.' + field.Unique_ID " uib-typeahead="item as item.code for item in options[field.Name] | filter:{code:$viewValue} | limitTo:5"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}{{ field.Name }}" ng-required="$eval(field.Required)> 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" name="{{ field.Name }}" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  autocomplete="off" typeahead-no-result="noResults" typeahead-on-select="triggerChangeFields(field.Name, field.Unique_ID);"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}" unique-id="{{ field.Unique_ID }}"  typeahead-editable="false"/>
+        <span class="input-group-addon"  ng-click="triggerModal('general', field.clc_id, CM.app_id + '.'+ field.Label | translate , 'formValues.' + field.Unique_ID,'','',field.Name,field.filter);" ng-if="$eval(field.Disabled) == true || field.Disabled == true ? false : true">
+            <a class=" btn default">
+                <i class="fa fa-search"></i>
+            </a>
+        </span>
+    </div>
+    <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''" ng-if='field.Label.indexOf("CODE")>-1 && field.Name != "CurrencyCode"'>
         <input dynamic-model="'formValues.' + field.Unique_ID " uib-typeahead="item as item.code for item in options[field.Name] | filter:{name:$viewValue} | limitTo:5"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}{{ field.Name }}" ng-required="$eval(field.Required)> 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" name="{{ field.Name }}" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  autocomplete="off" typeahead-no-result="noResults" typeahead-on-select="triggerChangeFields(field.Name, field.Unique_ID);"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}" unique-id="{{ field.Unique_ID }}"  typeahead-editable="false"/>
         <span class="input-group-addon"  ng-click="triggerModal('general', field.clc_id, CM.app_id + '.'+ field.Label | translate , 'formValues.' + field.Unique_ID,'','',field.Name,field.filter);" ng-if="$eval(field.Disabled) == true || field.Disabled == true ? false : true">
             <a class=" btn default">
