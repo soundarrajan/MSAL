@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'shiptech-search-box',
@@ -15,13 +14,13 @@ export class SearchBoxComponent implements OnInit {
 
   formControl = new FormControl();
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.formControl.valueChanges.pipe(
-      debounceTime(400),
-      tap(val => this.valueChanged.emit(val))
-    ).subscribe();
+  constructor() {
   }
 
+  ngOnInit(): void {
+  }
+
+  search(): void {
+    this.valueChanged.emit(this.formControl.value);
+  }
 }

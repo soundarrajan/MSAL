@@ -5,8 +5,7 @@
                             id="vessel-port-calls-master-selector"></app-filter-preferences>
   </div>
   <div>
-    <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1"
-                         gridId="vessel-port-calls-master-selector-grid"></shiptech-search-box>
+    <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1" [gridId]="search.id"></shiptech-search-box>
   </div>
   <button type="button" class="ui-button-warn btn-select" (click)="select()" [disabled]="disabled || readonly" pButton label="Select"></button>
 </div>
@@ -17,8 +16,10 @@
                  appAgGridSizeToFit
                  appExternalSearch
                  appAgGridEmptyFilterOption
-                 [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
-                 groupId="vessel-port-calls-master-filter-presets" id="vessel-port-calls-master-selector-grid"
+                 (search)="gridViewModel.onSearch($event)"
+                 groupId="vessel-port-calls-master-filter-presets"
+                 id="vessel-port-calls-master-selector-grid"
+                 #search="search-id"
                  class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
                  [gridOptions]="gridViewModel.gridOptions"
 >

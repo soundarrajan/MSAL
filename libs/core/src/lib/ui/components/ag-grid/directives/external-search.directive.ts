@@ -1,4 +1,4 @@
-import { Attribute, Directive, Input, OnDestroy, Optional } from '@angular/core';
+import { Attribute, Directive, EventEmitter, Input, OnDestroy, Optional, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { SearchBoxComponent } from '../../search-box/search-box.component';
@@ -9,15 +9,19 @@ import { tap } from 'rxjs/operators';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'shiptech-search-box[appExternalSearch], ag-grid-angular[appExternalSearch]'
+  selector: 'shiptech-search-box[appExternalSearch], ag-grid-angular[appExternalSearch]',
+  exportAs: 'search-id'
 })
 export class AgGridExternalSearchDirective implements OnDestroy {
   private _destroy$: Subject<any> = new Subject();
+
+  private _agGridSubscription:  ISubscriptionDefinition<any>;
+
   @Input() gridId: string;
-  @Input() onSearch: (value: string) => void;
+  @Output() search = new EventEmitter<string>();
 
   constructor(
-    @Attribute('id') private elementId: string,
+    @Attribute('id') public id: string,
     @Optional() private agGrid: AgGridAngular,
     @Optional() private searchBox: SearchBoxComponent
   ) {
@@ -39,15 +43,18 @@ export class AgGridExternalSearchDirective implements OnDestroy {
     ).subscribe()
   }
 
+
   processAgGridEvents(): void {
-    postal.subscribe({
+    this._agGridSubscription = postal.subscribe({
       channel: PostalChannelsEnum.Search,
-      topic: this.elementId,
-      callback: data => this.onSearch(data)
+      topic: this.id,
+      callback: data => this.search.next(data)
     })
   }
 
   ngOnDestroy(): void {
+    this._agGridSubscription?.unsubscribe();
+
     this._destroy$.next();
     this._destroy$.complete();
   }
