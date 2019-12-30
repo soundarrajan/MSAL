@@ -9,7 +9,7 @@ export enum ServerGridConditionFilterEnum {
   LESS_THAN_OR_EQUAL = '<=',
   GREATER_THAN = '>',
   GREATER_THAN_OR_EQUAL = '>=',
-  IN_RANGE = 'between',
+  IN_RANGE = 'BETWEEN',
   CONTAINS = 'LIKE',
   NOT_CONTAINS = 'NOT LIKE',
   STARTS_WITH = 'LIKE1',

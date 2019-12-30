@@ -11,6 +11,7 @@ import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-
 import { AgGridModule } from 'ag-grid-angular';
 import { VesselPortCallsMasterSelectorComponent } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/vessel-port-calls-master-selector.component';
 import { PrimeNGModule } from '../../primeng.module';
+import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -26,7 +27,8 @@ export function getDefaultStorage(defaultStorage: any): any {
     FilterPresetsModule,
     SearchBoxModule,
     AgGridExtensionsModule,
-    AgGridModule
+    AgGridModule,
+    AgFilterDisplayModule
   ],
   declarations: [
     MasterSelectorHostComponent,

@@ -84,8 +84,8 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   @ApiCall()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
     return of({
-      items: getMockQcSoundingReportList(nullable(request.pagination).take || 10),
-      totalCount: (nullable(request.pagination).take || 10) * 5
+      items: getMockQcSoundingReportList(request.pagination.take ?? 10),
+      totalCount: (request?.pagination?.take ?? 10) * 5
     });
   }
 
@@ -93,7 +93,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
     return of({
       items: getMockQcSoundingReportDetails(nullable(request.pagination).take || 10),
-      totalCount: (nullable(request.pagination).take || 10) * 5
+      totalCount: (request?.pagination?.take ?? 10)  * 5
     });
   }
 

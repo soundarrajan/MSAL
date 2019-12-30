@@ -1,0 +1,9 @@
+<div>
+  Filter:
+  <ng-container *ngFor="let filterPart of filterParts">
+     <span [ngSwitch]="filterPart.type">
+        <span *ngSwitchCase='filterPartType'>{{ filterPart.column }} {{ filterPart.condition }} <span *ngIf="filterPart.value" class="filter-value">{{ filterPart.value }}&nbsp;</span></span>
+        <span *ngSwitchCase='logicalOpPartType'>{{ filterPart.value }}&nbsp;</span>
+    </span>
+  </ng-container>
+</div>

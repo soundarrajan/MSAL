@@ -12,7 +12,7 @@ import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { catchError, first, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { QcReportService } from '../../../../../../services/qc-report.service';
-import { TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -62,7 +62,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     }
   };
 
-  actionsColumn: TypedColDef<IQcEventsLogItemState> = {
+  actionsColumn: ITypedColDef<IQcEventsLogItemState> = {
     colId: EventsLogColumns.Actions,
     width: 50,
     hide: false,
@@ -76,7 +76,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       : null
   };
 
-  eventDetailsCol: TypedColDef<IQcEventsLogItemState, string> = {
+  eventDetailsCol: ITypedColDef<IQcEventsLogItemState, string> = {
     headerName: EventsLogColumnsLabels.EventDetails,
     colId: EventsLogColumns.EventDetails,
     field: model('eventDetails'),
@@ -85,7 +85,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
   };
 
-  createdByCol: TypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
+  createdByCol: ITypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
     headerName: EventsLogColumnsLabels.CreatedBy,
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
@@ -96,7 +96,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     }
   };
 
-  createdCol: TypedColDef<IQcEventsLogItemState, string> = {
+  createdCol: ITypedColDef<IQcEventsLogItemState, string> = {
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
     field: model('createdOn'),
@@ -146,7 +146,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     ).subscribe();
   }
 
-  getColumnsDefs(): TypedColDef[] {
+  getColumnsDefs(): ITypedColDef[] {
     return [this.actionsColumn, this.eventDetailsCol, this.createdByCol, this.createdCol];
   }
 }

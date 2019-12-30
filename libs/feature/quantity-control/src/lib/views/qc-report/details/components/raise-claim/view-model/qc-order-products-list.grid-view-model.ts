@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions } from 'ag-grid-community';
-import { RowSelection, TypedColDef, TypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowSelection, ITypedColDef, ITypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QcOrderProductsListColumns, QcOrderProductsListColumnsLabels } from './qc-order-products-list.columns';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { Store } from '@ngxs/store';
@@ -41,7 +41,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  orderNoCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
+  orderNoCol: ITypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.orderNo,
     headerName: QcOrderProductsListColumnsLabels.orderNo,
     field: model('order'),
@@ -51,26 +51,26 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     checkboxSelection: true,
     filter: 'agNumberColumnFilter'
   };
-  counterpartyCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
+  counterpartyCol: ITypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.counterpartyName,
     headerName: QcOrderProductsListColumnsLabels.counterpartyName,
     field: model('counterparty'),
     valueFormatter: params => params.value?.displayName
   };
-  productCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
+  productCol: ITypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.productName,
     headerName: QcOrderProductsListColumnsLabels.productName,
     field: model('product'),
     valueFormatter: params => params.value?.displayName
   };
-  confirmedQuantityCol: TypedColDef<IQcOrderProductsListItemDto, number> = {
+  confirmedQuantityCol: ITypedColDef<IQcOrderProductsListItemDto, number> = {
     colId: QcOrderProductsListColumns.confirmedQuantity,
     headerName: QcOrderProductsListColumnsLabels.confirmedQuantity,
     field: model('confirmedQty'),
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
-  uomCol: TypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
+  uomCol: ITypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.uomName,
     headerName: QcOrderProductsListColumnsLabels.uomName,
     field: model('uom'),
@@ -110,7 +110,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
       ).subscribe();
   }
 
-  getColumnsDefs(): (TypedColDef | TypedColGroupDef)[] {
+  getColumnsDefs(): (ITypedColDef | ITypedColGroupDef)[] {
     return [this.orderNoCol, this.counterpartyCol, this.productCol, this.confirmedQuantityCol, this.uomCol];
   }
 }

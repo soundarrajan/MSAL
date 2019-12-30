@@ -9,7 +9,7 @@ import { defaultComparer } from './ag-grid.comparators';
 import { AgGridEventsEnum } from './ag-grid.events';
 import { AppError } from '../../../error-handling/app-error';
 import { nameof } from '@shiptech/core/utils/type-definitions';
-import { TypedColDef, TypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, ITypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 
 export const PageSizeOptions = [25, 50, 75, 100];
@@ -44,6 +44,8 @@ export abstract class BaseGridViewModel implements OnDestroy {
    * Note: For example, setting filters, sort or column preferences, will trigger the data source each time. Depending on case this behavior might not be desired,
    * Note: especially if the server side operation is heavy.
    * Note: We might at some point want to create a queue like behavior, if the grid needs to wait for multiple operations before it starts loading data.
+   *
+   * Note: Set {@link enablePreServerSideDataSourcePipe} property first to use this feature.
    */
   public preServerSideDataSourcePipe$: ReplaySubject<unknown>;
 
@@ -100,6 +102,11 @@ export abstract class BaseGridViewModel implements OnDestroy {
     return this.gridApi ? this.gridApi.paginationGetRowCount() : undefined;
   }
 
+  /**
+   * See docs for {@link preServerSideDataSourcePipe$}
+   */
+  public enablePreServerSideDataSourcePipe: boolean =  false;
+
   public syncPagination(): void {
     if (!this.gridOptions.pagination) {
       return;
@@ -136,6 +143,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
     const { observables, proxy } = observe(gridOptions);
     this.gridOptions = proxy;
     this.gridOptions.defaultColDef = this.gridOptions.defaultColDef || {};
+    this.enablePreServerSideDataSourcePipe = enablePreServerSideDataSourcePipe;
 
     if (enablePreServerSideDataSourcePipe) {
       this.preServerSideDataSourcePipe$ = new ReplaySubject<unknown>(1);
@@ -190,7 +198,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
     };
   }
 
-  public getColumnsDefs(): (TypedColDef | TypedColGroupDef)[] {
+  public getColumnsDefs(): (ITypedColDef | ITypedColGroupDef)[] {
     // Note: To be overridden in derived class
     throw Error(`${nameof<BaseGridViewModel>('getColumnsDefs')} was not overridden in derived class`);
   }
@@ -324,5 +332,17 @@ export abstract class BaseGridViewModel implements OnDestroy {
         });
       }),
       takeUntil(this.destroy$)).subscribe();
+  }
+
+  /**
+   * See docs for {@link preServerSideDataSourcePipe$}
+   */
+  markServerSideDataSourceReady(): void {
+    if(!this.enablePreServerSideDataSourcePipe){
+      console.warn(`${nameof<BaseGridViewModel>('markServerSideDataSourceReady')} was called while ${nameof<BaseGridViewModel>('enablePreServerSideDataSourcePipe')} is false. Did you forget to enable it?`)
+      return;
+    }
+
+    this.preServerSideDataSourcePipe$.next();
   }
 }

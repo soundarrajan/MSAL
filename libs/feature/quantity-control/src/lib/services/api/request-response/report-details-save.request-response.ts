@@ -2,6 +2,7 @@ import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './req
 import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from '../dto/qc-event-log-list-item.dto';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
+import { IQcReportProductTypeDto } from '../dto/qc-report-details.dto';
 
 export interface IQcReportSaveProductDetailsDto {
   id: number;
@@ -33,4 +34,5 @@ export interface ISaveReportDetailsRequest extends IBaseQuantityControlRequest {
 export interface ISaveReportDetailsResponse extends IBaseQuantityControlResponse {
   reportId: number;
   emailTransactionTypeId: number;
+  productTypes?: IQcReportProductTypeDto[]
 }

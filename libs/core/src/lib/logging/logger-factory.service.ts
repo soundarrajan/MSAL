@@ -27,9 +27,10 @@ const rootAjaxAppender = new LazyAjaxAppender('GlobalAjaxAppender', rootAjaxAppe
 function createRootLogger(): JL.JSNLogLogger {
   const logger = JL();
 
-  logger.setOptions({
-    appenders: [rootAjaxAppender]
-  });
+  // TODO: Disabled until we have a backend service which saves logs
+  // logger.setOptions({
+  //   appenders: [rootAjaxAppender]
+  // });
 
   return logger;
 }
@@ -51,6 +52,7 @@ export class LoggerFactory implements ILoggerFactory {
         appenders: [new StructuredConsoleAppender('StructuredConsole'), rootAjaxAppender]
       });
     }
+
     rootAjaxAppenderReady.next({
       bufferSize: 20,
       storeInBufferLevel: 1000,

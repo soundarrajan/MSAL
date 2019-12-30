@@ -6,7 +6,7 @@ import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { Subject, throwError } from 'rxjs';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
-import { KnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { AgGridKnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
@@ -27,7 +27,7 @@ export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDes
   @Input() field: keyof IVesselMasterDto = nameof<IVesselMasterDto>('name');
   @Input() dataKey: keyof IVesselMasterDto = nameof<IVesselMasterDto>('id');
   @Input() filterField: keyof IVesselMasterDto = nameof<IVesselMasterDto>('name');
-  @Input() filterType: KnownFilterTypes = KnownFilterTypes.Text;
+  @Input() filterType: AgGridKnownFilterTypes = AgGridKnownFilterTypes.Text;
   @Input() filterOp: ServerGridConditionFilterEnum = ServerGridConditionFilterEnum.STARTS_WITH;
 
   @Input() suggestions: IVesselMasterDto[];

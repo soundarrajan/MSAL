@@ -1,4 +1,4 @@
-import { Attribute, Directive, Input, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Attribute, Directive, EventEmitter, Input, OnDestroy, OnInit, Optional, Output } from '@angular/core';
 import { merge, of, Subject, throwError } from 'rxjs';
 import { concatMap, debounceTime, filter, finalize, map, mergeMap, retry, takeUntil, tap } from 'rxjs/operators';
 import { FilterChangedEvent } from 'ag-grid-community';
@@ -17,7 +17,7 @@ import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
 export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   private _destroy$: Subject<any> = new Subject();
 
-  @Input() postPresetsLoad$: Subject<any>;
+  @Output() presetsLoaded = new EventEmitter();
 
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
@@ -53,7 +53,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         finalize(() => {
           this.filterComponent.isLoading = false;
           this.filterComponent.refresh();
-          this.postPresetsLoad$?.next();
+          this.presetsLoaded.next();
         }),
         takeUntil(this._destroy$)
       )
