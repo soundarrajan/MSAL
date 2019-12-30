@@ -6,8 +6,7 @@
     </div>
     <div class="col-6">
       <div style="float:right">
-        <shiptech-search-box appExternalSearch [placeholder]="'Search something'" class="mr-1"
-          gridId="quantityControlGrid"></shiptech-search-box>
+        <shiptech-search-box appExternalSearch [placeholder]="'Search something'" class="mr-1" [gridId]="search.id"></shiptech-search-box>
         <button class="ui-button mr-15  save-icon mail-icon-position" label="" pButton type="button"></button>
 
         <button class="ui-button mr-15 trash-icon mail-icon-position" label="" pButton type="button"></button>
@@ -81,8 +80,10 @@
     appAgGridSizeToFit
     appExternalSearch
     appAgGridEmptyFilterOption
-    [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
-    groupId="qc-report-list-filter-presets" id="qc-report-list-grid" class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
+    (search)="gridViewModel.onSearch($event)"
+    #search="search-id"
+    groupId="qc-report-list-filter-presets"
+    id="qc-report-list-grid" class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
 

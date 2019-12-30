@@ -4,7 +4,7 @@
     <app-filter-preferences appAgGridFilterPresets groupId="vessel-master-filter-presets" id="vessel-master-selector" [postPresetsLoad$]="gridViewModel.preServerSideDataSourcePipe$"></app-filter-preferences>
   </div>
   <div>
-    <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1" gridId="vessel-master-selector-grid"></shiptech-search-box>
+    <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1" [gridId]="search.id"></shiptech-search-box>
   </div>
   <button type="button" class="ui-button-warn btn-select" (click)="select()" pButton label="Select" [disabled]="disabled || readonly"></button>
 </div>
@@ -15,7 +15,8 @@
                  appAgGridSizeToFit
                  appExternalSearch
                  appAgGridEmptyFilterOption
-                 [onSearch]="gridViewModel.onSearch.bind(gridViewModel)"
+                 (search)="gridViewModel.onSearch.bind(gridViewModel)"
+                 #search="search-id"
                  groupId="vessel-master-filter-presets" id="vessel-master-selector-grid"
                  class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
                  [gridOptions]="gridViewModel.gridOptions"

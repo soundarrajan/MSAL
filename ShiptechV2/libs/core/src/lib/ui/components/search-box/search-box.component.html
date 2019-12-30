@@ -1,4 +1,4 @@
-<input type="text" pInputText [formControl]="formControl" [placeholder]="placeholder" class="search-box">
-<button class="searchButton" type="submit">
+<input type="text" pInputText [formControl]="formControl" [placeholder]="placeholder" (keyup.enter)="search()" class="search-box">
+<button class="searchButton" type="button" (click)="search()">
     <i class="fa fa-search"></i>
 </button>
