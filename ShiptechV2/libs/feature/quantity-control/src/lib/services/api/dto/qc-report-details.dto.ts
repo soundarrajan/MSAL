@@ -17,6 +17,11 @@ export interface IQcReportDetailsDto {
   emailTransactionTypeId: number;
 }
 
+export interface IQcReportProductTypeDto {
+  id: number;
+  productType: IDisplayLookupDto;
+}
+
 export interface IQcReportDetailsProductTypeDto {
   id: number; // Note: Only used for BE
   productType: IDisplayLookupDto;

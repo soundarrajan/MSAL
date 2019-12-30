@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
@@ -59,7 +59,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  selectCol: TypedColDef<IQcReportsListItemDto> = {
+  selectCol: ITypedColDef<IQcReportsListItemDto> = {
     colId: QcReportsListColumns.selection,
     width: 50,
     checkboxSelection: params => params.data?.surveyStatus?.name === SurveyStatusEnum.New || params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
@@ -81,28 +81,28 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-border-green'
   };
 
-  portCallId: TypedColDef<IQcReportsListItemDto, string> = {
+  portCallId: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.portCallId,
     colId: QcReportsListColumns.portCallId,
     field: model('portCallId'),
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  portNameCol: TypedColDef<IQcReportsListItemDto, string> = {
+  portNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.portName,
     colId: QcReportsListColumns.portName,
     field: model('portName'),
     width: 106
   };
 
-  vesselNameCol: TypedColDef<IQcReportsListItemDto, string> = {
+  vesselNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
     field: model('vesselName'),
     width: 129
   };
 
-  surveyDateCol: TypedColDef<IQcReportsListItemDto, string> = {
+  surveyDateCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.surveyDate,
     colId: QcReportsListColumns.surveyDate,
     field: model('surveyDate'),
@@ -111,7 +111,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-  surveyStatusCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  surveyStatusCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.surveyStatus,
     colId: QcReportsListColumns.surveyStatus,
     field: model('surveyStatus'),
@@ -124,7 +124,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 78
   };
 
-  qtyMatchedStatusCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyMatchedStatusCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyMatchedStatus,
     colId: QcReportsListColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
@@ -138,7 +138,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 96
   };
 
-  logBookRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
+  logBookRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
@@ -147,7 +147,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  measuredRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
+  measuredRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
@@ -156,7 +156,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 181
   };
 
-  diffRobBeforeDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
+  diffRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffRobBeforeDelivery,
     colId: QcReportsListColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
@@ -170,14 +170,14 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 128
   };
 
-  qtyBeforeDeliveryUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyBeforeDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     valueFormatter: params => params.value?.displayName
   };
 
-  bdnQuantityCol: TypedColDef<IQcReportsListItemDto, number> = {
+  bdnQuantityCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.bdnQuantity,
     colId: QcReportsListColumns.bdnQuantity,
     field: model('bdnQuantity'),
@@ -185,7 +185,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  measuredDeliveredQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
+  measuredDeliveredQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredDeliveredQty,
     colId: QcReportsListColumns.measuredDeliveredQty,
     field: model('measuredDeliveredQty'),
@@ -193,7 +193,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffDeliveredQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
+  diffDeliveredQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffDeliveredQty,
     colId: QcReportsListColumns.diffDeliveredQty,
     field: model('diffDeliveredQty'),
@@ -206,14 +206,14 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  qtyDeliveredUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     valueFormatter: params => params.value?.displayName
   };
 
-  logBookRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
+  logBookRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.logBookRobAfterDelivery,
     colId: QcReportsListColumns.logBookRobAfterDelivery,
     field: model('logBookRobAfterDelivery'),
@@ -221,7 +221,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  measuredRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
+  measuredRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredRobAfterDelivery,
     colId: QcReportsListColumns.measuredRobAfterDelivery,
     field: model('measuredRobAfterDelivery'),
@@ -229,7 +229,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffRobAfterDeliveryCol: TypedColDef<IQcReportsListItemDto, number> = {
+  diffRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffRobAfterDelivery,
     colId: QcReportsListColumns.diffRobAfterDelivery,
     field: model('diffRobAfterDelivery'),
@@ -242,14 +242,14 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  qtyAfterDeliveryUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyAfterDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
     valueFormatter: params => params.value?.displayName
   };
 
-  logBookSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
+  logBookSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.logBookSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
@@ -257,7 +257,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  measuredSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
+  measuredSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
@@ -265,7 +265,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffSludgeRobBeforeDischargeCol: TypedColDef<IQcReportsListItemDto, number> = {
+  diffSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
@@ -277,7 +277,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  sludgeDischargedQtyCol: TypedColDef<IQcReportsListItemDto, number> = {
+  sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.sludgeDischargedQty,
     colId: QcReportsListColumns.sludgeDischargedQty,
     field: model('sludgeDischargedQty'),
@@ -285,20 +285,20 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  qtySludgeDischargedUomCol: TypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtySludgeDischargedUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
     valueFormatter: params => params.value?.displayName
   };
 
-  commentCol: TypedColDef<IQcReportsListItemDto, string> = {
+  commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.comment,
     colId: QcReportsListColumns.comment,
     field: model('comment')
   };
 
-  isVerifiedSludgeQtyCol: TypedColDef<IQcReportsListItemDto, string> = {
+  isVerifiedSludgeQtyCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.isVerifiedSludgeQty,
     colId: QcReportsListColumns.isVerifiedSludgeQty,
     field: model('isVerifiedSludgeQty'),
@@ -330,7 +330,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
   }
 
-  getColumnsDefs(): TypedColDef[] {
+  getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
       this.portCallId,

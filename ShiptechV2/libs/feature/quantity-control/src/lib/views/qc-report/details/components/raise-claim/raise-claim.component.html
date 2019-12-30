@@ -11,7 +11,9 @@
 </div>
 <hr class="line m-t-m-2 m-b-14">
 
+<app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
 <ag-grid-angular
+  #agGridAngular
   [gridOptions]="gridViewModel.gridOptions"
   appAgGridSizeToFit
   class="ag-theme-balham  shiptech-radio-grid"

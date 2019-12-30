@@ -1,7 +1,7 @@
 <div class="row" style="margin: 5px 0;">
   <div class="col-6 d-flex">
     <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
-    <app-filter-preferences appAgGridFilterPresets groupId="vessel-port-calls-master-filter-presets" [postPresetsLoad$]="gridViewModel.preServerSideDataSourcePipe$"
+    <app-filter-preferences appAgGridFilterPresets groupId="vessel-port-calls-master-filter-presets" (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
                             id="vessel-port-calls-master-selector"></app-filter-preferences>
   </div>
   <div>
@@ -11,7 +11,9 @@
 </div>
 
 
-<ag-grid-angular appAgGridFirstColumnLocked
+<app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+<ag-grid-angular #agGridAngular
+                 appAgGridFirstColumnLocked
                  appAgGridFilterPresets
                  appAgGridSizeToFit
                  appExternalSearch

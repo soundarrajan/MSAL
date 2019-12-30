@@ -9,7 +9,7 @@ import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from '../../../../../../services/api/dto/qc-report-sounding.dto';
-import { TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { combineLatest, Observable, of } from 'rxjs';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
@@ -34,31 +34,31 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     precision: () => this.format.quantityPrecision
   };
 
-  detailsReportIdCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
+  detailsReportIdCol: ITypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.reportId,
     colId: QcSoundingReportDetailsColumns.reportId,
     field: detailsModel('reportId')
   };
 
-  tankIdCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
+  tankIdCol: ITypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.tankId,
     colId: QcSoundingReportDetailsColumns.tankId,
     field: detailsModel('tankId')
   };
 
-  tankNameCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
+  tankNameCol: ITypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.tankName,
     colId: QcSoundingReportDetailsColumns.tankName,
     field: detailsModel('tankName')
   };
 
-  fuelDescriptionCol: TypedColDef<IQcSoundingReportDetailsItemDto, string> = {
+  fuelDescriptionCol: ITypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelDescription,
     colId: QcSoundingReportDetailsColumns.fuelDescription,
     field: detailsModel('fuelDescriptor')
   };
 
-  fuelVolumeCol: TypedColDef<IQcSoundingReportDetailsItemDto, number> = {
+  fuelVolumeCol: ITypedColDef<IQcSoundingReportDetailsItemDto, number> = {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelVolume,
     colId: QcSoundingReportDetailsColumns.fuelVolume,
     field: detailsModel('fuelVolume'),
@@ -66,7 +66,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  tankCapacityCol: TypedColDef<IQcSoundingReportDetailsItemDto, number> = {
+  tankCapacityCol: ITypedColDef<IQcSoundingReportDetailsItemDto, number> = {
     headerName: QcSoundingReportDetailsColumnsLabels.tankCapacity,
     colId: QcSoundingReportDetailsColumns.tankCapacity,
     field: detailsModel('tankCapacity'),
@@ -74,7 +74,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  fuelTempCol: TypedColDef<IQcSoundingReportDetailsItemDto, number> = {
+  fuelTempCol: ITypedColDef<IQcSoundingReportDetailsItemDto, number> = {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelTemp,
     colId: QcSoundingReportDetailsColumns.fuelTemp,
     field: detailsModel('fuelTemperature'),
@@ -82,7 +82,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  tankUnpumpableVolumeCol: TypedColDef<IQcSoundingReportDetailsItemDto, number> = {
+  tankUnpumpableVolumeCol: ITypedColDef<IQcSoundingReportDetailsItemDto, number> = {
     headerName: QcSoundingReportDetailsColumnsLabels.tankUnpumpableVolume,
     colId: QcSoundingReportDetailsColumns.tankUnpumpableVolume,
     field: detailsModel('tankUnpumpableVolume'),
@@ -90,7 +90,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  fuelMassCol: TypedColDef<IQcSoundingReportDetailsItemDto, number> = {
+  fuelMassCol: ITypedColDef<IQcSoundingReportDetailsItemDto, number> = {
     headerName: QcSoundingReportDetailsColumnsLabels.fuelMass,
     colId: QcSoundingReportDetailsColumns.fuelMass,
     field: detailsModel('fuelMass'),
@@ -152,38 +152,38 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  vesselNameCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  vesselNameCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.vesselName,
     colId: QcSoundingReportListColumns.vesselName,
     field: model('vesselName'),
     cellRenderer: 'agGroupCellRenderer'
   };
 
-  vesselCodeCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  vesselCodeCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.vesselCode,
     colId: QcSoundingReportListColumns.vesselCode,
     field: model('vesselCode')
   };
 
-  imoNoCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  imoNoCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.imoNo,
     colId: QcSoundingReportListColumns.imoNo,
     field: model('imoNo')
   };
 
-  reportIdCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  reportIdCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.reportId,
     colId: QcSoundingReportListColumns.reportId,
     field: model('reportId')
   };
 
-  voyageReferenceCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  voyageReferenceCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.voyageReference,
     colId: QcSoundingReportListColumns.voyageReference,
     field: model('voyageReference')
   };
 
-  soundedOnCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  soundedOnCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.soundedOn,
     colId: QcSoundingReportListColumns.soundedOn,
     field: model('soundedOn'),
@@ -191,61 +191,61 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.date(params.value)
   };
 
-  soundingReasonCol: TypedColDef<IQcSoundingReportItemDto, string> = {
+  soundingReasonCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.soundingReason,
     colId: QcSoundingReportListColumns.soundingReason,
     field: model('soundingReason')
   };
 
-  computedRobHsfoCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  computedRobHsfoCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.computedRobHsfo,
     colId: QcSoundingReportListColumns.computedRobHsfo,
     field: model('computedRobHsfo')
   };
 
-  measuredRobHsfoCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  measuredRobHsfoCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.measuredRobHsfo,
     colId: QcSoundingReportListColumns.measuredRobHsfo,
     field: model('measuredRobHsfo')
   };
 
-  robHsfoDiffCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  robHsfoDiffCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.robHsfoDiff,
     colId: QcSoundingReportListColumns.robHsfoDiff,
     field: model('robHsfoDiff')
   };
 
-  computedRobLsfoCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  computedRobLsfoCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.computedRobLsfo,
     colId: QcSoundingReportListColumns.computedRobLsfo,
     field: model('computedRobLsfo')
   };
 
-  measuredRobLsfoCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  measuredRobLsfoCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.measuredRobLsfo,
     colId: QcSoundingReportListColumns.measuredRobLsfo,
     field: model('measuredRobLsfo')
   };
 
-  robLsfoDiffCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  robLsfoDiffCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.robLsfoDiff,
     colId: QcSoundingReportListColumns.robLsfoDiff,
     field: model('robLsfoDiff')
   };
 
-  computedRobDogoCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  computedRobDogoCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.computedRobDogo,
     colId: QcSoundingReportListColumns.computedRobDogo,
     field: model('computedRobDogo')
   };
 
-  measuredRobDogoCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  measuredRobDogoCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.measuredRobDogo,
     colId: QcSoundingReportListColumns.measuredRobDogo,
     field: model('measuredRobDogo')
   };
 
-  robDogoDiffCol: TypedColDef<IQcSoundingReportItemDto, number> = {
+  robDogoDiffCol: ITypedColDef<IQcSoundingReportItemDto, number> = {
     headerName: QcSoundingReportListColumnsLabels.robDogoDiff,
     colId: QcSoundingReportListColumns.robDogoDiff,
     field: model('robDogoDiff')
@@ -299,7 +299,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
       ).subscribe();
   }
 
-  getColumnsDefs(): TypedColDef[] {
+  getColumnsDefs(): ITypedColDef[] {
     return [
       this.vesselNameCol,
       this.vesselCodeCol,

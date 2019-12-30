@@ -1,7 +1,7 @@
 /**
  * To be used in combination with  colDef.filter: 'agNumberColumnFilter'
  */
-import { AgGridConditionTypeEnum, TypedNewValueParams } from './type.definition';
+import { AgGridConditionTypeEnum, ITypedValueParams } from './type.definition';
 
 export const BooleanFilterParams = {
   suppressAndOrCondition: true,
@@ -20,7 +20,7 @@ export const BooleanFilterParams = {
     }]
 };
 
-export function refreshCellAsync<TData = any, TField = any>(params: TypedNewValueParams<TData, TField>): boolean {
+export function refreshCellAsync<TData = any, TField = any>(params: ITypedValueParams<TData, TField>): boolean {
   setTimeout(() => params.api.refreshCells({ columns: [params.colDef.colId], rowNodes: [params.node] }));
   return true;
 }

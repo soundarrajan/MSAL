@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Inject, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -52,7 +52,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     }
   };
 
-  selectCol: TypedColDef = {
+  selectCol: ITypedColDef = {
     colId: 'selection',
     width: 50,
     checkboxSelection: true,
@@ -74,21 +74,21 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     cellClass: 'cell-border-green'
   };
 
-  locationPortCol: TypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
+  locationPortCol: ITypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
     headerName: VesselPortCallsMasterListColumnsLabels.locationPort,
     colId: VesselPortCallsMasterListColumns.locationPort,
     field: model('location'),
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
-  voyageIdCol: TypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
+  voyageIdCol: ITypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
     headerName: VesselPortCallsMasterListColumnsLabels.voyageId,
     colId: VesselPortCallsMasterListColumns.voyageId,
     field: model('voyageId'),
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
-  etaCol: TypedColDef<IVesselPortCallMasterDto, string> = {
+  etaCol: ITypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.eta,
     colId: VesselPortCallsMasterListColumns.eta,
     field: model('eta'),
@@ -96,7 +96,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     valueFormatter: params => this.format.date(params.value)
   };
 
-  etbCol: TypedColDef<IVesselPortCallMasterDto, string> = {
+  etbCol: ITypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.etb,
     colId: VesselPortCallsMasterListColumns.etb,
     field: model('etb'),
@@ -104,7 +104,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     valueFormatter: params => this.format.date(params.value)
   };
 
-  etdCol: TypedColDef<IVesselPortCallMasterDto, string> = {
+  etdCol: ITypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.etd,
     colId: VesselPortCallsMasterListColumns.etd,
     field: model('etd'),
@@ -112,13 +112,13 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     valueFormatter: params => this.format.date(params.value)
   };
 
-  portCallIdCol: TypedColDef<IVesselPortCallMasterDto, string> = {
+  portCallIdCol: ITypedColDef<IVesselPortCallMasterDto, string> = {
     headerName: VesselPortCallsMasterListColumnsLabels.portCallId,
     colId: VesselPortCallsMasterListColumns.portCallId,
     field: model('portCallId')
   };
 
-  serviceCol: TypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
+  serviceCol: ITypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
     headerName: VesselPortCallsMasterListColumnsLabels.service,
     colId: VesselPortCallsMasterListColumns.service,
     field: model('service'),
@@ -138,7 +138,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     this.init(this.gridOptions, true);
   }
 
-  getColumnsDefs(): TypedColDef[] {
+  getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
       this.locationPortCol,

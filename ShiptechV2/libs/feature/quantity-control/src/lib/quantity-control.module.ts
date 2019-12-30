@@ -40,6 +40,7 @@ import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-u
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { SurveyStatusLookups } from './services/survey-status-lookups';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
+import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-au
     RelatedLinksModule,
     EntityStatusModule,
     NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
-    NgxsResetPluginModule.forRoot()
+    NgxsResetPluginModule.forRoot(),
+    AgFilterDisplayModule
   ],
   declarations: [
     MainQuantityControlComponent,

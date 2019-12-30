@@ -16,8 +16,8 @@ export class LoadUserProfileSuccessfulAction {
 
   public log(): any {
     return {
-      userName: nullable(this.userProfile).username,
-      id: nullable(this.userProfile).id
+      userName: this.userProfile?.username,
+      id: this.userProfile?.id
     };
   }
 }

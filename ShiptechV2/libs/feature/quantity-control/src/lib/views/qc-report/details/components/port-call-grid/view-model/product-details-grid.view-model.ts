@@ -2,7 +2,7 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColGroupDef, GridOptions } from 'ag-grid-community';
-import { RowSelection, TypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ProductDetailsColGroupsEnum, ProductDetailsColGroupsLabels, ProductDetailsColumns, ProductDetailsColumnsLabels } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
@@ -56,14 +56,14 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
   };
 
-  productTypeCol: TypedColDef<ProductTypeListItemViewModel, IDisplayLookupDto> = {
+  productTypeCol: ITypedColDef<ProductTypeListItemViewModel, IDisplayLookupDto> = {
     headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: model('productType'),
     valueFormatter: params => params.value?.displayName ?? params.value?.name
   };
 
-  logBookBeforeDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  logBookBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: model('robBeforeDeliveryLogBookROB'),
@@ -71,7 +71,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  measuredRobBeforeDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  measuredRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: model('robBeforeDeliveryMeasuredROB'),
@@ -79,7 +79,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  differenceRobBeforeDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  differenceRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     field: model('robBeforeDiff'),
@@ -91,7 +91,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
   };
 
-  bdnDeliveredQuantityCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  bdnDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
     field: model('deliveredQuantityBdnQty'),
@@ -99,7 +99,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  measuredDeliveredQuantityCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  measuredDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: model('measuredDeliveredQty'),
@@ -107,7 +107,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  differenceDeliveredQuantityCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  differenceDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     field: model('deliveredDiff'),
@@ -118,7 +118,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
   };
 
-  logBookAfterDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  logBookAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: model('robAfterDeliveryLogBookROB'),
@@ -126,7 +126,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  measuredRobAfterDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  measuredRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: model('robAfterDeliveryMeasuredROB'),
@@ -134,7 +134,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellRendererFramework: AgCellTemplateComponent
   };
 
-  differenceRobAfterDeliveryCol: TypedColDef<ProductTypeListItemViewModel, number> = {
+  differenceRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.RobAfterDeliveryDifference,
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     field: model('robAfterDiff'),
@@ -213,7 +213,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 
-  getColumnsDefs(): TypedColDef[] {
+  getColumnsDefs(): ITypedColDef[] {
     return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
   }
 
