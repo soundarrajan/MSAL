@@ -1657,6 +1657,9 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
                 return;
             }
+            if (command == "cancel" &&  ctrl.comfirmCancelOrder) {
+                $state.reload();
+            }
             if (command == 'cancel' && !ctrl.comfirmCancelOrder) {
                 if (!ctrl.cancelReason) {
                     ctrl.cancelReason = {};
