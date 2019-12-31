@@ -1,3 +1,5 @@
+import { IQcReportProductTypeDto } from '../../../../services/api/dto/qc-report-details.dto';
+
 export class QcSaveReportDetailsAction {
   static readonly type = '[Qc.Report.Details] - Save';
 
@@ -12,13 +14,14 @@ export class QcSaveReportDetailsAction {
 export class QcSaveReportDetailsSuccessfulAction {
   static readonly type = '[Qc.Report.Details] - Save Successful';
 
-  constructor(public reportId: number, public emailTransactionTypeId: number) {
+  constructor(public reportId: number, public emailTransactionTypeId: number, public productTypes: IQcReportProductTypeDto[]) {
   }
 
   public log(): any {
     return {
       reportId: this.reportId,
       emailTransactionTypeId: this.emailTransactionTypeId,
+      productTypes: this.productTypes?.length
     };
   }
 }

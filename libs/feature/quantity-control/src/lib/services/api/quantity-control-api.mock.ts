@@ -78,7 +78,11 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
-    return of({ reportId: 2, emailTransactionTypeId: 1 });
+    return of({
+      reportId: 2,
+      emailTransactionTypeId: 1,
+      productTypes: request.details.map(s => ({ id: s.id, productType: { id: s.productTypeId, name: 'not used', displayName: 'not used' } }))
+    });
   }
 
   @ApiCall()
@@ -93,7 +97,7 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
     return of({
       items: getMockQcSoundingReportDetails(nullable(request.pagination).take || 10),
-      totalCount: (request?.pagination?.take ?? 10)  * 5
+      totalCount: (request?.pagination?.take ?? 10) * 5
     });
   }
 
@@ -131,8 +135,8 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
     return of({
       vesselVoyageDetailsId: request.vesselVoyageDetailsId,
       productTypes: getQcReportDetailsCall(1).productTypeCategories.map(p => ({ productType: p.productType, bdnQuantity: p.deliveredQty.bdnQuantity })),
-      nbOfClaims: faker.random.number({ min: 0, max:50}),
-      nbOfDeliveries: faker.random.number({ min: 0, max:50}),
+      nbOfClaims: faker.random.number({ min: 0, max: 50 }),
+      nbOfDeliveries: faker.random.number({ min: 0, max: 50 })
     });
   }
 }

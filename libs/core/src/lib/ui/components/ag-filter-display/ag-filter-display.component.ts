@@ -69,10 +69,7 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.grid.filterChanged.pipe(
       tap(() => {
-        const filterModel1 = this.grid.api.getFilterModel();
-        console.log(filterModel1);
-
-        this.filterParts = _.transform(filterModel1, (result: FilterPart[], filterModel: AgGridFilterModel, columnId: any) => {
+        this.filterParts = _.transform(this.grid.api.getFilterModel(), (result: FilterPart[], filterModel: AgGridFilterModel, columnId: any) => {
           const column = this.grid.columnApi.getColumn(columnId);
 
           if (result.length > 0)
@@ -104,8 +101,6 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
             });
           }
         }, []);
-
-        console.log(this.filterParts);
 
         this.changeDetector.markForCheck();
       }),
