@@ -273,7 +273,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
     cellClassRules: {
-      'matched-withing-limit': params => params.data?.diffSludgeRobBeforeDischarge < 0 // TODO: Wrong calculation, needs tolerance
+      'not-matched': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) > this.maxToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit,
     }
   };
 
