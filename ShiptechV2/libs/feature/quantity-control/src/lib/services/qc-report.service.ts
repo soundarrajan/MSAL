@@ -301,7 +301,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
         });
       },
       new QcSaveReportDetailsAction(),
-      response => new QcSaveReportDetailsSuccessfulAction(response.reportId, response.emailTransactionTypeId),
+      response => new QcSaveReportDetailsSuccessfulAction(response.reportId, response.emailTransactionTypeId, response.productTypes),
       new QcSaveReportDetailsFailedAction(),
       ModuleError.SaveReportDetailsFailed)
       .pipe(map(response => response.reportId));

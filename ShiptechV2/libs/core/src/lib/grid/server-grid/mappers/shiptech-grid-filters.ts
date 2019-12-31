@@ -49,7 +49,7 @@ function getShiptechFormatFilter(filter: AgGridFilterModelWithKey, params: IServ
     result = <IServerGridDateFilter>{
       ...result,
       dateType: 'server',
-      values: [(<IAgGridDateFilter><unknown>filter).dateFrom.toString()]
+      values: [(<IAgGridDateFilter><unknown>filter).dateFrom?.toString(), (<IAgGridDateFilter><unknown>filter).dateTo?.toString()].filter(d => !!d)
     };
   }
 
@@ -62,7 +62,7 @@ function getShiptechFormatFilter(filter: AgGridFilterModelWithKey, params: IServ
       precision: precision,
       values: filter.type === AgGridConditionTypeEnum.YES ? [1] :
         filter.type === AgGridConditionTypeEnum.NO ? [0] :
-          numberFilter.filterTo ? [numberFilter.filter, numberFilter.filterTo] : [numberFilter.filter]
+          numberFilter.filterTo ? [numberFilter.filter, numberFilter.filterTo].filter(s => s!== null && s !== undefined) : [numberFilter.filter]
     };
   }
 
