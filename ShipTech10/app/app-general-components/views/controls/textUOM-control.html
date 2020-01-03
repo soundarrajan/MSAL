@@ -15,8 +15,11 @@
 	    	{{ field.Name.toLowerCase().indexOf('quantity') || field.name.toLowerCase().indexOf('withuom') != -1 ? tenantFormatPrecision = CM.tenantSetting.defaultValues.quantityPrecision : "" }}
 		</span>
         <span class="input-group-addon uom_group pseudoSelect" ng-if="field.UOMType == 'Currency'">
-            <select  id="{{ field.Name }}" name="{{ field.Name }} Option" class="bs-select" data-width="fit" ng-model="dummyModel" dynamic-model="'formValues.' + field.UOMUnique_ID "  ng-change=" convertValues({{ 'formValues.'+field.UOMUnique_ID + '.id' }}, dummyModel, field.UOMType, field.Name) ; triggerChangeFields(field.Name, field.Unique_ID)"  ng-if="field.UOMUnique_ID" data-val="{{ $eval('formValues.'+field.UOMUnique_ID + '.id') }}"  ng-options="item as item.name for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true|| field.ReadOnlyUom == true ? true : false" ng-required='$eval(field.Required) == true || field.Required == true ? true : false && isVisible(field.Name + field.UOMType)'>
+            <select   id="{{ field.Name }}" name="{{ field.Name }} Option" class="bs-select" data-width="fit" ng-model="dummyModel" dynamic-model="'formValues.' + field.UOMUnique_ID "  ng-change=" convertValues({{ 'formValues.'+field.UOMUnique_ID + '.id' }}, dummyModel, field.UOMType, field.Name) ; triggerChangeFields(field.Name, field.Unique_ID) ; changeCurrencyValues(field.Name)"  ng-if="field.UOMUnique_ID" data-val="{{ $eval('formValues.'+field.UOMUnique_ID + '.id') }}"  ng-options="item as item.name for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true|| field.ReadOnlyUom == true ? true : false" ng-required='$eval(field.Required) == true || field.Required == true ? true : false && isVisible(field.Name + field.UOMType)'>
                 <option></option>
+            </select>
+             <select id="width_tmp_select_{{field.Name}}">
+                    <option id="width_tmp_option_{{field.Name}}"></option>
             </select>
         </span>
 		<!-- {{$eval('formValues.'+field.Unique_ID)}} -->
@@ -24,12 +27,16 @@
 
 
         <span class="input-group-addon uom_group pseudoSelect" ng-if="field.UOMType != 'Currency'">
+
             <select  id="{{ field.Name }}" name="{{ field.Name }} Option" class="bs-select" data-width="fit" ng-model="dummyModel" dynamic-model="'formValues.' + field.UOMUnique_ID "  ng-change=" convertValues({{ 'formValues.'+field.UOMUnique_ID + '.id' }}, dummyModel, field.UOMType, field.Name) ; triggerChangeFields(field.Name, field.Unique_ID)"  ng-if="field.UOMUnique_ID" data-val="{{ $eval('formValues.'+field.UOMUnique_ID + '.id') }}"  ng-options="item as item.name for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true|| field.ReadOnlyUom == true ? true : false" ng-required="$eval(field.Required) == true || field.Required == true ? true : false && isVisible(field.Name + field.UOMType) ">
 				<!-- || ( $eval('formValues.' + field.Unique_ID) != null && $eval('formValues.' + field.Unique_ID) != '') -->
 
                 <!-- $eval('formValues.' + field.Unique_ID) != null && $eval('formValues.' + field.Unique_ID) != ''" " -->
                 <!-- isFilledValue({{field.Unique_ID}}) -->
                 <option></option>
+            </select>
+             <select id="width_tmp_select_{{field.Name}}">
+                    <option id="width_tmp_option_{{field.Name}}"></option>
             </select>
         </span>
 

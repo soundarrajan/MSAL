@@ -167,6 +167,10 @@ APP_CLAIMS.controller("Controller_Claims", [
                                         }
                                     });
                                 });
+                                $rootScope.$broadcast("changeCurrencyValues", "EstimatedSettlementAmount");
+                                $rootScope.$broadcast("changeCurrencyValues", "OrderPrice");
+
+
                             }
                         }
                         $scope.$watchGroup([$scope.formValues, $scope.options], function() {
@@ -460,7 +464,9 @@ APP_CLAIMS.controller("Controller_Claims", [
                     });
                     $timeout(function() {
                         $("#EstimatedSettlementAmount").trigger("change");
+                        $("#OrderPrice").trigger("change");
                     }, 10);
+                    // $rootScope.$broadcast("changeCurrencyValues", "OrderPrice");
                     if (typeof $scope.formValues.claimType != "undefined") {
                         oldClaimType = angular.copy($scope.formValues.claimType.claimType);
                         $scope.formValues.claimType.claimType = null;
@@ -607,6 +613,8 @@ APP_CLAIMS.controller("Controller_Claims", [
                     $scope.formValues.claimDetails.actualSettlementAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
                     $scope.formValues.claimDetails.compromisedAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
                     $scope.formValues.claimDetails.noClaimAmountCurrency = $scope.formValues.claimDetails.estimatedSettlementAmountCurrency;
+                    
+                   
                 }
             }
         });
@@ -1137,6 +1145,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     }
                 }
             }
-        })
+        });
+
     }
 ]);

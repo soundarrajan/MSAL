@@ -3410,17 +3410,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         ctrl.changeScroll = function(index) {
             $(".st-new-request-form.form-horizontal.collapse.in.row")[index].style.cssText = "overflow: auto";
         }
-
         // jQuery(document).ready(function(){
         //     $(document).on("click", function(e){
-        //         if (e.toElement.name != "Product" && e.toElement.name != "") {
-        //             $(".st-new-request-form.form-horizontal.collapse.in.row").css("overflow", "auto");
-        //         } else if (e.toElement.name == "Product") {
-                    
-        //         }
-        //     });
-     
-        // });
+        //         if(!$(e.target).hasClass("Product") && $(e.target).parents(".vis-item").length == 0){
+        //             $(".vis-item").removeClass("vis-selected");
+        //         }   
+        //     })
+           
+        // })
 
       
 
