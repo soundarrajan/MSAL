@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Toast, ToastPackage, ToastrService } from 'ngx-toastr';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AppContext } from '../../app-context/app-context';
@@ -39,7 +39,8 @@ import { AppContext } from '../../app-context/app-context';
     ])
   ],
   preserveWhitespaces: false,
-  styleUrls: ['./toastr-log.component.scss']
+  styleUrls: ['./toastr-log.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToastrLogComponent extends Toast {
   constructor(public appContext: AppContext, public toastrService: ToastrService, public toastPackage: ToastPackage) {

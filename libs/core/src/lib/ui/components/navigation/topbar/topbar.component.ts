@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LayoutMainComponent } from '../../../layout/main/layout-main.component';
 import { AuthenticationService } from '../../../../authentication/authentication.service';
 import { BreadcrumbsService } from '../../breadcrumbs/breadcrumbs.service';
@@ -11,7 +11,8 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 
 @Component({
   selector: 'shiptech-topbar',
-  templateUrl: './topbar.component.html'
+  templateUrl: './topbar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopbarComponent {
 

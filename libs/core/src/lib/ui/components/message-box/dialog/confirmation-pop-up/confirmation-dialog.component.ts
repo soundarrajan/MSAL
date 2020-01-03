@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit, SecurityContext } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, SecurityContext } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-confirmation-pop-up',
   templateUrl: './confirmation-dialog.component.html',
-  styleUrls: ['./confirmation-dialog.component.scss']
+  styleUrls: ['./confirmation-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmationDialogComponent implements OnInit {
   title: string = 'Confirm';

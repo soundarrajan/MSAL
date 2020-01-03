@@ -1,10 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-confirmation-pop-up',
   templateUrl: './default-dialog.component.html',
-  styleUrls: ['./default-dialog.component.scss']
+  styleUrls: ['./default-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefaultDialogComponent implements OnInit {
   title: string = 'Default';

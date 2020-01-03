@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { EventsLogGridViewModel } from './view-model/events-log-grid.view-model';
 import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
 import { Select } from '@ngxs/store';
@@ -11,7 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'shiptech-events-log',
   templateUrl: './events-log.component.html',
   styleUrls: ['./events-log.component.scss'],
-  providers: [EventsLogGridViewModel]
+  providers: [EventsLogGridViewModel],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventsLogComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();

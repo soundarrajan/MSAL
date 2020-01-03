@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -54,7 +54,8 @@ export interface IRelatedLinkItem extends Omit<MenuItem, 'id'> {
           </ul>
       </div>
   `,
-  styleUrls: ['./related-links.scss']
+  styleUrls: ['./related-links.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RelatedLinksComponent implements OnInit, OnDestroy {
 

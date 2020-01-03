@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 import { MenuItem, TabMenu } from 'primeng/primeng';
 import { ActivatedRoute, NavigationCancel, NavigationError, Router } from '@angular/router';
@@ -11,7 +11,8 @@ import { filter, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'shiptech-qc-report-details-toolbar',
   templateUrl: './qc-report-details-toolbar.component.html',
-  styleUrls: ['./qc-report-details-toolbar.component.css']
+  styleUrls: ['./qc-report-details-toolbar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, AfterViewInit {
 

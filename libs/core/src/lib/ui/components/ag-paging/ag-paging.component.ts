@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-ag-paging',
   templateUrl: './ag-paging.component.html',
   styleUrls: ['./ag-paging.component.scss'],

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -40,7 +40,8 @@ const entityStatusMapping: Record<EntityStatus, IEntityStatusConfig> = {
 @Component({
   selector: 'shiptech-entity-status',
   templateUrl: './entity-status.component.html',
-  styleUrls: ['./entity-status.component.scss']
+  styleUrls: ['./entity-status.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityStatusComponent implements OnInit, OnDestroy {
 
@@ -51,7 +52,7 @@ export class EntityStatusComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  constructor(private service: EntityStatusService) {
+  constructor(private service: EntityStatusService, private changeDetector: ChangeDetectorRef) {
 
     this.service.statusChanged.pipe(
       tap(status => {
@@ -63,13 +64,15 @@ export class EntityStatusComponent implements OnInit, OnDestroy {
           this.color = statusConfig.color;
           this.backgroundColor = statusConfig.backgroundColor;
           this.cssClass = statusConfig.cssClass;
+
+          this.changeDetector.markForCheck();
         }
       }),
       takeUntil(this._destroy$)
     ).subscribe();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

@@ -1,11 +1,11 @@
 import { IServerGridPagination } from '@shiptech/core/grid/server-grid/server-grid-pagination';
-import { IServerGridSorts } from '@shiptech/core/grid/server-grid/server-grid-sorts';
+import { IServerGridSorts, IServerGridSortsDto } from '@shiptech/core/grid/server-grid/server-grid-sorts';
 import { ServerGridFilter } from '@shiptech/core/grid/server-grid/server-grid.filter';
 
 export interface IServerGridInfo {
   pageFilters?: IServerGridPageFilters;
   pagination?: IServerGridPagination;
-  sortList?: IServerGridSorts[]
+  sortList?: IServerGridSortsDto
   searchText?: string;
 }
 

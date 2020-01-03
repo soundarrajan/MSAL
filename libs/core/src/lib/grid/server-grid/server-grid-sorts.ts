@@ -6,3 +6,7 @@ export interface IServerGridSorts {
   sortParameter: ServerGridSortParametersEnum;
   isComputedColumn?: boolean;
 }
+
+export interface IServerGridSortsDto {
+  sortList: IServerGridSorts[]
+}

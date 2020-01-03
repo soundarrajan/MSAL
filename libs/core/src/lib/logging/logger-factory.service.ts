@@ -49,22 +49,23 @@ export class LoggerFactory implements ILoggerFactory {
   public init(settings: ILoggerSettings): void {
     if (settings.developmentMode) {
       jsnLogLogger.setOptions({
-        appenders: [new StructuredConsoleAppender('StructuredConsole'), rootAjaxAppender]
+        //appenders: [new StructuredConsoleAppender('StructuredConsole'), rootAjaxAppender]
+        appenders: [new StructuredConsoleAppender('StructuredConsole')]
       });
     }
 
-    rootAjaxAppenderReady.next({
-      bufferSize: 20,
-      storeInBufferLevel: 1000,
-      level: JL.getAllLevel(),
-      sendWithBufferLevel: 6000,
-      url: `${settings.serverSideUrl}/logger`,
-      beforeSend: (xhr: XMLHttpRequest) => {
-        xhr.setRequestHeader(KnownHeadersEnum.CorrelationId, this.appContext.sessionId);
-        xhr.setRequestHeader(KnownHeadersEnum.TenantId, this.appContext.authContext.tenantId || '');
-        xhr.setRequestHeader(KnownHeadersEnum.UserId, this.appContext.authContext.userId || '');
-      }
-    });
+    // rootAjaxAppenderReady.next({
+    //   bufferSize: 20,
+    //   storeInBufferLevel: 1000,
+    //   level: JL.getAllLevel(),
+    //   sendWithBufferLevel: 6000,
+    //   url: `${settings.serverSideUrl}/logger`,
+    //   beforeSend: (xhr: XMLHttpRequest) => {
+    //     xhr.setRequestHeader(KnownHeadersEnum.CorrelationId, this.appContext.sessionId);
+    //     xhr.setRequestHeader(KnownHeadersEnum.TenantId, this.appContext.authContext.tenantId || '');
+    //     xhr.setRequestHeader(KnownHeadersEnum.UserId, this.appContext.authContext.userId || '');
+    //   }
+    // });
   }
 
   public createLogger(name: string, enrich?: Record<string, any>): ILogger {

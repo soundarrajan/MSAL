@@ -1,8 +1,8 @@
 import { IServerSideGetRowsParams } from 'ag-grid-community';
 import { ServerGridSortParametersEnum } from '@shiptech/core/grid/server-grid/server-grid-sort-parameters.enum';
-import { IServerGridSorts } from '@shiptech/core/grid/server-grid/server-grid-sorts';
+import { IServerGridSorts, IServerGridSortsDto } from '@shiptech/core/grid/server-grid/server-grid-sorts';
 
-export function getShiptechFormatSorts(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): IServerGridSorts[] {
+export function getShiptechFormatSorts(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): IServerGridSortsDto {
 
   const sorts = params.request.sortModel.map((s, i) => ({
     // Note: TODO Temporary workaround to avoid providing gridApi as argument
@@ -12,5 +12,5 @@ export function getShiptechFormatSorts(params: IServerSideGetRowsParams, serverC
     sortParameter: ServerGridSortParametersEnum[s.sort]
   }));
 
-  return sorts || [];
+  return { sortList: sorts || [] };
 }

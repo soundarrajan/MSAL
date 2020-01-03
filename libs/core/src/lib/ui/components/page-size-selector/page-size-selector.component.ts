@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SelectItem } from 'primeng/primeng';
 
 export interface IPageSizeOption {
@@ -10,7 +10,8 @@ export interface IPageSizeOption {
   // tslint:disable-next-line:component-selector
   selector: 'app-page-size-selector',
   templateUrl: './page-size-selector.component.html',
-  styleUrls: ['./page-size-selector.component.scss']
+  styleUrls: ['./page-size-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageSizeSelectorComponent implements OnInit {
   @Input() options: number[];
