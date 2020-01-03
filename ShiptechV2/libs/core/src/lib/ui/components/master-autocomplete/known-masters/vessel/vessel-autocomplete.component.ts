@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChild, EventEmitter, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, EventEmitter, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AutoComplete } from 'primeng/primeng';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
@@ -16,7 +16,8 @@ const nameField = nameof<IDisplayLookupDto>('name');
   selector: 'shiptech-vessel-master-autocomplete',
   templateUrl: './vessel-autocomplete.component.html',
   styleUrls: ['./vessel-autocomplete.component.scss'],
-  exportAs: 'vesselMasterAutocomplete'
+  exportAs: 'vesselMasterAutocomplete',
+ // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   private _destroy$ = new Subject();
@@ -65,6 +66,7 @@ export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDes
     }
 
     this.autoComplete.completeMethod.pipe(
+      tap(() => console.log('test')),
       switchMap((event: { query: string }) => {
         // Note: Dexie.js is not efficient with filter or contains like, because it executes the lambda for each row.
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH

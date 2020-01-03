@@ -9,10 +9,10 @@ export class LoadReportListAction {
 
   public log(): any {
     return {
-      serverGridInfo: nullable(this.serverGridInfo).pagination,
-      searchText: nullable(this.serverGridInfo).searchText,
-      hasFilters: (nullable(this.serverGridInfo).pageFilters?.filters ?? []).length,
-      hasSorts: (nullable(this.serverGridInfo).sortList || []).length
+      serverGridInfo: nullable(this.serverGridInfo)?.pagination,
+      searchText: nullable(this.serverGridInfo)?.searchText,
+      hasFilters: (nullable(this.serverGridInfo)?.pageFilters?.filters ?? []).length,
+      hasSorts: (nullable(this.serverGridInfo)?.sortList?.sortList || []).length
     };
   }
 }

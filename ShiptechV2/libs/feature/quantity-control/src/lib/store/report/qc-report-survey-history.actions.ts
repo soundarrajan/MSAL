@@ -9,10 +9,10 @@ export class LoadReportSurveyHistoryAction {
 
   public log(): any {
     return {
-      serverGridInfo: nullable(this.serverGridInfo).pagination,
-      searchText: nullable(this.serverGridInfo).searchText,
-      hasFilters: (nullable(this.serverGridInfo).pageFilters?.filters  ?? []).length,
-      hasSorts: (nullable(this.serverGridInfo).sortList || []).length
+      serverGridInfo: this.serverGridInfo?.pagination,
+      searchText: this.serverGridInfo?.searchText,
+      hasFilters: (this.serverGridInfo.pageFilters?.filters  ?? []).length,
+      hasSorts: (this.serverGridInfo.sortList?.sortList ?? []).length
     };
   }
 }

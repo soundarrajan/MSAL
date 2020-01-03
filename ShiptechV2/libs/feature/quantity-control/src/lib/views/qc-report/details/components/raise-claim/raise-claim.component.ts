@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { QcOrderProductsListGridViewModel } from './view-model/qc-order-products-list.grid-view-model';
 import { IQcOrderProductsListItemDto } from '../../../../../services/api/dto/qc-order-products-list-item.dto';
 import { QcReportService } from '../../../../../services/qc-report.service';
@@ -9,7 +9,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/primeng';
   selector: 'shiptech-raise-claim',
   templateUrl: './raise-claim.component.html',
   styleUrls: ['./raise-claim.component.css'],
-  providers: [QcOrderProductsListGridViewModel]
+  providers: [QcOrderProductsListGridViewModel],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RaiseClaimComponent implements OnInit {
 

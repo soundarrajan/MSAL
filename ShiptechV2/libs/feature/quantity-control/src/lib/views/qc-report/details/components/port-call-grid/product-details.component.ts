@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ProductDetailsViewModel } from './view-model/product-details.view-model';
 import { ProductDetailsGridViewModel } from './view-model/product-details-grid.view-model';
 import { ProductTypeListItemViewModelFactory } from './view-model/product-type-list-item.view-model';
@@ -10,7 +10,8 @@ import { Observable } from 'rxjs';
   selector: 'shiptech-port-call-grid',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss'],
-  providers: [ProductDetailsViewModel, ProductDetailsGridViewModel, ProductTypeListItemViewModelFactory]
+  providers: [ProductDetailsViewModel, ProductDetailsGridViewModel, ProductTypeListItemViewModelFactory],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductDetailsComponent implements OnInit {
 

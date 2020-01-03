@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { VesselMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/known-masters/vessel/view-model/vessel-master-selector-grid.view-model';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
@@ -18,7 +18,8 @@ import { RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definiti
     },
     VesselMasterSelectorGridViewModel
   ],
-  exportAs: 'vesselMasterSelector'
+  exportAs: 'vesselMasterSelector',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VesselMasterSelectorComponent implements OnInit, ControlValueAccessor, AfterViewInit {
   @Input() disabled: boolean = false;
@@ -28,7 +29,7 @@ export class VesselMasterSelectorComponent implements OnInit, ControlValueAccess
 
   @Output() selectedChange = new EventEmitter<IVesselMasterDto | IVesselMasterDto[]>();
 
-  constructor(public gridViewModel: VesselMasterSelectorGridViewModel, private toastr: ToastrService) {
+  constructor(public gridViewModel: VesselMasterSelectorGridViewModel, private toastr: ToastrService, private changeDetector: ChangeDetectorRef) {
   }
 
   onModelChange: Function = () => {
@@ -51,10 +52,12 @@ export class VesselMasterSelectorComponent implements OnInit, ControlValueAccess
 
   writeValue(value: any): void {
     this.selected = value;
+    this.changeDetector.markForCheck();
   }
 
   setDisabledState(val: boolean): void {
     this.disabled = val;
+    this.changeDetector.markForCheck();
   }
 
   select(): void {
@@ -72,6 +75,8 @@ export class VesselMasterSelectorComponent implements OnInit, ControlValueAccess
     this.onModelTouched();
     this.onModelChange(this.selected);
     this.selectedChange.emit(this.selected);
+
+    this.changeDetector.markForCheck();
   }
 
   ngAfterViewInit(): void {
@@ -80,9 +85,13 @@ export class VesselMasterSelectorComponent implements OnInit, ControlValueAccess
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
+
+    this.changeDetector.markForCheck();
   }
 
   onPageSizeChange(pageSize: number): void {
     this.gridViewModel.pageSize = pageSize;
+
+    this.changeDetector.markForCheck();
   }
 }

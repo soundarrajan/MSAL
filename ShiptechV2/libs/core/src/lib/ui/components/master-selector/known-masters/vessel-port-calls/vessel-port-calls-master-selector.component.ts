@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
@@ -18,7 +18,8 @@ import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dt
     },
     VesselPortCallsMasterSelectorGridViewModel
   ],
-  exportAs: 'vesselPortCallsMasterSelector'
+  exportAs: 'vesselPortCallsMasterSelector',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VesselPortCallsMasterSelectorComponent implements OnInit, ControlValueAccessor, AfterViewInit {
   private _vesselId: number;
@@ -43,7 +44,7 @@ export class VesselPortCallsMasterSelectorComponent implements OnInit, ControlVa
 
   @Output() selectedChange = new EventEmitter<IVesselPortCallMasterDto | IVesselPortCallMasterDto[]>();
 
-  constructor(public gridViewModel: VesselPortCallsMasterSelectorGridViewModel, private toastr: ToastrService) {
+  constructor(public gridViewModel: VesselPortCallsMasterSelectorGridViewModel, private toastr: ToastrService, private changeDetector: ChangeDetectorRef) {
   }
 
   onModelChange: Function = () => {
@@ -66,10 +67,12 @@ export class VesselPortCallsMasterSelectorComponent implements OnInit, ControlVa
 
   writeValue(value: any): void {
     this.selected = value;
+    this.changeDetector.markForCheck();
   }
 
   setDisabledState(val: boolean): void {
     this.disabled = val;
+    this.changeDetector.markForCheck();
   }
 
   select(): void {
@@ -87,6 +90,8 @@ export class VesselPortCallsMasterSelectorComponent implements OnInit, ControlVa
     this.onModelTouched();
     this.onModelChange(this.selected);
     this.selectedChange.emit(this.selected);
+
+    this.changeDetector.markForCheck();
   }
 
   ngAfterViewInit(): void {
@@ -95,9 +100,13 @@ export class VesselPortCallsMasterSelectorComponent implements OnInit, ControlVa
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
+
+    this.changeDetector.markForCheck();
   }
 
   onPageSizeChange(pageSize: number): void {
     this.gridViewModel.pageSize = pageSize;
+
+    this.changeDetector.markForCheck();
   }
 }

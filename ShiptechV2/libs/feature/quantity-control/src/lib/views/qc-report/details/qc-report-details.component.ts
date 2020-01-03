@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
 import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { SwitchActiveBunkerResponseAction, SwitchActiveSludgeResponseAction } from '../../../store/report/details/actions/qc-vessel-response.actions';
@@ -30,7 +30,8 @@ import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
   selector: 'shiptech-port-call',
   templateUrl: './qc-report-details.component.html',
   styleUrls: ['./qc-report-details.component.scss'],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
@@ -56,10 +57,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
   @Select(QcReportState.isNew) isNew$: Observable<boolean>;
 
-  hasVerifiedStatus: boolean;
-  hasNewStatus: boolean;
+  hasVerifiedStatus$ = new BehaviorSubject<boolean>(false);
+  hasNewStatus$ = new BehaviorSubject<boolean>(false);
 
-  public quantityPrecision: number;
+  private quantityPrecision: number;
 
   constructor(private entityStatus: EntityStatusService,
               private store: Store,
@@ -86,8 +87,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
-        this.hasVerifiedStatus = status.name === EntityStatus.Verified;
-        this.hasNewStatus = status.name === EntityStatus.New;
+        this.hasVerifiedStatus$.next(status.name === EntityStatus.Verified);
+        this.hasNewStatus$.next(status.name === EntityStatus.New);
 
         this.entityStatus.setStatus({
           value: <EntityStatus>status.name
@@ -189,6 +190,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.hasNewStatus$.complete();
+    this.hasVerifiedStatus$.complete();
+
     this._destroy$.next();
     this._destroy$.complete();
 

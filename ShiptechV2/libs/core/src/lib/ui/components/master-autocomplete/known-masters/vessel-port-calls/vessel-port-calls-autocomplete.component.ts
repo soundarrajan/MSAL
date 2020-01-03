@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChild, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AutoComplete } from 'primeng/primeng';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -14,7 +14,8 @@ import { ServerGridSortParametersEnum } from '@shiptech/core/grid/server-grid/se
   selector: 'shiptech-vessel-port-calls-master-autocomplete',
   templateUrl: './vessel-port-calls-autocomplete.component.html',
   styleUrls: ['./vessel-port-calls-autocomplete.component.scss'],
-  exportAs: 'vesselPortCallsMasterAutocomplete'
+  exportAs: 'vesselPortCallsMasterAutocomplete',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VesselPortCallsAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   private _destroy$ = new Subject();
@@ -66,11 +67,11 @@ export class VesselPortCallsAutocompleteComponent implements OnInit, AfterViewIn
       switchMap((event: { query: string }) => this.mastersApi.getVesselPortCalls({
         id: this.vesselId,
         pagination: { skip: 0, take: DefaultPageSize },
-        sortList: [{
+        sortList: { sortList:  [{
           columnValue: this.filterField,
           sortIndex: 0,
           sortParameter: ServerGridSortParametersEnum.asc
-        }],
+        }]},
         pageFilters: {
           filters: [{
             columnType: this.filterType,

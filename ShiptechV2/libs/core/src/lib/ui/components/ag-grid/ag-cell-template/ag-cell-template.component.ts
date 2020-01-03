@@ -10,7 +10,7 @@ export interface ITemplateRendererParams extends Partial<ICellRendererParams> {
   // tslint:disable-next-line:component-selector
   selector: 'ag-cell-template',
   template: `
-      <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
+    <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -39,5 +39,7 @@ export class AgCellTemplateComponent implements ICellRendererAngularComp {
   agInit(params: ITemplateRendererParams): void {
     this.template = params.ngTemplate;
     this.refresh(params);
+
+    this.changeDetector.markForCheck();
   }
 }
