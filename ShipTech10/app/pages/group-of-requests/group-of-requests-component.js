@@ -2791,7 +2791,7 @@ ctrl.setProductData = function(data, loc) {
         ctrl.checkSludgeSeller = function () {
             var i = 0;
             sludgeMatchSellerProductError = false 
-            var msg= "A Service Provider Seller is required for Sludge Product Type";
+            var msg= "A Sludge Seller is required for Sludge Product Type";
             var isSludgeProduct = false;
             $.each(ctrl.requirements, function (requirementK, requirementV) {
                 var product = _.find(ctrl.locations, { id: requirementV.RequestLocationId });
@@ -2815,7 +2815,7 @@ ctrl.setProductData = function(data, loc) {
                         $.each(pv.sellers, function(sk,sv) {
                             if (sv.randUniquePkg == requirementV.randUniquePkg) {
                                 $.each(sv.counterpartyTypes, function(ctk,ctv){
-                                    if (ctv.name == "Service Provider") {
+                                    if (ctv.name == "Sludge") {
                                         sellerTypeSludge = true
                                     }
                                 })
@@ -6680,14 +6680,14 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
             if (shouldDisplay && counterpartyTypeId == 11) {
-                if (typeof ctrl.sellerTypeCheckboxes["Service Provider"] == "undefined") {
-                    ctrl.sellerTypeCheckboxes["Service Provider"] = true;
+                if (typeof ctrl.sellerTypeCheckboxes["Sludge"] == "undefined") {
+                    ctrl.sellerTypeCheckboxes["Sludge"] = true;
                 }
             }
             return shouldDisplay;
         };
         ctrl.checkedSellerTypesSelected = function () {
-            if (!ctrl.sellerTypeCheckboxes.Supplier && !ctrl.sellerTypeCheckboxes.Seller && !ctrl.sellerTypeCheckboxes.Broker && !ctrl.sellerTypeCheckboxes["Service Provider"]) {
+            if (!ctrl.sellerTypeCheckboxes.Supplier && !ctrl.sellerTypeCheckboxes.Seller && !ctrl.sellerTypeCheckboxes.Broker && !ctrl.sellerTypeCheckboxes["Sludge"]) {
                 return false;
             }
             return true;
@@ -6697,12 +6697,12 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.sellerTypeCheckboxes.Supplier = true;
                 ctrl.sellerTypeCheckboxes.Seller = true;
                 ctrl.sellerTypeCheckboxes.Broker = true;
-                ctrl.sellerTypeCheckboxes["Service Provider"] = true;
+                ctrl.sellerTypeCheckboxes["Sludge"] = true;
             } else {
                 ctrl.sellerTypeCheckboxes.Supplier = false;
                 ctrl.sellerTypeCheckboxes.Seller = false;
                 ctrl.sellerTypeCheckboxes.Broker = false;
-                ctrl.sellerTypeCheckboxes["Service Provider"] = false;
+                ctrl.sellerTypeCheckboxes["Sludge"] = false;
             }
             ctrl.changeSellerTypes();
         };

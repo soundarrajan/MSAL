@@ -7957,7 +7957,7 @@ APP_API.factory("$Api_Service", [
 
                     if (param.app == "invoices" && param.screen == "treasuryreport" && param.field.Name == "Seller") {
                     	//merge sellers and Service providers	
-                    	mergedList = $listsCache["Seller"].concat($listsCache["ServiceProvider"]);
+                    	mergedList = $listsCache["Seller"].concat($listsCache["Sludge"]);
 						callback(mergedList);
 						return;
 					}
