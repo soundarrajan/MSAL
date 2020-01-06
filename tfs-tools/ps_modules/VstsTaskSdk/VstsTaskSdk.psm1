@@ -78,6 +78,7 @@ Export-ModuleMember -Function @(
         'Get-TfsService'
         'Get-VssCredentials'
         'Get-VssHttpClient'
+        'Get-OMType'
         # Tool functions.
         'Assert-Agent'
         'Assert-Path'
