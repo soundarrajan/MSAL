@@ -1,0 +1,284 @@
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import "shiptech-variables";
+// AG-GRID Styles
+/*Common grid theme*/
+.ag-theme-balham {
+    border-style: solid;
+    border-color: $grid-border-color;
+    border-width: 0px 0 0;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+  
+    .ag-header-cell {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      color: $grid-defaulttext-color;
+      text-transform: capitalize;
+    }
+    .ag-cell{
+        color: $grid-defaulttext-color;
+    }
+  
+    .ag-root {
+      border: 1px solid $grid-border-color !important;
+    }
+  
+    .ag-body,
+    .ag-body-viewport {
+      border-top: 1px solid $grid-border-color;
+    }
+  
+    a {
+      color: $grid-link-color !important;
+      text-decoration: none;
+    }
+  
+    a:hover {
+      color: $grid-link-color !important;
+      text-decoration: underline;
+    }
+  
+    .ag-row-hover {
+      background-color: $grid-hover-color !important;
+    }
+  
+    .ag-header-cell::after {
+      border-right: 1px solid $grid-border-color;
+      content: " ";
+      height: 40px !important;
+      position: absolute;
+      margin-top: 0px !important;
+      top: 0;
+    }
+  
+    .ag-header-group-cell::after {
+      border-right: 1px solid $grid-border-color;
+      content: " ";
+      height: 40px !important;
+      position: absolute;
+      margin-top: 0px !important;
+      top: 0;
+    }
+  
+    .ag-header {
+      background-color: $grid-header-bggray !important;
+      border: 1px solid $grid-border-color;
+      color: $grid-defaulttext-color;
+      border-bottom: 0px solid $grid-border-color !important;
+    }
+  
+    .ag-cell {
+      box-shadow: 1px 0 0 0 $gridcell-shadow-color;
+      border: none;
+      padding: 0px 5px;
+  
+    }
+  }
+  
+  /*Grid with sub grid*/
+  .shiptech-panel-theme {
+    .ag-header {
+      font-weight: 500;
+      font-size: 10px !important;
+      line-height: 12px;
+      font-weight: 500;
+    }
+  
+    .ag-row {
+      .ag-cell {
+        font-family: Roboto;
+        font-size: 10px;
+        line-height: 12px;
+        font-weight: normal;
+        display: flex;
+        align-items: center !important;
+  
+  
+      }
+  
+      .ag-cell-wrapper {
+        align-items: center !important;
+  
+      }
+    }
+  
+    .ag-details-row {
+      padding: 0.5px 0px 0px 20px !important;
+  
+    }
+  
+    .ag-group-contracted .ag-icon-contracted {
+      font-family: "Font Awesome 5 Free";
+      font-weight: bold;
+    }
+  
+    .ag-group-contracted .ag-icon-contracted:empty:before {
+      content: "\f0da" !important;
+      font-size: 13px;
+    }
+  
+    .ag-group-expanded .ag-icon-expanded {
+      font-family: "Font Awesome 5 Free";
+      font-weight: bold;
+    }
+  
+    .ag-group-expanded .ag-icon-expanded:empty:before {
+      content: "\f0d8" !important;
+      font-size: 13px;
+    }
+  }
+  
+  //Double Header Grid
+  .shiptech-blue-group-header {
+    p-spinner {
+      margin-top: 3px;
+  
+      span {
+        height: 26px;
+  
+        .ui-inputtext {
+  
+          border: 1px solid $grid-headerinput-bordercolor;
+          height: 26px;
+          color:$grid-defaulttext-color;
+          font-family: Roboto;
+        }
+  
+        // .ui-spinner-button{
+        //   border-radius: 0!important;
+        // }
+        :hover {
+  
+          border: 1px solid $grid-headerinput-bordercolor !important;
+  
+        }
+  
+        :focus {
+          border: 1px solid $grid-headerinput-bordercolor !important;
+        }
+      }
+    }
+  
+    ag-column-group-header {
+      width: 100%
+    }
+  
+    .ag-header-group-cell {
+      background-color: $grid-header-bgblue;
+      font-family: Roboto;
+      font-weight: 500;
+      font-size: 14px;
+      color: $grid-defaulttext-color;
+      text-align: center;
+  
+      .col-2 {
+        position: relative;
+        right: -39px;
+      }
+  
+      .ui-dropdown .ui-dropdown-trigger {
+        border-left: 0px;
+      }
+  
+  
+      shiptech-uom-selector {
+        p-dropdown {
+          .ui-dropdown {
+            width: 70px;
+            min-width: 10px;
+            border: 1px solid $uom-border-color;
+          }
+  
+          .ui-dropdown label.ui-dropdown-label {
+            padding-top: 2px;
+            height: 19px;
+          }
+  
+          .ui-dropdown-trigger-icon {
+            top: 52%;
+  
+          }
+        }
+      }
+    }
+  
+    .ag-header-group-cell::after {
+      border-right: 1px solid $grid-border-color;
+      content: " ";
+      height: 25px !important;
+      position: absolute;
+      margin-top: 0px !important;
+      top: 0;
+    }
+  
+    .ag-header-row {
+
+      background-color: $bg-white;
+    }
+  
+    .sub-cell-border-left {
+      border-left: 1px solid $grid-border-color;
+      height: 35px;
+    }
+  }
+  
+  // Grid with Blue Header
+  .shiptech-blue-header {
+    .ag-header-cell {
+      background-color: $grid-header-bgblue;
+    }
+  }
+  
+  //Grid with Radio Buttons
+  .shiptech-radio-grid {
+    .ag-icon-checkbox-unchecked:before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 300;
+    }
+  
+    .ag-icon-checkbox-unchecked:before {
+      content: "\f111" !important;
+    }
+  
+    .ag-icon-checkbox-checked:before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 300;
+    }
+  
+    .ag-icon-checkbox-checked:before {
+      content: "\f192" !important;
+    }
+  }
+  
+  /*Main Grid */
+  .ag-shiptech-theme {
+    .ag-header {
+      font-weight: 500;
+      font-size: 14px !important;
+      line-height: 16px;
+      color: $grid-defaulttext-color;
+  
+      font-family: Roboto;
+      font-style: normal;
+    }
+  
+    .ag-row {
+      .ag-cell {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: normal;
+        justify-items: center;
+        padding-top: 10px;
+        color: $grid-defaulttext-color;
+        font-family: Roboto;
+        font-style: normal;
+      }
+    }
+  
+    .ag-selection-checkbox span {
+      margin-top: -12px;
+      margin-left: 3px;
+    }
+  }

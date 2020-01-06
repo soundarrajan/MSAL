@@ -1,0 +1,64 @@
+::ng-deep {
+  .ag-header-cell-label .ag-header-cell-text {
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+  }
+
+  .summary {
+    .summary-item {
+      padding: 5px 10px;
+      background-color: #f0f8ff;
+      color: #364150;
+
+      &.matched {
+        i {
+          color: #72bcab;
+        }
+      }
+
+      &.matched-withing-limit {
+        i {
+          color: #e98a46;
+        }
+      }
+
+      &.not-matched {
+        i {
+          color: #e9585a;
+        }
+      }
+
+      .label {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .cell-background {
+    &.not-matched {
+      color: white !important;
+      background-color: #e9585a;
+    }
+
+    &.matched-withing-limit {
+      color: white !important;
+      background-color: #e98a46;
+    }
+
+    &.verified {
+      color: white !important;
+      background-color: #26ae61;
+    }
+
+    &.pending {
+      color: white !important;
+      background-color: #fdbf2c;
+    }
+
+    &.matched {
+      color: white !important;
+      background-color: #72bcab;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+mat-card-title {
+  font-weight: 500;
+}
+
+mat-card {
+  height: 100%;
+}
+
+mat-list-item {
+  cursor: pointer;
+}
+
+.serviceStatus {
+  font-size: 12px;
+  font-weight: 500;
+  right: 0 !important;
+}
+
+.serviceStatus {
+  .badge {
+    padding: 1px 9px 2px;
+    font-size: 12.025px;
+    white-space: nowrap;
+    color: #ffffff;
+    background-color: #999999;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+  }
+
+  .real {
+    background-color: #69b578;
+  }
+
+  .mixed {
+    background-color: #0b4f6c;
+  }
+
+  .mock {
+    background-color: #01baef;
+  }
+}
+
+::ng-deep {
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 34px !important;
+    padding: 0 10px !important;
+  }
+
+  .mat-list-item-content {
+    padding-left: 0 !important;
+  }
+
+  .mat-flat-button {
+    padding: 0 9px !important;
+  }
+}
+
+.dialog-header {
+  margin-left: -25px !important;
+  margin-top: -24px !important;
+  margin-right: -24px !important;
+  background-color: #0078d7;
+}
+
+i {
+  color: white;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}

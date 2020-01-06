@@ -1,0 +1,44 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@shiptech/core": ["libs/core/src/index.ts"],
+      "@shiptech/core/*": ["libs/core/src/lib/*"],
+      "@shiptech/environment": [
+        "apps/shiptech/src/environments/environment.ts"
+      ],
+      "@shiptech/feature/quantity-control": [
+        "libs/feature/quantity-control/src/index.ts"
+      ],
+      "@shiptech/feature/lazy-load-poc": ["libs/feature/lazy-load-poc/src/index.ts"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "types": [
+      "reflect-metadata"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "disableTypeScriptVersionCheck": true,
+    "enableIvy": true
+  }
+}

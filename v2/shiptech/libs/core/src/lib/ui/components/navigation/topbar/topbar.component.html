@@ -1,0 +1,24 @@
+<div class="layout-topbar">
+
+  <a routerLink="/" class="layout-topbar-logo">
+    <img id="topbar-logo" src="http://mail.24software.ro:8160/img/logo.png">
+  </a>
+
+  <a href="#" class="layout-menu-button layout-topbar-icon  menu-toggler-icon" (click)="app.onMenuButtonClick($event)">
+  <!--  <i class="pi pi-bars pi-circle-off"></i>-->
+  </a>
+
+  <span class="navbar-text">
+    {{pageTitle$ | async}}
+  </span>
+  <router-outlet name="topbar"></router-outlet>
+
+  <div style="float:right;padding: 5px;">
+
+
+    <span class="mr-2">{{ username$ | async}} | {{ displayName$ | async }}</span>
+    <button pButton *ngIf="authService.userInfo.authenticated" (click)="authService.logout()" type="button"
+            class="ui-button-danger" label="Log out"></button>
+  </div>
+
+</div>

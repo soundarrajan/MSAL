@@ -1,0 +1,24 @@
+{
+  "npmScope": "shiptech",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "shiptech": {
+      "tags": []
+    },
+    "core": {
+      "tags": []
+    },
+    "quantity-control": {
+      "tags": []
+    },
+    "lazy-load-poc": {
+      "tags": []
+    }
+  }
+}

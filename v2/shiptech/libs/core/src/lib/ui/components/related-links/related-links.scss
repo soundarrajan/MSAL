@@ -1,0 +1,52 @@
+// #4B77BE - blue active color
+.ui-related-links {
+  margin: 0;
+  padding: 0;
+  padding: .5em;
+}
+
+.ui-related-links ul {
+  margin: 0;
+  padding: 0;
+}
+
+.ui-related-links ul li {
+  display: inline-block;
+  margin: 0 .25em;
+}
+
+.ui-related-links-chevron, .ui-breadcrumb-home {
+  vertical-align: middle;
+}
+
+.ui-related-links ul li .ui-menuitem-link {
+  text-decoration: none;
+  background-color: rgb(193, 195, 199);
+}
+
+.ui-related-links .ui-menuitem-icon {
+  margin-right: .25em;
+  vertical-align: middle;
+}
+
+.ui-related-links .ui-menuitem-text {
+  vertical-align: middle;
+  text-transform: uppercase;
+  color:#fff;
+  font-size: 12px;
+  font-family: Roboto;
+  font-weight: bold;
+}
+
+.ui-related-links ul li .ui-menuitem-link.previous-active {
+ background-color: rgb(75, 119, 190);
+}
+
+.ui-related-links ul li .ui-menuitem-link.active {
+ background-color: rgb(179, 180, 183);
+ background-color:  #B3B4B7;
+ .ui-menuitem-text {
+ color: #4D79BC;
+ font-weight: bold;
+ }
+}

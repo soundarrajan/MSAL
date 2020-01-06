@@ -1,0 +1,15 @@
+<div style="display: flex; flex-direction: row; min-height: 200px">
+  <!-- Note: We need at least  200px for the grid in order for the column filter panel not to be cut. See more options here: https://www.ag-grid.com/javascript-grid-width-and-height/#min-height-with-auto-height -->
+  <!-- Grid also uses domLayout: 'autoHeight', see css file for: ag-layout-auto-height. Depends on number of column tool panel items -->
+  <div style=" overflow: hidden; flex-grow: 1">
+    <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+    <ag-grid-angular
+      #agGridAngular
+      appAgGridSizeToFit
+      appAgGridEmptyFilterOption
+      id="qc-sounding-report-list"
+      style="width: 100%; height: 100%;"
+      class="ag-theme-balham shiptech-panel-theme"
+      [gridOptions]="gridViewModel.gridOptions">
+    </ag-grid-angular>
+  </div>

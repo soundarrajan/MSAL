@@ -1,0 +1,62 @@
+::ng-deep {
+  .cell-background {
+    color: white;
+
+    &.not-matched {
+      background-color: #e9585a;
+    }
+
+    &.matched-withing-limit {
+      background-color: #e98a46;
+    }
+
+    &.verified {
+      background-color: #26ae61;
+    }
+
+    &.pending {
+      background-color: #fdbf2c;
+    }
+
+    &.matched {
+      background-color: #72bcab;
+    }
+
+  }
+
+  shiptech-uom-selector {
+    overflow: visible;
+    z-index: 9999
+  }
+
+  .ag-header {
+    overflow: visible !important;
+
+    .ag-header-viewport {
+      overflow: visible !important;
+    }
+  }
+
+  .ag-header-row {
+    overflow: visible !important;
+
+    .ag-header-group-cell {
+      overflow: visible;
+      z-index: 1000;
+
+      .ag-header-group-cell-label {
+        overflow: visible;
+        z-index: 1000;
+      }
+    }
+  }
+
+  .ui-dropdown-items-wrapper {
+    // overflow: visible !important;
+    z-index: 9999
+  }
+
+  button.ui-spinner-button {
+    display: none;
+  }
+}

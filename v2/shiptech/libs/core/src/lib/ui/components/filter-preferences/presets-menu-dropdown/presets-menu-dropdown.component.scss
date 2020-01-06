@@ -1,0 +1,93 @@
+$dark: #838383;
+
+#menu-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: $dark;
+    margin: 1.2px;
+  }
+
+  #menu-button-dots {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    transition: all 0.3s;
+    position: absolute;
+  }
+
+  &:hover, &:active, &:focus {
+    background-color: $dark;
+    transition: all 0.3s;
+
+    #dot1 {
+      transition: all 0.2s;
+      animation: enlarge 0.15s linear 1 forwards;
+    }
+    #dot2,
+    #dot4 {
+      transition: all 0.2s;
+      animation: enlarge 0.15s linear 1 0.1s forwards;
+    }
+    #dot5 {
+      transition: all 0.2s;
+      animation: enlarge 0.15s linear 1 0.15s forwards;
+    }
+    #dot3,
+    #dot7 {
+      transition: all 0.2s;
+      animation: enlarge 0.15s linear 1 0.2s forwards;
+    }
+    #dot6,
+    #dot8 {
+      transition: all 0.2s;
+      animation: enlarge 0.15s linear 1 0.25s forwards;
+    }
+    #dot9 {
+      transition: all 0.2s;
+      animation: enlarge 0.15s linear 1 0.3s forwards;
+    }
+  }
+}
+.hideshow {
+  border: 1px solid black;
+  border-radius: 5px !important;
+}
+
+.no-boxshadow {
+  box-shadow: none !important;
+}
+
+.tbl-context {
+  width: 240px;
+  padding: 5px;
+  background: #fff;
+  color: black;
+  border-radius: 5px;
+  border: 1px solid #656565;
+  cursor: context-menu;
+  font-weight: 500;
+
+  div {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  div:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}

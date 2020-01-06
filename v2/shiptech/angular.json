@@ -1,0 +1,238 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "shiptech": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/workspace:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/shiptech",
+      "sourceRoot": "apps/shiptech/src",
+      "prefix": "shiptech",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./tools/custom-build.options.js",
+              "mergeStrategies": {
+                "externals": "replace"
+              }
+            },
+            "outputPath": "dist/apps/shiptech",
+            "index": "apps/shiptech/src/index.html",
+            "main": "apps/shiptech/src/main.ts",
+            "polyfills": "apps/shiptech/src/polyfills.ts",
+            "tsConfig": "apps/shiptech/tsconfig.app.json",
+            "assets": [
+              "apps/shiptech/src/favicon.ico",
+              "apps/shiptech/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./assets/",
+                "output": "./assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./v1/config",
+                "output": "./config"
+              },
+              "apps/shiptech/src/web.config"
+            ],
+            "styles": [              
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/bootstrap/dist/css/bootstrap-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-theme-balham.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "apps/shiptech/src/styles.scss",
+              "assets/sass/skinning/base-skinning.scss"          
+            ],
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": []
+            }
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/shiptech/src/environments/environment.ts",
+                  "with": "apps/shiptech/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "shiptech:build",
+            "proxyConfig": "angular-cli-proxy.conf.js",
+            "baseHref": "/v2/"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "shiptech:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "shiptech:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/shiptech/tsconfig.app.json",
+              "apps/shiptech/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/shiptech/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/shiptech/jest.config.js",
+            "tsConfig": "apps/shiptech/tsconfig.spec.json",
+            "setupFile": "apps/shiptech/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "quantity-control": {
+      "projectType": "library",
+      "root": "libs/feature/quantity-control",
+      "sourceRoot": "libs/feature/quantity-control/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/quantity-control/tsconfig.lib.json",
+              "libs/feature/quantity-control/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/quantity-control/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/quantity-control/jest.config.js",
+            "tsConfig": "libs/feature/quantity-control/tsconfig.spec.json",
+            "setupFile": "libs/feature/quantity-control/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "core": {
+      "projectType": "library",
+      "root": "libs/core",
+      "sourceRoot": "libs/core/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/core/tsconfig.lib.json",
+              "libs/core/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/core/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/core/jest.config.js",
+            "tsConfig": "libs/core/tsconfig.spec.json",
+            "setupFile": "libs/core/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "lazy-load-poc": {
+      "projectType": "library",
+      "root": "libs/feature/lazy-load-poc",
+      "sourceRoot": "libs/feature/lazy-load-poc/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/lazy-load-poc/tsconfig.lib.json",
+              "libs/feature/lazy-load-poc/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/feature/lazy-load-poc/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/lazy-load-poc/jest.config.js",
+            "tsConfig": "libs/feature/lazy-load-poc/tsng serveconfig.spec.json",
+            "setupFile": "libs/feature/lazy-load-poc/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "shiptech"
+}

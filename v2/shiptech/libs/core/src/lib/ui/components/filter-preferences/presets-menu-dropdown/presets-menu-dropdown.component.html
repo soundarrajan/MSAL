@@ -1,0 +1,38 @@
+<div id="menu-button" [matMenuTriggerFor]="togglecolumn" class="mr-2">
+  <div id="menu-button-dots">
+    <div id="dot1" class="dot"></div>
+    <div id="dot2" class="dot"></div>
+    <div id="dot3" class="dot"></div>
+    <div id="dot4" class="dot"></div>
+    <div id="dot5" class="dot"></div>
+    <div id="dot6" class="dot"></div>
+    <div id="dot7" class="dot"></div>
+    <div id="dot8" class="dot"></div>
+    <div id="dot9" class="dot"></div>
+  </div>
+</div>
+
+
+
+<mat-menu class="hideshow no-boxshadow mat-menu-position" #togglecolumn yPosition="below" xPosition="before" [overlapTrigger]="false">
+  <div class="tbl-context no-border">
+    <div class="p-tb-10" (click)="updateFilter()">
+      <span>
+<!--        <img class="p-r-10" src="../../../../../assets/customicons/context-save-as.svg" alt="Save icon" />-->
+      </span>
+      <span>Save Preference</span>
+    </div>
+    <div class="p-tb-10" (click)="createFilter()">
+      <span>
+<!--        <img class="p-r-10" src="../../../../../assets/customicons/context-save-as.svg" alt="Save As icon" />-->
+      </span>
+      <span>Save Preference As</span>
+    </div>
+    <div class="p-tb-10" (click)="exportExcel()">
+      <span>
+<!--        <img class="p-r-10" src="../../../../../assets/customicons/context-export-excel.svg" alt="export to excel icon" />-->
+      </span>
+      <span>Export To Excel</span>
+    </div>
+  </div>
+</mat-menu>
