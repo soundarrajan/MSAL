@@ -47,7 +47,7 @@
             <a class="btn orange btn-outline" ng-show="$ctrl.request.requestStatus.id == $ctrl.STATUS.PartiallyStemmed.id" ng-click="$ctrl.completeRequest()">
                 Complete Request
             </a> 
-    <!--  {{$ctrl.contractHasProduct }} - {{$ctrl.canSave($ctrl.screenActions)}} - {{$ctrl.checkGoContract()}} - {{!$ctrl.selectedContractHasStemmedProduct}} -->
+   <!--   {{$ctrl.contractHasProduct }} - {{$ctrl.canSave($ctrl.screenActions)}} - {{$ctrl.checkGoContract()}} - {{!$ctrl.selectedContractHasStemmedProduct}} -->
             <a class="btn orange btn-outline" ng-click="$ctrl.confirmContractSelection()" ng-show="$ctrl.contractHasProduct && $ctrl.canSave($ctrl.screenActions) && $ctrl.checkGoContract() && !$ctrl.selectedContractHasStemmedProduct" ng-class="{'disabled' : $ctrl.buttonsDisabled}">
                 Proceed to order
             </a>
@@ -872,7 +872,7 @@
 	                            </form>
 	                        </div>
 	                        <div class="col-md-12" ng-init="$index1 = $index">
-                                {{$index1}}
+                                <!-- {{$index1}} -->
 	                            <form class="st-new-request-form form-horizontal collapse in row" name="forms.productForm[$index]" novalidate  autocomplete="off" style="overflow: auto;" >
 	                                <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table" id="product_info_table_{{ $index + 1 }}">
 	                                    <thead>
