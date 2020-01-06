@@ -7623,8 +7623,11 @@ Custom color buttons
     left: 0;
     height: 19px;
     width: 19px;
-    background: #E6E6E6;
+    background: #ffffff;
+    border: 1px solid #b3b4b7;
+    transition: 0.3s;
 }
+
 
 .mt-radio>span:after, .mt-checkbox>span:after, .mt-custom-checkbox>span:after {
     content: '';
@@ -7638,7 +7641,7 @@ Custom color buttons
 .mt-checkbox>input:focus~span,
 .mt-custom-checkbox:hover>input:not([disabled])~span, 
 .mt-custom-checkbox>input:focus~span {
-    background: #d9d9d9;
+    background: #fff;
     webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -ms-transition: all 0.3s;
@@ -7654,7 +7657,12 @@ Custom color buttons
     -ms-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
-    background: #d9d9d9;
+}
+
+.mt-radio>input:not([disabled]):checked~span, 
+.mt-checkbox>input:not([disabled]):checked~span,
+.mt-custom-checkbox>input:not([disabled]):checked~span {
+    background: #fff !important;
 }
 
 .mt-radio>input:checked~span:after, 
@@ -7683,12 +7691,14 @@ Custom color buttons
     opacity: 0.6;
     filter: alpha(opacity=60);
     pointer-events: none;
+    background: #ddd;
 }
 
 .mt-radio.mt-radio-outline>span, 
 .mt-radio.mt-checkbox-outline>span, 
-.mt-checkbox.mt-radio-outline>span, 
-.mt-checkbox.mt-checkbox-outline>span {
+.mt-checkbox.mt-radio-outline>span 
+/*.mt-checkbox.mt-checkbox-outline>span */
+{
     border: 1px solid #d9d9d9;
     background: none;
 }
