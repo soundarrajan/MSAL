@@ -117,6 +117,9 @@ function Get-TfsTeamProjectCollection()
         $TfsClientCredentials = New-Object Microsoft.TeamFoundation.Client.TfsClientCredentials($false) # Do not use default credentials.
         $TfsClientCredentials.AllowInteractive = $false
         $TfsClientCredentials.Federated = New-Object Microsoft.TeamFoundation.Client.OAuthTokenCredential([string]"t7fgviz6xfo2cg2lnh7yxcdyxgw63n6wprl4tpbpy2mkyb5hxova") 
+		
+		$credentials = New-Object Microsoft.VisualStudio.Services.Common.VssBasicCredential([System.String]::Empty,[string]"t7fgviz6xfo2cg2lnh7yxcdyxgw63n6wprl4tpbpy2mkyb5hxova")
+        $VssCredentials = New-Object Microsoft.VisualStudio.Services.Common.VssCredentials($credentials);
   
       
         # Validate the project collection type can be loaded.
@@ -124,7 +127,7 @@ function Get-TfsTeamProjectCollection()
 
         Write-Host "Before Collection"
         # Load the project collection object.
-        $tfsTeamProjectCollection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection($ProjectCollectionUri, $TfsClientCredentials)
+        $tfsTeamProjectCollection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection($ProjectCollectionUri, $VssCredentials)
 		Write-Host "After Collection"
 
     return $tfsTeamProjectCollection
