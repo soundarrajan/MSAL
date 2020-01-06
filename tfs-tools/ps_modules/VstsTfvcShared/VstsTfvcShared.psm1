@@ -98,12 +98,6 @@ function Get-TfsTeamProjectCollection()
      $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
 	 $OMDirectory = $(Find-VisualStudio)
 
-Write-Host "Test00"
-Write-Output "Test01"
-Write-Debug "Test02"
-Write-Message "Test03"
-
-
     # $tfsClientCredentials = Get-TfsClientCredentials -OMDirectory $(Find-VisualStudio)
 	
 	# $tfsService = Get-VstsTfsService -TypeName Microsoft.TeamFoundation.VersionControl.Client.VersionControlServer -OMDirectory $OMDirectory -Uri $ProjectCollectionUri
@@ -114,21 +108,21 @@ Write-Message "Test03"
     #$collection.EnsureAuthenticated()
 	
 	 
-        $TfsClientCredentials = Get-TfsClientCredentials -OMDirectory $OMDirectory
+        $TfsClientCredentialsNotUsed = Get-TfsClientCredentials -OMDirectory $OMDirectory
+		
+		 # Construct the credentials.
+        $TfsClientCredentials = New-Object Microsoft.TeamFoundation.Client.TfsClientCredentials($false) # Do not use default credentials.
+        $TfsClientCredentials.AllowInteractive = $false
+        $TfsClientCredentials.Federated = New-Object Microsoft.TeamFoundation.Client.OAuthTokenCredential($env:SYSTEM_ACCESSTOKEN)
+  
       
         # Validate the project collection type can be loaded.
         $null = Get-OMType -TypeName 'Microsoft.TeamFoundation.Client.TfsTeamProjectCollection' -OMKind 'ExtendedClient' -OMDirectory $OMDirectory -Require
 
-Write-Output "Test1"
-Write-Debug "Test2"
-Write-Message "Test3"
-
+        Write-Host "Before Collection"
         # Load the project collection object.
         $tfsTeamProjectCollection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection($ProjectCollectionUri, $TfsClientCredentials)
-
-Write-Output "Test4"
-Write-Debug "Test5"
-Write-Message "Test6"
+		Write-Host "After Collection"
 
     return $tfsTeamProjectCollection
 }
@@ -146,7 +140,7 @@ function Get-SourceProvider {
     $success = $false
     try {
         if ($provider.Name -eq 'TfsVersionControl') {
-		Write-Host "TestA"
+
             $provider.TfsTeamProjectCollection = Get-TfsTeamProjectCollection
 
             $versionControlServer = $provider.TfsTeamProjectCollection.GetService([Microsoft.TeamFoundation.VersionControl.Client.VersionControlServer])
