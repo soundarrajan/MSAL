@@ -42,8 +42,8 @@ export enum QcSoundingReportListColumns {
 }
 
 export enum QcSoundingReportListColumnsLabels {
-  vesselName = 'Vessel Code',
-  vesselCode = 'Vessel Name',
+  vesselName = 'Vessel Name',
+  vesselCode = 'Vessel Code',
   imoNo = 'IMO No',
   reportId = 'Report ID',
   voyageReference = 'Voyage Reference',
