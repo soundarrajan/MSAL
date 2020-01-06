@@ -1,4 +1,4 @@
-Import-VstsLocStrings -LiteralPath $PSScriptRoot/module.json
+Import-LocStrings -LiteralPath $PSScriptRoot/module.json
 
 function Add-Tls12InSession {
     [CmdletBinding()]
@@ -11,14 +11,14 @@ function Add-Tls12InSession {
             $securityProtocol+=[Net.SecurityProtocolType]3072
             [Net.ServicePointManager]::SecurityProtocol=$securityProtocol
             
-            Write-Host (Get-VstsLocString -Key TLS12AddedInSession)
+            Write-Host (Get-LocString -Key TLS12AddedInSession)
         }
         else {
             Write-Verbose 'TLS 1.2 already present in session.'
         }
     }
     catch {
-        Write-Host (Get-VstsLocString -Key "UnableToAddTls12InSession" -ArgumentList $($_.Exception.Message))
+        Write-Host (Get-LocString -Key "UnableToAddTls12InSession" -ArgumentList $($_.Exception.Message))
     }
 }
 
@@ -53,7 +53,7 @@ function Assert-TlsError {
 
     if (($hasWebException -eq $true) -and ($hasIOException -eq $true))
     {
-        Write-VstsTaskError -Message (Get-VstsLocString -Key UnsupportedTLSError)
+        Write-VstsTaskError -Message (Get-LocString -Key UnsupportedTLSError)
     }
 }
 
