@@ -171,13 +171,11 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   verifyVessel(): void {
-    // TODO: Verify should be disabled for New
     this.reportService.verifyVesselReports$([this.store.selectSnapshot(QcReportState.reportDetailsId)])
       .subscribe(() => this.toastrService.success('Report marked for verification.'));
   }
 
   revertVerifyVessel(): void {
-    // TODO: RevertVerify should be disabled for New
     this.reportService.revertVerifyVessel$([this.store.selectSnapshot(QcReportState.reportDetailsId)])
       .subscribe(() => this.toastrService.success('Verification reverted successfully.'));
   }
