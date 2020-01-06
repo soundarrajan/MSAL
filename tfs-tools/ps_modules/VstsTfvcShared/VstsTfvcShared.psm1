@@ -96,7 +96,20 @@ function Load-Assembly {
 function Get-TfsTeamProjectCollection()
 {
     $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
-    $tfsClientCredentials = Get-TfsClientCredentials -OMDirectory $(Find-VisualStudio)
+   
+	
+	    # Validate the type can be found.
+        $null = Get-OMType -TypeName 'Microsoft.TeamFoundation.Client.TfsClientCredentials' -OMKind 'ExtendedClient' -OMDirectory $(Find-VisualStudio) -Require
+		
+		Write-Host "Before Credentials"
+        # Construct the credentials.
+        $credentials = New-Object Microsoft.TeamFoundation.Client.TfsClientCredentials($false) # Do not use default credentials.
+		
+        $credentials.AllowInteractive = $false
+        $credentials.Federated = New-Object Microsoft.TeamFoundation.Client.OAuthTokenCredential([string]$env:SYSTEM_ACCESSTOKEN)
+      
+	#$tfsClientCredentials = Get-TfsClientCredentials -OMDirectory 
+	$tfsClientCredentials = $credentials
 	
 	Write-Host "Get-TfsTeamProjectCollection"
         
