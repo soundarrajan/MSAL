@@ -99,7 +99,7 @@ function Get-TfsTeamProjectCollection()
 	 $OMDirectory = $(Find-VisualStudio)
 
     # Construct the credentials.	
-	$credentials = New-Object Microsoft.VisualStudio.Services.Common.VssBasicCredential([System.String]::Empty,[string]"t7fgviz6xfo2cg2lnh7yxcdyxgw63n6wprl4tpbpy2mkyb5hxova")
+	$credentials = New-Object Microsoft.VisualStudio.Services.Common.VssBasicCredential([System.String]::Empty,[string]$env:SYSTEM_ACCESSTOKEN)
     $VssCredentials = New-Object Microsoft.VisualStudio.Services.Common.VssCredentials($credentials);
   
       
