@@ -150,7 +150,7 @@ function Get-SourceProvider {
             $versionControlServer.add_NonFatalError($OnNonFatalError)
             
             $workstation = [Microsoft.TeamFoundation.VersionControl.Client.Workstation]::Current
-            $workstation.EnsureUpdateWorkspaceInfoCache($versionControlServer, $versionControlServer.AuthorizedUser)
+            #$workstation.EnsureUpdateWorkspaceInfoCache($versionControlServer, $versionControlServer.AuthorizedUser)
 
             $provider.VersionControlServer = $versionControlServer;
             $provider.Workspace = $versionControlServer.TryGetWorkspace($provider.SourcesRootPath)
