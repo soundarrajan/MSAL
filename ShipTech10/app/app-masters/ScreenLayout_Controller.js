@@ -571,8 +571,10 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                 if ($rootScope.transportData != null) {
                     $scope.isCopiedEntity = true;
                     $scope.formValues = $rootScope.transportData;
+                    if (vm.app_id == "claims" && vm.screen_id == "claim") {
+	                    $scope.formValues.initialOrderPrice = angular.copy($rootScope.transportData.orderDetails.orderPrice);
+					}
                     $rootScope.transportData = null;
-
                    
                
                     if (vm.app_id == "invoices" && vm.screen_id == "invoice") {

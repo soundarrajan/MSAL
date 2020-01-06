@@ -167,6 +167,10 @@ APP_CLAIMS.controller("Controller_Claims", [
                                         }
                                     });
                                 });
+                                if ($scope.formValues.orderDetails.product) {
+                                	$scope.formValues.orderDetails.product = _.find($scope.options["Product"], {id:$scope.formValues.orderDetails.product.id})
+                                }
+                                $scope.triggerChangeFieldsAppSpecific("Product");
                                 $rootScope.$broadcast("changeCurrencyValues", "EstimatedSettlementAmount");
                                 $rootScope.$broadcast("changeCurrencyValues", "OrderPrice");
 
@@ -349,13 +353,15 @@ APP_CLAIMS.controller("Controller_Claims", [
 				            	$.each(response.products, function(k,v){
 				            		if (v.id == objParams["orderProductId"]) {
 				            			$scope.formValues.orderDetails.product = v.product;
+				            			$scope.formValues.orderDetails.orderProductId = v.id;
+				            			// $scope.triggerChangeFieldsAppSpecific("Product");
 				            		}
 				            	})
 
                             	newUrl = window.location.href.split("#")[1];
                             	newUrl = newUrl.split("?")[0];
-                            	// window.location.replace(window.location.href.split("?")[0]);
-                            	// window.history.pushState({}, document.title, "#" + newUrl);
+                            	window.location.replace(window.location.href.split("?")[0]);
+                            	window.history.pushState({}, document.title, "#" + newUrl);
                             }
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
