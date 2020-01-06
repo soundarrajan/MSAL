@@ -116,7 +116,7 @@ function Get-TfsTeamProjectCollection()
 		 # Construct the credentials.
         $TfsClientCredentials = New-Object Microsoft.TeamFoundation.Client.TfsClientCredentials($false) # Do not use default credentials.
         $TfsClientCredentials.AllowInteractive = $false
-        $TfsClientCredentials.Federated = New-Object Microsoft.TeamFoundation.Client.OAuthTokenCredential([string]$env:SYSTEM_ACCESSTOKEN)
+        $TfsClientCredentials.Federated = New-Object Microsoft.TeamFoundation.Client.OAuthTokenCredential([string]"t7fgviz6xfo2cg2lnh7yxcdyxgw63n6wprl4tpbpy2mkyb5hxova") 
   
       
         # Validate the project collection type can be loaded.
