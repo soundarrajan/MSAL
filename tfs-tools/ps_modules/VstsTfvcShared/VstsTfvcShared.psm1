@@ -96,7 +96,7 @@ function Load-Assembly {
 function Get-TfsTeamProjectCollection()
 {
     $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
-    $tfsClientCredentials = Get-VstsTfsClientCredentials -OMDirectory $(Find-VisualStudio)
+    $tfsClientCredentials = Get-TfsClientCredentials -OMDirectory $(Find-VisualStudio)
         
     $collection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection(
         $ProjectCollectionUri,
