@@ -97,6 +97,8 @@ function Get-TfsTeamProjectCollection()
 {
     $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
     $tfsClientCredentials = Get-TfsClientCredentials -OMDirectory $(Find-VisualStudio)
+	
+	Write-Host "Get-TfsTeamProjectCollection"
         
     $collection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection(
         $ProjectCollectionUri,
