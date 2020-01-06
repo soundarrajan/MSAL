@@ -153,17 +153,22 @@
 #width_tmp_select_ActualSettlementAmount, #width_tmp_select_EstimatedSettlementAmount, #width_tmp_select_CompromisedAmount, #width_tmp_select_OrderPrice, #width_tmp_select_NoClaimAmmount {
   display : none;
 } 
+.form_input_price span.input-group-addon select, .form_input_mfm_quantity  span.input-group-addon select, .form_input_final_quantity span.input-group-addon select {
+    max-width: 60px;
+}
 
 .dynamic_form_editor span.input-group-addon select {
     border: 1px solid #c2cad8;
     background: transparent;
     padding: 6px 2px;
     outline: none;
-    /*max-width: 60px;*/
-    border-left: 0;
+   /* max-width: 60px;*/
+     border-left: 0;
     max-height: 34px;
     font-weight: 400;
 }
+
+
 
 .dynamic_form_editor .bootstrap-tagsinput {
     background-color: transparent;

@@ -7845,26 +7845,26 @@ APP_MASTERS.controller("Controller_Master", [
         }
 
         $scope.changeCurrencyValues = function(element) {
-            var elem = "#" + element;
-            var widthTemp = "#width_tmp_option_" + element;
-            var option = "#" + element + " option:selected";
-            var select = "#width_tmp_select_" + element;
-
-        
-            
-            $(widthTemp).html($(option).text());
-            $(elem).width($(select).width());  
-            if (element == "EstimatedSettlementAmount") {
-                $scope.changeCurrency("ActualSettlementAmount");
-                $scope.changeCurrency("CompromisedAmount");
-                $scope.changeCurrency("NoClaimAmmount");
-             
-            }
-        
+            var array = ["ActualSettlementAmount", "EstimatedSettlementAmount", "CompromisedAmount", "OrderPrice", "NoClaimAmmount"];
+            if (array.indexOf(element) != -1) {
+                var elem = "#" + element;
+                var widthTemp = "#width_tmp_option_" + element;
+                var option = "#" + element + " option:selected";
+                var select = "#width_tmp_select_" + element;        
+                
+                $(widthTemp).html($(option).text());
+                $(elem).width($(select).width());  
+                if (element == "EstimatedSettlementAmount") {
+                    $scope.changeCurrency("ActualSettlementAmount");
+                    $scope.changeCurrency("CompromisedAmount");
+                    $scope.changeCurrency("NoClaimAmmount");
+                 
+                }
+            }           
         }
         $rootScope.$on("changeCurrencyValues", function (event, res) {
             $scope.changeCurrencyValues(res);
-        })  
+        });
      
      
 

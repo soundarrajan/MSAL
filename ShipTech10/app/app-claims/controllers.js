@@ -529,7 +529,11 @@ APP_CLAIMS.controller("Controller_Claims", [
             if (name != "EstimatedSettlementAmount") {
                 // $scope.checkClaimType();
             } else {
-                $rootScope.EstimatedSettlementAmountManualChange = true;
+                $rootScope.EstimatedSettlementAmountManualChange = true;  
+            }
+            if (name == "ClaimDate") {
+                $rootScope.$broadcast("changeCurrencyValues", "EstimatedSettlementAmount");
+                $rootScope.$broadcast("changeCurrencyValues", "OrderPrice");
             }
         };
         $scope.cancel_claim = function() {
