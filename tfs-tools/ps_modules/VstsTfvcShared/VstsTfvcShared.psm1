@@ -97,7 +97,8 @@ function Get-TfsTeamProjectCollection()
 {
      $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
 	 $OMDirectory = $(Find-VisualStudio)
-	 
+
+Write-Host "Test00"
 Write-Output "Test01"
 Write-Debug "Test02"
 Write-Message "Test03"
@@ -145,6 +146,7 @@ function Get-SourceProvider {
     $success = $false
     try {
         if ($provider.Name -eq 'TfsVersionControl') {
+		Write-Host "TestA"
             $provider.TfsTeamProjectCollection = Get-TfsTeamProjectCollection
 
             $versionControlServer = $provider.TfsTeamProjectCollection.GetService([Microsoft.TeamFoundation.VersionControl.Client.VersionControlServer])
