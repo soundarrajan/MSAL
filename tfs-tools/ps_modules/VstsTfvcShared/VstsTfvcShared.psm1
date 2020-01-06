@@ -111,6 +111,8 @@ function Get-TfsTeamProjectCollection()
 	     Write-Host "Before TfsClientCredentials"
         #$TfsClientCredentialsNotUsed = Get-TfsClientCredentials -OMDirectory $OMDirectory
 		
+		$null = Get-OMType -TypeName 'Microsoft.TeamFoundation.Client.TfsClientCredentials' -OMKind 'ExtendedClient' -OMDirectory $OMDirectory -Require
+
 		 # Construct the credentials.
         $TfsClientCredentials = New-Object Microsoft.TeamFoundation.Client.TfsClientCredentials($false) # Do not use default credentials.
         $TfsClientCredentials.AllowInteractive = $false
