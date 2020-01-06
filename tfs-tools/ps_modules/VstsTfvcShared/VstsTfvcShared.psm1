@@ -95,18 +95,41 @@ function Load-Assembly {
 
 function Get-TfsTeamProjectCollection()
 {
-    $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
-	$OMDirectory = $(Find-VisualStudio)
-    $tfsClientCredentials = Get-TfsClientCredentials -OMDirectory $(Find-VisualStudio)
-	
-	$tfsService = Get-VstsTfsService -TypeName Microsoft.TeamFoundation.VersionControl.Client.VersionControlServer -OMDirectory $OMDirectory -Uri $ProjectCollectionUri
-        
-    $collection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection(
-        $ProjectCollectionUri,
-        $tfsClientCredentials)
-    #$collection.EnsureAuthenticated()
+     $ProjectCollectionUri = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
+	 $OMDirectory = $(Find-VisualStudio)
+	 
+Write-Output "Test01"
+Write-Debug "Test02"
+Write-Message "Test03"
 
-    return $collection
+
+    # $tfsClientCredentials = Get-TfsClientCredentials -OMDirectory $(Find-VisualStudio)
+	
+	# $tfsService = Get-VstsTfsService -TypeName Microsoft.TeamFoundation.VersionControl.Client.VersionControlServer -OMDirectory $OMDirectory -Uri $ProjectCollectionUri
+        
+    # $collection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection(
+        # $ProjectCollectionUri,
+        # $tfsClientCredentials)
+    #$collection.EnsureAuthenticated()
+	
+	 
+        $TfsClientCredentials = Get-TfsClientCredentials -OMDirectory $OMDirectory
+      
+        # Validate the project collection type can be loaded.
+        $null = Get-OMType -TypeName 'Microsoft.TeamFoundation.Client.TfsTeamProjectCollection' -OMKind 'ExtendedClient' -OMDirectory $OMDirectory -Require
+
+Write-Output "Test1"
+Write-Debug "Test2"
+Write-Message "Test3"
+
+        # Load the project collection object.
+        $tfsTeamProjectCollection = New-Object Microsoft.TeamFoundation.Client.TfsTeamProjectCollection($ProjectCollectionUri, $TfsClientCredentials)
+
+Write-Output "Test4"
+Write-Debug "Test5"
+Write-Message "Test6"
+
+    return $tfsTeamProjectCollection
 }
 
 function Get-SourceProvider {
