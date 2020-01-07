@@ -7,7 +7,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { AvailableFiltersComponent } from './available-filters/available-filters.component';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultPreferenceLoaded, FiltersArNotLoaded, PreferenceAlreadyExists, PreferenceCleared, PreferenceLoaded, ToastPosition } from './filter-preferences-messages';
-import { ChangeDetection } from '@angular/cli/lib/config/schema';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -35,10 +34,11 @@ export class FilterPreferencesComponent implements OnDestroy {
   // NOTE: This event occurs when the active filter is changed by selecting a different preset
   @Output() activePresetChange$ = new EventEmitter<FilterPreferenceViewModel[]>();
   // NOTE: This is used to get the template for creating a new preset
-  @ViewChild('createPreset', {static: false}) createFilterTemplate: TemplateRef<any>;
+  @ViewChild('createPreset', { static: false }) createFilterTemplate: TemplateRef<any>;
   private _destroy$: Subject<any> = new Subject();
 
-  constructor(public matDialog: MatDialog, private toastr: ToastrService, private changeDetector: ChangeDetectorRef) {}
+  constructor(public matDialog: MatDialog, private toastr: ToastrService, private changeDetector: ChangeDetectorRef) {
+  }
 
   // NOTE: This occurs when a modification occurs on a filter item to set the has changes property true
   isDirty(isDirty: boolean): void {
@@ -190,7 +190,7 @@ export class FilterPreferencesComponent implements OnDestroy {
       .subscribe();
   }
 
-  public refresh(): void{
+  public refresh(): void {
     // Note: The whole filter component is a mess, this component is "managed" by the directive, so we need to trigger somehow the change detection.
     this.changeDetector.markForCheck();
   }
