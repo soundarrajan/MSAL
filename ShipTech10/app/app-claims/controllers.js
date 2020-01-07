@@ -358,10 +358,18 @@ APP_CLAIMS.controller("Controller_Claims", [
 				            		}
 				            	})
 
+				            	quantityClaimType = _.find(vm.listsCache.ClaimType, {"name" : "Quantity"})
+				            	if (!$scope.formValues.claimType) {
+				            		$scope.formValues.claimType = {
+						            	claimType : quantityClaimType		
+				            		};
+				            	}
+				            	// $scope.formValues.claimType.claimType = quantityClaimType;
+
                             	newUrl = window.location.href.split("#")[1];
                             	newUrl = newUrl.split("?")[0];
-                            	window.location.replace(window.location.href.split("?")[0]);
-                            	window.history.pushState({}, document.title, "#" + newUrl);
+                            	// window.location.replace(window.location.href.split("?")[0]);
+                            	// window.history.pushState({}, document.title, "#" + newUrl);
                             }
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
