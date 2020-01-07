@@ -67,7 +67,7 @@ export const QcSurveyHistoryListColumnServerKeys: Record<QcSurveyHistoryListColu
   [QcSurveyHistoryListColumns.logBookRobBeforeDelivery]: 'logBookRobBeforeDelivery',
   [QcSurveyHistoryListColumns.measuredRobBeforeDelivery]: 'measuredRobBeforeDelivery',
   [QcSurveyHistoryListColumns.diffRobBeforeDelivery]: 'diffRobBeforeDelivery',
-  [QcSurveyHistoryListColumns.qtyBeforeDeliveryUom]: 'QtyBeforeDeliveryUom_DisplayName',
+  [QcSurveyHistoryListColumns.qtyBeforeDeliveryUom]: 'QtyBeforeDeliveryUom_Name',
   [QcSurveyHistoryListColumns.bdnQuantity]: 'bdnQuantity',
   [QcSurveyHistoryListColumns.measuredDeliveredQty]: 'measuredDeliveredQty',
   [QcSurveyHistoryListColumns.diffDeliveredQty]: 'diffDeliveredQty',
@@ -75,12 +75,12 @@ export const QcSurveyHistoryListColumnServerKeys: Record<QcSurveyHistoryListColu
   [QcSurveyHistoryListColumns.logBookRobAfterDelivery]: 'logBookRobAfterDelivery',
   [QcSurveyHistoryListColumns.measuredRobAfterDelivery]: 'measuredRobAfterDelivery',
   [QcSurveyHistoryListColumns.diffRobAfterDelivery]: 'diffRobAfterDelivery',
-  [QcSurveyHistoryListColumns.qtyAfterDeliveryUom]: 'QtyAfterDeliveryUom_DisplayName',
+  [QcSurveyHistoryListColumns.qtyAfterDeliveryUom]: 'QtyAfterDeliveryUom_Name',
   [QcSurveyHistoryListColumns.logBookSludgeRobBeforeDischarge]: 'logBookSludgeRobBeforeDischarge',
   [QcSurveyHistoryListColumns.measuredSludgeRobBeforeDischarge]: 'measuredSludgeRobBeforeDischarge',
   [QcSurveyHistoryListColumns.diffSludgeRobBeforeDischarge]: 'diffSludgeRobBeforeDischarge',
   [QcSurveyHistoryListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
-  [QcSurveyHistoryListColumns.qtySludgeDischargedUom]: 'QtySludgeDischargedUom_DisplayName',
+  [QcSurveyHistoryListColumns.qtySludgeDischargedUom]: 'QtySludgeDischargedUom_Name',
   [QcSurveyHistoryListColumns.comment]: 'comment',
   [QcSurveyHistoryListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
 };

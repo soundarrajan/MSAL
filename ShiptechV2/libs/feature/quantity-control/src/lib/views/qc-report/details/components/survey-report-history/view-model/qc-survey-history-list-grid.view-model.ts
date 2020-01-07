@@ -157,7 +157,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   bdnQuantityCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -194,7 +194,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookRobAfterDeliveryCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -230,7 +230,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcSurveyHistoryListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookSludgeRobBeforeDischargeCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -274,7 +274,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.qtySludgeDischargedUom,
     colId: QcSurveyHistoryListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   commentCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
