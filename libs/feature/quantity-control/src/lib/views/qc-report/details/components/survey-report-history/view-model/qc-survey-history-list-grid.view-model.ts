@@ -103,7 +103,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
       'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
       'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
     },
-    width: 78
+    width: 85
   };
 
   qtyMatchedStatusCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
@@ -124,7 +124,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
-    width: 153,
+    width: 170,
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
@@ -135,7 +135,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    width: 181
+    width: 195
   };
 
   diffRobBeforeDeliveryCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -149,7 +149,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
       'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
       'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit
     },
-    width: 128
+    width: 140
   };
 
   qtyBeforeDeliveryUomCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
