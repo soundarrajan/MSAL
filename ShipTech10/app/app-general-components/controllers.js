@@ -142,7 +142,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             var payload = {
                 "Id": modal_id,
                 "Notes": note
-            }
+            };
             Factory_General_Components.update_documents_note(payload, function(response) {
                 if (response) {
                     if(response.status == 200){
@@ -161,7 +161,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     $scope.prettyCloseModal();
                 }
             });
-        }
+        };
         // Get Table Config
         vm.table_config = [];
         vm.config_id = ""; // config ID
@@ -241,7 +241,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             initialValue: rowValue, // initial
                             notesValue: rowValue, // last modified not saved
                             prevValue: rowValue  // last modified and saved
-                        }
+                        };
                     }
 
                     
