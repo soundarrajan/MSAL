@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnServerKeys, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
@@ -147,7 +147,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit
     },
     width: 128
   };
@@ -185,7 +185,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffDeliveredQty) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit
     }
   };
 
@@ -222,7 +222,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffRobAfterDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit
     }
   };
 
@@ -258,7 +258,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit
     }
   };
 
@@ -316,7 +316,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     // Note: When portCall changes we need to reload the grid,
     combineLatest(
       this.gridReady$,
-      this.selectReportDetails(state => state.portCall),
+      this.selectReportDetails(state => state.portCall)
     ).pipe(
       filter(() => !!this.selectReportDetailsSnapshot(s => s.surveyHistory?._hasLoaded)),
       tap(() => this.gridApi.purgeServerSideCache()),
@@ -385,6 +385,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
+
   private selectReportDetailsSnapshot<T>(select: ((state: IQcReportDetailsState) => T)): T {
     return this.store.selectSnapshot((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
