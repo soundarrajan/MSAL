@@ -197,7 +197,7 @@ APP_CLAIMS.controller("Controller_Claims", [
             var index = false;
             var lengthFalse = 0;
             var countIsFalse = 0;
-            if (typeof(object) != "undefined") {
+            if (typeof(object) != "undefined" && object) {
                 if (object.length > 0) {
                     object.forEach(function(obj, key) {
                         if (obj.isDeleted !== true) {
@@ -293,7 +293,6 @@ APP_CLAIMS.controller("Controller_Claims", [
             return false;
         };
         $scope.triggerChangeFieldsAppSpecific = function(name, id) {
-            console.log($rootScope.createDebunkerFromClaim);
             // if (!$rootScope.createDebunkerFromClaim && vm.entity_id < 1) {
             //     $.each($listsCache.ClaimType, function(k, v) {
             //         if (typeof v != "undefined") {
@@ -327,6 +326,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                 //suprascriem niste date
                 Factory_Master.get_master_entity($scope.formValues.orderDetails.order.id, "orders", "orders", function(response) {
                     if (response) {
+                    	$scope.formValues.orderDetails.orderPrice = $scope.formValues.initialOrderPrice;
                         if (response.orderDate) {
                             $scope.formValues.orderDetails.orderDate = response.orderDate;
                         }
@@ -368,8 +368,8 @@ APP_CLAIMS.controller("Controller_Claims", [
 
                             	newUrl = window.location.href.split("#")[1];
                             	newUrl = newUrl.split("?")[0];
-                            	// window.location.replace(window.location.href.split("?")[0]);
-                            	// window.history.pushState({}, document.title, "#" + newUrl);
+                            	window.location.replace(window.location.href.split("?")[0]);
+                            	window.history.pushState({}, document.title, "#" + newUrl);
                             }
                             // $scope.formValues.deliveryDate = response.deliveryDate;
                         }
@@ -462,7 +462,11 @@ APP_CLAIMS.controller("Controller_Claims", [
             if (name == "Product") {
                 if ($scope.formValues.orderDetails.product) {
                     var id = $scope.formValues.orderDetails.product.id;
-                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
+                    if (!$scope.formValues.initialOrderPrice) {
+	                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
+                    } else {
+                    	delete $scope.formValues.initialOrderPrice; 
+                    }
                     delete $scope.formValues.orderDetails.product.payload;
                     $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.formValues.orderDetails.currency;
                     $.each($scope.formValues.temp.tempProductforType, function(k, v) {

@@ -2050,6 +2050,9 @@ window.increment = 0;
                             filter = attrs.format;
                             fraction = 3;
                         }
+                        if (filter.endsWith(":")) {
+                            filter = attrs.format.split(":")[0];
+                        }
                         if (filter == "duration") {
                             elem.bind("focus", function(e) {
                                 if (!elem.val()) {
@@ -2063,7 +2066,12 @@ window.increment = 0;
                         }
                         returnData = null;
                         if (ctrl.$modelValue != null && ctrl.$modelValue != "" && typeof(ctrl.$modelValue) != 'undefined') {
-	                        returnData = $filter(filter)(ctrl.$modelValue, fraction); 
+                        	try {
+		                        returnData = $filter(filter)(ctrl.$modelValue, fraction); 
+                        	} catch(error) {
+                        		console.error(error);
+                        		debugger;
+                        	}
                         }
                         return returnData;
                         elem.unbind();
