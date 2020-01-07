@@ -1,2 +1,7 @@
-﻿branch master
-commit c0f107f18a7ad55eb7728c6b7f5e05e2780ba640 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com> Date:   Tue Jan 7 12:58:40 2020 +0200      QC survey-report-history fix column width
+﻿commit c0f107f18a7ad55eb7728c6b7f5e05e2780ba640
+Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
+Date:   Tue Jan 7 12:58:40 2020 +0200
+
+    QC survey-report-history fix column width
+
+branch master
