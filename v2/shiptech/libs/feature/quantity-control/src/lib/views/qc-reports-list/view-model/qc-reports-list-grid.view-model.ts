@@ -174,7 +174,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   bdnQuantityCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -210,7 +210,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -246,7 +246,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -290,7 +290,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
