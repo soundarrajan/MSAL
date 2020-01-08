@@ -928,7 +928,11 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                       }
 		                }
 	                    if (ctrl.transaction == "QuantityControl") {
-	                    	window.history.back();
+                            $http.post(API.BASE_URL_DATA_ROB + "/api/quantityControlReport/updateStatus", {
+                                "Payload": {"reportIds" : [ctrl.reportId]}
+                            }).then(function successCallback(response) {
+    	                    	window.history.back();
+                            });
 	                    }
 		                
 					} 	                
