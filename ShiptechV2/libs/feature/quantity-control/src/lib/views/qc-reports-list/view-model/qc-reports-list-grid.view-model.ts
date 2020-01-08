@@ -320,7 +320,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
-    private quantityControlService: QcReportService,
+    private reportService: QcReportService,
     private appErrorHandler: AppErrorHandler
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
@@ -368,7 +368,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
+    this.reportService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
