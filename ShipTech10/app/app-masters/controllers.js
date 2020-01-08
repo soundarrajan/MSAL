@@ -7731,7 +7731,7 @@ APP_MASTERS.controller("Controller_Master", [
                     filters: {},
                     page: 1,
                     query: "",
-                    rows: 25,
+                    rows: 9999,
                     shrinkToFit: true,
                     sort: "",
                     modal: true
