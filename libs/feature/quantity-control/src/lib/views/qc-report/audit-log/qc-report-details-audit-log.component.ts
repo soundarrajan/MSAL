@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {QcReportsListGridViewModel} from "../../qc-reports-list/view-model/qc-reports-list-grid.view-model";
 
 @Component({
   selector: 'shiptech-qc-audit-log',
@@ -8,7 +9,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 })
 export class QcReportDetailsAuditLogComponent implements OnInit {
 
-  constructor() {
+  constructor(public gridViewModel: QcReportsListGridViewModel) {
   }
 
   ngOnInit(): void {
