@@ -1,9 +1,7 @@
-﻿commit 3271066d186813dde8aeb31ecb64169216a93a67
+﻿commit cfb9df57c5a5494468d72c25dadd9d1c5710c72b
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Tue Jan 7 14:28:50 2020 +0200
+Date:   Wed Jan 8 13:49:24 2020 +0200
 
-    Updated qc report list grid column filter field map to backend
-    Updated qc report survery history grid column filter field map to backend
-    Updated qc vessel and vessel port calls grids columns filter field map to backend
+    Qc Small refactoring and cleanup after review session
 
 branch: master
