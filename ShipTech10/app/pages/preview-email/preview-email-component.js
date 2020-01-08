@@ -928,11 +928,13 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                       }
 		                }
 	                    if (ctrl.transaction == "QuantityControl") {
-                            $http.post(API.BASE_URL_DATA_ROB + "/api/quantityControlReport/updateStatus", {
-                                "Payload": {"reportIds" : [ctrl.reportId]}
-                            }).then(function successCallback(response) {
-    	                    	window.history.back();
-                            });
+                            if (ctrl.template.name == "BunkerQuantity") {
+                                $http.post(API.BASE_URL_DATA_ROB + "/api/quantityControlReport/updateStatus", {
+                                        "Payload": {"reportIds" : [ctrl.reportId]}
+                                    }).then(function successCallback(response) {
+                                        window.history.back();
+                                });
+                            }
 	                    }
 		                
 					} 	                
