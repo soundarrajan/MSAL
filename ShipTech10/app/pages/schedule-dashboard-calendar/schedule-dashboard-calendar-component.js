@@ -739,7 +739,10 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             if (!data) {
             	toastr.warning("No Voyages available for the selected period");
             }
+
             dataJSON = JSON.parse('{ "vessels": [' + data + "]}");
+            ctrl.voyagesStrategyGrouped = ctrl.checkIfHasStrategyOptimized(dataJSON.vessels);
+
             dates = angular.copy(calendarDates);
             var result = [],
                 dataRow,
@@ -842,7 +845,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	                                "day": i2,
 	                                "id": event.voyageDetail.id,
 	                                "portCode": event.voyageDetail.locationCode,
-	                                "hasStrategy": ctrl.checkIfHasStrategy(event.voyageDetail.id, dataJSON.vessels),
+	                                "hasStrategy": ctrl.voyagesStrategyGrouped[event.voyageDetail.id] ? true : false,
 	                                "status": event.voyageDetail.portStatus,
 	                                "request": event.voyageDetail.request,
 	                                "eta": event.voyageDetail.eta,
@@ -1193,9 +1196,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             }, true);
             if (statuses.length > 0) {
                 var statusColor = statusColors.getColorCodeFromLabels(status, $listsCache.ScheduleDashboardLabelConfiguration);
+                //"color": getContrastYIQ(statusColor)
                 return {
-                    "background-color": statusColor,
-                    "color": getContrastYIQ(statusColor)
+                    "background-color": statusColor
                 };
             }
             return null;
@@ -1495,6 +1498,28 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	       		})			
        		}
        		return hasStrategy;
+		}
+
+		ctrl.checkIfHasStrategyOptimized = function(dataJSONVessels){
+			var vesselsStrategy = [];
+       		if (dataJSONVessels) {
+       			$.each(dataJSONVessels, function(k,v){
+					if (v.voyageDetail.hasStrategy) {
+			       		vesselsStrategy[v.voyageDetail.id] = true;
+					}
+       			})
+       		} else {
+	       		$.each(ctrl.calendarDataRows, function(k, calData){
+	       			$.each(calData.calendar, function(k2, cal){
+	           			$.each(cal, function(k2, voyage){
+							if (v.voyageDetail.hasStrategy) {
+					       		vesselsStrategy[voyage.id] = true;
+							}
+	           			})
+	       			})
+	       		})			
+       		}
+       		return vesselsStrategy;
 		}
 
 		ctrl.checkIfHasSAPStrategy = function(voyageStops) {
