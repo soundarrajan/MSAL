@@ -697,9 +697,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 			        	}
     	        	}
                     $state.defaultTemplate = ctrl.template;
-                   if(refreshAfter && ctrl.transaction != "QuantityControl"){
+                    if(refreshAfter && ctrl.transaction != "QuantityControl"){
                         $state.reload();
-                    }
+                    } 
+
                     if (ctrl.state.current.name == "default.group-of-requests") {
 	                    $rootScope.$broadcast("reloadGroupPreviewRFQ", true);
                     }  
@@ -926,6 +927,10 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
 	                            $window.history.back();
 	                       }
 		                }
+	                    if (ctrl.transaction == "QuantityControl") {
+	                    	window.history.back();
+	                    }
+		                
 					} 	                
 	            }).finally(function(){
 	                if (ctrl.transaction == EMAIL_TRANSACTION.CONTRACT_PLANNING) {
