@@ -159,10 +159,10 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
 
   @ApiCall()
   getAuditLog(request: IGetQcReportDetailsAuditLogRequest): Observable<IGetQcReportDetailsAuditLogResponse> {
-    const payload = getMockQcReportDetailsAuditLog() || [];
+    const payload = [getMockQcReportDetailsAuditLog()] || [];
 
     return of({
-      payload: [...payload],
+      payload: payload,
       deletedCount: 2,
       modifiedCount: 0,
       matchedCount: 0,

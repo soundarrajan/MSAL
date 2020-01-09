@@ -2,7 +2,6 @@ import {BaseGridViewModel} from '@shiptech/core/ui/components/ag-grid/base.grid-
 import {ChangeDetectorRef, Injectable} from '@angular/core';
 import {GridOptions, IServerSideGetRowsParams} from 'ag-grid-community';
 import {ITypedColDef, RowModelType, RowSelection} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {AgCellTemplateComponent} from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import {AgColumnPreferencesService} from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import {transformLocalToServeGridInfo} from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -13,16 +12,14 @@ import {TenantSettingsModuleName} from '@shiptech/core/store/states/tenant/tenan
 import {TenantSettingsService} from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import {IQcReportDetailsAuditLogItemDto} from "../../../../services/api/dto/qc-report-details-audit-log.dto";
 import {
-  QcReportDetailsAuditLogColumns, QcReportDetailsAuditLogColumnServerKeys,
+  QcReportDetailsAuditLogColumns,
+  QcReportDetailsAuditLogColumnServerKeys,
   QcReportDetailsAuditLogColumnsLabels
 } from "./qc-report-details-audit-log.columns";
 import {ModuleLoggerFactory} from "../../../../core/logging/module-logger-factory";
 import {QcReportService} from "../../../../services/qc-report.service";
 import {IDeliveryTenantSettings} from "../../../../core/settings/delivery-tenant-settings";
-
-function model(prop: keyof IQcReportDetailsAuditLogItemDto): keyof IQcReportDetailsAuditLogItemDto {
-  return prop;
-}
+import {ServerGridFilterFilter} from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
 
 @Injectable()
 export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
@@ -34,6 +31,7 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
   };
 
   public searchText: string;
+  public filters: ServerGridFilterFilter[];
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -147,6 +145,16 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
     super('quantity-control-report-details-audit-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportDetailsAuditLogGridViewModel.name));
     this.init(this.gridOptions, false);
 
+    this.filters = [
+      {
+        ColumnName: 'BusinessId',
+        Value: '1'
+      },
+      {
+        ColumnName: 'Transaction',
+        Value: 'QuantityControlReport'
+      }];
+
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
     this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
@@ -173,7 +181,7 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText)).subscribe(
+    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText, this.filters)).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('audit'));

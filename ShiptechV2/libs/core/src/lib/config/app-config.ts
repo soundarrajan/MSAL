@@ -11,6 +11,7 @@ export class AppConfig implements IAppConfig {
   baseOrigin: string;
   robApi: string;
   masterApi: string;
+  adminApi: string;
 }
 
 // tslint:disable-next-line:no-empty-interface
