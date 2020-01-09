@@ -297,7 +297,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.comment,
     colId: QcReportsListColumns.comment,
-    field: model('comment')
+    field: model('comment'),
+    tooltipValueGetter: params => params.valueFormatted ?? params.value
   };
 
   isVerifiedSludgeQtyCol: ITypedColDef<IQcReportsListItemDto, string> = {

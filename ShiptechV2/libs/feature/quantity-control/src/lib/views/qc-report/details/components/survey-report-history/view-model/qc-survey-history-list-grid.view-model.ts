@@ -280,7 +280,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   commentCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
     headerName: QcSurveyHistoryListColumnsLabels.comment,
     colId: QcSurveyHistoryListColumns.comment,
-    field: model('comment')
+    field: model('comment'),
+    tooltipValueGetter: params => params.valueFormatted ?? params.value
   };
 
   isVerifiedSludgeQtyCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
