@@ -52,8 +52,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
       editable: false,
       sortable: false,
       filter: false,
+      resizable: true,
       suppressColumnsToolPanel: true,
-      suppressFiltersToolPanel: true
+      suppressFiltersToolPanel: true,
+      flex: 1,
     }
   };
 
@@ -61,7 +63,9 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: model('productType'),
-    valueFormatter: params => params.value?.displayName ?? params.value?.name
+    valueFormatter: params => params.value?.displayName ?? params.value?.name,
+    minWidth: 250,
+    flex: 2
   };
 
   logBookBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -69,7 +73,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: model('robBeforeDeliveryLogBookROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125,
   };
 
   measuredRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -77,7 +82,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: model('robBeforeDeliveryMeasuredROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125,
   };
 
   differenceRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -89,7 +95,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'not-matched': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
-    }
+    },
+    minWidth: 100,
   };
 
   bdnDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -97,7 +104,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.BdnQty,
     field: model('deliveredQuantityBdnQty'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 90,
   };
 
   measuredDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -105,7 +113,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: model('measuredDeliveredQty'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 115,
   };
 
   differenceDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -116,7 +125,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'not-matched': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
-    }
+    },
+    minWidth: 100,
   };
 
   logBookAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -124,7 +134,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: model('robAfterDeliveryLogBookROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125
   };
 
   measuredRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -132,7 +143,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: model('robAfterDeliveryMeasuredROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125
   };
 
   differenceRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -144,7 +156,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'not-matched': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
-    }
+    },
+    minWidth: 100,
   };
 
   robAfterDeliveryColGroup: ColGroupDef = {
