@@ -34,6 +34,10 @@ const routes: Routes = [
       },
       {
         path: `${KnownQuantityControlRoutes.Report}/:${KnownQuantityControlRoutes.ReportIdParam}`,
+        resolve: {
+          // Note: ReportId is expected in child routes in the data.
+          ...getTypedResolverPropertyName(KnownQuantityControlRoutes.ReportIdParam)
+        },
         children: [
           {
             path: '',
@@ -44,10 +48,6 @@ const routes: Routes = [
             path: KnownQuantityControlRoutes.ReportDetails,
             canDeactivate: [QcReportDetailsUnsavedChangesGuard],
             component: QcReportDetailsComponent,
-            resolve: {
-              // Note: ReportId is expected in child routes in the data.
-              ...getTypedResolverPropertyName(KnownQuantityControlRoutes.ReportIdParam)
-            },
             data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' }
           },
           {

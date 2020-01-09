@@ -1,5 +1,6 @@
 {
   "agGridLicense": "INATECH_EUROPE_LIMITED__MultiApp_1Devs1_SaaS_14_November_2022__MTY3MTUzMDkzODQxNQ==d429630a4af81735003a345c0cd1c941",
   "loggingApi": "http://sf.techoil.24software.ro:81/24S-Techoil/develop/Logs.API",
-  "robApi": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Rob"
+  "robApi": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Rob",
+  "masterApi": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Masters"
 }
