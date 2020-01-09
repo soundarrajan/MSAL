@@ -10,10 +10,12 @@ export class QcProductTypeListItemStateModel {
   measuredDeliveredQty: number;
   robAfterDeliveryLogBookROB: number;
   robAfterDeliveryMeasuredROB: number;
+  isSludge: boolean;
 
-  constructor(productType: IQcReportDetailsProductTypeDto) {
+  constructor(productType: IQcReportDetailsProductTypeDto, isSludge: boolean = false) {
     this.id = productType.id;
     this.productType = productType.productType;
+    this.isSludge = isSludge;
 
     this.robBeforeDeliveryLogBookROB = productType.robBeforeDelivery?.logBookROB;
     this.robBeforeDeliveryMeasuredROB = productType.robBeforeDelivery?.measuredROB;

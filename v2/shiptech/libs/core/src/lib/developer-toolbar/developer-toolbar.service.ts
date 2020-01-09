@@ -140,7 +140,7 @@ export class DeveloperToolbarService implements OnDestroy {
   }
 
   public getApiSettings(apiServiceId: string): IApiServiceSettings {
-    const storedSettingsJson = sessionStorage.getItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
+    const storedSettingsJson = localStorage.getItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
 
     if (!storedSettingsJson) {
       return;
@@ -151,21 +151,21 @@ export class DeveloperToolbarService implements OnDestroy {
   public saveApiSettings(apiServiceId: string, settings: IApiServiceSettings): void {
     this.apiSettingsChanged.next(settings);
 
-    sessionStorage.setItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`, JSON.stringify(settings));
+    localStorage.setItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`, JSON.stringify(settings));
   }
 
   public deleteApiSettings(apiServiceId: string): void {
-    sessionStorage.removeItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
+    localStorage.removeItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
   }
 
   public shouldKeepSettings(): boolean {
-    return Object.keys(sessionStorage).filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX)).length > 0;
+    return Object.keys(localStorage).filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX)).length > 0;
   }
 
   public purgeApiSettings(): void {
-    Object.keys(sessionStorage)
+    Object.keys(localStorage)
       .filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX))
-      .forEach(key => sessionStorage.removeItem(key));
+      .forEach(key => localStorage.removeItem(key));
   }
 
   /**

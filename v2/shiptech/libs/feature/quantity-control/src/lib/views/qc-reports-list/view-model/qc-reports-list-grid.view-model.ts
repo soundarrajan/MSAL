@@ -45,6 +45,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
     rowSelection: RowSelection.Multiple,
     suppressRowClickSelection: true,
+    suppressContextMenu: true,
 
     multiSortKey: 'ctrl',
 

@@ -47,7 +47,8 @@
               viewModel.gridViewModel.logBookAfterDeliveryCol,
               viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
              appAgCellTemplate let-column="column" let-model="data" let-value="valueFormatted">
-    <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="center center"
+         *ngIf="!((column.colId === viewModel.gridViewModel.logBookAfterDeliveryCol.colId || column.colId === viewModel.gridViewModel.measuredRobAfterDeliveryCol.colId) && model.isSludge)">
       <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)"
                  disable-keys-spin
                  tenant-format="quantity"
