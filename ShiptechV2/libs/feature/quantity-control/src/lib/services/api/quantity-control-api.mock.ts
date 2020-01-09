@@ -36,6 +36,8 @@ import {
   IGetQcReportDetailsAuditLogResponse
 } from "./request-response/qc-report-details-audit-log.request-response";
 import {getMockQcReportDetailsAuditLog} from "./mock/qc-report-details-audit-log.mock";
+import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
+import { getMockQcEmailLogs } from "./mock/qc-email-list.mock";
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +61,16 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
       nbOfMatched: firstItem.nbOfMatched || 0,
       nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
       nbOfNotMatched: firstItem.nbOfNotMatched || 0
+    });
+  }
+
+  @ApiCall()
+  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse> {
+    const items = getMockQcEmailLogs(request.pagination.take) || [];
+
+    return of({
+      payload: items,
+      matchedCount: items.length
     });
   }
 

@@ -19,6 +19,7 @@ import {
   IGetQcReportDetailsAuditLogRequest,
   IGetQcReportDetailsAuditLogResponse
 } from "./request-response/qc-report-details-audit-log.request-response";
+import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
 
 export interface IQuantityControlApiService {
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -46,4 +47,6 @@ export interface IQuantityControlApiService {
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse>;
 
   getAuditLog(request: IGetQcReportDetailsAuditLogRequest): Observable<IGetQcReportDetailsAuditLogResponse>;
+
+  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse>;
 }
