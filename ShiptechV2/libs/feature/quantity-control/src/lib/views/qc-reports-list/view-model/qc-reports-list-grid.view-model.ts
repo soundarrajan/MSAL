@@ -121,7 +121,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
       'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
     },
-    width: 78
+    width: 85
   };
 
   qtyMatchedStatusCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -142,7 +142,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
-    width: 153,
+    width: 170,
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
@@ -153,7 +153,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    width: 181
+    width: 195
   };
 
   diffRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -167,14 +167,14 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
       'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit,
     },
-    width: 128
+    width: 140
   };
 
   qtyBeforeDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   bdnQuantityCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -210,7 +210,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -246,7 +246,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -290,7 +290,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
@@ -320,7 +320,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
-    private quantityControlService: QcReportService,
+    private reportService: QcReportService,
     private appErrorHandler: AppErrorHandler
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
@@ -368,7 +368,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
+    this.reportService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
