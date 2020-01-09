@@ -31,6 +31,11 @@ import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.d
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
 import * as faker from 'faker';
+import {
+  IGetQcReportDetailsAuditLogRequest,
+  IGetQcReportDetailsAuditLogResponse
+} from "./request-response/qc-report-details-audit-log.request-response";
+import {getMockQcReportDetailsAuditLog} from "./mock/qc-report-details-audit-log.mock";
 
 @Injectable({
   providedIn: 'root'
@@ -137,6 +142,26 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
       productTypes: getQcReportDetailsCall(1).productTypeCategories.map(p => ({ productType: p.productType, bdnQuantity: p.deliveredQty.bdnQuantity })),
       nbOfClaims: faker.random.number({ min: 0, max: 50 }),
       nbOfDeliveries: faker.random.number({ min: 0, max: 50 })
+    });
+  }
+
+  @ApiCall()
+  getAuditLog(request: IGetQcReportDetailsAuditLogRequest): Observable<IGetQcReportDetailsAuditLogResponse> {
+    const payload = getMockQcReportDetailsAuditLog() || [];
+
+    return of({
+      payload: [...payload],
+      deletedCount: 2,
+      modifiedCount: 0,
+      matchedCount: 0,
+      isAcknowledged: true,
+      isModifiedCountAvailable: true,
+      upsertedId: 3,
+      status: 1,
+      isSuccess: true,
+      message: 'test',
+      error: null,
+      errorMessage: 'Success'
     });
   }
 }

@@ -49,6 +49,12 @@ import {
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
 } from '../store/report/details/actions/update-port-call-bdn.actions';
+import {IGetQcReportDetailsAuditLogResponse} from "./api/request-response/qc-report-details-audit-log.request-response";
+import {
+  LoadAuditLogAction,
+  LoadAuditLogFailedAction,
+  LoadAuditLogSuccessfulAction
+} from "../store/report/audit-log/qc-audit-log.actions";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -79,6 +85,17 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
       LoadReportListFailedAction,
       ModuleError.LoadReportListFailed
+    );
+  }
+
+  @ObservableException()
+  getAuditLogList$(gridRequest: IServerGridInfo): Observable<IGetQcReportDetailsAuditLogResponse> {
+    return this.apiDispatch(
+      () => this.api.getAuditLog({...gridRequest}),
+      new LoadAuditLogAction(gridRequest),
+      response => new LoadAuditLogSuccessfulAction(),
+      LoadAuditLogFailedAction,
+      ModuleError.LoadAuditLogFailed
     );
   }
 

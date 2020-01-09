@@ -63,70 +63,73 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
     headerName: QcReportDetailsAuditLogColumnsLabels.date,
     colId: QcReportDetailsAuditLogColumns.date,
     field: "date",
-    cellRendererFramework: AgCellTemplateComponent
+    filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
+    width: 170
   };
 
   modulePathUrl: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.modulePathUrl,
     colId: QcReportDetailsAuditLogColumns.modulePathUrl,
     field: "modulePathUrl",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 170
   };
 
   businessName: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.businessName,
     colId: QcReportDetailsAuditLogColumns.businessName,
     field: "businessName",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 170
   };
 
   transactionType: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.transactionType,
     colId: QcReportDetailsAuditLogColumns.transactionType,
     field: "transactionType",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 170
   };
 
   fieldName: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.fieldName,
     colId: QcReportDetailsAuditLogColumns.fieldName,
     field: "fieldName",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 210
   };
 
   oldValue: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.oldValue,
     colId: QcReportDetailsAuditLogColumns.oldValue,
     field: "oldValue",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 170
   };
 
   newValue: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.newValue,
     colId: QcReportDetailsAuditLogColumns.newValue,
     field: "newValue",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 170
   };
 
   modifiedBy: ITypedColDef<IQcReportDetailsAuditLogItemDto, IDisplayLookupDto> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.modifiedBy,
     colId: QcReportDetailsAuditLogColumns.modifiedBy,
     field: "modifiedBy",
-    cellRendererFramework: AgCellTemplateComponent
+    valueFormatter: params => params.value?.name,
+    width: 340
   };
 
   clientIpAddress: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.clientIpAddress,
     colId: QcReportDetailsAuditLogColumns.clientIpAddress,
     field: "clientIpAddress",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 130
   };
 
   userAction: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.userAction,
     colId: QcReportDetailsAuditLogColumns.userAction,
     field: "userAction",
-    cellRendererFramework: AgCellTemplateComponent
+    width: 170
   };
 
   private readonly minToleranceLimit;
@@ -170,10 +173,10 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText)).subscribe(
-      response => params.successCallback(response.items, response.totalCount),
+    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText)).subscribe(
+      response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
+        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('audit'));
         params.failCallback();
       });
   }
