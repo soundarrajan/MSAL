@@ -18,4 +18,6 @@ export enum ErrorCode {
 
   PortCallIsRequired = 3201,
   VesselIsRequired = 3202,
+
+  LoadAuditLogFailed = 4000
 }
