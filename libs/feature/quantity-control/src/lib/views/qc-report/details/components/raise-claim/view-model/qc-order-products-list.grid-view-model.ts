@@ -33,6 +33,8 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     multiSortKey: 'ctrl',
 
     enableBrowserTooltips: true,
+    suppressContextMenu: true,
+
     defaultColDef: {
       sortable: true,
       resizable: true,

@@ -6,6 +6,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { roundDecimals } from '@shiptech/core/utils/math';
+import { MatchedQuantityStatus } from '../../../../../../core/enums/quantity-match-status';
 
 @Injectable()
 export class ProductTypeListItemViewModelFactory {
@@ -41,9 +42,12 @@ export class ProductTypeListItemViewModel {
   deliveredDiffStatus: IDisplayLookupDto;
   robAfterDiffStatus: IDisplayLookupDto;
 
+  isSludge: boolean;
 
   constructor(item: QcProductTypeListItemStateModel, minToleranceLimit: number, maxToleranceLimit: number, private quantityPrecision: number) {
     this.productType = item.productType;
+    this.productType = item.productType;
+    this.isSludge = item.isSludge;
 
     this.robBeforeDeliveryLogBookROB = roundDecimals(item.robBeforeDeliveryLogBookROB, quantityPrecision);
     this.robBeforeDeliveryMeasuredROB = roundDecimals(item.robBeforeDeliveryMeasuredROB, quantityPrecision);
@@ -54,11 +58,11 @@ export class ProductTypeListItemViewModel {
 
     this.robBeforeDiffStatus = QcReportState.getMatchStatus(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
     this.deliveredDiffStatus = QcReportState.getMatchStatus(this.deliveredQuantityBdnQty, this.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
-    this.robAfterDiffStatus = QcReportState.getMatchStatus(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
+    this.robAfterDiffStatus = !this.isSludge ? QcReportState.getMatchStatus(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit) : undefined;
 
     this.robBeforeDiff = this.safeDiff(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB);
-    this.deliveredDiff= this.safeDiff(this.deliveredQuantityBdnQty, this.measuredDeliveredQty);
-    this.robAfterDiff= this.safeDiff(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB);
+    this.deliveredDiff = this.safeDiff(this.deliveredQuantityBdnQty, this.measuredDeliveredQty);
+    this.robAfterDiff = this.safeDiff(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB);
   }
 
   private safeDiff(left: number, right: number): number {

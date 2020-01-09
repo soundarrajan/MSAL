@@ -38,7 +38,7 @@ export class UrlService {
   }
 
   public getLegacySettings(): string {
-    return `/config/defaultConfig.json`;
+    return window.location.hostname === 'localhost' ? `/config/defaultConfig.json` : `/config/${window.location.hostname}.json`;
   }
 
   public offer(requestId: string | number): string {
