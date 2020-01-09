@@ -934,7 +934,9 @@ angular.module("shiptech.pages").controller("PreviewEmailController", [
                                     }).then(function successCallback(response) {
                                         window.history.back();
                                 });
-                            }
+                            } else {
+                                window.history.back();
+                            }         
 	                    }
 		                
 					} 	                
