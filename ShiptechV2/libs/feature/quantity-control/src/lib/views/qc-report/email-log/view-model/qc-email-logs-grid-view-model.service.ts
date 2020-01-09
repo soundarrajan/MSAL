@@ -71,10 +71,7 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     precision: () => this.format.quantityPrecision
   };
 
-  api: GridApi;
-
   gridOptions: GridOptions = {
-    api: this.api,
     groupHeaderHeight: 20,
     headerHeight: 40,
     rowHeight: 40,
@@ -126,13 +123,6 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
     this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
 
-    const hardcodedFilter = {
-      date: {
-        type: "lessThan",
-        dateFrom: "2010-01-01"
-      }
-    };
-    // this.gridOptions.api.setFilterModel(hardcodedFilter);
   }
 
   public onSearch(value: string): void {
