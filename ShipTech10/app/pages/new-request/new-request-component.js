@@ -3404,20 +3404,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         	console.log(event);
         }
 
-        ctrl.changedValue = function(index) {
-           $(".st-new-request-form.form-horizontal.collapse.in.row")[index].style.cssText = "overflow: initial";
-        }
-        ctrl.changeScroll = function(index) {
-            $(".st-new-request-form.form-horizontal.collapse.in.row")[index].style.cssText = "overflow: auto";
-        }
-        // jQuery(document).ready(function(){
-        //     $(document).on("click", function(e){
-        //         if(!$(e.target).hasClass("Product") && $(e.target).parents(".vis-item").length == 0){
-        //             $(".vis-item").removeClass("vis-selected");
-        //         }   
-        //     })
-           
-        // })
 
       
 

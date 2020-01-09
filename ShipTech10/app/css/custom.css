@@ -1925,7 +1925,7 @@
                 width: 100% !important;
             }
 
-            table#new_order_products, #new_order_products_wrapper .table-scrollable {
+            table#new_order_products, #new_order_products_wrapper .table-scrollable, table#new_request_products {
                 overflow: visible;
             }
 
@@ -3181,7 +3181,7 @@ Uncomment to see border around all .col-*
                 margin-left: 0 !important;
             }
 
-            #new_order_products, #new_order_additional_costs {
+            #new_order_products, #new_order_additional_costs, #new_request_products {
                 min-width: 2200px;
                 width: auto!important;
                 max-width: 9999px!important

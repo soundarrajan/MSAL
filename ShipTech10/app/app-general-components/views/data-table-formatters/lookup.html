@@ -4,7 +4,7 @@
 data-original-title="{{MODEL_COL_FIELD.name}}">
     <input ng-model="MODEL_COL_FIELD" 
     ng-class="'colt' + col.uid" 
-    uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | filter:{name:$viewValue}"  
+    uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | filter:{name:$viewValue} | limitTo:10"  
     class="form-control "  
     typeahead-show-hint="true" 
     typeahead-min-length="1" 

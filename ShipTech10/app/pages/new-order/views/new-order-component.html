@@ -358,7 +358,7 @@
                                                                        typeahead-append-to-body="true"
                                                                        typeahead-editable="false"
                                                                        typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.data.vessel})"
-                                                                       uib-typeahead="vessel as vessel.name for vessel in $ctrl.listsCache.Vessel | filter:$viewValue | limitTo:5">
+                                                                       uib-typeahead="vessel as vessel.name for vessel in $ctrl.listsCache.Vessel | filter:$viewValue | limitTo:10">
 							                                    <span class="input-group-addon ng-scope"
                                                                       ng-click="triggerModal('general', 'masters_vessellist', 'Vessel' , 'vessel');"
                                                                       ng-controller="Controller_Master as CM"
@@ -397,7 +397,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.selectCompany($item.id)"
-                                                                   uib-typeahead="carrierCompany as carrierCompany.name for carrierCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"/>
+                                                                   uib-typeahead="carrierCompany as carrierCompany.name for carrierCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:10"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_companylist', 'Carrier' ,'carrier',null,null,null,'bargeList');"
                                                                   ng-controller="Controller_Master as CM"
@@ -430,7 +430,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.selectCompany($item.id)"
-                                                                   uib-typeahead="paymentCompany as paymentCompany.name for paymentCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:5"/>
+                                                                   uib-typeahead="paymentCompany as paymentCompany.name for paymentCompany in $ctrl.lists.Company | filter:$viewValue | limitTo:10"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.companyDisplayName.name ,'paymentCompany',null,null,null,null);"
                                                                   ng-controller="Controller_Master as CM"
@@ -461,7 +461,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select=" $ctrl.isTrader = false; $ctrl.selectBuyer($item);"
-                                                                   uib-typeahead="buyer as buyer.name for buyer in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"/>
+                                                                   uib-typeahead="buyer as buyer.name for buyer in $ctrl.lists.Buyer | filter:$viewValue | limitTo:10"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_buyerlist', 'Buyer' ,'buyer',null,null,null,null); $ctrl.isTraderField = false"
                                                                   ng-controller="Controller_Master as CM"
@@ -488,7 +488,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.isTrader = true; $ctrl.selectTrader($item);"
-                                                                   uib-typeahead="trader as trader.name for trader in $ctrl.lists.Buyer | filter:$viewValue | limitTo:5"
+                                                                   uib-typeahead="trader as trader.name for trader in $ctrl.lists.Buyer | filter:$viewValue | limitTo:10"
                                                             />
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_buyerlist', 'Trader' ,'trader',null,null,null,null); $ctrl.isTraderField = true"
@@ -514,7 +514,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.selectPaymntTerm($item)"
-                                                                   uib-typeahead="term as term.name for term in $ctrl.lists.PaymentTerm | filter:$viewValue | limitTo:5"/>
+                                                                   uib-typeahead="term as term.name for term in $ctrl.lists.PaymentTerm | filter:$viewValue | limitTo:10"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_paymenttermlist', 'Payment Term' ,'paymentTerm',null,null,null,null);"
                                                                   ng-controller="Controller_Master as CM"
@@ -569,7 +569,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.selectService($item.id)"
-                                                                   uib-typeahead="serviceCode as serviceCode.name for serviceCode in $ctrl.lists.Service | filter:$viewValue | limitTo:5"/>
+                                                                   uib-typeahead="serviceCode as serviceCode.name for serviceCode in $ctrl.lists.Service | filter:$viewValue | limitTo:10"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_servicelist', 'Service' , 'service');"
                                                                   ng-controller="Controller_Master as CM"
@@ -612,7 +612,7 @@
                                                                        typeahead-append-to-body="true"
                                                                        typeahead-editable="false"
                                                                        typeahead-on-select="$ctrl.selectPort($item.id)"
-                                                                       uib-typeahead="location as location.name for location in $ctrl.lists.Location | filter:$viewValue | limitTo:5"/>
+                                                                       uib-typeahead="location as location.name for location in $ctrl.lists.Location | filter:$viewValue | limitTo:10"/>
                                                                 <span class="input-group-addon ng-scope"
                                                                       ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);"
                                                                       ng-controller="Controller_Master as CM">
@@ -765,7 +765,7 @@
                                                                    typeahead-on-select="$ctrl.selectSeller($item)"
                                                                    typeahead-show-hint="true"
                                                                    typeahead-wait-ms="100"
-                                                                   uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | filter:{name:$viewValue}"/>
+                                                                   uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | filter:{name:$viewValue} | limitTo:10"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_counterpartylist', 'Seller' ,'seller',null,null,null,'sellerList');"
                                                                   ng-controller="Controller_Master as CM"
@@ -794,7 +794,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="true"
                                                                    typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
-                                                                   uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | filter:$viewValue | limitTo:5"
+                                                                   uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | filter:$viewValue | limitTo:10"
                                                             />
                                                             <!-- <span class="input-group-addon" ng-class="{'disabled': $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id}" data-toggle="modal"
                                                                 href="#agents" ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.broker.name, $ctrl.data.broker)">
@@ -834,7 +834,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.surveyorCounterparty = $ctrl.setTypeahedVal($ctrl.data.surveyorCounterparty, $item, false)"
-                                                                   uib-typeahead="surveyorCounterparty as surveyorCounterparty.name for surveyorCounterparty in $ctrl.lists.Surveyor | filter:$viewValue | limitTo:5"
+                                                                   uib-typeahead="surveyorCounterparty as surveyorCounterparty.name for surveyorCounterparty in $ctrl.lists.Surveyor | filter:$viewValue | limitTo:10"
 
                                                             />
                                                             <span class="input-group-addon ng-scope"
@@ -871,7 +871,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)"
-                                                                   uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | filter:$viewValue | limitTo:5"
+                                                                   uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | filter:$viewValue | limitTo:10"
                                                             />
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'procurement_agentlist', 'agentCounterparty','agentCounterparty',null,null,null,null);"
@@ -914,7 +914,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.lab = $ctrl.setTypeahedVal($ctrl.data.lab, $item, false)"
-                                                                   uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | filter:$viewValue | limitTo:5"
+                                                                   uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | filter:$viewValue | limitTo:10"
                                                             />
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_counterpartylist_labs', 'Lab' ,'lab',null,null,null,null)"
@@ -946,7 +946,7 @@
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.barge = $ctrl.setTypeahedVal($ctrl.data.barge, $item, false)"
-                                                                   uib-typeahead="barge as barge.name for barge in $ctrl.lists.bargeCounterparties | filter:$viewValue | limitTo:5"
+                                                                   uib-typeahead="barge as barge.name for barge in $ctrl.lists.bargeCounterparties | filter:$viewValue | limitTo:10"
                                                             />
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_counterpartylist_barge', 'Barge' ,'barge',null,null,null,'bargeList');"
@@ -1139,7 +1139,7 @@
                                                typeahead-append-to-body="true"
                                                typeahead-editable="false"
                                                typeahead-on-select="$ctrl.selectProduct($item.id)"
-                                               uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | filter:$viewValue | limitTo:5"/>
+                                               uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | filter:$viewValue | limitTo:10"/>
                                         <span class="input-group-addon" data-toggle="modal" href="#lookup"
                                               ng-click="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
                                               ng-disabled="$ctrl.disabledProduct[product.id]">
@@ -1192,7 +1192,7 @@
                                                typeahead-append-to-body="true"
                                                typeahead-editable="false"
                                                typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
-                                               uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | filter:$viewValue | limitTo:5"
+                                               uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | filter:$viewValue | limitTo:10"
                                         />
                                         <!-- THIS WAS ON SUPPLIER REQUIRED: $ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id &&  -->
                                         <span class="input-group-addon ng-scope"
@@ -1444,7 +1444,7 @@
                                                typeahead-append-to-body="true"
                                                typeahead-editable="false"
                                                typeahead-on-select="selectProductContract($ctrl.productContractSelecting, $item)"
-                                               uib-typeahead="contract.contract.name for contract in $ctrl.orderContractOptions[product.product.id] | filter:$viewValue | limitTo:5"
+                                               uib-typeahead="contract.contract.name for contract in $ctrl.orderContractOptions[product.product.id] | filter:$viewValue | limitTo:10"
                                         />
 
                                         <span class="input-group-addon ng-scope"

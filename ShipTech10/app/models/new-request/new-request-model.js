@@ -253,7 +253,7 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
             var payload = {
                 "Pagination": {
                     "Skip ": 1,
-                    "Take": 20
+                    "Take": 10
                 },
                 "Filters": [{
                     "ColumnName": "VesselId",

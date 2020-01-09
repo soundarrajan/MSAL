@@ -85,7 +85,7 @@
                                             </span>
                                         </label>
                                         <div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.products[$index].product.id) }}">
-                                            <input ng-model="formValues.products[$index].product" uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue}"
+                                            <input ng-model="formValues.products[$index].product" uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="100" typeahead-on-select="" id="Product_{{ index_0 + 1 }}_Main_Product"
                                                 required="true" name="Product_{{ index_0 + 1 }}_Main_Product" autocomplete="off"
@@ -107,7 +107,7 @@
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Product", "Type": "simpleLookup", "masterSource": "Product"})'>
 
                                         <input ng-model="allowedProduct_[$index]" id="allowedProduct_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Products"
-                                            uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue}"
+                                            uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                             data-value="{{ allowedProduct_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Product', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].allowedProducts, $index, 'allowedProduct_'+$index, 'allowedProducts')"
@@ -165,7 +165,7 @@
                                             </span>
                                         </label>
                                         <div class="input-group form_input">
-                                            <input ng-model="formValues.products[$index].location" uib-typeahead="item as item.name for item in options.Location | filter:{name:$viewValue}"
+                                            <input ng-model="formValues.products[$index].location" uib-typeahead="item as item.name for item in options.Location | filter:{name:$viewValue} | limitTo:10"
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="100" id="Product_{{ index_0 + 1 }}_Location" required="true"
                                                 name="Product_{{ index_0 + 1 }}_Location" autocomplete="off" typeahead-on-select="getAdditionalCosts(formValues.products[$index].location.id, $index)"
@@ -187,7 +187,7 @@
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Location", "Type": "simpleLookup", "masterSource": "Location"})'>
 
                                         <input ng-model="allowedLocations_[$index]" id="allowedLocation_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Locations"
-                                            uib-typeahead="item as item.name for item in options.Location | filter:{name:$viewValue}"
+                                            uib-typeahead="item as item.name for item in options.Location | filter:{name:$viewValue} | limitTo:10"
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                             data-value="{{ allowedLocations_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Location', formValues.products[$index].allowedLocations);CM.multiTagsContractProducts(formValues.products[$index].allowedLocations, $index, 'allowedLocation_'+$index, 'allowedLocations')"
@@ -214,7 +214,7 @@
                                         </label>
                                         <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Supplier", "Type": "simpleLookup", "masterSource": "Supplier"})'>
 
-                                            <input ng-model="allowedSuppliers_[$index]" name="Product_{{ index_0 + 1 }}_Supplier" id="Supplier_{{ $index }}" uib-typeahead="item as item.name for item in options.Supplier | filter:{name:$viewValue}"
+                                            <input ng-model="allowedSuppliers_[$index]" name="Product_{{ index_0 + 1 }}_Supplier" id="Supplier_{{ $index }}" uib-typeahead="item as item.name for item in options.Supplier | filter:{name:$viewValue} | limitTo:10"
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                                 data-value="{{ allowedSuppliers_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Supplier', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].physicalSuppliers, $index, 'Supplier_'+$index, 'physicalSuppliers')"
@@ -268,7 +268,7 @@
                                                 {{ value.name }}
                                             </option>
                                         </select> -->
-                                        <input ng-model="barges_[$index]" id="barges_{{ $index }}" name="Product_{{ index_0 + 1 }}_Barges" uib-typeahead="item as item.name for item in options.Barge | filter:{name:$viewValue}"
+                                        <input ng-model="barges_[$index]" id="barges_{{ $index }}" name="Product_{{ index_0 + 1 }}_Barges" uib-typeahead="item as item.name for item in options.Barge | filter:{name:$viewValue} | limitTo:10"
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                             data-value="{{ barges_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Barge', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].barges, $index, 'barges_'+$index, 'barges')"
@@ -363,7 +363,7 @@
                                                 </a>
                                             </label>
                                             <div class="input-group form_input">
-                                                <input uib-typeahead="item as item.name for item in contractFormulaList | filter:{name:$viewValue}" class="form-control"
+                                                <input uib-typeahead="item as item.name for item in contractFormulaList | filter:{name:$viewValue} | limitTo:10" class="form-control"
                                                     typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                     typeahead-wait-ms="100" id="priceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_Price_Formula"
                                                     ng-model="formValues.products[$index].formula" autocomplete="off" ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' "
@@ -427,7 +427,7 @@
                                                 </a>
                                             </label>
                                             <div class="input-group form_input" >
-                                                <input uib-typeahead="item as item.name for item in contractFormulaList | filter:{name:$viewValue}" class="form-control"
+                                                <input uib-typeahead="item as item.name for item in contractFormulaList | filter:{name:$viewValue} | limitTo:10" class="form-control"
                                                     typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                     typeahead-wait-ms="100" id="MTMpriceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_MTM_Price_Formula"
                                                     ng-model="formValues.products[$index].mtmFormula" autocomplete="off" ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' "

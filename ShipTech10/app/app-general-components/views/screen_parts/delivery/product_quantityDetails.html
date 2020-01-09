@@ -31,7 +31,7 @@
                                 {{ CM.app_id + '.PRODUCT_DELIVERED' | translate }}
                             </label>
                             <div class="input-group form_input form_input_bdn_number">
-                                <input uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue}" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" type="text" name="Product_{{productIndex}}_productDelivered" autocomplete="off" aria-autocomplete="list" class="form-control productDelivered" ng-model="formValues.deliveryProducts[productIndex].product" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-required="false" />
+                                <input uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" type="text" name="Product_{{productIndex}}_productDelivered" autocomplete="off" aria-autocomplete="list" class="form-control productDelivered" ng-model="formValues.deliveryProducts[productIndex].product" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-required="false" />
                                 <span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.deliveryProducts.'+$index+'.product','','','Product', '');"  >
                                     <a   class=" btn default">
                                         <i class="fa fa-search"></i>
@@ -46,7 +46,7 @@
                                 {{ CM.app_id + '.PHYSICAL_SUPPLIER' | translate }}
                             </label>
                             <div class="input-group form_input form_input_physicalSupplier">
-                                <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{productIndex}}_physical_supplier" ng-model="product.physicalSupplier" autocomplete="off" />
+                                <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue} | limitTo:10" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{productIndex}}_physical_supplier" ng-model="product.physicalSupplier" autocomplete="off" />
                                 <!-- ng-model="product.product" -->
                                 <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' , 'formValues.deliveryProducts.'+$index+'.physicalSupplier','','','Counterparty', 'supplierList');"  >
                                     <a   class=" btn default">
