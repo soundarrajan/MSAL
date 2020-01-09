@@ -1,8 +1,8 @@
-﻿commit 2f98ef386c9da6778acb176f9d221a9a94f26502
+﻿commit bca283d87408ce6aa24c788d28f6d0a4e36c5692
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 9 16:45:58 2020 +0200
+Date:   Thu Jan 9 17:20:31 2020 +0200
 
-    Qc Report Details auto size columns using flex.
-    Auto size number inputs based on available cell space.
+    Qc report details event comments tooltip
+    Qc report list comment column tooltip
 
 branch: master

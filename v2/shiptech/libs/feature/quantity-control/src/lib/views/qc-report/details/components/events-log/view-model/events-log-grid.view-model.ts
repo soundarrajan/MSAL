@@ -48,6 +48,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     deltaRowDataMode: true,
     suppressPaginationPanel: true,
     suppressContextMenu: true,
+    enableBrowserTooltips: true,
 
     multiSortKey: 'ctrl',
     getRowNodeId: (data: IQcEventsLogItemState) => data.id.toString(),
@@ -59,7 +60,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       resizable: true,
       sortable: true,
       filter: 'agTextColumnFilter',
-      filterParams: this.defaultColFilterParams
+      filterParams: this.defaultColFilterParams,
     }
   };
 
@@ -83,7 +84,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     field: model('eventDetails'),
     width: 800,
     autoHeight: true,
-    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
+    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null,
+    tooltipValueGetter: params => params.valueFormatted ?? params.value
   };
 
   createdByCol: ITypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
