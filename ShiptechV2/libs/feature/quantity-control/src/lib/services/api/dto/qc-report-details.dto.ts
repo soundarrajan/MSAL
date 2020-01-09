@@ -9,6 +9,7 @@ export interface IQcReportDetailsDto {
   nbOfClaims: number;
   nbOfDeliveries: number;
   productTypeCategories: IQcReportDetailsProductTypeDto[];
+  sludgeProductType: IDisplayLookupDto;
   status: IDisplayLookupDto;
   uoms: IQcReportDetailsUoms;
   vesselResponses: IQcVesselResponsesDto;

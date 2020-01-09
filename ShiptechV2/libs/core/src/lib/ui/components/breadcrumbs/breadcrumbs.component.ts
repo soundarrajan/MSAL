@@ -11,7 +11,7 @@ import { MenuItem } from 'primeng/primeng';
   selector: 'shiptech-breadcrumbs',
   template: `
       <div fxLayout="row" fxLayoutAlign="start center" class="breadcrumbs-container">
-          <p-breadcrumb fxFlex="auto" [model]="breadcrumbs" [home]="{icon: 'fa fa-home'}"></p-breadcrumb>
+          <p-breadcrumb fxFlex="auto" [model]="breadcrumbs" [home]="{ routerLink: '/', icon: 'fa fa-home'}"></p-breadcrumb>
           <router-outlet class="breadcrumbs-right" fxFlex="initial" fxLayoutAlign="end start"
                          name="breadcrumbs-right"></router-outlet>
       </div>

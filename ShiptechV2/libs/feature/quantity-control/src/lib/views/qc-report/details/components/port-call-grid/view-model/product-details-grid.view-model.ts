@@ -2,7 +2,7 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColGroupDef, GridOptions } from 'ag-grid-community';
-import { RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ProductDetailsColGroupsEnum, ProductDetailsColGroupsLabels, ProductDetailsColumns, ProductDetailsColumnsLabels } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
@@ -46,6 +46,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     multiSortKey: 'ctrl',
     getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
     enableBrowserTooltips: true,
+    suppressContextMenu: true,
 
     defaultColDef: {
       editable: false,

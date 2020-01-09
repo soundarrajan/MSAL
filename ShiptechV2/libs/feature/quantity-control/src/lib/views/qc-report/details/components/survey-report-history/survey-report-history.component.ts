@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { QcSurveyHistoryListGridViewModel } from './view-model/qc-survey-history-list-grid.view-model';
 import { Select } from '@ngxs/store';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 @Component({
   selector: 'shiptech-survey-report-history',
@@ -14,7 +15,7 @@ import { QcReportState } from '../../../../../store/report/qc-report.state';
 })
 export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
 
-  public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.Report}`;
+  public reportDetailsRoutePath = `/${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.Report}`;
 
   @Select(QcReportState.nbOfMatched) nbOfMatched$: Observable<number>;
   @Select(QcReportState.nbOfMatchedWithinLimit) nbOfMatchedWithinLimit$: Observable<number>;

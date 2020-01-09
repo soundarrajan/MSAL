@@ -162,7 +162,7 @@ export class QcReportState {
       const item = items[i];
       const robBeforeDiff = QcReportState.getMatchStatus(item.robBeforeDeliveryLogBookROB, item.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
       const deliveredDiff = QcReportState.getMatchStatus(item.deliveredQuantityBdnQty, item.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
-      const robAfterDiff = QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
+      const robAfterDiff = !item.isSludge ? QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit): undefined;
 
       if (!robBeforeDiff && !deliveredDiff && !robAfterDiff)
         continue;
@@ -353,11 +353,10 @@ export class QcReportState {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
       const detailsDto = success.dto;
-      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productType => new QcProductTypeListItemStateModel(productType)), s => s.productType.id);
+      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productTypeItem => new QcProductTypeListItemStateModel(productTypeItem, detailsDto.sludgeProductType.id === productTypeItem.productType.id)), s => s.productType.id);
 
       patchState({
-        details: {
-          ...state.details,
+        details: new QcReportDetailsModel({
           isNew: !success.reportId,
           _isLoading: false,
           _hasLoaded: true,
@@ -375,8 +374,9 @@ export class QcReportState {
           robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
           robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
-          emailTransactionTypeId: detailsDto.emailTransactionTypeId
-        }
+          emailTransactionTypeId: detailsDto.emailTransactionTypeId,
+
+        })
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
       patchState({

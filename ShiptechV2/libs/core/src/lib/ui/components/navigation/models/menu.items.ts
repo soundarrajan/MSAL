@@ -1,20 +1,8 @@
 import { KeyedMenuItems } from './sidebar-view.model';
-import { KnownPrimaryRoutes } from '../../../../enums/known-modules-routes.enum';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 
 export const BASE_MENU: KeyedMenuItems = {
-  'qualityControl': {
-    'label': 'Quantity Control',
-    'routerLink': `/${KnownPrimaryRoutes.QuantityControl}`,
-  },
-  'blankPage': {
-    'label': 'Blank Page',
-    'routerLink': `/${KnownPrimaryRoutes.QuantityControl}/blank-page`,
-  },
-  'lazyLoad': {
-    'label': 'Lazy load',
-    'routerLink': `/${KnownPrimaryRoutes.LazyLoad}`,
-  },
   'masters': {
     'label': 'Masters',
     'items': {
@@ -603,6 +591,11 @@ export const BASE_MENU: KeyedMenuItems = {
   'delivery': {
     'label': 'Delivery',
     'items': {
+      'qualityControl': {
+        'label': 'Quantity Control List',
+        'routerLink': [`/${KnownPrimaryRoutes.QuantityControl}`],
+        'target': '_blank'
+      },
       'orders_to_be_delivered': {
         'label': 'Orders to be delivered',
         'url': '/delivery/ordersdelivery',

@@ -47,6 +47,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
 
     deltaRowDataMode: true,
     suppressPaginationPanel: true,
+    suppressContextMenu: true,
 
     multiSortKey: 'ctrl',
     getRowNodeId: (data: IQcEventsLogItemState) => data.id.toString(),

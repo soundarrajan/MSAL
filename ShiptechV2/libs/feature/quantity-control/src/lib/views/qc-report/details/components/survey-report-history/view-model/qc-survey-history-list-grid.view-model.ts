@@ -49,7 +49,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     rowSelection: RowSelection.Multiple,
     suppressRowClickSelection: true,
-
+    suppressContextMenu: true,
     multiSortKey: 'ctrl',
 
     enableBrowserTooltips: true,

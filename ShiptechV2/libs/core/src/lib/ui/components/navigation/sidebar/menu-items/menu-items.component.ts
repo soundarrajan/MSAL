@@ -80,6 +80,7 @@ export class AppSubMenuComponent {
 
       this.app.overlayMenuActive = false;
       this.app.staticMenuMobileActive = false;
+      this.app.staticMenuDesktopInactive = true;
       this.app.menuHoverActive = !this.app.menuHoverActive;
       this.app.unblockBodyScroll();
     }
