@@ -56,6 +56,7 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
     comment: faker.lorem.sentence(),
     isVerifiedSludgeQty: faker.random.boolean(),
     totalCount: faker.random.number(20),
-    emailTransactionTypeId: faker.random.number(500)
+    emailTransactionTypeId: faker.random.number(500),
+    reportId: faker.random.number(500)
   };
 }

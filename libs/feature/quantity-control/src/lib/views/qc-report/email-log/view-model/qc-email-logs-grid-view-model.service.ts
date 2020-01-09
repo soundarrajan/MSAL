@@ -27,6 +27,8 @@ import {
 } from "@shiptech/core/grid/server-grid/server-grid-condition-filter.enum";
 import { nameof } from "@shiptech/core/utils/type-definitions";
 import { ServerGridFilterFilter } from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
+import { IAppState } from "@shiptech/core/store/states/app.state.interface";
+import { Store } from "@ngxs/store";
 
 function model(prop: keyof IQcEmailLogsItemDto): keyof IQcEmailLogsItemDto {
   return prop;
@@ -36,7 +38,6 @@ function model(prop: keyof IQcEmailLogsItemDto): keyof IQcEmailLogsItemDto {
 export class QcEmailLogsGridViewModel extends BaseGridViewModel {
 
   public searchText: string;
-  public filters: ServerGridFilterFilter[];
   private readonly minToleranceLimit;
   private readonly maxToleranceLimit;
 
@@ -126,20 +127,11 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
     private quantityControlService: QcReportService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private store: Store,
   ) {
     super("quantity-control-email-logs-grid", columnPreferences, changeDetector, loggerFactory.createLogger(QcEmailLogsGridViewModel.name));
     this.init(this.gridOptions, false);
-
-    this.filters = [
-      {
-        ColumnName: "TransactionTypeId",
-        Value: "36"
-      },
-      {
-        ColumnName: "TransactionIds",
-        Value: "1"
-      }];
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
@@ -153,7 +145,19 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsColumnServerKeys, this.searchText, this.filters)).subscribe(
+    const emailTransactionTypeId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.emailTransactionTypeId;
+    const reportId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.reportId;
+    const filters: ServerGridFilterFilter[] = [
+      {
+        ColumnName: "TransactionTypeId",
+        Value: emailTransactionTypeId.toString(10)
+      },
+      {
+        ColumnName: "TransactionIds",
+        Value: reportId.toString(10)
+      }];
+
+    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsColumnServerKeys, this.searchText, filters)).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
