@@ -61,6 +61,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       sortable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams,
+      flex: 1,
     }
   };
 
@@ -85,7 +86,9 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     width: 800,
     autoHeight: true,
     cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null,
-    tooltipValueGetter: params => params.valueFormatted ?? params.value
+    tooltipValueGetter: params => params.valueFormatted ?? params.value,
+    flex: 2,
+    minWidth: 200,
   };
 
   createdByCol: ITypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
@@ -93,7 +96,6 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
     valueFormatter: params => params.value?.displayName ?? params.value?.name,
-    width: 400,
     filterParams: {
       valueGetter: rowModel => rowModel.data?.createdBy?.displayName ?? rowModel.data?.createdBy?.name
     }
@@ -105,7 +107,6 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
-    width: 400
   };
 
   constructor(
