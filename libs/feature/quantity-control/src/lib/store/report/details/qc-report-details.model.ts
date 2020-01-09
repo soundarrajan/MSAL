@@ -29,6 +29,7 @@ export class QcReportDetailsModel {
   vesselResponse: IQcVesselResponsesState;
 
   emailTransactionTypeId: number;
+  reportId: number;
 
   isSaving = false;
   isRaisingClaim: boolean;
