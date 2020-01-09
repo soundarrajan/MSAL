@@ -710,6 +710,7 @@ span.variance {
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible {
     display: inline-table;
     height: 100%;
+    text-align: center;
 }
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible:before {
@@ -1066,8 +1067,8 @@ display: flex;
     background-color: #f1f4f6;
 }
 .label_false_visible:last-child .ui-grid-header-cell:last-child {
-    min-width: 220px;
-    max-width: 220px;
+    min-width: 270px;
+ /*   max-width: 220px;*/
 }
 
 //vessel master
