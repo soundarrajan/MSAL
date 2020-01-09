@@ -13,6 +13,11 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not load report list. Please try again later.'
   });
 
+  static readonly LoadEmailLogsFailed = new ModuleError({
+    code: ErrorCode.LoadEmailLogsFailed,
+    message: 'Could not load email list. Please try again later.'
+  });
+
   static readonly LoadReportSurveyHistoryFailed = new ModuleError({
     code: ErrorCode.LoadReportSurveyHistoryFailed,
     message: 'Could not report survey history. Please try again later.'

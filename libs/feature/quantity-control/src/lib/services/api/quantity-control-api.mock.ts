@@ -31,6 +31,8 @@ import { IQcSurveyHistoryListItemDto } from './dto/qc-survey-history-list-item.d
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
 import * as faker from 'faker';
+import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
+import { getMockQcEmailLogs } from "./mock/qc-email-list.mock";
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +56,16 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
       nbOfMatched: firstItem.nbOfMatched || 0,
       nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
       nbOfNotMatched: firstItem.nbOfNotMatched || 0
+    });
+  }
+
+  @ApiCall()
+  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse> {
+    const items = getMockQcEmailLogs(request.pagination.take) || [];
+
+    return of({
+      payload: items,
+      matchedCount: items.length
     });
   }
 
