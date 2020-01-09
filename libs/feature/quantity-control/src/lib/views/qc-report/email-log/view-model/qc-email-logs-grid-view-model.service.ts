@@ -29,6 +29,8 @@ import { nameof } from "@shiptech/core/utils/type-definitions";
 import { ServerGridFilterFilter } from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
 import { IAppState } from "@shiptech/core/store/states/app.state.interface";
 import { Store } from "@ngxs/store";
+import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
+import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
 
 function model(prop: keyof IQcEmailLogsItemDto): keyof IQcEmailLogsItemDto {
   return prop;
@@ -41,10 +43,17 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
   private readonly minToleranceLimit;
   private readonly maxToleranceLimit;
 
+  private defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.format.quantityPrecision
+  };
+
   fromCol: ITypedColDef<IQcEmailLogsItemDto, string> = {
     headerName: QcEmailLogsColumnsLabels.from,
     colId: QcEmailLogsColumns.from,
     field: model("from"),
+    cellRendererFramework: AgCellTemplateComponent,
     width: 306
   };
 
@@ -74,14 +83,9 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     headerName: QcEmailLogsColumnsLabels.sentAt,
     colId: QcEmailLogsColumns.sentAt,
     field: model("sentAt"),
+    filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     width: 206
-  };
-
-  private defaultColFilterParams = {
-    clearButton: true,
-    applyButton: true,
-    precision: () => this.format.quantityPrecision
   };
 
   gridOptions: GridOptions = {
