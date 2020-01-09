@@ -12,6 +12,7 @@ import { TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definiti
 import { SurveyStatusLookups } from '../../services/survey-status-lookups';
 import { RowNode } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppConfig } from '@shiptech/core/config/app-config';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -33,6 +34,7 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(public gridViewModel: QcReportsListGridViewModel,
+              public appConfig: AppConfig,
               private messageBox: MessageBoxService,
               private reportService: QcReportService,
               private toastr: ToastrService,

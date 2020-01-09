@@ -1,8 +1,8 @@
-﻿commit bca283d87408ce6aa24c788d28f6d0a4e36c5692
+﻿commit 7d6730b31c2c40f92e9821354f6b24946c761ba7
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 9 17:20:31 2020 +0200
+Date:   Thu Jan 9 19:30:18 2020 +0200
 
-    Qc report details event comments tooltip
-    Qc report list comment column tooltip
+    openLinkInNewTab feature disable for ro settings.ro
+    qc report details events column flex options
 
 branch: master
