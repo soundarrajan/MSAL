@@ -6,7 +6,7 @@ export class QcEmailLogsItemState {
 }
 
 export class QcEmailLogModel extends BaseModel {
-  items: QcEmailLogsItemState[];
+  payload: QcEmailLogsItemState[];
   gridInfo: IServerGridInfo = { pagination: { skip: 0, take: DefaultPageSize } };
 
   matchedCount: number;
