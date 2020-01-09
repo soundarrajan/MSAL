@@ -1,14 +1,8 @@
-﻿commit 8df84e0223d6b56a4a65c3cda3aae50083319a04
+﻿commit 2f98ef386c9da6778acb176f9d221a9a94f26502
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 9 14:46:47 2020 +0200
+Date:   Thu Jan 9 16:45:58 2020 +0200
 
-    Fix menu items not opening in new tabs.
-    Moved Quantity Control menu item in Delivery Menu.
-    Fixed breadcrumbs home menu not working.
-    Changed how legacy config is loaded (for localhost it always defaults to defaultConfig.json) if not domain.json.
-    Disabled context menu on all grids.
-    Added clear button to search-box.component.ts and refactored to debounce
-    Qc Report Details - do no render textboxes on sludge row for after rob delivery
-    Fixed survery history bad port call id url
+    Qc Report Details auto size columns using flex.
+    Auto size number inputs based on available cell space.
 
 branch: master
