@@ -375,7 +375,8 @@ export class QcReportState {
           robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
           robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
-          emailTransactionTypeId: detailsDto.emailTransactionTypeId
+          emailTransactionTypeId: detailsDto.emailTransactionTypeId,
+          reportId: detailsDto.reportId
         }
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
