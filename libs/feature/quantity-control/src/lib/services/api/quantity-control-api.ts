@@ -26,6 +26,7 @@ import {
   IGetQcReportDetailsAuditLogRequest,
   IGetQcReportDetailsAuditLogResponse
 } from "./request-response/qc-report-details-audit-log.request-response";
+import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -44,12 +45,17 @@ export namespace RobApiPaths {
   export const getAuditLog = () => 'api/admin/audit/get';
 }
 
+export namespace MasterApiPaths {
+  export const getEmailLogs = () => `api/masters/emaillogs/list`;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApi implements IQuantityControlApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.robApi;
+  private _masterApiUrl = this.appConfig.masterApi;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {
   }
@@ -119,6 +125,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
   @ObservableException()
   getAuditLog(request: IGetQcReportDetailsAuditLogRequest): Observable<IGetQcReportDetailsAuditLogResponse> {
     return this.http.post<IGetQcReportDetailsAuditLogResponse>(`${this._apiUrl}/${RobApiPaths.getAuditLog()}`, { payload: {...request, Filters: [{ColumnName: 'BusinessId', Value: '1'}, {ColumnName: 'Transaction', Value: 'QuantityControlReport'}]} });
+  }
+
+  @ObservableException()
+  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse> {
+    return this.http.post<IGetQcEmailLogsResponse>(`${this._masterApiUrl}/${MasterApiPaths.getEmailLogs()}`, { payload: request });
   }
 }
 
