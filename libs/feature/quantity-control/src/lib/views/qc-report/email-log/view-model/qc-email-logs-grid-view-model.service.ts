@@ -26,7 +26,7 @@ import {
   ShiptechGridFilterOperators
 } from "@shiptech/core/grid/server-grid/server-grid-condition-filter.enum";
 import { nameof } from "@shiptech/core/utils/type-definitions";
-import { ServerGridFilterFilter } from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
+import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IAppState } from "@shiptech/core/store/states/app.state.interface";
 import { Store } from "@ngxs/store";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
@@ -150,8 +150,8 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const emailTransactionTypeId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.emailTransactionTypeId;
-    const reportId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.reportId;
-    const filters: ServerGridFilterFilter[] = [
+    const reportId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
+    const filters: ServerQueryFilter[] = [
       {
         ColumnName: "TransactionTypeId",
         Value: emailTransactionTypeId.toString(10)

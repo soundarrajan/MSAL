@@ -15,7 +15,6 @@ import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './r
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
-import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
 
 export interface IQuantityControlApiService {
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -41,6 +40,4 @@ export interface IQuantityControlApiService {
   markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse>;
 
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse>;
-
-  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse>;
 }

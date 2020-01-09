@@ -1,5 +1,4 @@
-import { nullable } from '@shiptech/core/utils/nullable';
-import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
 
 export class LoadEmailLogsAction {
   static readonly type = '[QC.Email.Logs] Load Email Logs';
@@ -9,10 +8,10 @@ export class LoadEmailLogsAction {
 
   public log(): any {
     return {
-      serverGridInfo: nullable(this.serverGridInfo)?.pagination,
-      searchText: nullable(this.serverGridInfo)?.searchText,
-      hasFilters: (nullable(this.serverGridInfo)?.pageFilters?.filters ?? []).length,
-      hasSorts: (nullable(this.serverGridInfo)?.sortList?.sortList || []).length
+      serverGridInfo: this.serverGridInfo?.pagination,
+      searchText: this.serverGridInfo?.searchText,
+      hasFilters: (this.serverGridInfo?.pageFilters?.filters ?? []).length,
+      hasSorts: (this.serverGridInfo?.sortList?.sortList || []).length
     };
   }
 }

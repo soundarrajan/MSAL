@@ -88,6 +88,8 @@ import {
   LoadEmailLogsFailedAction,
   LoadEmailLogsSuccessfulAction
 } from "../store/report/email-log/qc-email-log.actions";
+import { QUANTITY_CONTROL_EMAIL_LOGS_API_SERVICE } from "./api/quantity-control-email-logs-api";
+import { IQuantityControlEmailLogsApiService } from "./api/quantity-control-email-logs.api.service.interface";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -96,7 +98,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private urlService: UrlService,
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
-    @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
+    @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
+    @Inject(QUANTITY_CONTROL_EMAIL_LOGS_API_SERVICE) private apiEmail: IQuantityControlEmailLogsApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -135,7 +138,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getEmailLogs$(gridRequest: IServerGridInfo): Observable<IGetQcEmailLogsResponse> {
     return this.apiDispatch(
-      () => this.api.getEmailLogs({ ...gridRequest }),
+      () => this.apiEmail.getEmailLogs({ ...gridRequest }),
       new LoadEmailLogsAction(gridRequest),
       response => new LoadEmailLogsSuccessfulAction(response.matchedCount),
       LoadEmailLogsFailedAction,
