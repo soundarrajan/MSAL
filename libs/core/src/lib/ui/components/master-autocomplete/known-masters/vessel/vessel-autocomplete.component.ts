@@ -17,7 +17,7 @@ const nameField = nameof<IDisplayLookupDto>('name');
   templateUrl: './vessel-autocomplete.component.html',
   styleUrls: ['./vessel-autocomplete.component.scss'],
   exportAs: 'vesselMasterAutocomplete',
- // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   private _destroy$ = new Subject();
@@ -66,7 +66,6 @@ export class VesselAutocompleteComponent implements OnInit, AfterViewInit, OnDes
     }
 
     this.autoComplete.completeMethod.pipe(
-      tap(() => console.log('test')),
       switchMap((event: { query: string }) => {
         // Note: Dexie.js is not efficient with filter or contains like, because it executes the lambda for each row.
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH

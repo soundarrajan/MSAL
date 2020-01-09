@@ -24,11 +24,11 @@ export enum VesselPortCallsMasterListColumnsLabels {
  */
 export const VesselPortCallsMasterListColumnServerKeys: Record<VesselPortCallsMasterListColumns, string> = {
   [VesselPortCallsMasterListColumns.selection]: undefined,
-  [VesselPortCallsMasterListColumns.locationPort]: 'locationPort',
-  [VesselPortCallsMasterListColumns.voyageId]: 'voyageId',
+  [VesselPortCallsMasterListColumns.locationPort]: 'LocationPort_Name',
+  [VesselPortCallsMasterListColumns.voyageId]: 'VoyageId_Name',
   [VesselPortCallsMasterListColumns.eta]: 'eta',
   [VesselPortCallsMasterListColumns.etb]: 'etb',
   [VesselPortCallsMasterListColumns.etd]: 'etd',
   [VesselPortCallsMasterListColumns.portCallId]: 'portCallId',
-  [VesselPortCallsMasterListColumns.service]: 'service',
+  [VesselPortCallsMasterListColumns.service]: 'Service_Name',
 };

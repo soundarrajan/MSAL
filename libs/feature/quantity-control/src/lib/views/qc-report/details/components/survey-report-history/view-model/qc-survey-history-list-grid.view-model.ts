@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnServerKeys, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
@@ -103,7 +103,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
       'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
       'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
     },
-    width: 78
+    width: 85
   };
 
   qtyMatchedStatusCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
@@ -124,7 +124,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcSurveyHistoryListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
-    width: 153,
+    width: 170,
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
@@ -135,7 +135,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    width: 181
+    width: 195
   };
 
   diffRobBeforeDeliveryCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -147,9 +147,9 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit
     },
-    width: 128
+    width: 140
   };
 
   qtyBeforeDeliveryUomCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
@@ -157,7 +157,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   bdnQuantityCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -185,7 +185,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffDeliveredQty) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit
     }
   };
 
@@ -194,7 +194,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookRobAfterDeliveryCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -222,7 +222,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffRobAfterDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit
     }
   };
 
@@ -230,7 +230,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcSurveyHistoryListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   logBookSludgeRobBeforeDischargeCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -258,7 +258,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit,
+      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit
     }
   };
 
@@ -274,7 +274,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.qtySludgeDischargedUom,
     colId: QcSurveyHistoryListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
-    valueFormatter: params => params.value?.displayName
+    valueFormatter: params => params.value?.name
   };
 
   commentCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
@@ -316,7 +316,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     // Note: When portCall changes we need to reload the grid,
     combineLatest(
       this.gridReady$,
-      this.selectReportDetails(state => state.portCall),
+      this.selectReportDetails(state => state.portCall)
     ).pipe(
       filter(() => !!this.selectReportDetailsSnapshot(s => s.surveyHistory?._hasLoaded)),
       tap(() => this.gridApi.purgeServerSideCache()),
@@ -385,6 +385,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
     return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
+
   private selectReportDetailsSnapshot<T>(select: ((state: IQcReportDetailsState) => T)): T {
     return this.store.selectSnapshot((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
