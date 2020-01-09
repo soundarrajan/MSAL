@@ -19,7 +19,6 @@ import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/
 import { ISaveReportDetailsRequest, ISaveReportDetailsResponse } from './request-response/report-details-save.request-response';
 import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './request-response/claims-list.request-response';
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
-import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
 import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
@@ -40,17 +39,12 @@ export namespace RobApiPaths {
   export const getRelatedVoyageOrders = () => `api/quantityControlReport/getRelatedVoyageOrders`;
 }
 
-export namespace MasterApiPaths {
-  export const getEmailLogs = () => `api/masters/emaillogs/list`;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApi implements IQuantityControlApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.robApi;
-  private _masterApiUrl = this.appConfig.masterApi;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {
   }
@@ -117,10 +111,6 @@ export class QuantityControlApi implements IQuantityControlApiService {
     return this.http.post<IQcLoadPortCallBdnResponse>(`${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`, { payload: request });
   }
 
-  @ObservableException()
-  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse> {
-    return this.http.post<IGetQcEmailLogsResponse>(`${this._masterApiUrl}/${MasterApiPaths.getEmailLogs()}`, { payload: request });
-  }
 }
 
 export const QUANTITY_CONTROL_API_SERVICE = new InjectionToken<IQuantityControlApiService>('QUANTITY_CONTROL_API_SERVICE');

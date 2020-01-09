@@ -43,8 +43,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       vesselResponses: {
         categories: mockCategoriesLookup
       },
-      emailTransactionTypeId: faker.random.number(),
-      reportId: faker.random.number()
+      emailTransactionTypeId: faker.random.number()
     };
   }
 
@@ -81,8 +80,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     comments: faker.random.words(faker.random.number({ min: 10, max: 40 })),
     hasEmailSent: faker.random.boolean(),
-    emailTransactionTypeId: faker.random.number(),
-    reportId: faker.random.number()
+    emailTransactionTypeId: faker.random.number()
   };
 }
 
