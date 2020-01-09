@@ -576,6 +576,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $("#timeline > .vis-timeline").css("display", "none"); 
                 $(".vis-timeline-zoom-container").css("display", "none");
                 $(".schedule-dashboard-timeline-footer").css("display","none");
+                toastr.error("No Voyages available for the selected period");
                 $("#timeline").append('<div class="noDataFound"> No Results Found</div>');
             } else {
                 $(".schedule-dashboard-timeline-footer").css("display", "block");
