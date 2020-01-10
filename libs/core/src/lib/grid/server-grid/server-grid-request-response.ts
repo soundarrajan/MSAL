@@ -6,9 +6,9 @@ import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.
 export interface IServerGridInfo {
   pageFilters?: IServerGridPageFilters;
   pagination?: IServerGridPagination;
-  sortList?: IServerGridSortsDto
+  sortList?: IServerGridSortsDto;
   searchText?: string;
-  filters?: ServerQueryFilter[]
+  filters?: ServerQueryFilter[];
 }
 
 export interface IServerGridPageFilters {
