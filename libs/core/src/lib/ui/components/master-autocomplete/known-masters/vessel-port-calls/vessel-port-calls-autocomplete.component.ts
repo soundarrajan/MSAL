@@ -3,7 +3,7 @@ import { AutoComplete } from 'primeng/primeng';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { AgGridKnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ServerGridConditionFilterEnum, ShiptechGridFilterOperators } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';

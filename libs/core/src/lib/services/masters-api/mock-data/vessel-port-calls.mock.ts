@@ -1,4 +1,4 @@
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import * as _ from 'lodash';
 import * as faker from 'faker';
 import { MockLocationsLookup } from '@shiptech/core/services/masters-api/mock-data/locations.mock';

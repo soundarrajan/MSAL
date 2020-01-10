@@ -10,10 +10,10 @@ import { QcReportService } from "../../../../services/qc-report.service";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import { AppError } from "@shiptech/core/error-handling/app-error";
-import { IQcDocumentsItemDto } from "../../../../services/api/dto/qc-document.dto";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
 import { QcDocumentsListColumns, QcDocumentsListColumnServerKeys, QcDocumentsListColumnsLabels } from "./qc-documents.columns";
 
-function model(prop: keyof IQcDocumentsItemDto): keyof IQcDocumentsItemDto {
+function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
 }
 
@@ -42,7 +42,7 @@ export class QcDocumentsListGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IQcDocumentsItemDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IDocumentsItemDto) => data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -51,21 +51,21 @@ export class QcDocumentsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  nameCol: ITypedColDef<IQcDocumentsItemDto, string> = {
+  nameCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: QcDocumentsListColumnsLabels.name,
     colId: QcDocumentsListColumns.name,
     field: model("name"),
     width: 106
   };
 
-  sizeCol: ITypedColDef<IQcDocumentsItemDto, string> = {
+  sizeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: QcDocumentsListColumnsLabels.size,
     colId: QcDocumentsListColumns.size,
     field: model("size"),
     width: 129
   };
 
-  fileTypeCol: ITypedColDef<IQcDocumentsItemDto, string> = {
+  fileTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: QcDocumentsListColumnsLabels.fileType,
     colId: QcDocumentsListColumns.fileType,
     field: model("fileType"),
