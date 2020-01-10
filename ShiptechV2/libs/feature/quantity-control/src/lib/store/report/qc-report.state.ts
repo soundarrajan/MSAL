@@ -376,9 +376,8 @@ export class QcReportState {
           robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
           emailTransactionTypeId: detailsDto.emailTransactionTypeId,
-          entityTransactionType: detailsDto.entityTransactionType,
-          reportId: detailsDto.reportId
-        }
+          entityTransactionType: detailsDto.entityTransactionType
+        })
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
       patchState({
@@ -721,7 +720,7 @@ export class QcReportState {
         const productType = productTypesById[p.productType.id];
         if (!productType) return;
 
-        productTypesById[p.productType.id] = {...productType, deliveredQuantityBdnQty: p.bdnQuantity};
+        productTypesById[p.productType.id] = { ...productType, deliveredQuantityBdnQty: p.bdnQuantity };
       });
 
       patchState({

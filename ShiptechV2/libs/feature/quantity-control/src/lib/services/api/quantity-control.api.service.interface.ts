@@ -15,11 +15,6 @@ import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './r
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
-import {
-  IGetQcReportDetailsAuditLogRequest,
-  IGetQcReportDetailsAuditLogResponse
-} from "./request-response/qc-report-details-audit-log.request-response";
-import { IGetQcEmailLogsRequest, IGetQcEmailLogsResponse } from "./request-response/qc-emails-list.request-response";
 
 export interface IQuantityControlApiService {
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse>;
@@ -46,7 +41,4 @@ export interface IQuantityControlApiService {
 
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse>;
 
-  getAuditLog(request: IGetQcReportDetailsAuditLogRequest): Observable<IGetQcReportDetailsAuditLogResponse>;
-
-  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse>;
 }
