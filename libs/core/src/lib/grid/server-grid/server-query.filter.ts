@@ -1,4 +1,4 @@
 export interface ServerQueryFilter {
-  ColumnName: string;
-  Value: string;
+  columnName: string;
+  value: string;
 }

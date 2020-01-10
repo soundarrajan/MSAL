@@ -1,13 +1,13 @@
 import { SurveyStatusEnumMap } from "../../../../../../feature/quantity-control/src/lib/core/enums/survey-status.enum";
-import { IEmailLogsMastersDto } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
+import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import { keys, range } from "lodash";
 import { date, internet, random } from "faker";
 
-export function getMockEmailLogs(n: number): IEmailLogsMastersDto[] {
+export function getMockEmailLogs(n: number): IEmailLogsItemDto[] {
   return range(1, n).map(id => getMockEmailLogsItem(id));
 }
 
-export function getMockEmailLogsItem(id: number): IEmailLogsMastersDto {
+export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
   const surveyStatuses = keys(SurveyStatusEnumMap);
   const surveyStatus = surveyStatuses[random.number({ min: 0, max: surveyStatuses.length - 1 })];
 

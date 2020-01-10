@@ -5,7 +5,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { Subject, throwError } from 'rxjs';
-import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
+import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import { AgGridKnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';

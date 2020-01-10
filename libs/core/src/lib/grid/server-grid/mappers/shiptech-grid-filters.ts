@@ -90,14 +90,13 @@ function flattenFilters(filters: AgGridFilterModelWithKey[]): AgGridFilterModelW
   return result;
 }
 
-export function transformLocalToServeGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string, filters?: ServerQueryFilter[]): IServerGridInfo {
+export function transformLocalToServeGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string): IServerGridInfo {
   return {
     pagination: getShiptechFormatPagination(params),
     sortList: getShiptechFormatSorts(params, serverColumnKeyMap),
     pageFilters: {
       filters: getShiptechFormatFilters(params, serverColumnKeyMap)
     },
-    filters: filters,
     searchText: searchText
   };
 }

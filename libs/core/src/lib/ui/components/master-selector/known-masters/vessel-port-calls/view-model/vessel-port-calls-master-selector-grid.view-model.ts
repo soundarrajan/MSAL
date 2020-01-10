@@ -12,7 +12,7 @@ import {
   VesselPortCallsMasterListColumnServerKeys,
   VesselPortCallsMasterListColumnsLabels
 } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/view-model/vessel-port-calls-master-list.columns';
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 function model(prop: keyof IVesselPortCallMasterDto): keyof IVesselPortCallMasterDto {
