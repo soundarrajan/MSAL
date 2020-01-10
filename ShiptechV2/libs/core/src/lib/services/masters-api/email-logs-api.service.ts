@@ -25,17 +25,8 @@ export class EmailLogsApi implements IEmailLogsApiService {
   }
 
   @ObservableException()
-  getEmailLogs(request: IEmailLogsRequest, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse> {
-    const filters: ServerQueryFilter[] = [
-      {
-        columnName: "TransactionTypeId",
-        value: emailTransactionTypeId.toString(10)
-      },
-      {
-        columnName: "TransactionIds",
-        value: reportId.toString(10)
-      }];
-    return this.http.post<IEmailLogsResponse>(`${this._apiUrl}/${EmailLogsApiPaths.getEmailLogs()}`, { payload: {...request, filters} });
+  getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse> {
+    return this.http.post<IEmailLogsResponse>(`${this._apiUrl}/${EmailLogsApiPaths.getEmailLogs()}`, { payload: {...request} });
   }
 }
 

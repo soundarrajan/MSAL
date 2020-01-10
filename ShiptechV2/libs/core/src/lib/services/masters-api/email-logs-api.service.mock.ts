@@ -18,7 +18,7 @@ export class EmailLogsApiMock implements IEmailLogsApiService {
   }
 
   @ApiCall()
-  getEmailLogs(request: IEmailLogsRequest, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse> {
+  getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse> {
     const items = getMockEmailLogs(request.pagination.take) || [];
 
     return of({
