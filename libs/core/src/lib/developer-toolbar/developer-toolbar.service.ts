@@ -18,6 +18,8 @@ import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel
 import 'reflect-metadata';
 import { EmailLogsMastersApi } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
 import { EmailLogsMastersApiMock } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.mock";
+import {AuditLogAdminApi} from "@shiptech/core/services/admin-api/audit-log-admin-api.service";
+import {AuditLogAdminApiMock} from "@shiptech/core/services/admin-api/audit-log-admin-api.service.mock";
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -38,6 +40,7 @@ export class DeveloperToolbarService implements OnDestroy {
               private userProfileApiMock: UserProfileApiMock,
               private vesselMastersApiServiceMock: VesselMastersApiMock,
               private emailLogsMastersApiServiceMock: EmailLogsMastersApiMock,
+              private auditLogAdminApiServiceMock: AuditLogAdminApiMock,
               private appConfig: AppConfig) {
   }
 
@@ -115,7 +118,7 @@ export class DeveloperToolbarService implements OnDestroy {
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
       });
-    
+
     this.registerApi(
       {
         id: EmailLogsMastersApi.name,
@@ -125,6 +128,17 @@ export class DeveloperToolbarService implements OnDestroy {
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS
+      });
+
+    this.registerApi(
+      {
+        id: AuditLogAdminApi.name,
+        displayName: 'Audit Logs Admin Api',
+        instance: this.auditLogAdminApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
       });
   }
 

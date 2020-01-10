@@ -7,7 +7,7 @@ import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-dat
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
 import { roundDecimals } from '@shiptech/core/utils/math';
-import {mockEttLookup} from "./audit-log-entityTransactionType.mock";
+import {random} from "faker";
 
 const mockDecimals = 3;
 
@@ -50,7 +50,11 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       },
       emailTransactionTypeId: faker.random.number(),
       reportId: faker.random.number(),
-      entityTransactionType: _.sample(mockEttLookup)
+      entityTransactionType: {
+        id: random.number(),
+        name: faker.random.word(),
+        displayName: faker.random.word()
+      }
     };
   }
 
@@ -90,7 +94,11 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     hasEmailSent: faker.random.boolean(),
     emailTransactionTypeId: faker.random.number(),
     reportId: faker.random.number(),
-    entityTransactionType: _.sample(mockEttLookup)
+    entityTransactionType: {
+      id: random.number(),
+      name: faker.random.word(),
+      displayName: faker.random.word()
+    }
   };
 }
 

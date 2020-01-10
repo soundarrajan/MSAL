@@ -10,18 +10,14 @@ import {AppError} from '@shiptech/core/error-handling/app-error';
 import {TenantFormattingService} from '@shiptech/core/services/formatting/tenant-formatting.service';
 import {TenantSettingsModuleName} from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import {TenantSettingsService} from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import {IQcReportDetailsAuditLogItemDto} from "../../../../services/api/dto/qc-report-details-audit-log.dto";
-import {
-  QcReportDetailsAuditLogColumns,
-  QcReportDetailsAuditLogColumnServerKeys,
-  QcReportDetailsAuditLogColumnsLabels
-} from "./qc-report-details-audit-log.columns";
+import {IQcReportDetailsAuditLogItemDto} from "@shiptech/core/services/admin-api/dtos/audit-log.dto";
+import {QcReportDetailsAuditLogColumns, QcReportDetailsAuditLogColumnServerKeys, QcReportDetailsAuditLogColumnsLabels} from "./qc-report-details-audit-log.columns";
 import {ModuleLoggerFactory} from "../../../../core/logging/module-logger-factory";
 import {QcReportService} from "../../../../services/qc-report.service";
 import {IDeliveryTenantSettings} from "../../../../core/settings/delivery-tenant-settings";
-import {ServerGridFilterFilter} from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
 import {IAppState} from "@shiptech/core/store/states/app.state.interface";
 import {Store} from "@ngxs/store";
+import {ServerQueryFilter} from "@shiptech/core/grid/server-grid/server-query.filter";
 
 @Injectable()
 export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
@@ -174,8 +170,8 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const entityTransactionType = (<IAppState>this.store.snapshot()).quantityControl.report.details.entityTransactionType;
-    const reportId = (<IAppState>this.store.snapshot()).quantityControl.report.details.reportId;
-    const filters: ServerGridFilterFilter[] = [
+    const reportId = (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
+    const filters: ServerQueryFilter[] = [
       {
         ColumnName: "BusinessId",
         Value: reportId.toString(10)

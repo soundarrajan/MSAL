@@ -21,10 +21,7 @@ import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './r
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
-import {
-  IGetQcReportDetailsAuditLogRequest,
-    IGetQcReportDetailsAuditLogResponse
-} from "./request-response/qc-report-details-audit-log.request-response";
+
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
   export const getReportsList = () => `api/quantityControlReport/list`;
@@ -39,7 +36,6 @@ export namespace RobApiPaths {
   export const verify = () => `api/quantityControlReport/verify`;
   export const revertVerify = () => `api/quantityControlReport/revertVerify`;
   export const getRelatedVoyageOrders = () => `api/quantityControlReport/getRelatedVoyageOrders`;
-  export const getAuditLog = () => 'api/admin/audit/get';
 }
 
 @Injectable({
@@ -114,10 +110,6 @@ export class QuantityControlApi implements IQuantityControlApiService {
     return this.http.post<IQcLoadPortCallBdnResponse>(`${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`, {payload: request});
   }
 
-  @ObservableException()
-  getAuditLog(request: IGetQcReportDetailsAuditLogRequest): Observable<IGetQcReportDetailsAuditLogResponse> {
-    return this.http.post<IGetQcReportDetailsAuditLogResponse>(`${this._adminApiUrl}/${RobApiPaths.getAuditLog()}`, {payload: request});
-  }
 }
 
 export const QUANTITY_CONTROL_API_SERVICE = new InjectionToken<IQuantityControlApiService>('QUANTITY_CONTROL_API_SERVICE');

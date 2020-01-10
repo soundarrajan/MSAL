@@ -82,7 +82,7 @@ import {
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
 } from "../store/report/details/actions/update-port-call-bdn.actions";
-import {IGetQcReportDetailsAuditLogResponse} from "./api/request-response/qc-report-details-audit-log.request-response";
+import {IAuditLogAdminResponse} from "@shiptech/core/services/admin-api/dtos/audit-log.dto";
 import {
   LoadAuditLogAction,
   LoadAuditLogFailedAction,
@@ -96,6 +96,8 @@ import {
 } from "../store/report/email-log/qc-email-log.actions";
 import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
 import { IEmailLogsMastersApiService } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.interface";
+import {AUDIT_LOG_ADMIN_API_SERVICE} from "@shiptech/core/services/admin-api/audit-log-admin-api.service";
+import {IAuditLogAdminApiService} from "@shiptech/core/services/admin-api/audit-log-admin-api.service.interface";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -105,7 +107,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
-    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsMastersApiService) {
+    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsMastersApiService,
+    @Inject(AUDIT_LOG_ADMIN_API_SERVICE) private apiAudit: IAuditLogAdminApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -131,11 +134,11 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getAuditLogList$(gridRequest: IServerGridInfo): Observable<IGetQcReportDetailsAuditLogResponse> {
+  getAuditLogList$(gridRequest: IServerGridInfo): Observable<IAuditLogAdminResponse> {
     return this.apiDispatch(
-      () => this.api.getAuditLog({...gridRequest}),
+      () => this.apiAudit.getAuditLog({...gridRequest}),
       new LoadAuditLogAction(gridRequest),
-      response => new LoadAuditLogSuccessfulAction(),
+      response => new LoadAuditLogSuccessfulAction(response.matchedCount),
       LoadAuditLogFailedAction,
       ModuleError.LoadAuditLogFailed
     );
