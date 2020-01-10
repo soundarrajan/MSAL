@@ -38,10 +38,11 @@
         </div>
         <span  ng-if="availableSubtypesLength.quantitySubtypes > 0 ">
             <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
-                {{ formValues.claimDetails.estimatedSettlementAmount = formValues.orderDetails.orderPrice * claimsOptions[0].payload.quantityShortage; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount'); }}
+               <!--  {{ formValues.claimDetails.estimatedSettlementAmount = formValues.orderDetails.orderPrice * claimsOptions[0].payload.quantityShortage; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount'); }} -->
             </span>
             <span class="hidden" ng-if="claimsOptions[0].payload.sellerQuantity && claimsOptions[0].payload.buyerQuantity && !formValues.claimType.quantityShortage ;">
-                {{ formValues.claimType.quantityShortage = claimsOptions[0].payload.quantityShortage; formValues.claimType.quantityShortageUom = claimsOptions[0].payload.quantityUom }}
+                {{  formValues.claimType.quantityShortageUom = claimsOptions[0].payload.quantityUom }}
+                <!-- {{formValues.claimType.quantityShortage = claimsOptions[0].payload.quantityShortage;}} -->
             </span>
             <span ng-init="initGridDropdowns('quantitySubtypes');"></span>
             <div id="grid_quantitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['quantitySubtypes']"></div>
@@ -49,12 +50,12 @@
         <span ng-if="availableSubtypesLength.densitySubtypes > 0 ">
         <!-- <span ng-if="IsQuantitySubtype == false && CM.table == 'den'"> -->
             <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
-                {{ formValues.claimDetails.estimatedSettlementAmount =  formValues.orderDetails.orderPrice * claimsOptions[13].payload.quantityShortage; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount');  }}
+               <!--  {{ formValues.claimDetails.estimatedSettlementAmount =  formValues.orderDetails.orderPrice * claimsOptions[13].payload.quantityShortage; triggerChangeFields('EstimatedSettlementAmount', 'claimDetails.estimatedSettlementAmount');  }} -->
             </span>
 
             <span class="hidden" ng-if="claimsOptions[13].payload.bdnDensity && claimsOptions[13].payload.labDensity && claimsOptions[13].payload.bdnQuantity  && !formValues.claimType.quantityShortage">
                 {{ formValues.claimType.quantityShortageUom = claimsOptions[13].payload.bdnQuantityUom }}
-                {{ formValues.claimType.quantityShortage = claimsOptions[13].payload.quantityShortage; }}
+                <!-- {{ formValues.claimType.quantityShortage = claimsOptions[13].payload.quantityShortage; }} -->
             </span>
             <span ng-init="initGridDropdowns('densitySubtypes');"></span>
             <div id="grid_densitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['densitySubtypes']"></div>
