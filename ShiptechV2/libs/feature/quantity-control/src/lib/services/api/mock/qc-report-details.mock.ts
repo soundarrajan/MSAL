@@ -26,6 +26,9 @@ export const mockCategoriesLookup: IDisplayLookupDto[] = [
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   const isNew = !id;
 
+  const productTypeCategories =  getMockQcReportProductTypes(faker.random.number({ min: 5, max: 5 }), true);
+  const sludgeProductType = _.last(productTypeCategories)?.productType;
+
   if (isNew) {
     return {
       id: 0,
@@ -39,7 +42,8 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       uoms: {
         options: mockUomsLookup
       },
-      productTypeCategories: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 5 }), true),
+      productTypeCategories: productTypeCategories,
+      sludgeProductType: sludgeProductType,
       vesselResponses: {
         categories: mockCategoriesLookup
       },
@@ -64,7 +68,8 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       robBeforeDeliveryUom: _.sample(mockUomsLookup),
       options: mockUomsLookup
     },
-    productTypeCategories: getMockQcReportProductTypes(faker.random.number({ min: 5, max: 10 })),
+    productTypeCategories: productTypeCategories,
+    sludgeProductType: sludgeProductType,
     vesselResponses: {
       categories: mockCategoriesLookup,
       bunker: {

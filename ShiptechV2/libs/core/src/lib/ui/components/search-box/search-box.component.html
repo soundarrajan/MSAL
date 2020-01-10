@@ -1,4 +1,8 @@
-<input type="text" pInputText [formControl]="formControl" [placeholder]="placeholder" (keyup.enter)="search()" class="search-box">
-<button class="searchButton" type="button" (click)="search()">
-    <i class="fa fa-search"></i>
+<input type="text" pInputText [formControl]="searchTextField" [placeholder]="placeholder" (keydown.enter)="search()" class="search-box">
+<button class="searchButton" type="submit" (click)="search()">
+  <i class="fa fa-search"></i>
+</button>
+
+<button class="clearButton" type="button" (click)="clear()" *ngIf="!!searchTextField.value">
+  Clear
 </button>

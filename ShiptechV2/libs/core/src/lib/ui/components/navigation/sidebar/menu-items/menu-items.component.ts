@@ -3,6 +3,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { SidebarComponent } from '../sidebar.component';
 import { MenuItem } from 'primeng/primeng';
+import { AppConfig } from '@shiptech/core/config/app-config';
 
 @Component({
   /* tslint:disable:component-selector */
@@ -44,7 +45,7 @@ export class AppSubMenuComponent {
 
   activeIndex: number;
 
-  constructor(public app: LayoutMainComponent, public appMenu: SidebarComponent) {
+  constructor(public app: LayoutMainComponent, public appMenu: SidebarComponent, public appConfig: AppConfig) {
   }
 
   itemClick(event: Event, item: MenuItem, index: number): boolean {
@@ -80,6 +81,7 @@ export class AppSubMenuComponent {
 
       this.app.overlayMenuActive = false;
       this.app.staticMenuMobileActive = false;
+      this.app.staticMenuDesktopInactive = true;
       this.app.menuHoverActive = !this.app.menuHoverActive;
       this.app.unblockBodyScroll();
     }
