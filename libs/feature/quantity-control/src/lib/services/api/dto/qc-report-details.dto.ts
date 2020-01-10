@@ -16,6 +16,7 @@ export interface IQcReportDetailsDto {
   hasEmailSent?: boolean;
   emailTransactionTypeId: number;
   reportId: number;
+  entityTransactionType: IDisplayLookupDto;
 }
 
 export interface IQcReportProductTypeDto {

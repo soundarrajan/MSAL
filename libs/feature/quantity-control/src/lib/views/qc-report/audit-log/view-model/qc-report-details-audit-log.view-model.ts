@@ -20,6 +20,8 @@ import {ModuleLoggerFactory} from "../../../../core/logging/module-logger-factor
 import {QcReportService} from "../../../../services/qc-report.service";
 import {IDeliveryTenantSettings} from "../../../../core/settings/delivery-tenant-settings";
 import {ServerGridFilterFilter} from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
+import {IAppState} from "@shiptech/core/store/states/app.state.interface";
+import {Store} from "@ngxs/store";
 
 @Injectable()
 export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
@@ -31,7 +33,6 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
   };
 
   public searchText: string;
-  public filters: ServerGridFilterFilter[];
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -140,20 +141,11 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
     tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
     private reportService: QcReportService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private store: Store
   ) {
     super('quantity-control-report-details-audit-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportDetailsAuditLogGridViewModel.name));
     this.init(this.gridOptions, false);
-
-    this.filters = [
-      {
-        ColumnName: 'BusinessId',
-        Value: '1'
-      },
-      {
-        ColumnName: 'Transaction',
-        Value: 'QuantityControlReport'
-      }];
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
@@ -181,7 +173,18 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText, this.filters)).subscribe(
+    const entityTransactionType = (<IAppState>this.store.snapshot()).quantityControl.report.details.entityTransactionType;
+    const reportId = (<IAppState>this.store.snapshot()).quantityControl.report.details.reportId;
+    const filters: ServerGridFilterFilter[] = [
+      {
+        ColumnName: "BusinessId",
+        Value: reportId.toString(10)
+      },
+      {
+        ColumnName: "Transaction",
+        Value: entityTransactionType.name
+      }];
+    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText, filters)).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('audit'));
