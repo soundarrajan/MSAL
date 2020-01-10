@@ -81,19 +81,21 @@ import {
   QcUpdatePortCallAction,
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
-} from '../store/report/details/actions/update-port-call-bdn.actions';
+} from "../store/report/details/actions/update-port-call-bdn.actions";
 import {IGetQcReportDetailsAuditLogResponse} from "./api/request-response/qc-report-details-audit-log.request-response";
 import {
   LoadAuditLogAction,
   LoadAuditLogFailedAction,
   LoadAuditLogSuccessfulAction
 } from "../store/report/audit-log/qc-audit-log.actions";
-import { IGetQcEmailLogsResponse } from "./api/request-response/qc-emails-list.request-response";
+import { IEmailLogsMastersResponse } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
 import {
   LoadEmailLogsAction,
   LoadEmailLogsFailedAction,
   LoadEmailLogsSuccessfulAction
 } from "../store/report/email-log/qc-email-log.actions";
+import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
+import { IEmailLogsMastersApiService } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.interface";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -102,7 +104,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private urlService: UrlService,
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
-    @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
+    @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
+    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsMastersApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -150,9 +153,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getEmailLogs$(gridRequest: IServerGridInfo): Observable<IGetQcEmailLogsResponse> {
+  getEmailLogs$(gridRequest: IServerGridInfo): Observable<IEmailLogsMastersResponse> {
     return this.apiDispatch(
-      () => this.api.getEmailLogs({ ...gridRequest }),
+      () => this.apiEmail.getEmailLogs({ ...gridRequest }),
       new LoadEmailLogsAction(gridRequest),
       response => new LoadEmailLogsSuccessfulAction(response.matchedCount),
       LoadEmailLogsFailedAction,

@@ -65,16 +65,6 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getEmailLogs(request: IGetQcEmailLogsRequest): Observable<IGetQcEmailLogsResponse> {
-    const items = getMockQcEmailLogs(request.pagination.take) || [];
-
-    return of({
-      payload: items,
-      matchedCount: items.length
-    });
-  }
-
-  @ApiCall()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
     const items = getMockQcSurveyHistoryList(request.pagination.take) || [];
     const firstItem = (_.first(items) || <IQcSurveyHistoryListItemDto>{});

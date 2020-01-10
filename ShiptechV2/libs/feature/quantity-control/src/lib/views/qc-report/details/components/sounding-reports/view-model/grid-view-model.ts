@@ -106,6 +106,7 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     animateRows: true,
     multiSortKey: 'ctrl',
     domLayout: 'autoHeight',
+    suppressContextMenu: true,
     columnDefs: [
       this.detailsReportIdCol,
       this.tankIdCol,
@@ -139,6 +140,8 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     masterDetail: true,
     keepDetailRows: true,
     keepDetailRowsCount: 100,
+    suppressContextMenu: true,
+
     detailCellRendererParams: {
       detailGridOptions: this.detailsGridOptions,
       getDetailRowData: params => this.detailServerSideGetRows(params)

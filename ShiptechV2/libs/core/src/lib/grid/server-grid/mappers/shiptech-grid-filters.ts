@@ -17,7 +17,7 @@ import {
 import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
 import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import { ServerGridFilterFilter } from "@shiptech/core/grid/server-grid/server-grid-filter.filter";
+import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 
 type AgGridFilterModelWithKey  = AgGridFilterModel & { key: string};
 
@@ -90,7 +90,7 @@ function flattenFilters(filters: AgGridFilterModelWithKey[]): AgGridFilterModelW
   return result;
 }
 
-export function transformLocalToServeGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string, filters?: ServerGridFilterFilter[]): IServerGridInfo {
+export function transformLocalToServeGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string, filters?: ServerQueryFilter[]): IServerGridInfo {
   return {
     pagination: getShiptechFormatPagination(params),
     sortList: getShiptechFormatSorts(params, serverColumnKeyMap),

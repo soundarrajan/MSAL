@@ -47,6 +47,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
 
     deltaRowDataMode: true,
     suppressPaginationPanel: true,
+    suppressContextMenu: true,
+    enableBrowserTooltips: true,
 
     multiSortKey: 'ctrl',
     getRowNodeId: (data: IQcEventsLogItemState) => data.id.toString(),
@@ -58,7 +60,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       resizable: true,
       sortable: true,
       filter: 'agTextColumnFilter',
-      filterParams: this.defaultColFilterParams
+      filterParams: this.defaultColFilterParams,
+      flex: 1,
     }
   };
 
@@ -71,7 +74,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressColumnsToolPanel: true,
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
-    cellRendererSelector: params => params.data?.isNew || params.data?.createdBy?.name?.toLowerCase() === this.store.selectSnapshot(UserProfileState.username)?.toLowerCase()
+    flex: undefined,
+    cellRendererSelector: params => params.data?.createdBy?.id === this.store.selectSnapshot(UserProfileState.userId)
       ? { component: nameof(AgCellTemplateComponent) }
       : null
   };
@@ -82,7 +86,10 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     field: model('eventDetails'),
     width: 800,
     autoHeight: true,
-    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null
+    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null,
+    tooltipValueGetter: params => params.valueFormatted ?? params.value,
+    flex: 2,
+    minWidth: 200,
   };
 
   createdByCol: ITypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
@@ -90,7 +97,6 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
     valueFormatter: params => params.value?.displayName ?? params.value?.name,
-    width: 400,
     filterParams: {
       valueGetter: rowModel => rowModel.data?.createdBy?.displayName ?? rowModel.data?.createdBy?.name
     }
@@ -102,7 +108,6 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
-    width: 400
   };
 
   constructor(
@@ -135,10 +140,10 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
         return EMPTY$;
       }),
       tap(items => {
+        this.gridApi.setRowData(items);
         if (!items || !items.length) {
           this.gridApi.showNoRowsOverlay();
         } else {
-          this.gridApi.setRowData(items);
           this.gridApi.hideOverlay();
         }
       }),

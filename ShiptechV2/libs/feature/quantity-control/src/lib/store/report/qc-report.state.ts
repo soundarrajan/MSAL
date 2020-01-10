@@ -25,21 +25,22 @@ import {
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
 } from './details/actions/qc-events-log.action';
-import {IQcEventsLogItemState, QcEventsLogItemStateModel} from './details/qc-events-log-state.model';
-import {QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction} from './details/actions/save-report.actions';
-import {QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction} from './details/actions/verify-report.actions';
-import {LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction} from './qc-report-survey-history.actions';
-import {QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction} from './details/actions/revert-verify-report.actions';
-import {SurveyStatusLookups} from '../../services/survey-status-lookups';
-import {MatchedQuantityStatus, NotMatchedQuantityStatus, WithinLimitQuantityStatus} from '../../core/enums/quantity-match-status';
-import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
-import {IDeliveryTenantSettings} from '../../core/settings/delivery-tenant-settings';
-import {TenantSettingsModuleName} from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import {TenantSettingsState} from '@shiptech/core/store/states/tenant/tenant-settings.state';
-import {UpdateQcReportPortCall, UpdateQcReportVessel} from './details/actions/qc-vessel.action';
-import {Injectable} from '@angular/core';
-import {fromLegacyLookup} from '@shiptech/core/lookups/utils';
-import {QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction} from './details/actions/update-port-call-bdn.actions';
+import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
+import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from './details/actions/save-report.actions';
+import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from './details/actions/verify-report.actions';
+import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from './qc-report-survey-history.actions';
+import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from './details/actions/revert-verify-report.actions';
+import { SurveyStatusLookups } from '../../services/survey-status-lookups';
+import { MatchedQuantityStatus, NotMatchedQuantityStatus, WithinLimitQuantityStatus } from '../../core/enums/quantity-match-status';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
+import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
+import { Injectable } from '@angular/core';
+import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
+import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -162,7 +163,7 @@ export class QcReportState {
       const item = items[i];
       const robBeforeDiff = QcReportState.getMatchStatus(item.robBeforeDeliveryLogBookROB, item.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
       const deliveredDiff = QcReportState.getMatchStatus(item.deliveredQuantityBdnQty, item.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
-      const robAfterDiff = QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
+      const robAfterDiff = !item.isSludge ? QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit): undefined;
 
       if (!robBeforeDiff && !deliveredDiff && !robAfterDiff)
         continue;
@@ -353,11 +354,10 @@ export class QcReportState {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
       const detailsDto = success.dto;
-      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productType => new QcProductTypeListItemStateModel(productType)), s => s.productType.id);
+      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productTypeItem => new QcProductTypeListItemStateModel(productTypeItem, detailsDto.sludgeProductType.id === productTypeItem.productType.id)), s => s.productType.id);
 
       patchState({
-        details: {
-          ...state.details,
+        details: new QcReportDetailsModel({
           isNew: !success.reportId,
           _isLoading: false,
           _hasLoaded: true,
@@ -458,6 +458,7 @@ export class QcReportState {
             [newEventLogId]: new QcEventsLogItemStateModel({
               id: newEventLogId,
               eventDetails: eventDetails,
+              createdBy: this.store.selectSnapshot(UserProfileState.user),
               isNew: true
             })
           }
@@ -480,7 +481,8 @@ export class QcReportState {
         eventsLog: {
           ...state.details.eventsLog,
           items: items,
-          deletedItemIds: [...(state.details.eventsLog.deletedItemIds ?? []), id],
+          // Note: deletedItemIds will be sent to server, if the user creates and deletes notes without saving, we don't want to send these to the BE
+          deletedItemIds: !(state.details.eventsLog.itemsById[id]?.isNew ?? true) ? [...(state.details.eventsLog.deletedItemIds ?? []), id] : state.details.eventsLog.deletedItemIds,
           itemsById: itemsById
         }
       }
@@ -548,10 +550,8 @@ export class QcReportState {
           isSaving: false,
           eventsLog: {
             ...state.details.eventsLog,
-            itemsById: _.keyBy(_.values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{
-              ...s,
-              isNew: false
-            })), s => s.id)
+            itemsById: _.keyBy(_.values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id),
+            deletedItemIds: undefined
           }
         }
       });

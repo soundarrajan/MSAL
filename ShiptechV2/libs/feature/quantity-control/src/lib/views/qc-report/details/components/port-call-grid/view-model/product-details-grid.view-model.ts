@@ -2,7 +2,7 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColGroupDef, GridOptions } from 'ag-grid-community';
-import { RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ProductDetailsColGroupsEnum, ProductDetailsColGroupsLabels, ProductDetailsColumns, ProductDetailsColumnsLabels } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
@@ -46,13 +46,16 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     multiSortKey: 'ctrl',
     getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
     enableBrowserTooltips: true,
+    suppressContextMenu: true,
 
     defaultColDef: {
       editable: false,
       sortable: false,
       filter: false,
+      resizable: true,
       suppressColumnsToolPanel: true,
-      suppressFiltersToolPanel: true
+      suppressFiltersToolPanel: true,
+      flex: 1,
     }
   };
 
@@ -60,7 +63,9 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: model('productType'),
-    valueFormatter: params => params.value?.displayName ?? params.value?.name
+    valueFormatter: params => params.value?.displayName ?? params.value?.name,
+    minWidth: 250,
+    flex: 2
   };
 
   logBookBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -68,7 +73,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: model('robBeforeDeliveryLogBookROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125,
   };
 
   measuredRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -76,7 +82,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: model('robBeforeDeliveryMeasuredROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125,
   };
 
   differenceRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -88,7 +95,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'not-matched': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
-    }
+    },
+    minWidth: 100,
   };
 
   bdnDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -96,7 +104,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.BdnQty,
     field: model('deliveredQuantityBdnQty'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 90,
   };
 
   measuredDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -104,7 +113,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: model('measuredDeliveredQty'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 115,
   };
 
   differenceDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -115,7 +125,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'not-matched': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
-    }
+    },
+    minWidth: 100,
   };
 
   logBookAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -123,7 +134,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: model('robAfterDeliveryLogBookROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125
   };
 
   measuredRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -131,7 +143,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: model('robAfterDeliveryMeasuredROB'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 125
   };
 
   differenceRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -143,7 +156,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClassRules: {
       'not-matched': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
       'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
-    }
+    },
+    minWidth: 100,
   };
 
   robAfterDeliveryColGroup: ColGroupDef = {
