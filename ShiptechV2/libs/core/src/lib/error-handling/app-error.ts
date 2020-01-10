@@ -37,6 +37,11 @@ export class AppError<T = any> implements IAppError {
     message: 'Could not load user profile.'
   });
 
+  static readonly LoadEmailLogsFailed = new AppError({
+    code: AppErrorCode.LoadEmailLogsFailed,
+    message: 'Could not load email list. Please try again later.'
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;

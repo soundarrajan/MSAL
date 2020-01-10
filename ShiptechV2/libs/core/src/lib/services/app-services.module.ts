@@ -17,9 +17,8 @@ import { VesselMastersApi } from '@shiptech/core/services/masters-api/vessel-mas
 import { UserSettingsApiServiceMock } from '@shiptech/core/services/user-settings/user-settings-api.service.mock';
 import {
   EMAIL_LOGS_MASTERS_API_SERVICE,
-  EmailLogsMastersApi
-} from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
-import { EmailLogsMastersApiMock } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.mock";
+  EmailLogsApi
+} from "@shiptech/core/services/masters-api/email-logs-api.service";
 import {AUDIT_LOG_ADMIN_API_SERVICE, AuditLogAdminApi} from "@shiptech/core/services/admin-api/audit-log-admin-api.service";
 import {AuditLogAdminApiMock} from "@shiptech/core/services/admin-api/audit-log-admin-api.service.mock";
 
@@ -60,7 +59,7 @@ export class AppServicesModule {
         },
         {
           provide: EMAIL_LOGS_MASTERS_API_SERVICE,
-          useClass: environment.production ? EmailLogsMastersApi : EmailLogsMastersApiMock
+          useClass: environment.production ? EmailLogsApi : EmailLogsApiMock
         },
         {
           provide: AUDIT_LOG_ADMIN_API_SERVICE,

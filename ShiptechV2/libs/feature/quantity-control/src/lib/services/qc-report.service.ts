@@ -88,14 +88,14 @@ import {
   LoadAuditLogFailedAction,
   LoadAuditLogSuccessfulAction
 } from "../store/report/audit-log/qc-audit-log.actions";
-import { IEmailLogsMastersResponse } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
+import { IEmailLogsRequest, IEmailLogsResponse } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import {
   LoadEmailLogsAction,
   LoadEmailLogsFailedAction,
   LoadEmailLogsSuccessfulAction
-} from "../store/report/email-log/qc-email-log.actions";
-import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
-import { IEmailLogsMastersApiService } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.interface";
+} from "../store/report/email-log/qc-report-email-log.actions";
+import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
 import {AUDIT_LOG_ADMIN_API_SERVICE} from "@shiptech/core/services/admin-api/audit-log-admin-api.service";
 import {IAuditLogAdminApiService} from "@shiptech/core/services/admin-api/audit-log-admin-api.service.interface";
 
@@ -107,8 +107,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
-    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsMastersApiService,
-    @Inject(AUDIT_LOG_ADMIN_API_SERVICE) private apiAudit: IAuditLogAdminApiService) {
+    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsApiService,
+    @Inject(AUDIT_LOG_ADMIN_API_SERVICE) private apiAudit: IAuditLogAdminApiService)
+{
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -156,9 +157,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getEmailLogs$(gridRequest: IServerGridInfo): Observable<IEmailLogsMastersResponse> {
+  getEmailLogs$(gridRequest: IServerGridInfo, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse> {
     return this.apiDispatch(
-      () => this.apiEmail.getEmailLogs({ ...gridRequest }),
+      () => this.apiEmail.getEmailLogs({ ...gridRequest }, emailTransactionTypeId, reportId),
       new LoadEmailLogsAction(gridRequest),
       response => new LoadEmailLogsSuccessfulAction(response.matchedCount),
       LoadEmailLogsFailedAction,
