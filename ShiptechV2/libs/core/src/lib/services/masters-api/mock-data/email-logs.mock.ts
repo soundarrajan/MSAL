@@ -1,13 +1,13 @@
-import { SurveyStatusEnumMap } from "../../../core/enums/survey-status.enum";
-import { IQcEmailLogsItemDto } from "../dto/qc-emails-list-item.dto";
-import { keys, range } from 'lodash';
-import { internet, random, date } from 'faker';
+import { SurveyStatusEnumMap } from "../../../../../../feature/quantity-control/src/lib/core/enums/survey-status.enum";
+import { IEmailLogsMastersDto } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
+import { keys, range } from "lodash";
+import { date, internet, random } from "faker";
 
-export function getMockQcEmailLogs(n: number): IQcEmailLogsItemDto[] {
-  return range(1, n).map(id => getMockQcEmailLogsItem(id));
+export function getMockEmailLogs(n: number): IEmailLogsMastersDto[] {
+  return range(1, n).map(id => getMockEmailLogsItem(id));
 }
 
-export function getMockQcEmailLogsItem(id: number): IQcEmailLogsItemDto {
+export function getMockEmailLogsItem(id: number): IEmailLogsMastersDto {
   const surveyStatuses = keys(SurveyStatusEnumMap);
   const surveyStatus = surveyStatuses[random.number({ min: 0, max: surveyStatuses.length - 1 })];
 
@@ -17,7 +17,7 @@ export function getMockQcEmailLogsItem(id: number): IQcEmailLogsItemDto {
     status: {
       id: random.number(),
       name: SurveyStatusEnumMap[surveyStatus],
-      displayName: SurveyStatusEnumMap[surveyStatus],
+      displayName: SurveyStatusEnumMap[surveyStatus]
     },
     transactionType: {
       id: random.number(),

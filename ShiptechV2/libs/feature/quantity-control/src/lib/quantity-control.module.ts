@@ -41,11 +41,6 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { SurveyStatusLookups } from './services/survey-status-lookups';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
-import {
-  QUANTITY_CONTROL_EMAIL_LOGS_API_SERVICE,
-  QuantityControlEmailLogsApi
-} from "./services/api/quantity-control-email-logs-api";
-import { QuantityControlEmailLogsApiMock } from "./services/api/quantity-control-email-logs-api.mock";
 
 @NgModule({
   imports: [
@@ -96,9 +91,6 @@ import { QuantityControlEmailLogsApiMock } from "./services/api/quantity-control
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
-    }, {
-      provide: QUANTITY_CONTROL_EMAIL_LOGS_API_SERVICE,
-      useClass: environment.production ? QuantityControlEmailLogsApi : QuantityControlEmailLogsApiMock
     },
     QcReportDetailsUnsavedChangesGuard,
     QcReportService

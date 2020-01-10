@@ -82,14 +82,14 @@ import {
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
 } from "../store/report/details/actions/update-port-call-bdn.actions";
-import { IGetQcEmailLogsResponse } from "./api/request-response/qc-emails-list.request-response";
+import { IEmailLogsMastersResponse } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
 import {
   LoadEmailLogsAction,
   LoadEmailLogsFailedAction,
   LoadEmailLogsSuccessfulAction
 } from "../store/report/email-log/qc-email-log.actions";
-import { QUANTITY_CONTROL_EMAIL_LOGS_API_SERVICE } from "./api/quantity-control-email-logs-api";
-import { IQuantityControlEmailLogsApiService } from "./api/quantity-control-email-logs.api.service.interface";
+import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
+import { IEmailLogsMastersApiService } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.interface";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -99,7 +99,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
-    @Inject(QUANTITY_CONTROL_EMAIL_LOGS_API_SERVICE) private apiEmail: IQuantityControlEmailLogsApiService) {
+    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsMastersApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -136,7 +136,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getEmailLogs$(gridRequest: IServerGridInfo): Observable<IGetQcEmailLogsResponse> {
+  getEmailLogs$(gridRequest: IServerGridInfo): Observable<IEmailLogsMastersResponse> {
     return this.apiDispatch(
       () => this.apiEmail.getEmailLogs({ ...gridRequest }),
       new LoadEmailLogsAction(gridRequest),

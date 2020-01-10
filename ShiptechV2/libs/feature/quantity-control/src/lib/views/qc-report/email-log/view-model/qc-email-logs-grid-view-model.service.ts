@@ -18,7 +18,7 @@ import {
   RowModelType,
   RowSelection
 } from "@shiptech/core/ui/components/ag-grid/type.definition";
-import { IQcEmailLogsItemDto } from "../../../../services/api/dto/qc-emails-list-item.dto";
+import { IEmailLogsMastersDto } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { GridApi } from "ag-grid-community/dist/lib/gridApi";
 import {
@@ -32,7 +32,7 @@ import { Store } from "@ngxs/store";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
 import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
 
-function model(prop: keyof IQcEmailLogsItemDto): keyof IQcEmailLogsItemDto {
+function model(prop: keyof IEmailLogsMastersDto): keyof IEmailLogsMastersDto {
   return prop;
 }
 
@@ -49,7 +49,7 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     precision: () => this.format.quantityPrecision
   };
 
-  fromCol: ITypedColDef<IQcEmailLogsItemDto, string> = {
+  fromCol: ITypedColDef<IEmailLogsMastersDto, string> = {
     headerName: QcEmailLogsColumnsLabels.from,
     colId: QcEmailLogsColumns.from,
     field: model("from"),
@@ -57,7 +57,7 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     width: 306
   };
 
-  statusCol: ITypedColDef<IQcEmailLogsItemDto, IDisplayLookupDto> = {
+  statusCol: ITypedColDef<IEmailLogsMastersDto, IDisplayLookupDto> = {
     headerName: QcEmailLogsColumnsLabels.status,
     colId: QcEmailLogsColumns.status,
     field: model("status"),
@@ -65,21 +65,21 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     width: 206
   };
 
-  toCol: ITypedColDef<IQcEmailLogsItemDto, string> = {
+  toCol: ITypedColDef<IEmailLogsMastersDto, string> = {
     headerName: QcEmailLogsColumnsLabels.to,
     colId: QcEmailLogsColumns.to,
     field: model("to"),
     width: 306
   };
 
-  subjectCol: ITypedColDef<IQcEmailLogsItemDto, string> = {
+  subjectCol: ITypedColDef<IEmailLogsMastersDto, string> = {
     headerName: QcEmailLogsColumnsLabels.subject,
     colId: QcEmailLogsColumns.subject,
     field: model("subject"),
     width: 306
   };
 
-  sendAtCol: ITypedColDef<IQcEmailLogsItemDto, string> = {
+  sendAtCol: ITypedColDef<IEmailLogsMastersDto, string> = {
     headerName: QcEmailLogsColumnsLabels.sentAt,
     colId: QcEmailLogsColumns.sentAt,
     field: model("sentAt"),
@@ -104,7 +104,7 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IQcEmailLogsItemDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IEmailLogsMastersDto) => data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
