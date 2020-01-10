@@ -16,8 +16,8 @@ import { UserProfileApi } from '@shiptech/core/services/user-profile/api/user-pr
 import { VesselMastersApi } from '@shiptech/core/services/masters-api/vessel-masters-api.service';
 import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel-masters-api.service.mock';
 import 'reflect-metadata';
-import { EmailLogsMastersApi } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
-import { EmailLogsMastersApiMock } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.mock";
+import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { EmailLogsApiMock } from "@shiptech/core/services/masters-api/email-logs-api.service.mock";
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -37,7 +37,7 @@ export class DeveloperToolbarService implements OnDestroy {
               private tenantSettingsApiMock: TenantSettingsApiMock,
               private userProfileApiMock: UserProfileApiMock,
               private vesselMastersApiServiceMock: VesselMastersApiMock,
-              private emailLogsMastersApiServiceMock: EmailLogsMastersApiMock,
+              private emailLogsApiServiceMock: EmailLogsApiMock,
               private appConfig: AppConfig) {
   }
 
@@ -115,12 +115,12 @@ export class DeveloperToolbarService implements OnDestroy {
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
       });
-    
+
     this.registerApi(
       {
-        id: EmailLogsMastersApi.name,
+        id: EmailLogsApi.name,
         displayName: 'Email Logs Masters Api',
-        instance: this.emailLogsMastersApiServiceMock,
+        instance: this.emailLogsApiServiceMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
