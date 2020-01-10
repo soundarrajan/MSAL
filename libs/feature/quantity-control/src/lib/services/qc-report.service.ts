@@ -90,6 +90,7 @@ import {
 } from "../store/report/email-log/qc-report-email-log.actions";
 import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
+import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -137,8 +138,17 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getEmailLogs$(gridRequest: IServerGridInfo, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse> {
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: "TransactionTypeId",
+        value: emailTransactionTypeId.toString(10)
+      },
+      {
+        columnName: "TransactionIds",
+        value: reportId.toString(10)
+      }];
     return this.apiDispatch(
-      () => this.apiEmail.getEmailLogs({ ...gridRequest }, emailTransactionTypeId, reportId),
+      () => this.apiEmail.getEmailLogs({ ...gridRequest, filters }),
       new LoadEmailLogsAction(gridRequest),
       response => new LoadEmailLogsSuccessfulAction(response.matchedCount),
       LoadEmailLogsFailedAction,
