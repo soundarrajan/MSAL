@@ -5,7 +5,7 @@ import {IQcReportState} from './report/qc-report.state.model';
 import {ResetQcModuleStateAction} from './report/qc-module.actions';
 import {StateReset} from 'ngxs-reset-plugin';
 import {Injectable} from '@angular/core';
-import {IQcAuditLogState} from "./report/audit-log/qc-audit-log.model";
+import {IQcReportAuditLogState} from "./report/audit-log/qc-report-audit-log.model";
 
 @State<IQuantityControlState>({
   name: 'quantityControl',
@@ -23,6 +23,6 @@ export class QuantityControlState {
 export interface IQuantityControlState {
   report: IQcReportState;
   reportsList: Record<number, unknown>;
-  auditLogList: IQcAuditLogState;
+  auditLogList: IQcReportAuditLogState;
 }
 

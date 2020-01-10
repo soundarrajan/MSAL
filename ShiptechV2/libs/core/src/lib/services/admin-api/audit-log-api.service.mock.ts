@@ -1,25 +1,25 @@
 import {Injectable} from "@angular/core";
 import {Observable, of} from "rxjs";
 import {ApiCall, ApiCallForwardTo} from "@shiptech/core/utils/decorators/api-call.decorator";
-import {IAuditLogAdminApiService} from "@shiptech/core/services/admin-api/audit-log-admin-api.service.interface";
-import {AuditLogAdminApi} from "@shiptech/core/services/admin-api/audit-log-admin-api.service";
-import {IAuditLogAdminRequest, IAuditLogAdminResponse} from "@shiptech/core/services/admin-api/dtos/audit-log.dto";
+import {IAuditLogApiService} from "@shiptech/core/services/admin-api/audit-log-api.service.interface";
+import {AuditLogApi} from "@shiptech/core/services/admin-api/audit-log-api.service";
+import {IAuditLogRequest, IAuditLogResponse} from "@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto";
 import {random} from "faker";
 import {getMockAuditLog} from "@shiptech/core/services/admin-api/mock-data/audit-log.mock";
 
 @Injectable({
   providedIn: "root"
 })
-export class AuditLogAdminApiMock implements IAuditLogAdminApiService {
+export class AuditLogApiMock implements IAuditLogApiService {
 
-  @ApiCallForwardTo() realService: AuditLogAdminApi;
+  @ApiCallForwardTo() realService: AuditLogApi;
 
-  constructor(realService: AuditLogAdminApi) {
+  constructor(realService: AuditLogApi) {
     this.realService = realService;
   }
 
   @ApiCall()
-  getAuditLog(request: IAuditLogAdminRequest): Observable<IAuditLogAdminResponse> {
+  getAuditLog(request: IAuditLogRequest): Observable<IAuditLogResponse> {
     const items = getMockAuditLog(request.pagination.take) || [];
 
     return of({

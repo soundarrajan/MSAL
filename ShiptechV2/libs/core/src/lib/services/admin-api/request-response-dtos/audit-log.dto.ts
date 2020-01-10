@@ -1,8 +1,8 @@
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import {IBaseQuantityControlRequest, IBaseQuantityControlResponse} from "../../../../../../feature/quantity-control/src/lib/services/api/request-response/request-response.quantity-control.model";
+import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {IBaseQuantityControlResponse} from "../../../../../../feature/quantity-control/src/lib/services/api/request-response/request-response.quantity-control.model";
 import {IServerGridInfo} from "@shiptech/core/grid/server-grid/server-grid-request-response";
 
-export interface IQcReportDetailsAuditLogItemDto {
+export interface IAuditLogItemDto {
   businessId: number;
   date: Date | string;
   businessName: string;
@@ -21,11 +21,11 @@ export interface IQcReportDetailsAuditLogItemDto {
   userAction: string;
 }
 
-export interface IAuditLogAdminRequest extends IBaseQuantityControlRequest, IServerGridInfo {
+export interface IAuditLogRequest extends IServerGridInfo {
 }
 
-export interface IAuditLogAdminResponse extends IBaseQuantityControlResponse {
-  payload: IQcReportDetailsAuditLogItemDto[];
+export interface IAuditLogResponse extends IBaseQuantityControlResponse {
+  payload: IAuditLogItemDto[];
   deletedCount: number;
   modifiedCount: number;
   matchedCount: number;

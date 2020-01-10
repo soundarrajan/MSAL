@@ -1,14 +1,14 @@
 import {date, random} from 'faker';
-import {IQcReportDetailsAuditLogItemDto} from "@shiptech/core/services/admin-api/dtos/audit-log.dto";
+import {IAuditLogItemDto} from "@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto";
 import {range} from "lodash";
 
-export function getMockAuditLog(n: number): IQcReportDetailsAuditLogItemDto[] {
+export function getMockAuditLog(n: number): IAuditLogItemDto[] {
   return range(1, n).map(id => getMockAuditLogItem(id));
 }
 
-export function getMockAuditLogItem(id: number): IQcReportDetailsAuditLogItemDto {
+export function getMockAuditLogItem(id: number): IAuditLogItemDto {
   return {
-    id: id,
+    id,
     businessId: random.number(100),
     date: date.past().toISOString(),
     businessName: random.word(),
