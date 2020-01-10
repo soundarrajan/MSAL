@@ -1,8 +1,8 @@
-﻿commit 7d6730b31c2c40f92e9821354f6b24946c761ba7
+﻿commit 1efcea2a35239a6f6202022e65079274bfea9365
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 9 19:30:18 2020 +0200
+Date:   Fri Jan 10 10:43:56 2020 +0200
 
-    openLinkInNewTab feature disable for ro settings.ro
-    qc report details events column flex options
+    Fixed qc report details event logs not allowing to delete items after save
+    Fixed menu not adding hash pound for v1
 
 branch: master
