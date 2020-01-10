@@ -12,6 +12,8 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { QuantityControlApi } from './services/api/quantity-control-api';
 import { SurveyStatusLookups } from './services/survey-status-lookups';
 import { fromPromise } from 'rxjs/internal-compatibility';
+import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { EmailLogsApiMock } from "@shiptech/core/services/masters-api/email-logs-api.service.mock";
 
 @Injectable()
 export class QuantityControlRouteResolver implements Resolve<any> {
@@ -35,6 +37,7 @@ export class QuantityControlRouteResolver implements Resolve<any> {
       devApiUrl: appConfig.robApi,
       qaApiUrl: appConfig.robApi
     });
+
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {

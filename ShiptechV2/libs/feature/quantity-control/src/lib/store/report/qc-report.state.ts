@@ -41,6 +41,8 @@ import { Injectable } from '@angular/core';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { LoadEmailLogsAction, LoadEmailLogsFailedAction, LoadEmailLogsSuccessfulAction } from "./email-log/qc-report-email-log.actions";
+import { IQcReportEmailLogState } from "./email-log/qc-report-email-log.model";
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -182,6 +184,11 @@ export class QcReportState {
       return undefined;
 
     return hasWithinLimit ? WithinLimitQuantityStatus : MatchedQuantityStatus;
+  }
+
+  @Selector([QcReportState])
+  static matchedCount(state: IQcReportEmailLogState): number {
+    return state.matchedCount;
   }
 
   @Action(LoadReportDetailsAction)
@@ -742,6 +749,32 @@ export class QcReportState {
           ...state.details,
           isUpdatingPortCallBtn: false
         }
+      });
+    }
+  }
+
+  @Action(LoadEmailLogsAction)
+  loadEmailLogsListAction({ patchState }: StateContext<IQcReportEmailLogState>, { serverGridInfo }: LoadEmailLogsAction): void {
+    patchState({
+      _isLoading: true,
+      _hasLoaded: false,
+      gridInfo: serverGridInfo
+    });
+  }
+
+  @Action([LoadEmailLogsSuccessfulAction, LoadEmailLogsFailedAction])
+  loadEmailLogsActionFinished({ getState, patchState }: StateContext<IQcReportEmailLogState>, action: LoadEmailLogsSuccessfulAction | LoadEmailLogsFailedAction): void {
+    if (isAction(action, LoadEmailLogsSuccessfulAction)) {
+      const { matchedCount } = <LoadEmailLogsSuccessfulAction>action;
+      patchState({
+        _isLoading: false,
+        _hasLoaded: true,
+        matchedCount: matchedCount
+      });
+    } else if (isAction(action, LoadEmailLogsFailedAction)) {
+      patchState({
+        _isLoading: false,
+        _hasLoaded: false
       });
     }
   }

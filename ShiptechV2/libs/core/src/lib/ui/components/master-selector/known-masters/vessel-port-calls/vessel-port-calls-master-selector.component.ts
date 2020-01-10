@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
 import { RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/view-model/vessel-port-calls-master-selector-grid.view-model';
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 
 @Component({
   selector: 'shiptech-vessel-port-calls-master-selector',

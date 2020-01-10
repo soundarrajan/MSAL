@@ -19,10 +19,8 @@ import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/
 import { ISaveReportDetailsRequest, ISaveReportDetailsResponse } from './request-response/report-details-save.request-response';
 import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './request-response/claims-list.request-response';
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
-import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
-import { IGetQcDocumentsListRequest, IGetQcDocumentsListResponse } from "./request-response/qc-documents-list.request-response";
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';

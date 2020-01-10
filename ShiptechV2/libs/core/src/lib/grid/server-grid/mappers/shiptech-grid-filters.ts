@@ -17,6 +17,7 @@ import {
 import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
 import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 
 type AgGridFilterModelWithKey  = AgGridFilterModel & { key: string};
 
