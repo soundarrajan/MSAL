@@ -16,6 +16,8 @@ import { UserProfileApi } from '@shiptech/core/services/user-profile/api/user-pr
 import { VesselMastersApi } from '@shiptech/core/services/masters-api/vessel-masters-api.service';
 import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel-masters-api.service.mock';
 import 'reflect-metadata';
+import { EmailLogsMastersApi } from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
+import { EmailLogsMastersApiMock } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.mock";
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -35,6 +37,7 @@ export class DeveloperToolbarService implements OnDestroy {
               private tenantSettingsApiMock: TenantSettingsApiMock,
               private userProfileApiMock: UserProfileApiMock,
               private vesselMastersApiServiceMock: VesselMastersApiMock,
+              private emailLogsMastersApiServiceMock: EmailLogsMastersApiMock,
               private appConfig: AppConfig) {
   }
 
@@ -112,6 +115,17 @@ export class DeveloperToolbarService implements OnDestroy {
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
       });
+    
+    this.registerApi(
+      {
+        id: EmailLogsMastersApi.name,
+        displayName: 'Email Logs Masters Api',
+        instance: this.emailLogsMastersApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS
+      });
   }
 
   /**
@@ -140,7 +154,7 @@ export class DeveloperToolbarService implements OnDestroy {
   }
 
   public getApiSettings(apiServiceId: string): IApiServiceSettings {
-    const storedSettingsJson = sessionStorage.getItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
+    const storedSettingsJson = localStorage.getItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
 
     if (!storedSettingsJson) {
       return;
@@ -151,21 +165,21 @@ export class DeveloperToolbarService implements OnDestroy {
   public saveApiSettings(apiServiceId: string, settings: IApiServiceSettings): void {
     this.apiSettingsChanged.next(settings);
 
-    sessionStorage.setItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`, JSON.stringify(settings));
+    localStorage.setItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`, JSON.stringify(settings));
   }
 
   public deleteApiSettings(apiServiceId: string): void {
-    sessionStorage.removeItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
+    localStorage.removeItem(`${DEV_SETTINGS_STORAGE_PREFIX}_${apiServiceId}`);
   }
 
   public shouldKeepSettings(): boolean {
-    return Object.keys(sessionStorage).filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX)).length > 0;
+    return Object.keys(localStorage).filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX)).length > 0;
   }
 
   public purgeApiSettings(): void {
-    Object.keys(sessionStorage)
+    Object.keys(localStorage)
       .filter(key => key.startsWith(DEV_SETTINGS_STORAGE_PREFIX))
-      .forEach(key => sessionStorage.removeItem(key));
+      .forEach(key => localStorage.removeItem(key));
   }
 
   /**

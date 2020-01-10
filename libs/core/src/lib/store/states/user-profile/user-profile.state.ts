@@ -7,6 +7,7 @@ import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
 import { Injectable } from '@angular/core';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 // @dynamic
 @State<IUserProfileState>({
@@ -29,8 +30,18 @@ export class UserProfileState {
   }
 
   @Selector([UserProfileState])
+  static userId(state: IUserProfileState): number {
+    return state.id;
+  }
+
+  @Selector([UserProfileState])
   static username(state: IUserProfileState): string {
     return state.username;
+  }
+
+  @Selector([UserProfileState.userId, UserProfileState.username, UserProfileState.displayName])
+  static user(userId: number, username: string, displayName: string): IDisplayLookupDto {
+    return { id: userId, name: username, displayName: displayName };
   }
 
   @Action(LoadUserProfileAction)

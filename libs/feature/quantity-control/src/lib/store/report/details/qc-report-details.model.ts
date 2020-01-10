@@ -29,7 +29,6 @@ export class QcReportDetailsModel {
   vesselResponse: IQcVesselResponsesState;
 
   emailTransactionTypeId: number;
-  reportId: number;
 
   entityTransactionType: IDisplayLookupDto;
 
@@ -42,6 +41,10 @@ export class QcReportDetailsModel {
 
   _hasLoaded: boolean;
   _isLoading: boolean;
+
+  constructor(props: Partial<IQcReportDetailsState> = {}) {
+    Object.assign(this, props);
+  }
 }
 
 export interface IQcReportDetailsState extends QcReportDetailsModel {

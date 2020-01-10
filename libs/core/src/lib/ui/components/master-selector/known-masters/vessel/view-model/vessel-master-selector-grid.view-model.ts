@@ -32,6 +32,7 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     groupHeaderHeight: 20,
     headerHeight: 40,
     rowHeight: 40,
+    suppressContextMenu: true,
 
     rowModelType: RowModelType.ServerSide,
     pagination: true,

@@ -5,4 +5,3 @@ export interface IDisplayLookupDto<TId = number, TName = string> extends ILookup
   name: TName;
   displayName: string;
 }
-

@@ -10,6 +10,8 @@ export class AppConfig implements IAppConfig {
   loggingApi: string;
   baseOrigin: string;
   robApi: string;
+  v1ConfigPath: string;
+  openLinksInNewTab =  true;
 }
 
 // tslint:disable-next-line:no-empty-interface
