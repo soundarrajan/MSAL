@@ -1,6 +1,5 @@
 import { ErrorCode } from './error-code';
 import { AppError, IAppError } from '@shiptech/core/error-handling/app-error';
-import { AppErrorCode } from "@shiptech/core/error-handling/app-error-codes";
 
 export class ModuleError<T = any> extends AppError<T> {
   // noinspection JSUnusedGlobalSymbols
@@ -12,11 +11,6 @@ export class ModuleError<T = any> extends AppError<T> {
   static readonly LoadReportListFailed = new ModuleError({
     code: ErrorCode.LoadReportListFailed,
     message: 'Could not load report list. Please try again later.'
-  });
-
-  static readonly LoadEmailLogsFailed = new ModuleError({
-    code: AppErrorCode.LoadEmailLogsFailed,
-    message: 'Could not load email list. Please try again later.'
   });
 
   static readonly LoadReportSurveyHistoryFailed = new ModuleError({
