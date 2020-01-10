@@ -1008,7 +1008,10 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
                 }, {
                     "ColumnName": "PlannedQuantityUomId",
                     "Value": selectedRowData.plannedQuantityUomId
-                }, ],
+                },{
+                    "ColumnName": "ContractProductId",
+                    "Value": vm.entity_id
+                } ],
                 "Pagination": {
                     "Take": $scope.entries,
                     "Skip": skip
@@ -1048,7 +1051,10 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
                 }, {
                     "ColumnName": "PlannedQuantityUomId",
                     "Value": selectedRowData.plannedQuantityUomId
-                }, ],
+                }, {
+                    "ColumnName": "ContractProductId",
+                    "Value": vm.entity_id
+                }],
                 "Pagination": {
                     "Take": $scope.entries,
                     "Skip": skip

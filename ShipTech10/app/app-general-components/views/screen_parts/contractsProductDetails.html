@@ -347,6 +347,13 @@
                                                 <input type="text" name="Product_{{ index_0 + 1 }}_Price" ng-required="formValues.products[index_0].fixedPrice" class="form-control price_{{ $index }}"
                                                     ng-model="formValues.products[$index].price" ng-class="CM.invalid_form ? 'ng-touched' : ''"
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
+                                                <span class="input-group-addon uom_group pseudoSelect">
+                                                    <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
+                                                        data-width="fit" id="" ng-model="formValues.products[$index].uom"
+                                                        ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
+                                                        <option></option>
+                                                    </select>
+                                                </span>                                                      
                                             </div>
                                             <div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError( field.Label, CM.editInstance[field.Name])"></div>
                                         </div>
@@ -385,13 +392,13 @@
                                                     <label class="mt-radio">
                                                         <input type="checkbox" name="inlineRadiosprice_{{ index_0 }}[]" ng-checked="formValues.products[index_0].mtmFixed" ng-click="formValues.products[index_0].isMtmFormula ? formValues.products[index_0].isMtmFormula = false : formValues.products[index_0].mtmFixed = true"
                                                             id="inlineRadioprice_{{ index_0 }}" ng-model="formValues.products[index_0].mtmFixed"
-                                                        /> {{ 'MTM_FIXED' | translate }}
+                                                        /> MTM Fixed
                                                         <span></span>
                                                     </label>
                                                     <label class="mt-radio">
                                                         <input type="checkbox" name="inlineRadiosprice_{{ index_0 }}[]" ng-checked="formValues.products[index_0].isMtmFormula" ng-click="formValues.products[index_0].mtmFixed ? formValues.products[index_0].mtmFixed = false : formValues.products[index_0].isFormula = true"
                                                             id="inlineRadiopriceFormula_{{ index_0 }}" ng-model="formValues.products[index_0].isMtmFormula"
-                                                        /> {{ 'MTM_FORMULA' | translate }}
+                                                        /> MTM&nbsp;Formula
                                                         <span></span>
                                                     </label>
                                                 </div>
@@ -412,6 +419,13 @@
                                                 <input type="text" name="Product_{{ index_0 + 1 }}_MTM_Price" ng-required="formValues.products[index_0].mtmFixed" class="form-control MTMprice_{{ $index }}"
                                                     ng-model="formValues.products[$index].mtmPrice" ng-class="CM.invalid_form ? 'ng-touched' : ''"
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
+                                                <span class="input-group-addon uom_group pseudoSelect">
+                                                    <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
+                                                        data-width="fit" id="" ng-model="formValues.products[$index].uom"
+                                                        ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
+                                                        <option></option>
+                                                    </select>
+                                                </span>                                                    
                                             </div>
                                             <div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError( field.Label, CM.editInstance[field.Name])"></div>
                                         </div>
@@ -443,6 +457,11 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                            	<div class="col-sm-12">
+                            		<div ng-include="'app-contract/views/conversionFactors.html'"></div>
+                            	</div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">

@@ -1,0 +1,38 @@
+<div class="caption" style="margin-top:40px;">
+	<h4 class="font-blue-madison ng-binding">
+	    Default Conversion Details
+	</h4>
+</div>
+<div class="custom-hardcoded-table ng-scope" ng-init="CM.getAdditionalCostsComponentTypes()">
+    <table class="table-body" width="100%">
+        <thead>
+            <tr>
+				<td class="padding"><b>Product</b></td>
+				<td class="padding"><b>Mass UOM</b></td>
+				<td class="padding"><b>Conversion Value</b></td>
+				<td class="padding"><b>Volume UOM</b></td>
+				<td class="padding"><b>Default Conversion</b></td>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr ng-repeat="(key, value) in formValues.products[$index].conversionFactors ">
+        		<td class="padding">{{value.product.name}}</td>
+        		<td>
+        			<select name="Product {{$index}} mass UOM" ng-model="value.massUom" ng-options="item as item.name for item in vm.listsCache.UomMass track by item.id" class="form-control"></select>
+        		</td>
+        		<td>
+        			<input type="text" class="form-control" ng-model="value.value">	
+        		</td>
+        		<td>
+        			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.Uom track by item.id" class="form-control"></select>
+        		</td>
+        		<td width="160px">
+        			<label class="mt-checkbox" style="margin-bottom: 15px;margin-left: 10px;">
+	        			<input type="checkbox" ng-model="value.isDefault">	
+        				<span></span>
+        			</label>
+        		</td>
+        	</tr>
+        </tbody>
+    </table>
+</div>
