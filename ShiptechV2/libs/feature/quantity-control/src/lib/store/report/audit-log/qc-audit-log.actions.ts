@@ -20,11 +20,13 @@ export class LoadAuditLogAction {
 export class LoadAuditLogSuccessfulAction {
   static readonly type = '[QC.Report.Audit.Log] Load QC Audit Log Successful';
 
-  constructor() {
+  constructor(public matchedCount: number) {
   }
 
   public log(): any {
-    return {};
+    return {
+      matchedCount: this.matchedCount
+    };
   }
 }
 

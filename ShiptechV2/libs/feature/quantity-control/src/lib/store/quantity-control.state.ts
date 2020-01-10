@@ -1,11 +1,11 @@
-import { Action, State, StateContext } from '@ngxs/store';
-import { QcReportsListState } from './reports-list/qc-reports-list.state';
-import { QcReportState } from './report/qc-report.state';
-import { IQcReportState } from './report/qc-report.state.model';
-import { ResetQcModuleStateAction } from './report/qc-module.actions';
-import { StateReset } from 'ngxs-reset-plugin';
-import { Injectable } from '@angular/core';
-import {IQcAuditLogState} from "./report/audit-log/qc-audit-log.state.model";
+import {Action, State, StateContext} from '@ngxs/store';
+import {QcReportsListState} from './reports-list/qc-reports-list.state';
+import {QcReportState} from './report/qc-report.state';
+import {IQcReportState} from './report/qc-report.state.model';
+import {ResetQcModuleStateAction} from './report/qc-module.actions';
+import {StateReset} from 'ngxs-reset-plugin';
+import {Injectable} from '@angular/core';
+import {IQcAuditLogState} from "./report/audit-log/qc-audit-log.model";
 
 @State<IQuantityControlState>({
   name: 'quantityControl',

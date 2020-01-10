@@ -75,8 +75,8 @@ export namespace MasterApiPaths {
 export class QuantityControlApi implements IQuantityControlApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.robApi;
-  private _masterApiUrl = this.appConfig.masterApi;
-  private _adminApiUrl = this.appConfig.adminApi;
+  private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
+  private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {
   }

@@ -33,4 +33,5 @@ export interface IQcReportsListItemDto {
   totalCount: number;
   emailTransactionTypeId: number;
   reportId: number;
+  entityTransactionType: IDisplayLookupDto;
 }
