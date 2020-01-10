@@ -39,8 +39,6 @@ function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
 @Injectable()
 export class QcEmailLogsGridViewModel extends BaseGridViewModel {
 
-  public searchText: string;
-
   private defaultColFilterParams = {
     clearButton: true,
     applyButton: true
@@ -135,16 +133,11 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
     this.init(this.gridOptions, false);
   }
 
-  public onSearch(value: string): void {
-    this.searchText = value;
-    this.gridApi.purgeServerSideCache();
-  }
-
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const emailTransactionTypeId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.emailTransactionTypeId;
     const reportId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
 
-    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsListColumnServerKeys, this.searchText), emailTransactionTypeId, reportId).subscribe(
+    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsListColumnServerKeys), emailTransactionTypeId, reportId).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
