@@ -143,15 +143,6 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const emailTransactionTypeId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.emailTransactionTypeId;
     const reportId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
-    const filters: ServerQueryFilter[] = [
-      {
-        ColumnName: "TransactionTypeId",
-        Value: emailTransactionTypeId.toString(10)
-      },
-      {
-        ColumnName: "TransactionIds",
-        Value: reportId.toString(10)
-      }];
 
     this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsListColumnServerKeys, this.searchText), emailTransactionTypeId, reportId).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
