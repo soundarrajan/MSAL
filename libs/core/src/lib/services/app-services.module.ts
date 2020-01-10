@@ -15,6 +15,11 @@ import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel
 import { VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { VesselMastersApi } from '@shiptech/core/services/masters-api/vessel-masters-api.service';
 import { UserSettingsApiServiceMock } from '@shiptech/core/services/user-settings/user-settings-api.service.mock';
+import {
+  EMAIL_LOGS_MASTERS_API_SERVICE,
+  EmailLogsMastersApi
+} from "@shiptech/core/services/masters-api/email-logs-masters-api.service";
+import { EmailLogsMastersApiMock } from "@shiptech/core/services/masters-api/email-logs-masters-api.service.mock";
 
 @NgModule({
   imports: [],
@@ -50,6 +55,10 @@ export class AppServicesModule {
         {
           provide: VESSEL_MASTERS_API_SERVICE,
           useClass: environment.production ? VesselMastersApi : VesselMastersApiMock
+        },
+        {
+          provide: EMAIL_LOGS_MASTERS_API_SERVICE,
+          useClass: environment.production ? EmailLogsMastersApi : EmailLogsMastersApiMock
         },
         {
           provide: RouteReuseStrategy,
