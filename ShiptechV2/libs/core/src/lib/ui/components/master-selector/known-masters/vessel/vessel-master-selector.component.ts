@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { VesselMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/known-masters/vessel/view-model/vessel-master-selector-grid.view-model';
-import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
+import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
 import { RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';

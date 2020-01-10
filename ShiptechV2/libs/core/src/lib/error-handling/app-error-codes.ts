@@ -13,5 +13,7 @@ export enum AppErrorCode {
   MissingLookupKey = 107,
   FailedToLoadMastersData = 108,
 
-  LoadUserProfileFailed = 200
+  LoadUserProfileFailed = 200,
+
+  LoadEmailLogsFailed = 300
 }

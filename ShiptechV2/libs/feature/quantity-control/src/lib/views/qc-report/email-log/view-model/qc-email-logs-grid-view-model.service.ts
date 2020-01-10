@@ -5,7 +5,7 @@ import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/m
 import { AppError } from "@shiptech/core/error-handling/app-error";
 import { QcReportService } from "../../../../services/qc-report.service";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { QcEmailLogsColumns, QcEmailLogsColumnServerKeys, QcEmailLogsColumnsLabels } from "./qc-email-logs.columns";
+import { QcEmailLogsListColumns, QcEmailLogsListColumnServerKeys, QcEmailLogsListColumnsLabels } from "./qc-email-logs-list.columns";
 import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import { ModuleLoggerFactory } from "../../../../core/logging/module-logger-factory";
 import { TenantSettingsService } from "@shiptech/core/services/tenant-settings/tenant-settings.service";
@@ -18,7 +18,7 @@ import {
   RowModelType,
   RowSelection
 } from "@shiptech/core/ui/components/ag-grid/type.definition";
-import { IEmailLogsDto } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
+import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { GridApi } from "ag-grid-community/dist/lib/gridApi";
 import {
@@ -32,7 +32,7 @@ import { Store } from "@ngxs/store";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
 import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
 
-function model(prop: keyof IEmailLogsDto): keyof IEmailLogsDto {
+function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
 }
 
@@ -40,48 +40,45 @@ function model(prop: keyof IEmailLogsDto): keyof IEmailLogsDto {
 export class QcEmailLogsGridViewModel extends BaseGridViewModel {
 
   public searchText: string;
-  private readonly minToleranceLimit;
-  private readonly maxToleranceLimit;
 
   private defaultColFilterParams = {
     clearButton: true,
-    applyButton: true,
-    precision: () => this.format.quantityPrecision
+    applyButton: true
   };
 
-  fromCol: ITypedColDef<IEmailLogsDto, string> = {
-    headerName: QcEmailLogsColumnsLabels.from,
-    colId: QcEmailLogsColumns.from,
+  fromCol: ITypedColDef<IEmailLogsItemDto, string> = {
+    headerName: QcEmailLogsListColumnsLabels.from,
+    colId: QcEmailLogsListColumns.from,
     field: model("from"),
     cellRendererFramework: AgCellTemplateComponent,
     width: 306
   };
 
-  statusCol: ITypedColDef<IEmailLogsDto, IDisplayLookupDto> = {
-    headerName: QcEmailLogsColumnsLabels.status,
-    colId: QcEmailLogsColumns.status,
+  statusCol: ITypedColDef<IEmailLogsItemDto, IDisplayLookupDto> = {
+    headerName: QcEmailLogsListColumnsLabels.status,
+    colId: QcEmailLogsListColumns.status,
     field: model("status"),
     valueFormatter: params => params.value?.name,
     width: 206
   };
 
-  toCol: ITypedColDef<IEmailLogsDto, string> = {
-    headerName: QcEmailLogsColumnsLabels.to,
-    colId: QcEmailLogsColumns.to,
+  toCol: ITypedColDef<IEmailLogsItemDto, string> = {
+    headerName: QcEmailLogsListColumnsLabels.to,
+    colId: QcEmailLogsListColumns.to,
     field: model("to"),
     width: 306
   };
 
-  subjectCol: ITypedColDef<IEmailLogsDto, string> = {
-    headerName: QcEmailLogsColumnsLabels.subject,
-    colId: QcEmailLogsColumns.subject,
+  subjectCol: ITypedColDef<IEmailLogsItemDto, string> = {
+    headerName: QcEmailLogsListColumnsLabels.subject,
+    colId: QcEmailLogsListColumns.subject,
     field: model("subject"),
     width: 306
   };
 
-  sendAtCol: ITypedColDef<IEmailLogsDto, string> = {
-    headerName: QcEmailLogsColumnsLabels.sentAt,
-    colId: QcEmailLogsColumns.sentAt,
+  sendAtCol: ITypedColDef<IEmailLogsItemDto, string> = {
+    headerName: QcEmailLogsListColumnsLabels.sentAt,
+    colId: QcEmailLogsListColumns.sentAt,
     field: model("sentAt"),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
@@ -104,7 +101,7 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IEmailLogsDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IEmailLogsItemDto) => data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -136,11 +133,6 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
   ) {
     super("quantity-control-email-logs-grid", columnPreferences, changeDetector, loggerFactory.createLogger(QcEmailLogsGridViewModel.name));
     this.init(this.gridOptions, false);
-
-    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
-    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
-    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
-
   }
 
   public onSearch(value: string): void {
@@ -161,7 +153,7 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
         Value: reportId.toString(10)
       }];
 
-    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsColumnServerKeys, this.searchText, filters)).subscribe(
+    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsListColumnServerKeys, this.searchText), emailTransactionTypeId, reportId).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));

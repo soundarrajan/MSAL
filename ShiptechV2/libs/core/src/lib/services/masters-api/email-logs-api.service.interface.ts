@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
-import { IEmailLogsRequest, IEmailLogsResponse } from "./dtos/email-logs.dto";
+import { IEmailLogsRequest, IEmailLogsResponse } from "./request-response-dtos/email-logs.dto";
 
 export interface IEmailLogsApiService {
-  getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse>;
+  getEmailLogs(request: IEmailLogsRequest, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse>;
 }

@@ -23,7 +23,6 @@ export class QuantityControlRouteResolver implements Resolve<any> {
     private tenantService: TenantSettingsService,
     private surveyStatusLookups: SurveyStatusLookups,
     mockApi: QuantityControlApiMock,
-    mockEmailApi: EmailLogsApiMock,
     appConfig: AppConfig,
     devService: DeveloperToolbarService
   ) {
