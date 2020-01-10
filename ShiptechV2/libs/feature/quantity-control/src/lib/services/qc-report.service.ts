@@ -49,6 +49,7 @@ import {
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
 } from '../store/report/details/actions/update-port-call-bdn.actions';
+import { IGetQcDocumentsListResponse } from "./api/request-response/qc-documents-list.request-response";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -75,6 +76,17 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   getReportsList$(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
     return this.apiDispatch(
       () => this.api.getReportList({ ...gridRequest }),
+      new LoadReportListAction(gridRequest),
+      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
+      LoadReportListFailedAction,
+      ModuleError.LoadReportListFailed
+    );
+  }
+
+  @ObservableException()
+  getDocumentsList$(gridRequest: IServerGridInfo): Observable<IGetQcDocumentsListResponse> {
+    return this.apiDispatch(
+      () => this.api.getDocumentList({ ...gridRequest }),
       new LoadReportListAction(gridRequest),
       response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
       LoadReportListFailedAction,

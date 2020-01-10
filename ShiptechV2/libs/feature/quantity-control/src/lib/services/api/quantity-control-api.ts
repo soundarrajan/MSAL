@@ -22,10 +22,12 @@ import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } f
 import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
+import { IGetQcDocumentsListRequest, IGetQcDocumentsListResponse } from "./request-response/qc-documents-list.request-response";
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
   export const getReportsList = () => `api/quantityControlReport/list`;
+  export const getDocumentsList = () => `api/quantityControlReport/list`;
   export const getReportDetails = () => `api/quantityControlReport/details`;
   export const loadPortCallBdn = () => `api/quantityControlReport/portCallBdn`;
   export const saveReport = () => `api/quantityControlReport/save`;
@@ -52,6 +54,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
   @ObservableException()
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
     return this.http.post<IGetQcReportsListResponse>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request });
+  }
+
+  @ObservableException()
+  getDocumentList(request: IGetQcDocumentsListRequest): Observable<IGetQcDocumentsListResponse> {
+    return this.http.post<IGetQcDocumentsListResponse>(`${this._apiUrl}/${RobApiPaths.getDocumentsList()}`, { payload: request });
   }
 
   @ObservableException()
