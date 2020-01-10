@@ -40,6 +40,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     animateRows: true,
     rowSelection: RowSelection.Single,
     multiSortKey: 'ctrl',
+    suppressContextMenu: true,
 
     enableBrowserTooltips: true,
     singleClickEdit: true,

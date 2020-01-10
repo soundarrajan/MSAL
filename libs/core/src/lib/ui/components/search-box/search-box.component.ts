@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shiptech-search-box',
@@ -7,21 +9,43 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./search-box.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchBoxComponent implements OnInit {
-
+export class SearchBoxComponent implements OnInit, OnDestroy {
   @Input() value: any;
   @Input() placeholder: string;
   @Output() valueChanged = new EventEmitter<string>();
 
-  formControl = new FormControl();
+  searchTextField = new FormControl();
+
+  private _destroy$: Subject<any> = new Subject();
+
+  private search$ = new Subject<string>();
 
   constructor() {
+    this.search$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      tap(value => this.valueChanged.emit(value)),
+      takeUntil(this._destroy$)
+    ).subscribe();
   }
 
   ngOnInit(): void {
   }
 
   search(): void {
-    this.valueChanged.emit(this.formControl.value);
+    this.search$.next(this.searchTextField.value);
+  }
+
+  clear(): void {
+    this.searchTextField.setValue(undefined);
+
+    this.search();
+  }
+
+  ngOnDestroy(): void {
+    this.search$.complete();
+
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

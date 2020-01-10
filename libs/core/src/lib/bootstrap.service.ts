@@ -71,8 +71,6 @@ export class BootstrapService {
   }
 
   private loadAppConfig(): Observable<IAppConfig> {
-    // TODO: Remove hardcoded path to settings
-    // TODO: Load both settings file, v1 and v2, merge them and also replicate same logic of loading settings based on domain
     const runtimeSettingsUrl = this.urlService.getRuntimeSettings();
     const legacySettingsUrl = this.urlService.getLegacySettings();
 
