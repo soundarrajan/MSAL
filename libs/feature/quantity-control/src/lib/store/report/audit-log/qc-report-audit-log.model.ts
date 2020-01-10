@@ -5,7 +5,7 @@ import {DefaultPageSize} from "@shiptech/core/ui/components/ag-grid/base.grid-vi
 export class QcAuditLogItemState {
 }
 
-export class QcAuditLogModel extends BaseModel {
+export class QcReportAuditLogModel extends BaseModel {
   payload: QcAuditLogItemState[];
 
   gridInfo: IServerGridInfo = {pagination: {skip: 0, take: DefaultPageSize}};
@@ -13,5 +13,5 @@ export class QcAuditLogModel extends BaseModel {
 
 }
 
-export interface IQcAuditLogState extends QcAuditLogModel {
+export interface IQcReportAuditLogState extends QcReportAuditLogModel {
 }

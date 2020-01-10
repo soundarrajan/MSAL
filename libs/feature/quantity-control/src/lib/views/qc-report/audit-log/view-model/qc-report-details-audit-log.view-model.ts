@@ -10,14 +10,13 @@ import {AppError} from '@shiptech/core/error-handling/app-error';
 import {TenantFormattingService} from '@shiptech/core/services/formatting/tenant-formatting.service';
 import {TenantSettingsModuleName} from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import {TenantSettingsService} from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import {IQcReportDetailsAuditLogItemDto} from "@shiptech/core/services/admin-api/dtos/audit-log.dto";
+import {IAuditLogItemDto} from "@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto";
 import {QcReportDetailsAuditLogColumns, QcReportDetailsAuditLogColumnServerKeys, QcReportDetailsAuditLogColumnsLabels} from "./qc-report-details-audit-log.columns";
 import {ModuleLoggerFactory} from "../../../../core/logging/module-logger-factory";
 import {QcReportService} from "../../../../services/qc-report.service";
 import {IDeliveryTenantSettings} from "../../../../core/settings/delivery-tenant-settings";
 import {IAppState} from "@shiptech/core/store/states/app.state.interface";
 import {Store} from "@ngxs/store";
-import {ServerQueryFilter} from "@shiptech/core/grid/server-grid/server-query.filter";
 
 @Injectable()
 export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
@@ -45,7 +44,7 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IQcReportDetailsAuditLogItemDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IAuditLogItemDto) => data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -54,7 +53,7 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
     }
   };
 
-  date: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  date: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.date,
     colId: QcReportDetailsAuditLogColumns.date,
     field: "date",
@@ -63,64 +62,64 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
     width: 170
   };
 
-  modulePathUrl: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  modulePathUrl: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.modulePathUrl,
     colId: QcReportDetailsAuditLogColumns.modulePathUrl,
     field: "modulePathUrl",
     width: 170
   };
 
-  businessName: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  businessName: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.businessName,
     colId: QcReportDetailsAuditLogColumns.businessName,
     field: "businessName",
     width: 170
   };
 
-  transactionType: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  transactionType: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.transactionType,
     colId: QcReportDetailsAuditLogColumns.transactionType,
     field: "transactionType",
-    width: 170
+    width: 130
   };
 
-  fieldName: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  fieldName: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.fieldName,
     colId: QcReportDetailsAuditLogColumns.fieldName,
     field: "fieldName",
-    width: 210
+    width: 220
   };
 
-  oldValue: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  oldValue: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.oldValue,
     colId: QcReportDetailsAuditLogColumns.oldValue,
     field: "oldValue",
     width: 170
   };
 
-  newValue: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  newValue: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.newValue,
     colId: QcReportDetailsAuditLogColumns.newValue,
     field: "newValue",
     width: 170
   };
 
-  modifiedBy: ITypedColDef<IQcReportDetailsAuditLogItemDto, IDisplayLookupDto> = {
+  modifiedBy: ITypedColDef<IAuditLogItemDto, IDisplayLookupDto> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.modifiedBy,
     colId: QcReportDetailsAuditLogColumns.modifiedBy,
     field: "modifiedBy",
     valueFormatter: params => params.value?.name,
-    width: 340
+    width: 360
   };
 
-  clientIpAddress: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  clientIpAddress: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.clientIpAddress,
     colId: QcReportDetailsAuditLogColumns.clientIpAddress,
     field: "clientIpAddress",
     width: 130
   };
 
-  userAction: ITypedColDef<IQcReportDetailsAuditLogItemDto, string> = {
+  userAction: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: QcReportDetailsAuditLogColumnsLabels.userAction,
     colId: QcReportDetailsAuditLogColumns.userAction,
     field: "userAction",
@@ -171,16 +170,8 @@ export class QcReportDetailsAuditLogGridViewModel extends BaseGridViewModel {
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const entityTransactionType = (<IAppState>this.store.snapshot()).quantityControl.report.details.entityTransactionType;
     const reportId = (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
-    const filters: ServerQueryFilter[] = [
-      {
-        ColumnName: "BusinessId",
-        Value: reportId.toString(10)
-      },
-      {
-        ColumnName: "Transaction",
-        Value: entityTransactionType.name
-      }];
-    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText, filters)).subscribe(
+
+    this.reportService.getAuditLogList$(transformLocalToServeGridInfo(params, QcReportDetailsAuditLogColumnServerKeys, this.searchText), reportId, entityTransactionType.name).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('audit'));
