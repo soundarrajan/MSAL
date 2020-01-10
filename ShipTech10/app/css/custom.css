@@ -2062,12 +2062,12 @@
                 min-height: 300px;
             }
 
-            .st-group-of-requests-table .dropdown-menu {
+           /* .st-group-of-requests-table .dropdown-menu {
                 width: 320px;
                 height: 150px;
                 overflow-x: hidden;
                 overflow-y: scroll;
-            }
+            }*/
 
             .st-group-of-requests-table th, .st-group-of-requests-table td {
                 font-size: 100% !important;

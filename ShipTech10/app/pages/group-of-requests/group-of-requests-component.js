@@ -1131,6 +1131,7 @@ ctrl.setProductData = function(data, loc) {
                     });
                 }
             });
+            ctrl.changeScroll();
         };
         ctrl.addSellerToAllLocations = function (sellerId, locations) {
             var product, newCounterparty, newSeller;
@@ -4901,6 +4902,8 @@ ctrl.setProductData = function(data, loc) {
             setTimeout(function () {
                 ctrl.disablePhysicalSupplierLookup = false;
             }, 3000);
+            ctrl.changeScroll();
+
         };
         ctrl.returnLocationReqOffIds = function (theLocation, randUniquePkg) {
             requestOfferIds = [];
@@ -7241,7 +7244,12 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.setWidth(portSellerComments);
             }
 
-
+        }
+        ctrl.changeScroll = function() {
+           $("#negotiation-table-fixed-container").css("overflow", "auto");
+        }
+        ctrl.keyPress = function() {
+            $("#negotiation-table-fixed-container").css("overflow", "initial");
         }
 
     }

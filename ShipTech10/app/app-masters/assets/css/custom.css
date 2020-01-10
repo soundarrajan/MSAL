@@ -711,6 +711,7 @@ span.variance {
     display: inline-table;
     height: 100%;
     text-align: center;
+    width: 30%;
 }
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible:before {
