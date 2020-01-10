@@ -4,18 +4,18 @@ import { ApiCallUrl } from "@shiptech/core/utils/decorators/api-call.decorator";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "@shiptech/core/config/app-config";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
-import { IEmailLogsMastersRequest, IEmailLogsMastersResponse } from "./dtos/email-logs.dto";
+import { IEmailLogsRequest, IEmailLogsResponse } from "./dtos/email-logs.dto";
 import { Observable } from "rxjs";
-import { IEmailLogsMastersApiService } from "./email-logs-masters-api.service.interface";
+import { IEmailLogsApiService } from "./email-logs-api.service.interface";
 
-export namespace EmailLogsMasterApiPaths {
+export namespace EmailLogsApiPaths {
   export const getEmailLogs = () => `api/masters/emaillogs/list`;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmailLogsMastersApi implements IEmailLogsMastersApiService {
+export class EmailLogsApi implements IEmailLogsApiService {
 
   @ApiCallUrl()
   protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
@@ -24,9 +24,9 @@ export class EmailLogsMastersApi implements IEmailLogsMastersApiService {
   }
 
   @ObservableException()
-  getEmailLogs(request: IEmailLogsMastersRequest): Observable<IEmailLogsMastersResponse> {
-    return this.http.post<IEmailLogsMastersResponse>(`${this._apiUrl}/${EmailLogsMasterApiPaths.getEmailLogs()}`, { payload: request });
+  getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse> {
+    return this.http.post<IEmailLogsResponse>(`${this._apiUrl}/${EmailLogsApiPaths.getEmailLogs()}`, { payload: request });
   }
 }
 
-export const EMAIL_LOGS_MASTERS_API_SERVICE = new InjectionToken<IEmailLogsMastersApiService>('EMAIL_LOGS_MASTERS_API_SERVICE');
+export const EMAIL_LOGS_MASTERS_API_SERVICE = new InjectionToken<IEmailLogsApiService>('EMAIL_LOGS_MASTERS_API_SERVICE');

@@ -1,7 +1,7 @@
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
 
-export interface IEmailLogsMastersDto {
+export interface IEmailLogsDto {
   id: number;
   from: string;
   status: IDisplayLookupDto;
@@ -20,10 +20,10 @@ export interface IEmailLogsMastersDto {
   userAction: string;
 }
 
-export interface IEmailLogsMastersRequest extends IServerGridInfo {
+export interface IEmailLogsRequest extends IServerGridInfo {
 }
 
-export interface IEmailLogsMastersResponse {
-  payload: IEmailLogsMastersDto[];
+export interface IEmailLogsResponse {
+  payload: IEmailLogsDto[];
   matchedCount: number;
 }
