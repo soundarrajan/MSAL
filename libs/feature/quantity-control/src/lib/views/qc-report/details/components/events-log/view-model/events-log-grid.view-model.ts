@@ -74,7 +74,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressColumnsToolPanel: true,
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
-    cellRendererSelector: params => params.data?.isNew || params.data?.createdBy?.name?.toLowerCase() === this.store.selectSnapshot(UserProfileState.username)?.toLowerCase()
+    flex: undefined,
+    cellRendererSelector: params => params.data?.createdBy?.id === this.store.selectSnapshot(UserProfileState.userId)
       ? { component: nameof(AgCellTemplateComponent) }
       : null
   };
@@ -139,10 +140,10 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
         return EMPTY$;
       }),
       tap(items => {
+        this.gridApi.setRowData(items);
         if (!items || !items.length) {
           this.gridApi.showNoRowsOverlay();
         } else {
-          this.gridApi.setRowData(items);
           this.gridApi.hideOverlay();
         }
       }),
