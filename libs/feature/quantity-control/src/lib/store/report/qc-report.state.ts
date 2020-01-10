@@ -40,6 +40,7 @@ import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/
 import { Injectable } from '@angular/core';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -456,6 +457,7 @@ export class QcReportState {
             [newEventLogId]: new QcEventsLogItemStateModel({
               id: newEventLogId,
               eventDetails: eventDetails,
+              createdBy: this.store.selectSnapshot(UserProfileState.user),
               isNew: true
             })
           }
@@ -478,7 +480,8 @@ export class QcReportState {
         eventsLog: {
           ...state.details.eventsLog,
           items: items,
-          deletedItemIds: [...(state.details.eventsLog.deletedItemIds ?? []), id],
+          // Note: deletedItemIds will be sent to server, if the user creates and deletes notes without saving, we don't want to send these to the BE
+          deletedItemIds: !(state.details.eventsLog.itemsById[id]?.isNew ?? true) ? [...(state.details.eventsLog.deletedItemIds ?? []), id] : state.details.eventsLog.deletedItemIds,
           itemsById: itemsById
         }
       }
@@ -543,7 +546,8 @@ export class QcReportState {
           isSaving: false,
           eventsLog: {
             ...state.details.eventsLog,
-            itemsById: _.keyBy(_.values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id)
+            itemsById: _.keyBy(_.values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id),
+            deletedItemIds: undefined
           }
         }
       });
