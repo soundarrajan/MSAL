@@ -82,12 +82,12 @@ import {
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
 } from "../store/report/details/actions/update-port-call-bdn.actions";
-import { IEmailLogsResponse } from "@shiptech/core/services/masters-api/dtos/email-logs.dto";
+import { IEmailLogsRequest, IEmailLogsResponse } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import {
   LoadEmailLogsAction,
   LoadEmailLogsFailedAction,
   LoadEmailLogsSuccessfulAction
-} from "../store/report/email-log/qc-email-log.actions";
+} from "../store/report/email-log/qc-report-email-log.actions";
 import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
 
@@ -136,9 +136,9 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getEmailLogs$(gridRequest: IServerGridInfo): Observable<IEmailLogsResponse> {
+  getEmailLogs$(gridRequest: IServerGridInfo, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse> {
     return this.apiDispatch(
-      () => this.apiEmail.getEmailLogs({ ...gridRequest }),
+      () => this.apiEmail.getEmailLogs({ ...gridRequest }, emailTransactionTypeId, reportId),
       new LoadEmailLogsAction(gridRequest),
       response => new LoadEmailLogsSuccessfulAction(response.matchedCount),
       LoadEmailLogsFailedAction,

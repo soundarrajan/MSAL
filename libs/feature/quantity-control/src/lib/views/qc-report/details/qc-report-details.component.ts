@@ -18,8 +18,8 @@ import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { ConfirmationService, DialogService } from 'primeng/primeng';
 import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
-import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
+import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
@@ -193,7 +193,5 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
     this._destroy$.next();
     this._destroy$.complete();
-
-    this.store.dispatch(ResetQcReportDetailsStateAction);
   }
 }

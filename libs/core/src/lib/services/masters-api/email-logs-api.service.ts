@@ -4,9 +4,10 @@ import { ApiCallUrl } from "@shiptech/core/utils/decorators/api-call.decorator";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "@shiptech/core/config/app-config";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
-import { IEmailLogsRequest, IEmailLogsResponse } from "./dtos/email-logs.dto";
+import { IEmailLogsRequest, IEmailLogsResponse } from "./request-response-dtos/email-logs.dto";
 import { Observable } from "rxjs";
 import { IEmailLogsApiService } from "./email-logs-api.service.interface";
+import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 
 export namespace EmailLogsApiPaths {
   export const getEmailLogs = () => `api/masters/emaillogs/list`;
@@ -24,8 +25,17 @@ export class EmailLogsApi implements IEmailLogsApiService {
   }
 
   @ObservableException()
-  getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse> {
-    return this.http.post<IEmailLogsResponse>(`${this._apiUrl}/${EmailLogsApiPaths.getEmailLogs()}`, { payload: request });
+  getEmailLogs(request: IEmailLogsRequest, emailTransactionTypeId: number, reportId: number): Observable<IEmailLogsResponse> {
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: "TransactionTypeId",
+        value: emailTransactionTypeId.toString(10)
+      },
+      {
+        columnName: "TransactionIds",
+        value: reportId.toString(10)
+      }];
+    return this.http.post<IEmailLogsResponse>(`${this._apiUrl}/${EmailLogsApiPaths.getEmailLogs()}`, { payload: {...request, filters} });
   }
 }
 
