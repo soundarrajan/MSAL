@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
-import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -27,6 +26,7 @@ import { KnownQuantityControlRoutes } from '../../../known-quantity-control.rout
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -93,11 +93,12 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
-        this.hasVerifiedStatus$.next(status.name === EntityStatus.Verified);
-        this.hasNewStatus$.next(status.name === EntityStatus.New);
+        this.hasVerifiedStatus$.next(status.name === StatusLookupEnum.Verified);
+        this.hasNewStatus$.next(status.name === StatusLookupEnum.New);
 
         this.entityStatus.setStatus({
-          value: <EntityStatus>status.name
+          name: status.displayName,
+          backgroundColor: status.code ?? '#c792ea' // TODO: Currently statuses do no have a color set
         });
       }),
       takeUntil(this._destroy$)
@@ -164,7 +165,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   openEmailPreview(): void {
-    const detailsState =  (<IAppState>this.store.snapshot()).quantityControl.report.details;
+    const detailsState = (<IAppState>this.store.snapshot()).quantityControl.report.details;
 
     this.reportService.previewEmail$(detailsState.id, detailsState.emailTransactionTypeId).subscribe();
   }

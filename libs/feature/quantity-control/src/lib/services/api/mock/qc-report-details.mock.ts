@@ -6,7 +6,7 @@ import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-dat
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
 import { roundDecimals } from '@shiptech/core/utils/math';
-import { EntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
+import { MockStatusLookupEnumMap, StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 const mockDecimals = 3;
 
@@ -34,11 +34,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       id: 0,
       nbOfClaims: 0,
       nbOfDeliveries: 0,
-      status: {
-        id: 1,
-        name: EntityStatus.New,
-        displayName: EntityStatus.New
-      },
+      status: MockStatusLookupEnumMap[StatusLookupEnum.New],
       uoms: {
         options: mockUomsLookup
       },
@@ -61,7 +57,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     nbOfClaims: faker.random.number(),
     nbOfDeliveries: faker.random.number(),
-    status: _.sample(PortCallStatuses),
+    status: _.sample(_.values(MockStatusLookupEnumMap)),
     uoms: {
       deliveredQtyUom: _.sample(mockUomsLookup),
       robAfterDeliveryUom: _.sample(mockUomsLookup),
@@ -88,24 +84,6 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     emailTransactionTypeId: faker.random.number()
   };
 }
-
-export const PortCallStatuses: IDisplayLookupDto<number, EntityStatus>[] = [
-  {
-    id: 1,
-    name: EntityStatus.New,
-    displayName: EntityStatus.New
-  },
-  {
-    id: 2,
-    name: EntityStatus.Pending,
-    displayName: EntityStatus.Pending
-  },
-  {
-    id: 3,
-    name: EntityStatus.Verified,
-    displayName: EntityStatus.Verified
-  }
-];
 
 export function getMockQcReportProductTypes(n: number, isNew: boolean = false): IQcReportDetailsProductTypeDto[] {
   return _.range(1, n).map(id => {
