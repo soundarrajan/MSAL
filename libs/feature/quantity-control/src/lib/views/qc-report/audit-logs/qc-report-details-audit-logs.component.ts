@@ -16,7 +16,7 @@ export class QcReportDetailsAuditLogsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(private store: Store) {
-    this.entityTransactionType = (<IAppState>this.store.snapshot()).quantityControl.report.details.entityTransactionType.displayName;
+    this.entityTransactionType = (<IAppState>this.store.snapshot()).quantityControl.report.details.entityTransactionType.name;
     this.businessId = (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
   }
 
