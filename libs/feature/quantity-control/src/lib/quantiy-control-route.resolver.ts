@@ -1,19 +1,17 @@
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
-import { catchError } from 'rxjs/operators';
-import { combineLatest, Observable, throwError } from 'rxjs';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
-import { AppConfig } from '@shiptech/core/config/app-config';
-import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
-import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
-import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
-import { QuantityControlApi } from './services/api/quantity-control-api';
-import { SurveyStatusLookups } from './services/survey-status-lookups';
-import { fromPromise } from 'rxjs/internal-compatibility';
-import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
-import { EmailLogsApiMock } from "@shiptech/core/services/masters-api/email-logs-api.service.mock";
+import { TenantSettingsService } from "@shiptech/core/services/tenant-settings/tenant-settings.service";
+import { Injectable } from "@angular/core";
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
+import { catchError } from "rxjs/operators";
+import { combineLatest, Observable, throwError } from "rxjs";
+import { TenantSettingsModuleName } from "@shiptech/core/store/states/tenant/tenant-settings.interface";
+import { QuantityControlApiMock } from "./services/api/quantity-control-api.mock";
+import { AppConfig } from "@shiptech/core/config/app-config";
+import { DeveloperToolbarService } from "@shiptech/core/developer-toolbar/developer-toolbar.service";
+import { KnownPrimaryRoutes } from "@shiptech/core/enums/known-modules-routes.enum";
+import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
+import { QuantityControlApi } from "./services/api/quantity-control-api";
+import { SurveyStatusLookups } from "./services/survey-status-lookups";
+import { fromPromise } from "rxjs/internal-compatibility";
 
 @Injectable()
 export class QuantityControlRouteResolver implements Resolve<any> {

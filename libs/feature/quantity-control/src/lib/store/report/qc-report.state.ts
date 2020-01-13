@@ -43,6 +43,8 @@ import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFaile
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { LoadEmailLogsAction, LoadEmailLogsFailedAction, LoadEmailLogsSuccessfulAction } from "./email-log/qc-report-email-log.actions";
 import { IQcReportEmailLogState } from "./email-log/qc-report-email-log.model";
+import { IQcReportDocumentState } from "./documents/qc-report-document.model";
+import { LoadDocumentsAction, LoadDocumentsFailedAction, LoadDocumentsSuccessfulAction } from "./documents/qc-report-document.actions";
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -187,8 +189,8 @@ export class QcReportState {
   }
 
   @Selector([QcReportState])
-  static matchedCount(state: IQcReportEmailLogState): number {
-    return state.matchedCount;
+  static matchedCount(state: IQcReportState): number {
+    return state.emailLog.matchedCount;
   }
 
   @Action(LoadReportDetailsAction)
@@ -772,6 +774,33 @@ export class QcReportState {
         matchedCount: matchedCount
       });
     } else if (isAction(action, LoadEmailLogsFailedAction)) {
+      patchState({
+        _isLoading: false,
+        _hasLoaded: false
+      });
+    }
+  }
+
+
+  @Action(LoadEmailLogsAction)
+  loadDocumentsListAction({ patchState }: StateContext<IQcReportDocumentState>, { serverGridInfo }: LoadDocumentsAction): void {
+    patchState({
+      _isLoading: true,
+      _hasLoaded: false,
+      gridInfo: serverGridInfo
+    });
+  }
+
+  @Action([LoadDocumentsSuccessfulAction, LoadDocumentsFailedAction])
+  loadDocumentsActionFinished({ getState, patchState }: StateContext<IQcReportDocumentState>, action: LoadDocumentsSuccessfulAction | LoadDocumentsFailedAction): void {
+    if (isAction(action, LoadDocumentsSuccessfulAction)) {
+      const { matchedCount } = <LoadDocumentsSuccessfulAction>action;
+      patchState({
+        _isLoading: false,
+        _hasLoaded: true,
+        matchedCount: matchedCount
+      });
+    } else if (isAction(action, LoadDocumentsFailedAction)) {
       patchState({
         _isLoading: false,
         _hasLoaded: false

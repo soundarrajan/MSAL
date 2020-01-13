@@ -15,5 +15,6 @@ export enum AppErrorCode {
 
   LoadUserProfileFailed = 200,
 
-  LoadEmailLogsFailed = 300
+  LoadEmailLogsFailed = 300,
+  LoadDocumentsFailed = 400
 }

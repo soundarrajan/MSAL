@@ -55,11 +55,6 @@ export class QuantityControlApi implements IQuantityControlApiService {
   }
 
   @ObservableException()
-  getDocumentList(request: IGetQcDocumentsListRequest): Observable<IGetQcDocumentsListResponse> {
-    return this.http.post<IGetQcDocumentsListResponse>(`${this._apiUrl}/${RobApiPaths.getDocumentsList()}`, { payload: request });
-  }
-
-  @ObservableException()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
     return this.http.post<IGetQcSurveyHistoryListResponse>(`${this._apiUrl}/${RobApiPaths.getSurveyHistoryList()}`, { payload: request });
   }

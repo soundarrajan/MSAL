@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
-import { QcDocumentsListGridViewModel } from "./view-model/qc-documents.grid.view-model";
+import { QcDocumentsListGridViewModel } from "./view-model/qc-documents-grid-view-model.service";
 
 @Component({
   selector: "shiptech-qc-report-details-documents",

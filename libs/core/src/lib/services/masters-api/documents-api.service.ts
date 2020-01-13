@@ -1,22 +1,21 @@
 import { Injectable, InjectionToken } from "@angular/core";
-import { IQuantityControlApiService } from "../../../../../feature/quantity-control/src/lib/services/api/quantity-control.api.service.interface";
 import { ApiCallUrl } from "@shiptech/core/utils/decorators/api-call.decorator";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "@shiptech/core/config/app-config";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
-import { IEmailLogsRequest, IEmailLogsResponse } from "./request-response-dtos/email-logs.dto";
 import { Observable } from "rxjs";
 import { IEmailLogsApiService } from "./email-logs-api.service.interface";
-import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
+import { IGetDocumentsListRequest, IGetDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
+import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 
 export namespace DocumentsApiPaths {
-  export const getDocuments = () => `api/masters/emaillogs/list`;
+  export const getDocuments = () => `api/masters/documenttype/list`;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
-export class DocumentsApi implements IEmailLogsApiService {
+export class DocumentsApi implements IDocumentsApiService {
 
   @ApiCallUrl()
   protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
@@ -25,9 +24,9 @@ export class DocumentsApi implements IEmailLogsApiService {
   }
 
   @ObservableException()
-  getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse> {
-    return this.http.post<IEmailLogsResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments()}`, { payload: {...request} });
+  getDocumentList(request: IGetDocumentsListRequest): Observable<IGetDocumentsListResponse> {
+    return this.http.post<IGetDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments()}`, { payload: { ...request } });
   }
 }
 
-export const DOCUMENTS_MASTERS_API_SERVICE = new InjectionToken<IEmailLogsApiService>('DOCUMENTS_MASTERS_API_SERVICE');
+export const DOCUMENTS_MASTERS_API_SERVICE = new InjectionToken<IEmailLogsApiService>("DOCUMENTS_MASTERS_API_SERVICE");

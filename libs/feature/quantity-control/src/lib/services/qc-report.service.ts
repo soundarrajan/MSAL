@@ -91,6 +91,10 @@ import {
 import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
+import { IGetDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
+import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
+import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
+import { LoadDocumentsAction, LoadDocumentsFailedAction, LoadDocumentsSuccessfulAction } from "../store/report/documents/qc-report-document.actions";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -100,7 +104,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
     @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
-    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsApiService) {
+    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsApiService,
+    @Inject(DOCUMENTS_MASTERS_API_SERVICE) private apiDocuments: IDocumentsApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -126,12 +131,21 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getDocumentsList$(gridRequest: IServerGridInfo): Observable<IGetQcDocumentsListResponse> {
+  getDocumentsList$(gridRequest: IServerGridInfo, emailTransactionTypeId: number, reportId: number): Observable<IGetDocumentsListResponse> {
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: "TransactionTypeId",
+        value: emailTransactionTypeId.toString(10)
+      },
+      {
+        columnName: "ReferenceNo",
+        value: reportId.toString(10)
+      }];
     return this.apiDispatch(
-      () => this.api.getDocumentList({ ...gridRequest }),
-      new LoadReportListAction(gridRequest),
-      response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
-      LoadReportListFailedAction,
+      () => this.apiDocuments.getDocumentList({ ...gridRequest, filters }),
+      new LoadDocumentsAction(gridRequest),
+      response => new LoadDocumentsSuccessfulAction(response.matchedCount),
+      LoadDocumentsFailedAction,
       ModuleError.LoadReportListFailed
     );
   }
@@ -163,7 +177,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       new LoadEmailLogsAction(gridRequest),
       response => new LoadEmailLogsSuccessfulAction(response.matchedCount),
       LoadEmailLogsFailedAction,
-      ModuleError.LoadEmailLogsFailed
+      ModuleError.LoadDocumentsFailed
     );
   }
 
