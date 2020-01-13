@@ -3,39 +3,6 @@ import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
-export enum EntityStatus {
-  New = 'New',
-  Pending = 'Pending',
-  Verified = 'Verified',
-}
-
-export interface IEntityStatusConfig {
-  name: string,
-  color?: string,
-  backgroundColor?: string,
-  cssClass?: string,
-}
-
-export interface IEntityStatus {
-  custom?: IEntityStatusConfig,
-  value?: EntityStatus,
-}
-
-const emptyStatus: IEntityStatus = { value: undefined };
-const entityStatusMapping: Record<EntityStatus, IEntityStatusConfig> = {
-  [EntityStatus.New]: {
-    name: 'New',
-    cssClass: 'new'
-  },
-  [EntityStatus.Pending]: {
-    name: 'Pending',
-    cssClass: 'pending'
-  },
-  [EntityStatus.Verified]: {
-    name: 'Verified',
-    cssClass: 'verified'
-  }
-};
 
 @Component({
   selector: 'shiptech-entity-status',
@@ -56,17 +23,13 @@ export class EntityStatusComponent implements OnInit, OnDestroy {
 
     this.service.statusChanged.pipe(
       tap(status => {
-        const newStatus = (status || emptyStatus);
-        const statusConfig = status.custom || entityStatusMapping[status.value];
+        this.statusName = status.name;
+        this.color = status.color;
+        this.backgroundColor = status.backgroundColor;
+        this.cssClass = status.cssClass;
 
-        if (statusConfig) {
-          this.statusName = statusConfig.name;
-          this.color = statusConfig.color;
-          this.backgroundColor = statusConfig.backgroundColor;
-          this.cssClass = statusConfig.cssClass;
+        this.changeDetector.markForCheck();
 
-          this.changeDetector.markForCheck();
-        }
       }),
       takeUntil(this._destroy$)
     ).subscribe();

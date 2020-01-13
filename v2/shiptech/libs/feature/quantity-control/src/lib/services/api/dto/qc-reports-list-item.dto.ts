@@ -1,4 +1,5 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
 export interface IQcReportsListItemDto {
   id: number;
@@ -9,8 +10,8 @@ export interface IQcReportsListItemDto {
   portName: string;
   vesselName: string;
   surveyDate: Date | string;
-  surveyStatus: IDisplayLookupDto;
-  qtyMatchedStatus: IDisplayLookupDto;
+  surveyStatus: IReconStatusLookupDto
+  qtyMatchedStatus: IReconStatusLookupDto;
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;
   diffRobBeforeDelivery: number;

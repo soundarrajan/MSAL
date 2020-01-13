@@ -18,8 +18,9 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
+import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
 function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
   return prop;
@@ -55,7 +56,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
       resizable: true,
       suppressColumnsToolPanel: true,
       suppressFiltersToolPanel: true,
-      flex: 1,
+      flex: 1
     }
   };
 
@@ -74,7 +75,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: model('robBeforeDeliveryLogBookROB'),
     valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent,
-    minWidth: 125,
+    minWidth: 125
   };
 
   measuredRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -83,7 +84,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: model('robBeforeDeliveryMeasuredROB'),
     valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent,
-    minWidth: 125,
+    minWidth: 125
   };
 
   differenceRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -91,12 +92,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     field: model('robBeforeDiff'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
-      'matched-withing-limit': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-    },
-    minWidth: 100,
+    cellStyle: params => this.toleranceMatchStyle(params.data?.robBeforeDiffStatus),
+    minWidth: 100
   };
 
   bdnDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -105,7 +102,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: model('deliveredQuantityBdnQty'),
     valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent,
-    minWidth: 90,
+    minWidth: 90
   };
 
   measuredDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -114,19 +111,15 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     field: model('measuredDeliveredQty'),
     valueFormatter: params => this.format.quantity(params.value),
     cellRendererFramework: AgCellTemplateComponent,
-    minWidth: 115,
+    minWidth: 115
   };
 
   differenceDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
     headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     field: model('deliveredDiff'),
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
-      'matched-withing-limit': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-    },
-    minWidth: 100,
+    cellStyle: params => this.toleranceMatchStyle(params.data?.deliveredDiffStatus),
+    minWidth: 100
   };
 
   logBookAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
@@ -152,12 +145,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     field: model('robAfterDiff'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
-      'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-    },
-    minWidth: 100,
+    cellStyle: params => this.toleranceMatchStyle(params.data?.robAfterDiffStatus),
+    minWidth: 100
   };
 
   robAfterDeliveryColGroup: ColGroupDef = {
@@ -210,8 +199,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     this.init(this.gridOptions);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
-    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
-    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
+    this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
+    this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
 
     this.robUomBeforeDelivery$ = this.selectReportDetails(state => state.robBeforeDeliveryUom);
     this.robUomAfterDelivery$ = this.selectReportDetails(state => state.robAfterDeliveryUom);
@@ -270,5 +259,14 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
         break;
       }
     }
+  }
+
+  private toleranceMatchStyle(status: IReconStatusLookupDto): Partial<CSSStyleDeclaration> {
+    const statusName = status?.name ??  ReconStatusLookupEnum.Matched; // Default no color (Matched)
+
+    return {
+      backgroundColor: statusName === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
+      color: statusName === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
+    };
   }
 }

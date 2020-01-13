@@ -1,8 +1,7 @@
-﻿commit d28f25989ba0b78b481a8694b813f1dcfd5e1116
+﻿commit 2d4e34de6e9ae179414778ebaa4e979a2761db7e
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Mon Jan 13 14:14:22 2020 +0200
+Date:   Mon Jan 13 21:04:03 2020 +0200
 
-    Legacy Db reconmatch entity. Implemented transformers to support entities with extra props.
-    Fixed status coloring for qc report list / survery and port calls
+    Refactor entity-status.component to be always set via customization and no presets
 
 branch: master

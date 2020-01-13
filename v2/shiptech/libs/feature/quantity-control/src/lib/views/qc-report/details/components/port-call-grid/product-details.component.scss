@@ -5,31 +5,6 @@
     white-space: normal;
   }
 
-  .cell-background {
-    color: white;
-
-    &.not-matched {
-      background-color: #e9585a;
-    }
-
-    &.matched-withing-limit {
-      background-color: #e98a46;
-    }
-
-    &.verified {
-      background-color: #26ae61;
-    }
-
-    &.pending {
-      background-color: #fdbf2c;
-    }
-
-    &.matched {
-      background-color: #72bcab;
-    }
-
-  }
-
   shiptech-uom-selector {
     overflow: visible;
     z-index: 9999

@@ -1,12 +1,12 @@
 import { IQcReportDetailsDto, IQcReportDetailsProductTypeDto } from '../dto/qc-report-details.dto';
 import * as faker from 'faker';
-import { QcReportStatusEnum, QcReportStatusLabelEnum } from '../../../core/enums/qc-report-status.enum';
 import * as _ from 'lodash';
 import { mockUomsLookup } from '@shiptech/core/services/masters-api/mock-data/uoms.mock';
 import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-data/products.mock';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
 import { roundDecimals } from '@shiptech/core/utils/math';
+import { MockStatusLookupEnumMap, StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 const mockDecimals = 3;
 
@@ -26,7 +26,7 @@ export const mockCategoriesLookup: IDisplayLookupDto[] = [
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   const isNew = !id;
 
-  const productTypeCategories =  getMockQcReportProductTypes(faker.random.number({ min: 5, max: 5 }), true);
+  const productTypeCategories = getMockQcReportProductTypes(faker.random.number({ min: 5, max: 5 }), true);
   const sludgeProductType = _.last(productTypeCategories)?.productType;
 
   if (isNew) {
@@ -34,11 +34,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       id: 0,
       nbOfClaims: 0,
       nbOfDeliveries: 0,
-      status: {
-        id: 1,
-        name: QcReportStatusEnum.New,
-        displayName: QcReportStatusLabelEnum.New
-      },
+      status: MockStatusLookupEnumMap[StatusLookupEnum.New],
       uoms: {
         options: mockUomsLookup
       },
@@ -61,7 +57,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     nbOfClaims: faker.random.number(),
     nbOfDeliveries: faker.random.number(),
-    status: _.sample(PortCallStatuses),
+    status: _.sample(_.values(MockStatusLookupEnumMap)),
     uoms: {
       deliveredQtyUom: _.sample(mockUomsLookup),
       robAfterDeliveryUom: _.sample(mockUomsLookup),
@@ -89,27 +85,9 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   };
 }
 
-export const PortCallStatuses: IDisplayLookupDto<number, QcReportStatusEnum>[] = [
-  {
-    id: 1,
-    name: QcReportStatusEnum.New,
-    displayName: QcReportStatusLabelEnum.New
-  },
-  {
-    id: 2,
-    name: QcReportStatusEnum.Pending,
-    displayName: QcReportStatusLabelEnum.Pending
-  },
-  {
-    id: 3,
-    name: QcReportStatusEnum.Verify,
-    displayName: QcReportStatusLabelEnum.Verify
-  }
-];
-
 export function getMockQcReportProductTypes(n: number, isNew: boolean = false): IQcReportDetailsProductTypeDto[] {
   return _.range(1, n).map(id => {
-    const product = MockProductsLookup.find(s => s.id === id) ?? { ..._.sample(MockProductsLookup), id: id};
+    const product = MockProductsLookup.find(s => s.id === id) ?? { ..._.sample(MockProductsLookup), id: id };
     return {
       id: product.id, // Note: Only used for BE
       productType: product,

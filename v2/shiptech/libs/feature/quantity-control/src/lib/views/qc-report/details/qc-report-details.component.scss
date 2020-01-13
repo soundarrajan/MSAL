@@ -3,26 +3,11 @@
   font-size: 12.025px;
   padding: 5px;
   white-space: nowrap;
-  color: #ffffff;
   background-color: #999999;
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
-
-  &.NotMatched {
-    color: black;
-    background-color: #e9585b;
-  }
-
-  &.WithinLimit {
-    color: black;
-    background-color: #e98b46;
-  }
-
-  &.Matched {
-    color: black;
-    background-color: #27ae60;
-  }
+  color: black;
 
   &.blue {
     color: #044f88;
