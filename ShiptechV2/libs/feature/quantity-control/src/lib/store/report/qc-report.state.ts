@@ -3,7 +3,7 @@ import { IQuantityControlState } from "../quantity-control.state";
 import { isAction } from "@shiptech/core/utils/ngxs-utils";
 import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction, ResetQcReportDetailsStateAction } from "./qc-report-details.actions";
 import { nameof } from "@shiptech/core/utils/type-definitions";
-import _ from "lodash";
+import { keyBy, filter, values } from "lodash";
 import { IQcReportState, QcReportStateModel } from "./qc-report.state.model";
 import { QcVesselResponsesStateModel } from "./details/qc-vessel-responses.state";
 import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from "./details/qc-product-type-list-item-state.model";
@@ -354,7 +354,7 @@ export class QcReportState {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
       const detailsDto = success.dto;
-      const productTypesMap = _.keyBy((detailsDto.productTypeCategories || []).map(productTypeItem => new QcProductTypeListItemStateModel(productTypeItem, detailsDto.sludgeProductType.id === productTypeItem.productType.id)), s => s.productType.id);
+      const productTypesMap = keyBy((detailsDto.productTypeCategories || []).map(productTypeItem => new QcProductTypeListItemStateModel(productTypeItem, detailsDto.sludgeProductType.id === productTypeItem.productType.id)), s => s.productType.id);
 
       patchState({
         details: new QcReportDetailsModel({
@@ -419,7 +419,7 @@ export class QcReportState {
           eventsLog: {
             ...state.details.eventsLog,
             items: (success.items || []).map(e => e.id),
-            itemsById: _.keyBy((success.items || []).map(e => new QcEventsLogItemStateModel(e)), e => e.id),
+            itemsById: keyBy((success.items || []).map(e => new QcEventsLogItemStateModel(e)), e => e.id),
             _isLoading: false,
             _hasLoaded: true
           }
@@ -471,7 +471,7 @@ export class QcReportState {
     const state = getState();
 
     const { [id]: __, ...itemsById } = state.details.eventsLog.itemsById;
-    const items = _.filter(state.details.eventsLog.items, i => i !== id);
+    const items = filter(state.details.eventsLog.items, i => i !== id);
 
     patchState({
       details: {
@@ -531,7 +531,7 @@ export class QcReportState {
       const success = <QcSaveReportDetailsSuccessfulAction>action;
 
       // Note: For New Reports we need to save the id of each product type row. This id is not used in front-end, we track by productTypes.productType.id, it's used in backend to update rows in db
-      const productTypes = _.values(state.details.productTypesById).map(p => {
+      const productTypes = values(state.details.productTypesById).map(p => {
         return { ...state.details.productTypesById[p.productType.id], id: success.productTypes.find(s => s.productType.id === p.productType.id)?.id ?? p.id };
       });
 
@@ -540,13 +540,13 @@ export class QcReportState {
           ...state.details,
           id: success.reportId,
           isNew: false,
-          productTypesById: _.keyBy(productTypes, s => s.productType.id),
+          productTypesById: keyBy(productTypes, s => s.productType.id),
           emailTransactionTypeId: success.emailTransactionTypeId,
           hasChanges: false,
           isSaving: false,
           eventsLog: {
             ...state.details.eventsLog,
-            itemsById: _.keyBy(_.values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id),
+            itemsById: keyBy(values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id),
             deletedItemIds: undefined
           }
         }
@@ -688,7 +688,7 @@ export class QcReportState {
 
     const productTypesById = { ...state.details.productTypesById };
 
-    _.values(productTypesById).forEach(p => {
+    values(productTypesById).forEach(p => {
       const productType = productTypesById[p.productType.id];
 
       productTypesById[p.productType.id] = { ...productType, deliveredQuantityBdnQty: undefined };
