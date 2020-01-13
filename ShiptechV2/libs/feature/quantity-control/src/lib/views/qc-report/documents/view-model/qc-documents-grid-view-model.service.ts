@@ -11,7 +11,9 @@ import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import { AppError } from "@shiptech/core/error-handling/app-error";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
-import { QcDocumentsListColumns, QcDocumentsListColumnServerKeys, QcDocumentsListColumnsLabels } from "./qc-documents.columns";
+import { QcDocumentsListColumns, QcDocumentsListColumnServerKeys, QcDocumentsListColumnsLabels } from "./qc-documents-list.columns";
+import { IAppState } from "@shiptech/core/store/states/app.state.interface";
+import { Store } from "@ngxs/store";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -78,11 +80,12 @@ export class QcDocumentsListGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
-    private reportService: QcReportService,
-    private appErrorHandler: AppErrorHandler
+    private quantityControlService: QcReportService,
+    private appErrorHandler: AppErrorHandler,
+    private store: Store
   ) {
-    super("quantity-control-grid", columnPreferences, changeDetector, loggerFactory.createLogger(QcDocumentsListGridViewModel.name));
-    this.init(this.gridOptions, true);
+    super("quantity-control-documents-grid", columnPreferences, changeDetector, loggerFactory.createLogger(QcDocumentsListGridViewModel.name));
+    this.init(this.gridOptions);
   }
 
   getColumnsDefs(): ITypedColDef[] {
@@ -94,10 +97,13 @@ export class QcDocumentsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(params, QcDocumentsListColumnServerKeys)).subscribe(
-      response => params.successCallback(response.items, response.totalCount),
+    const emailTransactionTypeId = (<IAppState>this.store.snapshot()).quantityControl.report.details.emailTransactionTypeId;
+    const reportId = (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
+
+    this.quantityControlService.getDocumentsList$(transformLocalToServeGridInfo(params, QcDocumentsListColumnServerKeys), emailTransactionTypeId, reportId).subscribe(
+      response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("vessel"));
+        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
         params.failCallback();
       });
   }

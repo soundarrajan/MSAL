@@ -22,7 +22,5 @@ export interface IGetDocumentsListRequest extends IServerGridInfo {
 
 export interface IGetDocumentsListResponse {
   payload: IDocumentsItemDto[];
-  nbOfMatched: number;
-  nbOfMatchedWithinLimit: number;
-  nbOfNotMatched: number;
+  matchedCount: number;
 }

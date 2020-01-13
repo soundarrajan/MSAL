@@ -18,6 +18,8 @@ import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel
 import 'reflect-metadata';
 import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { EmailLogsApiMock } from "@shiptech/core/services/masters-api/email-logs-api.service.mock";
+import { DocumentsApiMock } from "@shiptech/core/services/masters-api/documents-api.service.mock";
+import { DocumentsApi } from "@shiptech/core/services/masters-api/documents-api.service";
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -38,6 +40,7 @@ export class DeveloperToolbarService implements OnDestroy {
               private userProfileApiMock: UserProfileApiMock,
               private vesselMastersApiServiceMock: VesselMastersApiMock,
               private emailLogsApiServiceMock: EmailLogsApiMock,
+              private documentsApiServiceMock: DocumentsApiMock,
               private appConfig: AppConfig) {
   }
 
@@ -121,6 +124,17 @@ export class DeveloperToolbarService implements OnDestroy {
         id: EmailLogsApi.name,
         displayName: 'Email Logs Masters Api',
         instance: this.emailLogsApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS
+      });
+
+    this.registerApi(
+      {
+        id: DocumentsApi.name,
+        displayName: 'Document Masters Api',
+        instance: this.documentsApiServiceMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
