@@ -1,7 +1,7 @@
 import { IQcReportsListItemDto } from '../dto/qc-reports-list-item.dto';
 import * as faker from 'faker';
 import * as _ from 'lodash';
-import { SurveyStatusEnumMap } from '../../../core/enums/survey-status.enum';
+import { SurveyStatusEnumMap } from '@shiptech/core/enums/survey-status.enum';
 import { QuantityMatchStatusEnumMap } from '../../../core/enums/quantity-match-status';
 
 export function getMockQcReportsList(n: number): IQcReportsListItemDto[] {

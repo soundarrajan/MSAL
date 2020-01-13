@@ -1,4 +1,4 @@
-import { SurveyStatusEnumMap } from "../../../../../../feature/quantity-control/src/lib/core/enums/survey-status.enum";
+import { SurveyStatusEnumMap } from "@shiptech/core/enums/survey-status.enum";
 import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import { keys, range } from "lodash";
 import { date, internet, random } from "faker";

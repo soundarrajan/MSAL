@@ -13,7 +13,7 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
-import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
+import { SurveyStatusEnum } from '@shiptech/core/enums/survey-status.enum';
 import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { IQcReportState } from '../../../../../../store/report/qc-report.state.model';
