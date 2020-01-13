@@ -94,7 +94,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
-      'matched-withing-limit': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
+      'matched-withing-limit': params => params.data?.robBeforeDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit,
     },
     minWidth: 100,
   };
@@ -124,7 +124,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
-      'matched-withing-limit': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
+      'matched-withing-limit': params => params.data?.deliveredDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit,
     },
     minWidth: 100,
   };
@@ -155,7 +155,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-background',
     cellClassRules: {
       'not-matched': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.NotMatched,
-      'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit
+      'matched-withing-limit': params => params.data?.robAfterDiffStatus?.name === QuantityMatchStatusEnum.WithinLimit,
     },
     minWidth: 100,
   };

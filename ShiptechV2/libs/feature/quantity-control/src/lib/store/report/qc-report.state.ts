@@ -140,7 +140,7 @@ export class QcReportState {
 
     const diff = Math.abs(left - right);
 
-    if (diff > maxTolerance)
+    if (diff >= maxTolerance)
       return NotMatchedQuantityStatus;
 
     if (diff < minTolerance)

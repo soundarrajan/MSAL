@@ -5,24 +5,33 @@ import { ILegacyLookupVersion } from './legacy-lookup-version.interface';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IReconStatusDto } from '@shiptech/core/masters/recon-status.interface';
+import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 
+/**
+ * Front-end will only work with this class, and it doesn't care how these tables are actually populated.
+ * Note: See {@link LookupsCacheService} to see how data is actually loaded from the api.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class LegacyLookupsDatabase extends Dexie {
 
-  readonly company: Dexie.Table<IDisplayLookupDto, number>;
   readonly currency: Dexie.Table<IDisplayLookupDto, number>;
   readonly uom: Dexie.Table<IDisplayLookupDto, number>;
   readonly uomVolume: Dexie.Table<IDisplayLookupDto, number>;
   readonly uomMass: Dexie.Table<IDisplayLookupDto, number>;
-  readonly location: Dexie.Table<IDisplayLookupDto, number>;
-  readonly product: Dexie.Table<IDisplayLookupDto, number>;
-  readonly customer: Dexie.Table<IDisplayLookupDto, number>;
-  readonly supplier: Dexie.Table<IDisplayLookupDto, number>;
   readonly status: Dexie.Table<IDisplayLookupDto, number>;
   readonly vessel: Dexie.Table<IDisplayLookupDto, number>;
-  readonly vesselSchedule: Dexie.Table<IDisplayLookupDto, number>;
+  readonly reconMatch: Dexie.Table<IReconStatusDto, number>;
+
+  /**
+   * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
+   * Note: In case a transformer is not defined {@link fromLegacyLookup} is used as default mapper
+   */
+  readonly transforms: Record<string, (dto: any) => any> = {
+    [nameof<LegacyLookupsDatabase>('reconMatch')]: (dto: IDisplayLookupDto & { 'code': string }) => (<IReconStatusDto>{ ... fromLegacyLookup(dto), code: dto.code })
+  };
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
   dbVersion: number;
@@ -38,19 +47,14 @@ export class LegacyLookupsDatabase extends Dexie {
 
     // Note: Never change versions, always make changes by incrementing the version, the key of the following object.
     this.schema = {
-      [nameof<LegacyLookupsDatabase>('company')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('currency')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('uom')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('location')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('lookupVersions')]: `++${nameof<ILegacyLookupVersion>('name')}`,
       [nameof<LegacyLookupsDatabase>('uomVolume')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('uomMass')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('product')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('customer')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('supplier')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('status')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('vessel')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('vesselSchedule')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('reconMatch')]: lookupSchema,
     };
   }
 

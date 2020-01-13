@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { IAgGridCellClassRules, ITypedColDef, ITypedValueParams, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
@@ -164,10 +164,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     cellClass: 'cell-background',
     valueFormatter: params => this.format.quantity(params.value),
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit,
-    },
+    cellClassRules: this.toleranceStatus(params => params.data?.diffRobBeforeDelivery),
     width: 140
   };
 
@@ -201,10 +198,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffDeliveredQty) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit,
-    }
+    cellClassRules: this.toleranceStatus(params => params.data?.diffDeliveredQty),
   };
 
   qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -237,10 +231,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffRobAfterDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit,
-    }
+    cellClassRules: this.toleranceStatus(params => params.data?.diffRobAfterDelivery),
   };
 
   qtyAfterDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -273,10 +264,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit,
-    }
+    cellClassRules: this.toleranceStatus(params => params.data?.diffSludgeRobBeforeDischarge),
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -376,5 +364,22 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
         params.failCallback();
       });
+  }
+
+  private toleranceStatus(field:  (params: ITypedValueParams<IQcReportsListItemDto, number>) => number): IAgGridCellClassRules<IQcReportsListItemDto, number> {
+    return {
+      'not-matched': params => Math.abs(field(params)) >= this.maxToleranceLimit,
+      'matched-withing-limit': params => Math.abs(field(params)) > this.minToleranceLimit && Math.abs(field(params)) < this.maxToleranceLimit,
+    };
+  }
+
+  exportExcel(): void {
+    // TODO:
+    // this.reportService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
+    //   response => { },
+    //   () => {
+    //     this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
+    //
+    //   });
   }
 }
