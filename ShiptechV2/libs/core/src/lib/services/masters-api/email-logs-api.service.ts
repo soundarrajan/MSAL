@@ -1,5 +1,4 @@
 import { Injectable, InjectionToken } from "@angular/core";
-import { IQuantityControlApiService } from "../../../../../feature/quantity-control/src/lib/services/api/quantity-control.api.service.interface";
 import { ApiCallUrl } from "@shiptech/core/utils/decorators/api-call.decorator";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "@shiptech/core/config/app-config";
@@ -7,7 +6,6 @@ import { ObservableException } from "@shiptech/core/utils/decorators/observable-
 import { IEmailLogsRequest, IEmailLogsResponse } from "./request-response-dtos/email-logs.dto";
 import { Observable } from "rxjs";
 import { IEmailLogsApiService } from "./email-logs-api.service.interface";
-import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 
 export namespace EmailLogsApiPaths {
   export const getEmailLogs = () => `api/masters/emaillogs/list`;
