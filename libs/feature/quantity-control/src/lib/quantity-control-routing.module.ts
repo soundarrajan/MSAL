@@ -5,7 +5,7 @@ import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.
 import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';
 import { EntityStatusComponent } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
-import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
+import { QuantityControlModuleResolver } from './quantiy-control-route.resolver';
 import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-report-details-route.resolver';
 import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
 import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
@@ -17,7 +17,7 @@ const routes: Routes = [
   {
     path: '',
     component: MainQuantityControlComponent,
-    resolve: { moduleInit: QuantityControlRouteResolver },
+    resolve: { moduleInit: QuantityControlModuleResolver },
     data: {
       breadcrumb: 'Delivery'
     },

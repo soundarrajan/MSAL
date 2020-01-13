@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
-import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { SwitchActiveBunkerResponseAction, SwitchActiveSludgeResponseAction } from '../../../store/report/details/actions/qc-vessel-response.actions';
 import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
 import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -53,7 +54,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   vessel$: Observable<IDisplayLookupDto>;
   portCall$: Observable<IQcVesselPortCall>;
 
-  @Select(QcReportState.matchStatus) matchStatus$: Observable<IDisplayLookupDto>;
+  matchStatus$: Observable<IDisplayLookupDto>;
+
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
   @Select(QcReportState.isNew) isNew$: Observable<boolean>;
 
@@ -70,6 +72,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
               private dialogService: DialogService,
               private confirmationService: ConfirmationService,
               private toastrService: ToastrService,
+              private reconStatusLookups: ReconStatusLookup,
               private tenantSettings: TenantSettingsService
   ) {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
@@ -77,6 +80,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
     this.vessel$ = this.selectReportDetails(state => state.vessel);
     this.portCall$ = this.selectReportDetails(state => state.portCall);
+
+    this.matchStatus$ = this.store.select(QcReportState.matchStatus).pipe(map(s => reconStatusLookups.toReconStatus(s)));
 
     // Note: Since the PortCall can change multiple times (autocomplete) we want to load BDN / nbOfClaims / ndOfDeliveries just for the last call and cancel previous.
     // Note: That's why we update it here, via an observable, instead of on UpdatePortCall.

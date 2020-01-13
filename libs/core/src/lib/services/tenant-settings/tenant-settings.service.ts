@@ -13,6 +13,7 @@ import { TENANT_SETTINGS_API } from '@shiptech/core/services/tenant-settings/api
 import { ITenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
+import { tap } from 'rxjs/operators';
 
 /*
 * // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url

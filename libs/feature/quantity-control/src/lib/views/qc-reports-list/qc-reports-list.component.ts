@@ -9,10 +9,11 @@ import { QcReportService } from '../../services/qc-report.service';
 import { ToastrService } from 'ngx-toastr';
 import { IQcReportsListItemDto } from '../../services/api/dto/qc-reports-list-item.dto';
 import { TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { SurveyStatusLookups } from '../../services/survey-status-lookups';
+import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { RowNode } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '@shiptech/core/config/app-config';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -35,12 +36,14 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
 
   constructor(public gridViewModel: QcReportsListGridViewModel,
               public appConfig: AppConfig,
+              public reconStatusLookups: ReconStatusLookup,
               private messageBox: MessageBoxService,
               private reportService: QcReportService,
               private toastr: ToastrService,
-              private surveyStatusLookups: SurveyStatusLookups,
+              private surveyStatusLookups: StatusLookup,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute
+  ) {
   }
 
   onPageChange(page: number): void {
@@ -56,7 +59,7 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   }
 
   newReport(): void {
-    this.router.navigate([this.reportDetailsRoutePath, 0], {relativeTo: this.activatedRoute});
+    this.router.navigate([this.reportDetailsRoutePath, 0], { relativeTo: this.activatedRoute });
   }
 
   verifyVessels(): void {

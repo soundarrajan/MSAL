@@ -13,8 +13,8 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
-import { SurveyStatusEnum } from '../../../../../../core/enums/survey-status.enum';
-import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { IQcReportState } from '../../../../../../store/report/qc-report.state.model';
 import { combineLatest, Observable } from 'rxjs';
@@ -101,8 +101,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.displayName,
     cellClass: 'cell-background',
     cellClassRules: {
-      'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
-      'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
+      'pending': params => params.data?.surveyStatus?.name === StatusLookupEnum.Pending,
+      'verified': params => params.data?.surveyStatus?.name === StatusLookupEnum.Verified
     },
     width: 85
   };
@@ -114,9 +114,9 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.displayName,
     cellClass: 'cell-background',
     cellClassRules: {
-      'matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
-      'matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-      'not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
+      'matched': params => params.data?.qtyMatchedStatus?.name === ReconStatusLookupEnum.Matched,
+      'matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === ReconStatusLookupEnum.WithinLimit,
+      'not-matched': params => params.data?.qtyMatchedStatus?.name === ReconStatusLookupEnum.NotMatched
     },
     width: 96
   };
@@ -300,8 +300,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     this.init(this.gridOptions);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
-    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
-    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
+    this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
+    this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
 
     // Note: When portCall changes we need to reload the grid,
     combineLatest(
