@@ -8,7 +8,7 @@
       <div style="float:right">
         <shiptech-search-box appExternalSearch [placeholder]="'Search something'" class="mr-1" [gridId]="search.id"></shiptech-search-box>
 
-        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>
+        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button" (click) = "gridViewModel.exportExcel()"></button>
 
         <button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>
 

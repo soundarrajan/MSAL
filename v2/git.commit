@@ -1,8 +1,8 @@
-﻿commit 1efcea2a35239a6f6202022e65079274bfea9365
+﻿commit d28f25989ba0b78b481a8694b813f1dcfd5e1116
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Fri Jan 10 10:43:56 2020 +0200
+Date:   Mon Jan 13 14:14:22 2020 +0200
 
-    Fixed qc report details event logs not allowing to delete items after save
-    Fixed menu not adding hash pound for v1
+    Legacy Db reconmatch entity. Implemented transformers to support entities with extra props.
+    Fixed status coloring for qc report list / survery and port calls
 
 branch: master

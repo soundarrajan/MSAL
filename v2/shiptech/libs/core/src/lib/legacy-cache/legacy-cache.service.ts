@@ -7,6 +7,7 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 import { LegacyLookupsDatabase } from './legacy-lookups-database.service';
 import { AppConfig } from '../config/app-config';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 
 interface ILegacyListStatus {
   name: string;
@@ -26,6 +27,9 @@ interface IStaticListLegacy {
 
 const NonLookupTables = [nameof<LegacyLookupsDatabase>('lookupVersions').toString()];
 
+/**
+ * In charge of loading data into the {@link LegacyLookupsDatabase}.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -96,7 +100,8 @@ export class LookupsCacheService {
 
         await lookupTable.clear();
 
-        const lookupItems = tableAndLookup.items.map(i => (<IDisplayLookupDto>{ id: i.id, name: i.name, displayName: i.displayName ?? i.name}));
+        // Note: For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
+        const lookupItems = tableAndLookup.items.map(i => this.db.transforms[tableAndLookup.table.name]?.(i) ?? fromLegacyLookup(i));
         await lookupTable.bulkPut(lookupItems);
 
         return lookupItems;
