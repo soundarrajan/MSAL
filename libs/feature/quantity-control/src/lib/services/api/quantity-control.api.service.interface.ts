@@ -40,4 +40,5 @@ export interface IQuantityControlApiService {
   markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse>;
 
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse>;
+
 }

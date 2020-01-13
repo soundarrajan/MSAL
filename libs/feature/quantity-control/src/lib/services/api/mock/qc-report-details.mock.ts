@@ -7,6 +7,7 @@ import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-dat
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
 import { roundDecimals } from '@shiptech/core/utils/math';
+import {random} from "faker";
 
 const mockDecimals = 3;
 
@@ -47,7 +48,12 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       vesselResponses: {
         categories: mockCategoriesLookup
       },
-      emailTransactionTypeId: faker.random.number()
+      emailTransactionTypeId: faker.random.number(),
+      entityTransactionType: {
+        id: random.number(),
+        name: faker.random.word(),
+        displayName: faker.random.word()
+      }
     };
   }
 
@@ -85,7 +91,12 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     comments: faker.random.words(faker.random.number({ min: 10, max: 40 })),
     hasEmailSent: faker.random.boolean(),
-    emailTransactionTypeId: faker.random.number()
+    emailTransactionTypeId: faker.random.number(),
+    entityTransactionType: {
+      id: random.number(),
+      name: faker.random.word(),
+      displayName: faker.random.word()
+    }
   };
 }
 

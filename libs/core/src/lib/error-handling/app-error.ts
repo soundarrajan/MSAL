@@ -1,6 +1,6 @@
-import { AppErrorHandlingStrategy } from './app-error-handling-strategy';
-import { AppErrorCode } from './app-error-codes';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { AppErrorHandlingStrategy } from "./app-error-handling-strategy";
+import { AppErrorCode } from "./app-error-codes";
+import { TenantSettingsModuleName } from "@shiptech/core/store/states/tenant/tenant-settings.interface";
 
 export interface IAppError<T = any> {
   readonly message?: string;
@@ -12,8 +12,8 @@ export interface IAppError<T = any> {
 
 export class AppError<T = any> implements IAppError {
   static readonly Unknown: AppError = new AppError();
-  static readonly UnknownServerError: AppError = new AppError({ code: AppErrorCode.ServerUnknown });
-  static readonly Unauthorized: AppError = new AppError({ message: 'You do not have sufficient privileges to perform the requested action.' });
+  static readonly UnknownServerError: AppError = new AppError({code: AppErrorCode.ServerUnknown});
+  static readonly Unauthorized: AppError = new AppError({message: 'You do not have sufficient privileges to perform the requested action.'});
   static readonly FailedToSaveUserSettings = new AppError({
     code: AppErrorCode.FailedToSaveUserSettings,
     message: 'Could not save User Settings.'
@@ -42,13 +42,18 @@ export class AppError<T = any> implements IAppError {
     message: 'Could not load email list. Please try again later.'
   });
 
+  static readonly LoadAuditLogFailed = new AppError({
+    code: AppErrorCode.LoadAuditLogFailed,
+    message: 'Could not load audit log list. Please try again later.'
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;
   readonly message: string;
   readonly treatAsWarning: boolean;
 
-  constructor({ code, data, handleStrategy, treatAsWarning, message }: Partial<IAppError> = {}) {
+  constructor({code, data, handleStrategy, treatAsWarning, message}: Partial<IAppError> = {}) {
     this.code = code || AppErrorCode.Unknown;
     this.data = data;
     this.handleStrategy = handleStrategy || AppErrorHandlingStrategy.Toastr;
@@ -65,11 +70,11 @@ export class AppError<T = any> implements IAppError {
   }
 
   static UnknownWithData<T = any>(data: T): AppError<T> {
-    return new AppError<T>({ data });
+    return new AppError<T>({data});
   }
 
   static UnknownServerErrorWithData<T = any>(data: T): AppError<T> {
-    return new AppError<T>({ code: AppErrorCode.ServerUnknown, data });
+    return new AppError<T>({code: AppErrorCode.ServerUnknown, data});
   }
 
 

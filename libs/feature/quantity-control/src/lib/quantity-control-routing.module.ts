@@ -1,17 +1,17 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { MainQuantityControlComponent } from './views/main-quantity-control.component';
-import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
-import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';
-import { EntityStatusComponent } from '@shiptech/core/ui/components/entity-status/entity-status.component';
-import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
-import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
-import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-report-details-route.resolver';
-import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
-import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
-import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
-import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
+import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from "@angular/core";
+import { MainQuantityControlComponent } from "./views/main-quantity-control.component";
+import { QcReportsListComponent } from "./views/qc-reports-list/qc-reports-list.component";
+import { QcReportDetailsComponent } from "./views/qc-report/details/qc-report-details.component";
+import { EntityStatusComponent } from "@shiptech/core/ui/components/entity-status/entity-status.component";
+import { KnownNamedRouterOutlets } from "@shiptech/core/enums/known-named-router-outlets";
+import { QuantityControlRouteResolver } from "./quantiy-control-route.resolver";
+import { QcReportDetailsRouteResolver } from "./views/qc-report/details/qc-report-details-route.resolver";
+import { KnownQuantityControlRoutes } from "./known-quantity-control.routes";
+import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/qc-report-details-documents.component";
+import { QcReportDetailsUnsavedChangesGuard } from "./guards/qc-report-details-unsaved-changes-guard.service";
 import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
+import { QcReportDetailsAuditLogsComponent } from "./views/qc-report/audit-logs/qc-report-details-audit-logs.component";
 
 const routes: Routes = [
   {
@@ -62,7 +62,7 @@ const routes: Routes = [
           },
           {
             path: KnownQuantityControlRoutes.ReportAuditPath,
-            component: QcReportDetailsAuditLogComponent,
+            component: QcReportDetailsAuditLogsComponent,
             data: { title: 'Quantity Control - Audit Log', breadcrumb: 'Audit Log' }
           },
           {

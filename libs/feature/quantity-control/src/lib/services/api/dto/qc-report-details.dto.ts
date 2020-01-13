@@ -16,6 +16,7 @@ export interface IQcReportDetailsDto {
   comments?: string;
   hasEmailSent?: boolean;
   emailTransactionTypeId: number;
+  entityTransactionType: IDisplayLookupDto;
 }
 
 export interface IQcReportProductTypeDto {
