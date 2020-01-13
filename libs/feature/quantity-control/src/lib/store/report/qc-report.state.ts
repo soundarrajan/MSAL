@@ -1,22 +1,22 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { IQuantityControlState } from '../quantity-control.state';
-import { isAction } from '@shiptech/core/utils/ngxs-utils';
-import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction, ResetQcReportDetailsStateAction } from './qc-report-details.actions';
-import { nameof } from '@shiptech/core/utils/type-definitions';
-import _ from 'lodash';
-import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
-import { QcVesselResponsesStateModel } from './details/qc-vessel-responses.state';
-import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from './details/qc-product-type-list-item-state.model';
-import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
+import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
+import { IQuantityControlState } from "../quantity-control.state";
+import { isAction } from "@shiptech/core/utils/ngxs-utils";
+import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction, ResetQcReportDetailsStateAction } from "./qc-report-details.actions";
+import { nameof } from "@shiptech/core/utils/type-definitions";
+import _ from "lodash";
+import { IQcReportState, QcReportStateModel } from "./qc-report.state.model";
+import { QcVesselResponsesStateModel } from "./details/qc-vessel-responses.state";
+import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from "./details/qc-product-type-list-item-state.model";
+import { UpdateProductTypeAction } from "./details/actions/update-product-type.actions";
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction,
   UpdateActiveBunkerVesselResponseAction,
   UpdateActiveSludgeVesselResponseAction
-} from './details/actions/qc-vessel-response.actions';
-import { UpdateQcReportComment } from './details/actions/qc-comment.action';
-import { QcReportDetailsModel } from './details/qc-report-details.model';
-import { SwitchUomForDeliveredQuantityAction, SwitchUomForRobAfterDelivery, SwitchUomForRobBeforeDeliveryAction } from './details/actions/qc-uom.actions';
+} from "./details/actions/qc-vessel-response.actions";
+import { UpdateQcReportComment } from "./details/actions/qc-comment.action";
+import { QcReportDetailsModel } from "./details/qc-report-details.model";
+import { SwitchUomForDeliveredQuantityAction, SwitchUomForRobAfterDelivery, SwitchUomForRobBeforeDeliveryAction } from "./details/actions/qc-uom.actions";
 import {
   QcAddEventLogAction,
   QcLoadEventsLogAction,
@@ -24,25 +24,23 @@ import {
   QcLoadEventsLogSuccessfulAction,
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
-} from './details/actions/qc-events-log.action';
-import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
-import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from './details/actions/save-report.actions';
-import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from './details/actions/verify-report.actions';
-import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from './qc-report-survey-history.actions';
-import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from './details/actions/revert-verify-report.actions';
-import { SurveyStatusLookups } from '../../services/survey-status-lookups';
-import { MatchedQuantityStatus, NotMatchedQuantityStatus, WithinLimitQuantityStatus } from '../../core/enums/quantity-match-status';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
-import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
-import { Injectable } from '@angular/core';
-import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
-import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
-import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { LoadEmailLogsAction, LoadEmailLogsFailedAction, LoadEmailLogsSuccessfulAction } from "./email-log/qc-report-email-log.actions";
-import { IQcReportEmailLogState } from "./email-log/qc-report-email-log.model";
+} from "./details/actions/qc-events-log.action";
+import { IQcEventsLogItemState, QcEventsLogItemStateModel } from "./details/qc-events-log-state.model";
+import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from "./details/actions/save-report.actions";
+import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from "./details/actions/verify-report.actions";
+import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from "./qc-report-survey-history.actions";
+import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from "./details/actions/revert-verify-report.actions";
+import { SurveyStatusLookups } from "../../services/survey-status-lookups";
+import { MatchedQuantityStatus, NotMatchedQuantityStatus, WithinLimitQuantityStatus } from "../../core/enums/quantity-match-status";
+import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
+import { IDeliveryTenantSettings } from "../../core/settings/delivery-tenant-settings";
+import { TenantSettingsModuleName } from "@shiptech/core/store/states/tenant/tenant-settings.interface";
+import { TenantSettingsState } from "@shiptech/core/store/states/tenant/tenant-settings.state";
+import { UpdateQcReportPortCall, UpdateQcReportVessel } from "./details/actions/qc-vessel.action";
+import { Injectable } from "@angular/core";
+import { fromLegacyLookup } from "@shiptech/core/lookups/utils";
+import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from "./details/actions/update-port-call-bdn.actions";
+import { UserProfileState } from "@shiptech/core/store/states/user-profile/user-profile.state";
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -184,11 +182,6 @@ export class QcReportState {
       return undefined;
 
     return hasWithinLimit ? WithinLimitQuantityStatus : MatchedQuantityStatus;
-  }
-
-  @Selector([QcReportState])
-  static matchedCount(state: IQcReportEmailLogState): number {
-    return state.matchedCount;
   }
 
   @Action(LoadReportDetailsAction)
@@ -753,29 +746,4 @@ export class QcReportState {
     }
   }
 
-  @Action(LoadEmailLogsAction)
-  loadEmailLogsListAction({ patchState }: StateContext<IQcReportEmailLogState>, { serverGridInfo }: LoadEmailLogsAction): void {
-    patchState({
-      _isLoading: true,
-      _hasLoaded: false,
-      gridInfo: serverGridInfo
-    });
-  }
-
-  @Action([LoadEmailLogsSuccessfulAction, LoadEmailLogsFailedAction])
-  loadEmailLogsActionFinished({ getState, patchState }: StateContext<IQcReportEmailLogState>, action: LoadEmailLogsSuccessfulAction | LoadEmailLogsFailedAction): void {
-    if (isAction(action, LoadEmailLogsSuccessfulAction)) {
-      const { matchedCount } = <LoadEmailLogsSuccessfulAction>action;
-      patchState({
-        _isLoading: false,
-        _hasLoaded: true,
-        matchedCount: matchedCount
-      });
-    } else if (isAction(action, LoadEmailLogsFailedAction)) {
-      patchState({
-        _isLoading: false,
-        _hasLoaded: false
-      });
-    }
-  }
 }

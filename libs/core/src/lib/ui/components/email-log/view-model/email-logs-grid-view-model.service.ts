@@ -1,43 +1,30 @@
-import { ChangeDetectorRef, Injectable } from "@angular/core";
+import { ChangeDetectorRef, Inject, Injectable } from "@angular/core";
 import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import { AppError } from "@shiptech/core/error-handling/app-error";
-import { QcReportService } from "../../../../services/qc-report.service";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { QcEmailLogsListColumns, QcEmailLogsListColumnServerKeys, QcEmailLogsListColumnsLabels } from "./qc-email-logs-list.columns";
+import { EmailLogsListColumns, EmailLogsListColumnServerKeys, EmailLogsListColumnsLabels } from "./email-logs-list.columns";
 import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
-import { ModuleLoggerFactory } from "../../../../core/logging/module-logger-factory";
-import { TenantSettingsService } from "@shiptech/core/services/tenant-settings/tenant-settings.service";
 import { TenantFormattingService } from "@shiptech/core/services/formatting/tenant-formatting.service";
-import { IDeliveryTenantSettings } from "../../../../core/settings/delivery-tenant-settings";
-import { TenantSettingsModuleName } from "@shiptech/core/store/states/tenant/tenant-settings.interface";
-import {
-  AgGridKnownFilterTypes,
-  ITypedColDef,
-  RowModelType,
-  RowSelection
-} from "@shiptech/core/ui/components/ag-grid/type.definition";
+import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
 import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { GridApi } from "ag-grid-community/dist/lib/gridApi";
-import {
-  ServerGridConditionFilterEnum,
-  ShiptechGridFilterOperators
-} from "@shiptech/core/grid/server-grid/server-grid-condition-filter.enum";
-import { nameof } from "@shiptech/core/utils/type-definitions";
-import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
-import { IAppState } from "@shiptech/core/store/states/app.state.interface";
-import { Store } from "@ngxs/store";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
-import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
+import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
+import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
+import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
 }
 
 @Injectable()
-export class QcEmailLogsGridViewModel extends BaseGridViewModel {
+export class EmailLogsGridViewModel extends BaseGridViewModel {
+
+  transactionTypeId: number;
+  transactionIds: string;
 
   private defaultColFilterParams = {
     clearButton: true,
@@ -45,40 +32,40 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
   };
 
   fromCol: ITypedColDef<IEmailLogsItemDto, string> = {
-    headerName: QcEmailLogsListColumnsLabels.from,
-    colId: QcEmailLogsListColumns.from,
+    headerName: EmailLogsListColumnsLabels.from,
+    colId: EmailLogsListColumns.from,
     field: model("from"),
     cellRendererFramework: AgCellTemplateComponent,
     width: 306
   };
 
   statusCol: ITypedColDef<IEmailLogsItemDto, IDisplayLookupDto> = {
-    headerName: QcEmailLogsListColumnsLabels.status,
-    colId: QcEmailLogsListColumns.status,
+    headerName: EmailLogsListColumnsLabels.status,
+    colId: EmailLogsListColumns.status,
     field: model("status"),
     valueFormatter: params => params.value?.name,
     width: 206
   };
 
   toCol: ITypedColDef<IEmailLogsItemDto, string> = {
-    headerName: QcEmailLogsListColumnsLabels.to,
-    colId: QcEmailLogsListColumns.to,
+    headerName: EmailLogsListColumnsLabels.to,
+    colId: EmailLogsListColumns.to,
     field: model("to"),
     width: 306
   };
 
   subjectCol: ITypedColDef<IEmailLogsItemDto, string> = {
-    headerName: QcEmailLogsListColumnsLabels.subject,
-    colId: QcEmailLogsListColumns.subject,
+    headerName: EmailLogsListColumnsLabels.subject,
+    colId: EmailLogsListColumns.subject,
     field: model("subject"),
     width: 306
   };
 
   sendAtCol: ITypedColDef<IEmailLogsItemDto, string> = {
-    headerName: QcEmailLogsListColumnsLabels.sentAt,
-    colId: QcEmailLogsListColumns.sentAt,
+    headerName: EmailLogsListColumnsLabels.sentAt,
+    colId: EmailLogsListColumns.sentAt,
     field: model("sentAt"),
-    filter: 'agDateColumnFilter',
+    filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
     width: 206
   };
@@ -122,22 +109,27 @@ export class QcEmailLogsGridViewModel extends BaseGridViewModel {
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
-    loggerFactory: ModuleLoggerFactory,
-    tenantSettings: TenantSettingsService,
+    loggerFactory: LoggerFactory,
+    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private mastersApi: IEmailLogsApiService,
     private format: TenantFormattingService,
-    private quantityControlService: QcReportService,
-    private appErrorHandler: AppErrorHandler,
-    private store: Store,
+    private appErrorHandler: AppErrorHandler
   ) {
-    super("quantity-control-email-logs-grid", columnPreferences, changeDetector, loggerFactory.createLogger(QcEmailLogsGridViewModel.name));
+    super("email-logs-grid", columnPreferences, changeDetector, loggerFactory.createLogger(EmailLogsGridViewModel.name));
     this.init(this.gridOptions, false);
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const emailTransactionTypeId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.emailTransactionTypeId;
-    const reportId =  (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: "TransactionTypeId",
+        value: this.transactionTypeId.toString(10)
+      },
+      {
+        columnName: "TransactionIds",
+        value: this.transactionIds
+      }];
 
-    this.quantityControlService.getEmailLogs$(transformLocalToServeGridInfo(params, QcEmailLogsListColumnServerKeys), emailTransactionTypeId, reportId).subscribe(
+    this.mastersApi.getEmailLogs({ ...transformLocalToServeGridInfo(params, EmailLogsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
