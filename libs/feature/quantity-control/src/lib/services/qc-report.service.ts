@@ -34,7 +34,7 @@ import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccess
 import { LoadReportListAction, LoadReportListFailedAction, LoadReportListSuccessfulAction } from "../store/reports-list/qc-report-list.actions";
 import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from "../store/report/qc-report-survey-history.actions";
 import { QcVesselResponseBunkerStateModel, QcVesselResponseSludgeStateModel } from "../store/report/details/qc-vessel-responses.state";
-import _ from "lodash";
+import { values } from "lodash";
 import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from "./api/dto/qc-event-log-list-item.dto";
 import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from "../store/report/details/actions/revert-verify-report.actions";
 import { IQcReportState } from "../store/report/qc-report.state.model";
@@ -44,8 +44,6 @@ import { EMPTY$ } from "@shiptech/core/utils/rxjs-operators";
 import { IQcVesselPortCall } from "../guards/qc-vessel-port-call.interface";
 import { map } from "rxjs/operators";
 import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from "../store/report/details/actions/update-port-call-bdn.actions";
-import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
-import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -54,8 +52,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     private urlService: UrlService,
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
-    @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService,
-    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private apiEmail: IEmailLogsApiService) {
+    @Inject(QUANTITY_CONTROL_API_SERVICE) private api: IQuantityControlApiService) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
 
@@ -274,7 +271,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
           bunkerVesselResponseDescription: vesselResponse.bunker.description,
           bunkerVesselResponseCategory: vesselResponse.bunker.activeCategory,
           sludgeVesselResponseCategory: vesselResponse.sludge.activeCategory,
-          details: _.values(reportDetailsState.productTypesById).map(s => ({
+          details: values(reportDetailsState.productTypesById).map(s => ({
             id: s.id,
             productTypeId: s.productType.id,
             logBookRobQtyBeforeDelivery: s.robBeforeDeliveryLogBookROB,
@@ -287,7 +284,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
             afterDeliveryQtyUomId: reportDetailsState.robAfterDeliveryUom?.id
           })),
           notes: [
-            ..._.values(reportDetailsState.eventsLog.itemsById).filter(s => s.isNew).map(s => (<IQcEventLogAddedListItemDto>{
+            ...values(reportDetailsState.eventsLog.itemsById).filter(s => s.isNew).map(s => (<IQcEventLogAddedListItemDto>{
               ...s,
               id: undefined
             })),
