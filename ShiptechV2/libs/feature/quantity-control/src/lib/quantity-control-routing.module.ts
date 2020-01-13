@@ -10,8 +10,8 @@ import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-repor
 import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
 import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
-import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
+import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
 
 const routes: Routes = [
   {
@@ -57,7 +57,7 @@ const routes: Routes = [
           },
           {
             path: KnownQuantityControlRoutes.ReportEmailLogPath,
-            component: QcReportDetailsEmailLogComponent,
+            component: QcReportDetailsEmailLogsComponent,
             data: { title: 'Quantity Control - Email Log', breadcrumb: 'Email Log' }
           },
           {

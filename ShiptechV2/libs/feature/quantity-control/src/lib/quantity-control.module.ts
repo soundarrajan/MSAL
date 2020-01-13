@@ -33,7 +33,6 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { QcReportDetailsAuditLogComponent } from './views/qc-report/audit-log/qc-report-details-audit-log.component';
 import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-report-details-toolbar.component';
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
-import { QcReportDetailsEmailLogComponent } from './views/qc-report/email-log/qc-report-details-email-log.component';
 import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
 import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
@@ -41,6 +40,8 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { SurveyStatusLookups } from './services/survey-status-lookups';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
+import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
+import { EmailLogComponent } from "@shiptech/core/ui/components/email-log/email-log.component";
 
 @NgModule({
   imports: [
@@ -72,10 +73,11 @@ import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-di
     ProductDetailsComponent,
     QcReportDetailsToolbarComponent,
     QcReportDetailsDocumentsComponent,
-    QcReportDetailsEmailLogComponent,
+    QcReportDetailsEmailLogsComponent,
     QcReportDetailsAuditLogComponent,
     UomSelectorComponent,
-    RaiseClaimComponent
+    RaiseClaimComponent,
+    EmailLogComponent
   ],
   entryComponents: [
     RaiseClaimComponent
