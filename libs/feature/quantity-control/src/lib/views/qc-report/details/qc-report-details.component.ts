@@ -26,6 +26,7 @@ import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.en
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -54,7 +55,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   vessel$: Observable<IDisplayLookupDto>;
   portCall$: Observable<IQcVesselPortCall>;
 
-  matchStatus$: Observable<IDisplayLookupDto>;
+  matchStatus$: Observable<IReconStatusLookupDto>;
 
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
   @Select(QcReportState.isNew) isNew$: Observable<boolean>;
