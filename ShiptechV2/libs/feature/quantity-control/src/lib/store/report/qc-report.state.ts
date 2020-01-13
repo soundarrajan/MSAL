@@ -185,7 +185,7 @@ export class QcReportState {
   }
 
   @Action(LoadReportDetailsAction)
-  loadPortCallDetails({ getState, patchState }: StateContext<IQcReportState>, { reportId }: LoadReportDetailsAction): void {
+  loadPortCallDetails({getState, patchState}: StateContext<IQcReportState>, {reportId}: LoadReportDetailsAction): void {
     const state = getState();
     patchState({
       details: {
@@ -198,7 +198,7 @@ export class QcReportState {
   }
 
   @Action(UpdateProductTypeAction)
-  updateProductType({ getState, patchState }: StateContext<IQcReportState>, { productTypeId, prop, value }: UpdateProductTypeAction): void {
+  updateProductType({getState, patchState}: StateContext<IQcReportState>, {productTypeId, prop, value}: UpdateProductTypeAction): void {
     const state = getState();
     if (!state.details.productTypesById[productTypeId]) {
       return;
@@ -222,7 +222,7 @@ export class QcReportState {
   }
 
   @Action(UpdateActiveSludgeVesselResponseAction)
-  updateSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveSludgeVesselResponseAction): void {
+  updateSludgeVesselResponse({getState, patchState}: StateContext<IQcReportState>, {prop, value}: UpdateActiveSludgeVesselResponseAction): void {
     const state = getState();
 
     patchState({
@@ -241,7 +241,7 @@ export class QcReportState {
   }
 
   @Action(SwitchActiveSludgeResponseAction)
-  switchActiveSludgeVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { category }: SwitchActiveSludgeResponseAction): void {
+  switchActiveSludgeVesselResponse({getState, patchState}: StateContext<IQcReportState>, {category}: SwitchActiveSludgeResponseAction): void {
     const state = getState();
 
     patchState({
@@ -260,7 +260,7 @@ export class QcReportState {
   }
 
   @Action(UpdateActiveBunkerVesselResponseAction)
-  updateBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { prop, value }: UpdateActiveBunkerVesselResponseAction): void {
+  updateBunkerVesselResponse({getState, patchState}: StateContext<IQcReportState>, {prop, value}: UpdateActiveBunkerVesselResponseAction): void {
     const state = getState();
 
     patchState({
@@ -279,7 +279,7 @@ export class QcReportState {
   }
 
   @Action(SwitchActiveBunkerResponseAction)
-  switchActiveBunkerVesselResponse({ getState, patchState }: StateContext<IQcReportState>, { category }: SwitchActiveBunkerResponseAction): void {
+  switchActiveBunkerVesselResponse({getState, patchState}: StateContext<IQcReportState>, {category}: SwitchActiveBunkerResponseAction): void {
     const state = getState();
 
     patchState({
@@ -298,14 +298,14 @@ export class QcReportState {
   }
 
   @Action([SwitchUomForRobBeforeDeliveryAction, SwitchUomForRobAfterDelivery, SwitchUomForDeliveredQuantityAction])
-  switchUom({ getState, patchState }: StateContext<IQcReportState>, action: SwitchUomForRobBeforeDeliveryAction | SwitchUomForRobAfterDelivery | SwitchUomForDeliveredQuantityAction): void {
+  switchUom({getState, patchState}: StateContext<IQcReportState>, action: SwitchUomForRobBeforeDeliveryAction | SwitchUomForRobAfterDelivery | SwitchUomForDeliveredQuantityAction): void {
     const state = getState();
 
     if (isAction(action, SwitchUomForRobBeforeDeliveryAction)) {
       patchState({
           details: {
             ...state.details,
-            robBeforeDeliveryUom: { ...action.uom }
+            robBeforeDeliveryUom: {...action.uom}
           }
         }
       );
@@ -315,7 +315,7 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
-            robAfterDeliveryUom: { ...action.uom }
+            robAfterDeliveryUom: {...action.uom}
           }
         }
       );
@@ -325,7 +325,7 @@ export class QcReportState {
       patchState({
           details: {
             ...state.details,
-            deliveredQtyUom: { ...action.uom }
+            deliveredQtyUom: {...action.uom}
           }
         }
       );
@@ -333,7 +333,7 @@ export class QcReportState {
   }
 
   @Action(UpdateQcReportComment)
-  updateQcReportComment({ getState, patchState }: StateContext<IQcReportState>, { comment }: UpdateQcReportComment): void {
+  updateQcReportComment({getState, patchState}: StateContext<IQcReportState>, {comment}: UpdateQcReportComment): void {
     const state = getState();
     patchState({
       details: {
@@ -345,7 +345,7 @@ export class QcReportState {
   }
 
   @Action([LoadReportDetailsSuccessfulAction, LoadReportDetailsFailedAction])
-  loadReportDetailsFinished({ getState, patchState }: StateContext<IQcReportState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
+  loadReportDetailsFinished({getState, patchState}: StateContext<IQcReportState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
     const state = getState();
     // Note: We could have use also TenantSettingService
     const defaultUom = fromLegacyLookup(this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom);
@@ -376,7 +376,7 @@ export class QcReportState {
           robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
           emailTransactionTypeId: detailsDto.emailTransactionTypeId,
-
+          entityTransactionType: detailsDto.entityTransactionType
         })
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
@@ -392,7 +392,7 @@ export class QcReportState {
   }
 
   @Action(QcLoadEventsLogAction)
-  loadEventsLog({ getState, patchState }: StateContext<IQcReportState>, __: QcLoadEventsLogAction): void {
+  loadEventsLog({getState, patchState}: StateContext<IQcReportState>, __: QcLoadEventsLogAction): void {
     const state = getState();
 
     patchState({
@@ -408,7 +408,7 @@ export class QcReportState {
   }
 
   @Action([QcLoadEventsLogSuccessfulAction, QcLoadEventsLogFailedAction])
-  loadEventsLogFinished({ getState, patchState }: StateContext<IQcReportState>, action: QcLoadEventsLogSuccessfulAction | QcLoadEventsLogFailedAction): void {
+  loadEventsLogFinished({getState, patchState}: StateContext<IQcReportState>, action: QcLoadEventsLogSuccessfulAction | QcLoadEventsLogFailedAction): void {
     const state = getState();
     if (isAction(action, QcLoadEventsLogSuccessfulAction)) {
       const success = <QcLoadEventsLogSuccessfulAction>action;
@@ -440,7 +440,7 @@ export class QcReportState {
   }
 
   @Action(QcAddEventLogAction)
-  addEventLogAction({ getState, patchState }: StateContext<IQcReportState>, { eventDetails }: QcAddEventLogAction): void {
+  addEventLogAction({getState, patchState}: StateContext<IQcReportState>, {eventDetails}: QcAddEventLogAction): void {
     const state = getState();
 
     const newEventLogId = -Math.random();
@@ -467,7 +467,7 @@ export class QcReportState {
   }
 
   @Action(QcRemoveEventLogAction)
-  removeEventLogAction({ getState, patchState }: StateContext<IQcReportState>, { id }: QcRemoveEventLogAction): void {
+  removeEventLogAction({getState, patchState}: StateContext<IQcReportState>, {id}: QcRemoveEventLogAction): void {
     const state = getState();
 
     const { [id]: __, ...itemsById } = state.details.eventsLog.itemsById;
@@ -489,7 +489,7 @@ export class QcReportState {
   }
 
   @Action(QcUpdateEventLogAction)
-  updateEventLogAction({ getState, patchState }: StateContext<IQcReportState>, { id, eventDetails }: QcUpdateEventLogAction): void {
+  updateEventLogAction({getState, patchState}: StateContext<IQcReportState>, {id, eventDetails}: QcUpdateEventLogAction): void {
     const state = getState();
 
     patchState({
@@ -512,7 +512,7 @@ export class QcReportState {
   }
 
   @Action(QcSaveReportDetailsAction)
-  saveReportDetailsAction({ getState, patchState }: StateContext<IQcReportState>, __: QcSaveReportDetailsAction): void {
+  saveReportDetailsAction({getState, patchState}: StateContext<IQcReportState>, __: QcSaveReportDetailsAction): void {
     const state = getState();
 
     patchState({
@@ -524,7 +524,7 @@ export class QcReportState {
   }
 
   @Action([QcSaveReportDetailsSuccessfulAction, QcSaveReportDetailsFailedAction])
-  saveReportDetailsSuccessfulAction({ getState, patchState }: StateContext<IQcReportState>, action: QcSaveReportDetailsSuccessfulAction | QcSaveReportDetailsFailedAction): void {
+  saveReportDetailsSuccessfulAction({getState, patchState}: StateContext<IQcReportState>, action: QcSaveReportDetailsSuccessfulAction | QcSaveReportDetailsFailedAction): void {
     const state = getState();
     if (isAction(action, QcSaveReportDetailsSuccessfulAction)) {
 
@@ -562,19 +562,19 @@ export class QcReportState {
   }
 
   @Action(ResetQcReportDetailsStateAction)
-  resetQcReportDetailsStateAction({ patchState }: StateContext<IQcReportState>, __: ResetQcReportDetailsStateAction): void {
+  resetQcReportDetailsStateAction({patchState}: StateContext<IQcReportState>, __: ResetQcReportDetailsStateAction): void {
     patchState({
       details: new QcReportDetailsModel()
     });
   }
 
   @Action([QcVerifyReportAction, QcVerifyReportSuccessfulAction, QcVerifyReportFailedAction])
-  verifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): void {
+  verifyReportAction({getState, patchState}: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): void {
     const state = getState();
 
     if (isAction(action, QcVerifyReportAction)) {
       patchState({
-        details: { ...state.details, isVerifying: true }
+        details: {...state.details, isVerifying: true}
       });
     } else {
       patchState({
@@ -588,12 +588,12 @@ export class QcReportState {
   }
 
   @Action([QcRevertVerifyReportAction, QcRevertVerifyReportSuccessfulAction, QcRevertVerifyReportFailedAction])
-  revertVerifyReportAction({ getState, patchState }: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): void {
+  revertVerifyReportAction({getState, patchState}: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): void {
     const state = getState();
 
     if (isAction(action, QcVerifyReportAction)) {
       patchState({
-        details: { ...state.details, isRevertVerifying: true }
+        details: {...state.details, isRevertVerifying: true}
       });
     } else {
       patchState({
@@ -607,7 +607,7 @@ export class QcReportState {
   }
 
   @Action(UpdateQcReportVessel)
-  updateQcReportVessel({ getState, patchState }: StateContext<IQcReportState>, { vessel }: UpdateQcReportVessel): void {
+  updateQcReportVessel({getState, patchState}: StateContext<IQcReportState>, {vessel}: UpdateQcReportVessel): void {
     const state = getState();
     patchState(
       {
@@ -620,7 +620,7 @@ export class QcReportState {
   }
 
   @Action(UpdateQcReportPortCall)
-  updateQcReportPortCall({ getState, patchState }: StateContext<IQcReportState>, { portCall }: UpdateQcReportPortCall): void {
+  updateQcReportPortCall({getState, patchState}: StateContext<IQcReportState>, {portCall}: UpdateQcReportPortCall): void {
     const state = getState();
     patchState(
       {
@@ -632,7 +632,7 @@ export class QcReportState {
   }
 
   @Action(LoadReportSurveyHistoryAction)
-  loadReportSurveyHistoryAction({ getState, patchState }: StateContext<IQcReportState>, { serverGridInfo }: LoadReportSurveyHistoryAction): void {
+  loadReportSurveyHistoryAction({getState, patchState}: StateContext<IQcReportState>, {serverGridInfo}: LoadReportSurveyHistoryAction): void {
     const state = getState();
     patchState(
       {
@@ -649,11 +649,11 @@ export class QcReportState {
   }
 
   @Action([LoadReportSurveyHistorySuccessfulAction, LoadReportSurveyHistoryFailedAction])
-  loadReportSurveyHistoryActionFinished({ getState, patchState }: StateContext<IQcReportState>, action: LoadReportSurveyHistorySuccessfulAction | LoadReportSurveyHistoryFailedAction): void {
+  loadReportSurveyHistoryActionFinished({getState, patchState}: StateContext<IQcReportState>, action: LoadReportSurveyHistorySuccessfulAction | LoadReportSurveyHistoryFailedAction): void {
     const state = getState();
 
     if (isAction(action, LoadReportSurveyHistorySuccessfulAction)) {
-      const { nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalCount } = <LoadReportSurveyHistorySuccessfulAction>action;
+      const {nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalCount} = <LoadReportSurveyHistorySuccessfulAction>action;
       patchState({
         details: {
           ...state.details,
@@ -683,15 +683,15 @@ export class QcReportState {
   }
 
   @Action([QcClearPortCallBdnAction])
-  clearPortCallBdnAction({ getState, patchState }: StateContext<IQcReportState>, action: QcClearPortCallBdnAction): void {
+  clearPortCallBdnAction({getState, patchState}: StateContext<IQcReportState>, action: QcClearPortCallBdnAction): void {
     const state = getState();
 
-    const productTypesById = { ...state.details.productTypesById };
+    const productTypesById = {...state.details.productTypesById};
 
     values(productTypesById).forEach(p => {
       const productType = productTypesById[p.productType.id];
 
-      productTypesById[p.productType.id] = { ...productType, deliveredQuantityBdnQty: undefined };
+      productTypesById[p.productType.id] = {...productType, deliveredQuantityBdnQty: undefined};
     });
 
     patchState({
@@ -705,13 +705,13 @@ export class QcReportState {
   }
 
   @Action([QcUpdatePortCallAction, QcUpdatePortCallSuccessfulAction, QcUpdatePortCallFailedAction])
-  updatePortCallBdnActionFinished({ getState, patchState }: StateContext<IQcReportState>, action: QcUpdatePortCallAction | QcUpdatePortCallSuccessfulAction | QcUpdatePortCallFailedAction): void {
+  updatePortCallBdnActionFinished({getState, patchState}: StateContext<IQcReportState>, action: QcUpdatePortCallAction | QcUpdatePortCallSuccessfulAction | QcUpdatePortCallFailedAction): void {
     const state = getState();
 
     if (isAction(action, QcUpdatePortCallSuccessfulAction)) {
       const success = <QcUpdatePortCallSuccessfulAction>action;
 
-      const productTypesById = { ...state.details.productTypesById };
+      const productTypesById = {...state.details.productTypesById};
 
       (success.productTypes ?? []).forEach(p => {
         const productType = productTypesById[p.productType.id];
