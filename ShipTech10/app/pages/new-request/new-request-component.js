@@ -217,37 +217,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             ctrl.checkedProducts = [];
             ctrl.productIds = [];
             // Get the UI settings from server. When complete, get business data.
-            uiApiModel
+            uiApiModel 
                 .get(SCREEN_LAYOUTS.NEW_REQUEST)
                 .then(function(data) {
 
-			        Factory_Admin.getAgreementTypeIndividualList(true, function(response) {
-			        	ctrl.contractAgreementTypesList = response.payload.contractAgreementTypesList;
-			        	ctrl.spotAgreementTypesList = response.payload.spotAgreementTypesList;
-			        })	
-
-                    ctrl.ui = data.layout.children.edit;
-                    ctrl.screenActions = uiApiModel.getScreenActions();
-                    $scope.formFieldsNew = data;
-                    //Normalize relevant data for use in template.
-                    ctrl.vesselDetailsFields = normalizeArrayToHash(ctrl.ui.vesselDetails.fields, "name");
-                    ctrl.productInfoFields = normalizeArrayToHash(ctrl.ui.Locations.fields, "name");
-                    ctrl.productInfoColumns = normalizeArrayToHash(ctrl.ui.Locations.columns, "name");
-                    $.each(ctrl.productInfoColumns, function(k, v) {
-                        if (v.name == "ProductType") {
-                            if (ctrl.requestTenantSettings.productTypeInRequest.id == 2) {
-                                 delete ctrl.productInfoColumns[k];                           
-                            }
-                        }
-                    })
-                    ctrl.ui.Locations.columns  = ctrl.productInfoColumns;
-                    ctrl.footerSectionFields = normalizeArrayToHash(ctrl.ui.FooterSection.fields, "name");
-                        $timeout(function() {
-                            ctrl.agentCounterpartyTypeId = [IDS.AGENT_COUNTERPARTY_ID];
-                            initializeLookupInputs();
-                        });
-                    // listsModel.get().then(function(data) {
-                    // });
                     if ($stateParams.copyFrom) {
                         newRequestModel.getDefaultBuyer($stateParams.copyFrom.vesselId).then(function(data) {
                             ctrl.disableAllFields = false;// fields enabled at copy
@@ -458,14 +431,43 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             });
                         });
                     }
+
+			        Factory_Admin.getAgreementTypeIndividualList(true, function(response) {
+			        	ctrl.contractAgreementTypesList = response.payload.contractAgreementTypesList;
+			        	ctrl.spotAgreementTypesList = response.payload.spotAgreementTypesList;
+			        })	
+
+                    ctrl.ui = data.layout.children.edit;
+                    ctrl.screenActions = uiApiModel.getScreenActions();
+                    $scope.formFieldsNew = data;
+                    //Normalize relevant data for use in template.
+                    ctrl.vesselDetailsFields = normalizeArrayToHash(ctrl.ui.vesselDetails.fields, "name");
+                    ctrl.productInfoFields = normalizeArrayToHash(ctrl.ui.Locations.fields, "name");
+                    ctrl.productInfoColumns = normalizeArrayToHash(ctrl.ui.Locations.columns, "name");
+                    $.each(ctrl.productInfoColumns, function(k, v) {
+                        if (v.name == "ProductType") {
+                            if (ctrl.requestTenantSettings.productTypeInRequest.id == 2) {
+                                 delete ctrl.productInfoColumns[k];                           
+                            }
+                        }
+                    })
+                    ctrl.ui.Locations.columns  = ctrl.productInfoColumns;
+                    ctrl.footerSectionFields = normalizeArrayToHash(ctrl.ui.FooterSection.fields, "name");
+                        $timeout(function() {
+                            ctrl.agentCounterpartyTypeId = [IDS.AGENT_COUNTERPARTY_ID];
+                            initializeLookupInputs();
+                        });
+                    // listsModel.get().then(function(data) {
+                    // });
+
                 })
                 .then(function(data) {
                     initDataTables();
                     $timeout(function() {
                     });
-                }).finally(
-                    function(){
-                        screenLoader.hideLoader();
+                }).catch(
+                    function(error){
+	                	console.error("Screen Layout Failed");
                     }
                 );
         };
