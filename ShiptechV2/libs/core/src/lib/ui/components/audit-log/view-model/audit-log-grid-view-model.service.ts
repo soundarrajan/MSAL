@@ -1,5 +1,5 @@
 import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
-import { ChangeDetectorRef, Injectable } from "@angular/core";
+import { ChangeDetectorRef, Inject, Injectable } from "@angular/core";
 import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
 import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
 import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
@@ -13,6 +13,9 @@ import { AuditLogColumnServerKeys, AuditLogColumnsLabels, AuditLogListColumns } 
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IAuditLogApiService } from "@shiptech/core/services/admin-api/audit-log-api.service.interface";
+import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
+import { AUDIT_LOG_ADMIN_API_SERVICE } from "@shiptech/core/services/admin-api/audit-log-api.service";
 
 @Injectable()
 export class AuditLogGridViewModel extends BaseGridViewModel {
@@ -130,7 +133,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
     private format: TenantFormattingService,
-    private adminApi: IAuditLogApiService,
+    @Inject(AUDIT_LOG_ADMIN_API_SERVICE) private adminApi: IAuditLogApiService,
     private appErrorHandler: AppErrorHandler
   ) {
     super('audit-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(AuditLogGridViewModel.name));
