@@ -1,6 +1,6 @@
 import * as faker from 'faker';
 import * as _ from 'lodash';
-import { SurveyStatusEnumMap } from '../../../core/enums/survey-status.enum';
+import { SurveyStatusEnumMap } from '@shiptech/core/enums/survey-status.enum';
 import { IQcSurveyHistoryListItemDto } from '../dto/qc-survey-history-list-item.dto';
 import { QuantityMatchStatusEnumMap } from '../../../core/enums/quantity-match-status';
 

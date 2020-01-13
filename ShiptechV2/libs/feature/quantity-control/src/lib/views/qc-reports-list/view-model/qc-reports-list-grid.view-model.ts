@@ -5,7 +5,7 @@ import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/comp
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
-import { SurveyStatusEnum } from '../../../core/enums/survey-status.enum';
+import { SurveyStatusEnum } from '@shiptech/core/enums/survey-status.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
