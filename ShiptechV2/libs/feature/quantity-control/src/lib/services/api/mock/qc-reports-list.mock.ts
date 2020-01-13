@@ -1,8 +1,8 @@
 import { IQcReportsListItemDto } from '../dto/qc-reports-list-item.dto';
 import * as faker from 'faker';
 import * as _ from 'lodash';
-import { SurveyStatusEnumMap } from '../../../core/enums/survey-status.enum';
-import { QuantityMatchStatusEnumMap } from '../../../core/enums/quantity-match-status';
+import { MockStatusLookupEnumMap } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { MockReconStatusLookupEnumMap } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 
 export function getMockQcReportsList(n: number): IQcReportsListItemDto[] {
   return _.range(1, n).map(id => getMockQcReportsListItem(id));
@@ -12,30 +12,18 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
   const quantityBefore: number = faker.random.number(5000);
   const rob: number = faker.random.number(200);
   const sludge: number = faker.random.number(20);
-  const surveyStatuses = _.keys(SurveyStatusEnumMap);
-  const surveyStatus = surveyStatuses[faker.random.number({ min: 0, max: surveyStatuses.length-1 })];
-  const qtyMatchValues = _.keys(QuantityMatchStatusEnumMap);
-  const qtyMatch = qtyMatchValues[faker.random.number({ min: 0, max: qtyMatchValues.length-1 })];
 
   return {
     id,
     nbOfMatched: faker.random.number(100),
     nbOfMatchedWithinLimit: faker.random.number(100),
     nbOfNotMatched: faker.random.number(100),
-    portCallId: faker.random.number({ min: Math.pow(10, 15), max: Math.pow(10, 16)-1}).toString(),
+    portCallId: faker.random.number({ min: Math.pow(10, 15), max: Math.pow(10, 16) - 1 }).toString(),
     portName: faker.name.lastName(),
     vesselName: faker.random.word(),
     surveyDate: faker.date.past().toISOString(),
-    surveyStatus: {
-      id: faker.random.number(),
-      name: SurveyStatusEnumMap[surveyStatus],
-      displayName: SurveyStatusEnumMap[surveyStatus],
-    },
-    qtyMatchedStatus: {
-      id: faker.random.number(),
-      name: QuantityMatchStatusEnumMap[qtyMatch],
-      displayName: QuantityMatchStatusEnumMap[qtyMatch]
-    },
+    surveyStatus: _.sample(_.values(MockStatusLookupEnumMap)),
+    qtyMatchedStatus: _.sample(_.values(MockReconStatusLookupEnumMap)),
     logBookRobBeforeDelivery: rob * 0.95,
     measuredRobBeforeDelivery: rob * 0.90,
     diffRobBeforeDelivery: rob * 0.7,

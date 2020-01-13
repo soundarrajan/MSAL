@@ -1,5 +1,5 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
-export interface IReconStatusDto extends IDisplayLookupDto{
+export interface IReconStatusLookupDto extends IDisplayLookupDto{
   code: string;
 }
