@@ -48,8 +48,9 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
     enableBrowserTooltips: true,
     suppressContextMenu: true,
-
+    suppressMovableColumns: true,
     defaultColDef: {
+
       editable: false,
       sortable: false,
       filter: false,

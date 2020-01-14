@@ -356,7 +356,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     this.quantityControlService.getSurveyHistoryList$(
       this.reportDetailsState.vessel.id,
-      transformLocalToServeGridInfo(params, QcSurveyHistoryListColumnServerKeys)
+      transformLocalToServeGridInfo(this.gridApi, params, QcSurveyHistoryListColumnServerKeys)
     ).subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => params.failCallback());

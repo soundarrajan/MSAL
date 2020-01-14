@@ -28,21 +28,43 @@
           <div fxLayout="row">
             <div fxLayout="row" fxLayoutGap="20px">
               <span>QUANTITY CONTROL REPORT</span>
-              <shiptech-vessel-master-autocomplete [disabled]="(isBusy$ | async) || !(isNew$ | async)" field="name" dataKey="id">
-                <p-autoComplete (onSelect)="updateVessel($event)" (onClear)="updateVessel(undefined)" [ngModel]="vessel$ | async" [size]="30" [forceSelection]="true" [minLength]="1"
-                                placeholder="Vessel Name"
-                ></p-autoComplete>
-              </shiptech-vessel-master-autocomplete>
+              <shiptech-vessel-autocomplete [disabled]="(isBusy$ | async) || !(isNew$ | async)" #vesselAutoComplete>
+                <p-autoComplete (onSelect)="updateVessel($event)"
+                                [disabled]="vesselAutoComplete.disabled"
+                                [readonly]="vesselAutoComplete.readonly"
+                                (completeMethod)="vesselAutoComplete.filter($event.query)"
+                                [suggestions]="vesselAutoComplete.suggestions"
+                                (onClear)="updateVessel(undefined)"
+                                [ngModel]="vessel$ | async"
+                                [size]="30"
+                                [dataKey]="vesselAutoComplete.dataKey"
+                                [field]="vesselAutoComplete.field"
+                                [forceSelection]="true"
+                                [minLength]="0"
+                                placeholder="Vessel Name">
+                </p-autoComplete>
+              </shiptech-vessel-autocomplete>
               <shiptech-vessel-port-calls-master-autocomplete [vesselId]="(vessel$ | async)?.id"
-                                                              [disabled]="(isBusy$ | async) || !(isNew$ | async) || !(vessel$ | async)"
-                                                              field="portCallId" dataKey="id">
-                <p-autoComplete (onSelect)="updatePortCall($event)" (onClear)="updatePortCall(undefined)"
-                                [ngModel]="portCall$ | async" placeholder="Port Call ID"
-                                [size]="30" [forceSelection]="true" [minLength]="1"></p-autoComplete>
+                                                              [disabled]="(isBusy$ | async) || !(isNew$ | async) || !(vessel$ | async)" #portCallAutoComplete>
+                <p-autoComplete (onSelect)="updatePortCall($event)"
+                                [disabled]="portCallAutoComplete.disabled"
+                                [readonly]="portCallAutoComplete.readonly"
+                                (completeMethod)="portCallAutoComplete.filter($event.query)"
+                                [suggestions]="portCallAutoComplete.suggestions"
+                                (onClear)="updatePortCall(undefined)"
+                                [ngModel]="portCall$ | async"
+                                [size]="30"
+                                [dataKey]="portCallAutoComplete.dataKey"
+                                [field]="portCallAutoComplete.field"
+                                [forceSelection]="true"
+                                [minLength]="0"
+                                placeholder="Port Call ID">
+                </p-autoComplete>
               </shiptech-vessel-port-calls-master-autocomplete>
             </div>
             <div style="margin-left: auto">
-              <span class="badge" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined" [ngStyle]="{ backgroundColor: (matchStatus$ | async)?.code }">{{ (matchStatus$ | async)?.displayName }}</span>
+              <span class="badge" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined"
+                    [ngStyle]="{ backgroundColor: (matchStatus$ | async)?.code }">{{ (matchStatus$ | async)?.displayName }}</span>
               <span class="badge" *ngIf="(nbOfClaims$ | async) >= 0">Claims: {{nbOfClaims$ | async}}</span>
               <span class="badge" *ngIf="(nbOfDeliveries$ | async) >= 0">Deliveries: {{nbOfDeliveries$ | async}}</span>
             </div>

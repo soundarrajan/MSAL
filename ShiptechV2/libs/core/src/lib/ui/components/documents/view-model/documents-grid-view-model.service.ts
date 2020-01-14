@@ -189,7 +189,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
         columnName: "ReferenceNo",
         value: this.entityId.toString(10)
       }];
-    this.mastersApi.getDocumentList({ ...transformLocalToServeGridInfo(params, DocumentsListColumnServerKeys), filters }).subscribe(
+    this.mastersApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
