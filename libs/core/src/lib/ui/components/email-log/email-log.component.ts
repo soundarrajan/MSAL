@@ -5,7 +5,7 @@ import { Subject } from "rxjs";
 @Component({
   selector: "shiptech-email-log",
   templateUrl: "./email-log.component.html",
-  styleUrls: ["./email-log.component.css"],
+  styleUrls: ["./email-log.component.scss"],
   providers: [EmailLogsGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
