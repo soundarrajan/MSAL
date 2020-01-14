@@ -26,4 +26,9 @@ export class EmailLogsApiMock implements IEmailLogsApiService {
       matchedCount: items.length
     });
   }
+
+  @ApiCall()
+  editEmail(emailId:number): Observable<IEmailLogsResponse> {
+    return null;
+  }
 }
