@@ -23,8 +23,8 @@ function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
 @Injectable()
 export class EmailLogsGridViewModel extends BaseGridViewModel {
 
-  transactionTypeId: number;
-  transactionIds: string;
+  entityId: number;
+  entityName: string;
 
   private defaultColFilterParams = {
     clearButton: true,
@@ -122,11 +122,11 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     const filters: ServerQueryFilter[] = [
       {
         columnName: "TransactionTypeId",
-        value: this.transactionTypeId.toString(10)
+        value: this.entityId.toString(10)
       },
       {
         columnName: "TransactionIds",
-        value: this.transactionIds
+        value: this.entityName
       }];
 
     this.mastersApi.getEmailLogs({ ...transformLocalToServeGridInfo(params, EmailLogsListColumnServerKeys), filters }).subscribe(

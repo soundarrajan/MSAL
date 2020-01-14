@@ -20,8 +20,8 @@ import { AUDIT_LOG_ADMIN_API_SERVICE } from "@shiptech/core/services/admin-api/a
 @Injectable()
 export class AuditLogGridViewModel extends BaseGridViewModel {
 
-  entityTransactionType: string;
-  businessId: number;
+  entityName: string;
+  entityId: number;
 
   private defaultColFilterParams = {
     clearButton: true,
@@ -165,11 +165,11 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     const filters: ServerQueryFilter[] = [
       {
         columnName: "BusinessId",
-        value: this.businessId.toString(10)
+        value: this.entityId.toString(10)
       },
       {
         columnName: "Transaction",
-        value: this.entityTransactionType
+        value: this.entityName
       }];
 
     this.adminApi.getAuditLog({...transformLocalToServeGridInfo(params, AuditLogColumnServerKeys), filters}).subscribe(
