@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/
 import { Store } from "@ngxs/store";
 import { IAppState } from "@shiptech/core/store/states/app.state.interface";
 import { Subject } from "rxjs";
+import { EmailLogsEntities } from "@shiptech/core/enums/email-logs-entities.enum";
 
 @Component({
   selector: "shiptech-qc-report-details-email-logs",
@@ -11,13 +12,12 @@ import { Subject } from "rxjs";
 })
 export class QcReportDetailsAuditLogsComponent implements OnInit, OnDestroy {
 
-  businessId: number;
-  entityTransactionType: string;
+  entityId: number;
+  entityName = EmailLogsEntities.Report;
   private _destroy$ = new Subject();
 
   constructor(private store: Store) {
-    this.entityTransactionType = (<IAppState>this.store.snapshot()).quantityControl.report.details.entityTransactionType.name;
-    this.businessId = (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
+    this.entityId = (<IAppState>this.store.snapshot()).quantityControl.report.details.id;
   }
 
   ngOnInit(): void {

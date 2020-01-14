@@ -11,28 +11,28 @@ import {Subject} from "rxjs";
 })
 export class AuditLogComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
-  private _businessId: number;
-  private _entityTransactionType: string;
+  private _entityId: number;
+  private _entityName: string;
 
-  get businessId(): number {
-    return this._businessId;
+  get entityId(): number {
+    return this._entityId;
   }
-  get entityTransactionType(): string {
-    return this._entityTransactionType;
+  get entityName(): string {
+    return this._entityName;
   }
 
-  @Input() set businessId(value: number) {
-    this._businessId = value;
-    this.gridViewModel.businessId = this.businessId;
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+    this.gridViewModel.entityId = this.entityId;
 
     if (this.gridViewModel.isReady) {
       this.gridViewModel.gridOptions.api.purgeServerSideCache();
     }
   }
 
-  @Input() set entityTransactionType(value: string) {
-    this._entityTransactionType = value;
-    this.gridViewModel.entityTransactionType = this.entityTransactionType;
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    this.gridViewModel.entityName = this.entityName;
 
     if (this.gridViewModel.isReady) {
       this.gridViewModel.gridOptions.api.purgeServerSideCache();

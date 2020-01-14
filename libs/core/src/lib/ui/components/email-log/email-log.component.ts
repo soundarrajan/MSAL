@@ -12,28 +12,28 @@ import { Subject } from "rxjs";
 export class EmailLogComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
-  private _transactionTypeId: number;
-  private _transactionIds: string;
+  private _entityId: number;
+  private _entityName: string;
 
-  get transactionTypeId(): number {
-    return this._transactionTypeId;
+  get entityId(): number {
+    return this._entityId;
   }
-  get transactionIds(): string {
-    return this._transactionIds;
+  get entityName(): string {
+    return this._entityName;
   }
 
-  @Input() set transactionTypeId(value: number) {
-    this._transactionTypeId = value;
-    this.gridViewModel.transactionTypeId = this.transactionTypeId;
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+    this.gridViewModel.entityId = this.entityId;
 
     if (this.gridViewModel.isReady) {
       this.gridViewModel.gridOptions.api.purgeServerSideCache();
     }
   }
 
-  @Input() set transactionIds(value: string) {
-    this._transactionIds = value;
-    this.gridViewModel.transactionIds = this.transactionIds;
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    this.gridViewModel.entityName = this.entityName;
 
     if (this.gridViewModel.isReady) {
       this.gridViewModel.gridOptions.api.purgeServerSideCache();
