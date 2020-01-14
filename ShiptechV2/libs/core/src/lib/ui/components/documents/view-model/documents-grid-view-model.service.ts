@@ -14,6 +14,8 @@ import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
+import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
+import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -70,11 +72,11 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     width: 129
   };
 
-  documentTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
+  documentTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
     headerName: DocumentsListColumnsLabels.documentType,
     colId: DocumentsListColumns.documentType,
     field: model("documentType"),
-    valueFormatter: params => params.value?.name,
+    valueFormatter: params => params.value.name,
     width: 150
   };
 
@@ -85,7 +87,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-  transactionTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
+  transactionTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
     headerName: DocumentsListColumnsLabels.transactionType,
     colId: DocumentsListColumns.transactionType,
     field: model("transactionType"),
@@ -100,7 +102,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-  uploadedByCol: ITypedColDef<IDocumentsItemDto, string> = {
+  uploadedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
     headerName: DocumentsListColumnsLabels.uploadedBy,
     colId: DocumentsListColumns.uploadedBy,
     field: model("uploadedBy"),
@@ -136,7 +138,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-  verifiedByCol: ITypedColDef<IDocumentsItemDto, string> = {
+  verifiedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
     headerName: DocumentsListColumnsLabels.verifiedBy,
     colId: DocumentsListColumns.verifiedBy,
     field: model("verifiedBy"),
