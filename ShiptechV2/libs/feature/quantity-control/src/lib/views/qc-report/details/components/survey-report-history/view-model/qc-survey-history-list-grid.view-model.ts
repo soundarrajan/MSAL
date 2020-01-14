@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { IAgGridCellClassRules, ITypedColDef, ITypedValueParams, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnServerKeys, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
@@ -13,8 +13,8 @@ import { IQcReportDetailsState } from '../../../../../../store/report/details/qc
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
-import { SurveyStatusEnum } from '@shiptech/core/enums/survey-status.enum';
-import { QuantityMatchStatusEnum } from '../../../../../../core/enums/quantity-match-status';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { IQcReportState } from '../../../../../../store/report/qc-report.state.model';
 import { combineLatest, Observable } from 'rxjs';
@@ -23,6 +23,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { IQcReportsListItemDto } from '../../../../../../services/api/dto/qc-reports-list-item.dto';
 
 function model(prop: keyof IQcSurveyHistoryListItemDto): keyof IQcSurveyHistoryListItemDto {
   return prop;
@@ -100,8 +101,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.displayName,
     cellClass: 'cell-background',
     cellClassRules: {
-      'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
-      'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
+      'pending': params => params.data?.surveyStatus?.name === StatusLookupEnum.Pending,
+      'verified': params => params.data?.surveyStatus?.name === StatusLookupEnum.Verified
     },
     width: 85
   };
@@ -113,9 +114,9 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.displayName,
     cellClass: 'cell-background',
     cellClassRules: {
-      'matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
-      'matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-      'not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
+      'matched': params => params.data?.qtyMatchedStatus?.name === ReconStatusLookupEnum.Matched,
+      'matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === ReconStatusLookupEnum.WithinLimit,
+      'not-matched': params => params.data?.qtyMatchedStatus?.name === ReconStatusLookupEnum.NotMatched
     },
     width: 96
   };
@@ -145,10 +146,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit
-    },
+    cellClassRules: this.toleranceStatus(params => params.data?.diffRobBeforeDelivery),
     width: 140
   };
 
@@ -183,10 +181,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffDeliveredQty) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit
-    }
+    cellClassRules: this.toleranceStatus(params => params.data?.diffDeliveredQty),
   };
 
   qtyDeliveredUomCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
@@ -220,10 +215,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffRobAfterDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit
-    }
+    cellClassRules: this.toleranceStatus(params => params.data?.diffRobAfterDelivery),
   };
 
   qtyAfterDeliveryUomCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
@@ -256,10 +248,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit
-    }
+    cellClassRules: this.toleranceStatus(params => params.data?.diffSludgeRobBeforeDischarge),
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -311,8 +300,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     this.init(this.gridOptions);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
-    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
-    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
+    this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
+    this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
 
     // Note: When portCall changes we need to reload the grid,
     combineLatest(
@@ -389,5 +378,12 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
   private selectReportDetailsSnapshot<T>(select: ((state: IQcReportDetailsState) => T)): T {
     return this.store.selectSnapshot((appState: IAppState) => select(appState?.quantityControl?.report?.details));
+  }
+
+  private toleranceStatus(field:  (params: ITypedValueParams<IQcReportsListItemDto, number>) => number): IAgGridCellClassRules<IQcReportsListItemDto, number> {
+    return {
+      'not-matched': params => Math.abs(field(params)) >= this.maxToleranceLimit,
+      'matched-withing-limit': params => Math.abs(field(params)) > this.minToleranceLimit && Math.abs(field(params)) < this.maxToleranceLimit,
+    };
   }
 }

@@ -22,7 +22,7 @@ import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { QcReportService } from './services/qc-report.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
-import { QuantityControlRouteResolver } from './quantiy-control-route.resolver';
+import { QuantityControlModuleResolver } from './quantiy-control-route.resolver';
 import { SoundingReportsComponent } from './views/qc-report/details/components/sounding-reports/sounding-reports.component';
 import { EventsLogComponent } from './views/qc-report/details/components/events-log/events-log.component';
 import { SurveyReportHistoryComponent } from './views/qc-report/details/components/survey-report-history/survey-report-history.component';
@@ -35,7 +35,7 @@ import { UomSelectorComponent } from './views/qc-report/details/components/uom-s
 import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
-import { SurveyStatusLookups } from './services/survey-status-lookups';
+import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
@@ -92,8 +92,7 @@ import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/q
   ],
   providers: [
     ModuleLoggerFactory,
-    SurveyStatusLookups,
-    QuantityControlRouteResolver,
+    QuantityControlModuleResolver,
     QcReportDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,

@@ -18,6 +18,9 @@ import { DeveloperToolbarService } from './developer-toolbar/developer-toolbar.s
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { UserProfileService } from '@shiptech/core/services/user-profile/user-profile.service';
+import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
+import { fromPromise } from 'rxjs/internal-compatibility';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +59,7 @@ export class BootstrapService {
       concatMap(() => this.loadGeneralTenantSettings()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
+      concatMap(() => this.loadKnownLookups()),
       tap(() => this.setupAgGrid()),
       tap(() => this._initialized.next())
     );
@@ -137,6 +141,15 @@ export class BootstrapService {
         return EMPTY$;
       }
     }));
+  }
+
+  private loadKnownLookups(): Observable<unknown>{
+    const surveyStatusLookups = this.injector.get(StatusLookup);
+    const reconStatusLookups = this.injector.get(ReconStatusLookup);
+
+    return forkJoin(
+      fromPromise(surveyStatusLookups.load()),
+      fromPromise(reconStatusLookups.load()));
   }
 }
 

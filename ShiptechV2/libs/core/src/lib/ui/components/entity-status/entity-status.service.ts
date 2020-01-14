@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { IEntityStatus } from '@shiptech/core/ui/components/entity-status/entity-status.component';
+import { IEntityStatusConfig } from '@shiptech/core/ui/components/entity-status/entity-status-config.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntityStatusService {
-  public statusChanged = new ReplaySubject<IEntityStatus>(1);
-  public currentStatus: IEntityStatus;
+  public statusChanged = new ReplaySubject<IEntityStatusConfig>(1);
+  public currentStatus: IEntityStatusConfig;
 
   constructor() {
   }
 
-  public setStatus(newStatus: IEntityStatus): void{
+  public setStatus(newStatus: IEntityStatusConfig): void{
     this.currentStatus = newStatus;
     this.statusChanged.next(this.currentStatus);
   }
