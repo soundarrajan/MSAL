@@ -42,6 +42,6 @@
 </div>
 
 <ng-template [columnDef]="[gridViewModel.fromCol]" appAgCellTemplate let-data="data" let-value="value">
-  <a *ngIf="data && data.id" (click)="openEditEmail(data.id)">{{data?.from}}</a>
+  <a *ngIf="data && data.id" (click)="openEditEmail(data.id)"><i class="fa fa-pencil-alt"></i> {{data?.from}}</a>
 </ng-template>
 
