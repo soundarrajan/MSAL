@@ -70,10 +70,77 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     width: 129
   };
 
+  documentTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.documentType,
+    colId: DocumentsListColumns.documentType,
+    field: model("documentType"),
+    valueFormatter: params => params.value?.name,
+    width: 150
+  };
+
   fileTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.fileType,
     colId: DocumentsListColumns.fileType,
     field: model("fileType"),
+    width: 150
+  };
+
+  transactionTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.transactionType,
+    colId: DocumentsListColumns.transactionType,
+    field: model("transactionType"),
+    valueFormatter: params => params.value?.name,
+    width: 150
+  };
+
+  referenceNoCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.referenceNo,
+    colId: DocumentsListColumns.referenceNo,
+    field: model("referenceNo"),
+    width: 150
+  };
+
+  uploadedByCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.uploadedBy,
+    colId: DocumentsListColumns.uploadedBy,
+    field: model("uploadedBy"),
+    valueFormatter: params => params.value?.name,
+    width: 150
+  };
+
+  uploadedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.uploadedOn,
+    colId: DocumentsListColumns.uploadedOn,
+    field: model("uploadedOn"),
+    width: 150
+  };
+
+  notesCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.notes,
+    colId: DocumentsListColumns.notes,
+    field: model("notes"),
+    width: 150
+  };
+
+  isVerifiedCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.isVerified,
+    colId: DocumentsListColumns.isVerified,
+    field: model("isVerified"),
+    width: 150
+  };
+
+  verifiedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.verifiedOn,
+    colId: DocumentsListColumns.verifiedOn,
+    field: model("verifiedOn"),
+    width: 150
+  };
+
+  verifiedByCol: ITypedColDef<IDocumentsItemDto, string> = {
+    headerName: DocumentsListColumnsLabels.verifiedBy,
+    colId: DocumentsListColumns.verifiedBy,
+    field: model("verifiedBy"),
+    valueFormatter: params => params.value?.name,
     width: 150
   };
 
@@ -94,7 +161,16 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     return [
       this.nameCol,
       this.sizeCol,
-      this.fileTypeCol
+      this.documentTypeCol,
+      this.fileTypeCol,
+      this.transactionTypeCol,
+      this.referenceNoCol,
+      this.uploadedByCol,
+      this.uploadedOnCol,
+      this.notesCol,
+      this.isVerifiedCol,
+      this.verifiedOnCol,
+      this.verifiedByCol
     ];
   }
 
