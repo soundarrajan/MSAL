@@ -1,10 +1,11 @@
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
+import { IReconStatusLookupDto } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface";
 
 export interface IEmailLogsItemDto {
   id: number;
   from: string;
-  status: IDisplayLookupDto;
+  status: IReconStatusLookupDto;
   transactionType: IDisplayLookupDto;
   emailTemplateId: number;
   to: string;

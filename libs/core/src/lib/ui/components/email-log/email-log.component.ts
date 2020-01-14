@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { EmailLogsGridViewModel } from "./view-model/email-logs-grid-view-model.service";
 import { Subject } from "rxjs";
+import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
 
 @Component({
   selector: "shiptech-email-log",
@@ -18,6 +19,7 @@ export class EmailLogComponent implements OnInit, OnDestroy {
   get entityId(): number {
     return this._entityId;
   }
+
   get entityName(): string {
     return this._entityName;
   }
@@ -40,7 +42,11 @@ export class EmailLogComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(public gridViewModel: EmailLogsGridViewModel) {
+  constructor(public gridViewModel: EmailLogsGridViewModel, private emailLogsApi: EmailLogsApi) {
+  }
+
+  openEditEmail(emailId: number): void {
+    this.emailLogsApi.editEmail(emailId).subscribe();
   }
 
   ngOnInit(): void {
