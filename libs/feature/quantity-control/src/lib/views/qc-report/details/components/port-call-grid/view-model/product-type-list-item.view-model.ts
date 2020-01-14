@@ -6,14 +6,15 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { roundDecimals } from '@shiptech/core/utils/math';
-import { MatchedQuantityStatus } from '../../../../../../core/enums/quantity-match-status';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
 @Injectable()
 export class ProductTypeListItemViewModelFactory {
   private deliverySettings: IDeliveryTenantSettings;
   private readonly quantityPrecision: number;
 
-  constructor(private tenantSettingsService: TenantSettingsService) {
+  constructor(private tenantSettingsService: TenantSettingsService, private reconStatusLookups: ReconStatusLookup) {
     const generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
 
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
@@ -21,7 +22,7 @@ export class ProductTypeListItemViewModelFactory {
   }
 
   build(itemState: QcProductTypeListItemStateModel): ProductTypeListItemViewModel {
-    return new ProductTypeListItemViewModel(itemState, this.deliverySettings.minToleranceLimit, this.deliverySettings.maxToleranceLimit, this.quantityPrecision);
+    return new ProductTypeListItemViewModel(itemState, this.deliverySettings.qcMinToleranceLimit, this.deliverySettings.qcMaxToleranceLimit, this.quantityPrecision, this.reconStatusLookups);
   }
 }
 
@@ -38,13 +39,13 @@ export class ProductTypeListItemViewModel {
   deliveredDiff: number;
   robAfterDiff: number;
 
-  robBeforeDiffStatus: IDisplayLookupDto;
-  deliveredDiffStatus: IDisplayLookupDto;
-  robAfterDiffStatus: IDisplayLookupDto;
+  robBeforeDiffStatus: IReconStatusLookupDto;
+  deliveredDiffStatus: IReconStatusLookupDto;
+  robAfterDiffStatus: IReconStatusLookupDto;
 
   isSludge: boolean;
 
-  constructor(item: QcProductTypeListItemStateModel, minToleranceLimit: number, maxToleranceLimit: number, private quantityPrecision: number) {
+  constructor(item: QcProductTypeListItemStateModel, minToleranceLimit: number, maxToleranceLimit: number, private quantityPrecision: number, reconStatusLookups: ReconStatusLookup) {
     this.productType = item.productType;
     this.productType = item.productType;
     this.isSludge = item.isSludge;
@@ -56,9 +57,9 @@ export class ProductTypeListItemViewModel {
     this.robAfterDeliveryLogBookROB = roundDecimals(item.robAfterDeliveryLogBookROB, quantityPrecision);
     this.robAfterDeliveryMeasuredROB = roundDecimals(item.robAfterDeliveryMeasuredROB, quantityPrecision);
 
-    this.robBeforeDiffStatus = QcReportState.getMatchStatus(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
-    this.deliveredDiffStatus = QcReportState.getMatchStatus(this.deliveredQuantityBdnQty, this.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
-    this.robAfterDiffStatus = !this.isSludge ? QcReportState.getMatchStatus(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit) : undefined;
+    this.robBeforeDiffStatus = reconStatusLookups.toReconStatus(QcReportState.getMatchStatus(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit));
+    this.deliveredDiffStatus = reconStatusLookups.toReconStatus(QcReportState.getMatchStatus(this.deliveredQuantityBdnQty, this.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit));
+    this.robAfterDiffStatus = reconStatusLookups.toReconStatus(!this.isSludge ? QcReportState.getMatchStatus(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit) : undefined);
 
     this.robBeforeDiff = this.safeDiff(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB);
     this.deliveredDiff = this.safeDiff(this.deliveredQuantityBdnQty, this.measuredDeliveredQty);

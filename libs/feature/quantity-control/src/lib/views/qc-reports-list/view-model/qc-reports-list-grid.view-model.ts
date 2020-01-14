@@ -1,16 +1,16 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
-import { SurveyStatusEnum } from '@shiptech/core/enums/survey-status.enum';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { QcReportService } from '../../../services/qc-report.service';
-import { QuantityMatchStatusEnum } from '../../../core/enums/quantity-match-status';
+import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
@@ -19,6 +19,9 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { IDeliveryTenantSettings } from '../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -63,7 +66,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   selectCol: ITypedColDef<IQcReportsListItemDto> = {
     colId: QcReportsListColumns.selection,
     width: 50,
-    checkboxSelection: params => params.data?.surveyStatus?.name === SurveyStatusEnum.New || params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
+    checkboxSelection: params => params.data?.surveyStatus?.name === StatusLookupEnum.New || params.data?.surveyStatus?.name === StatusLookupEnum.Pending,
     editable: false,
     filter: false,
     sortable: false,
@@ -112,30 +115,28 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-  surveyStatusCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  surveyStatusCol: ITypedColDef<IQcReportsListItemDto, IStatusLookupDto> = {
     headerName: QcReportsListColumnsLabels.surveyStatus,
     colId: QcReportsListColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellClass: 'cell-background',
-    cellClassRules: {
-      'pending': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Pending,
-      'verified': params => params.data?.surveyStatus?.name === SurveyStatusEnum.Verified
-    },
+    cellStyle: params => ({
+      backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : params.data?.surveyStatus?.code,
+      color: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
+    }),
     width: 85
   };
 
-  qtyMatchedStatusCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyMatchedStatusCol: ITypedColDef<IQcReportsListItemDto, IReconStatusLookupDto> = {
     headerName: QcReportsListColumnsLabels.qtyMatchedStatus,
     colId: QcReportsListColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
     valueFormatter: params => params.value?.displayName,
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.Matched,
-      'matched-withing-limit': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.WithinLimit,
-      'not-matched': params => params.data?.qtyMatchedStatus?.name === QuantityMatchStatusEnum.NotMatched
-    },
+    cellStyle: params => ({
+      backgroundColor: params.data?.qtyMatchedStatus?.code ?? 'inherit',
+      color: !!params.data.qtyMatchedStatus ? '#fff' : 'inherit'
+    }),
     width: 96
   };
 
@@ -162,12 +163,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
-    cellClass: 'cell-background',
     valueFormatter: params => this.format.quantity(params.value),
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffRobBeforeDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobBeforeDelivery) < this.minToleranceLimit,
-    },
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobBeforeDelivery),
     width: 140
   };
 
@@ -200,11 +197,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffDeliveredQty) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffDeliveredQty) < this.minToleranceLimit,
-    }
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffDeliveredQty)
   };
 
   qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -236,11 +229,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffRobAfterDelivery) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffRobAfterDelivery) < this.minToleranceLimit,
-    }
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobAfterDelivery)
   };
 
   qtyAfterDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
@@ -272,11 +261,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellClass: 'cell-background',
-    cellClassRules: {
-      'not-matched': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) > this.maxToleranceLimit,
-      'matched-withing-limit': params => Math.abs(params.data?.diffSludgeRobBeforeDischarge) < this.minToleranceLimit,
-    }
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffSludgeRobBeforeDischarge)
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -322,6 +307,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
+    private reconStatusLookups: ReconStatusLookup,
     private reportService: QcReportService,
     private appErrorHandler: AppErrorHandler
   ) {
@@ -329,8 +315,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     this.init(this.gridOptions, true);
 
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
-    this.minToleranceLimit = deliveryTenantSettings.minToleranceLimit;
-    this.maxToleranceLimit = deliveryTenantSettings.maxToleranceLimit;
+    this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
+    this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
   }
 
   getColumnsDefs(): ITypedColDef[] {
@@ -376,5 +362,26 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
         params.failCallback();
       });
+  }
+
+  private toleranceMatchStyle(value: number): Partial<CSSStyleDeclaration> {
+    if (value === null || value === undefined)
+      return {
+        backgroundColor: 'inherit',
+        color: 'inherit'
+      };
+
+    let status = this.reconStatusLookups.matched;
+
+    if (Math.abs(value) >= this.maxToleranceLimit)
+      status = this.reconStatusLookups.notMatched;
+
+    if (Math.abs(value) > this.minToleranceLimit && Math.abs(value) < this.maxToleranceLimit)
+      status = this.reconStatusLookups.withinLimit;
+
+    return {
+      backgroundColor: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
+      color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
+    };
   }
 }

@@ -59,12 +59,15 @@ export interface TypedFilterParams<TData = any, TField = any> extends Omit<Parti
   valueGetter?: (rowNode: TypedRowNode<TData>) => any;
 }
 
+export interface IAgGridCellClassRules<TData = any, TField = any> {
+  [cssClassName: string]: ((params: ITypedValueParams<TData, TField>) => boolean) | string;
+}
+
 export interface ITypedColDef<TData = any, TField = any> extends Omit<ColDef, 'field' | 'filterParams'> {
   valueFormatter?: (params: ITypedValueFormatterParams<TField>) => string;
-  valueGetter?: ((params: ITypedBaseColDefParams<TData>) => any) | string
-  cellClassRules?: {
-    [cssClassName: string]: ((params: ITypedValueParams<TData, TField>) => boolean) | string;
-  };
+  valueGetter?: ((params: ITypedBaseColDefParams<TData>) => any) | string;
+  cellClassRules?: IAgGridCellClassRules;
+  cellStyle?: (params: ITypedValueFormatterParams<TField>) => Partial<CSSStyleDeclaration>;
   field?: keyof TData,
   cellRendererSelector?: (params: ITypedCellRendererParams<TData, TField>) => ComponentSelectorResult;
   onCellValueChanged?: (params: ITypedValueParams<TData, TField>) => void;
@@ -148,7 +151,7 @@ export interface IAgGridBaseFilter {
   type: AgGridConditionTypeEnum
 }
 
-export interface IAgGridConditionFilter extends IAgGridBaseFilter{
+export interface IAgGridConditionFilter extends IAgGridBaseFilter {
   condition1?: IAgGridDateFilter | IAgGridTextFilter
   condition2?: IAgGridDateFilter | IAgGridTextFilter
   operator?: AgGridOperatorEnum;

@@ -24,23 +24,22 @@ import {
   QcLoadEventsLogSuccessfulAction,
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
-} from "./details/actions/qc-events-log.action";
-import { IQcEventsLogItemState, QcEventsLogItemStateModel } from "./details/qc-events-log-state.model";
-import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from "./details/actions/save-report.actions";
-import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from "./details/actions/verify-report.actions";
-import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from "./qc-report-survey-history.actions";
-import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from "./details/actions/revert-verify-report.actions";
-import { SurveyStatusLookups } from "../../services/survey-status-lookups";
-import { MatchedQuantityStatus, NotMatchedQuantityStatus, WithinLimitQuantityStatus } from "../../core/enums/quantity-match-status";
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IDeliveryTenantSettings } from "../../core/settings/delivery-tenant-settings";
-import { TenantSettingsModuleName } from "@shiptech/core/store/states/tenant/tenant-settings.interface";
-import { TenantSettingsState } from "@shiptech/core/store/states/tenant/tenant-settings.state";
-import { UpdateQcReportPortCall, UpdateQcReportVessel } from "./details/actions/qc-vessel.action";
-import { Injectable } from "@angular/core";
-import { fromLegacyLookup } from "@shiptech/core/lookups/utils";
-import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from "./details/actions/update-port-call-bdn.actions";
-import { UserProfileState } from "@shiptech/core/store/states/user-profile/user-profile.state";
+} from './details/actions/qc-events-log.action';
+import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
+import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from './details/actions/save-report.actions';
+import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from './details/actions/verify-report.actions';
+import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from './qc-report-survey-history.actions';
+import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from './details/actions/revert-verify-report.actions';
+import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
+import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
+import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
+import { Injectable } from '@angular/core';
+import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
+import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -53,7 +52,7 @@ export class QcReportState {
 
   constructor(
     private store: Store,
-    private surveyStatusLookups: SurveyStatusLookups
+    private surveyStatusLookups: StatusLookup
   ) {
   }
 
@@ -134,27 +133,27 @@ export class QcReportState {
     return state.details.surveyHistory.nbOfNotMatched;
   }
 
-  static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): IDisplayLookupDto | undefined {
+  static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): ReconStatusLookupEnum | undefined {
     if (left === null || left === undefined || right === null || right === undefined)
       return undefined;
 
     const diff = Math.abs(left - right);
 
-    if (diff > maxTolerance)
-      return NotMatchedQuantityStatus;
+    if (diff >= maxTolerance)
+      return ReconStatusLookupEnum.NotMatched;
 
     if (diff < minTolerance)
-      return MatchedQuantityStatus;
+      return ReconStatusLookupEnum.Matched;
 
-    return WithinLimitQuantityStatus;
+    return ReconStatusLookupEnum.WithinLimit;
   }
 
   @Selector([QcReportState.productTypes, TenantSettingsState.byModule<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery)])
-  static matchStatus(items: IQcProductTypeListItemState[], deliverySettings: IDeliveryTenantSettings): IDisplayLookupDto {
+  static matchStatus(items: IQcProductTypeListItemState[], deliverySettings: IDeliveryTenantSettings): ReconStatusLookupEnum | undefined {
     // Note: This method is called very often, so we specifically use another selector and we don't insert state!!
 
-    const minToleranceLimit = deliverySettings.minToleranceLimit;
-    const maxToleranceLimit = deliverySettings.maxToleranceLimit;
+    const minToleranceLimit = deliverySettings.qcMinToleranceLimit;
+    const maxToleranceLimit = deliverySettings.qcMaxToleranceLimit;
 
     let hasWithinLimit = false;
     let atleastOneItemHasStatus = false;
@@ -163,17 +162,17 @@ export class QcReportState {
       const item = items[i];
       const robBeforeDiff = QcReportState.getMatchStatus(item.robBeforeDeliveryLogBookROB, item.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
       const deliveredDiff = QcReportState.getMatchStatus(item.deliveredQuantityBdnQty, item.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
-      const robAfterDiff = !item.isSludge ? QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit): undefined;
+      const robAfterDiff = !item.isSludge ? QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit) : undefined;
 
       if (!robBeforeDiff && !deliveredDiff && !robAfterDiff)
         continue;
 
       atleastOneItemHasStatus = true;
 
-      if (robBeforeDiff?.id === NotMatchedQuantityStatus.id || deliveredDiff?.id === NotMatchedQuantityStatus.id || robAfterDiff?.id === NotMatchedQuantityStatus.id)
-        return NotMatchedQuantityStatus;
+      if (robBeforeDiff === ReconStatusLookupEnum.NotMatched || deliveredDiff === ReconStatusLookupEnum.NotMatched || robAfterDiff === ReconStatusLookupEnum.NotMatched)
+        return ReconStatusLookupEnum.NotMatched;
 
-      if (robBeforeDiff?.id === WithinLimitQuantityStatus.id || deliveredDiff?.id === WithinLimitQuantityStatus.id || robAfterDiff?.id === WithinLimitQuantityStatus.id)
+      if (robBeforeDiff === ReconStatusLookupEnum.WithinLimit || deliveredDiff === ReconStatusLookupEnum.WithinLimit || robAfterDiff === ReconStatusLookupEnum.WithinLimit)
         hasWithinLimit = true;
     }
 
@@ -181,7 +180,7 @@ export class QcReportState {
     if (!atleastOneItemHasStatus)
       return undefined;
 
-    return hasWithinLimit ? WithinLimitQuantityStatus : MatchedQuantityStatus;
+    return hasWithinLimit ? ReconStatusLookupEnum.WithinLimit : ReconStatusLookupEnum.Matched;
   }
 
   @Action(LoadReportDetailsAction)
@@ -375,8 +374,8 @@ export class QcReportState {
           robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
           robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
-          emailTransactionTypeId: detailsDto.emailTransactionTypeId,
-          entityTransactionType: detailsDto.entityTransactionType
+          emailTransactionTypeId: detailsDto.emailTransactionTypeId
+
         })
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
