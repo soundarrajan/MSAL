@@ -1,4 +1,4 @@
-import { IServerSideGetRowsParams } from 'ag-grid-community';
+import { GridApi, IServerSideGetRowsParams } from 'ag-grid-community';
 import * as _ from 'lodash';
 import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
 import { ServerGridFilter } from '@shiptech/core/grid/server-grid/server-grid.filter';
@@ -21,20 +21,19 @@ import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.
 
 type AgGridFilterModelWithKey  = AgGridFilterModel & { key: string};
 
-export function getShiptechFormatFilters(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): ServerGridFilter[] {
+export function getShiptechFormatFilters(gridApi: GridApi, params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): ServerGridFilter[] {
   const filtersWithKeys = _.mapValues(params.request.filterModel, (value, key) => (<AgGridFilterModelWithKey>{ ...value, key }));
-  const filters = flattenFilters(_.values(filtersWithKeys)).map(f => getShiptechFormatFilter(f, params, serverColumnKeyMap));
+  const filters = flattenFilters(_.values(filtersWithKeys)).map(f => getShiptechFormatFilter(gridApi, f, params, serverColumnKeyMap));
   return filters || [];
 }
 
-function getShiptechFormatFilter(filter: AgGridFilterModelWithKey, params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): ServerGridFilter {
-  // Note: TODO Temporary workaround to avoid providing gridApi as argument
-  const colDef = params.parentNode['gridApi'].getColumnDef(filter.key);
+function getShiptechFormatFilter(gridApi: GridApi, filter: AgGridFilterModelWithKey, params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>): ServerGridFilter {
+  const colDef = gridApi.getColumnDef(filter.key);
 
   let result: Omit<ServerGridFilter, 'values'> = {
     columnType: filter.filterType,
     conditionValue: AgGridConditionTypeToServer[filter.type],
-    columnValue: serverColumnKeyMap[colDef.field.split('.').slice(-1)[0]],
+    columnValue: serverColumnKeyMap[filter.key],
     isComputedColumn: false,
     filterOperator: ShiptechGridFilterOperators[filter.operator] || 0
   };
@@ -90,12 +89,12 @@ function flattenFilters(filters: AgGridFilterModelWithKey[]): AgGridFilterModelW
   return result;
 }
 
-export function transformLocalToServeGridInfo(params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string): IServerGridInfo {
+export function transformLocalToServeGridInfo(gridApi: GridApi, params: IServerSideGetRowsParams, serverColumnKeyMap: Record<string, string>, searchText?: string): IServerGridInfo {
   return {
-    pagination: getShiptechFormatPagination(params),
-    sortList: getShiptechFormatSorts(params, serverColumnKeyMap),
+    pagination: getShiptechFormatPagination(gridApi, params),
+    sortList: getShiptechFormatSorts(gridApi, params, serverColumnKeyMap),
     pageFilters: {
-      filters: getShiptechFormatFilters(params, serverColumnKeyMap)
+      filters: getShiptechFormatFilters(gridApi, params, serverColumnKeyMap)
     },
     searchText: searchText
   };

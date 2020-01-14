@@ -24,7 +24,7 @@ export enum VesselPortCallsMasterListColumnsLabels {
  */
 export const VesselPortCallsMasterListColumnServerKeys: Record<VesselPortCallsMasterListColumns, string> = {
   [VesselPortCallsMasterListColumns.selection]: undefined,
-  [VesselPortCallsMasterListColumns.locationPort]: 'LocationPort_Name',
+  [VesselPortCallsMasterListColumns.locationPort]: 'Location_Name',
   [VesselPortCallsMasterListColumns.voyageId]: 'VoyageId_Name',
   [VesselPortCallsMasterListColumns.eta]: 'eta',
   [VesselPortCallsMasterListColumns.etb]: 'etb',
