@@ -738,10 +738,10 @@ angular.module("shiptech.models", []);
 i = 0;
 
 var hostName = window.location.hostname;
-var config = "config/defaultConfig.js";
-if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
-    config = "config/" + hostName + ".js";
-}
+// var config = "config/config.js";
+// if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
+//     config = "config/" + hostName + ".js";
+// }
 function bootstrapApplication() {
     if (i == 0) {
         // angular.element(document).ready(function() {
@@ -754,44 +754,54 @@ function bootstrapApplication() {
 }
 
 angular.element(document).ready(function() {
-    loadScript(config, function() {
-        angular
-            .module("shiptech")
-            .constant("tenantConfigs", appConfig.tenantConfigs)
-            .constant("STATE", appConfig.STATE)
-            .constant("VIEW_TYPES", appConfig.VIEW_TYPES)
-            .constant("API", appConfig.API)
-            .constant("SCREEN_LAYOUTS", appConfig.SCREEN_LAYOUTS)
-            .constant("TIMESCALE", appConfig.TIMESCALE)
-            .constant("CUSTOM_EVENTS", appConfig.CUSTOM_EVENTS)
-            .constant("LOOKUP_TYPE", appConfig.LOOKUP_TYPE)
-            .constant("LOOKUP_MAP", appConfig.LOOKUP_MAP)
-            .constant("SCREEN_ACTIONS", appConfig.SCREEN_ACTIONS)
-            .constant("IDS", appConfig.IDS)
-            .constant("VALIDATION_MESSAGES", appConfig.VALIDATION_MESSAGES)
-            .constant("ORDER_COMMANDS", appConfig.ORDER_COMMANDS)
-            .constant("STATUS", appConfig.STATUS)
-            .constant("COST_TYPE_IDS", appConfig.COST_TYPE_IDS)
-            .constant("COMPONENT_TYPE_IDS", appConfig.COMPONENT_TYPE_IDS)
-            .constant("SELLER_SORT_ORDER", appConfig.SELLER_SORT_ORDER)
-            .constant("PRODUCT_STATUS_IDS", appConfig.PRODUCT_STATUS_IDS)
-            .constant("EXPORT_FILETYPE", appConfig.EXPORT_FILETYPE)
-            .constant("VALIDATION_STOP_TYPE_IDS", appConfig.VALIDATION_STOP_TYPE_IDS)
-            .constant("EXPORT_FILETYPE_EXTENSION", appConfig.EXPORT_FILETYPE_EXTENSION)
-            .constant("PACKAGES_CONFIGURATION", appConfig.PACKAGES_CONFIGURATION)
-            .constant("EMAIL_TRANSACTION", appConfig.EMAIL_TRANSACTION)
-            .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
-        if (window.location.hash.indexOf("supplier-portal") > 0) {
-            angular.module("shiptech").value("$tenantSettings", {});
-            angular.module("shiptech").value("$listsCache", {});
-            angular.module("shiptech").value("$filtersData", {});
-            bootstrapApplication();
-        } else {
-            angular.bootstrap(auth, ["auth"], {
-                strictDi: true
-            });
-        }
-    });
+    // loadScript(config, function() {
+    // });
+	$.ajax({
+		url: "config/config.json",
+		dataType: "json",
+		method: "GET",   
+		success:function(response){
+			appConfig = response; 
+	        angular
+	            .module("shiptech")
+	            .constant("tenantConfigs", appConfig.tenantConfigs)
+	            .constant("STATE", appConfig.STATE)
+	            .constant("VIEW_TYPES", appConfig.VIEW_TYPES)
+	            .constant("API", appConfig.API)
+	            .constant("SCREEN_LAYOUTS", appConfig.SCREEN_LAYOUTS)
+	            .constant("TIMESCALE", appConfig.TIMESCALE)
+	            .constant("CUSTOM_EVENTS", appConfig.CUSTOM_EVENTS)
+	            .constant("LOOKUP_TYPE", appConfig.LOOKUP_TYPE)
+	            .constant("LOOKUP_MAP", appConfig.LOOKUP_MAP)
+	            .constant("SCREEN_ACTIONS", appConfig.SCREEN_ACTIONS)
+	            .constant("IDS", appConfig.IDS)
+	            .constant("VALIDATION_MESSAGES", appConfig.VALIDATION_MESSAGES)
+	            .constant("ORDER_COMMANDS", appConfig.ORDER_COMMANDS)
+	            .constant("STATUS", appConfig.STATUS)
+	            .constant("COST_TYPE_IDS", appConfig.COST_TYPE_IDS)
+	            .constant("COMPONENT_TYPE_IDS", appConfig.COMPONENT_TYPE_IDS)
+	            .constant("SELLER_SORT_ORDER", appConfig.SELLER_SORT_ORDER)
+	            .constant("PRODUCT_STATUS_IDS", appConfig.PRODUCT_STATUS_IDS)
+	            .constant("EXPORT_FILETYPE", appConfig.EXPORT_FILETYPE)
+	            .constant("VALIDATION_STOP_TYPE_IDS", appConfig.VALIDATION_STOP_TYPE_IDS)
+	            .constant("EXPORT_FILETYPE_EXTENSION", appConfig.EXPORT_FILETYPE_EXTENSION)
+	            .constant("PACKAGES_CONFIGURATION", appConfig.PACKAGES_CONFIGURATION)
+	            .constant("EMAIL_TRANSACTION", appConfig.EMAIL_TRANSACTION)
+	            .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
+	        if (window.location.hash.indexOf("supplier-portal") > 0) {
+	            angular.module("shiptech").value("$tenantSettings", {});
+	            angular.module("shiptech").value("$listsCache", {});
+	            angular.module("shiptech").value("$filtersData", {});
+	            bootstrapApplication();
+	        } else {
+	            angular.bootstrap(auth, ["auth"], {
+	                strictDi: true
+	            });
+	        }
+		},
+		async:false
+	});
+    	
 });
 
 
