@@ -13,9 +13,11 @@ import { AuditLogColumnServerKeys, AuditLogColumnsLabels, AuditLogListColumns } 
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IAuditLogApiService } from "@shiptech/core/services/admin-api/audit-log-api.service.interface";
-import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
-import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
 import { AUDIT_LOG_ADMIN_API_SERVICE } from "@shiptech/core/services/admin-api/audit-log-api.service";
+
+function model(prop: keyof IAuditLogItemDto): keyof IAuditLogItemDto {
+  return prop;
+}
 
 @Injectable()
 export class AuditLogGridViewModel extends BaseGridViewModel {
@@ -42,15 +44,14 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     rowSelection: RowSelection.Single,
     suppressRowClickSelection: true,
 
-    multiSortKey: 'ctrl',
+    multiSortKey: "ctrl",
 
     enableBrowserTooltips: true,
-    singleClickEdit: true,
     getRowNodeId: (data: IAuditLogItemDto) => data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: 'agTextColumnFilter',
+      filter: "agTextColumnFilter",
       filterParams: this.defaultColFilterParams
     }
   };
@@ -58,8 +59,8 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
   date: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.date,
     colId: AuditLogListColumns.date,
-    field: "date",
-    filter: 'agDateColumnFilter',
+    field: model("date"),
+    filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
     width: 170
   };
@@ -67,49 +68,51 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
   modulePathUrl: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.modulePathUrl,
     colId: AuditLogListColumns.modulePathUrl,
-    field: "modulePathUrl",
+    field: model("modulePathUrl"),
+    hide: true,
     width: 170
   };
 
   businessName: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.businessName,
     colId: AuditLogListColumns.businessName,
-    field: "businessName",
+    field: model("businessName"),
+    hide: true,
     width: 170
   };
 
   transactionType: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.transactionType,
     colId: AuditLogListColumns.transactionType,
-    field: "transactionType",
+    field: model("transactionType"),
     width: 130
   };
 
   fieldName: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.fieldName,
     colId: AuditLogListColumns.fieldName,
-    field: "fieldName",
+    field: model("fieldName"),
     width: 220
   };
 
   oldValue: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.oldValue,
     colId: AuditLogListColumns.oldValue,
-    field: "oldValue",
+    field: model("oldValue"),
     width: 170
   };
 
   newValue: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.newValue,
     colId: AuditLogListColumns.newValue,
-    field: "newValue",
+    field: model("newValue"),
     width: 170
   };
 
   modifiedBy: ITypedColDef<IAuditLogItemDto, IDisplayLookupDto> = {
     headerName: AuditLogColumnsLabels.modifiedBy,
     colId: AuditLogListColumns.modifiedBy,
-    field: "modifiedBy",
+    field: model("modifiedBy"),
     valueFormatter: params => params.value?.name,
     width: 360
   };
@@ -117,14 +120,16 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
   clientIpAddress: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.clientIpAddress,
     colId: AuditLogListColumns.clientIpAddress,
-    field: "clientIpAddress",
+    field: model("clientIpAddress"),
+    hide: true,
     width: 130
   };
 
   userAction: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.userAction,
     colId: AuditLogListColumns.userAction,
-    field: "userAction",
+    field: model("userAction"),
+    hide: true,
     width: 170
   };
 
@@ -136,7 +141,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     @Inject(AUDIT_LOG_ADMIN_API_SERVICE) private adminApi: IAuditLogApiService,
     private appErrorHandler: AppErrorHandler
   ) {
-    super('audit-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(AuditLogGridViewModel.name));
+    super("audit-log-grid", columnPreferences, changeDetector, loggerFactory.createLogger(AuditLogGridViewModel.name));
     this.init(this.gridOptions);
 
   }
@@ -172,10 +177,10 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.adminApi.getAuditLog({...transformLocalToServeGridInfo(params, AuditLogColumnServerKeys), filters}).subscribe(
+    this.adminApi.getAuditLog({ ...transformLocalToServeGridInfo(params, AuditLogColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('audit'));
+        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("audit"));
         params.failCallback();
       });
   }

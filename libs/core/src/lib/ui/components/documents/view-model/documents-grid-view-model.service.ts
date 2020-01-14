@@ -14,7 +14,6 @@ import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
-import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
@@ -114,6 +113,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.uploadedOn,
     colId: DocumentsListColumns.uploadedOn,
     field: model("uploadedOn"),
+    filter: "agDateColumnFilter",
+    valueFormatter: params => this.format.date(params.value),
     width: 150
   };
 
@@ -135,6 +136,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.verifiedOn,
     colId: DocumentsListColumns.verifiedOn,
     field: model("verifiedOn"),
+    filter: "agDateColumnFilter",
+    valueFormatter: params => this.format.date(params.value),
     width: 150
   };
 
