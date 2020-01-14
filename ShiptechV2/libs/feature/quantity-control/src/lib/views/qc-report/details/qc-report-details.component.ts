@@ -27,6 +27,7 @@ import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
 
 @Component({
   selector: 'shiptech-port-call',
