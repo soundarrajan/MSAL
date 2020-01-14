@@ -46,10 +46,10 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     field: model("status"),
     valueFormatter: params => params.value?.name,
     cellClass: 'cell-background',
-    cellClassRules: {
-      'pending': params => params.data?.status === StatusLookupEnum.Pending,
-      'verified': params => params.data?.status === StatusLookupEnum.Verified
-    },
+    cellStyle: params => ({
+      backgroundColor: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : params.data?.status?.code,
+      color: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
+    }),
     width: 206
   };
 

@@ -1,5 +1,5 @@
 import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
-import { range, keys } from "lodash";
+import { range } from "lodash";
 import { date, internet, random } from "faker";
 import { MockStatusLookupEnumMap, StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 
@@ -8,13 +8,10 @@ export function getMockEmailLogs(n: number): IEmailLogsItemDto[] {
 }
 
 export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
-  const surveyStatuses = keys(StatusLookupEnum);
-  const surveyStatus = surveyStatuses[random.number({ min: 0, max: surveyStatuses.length - 1 })];
-
   return {
     id,
     from: internet.email(),
-    status: MockStatusLookupEnumMap[surveyStatus],
+    status: MockStatusLookupEnumMap[StatusLookupEnum.Pending],
     transactionType: {
       id: random.number(),
       name: random.word(),
