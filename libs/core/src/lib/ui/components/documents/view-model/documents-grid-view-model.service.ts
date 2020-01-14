@@ -61,14 +61,14 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.name,
     colId: DocumentsListColumns.name,
     field: model("name"),
-    width: 106
+    width: 400
   };
 
   sizeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.size,
     colId: DocumentsListColumns.size,
     field: model("size"),
-    width: 129
+    width: 100
   };
 
   documentTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -76,14 +76,14 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.documentType,
     field: model("documentType"),
     valueFormatter: params => params.value.name,
-    width: 150
+    width: 400
   };
 
   fileTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.fileType,
     colId: DocumentsListColumns.fileType,
     field: model("fileType"),
-    width: 150
+    width: 100
   };
 
   transactionTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -91,14 +91,14 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.transactionType,
     field: model("transactionType"),
     valueFormatter: params => params.value?.name,
-    width: 150
+    width: 100
   };
 
   referenceNoCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.referenceNo,
     colId: DocumentsListColumns.referenceNo,
     field: model("referenceNo"),
-    width: 150
+    width: 100
   };
 
   uploadedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -106,7 +106,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.uploadedBy,
     field: model("uploadedBy"),
     valueFormatter: params => params.value?.name,
-    width: 150
+    width: 400
   };
 
   uploadedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -115,21 +115,21 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("uploadedOn"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 150
+    width: 180
   };
 
   notesCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.notes,
     colId: DocumentsListColumns.notes,
     field: model("notes"),
-    width: 150
+    width: 200
   };
 
   isVerifiedCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.isVerified,
     colId: DocumentsListColumns.isVerified,
     field: model("isVerified"),
-    width: 150
+    width: 100
   };
 
   verifiedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -138,7 +138,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("verifiedOn"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 150
+    width: 180
   };
 
   verifiedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -146,7 +146,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.verifiedBy,
     field: model("verifiedBy"),
     valueFormatter: params => params.value?.name,
-    width: 150
+    width: 400
   };
 
   constructor(

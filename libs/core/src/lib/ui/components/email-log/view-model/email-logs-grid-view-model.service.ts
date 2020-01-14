@@ -37,7 +37,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     colId: EmailLogsListColumns.from,
     field: model("from"),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 306
+    width: 400
   };
 
   statusCol: ITypedColDef<IEmailLogsItemDto, IDisplayLookupDto> = {
@@ -50,21 +50,21 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
       backgroundColor: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : params.data?.status?.code,
       color: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
     }),
-    width: 206
+    width: 200
   };
 
   toCol: ITypedColDef<IEmailLogsItemDto, string> = {
     headerName: EmailLogsListColumnsLabels.to,
     colId: EmailLogsListColumns.to,
     field: model("to"),
-    width: 306
+    width: 400
   };
 
   subjectCol: ITypedColDef<IEmailLogsItemDto, string> = {
     headerName: EmailLogsListColumnsLabels.subject,
     colId: EmailLogsListColumns.subject,
     field: model("subject"),
-    width: 306
+    width: 500
   };
 
   sendAtCol: ITypedColDef<IEmailLogsItemDto, string> = {
@@ -73,7 +73,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     field: model("sentAt"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 206
+    width: 180
   };
 
   gridOptions: GridOptions = {
