@@ -38,10 +38,10 @@ export const DocumentsListColumnServerKeys: Record<DocumentsListColumns, string>
   [DocumentsListColumns.fileType]: 'fileType',
   [DocumentsListColumns.transactionType]: 'TransactionType_DisplayName',
   [DocumentsListColumns.referenceNo]: 'referenceNo',
-  [DocumentsListColumns.uploadedBy]: 'uploadedBy',
+  [DocumentsListColumns.uploadedBy]: 'UploadedBy_DisplayName',
   [DocumentsListColumns.uploadedOn]: 'uploadedOn',
   [DocumentsListColumns.notes]: 'notes',
   [DocumentsListColumns.isVerified]: 'isVerified',
   [DocumentsListColumns.verifiedOn]: 'verifiedOn',
-  [DocumentsListColumns.verifiedBy]: 'verifiedBy'
+  [DocumentsListColumns.verifiedBy]: 'VerifiedBy_DisplayName'
 };
