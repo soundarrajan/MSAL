@@ -4,7 +4,7 @@ import { ApiCall, ApiCallForwardTo } from "@shiptech/core/utils/decorators/api-c
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { DocumentsApi } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsListRequest, IDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
-import { getMockDocuments } from "@shiptech/core/services/masters-api/mock-data/documents.mock";
+import { getMockDocuments } from "@shiptech/core/services/masters-api/mock-data/documents-upload-list.mock";
 
 @Injectable({
   providedIn: "root"

@@ -1,11 +1,12 @@
-import {IServerGridInfo} from "@shiptech/core/grid/server-grid/server-grid-request-response";
+import {IDocumentsCreateUploadItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
+import {IDocumentsInterfaceExtended} from "@shiptech/core/services/masters-api/request-response-dtos/documents-request-response.interface";
 
-export interface IDocumentsUploadItemDto {
+export interface IDocumentsUpdateItemDto {
 }
 
-export interface IDocumentsUploadRequest extends IServerGridInfo {
+export interface IDocumentsUpdateRequest extends IDocumentsInterfaceExtended {
 }
 
-export interface IDocumentsUploadResponse {
+export interface IDocumentsUpdateResponse {
   matchedCount: number;
 }

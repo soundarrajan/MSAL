@@ -1,9 +1,9 @@
-import {IServerGridInfo} from "@shiptech/core/grid/server-grid/server-grid-request-response";
+import {IDocumentsInterfaceExtended} from "@shiptech/core/services/masters-api/request-response-dtos/documents-request-response.interface";
 
 export interface IDocumentsDeleteItemDto {
 }
 
-export interface IDocumentsDeleteRequest extends IServerGridInfo {
+export interface IDocumentsDeleteRequest extends IDocumentsInterfaceExtended {
 }
 
 export interface IDocumentsDeleteResponse {
