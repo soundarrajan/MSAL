@@ -15,6 +15,7 @@ import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-
 import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
+import {StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -44,6 +45,11 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     colId: EmailLogsListColumns.status,
     field: model("status"),
     valueFormatter: params => params.value?.name,
+    cellClass: 'cell-background',
+    cellClassRules: {
+      'pending': params => params.data?.status === StatusLookupEnum.Pending,
+      'verified': params => params.data?.status === StatusLookupEnum.Verified
+    },
     width: 206
   };
 

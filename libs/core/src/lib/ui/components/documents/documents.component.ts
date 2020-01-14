@@ -5,7 +5,7 @@ import { DocumentsGridViewModel } from "./view-model/documents-grid-view-model.s
 @Component({
   selector: "shiptech-documents",
   templateUrl: "./documents.component.html",
-  styleUrls: ["./documents.component.css"],
+  styleUrls: ["./documents.component.scss"],
   providers: [DocumentsGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
