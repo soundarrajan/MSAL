@@ -17,10 +17,10 @@ export interface IDocumentsItemDto {
   verifiedBy: IDisplayLookupDto;
 }
 
-export interface IGetDocumentsListRequest extends IServerGridInfo {
+export interface IDocumentsListRequest extends IServerGridInfo {
 }
 
-export interface IGetDocumentsListResponse {
+export interface IDocumentsListResponse {
   payload: IDocumentsItemDto[];
   matchedCount: number;
 }

@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import { date, random } from "faker";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
 
 export function getMockDocuments(n: number): IDocumentsItemDto[] {
   return range(1, n).map(id => getMockDocumentItem(id));
