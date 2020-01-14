@@ -1,7 +1,9 @@
-﻿commit 2d4e34de6e9ae179414778ebaa4e979a2761db7e
+﻿commit d814f4b7d2e3609601c5c46d9cf2736ba91ecdf0
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Mon Jan 13 21:04:03 2020 +0200
+Date:   Tue Jan 14 12:00:03 2020 +0200
 
-    Refactor entity-status.component to be always set via customization and no presets
+    Rewrite/refactor vessel-autocomplete.component and vessel-port-calls-autocomplete.component
+    Fixed vessel-port-calls selector location column not mapped correctly
+    Refactored transformLocalToServeGridInfo to pass in gridApi and not access private fields
 
 branch: master

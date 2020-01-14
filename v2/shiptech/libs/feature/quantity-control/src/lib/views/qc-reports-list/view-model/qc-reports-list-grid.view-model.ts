@@ -356,7 +356,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
+    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => {
         this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
