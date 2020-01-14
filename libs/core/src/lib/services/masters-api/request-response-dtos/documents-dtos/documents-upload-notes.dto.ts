@@ -3,7 +3,9 @@ import {IServerGridInfo} from "@shiptech/core/grid/server-grid/server-grid-reque
 export interface IDocumentsNotesItemDto {
 }
 
-export interface IDocumentsNotesRequest extends IServerGridInfo {
+export interface IDocumentsNotesRequest {
+  Id: number;
+  Notes: string;
 }
 
 export interface IDocumentsNotesResponse {
