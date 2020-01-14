@@ -1,7 +1,7 @@
-﻿commit edbd64eec136cac66cbcce400554259aacbe6d8d
+﻿commit 32bf32b44c716fb12f6a07ab57594d17b089b8f4
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Tue Jan 14 12:15:39 2020 +0200
+Date:   Tue Jan 14 12:47:00 2020 +0200
 
-    qc report details product types grid disable movable
+    Fix qc report details tolerance
 
 branch: master
