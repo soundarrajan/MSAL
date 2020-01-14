@@ -109,7 +109,6 @@ export class QuantityControlApi implements IQuantityControlApiService {
   loadPortCallBdn(request: IQcLoadPortCallBdnRequest): Observable<IQcLoadPortCallBdnResponse> {
     return this.http.post<IQcLoadPortCallBdnResponse>(`${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`, {payload: request});
   }
-
 }
 
 export const QUANTITY_CONTROL_API_SERVICE = new InjectionToken<IQuantityControlApiService>('QUANTITY_CONTROL_API_SERVICE');
