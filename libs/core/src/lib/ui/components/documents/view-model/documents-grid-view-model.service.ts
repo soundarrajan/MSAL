@@ -7,7 +7,7 @@ import { TenantFormattingService } from "@shiptech/core/services/formatting/tena
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import { AppError } from "@shiptech/core/error-handling/app-error";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
 import { DocumentsListColumns, DocumentsListColumnServerKeys, DocumentsListColumnsLabels } from "./documents-list.columns";
 import { Store } from "@ngxs/store";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";

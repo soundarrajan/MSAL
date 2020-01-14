@@ -5,7 +5,7 @@ import { AppConfig } from "@shiptech/core/config/app-config";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
 import { Observable } from "rxjs";
 import { IEmailLogsApiService } from "./email-logs-api.service.interface";
-import { IGetDocumentsListRequest, IGetDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/document.dto";
+import { IDocumentsListRequest, IDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 
 export namespace DocumentsApiPaths {
@@ -24,8 +24,8 @@ export class DocumentsApi implements IDocumentsApiService {
   }
 
   @ObservableException()
-  getDocumentList(request: IGetDocumentsListRequest): Observable<IGetDocumentsListResponse> {
-    return this.http.post<IGetDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments()}`, { payload: { ...request } });
+  getDocumentList(request: IDocumentsListRequest): Observable<IDocumentsListResponse> {
+    return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments()}`, { payload: { ...request } });
   }
 }
 
