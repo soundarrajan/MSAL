@@ -1,29 +1,29 @@
-import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
-import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { IAgGridCellClassRules, ITypedColDef, ITypedValueParams, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { QcSurveyHistoryListColumns, QcSurveyHistoryListColumnServerKeys, QcSurveyHistoryListColumnsLabels } from './qc-survey-history-list.columns';
-import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
-import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
-import { QcReportService } from '../../../../../../services/qc-report.service';
-import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
-import { Store } from '@ngxs/store';
-import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
-import { IAppState } from '@shiptech/core/store/states/app.state.interface';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IQcSurveyHistoryListItemDto } from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
-import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
-import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
-import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
-import { IQcReportState } from '../../../../../../store/report/qc-report.state.model';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, takeUntil, tap } from 'rxjs/operators';
-import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { IDeliveryTenantSettings } from '../../../../../../core/settings/delivery-tenant-settings';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { IQcReportsListItemDto } from '../../../../../../services/api/dto/qc-reports-list-item.dto';
+import {ChangeDetectorRef, Injectable} from '@angular/core';
+import {BaseGridViewModel} from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
+import {GridOptions, IServerSideGetRowsParams} from 'ag-grid-community';
+import {IAgGridCellClassRules, ITypedColDef, ITypedValueParams, RowModelType, RowSelection} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {QcSurveyHistoryListColumns, QcSurveyHistoryListColumnServerKeys, QcSurveyHistoryListColumnsLabels} from './qc-survey-history-list.columns';
+import {AgCellTemplateComponent} from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
+import {AgColumnPreferencesService} from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
+import {ModuleLoggerFactory} from '../../../../../../core/logging/module-logger-factory';
+import {QcReportService} from '../../../../../../services/qc-report.service';
+import {transformLocalToServeGridInfo} from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import {Store} from '@ngxs/store';
+import {IQcReportDetailsState} from '../../../../../../store/report/details/qc-report-details.model';
+import {IAppState} from '@shiptech/core/store/states/app.state.interface';
+import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {IQcSurveyHistoryListItemDto} from '../../../../../../services/api/dto/qc-survey-history-list-item.dto';
+import {StatusLookupEnum} from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import {ReconStatusLookupEnum} from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
+import {BooleanFilterParams} from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
+import {IQcReportState} from '../../../../../../store/report/qc-report.state.model';
+import {combineLatest, Observable} from 'rxjs';
+import {filter, takeUntil, tap} from 'rxjs/operators';
+import {TenantFormattingService} from '@shiptech/core/services/formatting/tenant-formatting.service';
+import {IDeliveryTenantSettings} from '../../../../../../core/settings/delivery-tenant-settings';
+import {TenantSettingsModuleName} from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import {TenantSettingsService} from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import {IQcReportsListItemDto} from '../../../../../../services/api/dto/qc-reports-list-item.dto';
 
 function model(prop: keyof IQcSurveyHistoryListItemDto): keyof IQcSurveyHistoryListItemDto {
   return prop;
@@ -380,7 +380,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     return this.store.selectSnapshot((appState: IAppState) => select(appState?.quantityControl?.report?.details));
   }
 
-  private toleranceStatus(field:  (params: ITypedValueParams<IQcReportsListItemDto, number>) => number): IAgGridCellClassRules<IQcReportsListItemDto, number> {
+  private toleranceStatus(field: (params: ITypedValueParams<IQcReportsListItemDto, number>) => number): IAgGridCellClassRules<IQcReportsListItemDto, number> {
     return {
       'not-matched': params => Math.abs(field(params)) >= this.maxToleranceLimit,
       'matched-withing-limit': params => Math.abs(field(params)) > this.minToleranceLimit && Math.abs(field(params)) < this.maxToleranceLimit,
