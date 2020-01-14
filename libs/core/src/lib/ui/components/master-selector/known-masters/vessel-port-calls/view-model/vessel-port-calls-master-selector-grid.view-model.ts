@@ -79,14 +79,14 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     headerName: VesselPortCallsMasterListColumnsLabels.locationPort,
     colId: VesselPortCallsMasterListColumns.locationPort,
     field: model('location'),
-    valueFormatter: params => params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.name
   };
 
   voyageIdCol: ITypedColDef<IVesselPortCallMasterDto, IDisplayLookupDto> = {
     headerName: VesselPortCallsMasterListColumnsLabels.voyageId,
     colId: VesselPortCallsMasterListColumns.voyageId,
     field: model('voyageId'),
-    valueFormatter: params => params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.name
   };
 
   etaCol: ITypedColDef<IVesselPortCallMasterDto, string> = {
@@ -123,7 +123,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     headerName: VesselPortCallsMasterListColumnsLabels.service,
     colId: VesselPortCallsMasterListColumns.service,
     field: model('service'),
-    valueFormatter: params => params.value?.name ?? params.value?.displayName
+    valueFormatter: params => params.value?.name ?? params.value?.name
   };
 
   vesselId: number;
@@ -158,7 +158,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.mastersApi.getVesselPortCalls({ id: this.vesselId, ...transformLocalToServeGridInfo(params, VesselPortCallsMasterListColumnServerKeys, this.searchText) }).subscribe(
+    this.mastersApi.getVesselPortCalls({ id: this.vesselId, ...transformLocalToServeGridInfo(this.gridApi, params, VesselPortCallsMasterListColumnServerKeys, this.searchText) }).subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => params.failCallback());
   }
