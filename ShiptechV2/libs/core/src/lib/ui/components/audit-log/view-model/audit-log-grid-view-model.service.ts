@@ -62,7 +62,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     field: model("date"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 170
+    width: 180
   };
 
   modulePathUrl: ITypedColDef<IAuditLogItemDto, string> = {
@@ -85,28 +85,28 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     headerName: AuditLogColumnsLabels.transactionType,
     colId: AuditLogListColumns.transactionType,
     field: model("transactionType"),
-    width: 130
+    width: 200
   };
 
   fieldName: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.fieldName,
     colId: AuditLogListColumns.fieldName,
     field: model("fieldName"),
-    width: 220
+    width: 400
   };
 
   oldValue: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.oldValue,
     colId: AuditLogListColumns.oldValue,
     field: model("oldValue"),
-    width: 170
+    width: 200
   };
 
   newValue: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.newValue,
     colId: AuditLogListColumns.newValue,
     field: model("newValue"),
-    width: 170
+    width: 200
   };
 
   modifiedBy: ITypedColDef<IAuditLogItemDto, IDisplayLookupDto> = {
@@ -114,7 +114,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     colId: AuditLogListColumns.modifiedBy,
     field: model("modifiedBy"),
     valueFormatter: params => params.value?.name,
-    width: 360
+    width: 500
   };
 
   clientIpAddress: ITypedColDef<IAuditLogItemDto, string> = {

@@ -24,17 +24,7 @@ export class AuditLogApiMock implements IAuditLogApiService {
 
     return of({
       payload: items,
-      matchedCount: items.length,
-      deletedCount: random.number(),
-      modifiedCount: random.number(),
-      isAcknowledged: random.boolean(),
-      isModifiedCountAvailable: random.boolean(),
-      upsertedId: random.number(),
-      status: random.number(),
-      isSuccess: random.boolean(),
-      message: random.word(),
-      error: null,
-      errorMessage: random.word()
+      matchedCount: items.length
     });
   }
 }
