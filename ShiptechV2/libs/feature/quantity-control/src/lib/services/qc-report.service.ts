@@ -69,7 +69,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getReportsList$(gridRequest: IServerGridInfo): Observable<IGetQcReportsListResponse> {
     return this.apiDispatch(
-      () => this.api.getReportList({...gridRequest}),
+      () => this.api.getReportList({ ...gridRequest }),
       new LoadReportListAction(gridRequest),
       response => new LoadReportListSuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
       LoadReportListFailedAction,
@@ -80,7 +80,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getSurveyHistoryList$(vesselId: number, gridRequest: IServerGridInfo): Observable<IGetQcSurveyHistoryListResponse> {
     return this.apiDispatch(
-      () => this.api.getSurveyHistoryList({id: vesselId, ...gridRequest}),
+      () => this.api.getSurveyHistoryList({ id: vesselId, ...gridRequest }),
       new LoadReportSurveyHistoryAction(gridRequest),
       response => new LoadReportSurveyHistorySuccessfulAction(response.nbOfMatched, response.nbOfNotMatched, response.nbOfMatchedWithinLimit, response.totalCount),
       LoadReportSurveyHistoryFailedAction,
@@ -96,7 +96,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   loadReportDetails$(reportId: number): Observable<unknown> {
     // Note: apiDispatch is deferred, but the above validation is not, state might change until the caller subscribes
     return this.apiDispatch(
-      () => this.api.getReportDetails({id: reportId}),
+      () => this.api.getReportDetails({ id: reportId }),
       new LoadReportDetailsAction(reportId),
       response => new LoadReportDetailsSuccessfulAction(reportId, response),
       new LoadReportDetailsFailedAction(reportId),
@@ -115,7 +115,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getSoundingReportListItemDetails$(soundingReportId: number, gridRequest: IServerGridInfo): Observable<IGetSoundingReportDetailsResponse> {
-    return this.api.getSoundingReportDetails({...gridRequest, id: soundingReportId});
+    return this.api.getSoundingReportDetails({ ...gridRequest, id: soundingReportId });
   }
 
   @ObservableException()
@@ -154,7 +154,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       return EMPTY$;
 
     return this.apiDispatch(
-      () => this.api.verifyReports({reportIds}),
+      () => this.api.verifyReports({ reportIds }),
       QcVerifyReportAction,
       __ => QcVerifyReportSuccessfulAction,
       QcVerifyReportFailedAction,
@@ -168,7 +168,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       return EMPTY$;
 
     return this.apiDispatch(
-      () => this.api.revertVerifyVessel({reportIds}),
+      () => this.api.revertVerifyVessel({ reportIds }),
       QcRevertVerifyReportAction,
       __ => QcRevertVerifyReportSuccessfulAction,
       QcRevertVerifyReportFailedAction,
@@ -178,19 +178,19 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   markSludgeVerification$(reportId: number, verify: boolean): Observable<unknown> {
-    return this.api.markSludgeVerification({id: reportId, IsVerifiedSludge: verify});
+    return this.api.markSludgeVerification({ id: reportId, IsVerifiedSludge: verify });
   }
 
   @ObservableException()
   getOrderProductsList$(): Observable<IGetOrderProductsListResponse> {
-    return this.api.getOrderProductsList({vesselVoyageDetailId: this.reportDetailsState.portCall.vesselVoyageDetailId});
+    return this.api.getOrderProductsList({ vesselVoyageDetailId: this.reportDetailsState.portCall.vesselVoyageDetailId });
   }
 
   raiseClaim$(orderProductId: number, orderId: number): Observable<unknown> {
     if (this.reportDetailsState.isNew)
       return EMPTY$;
 
-    return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), '_blank')));
+    return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), "_blank")));
   }
 
   previewEmail$(reportId: number, emailTransactionTypeId: number): Observable<unknown> {
@@ -209,7 +209,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       return EMPTY$;
 
     return this.apiDispatch(
-      () => this.api.getEventsLog({id: reportId}),
+      () => this.api.getEventsLog({ id: reportId }),
       new QcLoadEventsLogAction(),
       response => new QcLoadEventsLogSuccessfulAction(response.items),
       new QcLoadEventsLogFailedAction(),
@@ -308,7 +308,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       return this.store.dispatch(QcClearPortCallBdnAction);
     }
 
-    return this.apiDispatch(() => this.api.loadPortCallBdn({vesselVoyageDetailsId: portCall.vesselVoyageDetailId}),
+    return this.apiDispatch(() => this.api.loadPortCallBdn({ vesselVoyageDetailsId: portCall.vesselVoyageDetailId }),
       new QcUpdatePortCallAction(),
       response => new QcUpdatePortCallSuccessfulAction(response.vesselVoyageDetailsId, response.productTypes, response.nbOfClaims, response.nbOfDeliveries),
       new QcUpdatePortCallFailedAction(),

@@ -8,10 +8,10 @@ import { KnownNamedRouterOutlets } from "@shiptech/core/enums/known-named-router
 import { QuantityControlRouteResolver } from "./quantiy-control-route.resolver";
 import { QcReportDetailsRouteResolver } from "./views/qc-report/details/qc-report-details-route.resolver";
 import { KnownQuantityControlRoutes } from "./known-quantity-control.routes";
-import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/qc-report-details-documents.component";
 import { QcReportDetailsUnsavedChangesGuard } from "./guards/qc-report-details-unsaved-changes-guard.service";
 import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
 import { QcReportDetailsAuditLogsComponent } from "./views/qc-report/audit-logs/qc-report-details-audit-logs.component";
+import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/qc-report-details-documents.component";
 
 const routes: Routes = [
   {

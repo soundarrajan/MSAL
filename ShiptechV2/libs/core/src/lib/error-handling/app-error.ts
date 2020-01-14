@@ -47,6 +47,11 @@ export class AppError<T = any> implements IAppError {
     message: 'Could not load audit log list. Please try again later.'
   });
 
+  static readonly LoadDocumentsFailed = new AppError({
+    code: AppErrorCode.LoadDocumentsFailed,
+    message: 'Could not load document list. Please try again later.'
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;

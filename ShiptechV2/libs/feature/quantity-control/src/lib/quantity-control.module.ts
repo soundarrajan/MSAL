@@ -31,7 +31,6 @@ import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-repor
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-report-details-toolbar.component';
-import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
 import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
@@ -43,6 +42,9 @@ import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/
 import { EmailLogComponent } from "@shiptech/core/ui/components/email-log/email-log.component";
 import { QcReportDetailsAuditLogsComponent } from './views/qc-report/audit-logs/qc-report-details-audit-logs.component';
 import { AuditLogComponent } from '@shiptech/core/ui/components/audit-log/audit-log.component';
+import { DocumentsComponent } from '@shiptech/core/ui/components/documents/documents.component';
+import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
+
 
 @NgModule({
   imports: [
@@ -73,13 +75,14 @@ import { AuditLogComponent } from '@shiptech/core/ui/components/audit-log/audit-
     SurveyReportHistoryComponent,
     ProductDetailsComponent,
     QcReportDetailsToolbarComponent,
-    QcReportDetailsDocumentsComponent,
     QcReportDetailsEmailLogsComponent,
-    QcReportDetailsAuditLogsComponent,
-    UomSelectorComponent,
-    RaiseClaimComponent,
     EmailLogComponent,
-    AuditLogComponent
+    QcReportDetailsAuditLogsComponent,
+    AuditLogComponent,
+    QcReportDetailsDocumentsComponent,
+    DocumentsComponent,
+    UomSelectorComponent,
+    RaiseClaimComponent
   ],
   entryComponents: [
     RaiseClaimComponent
