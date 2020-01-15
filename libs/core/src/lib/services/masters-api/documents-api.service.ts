@@ -5,11 +5,15 @@ import { AppConfig } from "@shiptech/core/config/app-config";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
 import { Observable } from "rxjs";
 import { IEmailLogsApiService } from "./email-logs-api.service.interface";
-import { IDocumentsListRequest, IDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
+import { IDocumentsListRequest, IDocumentsListResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
+import { IDocumentsUpdateIsVerifiedRequest, IDocumentsUpdateIsVerifiedResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
+import { IDocumentsDeleteRequest, IDocumentsDeleteResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
 
 export namespace DocumentsApiPaths {
-  export const getDocuments = () => `api/masters/documenttype/list`;
+  export const getDocuments = () => `api/masters/documentupload/list`;
+  export const updateIsVerifiedDocument = () => `api/masters/documentupload/update`;
+  export const deleteDocument = () => `api/masters/documentupload/delete`;
 }
 
 @Injectable({
@@ -26,6 +30,16 @@ export class DocumentsApi implements IDocumentsApiService {
   @ObservableException()
   getDocumentList(request: IDocumentsListRequest): Observable<IDocumentsListResponse> {
     return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments()}`, { payload: { ...request } });
+  }
+
+  @ObservableException()
+  updateIsVerifiedDocument(request: IDocumentsUpdateIsVerifiedRequest): Observable<IDocumentsUpdateIsVerifiedResponse> {
+    return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateIsVerifiedDocument()}`, { payload: { ...request } });
+  }
+
+  @ObservableException()
+  deleteDocument(request: IDocumentsDeleteRequest): Observable<IDocumentsDeleteResponse> {
+    return this.http.post<IDocumentsDeleteResponse>(`${this._apiUrl}/${DocumentsApiPaths.deleteDocument()}`, { payload: { ...request } });
   }
 }
 

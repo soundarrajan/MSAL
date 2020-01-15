@@ -1,4 +1,4 @@
-import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
+import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import {range} from "lodash";
 import {random} from "faker";
 import {IDocumentsSearchItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-search-input-list.dto";

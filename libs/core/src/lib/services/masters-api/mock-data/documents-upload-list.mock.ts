@@ -1,6 +1,6 @@
 import { range } from "lodash";
-import { date, random } from "faker";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
+import { date, internet, random } from "faker";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 
 export function getMockDocuments(n: number): IDocumentsItemDto[] {
   return range(1, n).map(id => getMockDocumentItem(id));
@@ -18,6 +18,7 @@ export function getMockDocumentItem(id: number): IDocumentsItemDto {
       displayName: random.word()
     },
     fileType: random.word(),
+    fileId: random.number(),
     transactionType: {
       id: random.number(),
       name: random.word(),
@@ -35,8 +36,28 @@ export function getMockDocumentItem(id: number): IDocumentsItemDto {
     verifiedOn: date.past().toISOString(),
     verifiedBy: {
       id: random.number(),
-        name: random.word(),
-        displayName: random.word()
-    }
+      name: random.word(),
+      displayName: random.word()
+    },
+    createdBy: {
+      id: random.number(),
+      name: random.word(),
+      displayName: random.word()
+    },
+    createdOn: date.past().toISOString(),
+    lastModifiedOn: date.past().toISOString(),
+    lastModifiedByUser: {
+      id: random.number(),
+      name: random.word(),
+      displayName: random.word()
+    },
+    isDeleted: random.boolean(),
+    isIncludedInMail: random.word(),
+    totalCount: random.number(),
+    inclusionInMail: random.word(),
+    content: random.words(),
+    modulePathUrl: random.word(),
+    clientIpAddress: internet.ip(),
+    userAction: random.word()
   };
 }
