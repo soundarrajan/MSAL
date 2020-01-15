@@ -78,11 +78,6 @@ export class QcReportState {
     return state.details.hasChanges;
   }
 
-  @Selector([QcReportState.hasChanges, QcReportState.isNew])
-  static hasUnsavedChanges(hasChanges: boolean, isNew: boolean): boolean {
-    return hasChanges || isNew;
-  }
-
   @Selector([QcReportState])
   static reportDetailsId(state: IQcReportState): number {
     return state.details.id;
@@ -612,6 +607,7 @@ export class QcReportState {
       {
         details: {
           ...state.details,
+          hasChanges: true,
           vessel: vessel,
           portCall: undefined
         }
@@ -625,6 +621,7 @@ export class QcReportState {
       {
         details: {
           ...state.details,
+          hasChanges: true,
           portCall: portCall
         }
       });

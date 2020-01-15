@@ -1,6 +1,6 @@
 import { Attribute, Directive, EventEmitter, OnDestroy, OnInit, Optional, Output } from '@angular/core';
 import { merge, of, Subject, throwError } from 'rxjs';
-import { concatMap, debounceTime, filter, finalize, map, mergeMap, retry, takeUntil, tap } from 'rxjs/operators';
+import { concatMap, debounceTime, delay, filter, finalize, map, mergeMap, retry, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { FilterChangedEvent } from 'ag-grid-community';
 import * as _ from 'lodash';
 import { first } from 'rxjs/internal/operators/first';
@@ -151,6 +151,9 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
 
   processAgGridEvents(): void {
     const setSavedPreset$ = this.filterPresetsService.filterPresets$.pipe(
+      // TODO: MAJOR hack/workaround, filters arrive before grid is ready and columns are set, which will fail when trying to apply the filter on an empty set of columns
+      // TODO: These filter presets need no love, but hell fire. If they have not already laid eggs, should definitely be re-written completely.
+      switchMap(presets => of(presets).pipe(delay((this.agGrid.columnApi.getAllColumns()?.length ?? 0) === 0 ? 200: 0))),
       map(presets => !!presets[this.groupId]),
       // Note: If the user has already changed the grid filters while presets are loading
       // Note: Do not set the default or last active filter, so we don't override the user's currently set filters.
