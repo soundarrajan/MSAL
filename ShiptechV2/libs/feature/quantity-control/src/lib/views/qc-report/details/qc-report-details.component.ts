@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
-import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { SwitchActiveBunkerResponseAction, SwitchActiveSludgeResponseAction } from '../../../store/report/details/actions/qc-vessel-response.actions';
 import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
 import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
@@ -88,6 +88,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     // Note: Since the PortCall can change multiple times (autocomplete) we want to load BDN / nbOfClaims / ndOfDeliveries just for the last call and cancel previous.
     // Note: That's why we update it here, via an observable, instead of on UpdatePortCall.
     this.portCall$.pipe(
+      skip(1),
       filter(s => this.store.selectSnapshot(QcReportState.isNew)), // Note: PortCalls can be updated only on New Reports. We don't want to loadPortCallBdn$ when editing
       switchMap(portCall => this.reportService.loadPortCallBdn$(portCall)),
       takeUntil(this._destroy$)
