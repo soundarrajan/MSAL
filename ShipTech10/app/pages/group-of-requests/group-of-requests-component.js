@@ -680,7 +680,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     },
                     {
                         source: lookupModel.substrMatcher(list),
-                        limit: 5
+                        limit: 10
                     }
                 )
                 .bind("typeahead:select", function (event, suggestion) {

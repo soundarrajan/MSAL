@@ -72,11 +72,11 @@
 									Include in RFQ
 								</a>
 							</li>
-							<li ng-if="!$ctrl.hasAction($ctrl.SCREEN_ACTIONS.DELINKRFQ)">
+						<!-- 	<li ng-if="!$ctrl.hasAction($ctrl.SCREEN_ACTIONS.DELINKRFQ)">
 								<a ng-click="$ctrl.delinkInRFQ()">
 									Delink in RFQ
 								</a>
-							</li>
+							</li> -->
 							<li ng-if="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.REVIEW) && $ctrl.isOfferReviewMandatory">
 								<a ng-click="$ctrl.reviewRFQ()">
 									Review
