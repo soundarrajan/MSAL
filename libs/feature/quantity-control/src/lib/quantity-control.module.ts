@@ -41,6 +41,7 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
+import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-di
     EntityStatusModule,
     NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
     NgxsResetPluginModule.forRoot(),
-    AgFilterDisplayModule
+    AgFilterDisplayModule,
+    SelectTextOnFocusDirectiveModule
   ],
   declarations: [
     MainQuantityControlComponent,
