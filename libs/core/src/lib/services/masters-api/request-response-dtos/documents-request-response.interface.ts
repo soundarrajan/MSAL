@@ -20,7 +20,7 @@ export interface IDocumentsInterface {
   isDeleted: boolean;
 }
 
-export interface IDocumentsInterfaceExtended extends IDocumentsInterface {
+export interface IDocumentsExtendedInterface extends IDocumentsInterface {
   verifiedBy: string;
   verifiedOn: string;
   inclusionInMail: string;
@@ -30,4 +30,9 @@ export interface IDocumentsInterfaceExtended extends IDocumentsInterface {
   modulePathUrl: string;
   clientIpAddress: string;
   userAction: string;
+}
+
+export interface IDocumentsUploadFileInterface {
+  file: string | Blob;
+  request: IDocumentsInterface;
 }
