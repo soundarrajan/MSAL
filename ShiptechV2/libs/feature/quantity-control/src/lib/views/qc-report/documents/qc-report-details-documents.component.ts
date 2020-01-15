@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
-import { EmailLogsEntities } from "@shiptech/core/enums/email-logs-entities.enum";
 import { ActivatedRoute } from "@angular/router";
 import { KnownQuantityControlRoutes } from "../../../known-quantity-control.routes";
+import { KnownTransactionTypes } from "@shiptech/core/enums/known-transaction-types.enum";
 
 @Component({
   selector: "shiptech-qc-report-details-documents",
@@ -13,7 +13,7 @@ import { KnownQuantityControlRoutes } from "../../../known-quantity-control.rout
 export class QcReportDetailsDocumentsComponent implements OnInit, OnDestroy {
 
   reportId: number;
-  entityName = EmailLogsEntities.Report;
+  entityName = KnownTransactionTypes.QuantityControlReport;
   private _destroy$ = new Subject();
 
   constructor(route: ActivatedRoute) {
