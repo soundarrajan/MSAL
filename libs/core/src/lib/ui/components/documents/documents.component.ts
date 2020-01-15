@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { DocumentsGridViewModel } from "./view-model/documents-grid-view-model.service";
+import {IVesselMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/vessel";
+import {fromLegacyLookup} from "@shiptech/core/lookups/utils";
+import {QcReportService} from "../../../../../../feature/quantity-control/src/lib/services/qc-report.service";
 
 @Component({
   selector: "shiptech-documents",
@@ -40,7 +43,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(public gridViewModel: DocumentsGridViewModel) {
+  constructor(public gridViewModel: DocumentsGridViewModel, private reportService: QcReportService) {
+  }
+
+  updateVessel(newVessel: IVesselMasterDto): void {
+    this.reportService.updateVessel$(fromLegacyLookup(newVessel)).subscribe();
   }
 
   ngOnInit(): void {
@@ -48,6 +55,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
+  }
+
+  uploadHandlerDocuments(event: any):void {
+    console.log(event);
   }
 
   onPageSizeChange(pageSize: number): void {
