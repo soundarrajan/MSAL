@@ -1,9 +1,9 @@
-import {IDocumentsInterfaceExtended} from "@shiptech/core/services/masters-api/request-response-dtos/documents-request-response.interface";
+import {IDocumentsExtendedInterface} from "@shiptech/core/services/masters-api/request-response-dtos/documents-request-response.interface";
 
 export interface IDocumentsDeleteItemDto {
 }
 
-export interface IDocumentsDeleteRequest extends IDocumentsInterfaceExtended {
+export interface IDocumentsDeleteRequest extends IDocumentsExtendedInterface {
 }
 
 export interface IDocumentsDeleteResponse {
