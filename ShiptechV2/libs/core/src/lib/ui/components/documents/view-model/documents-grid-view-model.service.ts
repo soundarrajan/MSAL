@@ -7,7 +7,7 @@ import { TenantFormattingService } from "@shiptech/core/services/formatting/tena
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import { AppError } from "@shiptech/core/error-handling/app-error";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-upload-list.dto";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import { DocumentsListColumns, DocumentsListColumnServerKeys, DocumentsListColumnsLabels } from "./documents-list.columns";
 import { Store } from "@ngxs/store";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
@@ -15,6 +15,10 @@ import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-a
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
+import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
+import { IQcReportsListItemDto } from "../../../../../../../feature/quantity-control/src/lib/services/api/dto/qc-reports-list-item.dto";
+import { QcReportsListColumns } from "../../../../../../../feature/quantity-control/src/lib/views/qc-reports-list/view-model/qc-reports-list.columns";
+import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -52,9 +56,35 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: {
+        values: ['true', 'false']
+      },
       filter: "agTextColumnFilter",
       filterParams: this.defaultColFilterParams
     }
+  };
+
+  deleteCol: ITypedColDef<IQcReportsListItemDto> = {
+    colId: 'deleteCol',
+    width: 50,
+    editable: false,
+    filter: false,
+    sortable: false,
+    suppressMenu: true,
+    resizable: false,
+    suppressAutoSize: true,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    suppressNavigable: true,
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true,
+    suppressCellFlash: true,
+    suppressPaste: true,
+    lockPosition: true,
+    lockVisible: true,
+    cellClass: 'text-align-center',
+    cellRendererFramework: AgCellTemplateComponent
   };
 
   nameCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -75,7 +105,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.documentType,
     colId: DocumentsListColumns.documentType,
     field: model("documentType"),
-    valueFormatter: params => params.value.name,
+    valueFormatter: params => params.value?.name,
     width: 400
   };
 
@@ -129,6 +159,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.isVerified,
     colId: DocumentsListColumns.isVerified,
     field: model("isVerified"),
+    cellRendererFramework: AgCellTemplateComponent,
     width: 100
   };
 
@@ -155,8 +186,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     loggerFactory: LoggerFactory,
     private format: TenantFormattingService,
     @Inject(DOCUMENTS_MASTERS_API_SERVICE) private mastersApi: IDocumentsApiService,
-    private appErrorHandler: AppErrorHandler,
-    private store: Store
+    private appErrorHandler: AppErrorHandler
   ) {
     super("documents-grid", columnPreferences, changeDetector, loggerFactory.createLogger(DocumentsGridViewModel.name));
     this.init(this.gridOptions);
@@ -164,6 +194,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
 
   getColumnsDefs(): ITypedColDef[] {
     return [
+      this.deleteCol,
       this.nameCol,
       this.sizeCol,
       this.documentTypeCol,
@@ -182,7 +213,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const filters: ServerQueryFilter[] = [
       {
-        columnName: "TransactionTypeId",
+        columnName: "TransactionTypeName",
         value: this.entityName
       },
       {

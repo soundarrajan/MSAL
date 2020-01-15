@@ -127,11 +127,11 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const filters: ServerQueryFilter[] = [
       {
-        columnName: "TransactionTypeId",
+        columnName: "TransactionIds",
         value: this.entityId.toString(10)
       },
       {
-        columnName: "TransactionIds",
+        columnName: "EmailTransactionTypeName",
         value: this.entityName
       }];
 
