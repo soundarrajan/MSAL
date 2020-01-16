@@ -43,12 +43,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       vesselResponses: {
         categories: mockCategoriesLookup
       },
-      emailTransactionTypeId: random.number(),
-      entityTransactionType: {
-        id: random.number(),
-        name: random.word(),
-        displayName: random.word()
-      }
+      emailTransactionTypeId: random.number()
     };
   }
 
@@ -86,12 +81,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     },
     comments: random.words(random.number({ min: 10, max: 40 })),
     hasEmailSent: random.boolean(),
-    emailTransactionTypeId: random.number(),
-    entityTransactionType: {
-      id: random.number(),
-      name: random.word(),
-      displayName: random.word()
-    }
+    emailTransactionTypeId: random.number()
   };
 }
 

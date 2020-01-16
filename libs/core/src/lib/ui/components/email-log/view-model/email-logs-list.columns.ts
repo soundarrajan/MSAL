@@ -19,7 +19,7 @@ export enum EmailLogsListColumnsLabels {
  */
 export const EmailLogsListColumnServerKeys: Record<EmailLogsListColumns, string> = {
   [EmailLogsListColumns.from]: 'from',
-  [EmailLogsListColumns.status]: 'Status_DisplayName',
+  [EmailLogsListColumns.status]: 'Status_Name',
   [EmailLogsListColumns.to]: 'to',
   [EmailLogsListColumns.subject]: 'subject',
   [EmailLogsListColumns.sentAt]: 'sentAt'

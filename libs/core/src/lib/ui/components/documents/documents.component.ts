@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit } 
 import { Subject } from "rxjs";
 import { DocumentsGridViewModel } from "./view-model/documents-grid-view-model.service";
 import { AppError } from "@shiptech/core/error-handling/app-error";
-import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
+import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
@@ -33,23 +33,15 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   @Input() set entityId(value: number) {
     this._entityId = value;
     this.gridViewModel.entityId = this.entityId;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
   @Input() set entityName(value: string) {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
   constructor(public gridViewModel: DocumentsGridViewModel,
-              @Inject(DOCUMENTS_MASTERS_API_SERVICE) private mastersApi: IDocumentsApiService,
+              @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
               private appErrorHandler: AppErrorHandler) {
   }
 

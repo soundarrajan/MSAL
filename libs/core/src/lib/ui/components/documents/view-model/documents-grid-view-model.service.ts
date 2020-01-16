@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Inject, Injectable } from "@angular/core";
+import { ChangeDetectorRef, Inject, Injectable, Input } from "@angular/core";
 import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
 import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
@@ -11,7 +11,7 @@ import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-r
 import { DocumentsListColumns, DocumentsListColumnServerKeys, DocumentsListColumnsLabels } from "./documents-list.columns";
 import { Store } from "@ngxs/store";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
-import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
+import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
@@ -29,8 +29,30 @@ function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
 @Injectable()
 export class DocumentsGridViewModel extends BaseGridViewModel {
 
-  entityId: number;
-  entityName: string;
+  private _entityId: number;
+  private _entityName: string;
+
+  get entityId(): number {
+    return this._entityId;
+  }
+
+  get entityName(): string {
+    return this._entityName;
+  }
+
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+    if (this.isReady) {
+      this.gridApi.purgeServerSideCache();
+    }
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    if (this.isReady) {
+      this.gridApi.purgeServerSideCache();
+    }
+  }
 
   private defaultColFilterParams = {
     clearButton: true,
@@ -184,7 +206,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
     private format: TenantFormattingService,
-    @Inject(DOCUMENTS_MASTERS_API_SERVICE) private mastersApi: IDocumentsApiService,
+    @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
     private appErrorHandler: AppErrorHandler
   ) {
     super("documents-grid", columnPreferences, changeDetector, loggerFactory.createLogger(DocumentsGridViewModel.name));

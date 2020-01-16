@@ -50,4 +50,4 @@ export class DocumentsApi implements IDocumentsApiService {
   }
 }
 
-export const DOCUMENTS_MASTERS_API_SERVICE = new InjectionToken<IEmailLogsApiService>("DOCUMENTS_MASTERS_API_SERVICE");
+export const DOCUMENTS_API_SERVICE = new InjectionToken<IEmailLogsApiService>("DOCUMENTS_API_SERVICE");

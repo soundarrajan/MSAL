@@ -4,7 +4,7 @@ import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-
 import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
 import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
-import {DOCUMENTS_MASTERS_API_SERVICE} from "@shiptech/core/services/masters-api/documents-api.service";
+import {DOCUMENTS_API_SERVICE} from "@shiptech/core/services/masters-api/documents-api.service";
 import {IDocumentsApiService} from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
 
@@ -18,7 +18,7 @@ export class DocumentTypeGridViewModel extends BaseGridViewModel {
               changeDetector: ChangeDetectorRef,
               loggerFactory: LoggerFactory,
               private format: TenantFormattingService,
-              @Inject(DOCUMENTS_MASTERS_API_SERVICE) private mastersApi: IDocumentsApiService,
+              @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
               private appErrorHandler: AppErrorHandler) {
     super("documents-grid", columnPreferences, changeDetector, loggerFactory.createLogger(DocumentTypeGridViewModel.name));
   }

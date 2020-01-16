@@ -25,7 +25,6 @@ export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
     subject: random.word(),
     sentAt: date.past().toISOString(),
     totalCount: random.number(100),
-    isDeleted: random.boolean(),
     modulePathUrl: random.word(),
     clientIpAddress: random.word(),
     userAction: random.word()

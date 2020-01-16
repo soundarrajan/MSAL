@@ -24,19 +24,11 @@ export class AuditLogComponent implements OnInit, OnDestroy {
   @Input() set entityId(value: number) {
     this._entityId = value;
     this.gridViewModel.entityId = this.entityId;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
   @Input() set entityName(value: string) {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
   constructor(public gridViewModel: AuditLogGridViewModel) {
   }
