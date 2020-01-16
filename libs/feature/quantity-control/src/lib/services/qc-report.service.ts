@@ -1,23 +1,23 @@
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { QUANTITY_CONTROL_API_SERVICE } from './api/quantity-control-api';
-import { IQuantityControlApiService } from './api/quantity-control.api.service.interface';
-import { defer, Observable, of, throwError } from 'rxjs';
-import { ModuleError } from '../core/error-handling/module-error';
-import { BaseStoreService } from '@shiptech/core/services/base-store.service';
-import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
-import { Store } from '@ngxs/store';
-import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction } from '../store/report/qc-report-details.actions';
-import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { IAppState } from '@shiptech/core/store/states/app.state.interface';
-import { IQcReportDetailsState } from '../store/report/details/qc-report-details.model';
-import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import { IGetQcReportsListResponse } from './api/request-response/qc-reports-list.request-response';
-import { IGetSoundingReportDetailsResponse, IGetSoundingReportListResponse } from './api/request-response/sounding-reports.request-response';
-import { UpdateProductTypeAction } from '../store/report/details/actions/update-product-type.actions';
-import { QcProductTypeEditableProps } from '../views/qc-report/details/components/port-call-grid/view-model/product-details.view-model';
-import { UpdateActiveBunkerVesselResponseAction, UpdateActiveSludgeVesselResponseAction } from '../store/report/details/actions/qc-vessel-response.actions';
-import { UpdateQcReportComment } from '../store/report/details/actions/qc-comment.action';
-import { IGetQcSurveyHistoryListResponse } from './api/request-response/qc-survey-history-list.request-response';
+import { Inject, Injectable, OnDestroy } from "@angular/core";
+import { QUANTITY_CONTROL_API_SERVICE } from "./api/quantity-control-api";
+import { IQuantityControlApiService } from "./api/quantity-control.api.service.interface";
+import { defer, Observable, of, throwError } from "rxjs";
+import { ModuleError } from "../core/error-handling/module-error";
+import { BaseStoreService } from "@shiptech/core/services/base-store.service";
+import { ModuleLoggerFactory } from "../core/logging/module-logger-factory";
+import { Store } from "@ngxs/store";
+import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction } from "../store/report/qc-report-details.actions";
+import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
+import { IAppState } from "@shiptech/core/store/states/app.state.interface";
+import { IQcReportDetailsState } from "../store/report/details/qc-report-details.model";
+import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
+import { IGetQcReportsListResponse } from "./api/request-response/qc-reports-list.request-response";
+import { IGetSoundingReportDetailsResponse, IGetSoundingReportListResponse } from "./api/request-response/sounding-reports.request-response";
+import { UpdateProductTypeAction } from "../store/report/details/actions/update-product-type.actions";
+import { QcProductTypeEditableProps } from "../views/qc-report/details/components/port-call-grid/view-model/product-details.view-model";
+import { UpdateActiveBunkerVesselResponseAction, UpdateActiveSludgeVesselResponseAction } from "../store/report/details/actions/qc-vessel-response.actions";
+import { UpdateQcReportComment } from "../store/report/details/actions/qc-comment.action";
+import { IGetQcSurveyHistoryListResponse } from "./api/request-response/qc-survey-history-list.request-response";
 import {
   QcAddEventLogAction,
   QcLoadEventsLogAction,
@@ -25,30 +25,25 @@ import {
   QcLoadEventsLogSuccessfulAction,
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
-} from '../store/report/details/actions/qc-events-log.action';
-import { IGetOrderProductsListResponse } from './api/request-response/claims-list.request-response';
-import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from '../store/report/details/actions/save-report.actions';
-import { UrlService } from '@shiptech/core/services/url/url.service';
-import { Router } from '@angular/router';
-import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from '../store/report/details/actions/verify-report.actions';
-import { LoadReportListAction, LoadReportListFailedAction, LoadReportListSuccessfulAction } from '../store/reports-list/qc-report-list.actions';
-import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from '../store/report/qc-report-survey-history.actions';
-import { QcVesselResponseBunkerStateModel, QcVesselResponseSludgeStateModel } from '../store/report/details/qc-vessel-responses.state';
-import _ from 'lodash';
-import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from './api/dto/qc-event-log-list-item.dto';
-import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from '../store/report/details/actions/revert-verify-report.actions';
-import { IQcReportState } from '../store/report/qc-report.state.model';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { UpdateQcReportPortCall, UpdateQcReportVessel } from '../store/report/details/actions/qc-vessel.action';
-import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
-import { IQcVesselPortCall } from '../guards/qc-vessel-port-call.interface';
-import { map } from 'rxjs/operators';
-import {
-  QcClearPortCallBdnAction,
-  QcUpdatePortCallAction,
-  QcUpdatePortCallFailedAction,
-  QcUpdatePortCallSuccessfulAction
-} from '../store/report/details/actions/update-port-call-bdn.actions';
+} from "../store/report/details/actions/qc-events-log.action";
+import { IGetOrderProductsListResponse } from "./api/request-response/claims-list.request-response";
+import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from "../store/report/details/actions/save-report.actions";
+import { UrlService } from "@shiptech/core/services/url/url.service";
+import { Router } from "@angular/router";
+import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from "../store/report/details/actions/verify-report.actions";
+import { LoadReportListAction, LoadReportListFailedAction, LoadReportListSuccessfulAction } from "../store/reports-list/qc-report-list.actions";
+import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from "../store/report/qc-report-survey-history.actions";
+import { QcVesselResponseBunkerStateModel, QcVesselResponseSludgeStateModel } from "../store/report/details/qc-vessel-responses.state";
+import { values } from "lodash";
+import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from "./api/dto/qc-event-log-list-item.dto";
+import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from "../store/report/details/actions/revert-verify-report.actions";
+import { IQcReportState } from "../store/report/qc-report.state.model";
+import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
+import { UpdateQcReportPortCall, UpdateQcReportVessel } from "../store/report/details/actions/qc-vessel.action";
+import { EMPTY$ } from "@shiptech/core/utils/rxjs-operators";
+import { IQcVesselPortCall } from "../guards/qc-vessel-port-call.interface";
+import { map } from "rxjs/operators";
+import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from "../store/report/details/actions/update-port-call-bdn.actions";
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -195,7 +190,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     if (this.reportDetailsState.isNew)
       return EMPTY$;
 
-    return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), '_blank')));
+    return defer(() => of(window.open(this.urlService.newClaim(orderProductId, orderId), "_blank")));
   }
 
   previewEmail$(reportId: number, emailTransactionTypeId: number): Observable<unknown> {
@@ -255,10 +250,10 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   saveReport$(): Observable<number> {
-    if(!this.reportDetailsState.vessel)
+    if (!this.reportDetailsState.vessel)
       return throwError(ModuleError.VesselIsRequired);
 
-    if(!this.reportDetailsState.portCall)
+    if (!this.reportDetailsState.portCall)
       return throwError(ModuleError.PortCallIsRequired);
 
     return this.apiDispatch(
@@ -276,7 +271,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
           bunkerVesselResponseDescription: vesselResponse.bunker.description,
           bunkerVesselResponseCategory: vesselResponse.bunker.activeCategory,
           sludgeVesselResponseCategory: vesselResponse.sludge.activeCategory,
-          details: _.values(reportDetailsState.productTypesById).map(s => ({
+          details: values(reportDetailsState.productTypesById).map(s => ({
             id: s.id,
             productTypeId: s.productType.id,
             logBookRobQtyBeforeDelivery: s.robBeforeDeliveryLogBookROB,
@@ -289,7 +284,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
             afterDeliveryQtyUomId: reportDetailsState.robAfterDeliveryUom?.id
           })),
           notes: [
-            ..._.values(reportDetailsState.eventsLog.itemsById).filter(s => s.isNew).map(s => (<IQcEventLogAddedListItemDto>{
+            ...values(reportDetailsState.eventsLog.itemsById).filter(s => s.isNew).map(s => (<IQcEventLogAddedListItemDto>{
               ...s,
               id: undefined
             })),
