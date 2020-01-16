@@ -269,6 +269,5 @@
     "ORDER": "Order",
     "ORDER_CONFIRM": "OrderConfirmationToSellerOrVessel",
     "CONTRACT_PLANNING": "ContractPlanning"
-  },
-  "userSettingsApiUrl": "http://sf.techoil.24software.ro:81/24S-Techoil/develop/UserSettings.API"
+  }
 }
