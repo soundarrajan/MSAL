@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-        	<tr ng-repeat="(key, value) in formValues.products[$index].conversionFactors ">
+        	<tr ng-repeat="(key, value) in formValues.products[$index].conversionFactors " ng-if="!value.isDeleted">
         		<td class="padding">{{value.product.name}}</td>
         		<td>
         			<select name="Product {{$index}} mass UOM" ng-model="value.massUom" ng-options="item as item.name for item in vm.listsCache.UomMass track by item.id" class="form-control"></select>

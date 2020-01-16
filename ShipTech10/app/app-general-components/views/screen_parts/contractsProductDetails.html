@@ -84,12 +84,16 @@
                                                 *
                                             </span>
                                         </label>
+                                        <span class="hide">
+                                            <inpuut ng-model="formValues.products[$index].conversionFactors">
+                                        </span>
                                         <div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.products[$index].product.id) }}">
                                             <input ng-model="formValues.products[$index].product" uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
-                                                typeahead-wait-ms="100" typeahead-on-select="" id="Product_{{ index_0 + 1 }}_Main_Product"
+                                                typeahead-wait-ms="100"  typeahead-on-select="addProductToConversion($index, false ,true)" id="Product_{{ index_0 + 1 }}_Main_Product"
                                                 required="true" name="Product_{{ index_0 + 1 }}_Main_Product" autocomplete="off"
-                                                ng-change="formValues.products[$index].product.id ? productSpecGroups = getSpecGroupByProduct(formValues.products[$index].product.id) : '' "
+                                                ng-change="formValues.products[$index].product.id ? productSpecGroups = getSpecGroupByProduct(formValues.products[$index].product.id) && addProductToConversion($index, false ,true) : '' "
+                                                ng-init=""
                                             />
                                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product');"
                                                 ng-init="modal = false">
@@ -105,22 +109,21 @@
                                         {{ CM.app_id + '.ALLOWED_PRODUCTS' | translate }}
                                     </label>
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Product", "Type": "simpleLookup", "masterSource": "Product"})'>
-
                                         <input ng-model="allowedProduct_[$index]" id="allowedProduct_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Products"
                                             uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                             data-value="{{ allowedProduct_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Product', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].allowedProducts, $index, 'allowedProduct_'+$index, 'allowedProducts')"
-                                            ng-blur="showMultiLookupWarning(allowedProduct_[$index])" />
+                                            ng-blur="showMultiLookupWarning(allowedProduct_[$index])"/>
                                         <span class="input-group-addon">
-                                            <a   class="object_tagsinput_add_allowedProduct_{{ $index }} btn default" ng-click="CM.plusClickedMultilookup = true">
+                                            <a   class="object_tagsinput_add_allowedProduct_{{ $index }} btn default" ng-click="CM.plusClickedMultilookup = true;">
                                                 <i class="fa fa-plus"></i>
                                             </a>
                                         </span>
                                     </div>
                                     <div class="multi_lookup_tags tagsForallowedProduct{{ $index }}">
                                         <input type="text" name="Product_{{ index_0 + 1 }}_Allowed_Products" class="input-as-label form-control typeahead object_tagsinput_allowedProduct_{{ $index }}"
-                                            ng-model="formValues.products[$index].allowedProducts.name" ng-change="allowedProduct_[$index] = null"
+                                            ng-model="formValues.products[$index].allowedProductsTemp.name" ng-change="addProductToConversion($index, allowedProduct_[$index], false); allowedProduct_[$index] = null;" 
                                         />
                                     </div>
                                 </div>
@@ -349,7 +352,7 @@
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
-                                                        data-width="fit" id="" ng-model="formValues.products[$index].uom"
+                                                        data-width="fit" id="" ng-model="formValues.products[$index].priceUom"
                                                         ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
                                                         <option></option>
                                                     </select>
@@ -421,7 +424,7 @@
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
-                                                        data-width="fit" id="" ng-model="formValues.products[$index].uom"
+                                                        data-width="fit" id="" ng-model="formValues.products[$index].mtmPriceUom"
                                                         ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
                                                         <option></option>
                                                     </select>

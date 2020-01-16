@@ -4390,6 +4390,10 @@ APP_MASTERS.controller("Controller_Master", [
             // Check if modal triggered from datatable
             if (!formvalue) {
                 $scope.assignObjValue($scope, elements, $scope.selected_value);
+                if (element.screen == "productlist" && element.name == "Product" && element.app == "masters") {
+                    var productIndex = element.source.split('.')[2];
+                    $scope.addProductToConversion(productIndex, null, true);
+                }
                 if (element.screen == "rfqrequestslist") {
                 	$scope.selected_value = [];
                 	rowsData = CLC.jqGrid('getGridParam','selarrrow')
@@ -4416,6 +4420,7 @@ APP_MASTERS.controller("Controller_Master", [
             $scope.prettyCloseModal();
             $("*").tooltip("destroy");
             $scope.triggerChangeFields(field_name, elements[1]);
+
         };
 
         $scope.assignObjValue = function(obj, keyPath, value) {
@@ -5718,6 +5723,7 @@ APP_MASTERS.controller("Controller_Master", [
             Factory_Master.specGroupGetByProduct(data, function(callback) {
                 if (callback) {
                     vm.productSpecGroup[productId] = callback.data.payload;
+                    // $scope.addProductToConversion(index, false, false);
                 }
             });
         };
@@ -7865,6 +7871,115 @@ APP_MASTERS.controller("Controller_Master", [
         $rootScope.$on("changeCurrencyValues", function (event, res) {
             $scope.changeCurrencyValues(res);
         });
+
+        $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
+            if (!$scope.formValues.products[index].conversionFactors) {
+                $scope.formValues.products[index].conversionFactors = [];
+            }
+            var selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
+            var  payload;
+            setTimeout(function() {
+                 if (isMainProduct) {
+                    selectedProduct = $scope.formValues.products[index];
+                    if ($scope.formValues.products[index].conversionFactors.length) {
+                            var allowProducts = $scope.formValues.products[index].allowedProducts;
+                            if (allowProducts.length) {
+                                $scope.formValues.products[index].conversionFactors.forEach(function(value, key) {
+                                    idIndex =  _.findIndex(allowProducts, function(o) { return o.id == value.product.id });
+                                    if (idIndex == -1) {
+                                      if (value.id == 0) {
+                                            $scope.formValues.products[index].conversionFactors.splice(key, 1);
+                                            return;
+
+                                       } else {
+                                             $scope.formValues.products[index].conversionFactors[key].isDeleted = true;
+                                        }
+                                    }
+                                    
+                                });
+                            } else {
+                                $scope.formValues.products[index].conversionFactors = [];
+
+                            }
+                    }
+                                
+                } else {
+                    if (allowProduct != null) {
+                        selectedProduct = {'product': allowProduct};
+                    } else if (allowProduct == null) {
+                            var allowProducts = $scope.formValues.products[index].allowedProducts;
+                            if (allowProducts.length) {
+                                $scope.formValues.products[index].conversionFactors.forEach(function(value, key) {
+                                    if (value.product.id != $scope.formValues.products[index].product.id) {
+                                        idIndex =  _.findIndex(allowProducts, function(o) {
+                                            console.log(o.id)
+                                             return o.id == value.product.id });
+                                        if (idIndex == -1) {
+                                            indexDeleted = key;
+                                            if (value.id == 0) {
+                                                $scope.formValues.products[index].conversionFactors.splice(indexDeleted, 1);
+                                                return;
+
+                                            } else {
+                                                $scope.formValues.products[index].conversionFactors[indexDeleted].isDeleted = true;
+                                            }
+                                
+                                        }
+                                    }
+                                });
+                            } else {
+                                $scope.formValues.products[index].conversionFactors.forEach(function(value, key) {
+                                    if (value.product.id != $scope.formValues.products[index].product.id && !value.isDeleted) {
+                                        if (value.id == 0) {
+                                            $scope.formValues.products[index].conversionFactors.splice(key, 1);
+                                            return;
+
+                                        } else {
+                                                $scope.formValues.products[index].conversionFactors[key].isDeleted = true;
+                                        }
+                                      
+
+                                   }
+                               });
+
+                            }               
+                    }         
+                }
+                if ($scope.formValues.products[index].conversionFactors) {
+                    if (selectedProduct) {
+                        var indexProduct = _.findIndex($scope.formValues.products[index].conversionFactors, function(o) { return o.product.id == selectedProduct.product.id;});
+                        if (indexProduct != -1) {
+                            if (!$scope.formValues.products[index].conversionFactors[indexProduct].isDeleted) {
+                                toastr.error("Product is already added");
+                                isAlreadyAdded = 1;
+
+                            }
+                        }
+                    }
+                }
+                if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
+                    payload = {"Payload": selectedProduct.product.id};
+                    $http.post(API.BASE_URL_DATA_MASTERS + '/api/masters/products/getProdDefaultConversionFactors', payload).then(function successCallback(response) {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        var object = {
+                            "id": 0,
+                            "product" : selectedProduct.product ,
+                            "value": response.data.payload.value,
+                            "massUom": response.data.payload.massUom,
+                            "volumeUom": response.data.payload.volumeUom,
+                        }
+                        $scope.formValues.products[index].conversionFactors.push(object);
+                     
+                    }
+                });
+
+                }
+
+            })
+           
+        
+        }
      
      
 
