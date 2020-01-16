@@ -23,7 +23,7 @@ export class QcReportDetailsUnsavedChangesGuard implements CanDeactivate<QcRepor
     if (hasChanges) {
       return new Observable((observer: Observer<boolean>) => {
         this.confirmationService.confirm({
-          message: 'You have unsaved changes. Do you want to discard these?',
+          message: 'You have unsaved changes. Do you want to discard changes?',
           accept: () => {
             observer.next(true);
             observer.complete();

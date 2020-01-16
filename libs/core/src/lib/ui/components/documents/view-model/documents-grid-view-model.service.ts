@@ -21,6 +21,7 @@ import { QcReportsListColumns } from "../../../../../../../feature/quantity-cont
 import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
+import { takeUntil } from "rxjs/operators";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -241,7 +242,9 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
         columnName: "ReferenceNo",
         value: this.entityId.toString(10)
       }];
-    this.documentsApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters }).subscribe(
+    this.documentsApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadDocumentsFailed);
