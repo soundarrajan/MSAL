@@ -1,7 +1,7 @@
-﻿commit 301b6996687fa8c1a5f5dda622ead06c50b10d27
+﻿commit 42ce56d9709894e969009f281c67c9001d5eb993
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 16 12:06:34 2020 +0200
+Date:   Thu Jan 16 12:55:36 2020 +0200
 
-    Fixed build
+    Fixed search performed twice
 
 branch: master
