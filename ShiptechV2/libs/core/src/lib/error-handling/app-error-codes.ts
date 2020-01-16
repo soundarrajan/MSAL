@@ -17,5 +17,8 @@ export enum AppErrorCode {
 
   LoadEmailLogsFailed = 300,
   LoadAuditLogFailed = 400,
-  LoadDocumentsFailed = 500
+  LoadDocumentsFailed = 500,
+  DeleteDocumentFailed = 501,
+  UpdateIsVerifiedDocumentFailed = 502,
+  UpdateNotesDocumentFailed = 503
 }

@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { DocumentsGridViewModel } from "./view-model/documents-grid-view-model.service";
 import {IVesselMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/vessel";
 import {fromLegacyLookup} from "@shiptech/core/lookups/utils";
 import {QcReportService} from "../../../../../../feature/quantity-control/src/lib/services/qc-report.service";
+import { AppError } from "@shiptech/core/error-handling/app-error";
+import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
+import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
+import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
+import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
+import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
+import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 
 @Component({
   selector: "shiptech-documents",
@@ -21,6 +28,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   get entityId(): number {
     return this._entityId;
   }
+
   get entityName(): string {
     return this._entityName;
   }
@@ -43,7 +51,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(public gridViewModel: DocumentsGridViewModel, private reportService: QcReportService) {
+  constructor(public gridViewModel: DocumentsGridViewModel,
+              @Inject(DOCUMENTS_MASTERS_API_SERVICE) private mastersApi: IDocumentsApiService,
+              private appErrorHandler: AppErrorHandler,
+              private reportService: QcReportService) {
   }
 
   updateVessel(newVessel: IVesselMasterDto): void {
@@ -63,6 +74,46 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   onPageSizeChange(pageSize: number): void {
     this.gridViewModel.pageSize = pageSize;
+  }
+
+  updateIsVerifiedDocument(id: number, isVerified: boolean): void {
+    const request: IDocumentsUpdateIsVerifiedRequest = {
+      id,
+      isVerified: !isVerified
+    };
+    this.mastersApi.updateIsVerifiedDocument(request).subscribe(
+      response => {},
+      () => {
+        this.appErrorHandler.handleError(AppError.UpdateIsVerifiedDocumentFailed);
+      },()=>{
+        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+      });
+  }
+
+  updateNotesDocument(id: number, notes: string): void {
+    const request: IDocumentsUpdateNotesRequest = {
+      id,
+      notes
+    };
+    this.mastersApi.updateNotesDocument(request).subscribe(
+      response => {},
+      () => {
+        this.appErrorHandler.handleError(AppError.UpdateNotesDocumentFailed);
+      },()=>{
+        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+      });
+  }
+  deleteDocument(id: number): void{
+    const request: IDocumentsDeleteRequest = {
+      id
+    };
+    this.mastersApi.deleteDocument(request).subscribe(
+      response => {},
+      () => {
+        this.appErrorHandler.handleError(AppError.DeleteDocumentFailed);
+      },()=>{
+        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+      });
   }
 
   ngOnDestroy(): void {
