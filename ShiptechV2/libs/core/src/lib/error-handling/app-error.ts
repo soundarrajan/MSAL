@@ -52,6 +52,21 @@ export class AppError<T = any> implements IAppError {
     message: 'Could not load document list. Please try again later.'
   });
 
+  static readonly DeleteDocumentFailed = new AppError({
+    code: AppErrorCode.DeleteDocumentFailed,
+    message: 'Could not delete the document. Please try again later.'
+  });
+
+  static readonly UpdateIsVerifiedDocumentFailed = new AppError({
+    code: AppErrorCode.UpdateIsVerifiedDocumentFailed,
+    message: 'Could not update the verification of the document. Please try again later.'
+  });
+
+  static readonly UpdateNotesDocumentFailed = new AppError({
+    code: AppErrorCode.UpdateNotesDocumentFailed,
+    message: 'Could not update the notes of the document. Please try again later.'
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;

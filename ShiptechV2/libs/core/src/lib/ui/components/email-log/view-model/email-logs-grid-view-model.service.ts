@@ -138,7 +138,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     this.mastersApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
+        this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);
         params.failCallback();
       });
   }

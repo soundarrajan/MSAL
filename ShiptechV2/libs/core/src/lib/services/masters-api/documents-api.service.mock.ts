@@ -7,6 +7,7 @@ import { IDocumentsListRequest, IDocumentsListResponse } from "@shiptech/core/se
 import { getMockDocuments } from "@shiptech/core/services/masters-api/mock-data/documents-upload-list.mock";
 import { IDocumentsUpdateIsVerifiedRequest, IDocumentsUpdateIsVerifiedResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest, IDocumentsDeleteResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
+import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 
 @Injectable({
   providedIn: "root"
@@ -30,6 +31,13 @@ export class DocumentsApiMock implements IDocumentsApiService {
 
   @ApiCall()
   updateIsVerifiedDocument(request: IDocumentsUpdateIsVerifiedRequest): Observable<IDocumentsUpdateIsVerifiedResponse> {
+    return of({
+      matchedCount: 10
+    });
+  }
+
+  @ApiCall()
+  updateNotesDocument(request: IDocumentsUpdateNotesRequest): Observable<IDocumentsUpdateNotesResponse> {
     return of({
       matchedCount: 10
     });

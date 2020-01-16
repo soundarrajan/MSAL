@@ -19,6 +19,8 @@ import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag
 import { IQcReportsListItemDto } from "../../../../../../../feature/quantity-control/src/lib/services/api/dto/qc-reports-list-item.dto";
 import { QcReportsListColumns } from "../../../../../../../feature/quantity-control/src/lib/views/qc-reports-list/view-model/qc-reports-list.columns";
 import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
+import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -56,10 +58,6 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: ['true', 'false']
-      },
       filter: "agTextColumnFilter",
       filterParams: this.defaultColFilterParams
     }
@@ -121,14 +119,14 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.transactionType,
     field: model("transactionType"),
     valueFormatter: params => params.value?.name,
-    width: 100
+    width: 150
   };
 
   referenceNoCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.referenceNo,
     colId: DocumentsListColumns.referenceNo,
     field: model("referenceNo"),
-    width: 100
+    width: 130
   };
 
   uploadedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -152,7 +150,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.notes,
     colId: DocumentsListColumns.notes,
     field: model("notes"),
-    width: 200
+    cellRendererFramework: AgCellTemplateComponent,
+    width: 150
   };
 
   isVerifiedCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -223,7 +222,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     this.mastersApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
+        this.appErrorHandler.handleError(AppError.LoadDocumentsFailed);
         params.failCallback();
       });
   }

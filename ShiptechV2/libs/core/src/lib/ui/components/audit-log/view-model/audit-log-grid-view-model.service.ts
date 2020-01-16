@@ -176,7 +176,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     this.adminApi.getAuditLog({ ...transformLocalToServeGridInfo(this.gridApi, params, AuditLogColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("audit"));
+        this.appErrorHandler.handleError(AppError.LoadAuditLogFailed);
         params.failCallback();
       });
   }
