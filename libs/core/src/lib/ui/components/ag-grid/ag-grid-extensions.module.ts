@@ -17,6 +17,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
 import { Utils } from 'ag-grid-community';
 import moment from 'moment';
+import { AgGridClearAllFiltersDirective } from '@shiptech/core/ui/components/ag-grid/directives/clear-all-filters.directive';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -26,6 +27,7 @@ const COMPONENTS = [
   AgColumnGroupHeaderComponent,
   AgColumnHeaderTemplateDirective,
   AgGridSizeToFitDirective,
+  AgGridClearAllFiltersDirective,
   AgGridFirstColumnLockedDirective,
   AgGridDeselectFilteredRowsDirective,
   AgGridEmptyFilterOptionDirective,

@@ -6,15 +6,15 @@ import { AgGridGeneralMenuItemsStorage } from '@shiptech/core/ui/components/ag-g
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'ag-grid-angular[appAgGridSizeToFit]'
+  selector: 'ag-grid-angular[appAgGridClearAllFilters]'
 })
-export class AgGridSizeToFitDirective implements OnDestroy {
+export class AgGridClearAllFiltersDirective implements OnDestroy {
   private _destroy$: Subject<any> = new Subject();
 
   constructor(private agGrid: AgGridAngular, private generalMenuItems: AgGridGeneralMenuItemsStorage) {
     generalMenuItems.menuItems.set(this.agGrid, [...generalMenuItems.menuItems.get(this.agGrid) ?? [], {
-      name: 'Size To Fit',
-      action: () => this.agGrid.api.sizeColumnsToFit()
+      name: 'Clear All Filters',
+      action: () => this.agGrid.api.setFilterModel({})
     }]);
 
     this.agGrid.gridReady.pipe(
