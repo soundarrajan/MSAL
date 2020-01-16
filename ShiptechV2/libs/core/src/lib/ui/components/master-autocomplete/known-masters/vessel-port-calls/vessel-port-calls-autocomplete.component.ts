@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input } 
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { ShiptechGridFilterOperators } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
 import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';

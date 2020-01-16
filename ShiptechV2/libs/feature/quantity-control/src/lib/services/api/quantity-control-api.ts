@@ -19,7 +19,6 @@ import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/
 import { ISaveReportDetailsRequest, ISaveReportDetailsResponse } from './request-response/report-details-save.request-response';
 import { IGetOrderProductsListRequest, IGetOrderProductsListResponse } from './request-response/claims-list.request-response';
 import { IQcMarkSludgeVerificationRequest, IQcMarkSludgeVerificationResponse } from './request-response/qc-mark-sludge-verification.request-response';
-import { IQcEventLogListItemDto } from './dto/qc-event-log-list-item.dto';
 import { IQcRevertVerifyReportsRequest, IQcRevertVerifyReportsResponse } from './request-response/revert-verify-port-calls.request-response';
 import { IQcLoadPortCallBdnRequest, IQcLoadPortCallBdnResponse } from './request-response/load-bdn-port-call.request-response';
 
@@ -51,64 +50,64 @@ export class QuantityControlApi implements IQuantityControlApiService {
 
   @ObservableException()
   getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
-    return this.http.post<IGetQcReportsListResponse>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, { payload: request });
+    return this.http.post<IGetQcReportsListResponse>(`${this._apiUrl}/${RobApiPaths.getReportsList()}`, {payload: request});
   }
 
   @ObservableException()
   getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
-    return this.http.post<IGetQcSurveyHistoryListResponse>(`${this._apiUrl}/${RobApiPaths.getSurveyHistoryList()}`, { payload: request });
+    return this.http.post<IGetQcSurveyHistoryListResponse>(`${this._apiUrl}/${RobApiPaths.getSurveyHistoryList()}`, {payload: request});
   }
 
   @ObservableException()
   getReportDetails(request: IQcReportDetailsRequest): Observable<IQcReportDetailsResponse> {
-    return this.http.post<IQcReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getReportDetails()}`, { payload: request });
+    return this.http.post<IQcReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getReportDetails()}`, {payload: request});
   }
 
   @ObservableException()
   saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
-    return this.http.post<ISaveReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.saveReport()}`, { payload: request });
+    return this.http.post<ISaveReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.saveReport()}`, {payload: request});
   }
 
   @ObservableException()
   getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
-    return this.http.post<IGetSoundingReportListResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, { payload: request });
+    return this.http.post<IGetSoundingReportListResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportList()}`, {payload: request});
   }
 
   @ObservableException()
   getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
-    return this.http.post<IGetSoundingReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, { payload: request });
+    return this.http.post<IGetSoundingReportDetailsResponse>(`${this._apiUrl}/${RobApiPaths.getSoundingReportDetails()}`, {payload: request});
   }
 
   @ObservableException()
   getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
-    return this.http.post<IGetOrderProductsListResponse>(`${this._apiUrl}/${RobApiPaths.getRelatedVoyageOrders()}`, { payload: request.vesselVoyageDetailId });
+    return this.http.post<IGetOrderProductsListResponse>(`${this._apiUrl}/${RobApiPaths.getRelatedVoyageOrders()}`, {payload: request.vesselVoyageDetailId});
   }
 
   @ObservableException()
   verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse> {
     return this.http.post<IQcMarkSludgeVerificationResponse>(`${this._apiUrl}/${RobApiPaths.verify()}`,
-      { payload: request });
+      {payload: request});
   }
 
   @ObservableException()
   revertVerifyVessel(request: IQcRevertVerifyReportsRequest): Observable<IQcRevertVerifyReportsResponse> {
     return this.http.post<IQcMarkSludgeVerificationResponse>(`${this._apiUrl}/${RobApiPaths.revertVerify()}`,
-      { payload: request });
+      {payload: request});
   }
 
   @ObservableException()
   getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
-    return this.http.post<IGetEventsLogResponse>(`${this._apiUrl}/${RobApiPaths.getReportEventNotes()}`, { payload: request });
+    return this.http.post<IGetEventsLogResponse>(`${this._apiUrl}/${RobApiPaths.getReportEventNotes()}`, {payload: request});
   }
 
   @ObservableException()
   markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse> {
-    return this.http.post<IQcMarkSludgeVerificationResponse>(`${this._apiUrl}/${RobApiPaths.verifySludge()}`, { payload: request });
+    return this.http.post<IQcMarkSludgeVerificationResponse>(`${this._apiUrl}/${RobApiPaths.verifySludge()}`, {payload: request});
   }
 
   @ObservableException()
   loadPortCallBdn(request: IQcLoadPortCallBdnRequest): Observable<IQcLoadPortCallBdnResponse> {
-    return this.http.post<IQcLoadPortCallBdnResponse>(`${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`, { payload: request });
+    return this.http.post<IQcLoadPortCallBdnResponse>(`${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`, {payload: request});
   }
 }
 

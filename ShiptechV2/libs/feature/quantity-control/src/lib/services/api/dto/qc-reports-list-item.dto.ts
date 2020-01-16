@@ -10,7 +10,7 @@ export interface IQcReportsListItemDto {
   portName: string;
   vesselName: string;
   surveyDate: Date | string;
-  surveyStatus: IReconStatusLookupDto
+  surveyStatus: IReconStatusLookupDto;
   qtyMatchedStatus: IReconStatusLookupDto;
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;
