@@ -1,7 +1,7 @@
-﻿commit 3a47ddb793a8ac5adc644521c01b8c4f196fe3e2
+﻿commit 52fa2a3d90d11258314f1baff4622df8d6f5c384
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 16 13:57:33 2020 +0200
+Date:   Thu Jan 16 14:57:12 2020 +0200
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Destroy in flight grid api request if component is destroyed
 
 branch: master

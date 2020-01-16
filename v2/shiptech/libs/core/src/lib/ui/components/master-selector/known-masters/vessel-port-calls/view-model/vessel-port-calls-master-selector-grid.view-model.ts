@@ -14,6 +14,7 @@ import {
 } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/view-model/vessel-port-calls-master-list.columns';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { takeUntil } from 'rxjs/operators';
 
 function model(prop: keyof IVesselPortCallMasterDto): keyof IVesselPortCallMasterDto {
   return prop;
@@ -158,7 +159,9 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.mastersApi.getVesselPortCalls({ id: this.vesselId, ...transformLocalToServeGridInfo(this.gridApi, params, VesselPortCallsMasterListColumnServerKeys, this.searchText) }).subscribe(
+    this.mastersApi.getVesselPortCalls({ id: this.vesselId, ...transformLocalToServeGridInfo(this.gridApi, params, VesselPortCallsMasterListColumnServerKeys, this.searchText) })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => params.failCallback());
   }

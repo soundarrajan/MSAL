@@ -14,6 +14,7 @@ import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IAuditLogApiService } from "@shiptech/core/services/admin-api/audit-log-api.service.interface";
 import { AUDIT_LOG_API_SERVICE } from "@shiptech/core/services/admin-api/audit-log-api.service";
+import { takeUntil } from 'rxjs/operators';
 
 function model(prop: keyof IAuditLogItemDto): keyof IAuditLogItemDto {
   return prop;
