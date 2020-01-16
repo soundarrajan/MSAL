@@ -6,7 +6,7 @@
 	<span ng-if="structure" ng-init="CM.load_eef_config(structure);"></span>
 	<span ng-if="!structure" ng-init="CM.get_master_entity(screenchild);"></span>
 	<div class=" text-center " id="main-content" ng-init="checkIfTab();">
-    <form  name="CM.editInstance" novalidate ng-class="CM.app_id == 'wizard_form' ? 'step' : ''">
+    <form  name="CM.editInstance" autocomplete="off" novalidate ng-class="CM.app_id == 'wizard_form' ? 'step' : ''">
         <div class=" dynamic_form_editor  app_{{ CM.app_id }}_screen_{{ CM.screen_id }}" ng-init="hideDependentFields()">
             <div  class=" text-left row form-wizard" id="formBuilderContent">
                 <div class="col-md-12  hidden" ng-if=" type =='tabs' " id="tabs_navigation">
