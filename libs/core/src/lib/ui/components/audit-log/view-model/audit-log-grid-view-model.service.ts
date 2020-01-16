@@ -69,7 +69,6 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     headerName: AuditLogColumnsLabels.modulePathUrl,
     colId: AuditLogListColumns.modulePathUrl,
     field: model("modulePathUrl"),
-    hide: true,
     width: 170
   };
 
@@ -77,7 +76,6 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     headerName: AuditLogColumnsLabels.businessName,
     colId: AuditLogListColumns.businessName,
     field: model("businessName"),
-    hide: true,
     width: 170
   };
 
@@ -121,15 +119,13 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     headerName: AuditLogColumnsLabels.clientIpAddress,
     colId: AuditLogListColumns.clientIpAddress,
     field: model("clientIpAddress"),
-    hide: true,
-    width: 130
+    width: 150
   };
 
   userAction: ITypedColDef<IAuditLogItemDto, string> = {
     headerName: AuditLogColumnsLabels.userAction,
     colId: AuditLogListColumns.userAction,
     field: model("userAction"),
-    hide: true,
     width: 170
   };
 
@@ -180,7 +176,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     this.adminApi.getAuditLog({ ...transformLocalToServeGridInfo(this.gridApi, params, AuditLogColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("audit"));
+        this.appErrorHandler.handleError(AppError.LoadAuditLogFailed);
         params.failCallback();
       });
   }

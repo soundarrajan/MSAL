@@ -1,9 +1,8 @@
-import {IDocumentsUploadFileInterface} from "@shiptech/core/services/masters-api/request-response-dtos/documents-request-response.interface";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 
-export interface IDocumentsCreateUploadItemDto {
-}
-
-export interface IDocumentsCreateUploadRequest extends IDocumentsUploadFileInterface {
+export interface IDocumentsCreateUploadRequest {
+  file: string | Blob;
+  request: IDocumentsItemDto;
 }
 
 export interface IDocumentsCreateUploadResponse {

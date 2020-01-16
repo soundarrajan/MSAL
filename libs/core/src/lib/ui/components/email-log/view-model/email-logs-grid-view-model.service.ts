@@ -127,18 +127,18 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const filters: ServerQueryFilter[] = [
       {
-        columnName: "TransactionTypeId",
+        columnName: "TransactionIds",
         value: this.entityId.toString(10)
       },
       {
-        columnName: "TransactionIds",
+        columnName: "EmailTransactionTypeName",
         value: this.entityName
       }];
 
     this.mastersApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
+        this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);
         params.failCallback();
       });
   }

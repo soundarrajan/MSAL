@@ -1,6 +1,7 @@
-import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
+import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
+import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 
-export interface IDocumentsInterface {
+export interface IDocumentsItemDto{
   name: string;
   documentType: IDisplayLookupDto;
   size: number;
@@ -11,17 +12,14 @@ export interface IDocumentsInterface {
   uploadedOn: string;
   notes: string;
   isVerified: boolean;
-  referenceNo: string;
+  referenceNo: number;
   createdBy: IDisplayLookupDto;
   createdOn: string;
   lastModifiedByUser: IDisplayLookupDto;
   lastModifiedOn: string;
   id: number;
   isDeleted: boolean;
-}
-
-export interface IDocumentsExtendedInterface extends IDocumentsInterface {
-  verifiedBy: string;
+  verifiedBy: IDisplayLookupDto;
   verifiedOn: string;
   inclusionInMail: string;
   totalCount: number;
@@ -32,7 +30,10 @@ export interface IDocumentsExtendedInterface extends IDocumentsInterface {
   userAction: string;
 }
 
-export interface IDocumentsUploadFileInterface {
-  file: string | Blob;
-  request: IDocumentsInterface;
+export interface IDocumentsListRequest extends IServerGridInfo {
+}
+
+export interface IDocumentsListResponse {
+  payload: IDocumentsItemDto[];
+  matchedCount: number;
 }
