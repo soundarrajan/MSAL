@@ -4835,6 +4835,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .dayColumn .portCode.hasSludgeProduct {
 	background-color: #fff;
 	display: block;
+	color: #000;
 }
 
 .footer-general-header .tabs_bar {

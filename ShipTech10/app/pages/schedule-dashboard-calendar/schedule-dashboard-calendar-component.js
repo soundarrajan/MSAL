@@ -741,8 +741,8 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             }
 
             dataJSON = JSON.parse('{ "vessels": [' + data + "]}");
+            var bunkerPlans = JSON.parse('{ "bunkerPlans": [' + ctrl.calendarData.bunkerPlans + "]}").bunkerPlans;
             ctrl.voyagesStrategyGrouped = ctrl.checkIfHasStrategyOptimized(dataJSON.vessels);
-
             dates = angular.copy(calendarDates);
             var result = [],
                 dataRow,
@@ -753,7 +753,12 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
             // apply hierarchiy
             var vessels = Array();
-	        ctrl.bunkerDetails = [];
+	        ctrl.bunkerDetails = _.groupBy(bunkerPlans, "voyageDetailId");
+	        $.each(ctrl.bunkerDetails, function(k,v){
+	        	$.each(v, function(k1,v1){
+	        		v1 = v1.bunkerDetails;
+	        	})
+	        })
 	        ctrl.sludgeVoyages = [];
             for (i = 0; i < dataJSON.vessels.length; i ++)
             {
@@ -1196,8 +1201,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             }, true);
             if (statuses.length > 0) {
                 var statusColor = statusColors.getColorCodeFromLabels(status, $listsCache.ScheduleDashboardLabelConfiguration);
-                //"color": getContrastYIQ(statusColor)
+                
                 return {
+                    "color": getContrastYIQ(statusColor),
                     "background-color": statusColor
                 };
             }
@@ -1332,7 +1338,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                     hasRequest = true;
                 }
 
-                if (value.voyageDetail.bunkerPlan) {
+                if (ctrl.bunkerDetails[value.voyageDetail.id]) {
                 	hasBunkerPlan = true
                 }
 
@@ -1520,13 +1526,13 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	       		})			
        		}
        		return vesselsStrategy;
-		}
+		}		
 
 		ctrl.checkIfHasSAPStrategy = function(voyageStops) {
 			hasStrategy = false;
 			$.each(voyageStops, function(k,v){
 				$.each(ctrl.bunkerDetails[v.id], function(k2,v2){
-					if (v2.supplyStrategy) {
+					if (v2.bunkerPlan.supplyStrategy) {
 						hasStrategy = true;
 					}
 				})
@@ -1561,8 +1567,8 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 	               				if (voyage.voyageDetail.bunkerPlansGrouped) {
 	               				}
                					$.each(ctrl.bunkerDetails[voyage.id], function(k4, bp){
-		               				if (bp.id == currentBunkerPlanId) {
-		               					bp.supplyStrategy = false;
+		               				if (bp.bunkerPlan.id == currentBunkerPlanId) {
+		               					bp.bunkerPlan.supplyStrategy = false;
 		               				}
                					})
 	               			})

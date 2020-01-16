@@ -51,7 +51,7 @@ angular.module('shiptech.models').factory('scheduleDashboardCalendarModel', ['sc
             }
             //complete request data with custom payload info
             request_data = payloadDataModel.create(payload);
-            return scheduleDashboardCalendarResource.fetch(request_data).$promise.then(function(data) {
+            return scheduleDashboardCalendarResource.getWSeparateBunkerPlan(request_data).$promise.then(function(data) {
                 currentModel = new scheduleDashboardCalendarModel(data);
                 modelReady = true;
                 return data;
