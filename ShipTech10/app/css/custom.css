@@ -4634,6 +4634,12 @@ table#new_order_products td {
     /* font-size: 0.9em; */
 }
 
+.form-control[disabled] {
+	background: #e6e6e6 !important;
+}
+
+
+
 input[id^="_dateinput"] {
     text-spacing: -0.6px;
 }
