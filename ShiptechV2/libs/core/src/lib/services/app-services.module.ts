@@ -15,11 +15,11 @@ import { VesselMastersApiMock } from "@shiptech/core/services/masters-api/vessel
 import { VESSEL_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/vessel-masters-api.service.interface";
 import { VesselMastersApi } from "@shiptech/core/services/masters-api/vessel-masters-api.service";
 import { UserSettingsApiServiceMock } from "@shiptech/core/services/user-settings/user-settings-api.service.mock";
-import { EMAIL_LOGS_MASTERS_API_SERVICE, EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
-import { AUDIT_LOG_ADMIN_API_SERVICE, AuditLogApi } from "@shiptech/core/services/admin-api/audit-log-api.service";
+import { EMAIL_LOGS_API_SERVICE, EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { AUDIT_LOG_API_SERVICE, AuditLogApi } from "@shiptech/core/services/admin-api/audit-log-api.service";
 import { AuditLogApiMock } from "@shiptech/core/services/admin-api/audit-log-api.service.mock";
 import { EmailLogsApiMock } from "./masters-api/email-logs-api.service.mock";
-import { DOCUMENTS_MASTERS_API_SERVICE, DocumentsApi } from "@shiptech/core/services/masters-api/documents-api.service";
+import { DOCUMENTS_API_SERVICE, DocumentsApi } from "@shiptech/core/services/masters-api/documents-api.service";
 import { DocumentsApiMock } from "@shiptech/core/services/masters-api/documents-api.service.mock";
 
 @NgModule({
@@ -58,15 +58,15 @@ export class AppServicesModule {
           useClass: environment.production ? VesselMastersApi : VesselMastersApiMock
         },
         {
-          provide: EMAIL_LOGS_MASTERS_API_SERVICE,
+          provide: EMAIL_LOGS_API_SERVICE,
           useClass: environment.production ? EmailLogsApi : EmailLogsApiMock
         },
         {
-          provide: AUDIT_LOG_ADMIN_API_SERVICE,
+          provide: AUDIT_LOG_API_SERVICE,
           useClass: environment.production ? AuditLogApi : AuditLogApiMock
         },
         {
-          provide: DOCUMENTS_MASTERS_API_SERVICE,
+          provide: DOCUMENTS_API_SERVICE,
           useClass: environment.production ? DocumentsApi : DocumentsApiMock
         },
         {

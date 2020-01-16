@@ -1,23 +1,15 @@
-import { GridApi, IServerSideGetRowsParams } from 'ag-grid-community';
-import * as _ from 'lodash';
-import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
-import { ServerGridFilter } from '@shiptech/core/grid/server-grid/server-grid.filter';
-import { IServerGridDateFilter } from '@shiptech/core/grid/server-grid/server-grid-date.filter';
-import { IServerGridTextFilter } from '@shiptech/core/grid/server-grid/server-grid-text-filter';
-import { IServerGridNumberFilter } from '@shiptech/core/grid/server-grid/server-grid-number-filter';
-import { AgGridConditionTypeToServer, ShiptechGridFilterOperators } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
-import {
-  AgGridConditionTypeEnum,
-  IAgGridDateFilter,
-  IAgGridNumberFilter,
-  IAgGridTextFilter,
-  AgGridKnownFilterTypes,
-  AgGridFilterModel
-} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { getShiptechFormatPagination } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging';
-import { getShiptechFormatSorts } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts';
-import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
+import { GridApi, IServerSideGetRowsParams } from "ag-grid-community";
+import * as _ from "lodash";
+import { nameof, Omit } from "@shiptech/core/utils/type-definitions";
+import { ServerGridFilter } from "@shiptech/core/grid/server-grid/server-grid.filter";
+import { IServerGridDateFilter } from "@shiptech/core/grid/server-grid/server-grid-date.filter";
+import { IServerGridTextFilter } from "@shiptech/core/grid/server-grid/server-grid-text-filter";
+import { IServerGridNumberFilter } from "@shiptech/core/grid/server-grid/server-grid-number-filter";
+import { AgGridConditionTypeToServer, ShiptechGridFilterOperators } from "@shiptech/core/grid/server-grid/server-grid-condition-filter.enum";
+import { AgGridConditionTypeEnum, AgGridFilterModel, AgGridKnownFilterTypes, IAgGridDateFilter, IAgGridNumberFilter, IAgGridTextFilter } from "@shiptech/core/ui/components/ag-grid/type.definition";
+import { getShiptechFormatPagination } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-paging";
+import { getShiptechFormatSorts } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-sorts";
+import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
 
 type AgGridFilterModelWithKey  = AgGridFilterModel & { key: string};
 

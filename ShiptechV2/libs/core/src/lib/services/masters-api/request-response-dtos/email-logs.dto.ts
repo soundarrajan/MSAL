@@ -15,7 +15,6 @@ export interface IEmailLogsItemDto {
   subject: string;
   sentAt: Date | string;
   totalCount: number;
-  isDeleted: boolean;
   modulePathUrl: string;
   clientIpAddress: string;
   userAction: string;

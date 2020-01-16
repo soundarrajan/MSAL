@@ -27,8 +27,4 @@ export class EmailLogsApiMock implements IEmailLogsApiService {
     });
   }
 
-  @ApiCall()
-  editEmail(emailId:number): Observable<IEmailLogsResponse> {
-    return null;
-  }
 }

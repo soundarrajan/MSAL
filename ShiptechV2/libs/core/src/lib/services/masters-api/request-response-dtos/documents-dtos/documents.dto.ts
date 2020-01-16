@@ -18,7 +18,6 @@ export interface IDocumentsItemDto{
   lastModifiedByUser: IDisplayLookupDto;
   lastModifiedOn: string;
   id: number;
-  isDeleted: boolean;
   verifiedBy: IDisplayLookupDto;
   verifiedOn: string;
   inclusionInMail: string;
