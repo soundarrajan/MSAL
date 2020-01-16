@@ -20,9 +20,17 @@
     padding: 20px;
     margin: 0 auto;
     text-align: center;
+
+    .ui-fileupload {
+      width: 150px!important;
+    }
   }
+
+
 }
 
 .min-hgt-50 {
   min-height: 50px;
 }
+
+
