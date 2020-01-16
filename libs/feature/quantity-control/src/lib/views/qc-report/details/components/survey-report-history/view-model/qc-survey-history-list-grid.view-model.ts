@@ -352,9 +352,10 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     this.quantityControlService.getSurveyHistoryList$(
       this.reportDetailsState.vessel.id,
       transformLocalToServeGridInfo(this.gridApi, params, QcSurveyHistoryListColumnServerKeys)
-    ).subscribe(
-      response => params.successCallback(response.items, response.totalCount),
-      () => params.failCallback());
+    ).pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => params.successCallback(response.items, response.totalCount),
+        () => params.failCallback());
   }
 
   private get reportDetailsState(): IQcReportDetailsState {
