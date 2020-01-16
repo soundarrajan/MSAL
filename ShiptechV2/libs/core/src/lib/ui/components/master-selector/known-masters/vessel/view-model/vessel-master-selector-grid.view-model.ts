@@ -14,6 +14,7 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { takeUntil } from 'rxjs/operators';
 
 function model(prop: keyof IVesselMasterDto): keyof IVesselMasterDto {
   return prop;
@@ -449,7 +450,9 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.mastersApi.getVessels(transformLocalToServeGridInfo(this.gridApi, params, VesselMasterListColumnServerKeys, this.searchText)).subscribe(
+    this.mastersApi.getVessels(transformLocalToServeGridInfo(this.gridApi, params, VesselMasterListColumnServerKeys, this.searchText))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       response => params.successCallback(response.items, response.totalCount),
       () => params.failCallback());
   }
