@@ -5,7 +5,7 @@
                             id="vessel-port-calls-master-selector"></app-filter-preferences>
   </div>
   <div>
-    <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1" [gridId]="search.id"></shiptech-search-box>
+    <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1" [gridId]="search.id" (search)="gridViewModel.onSearch($event)"></shiptech-search-box>
   </div>
   <button type="button" class="ui-button-warn btn-select" (click)="select()" [disabled]="disabled || readonly" pButton label="Select"></button>
 </div>

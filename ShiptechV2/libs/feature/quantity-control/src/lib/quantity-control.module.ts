@@ -44,7 +44,7 @@ import { QcReportDetailsAuditLogsComponent } from './views/qc-report/audit-logs/
 import { AuditLogComponent } from '@shiptech/core/ui/components/audit-log/audit-log.component';
 import { DocumentsComponent } from '@shiptech/core/ui/components/documents/documents.component';
 import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
-
+import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
 
 @NgModule({
   imports: [
@@ -63,7 +63,8 @@ import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/q
     EntityStatusModule,
     NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
     NgxsResetPluginModule.forRoot(),
-    AgFilterDisplayModule
+    AgFilterDisplayModule,
+    SelectTextOnFocusDirectiveModule
   ],
   declarations: [
     MainQuantityControlComponent,
