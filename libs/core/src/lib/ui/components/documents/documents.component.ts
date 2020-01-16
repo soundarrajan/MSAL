@@ -7,6 +7,7 @@ import { IDocumentsApiService } from "@shiptech/core/services/masters-api/docume
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
+import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 
 @Component({
   selector: "shiptech-documents",
@@ -71,13 +72,25 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.mastersApi.updateIsVerifiedDocument(request).subscribe(
       response => {},
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
-        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+        this.appErrorHandler.handleError(AppError.UpdateIsVerifiedDocumentFailed);
       },()=>{
         this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
       });
   }
 
+  updateNotesDocument(id: number, notes: string): void {
+    const request: IDocumentsUpdateNotesRequest = {
+      id,
+      notes
+    };
+    this.mastersApi.updateNotesDocument(request).subscribe(
+      response => {},
+      () => {
+        this.appErrorHandler.handleError(AppError.UpdateNotesDocumentFailed);
+      },()=>{
+        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+      });
+  }
   deleteDocument(id: number): void{
     const request: IDocumentsDeleteRequest = {
       id
@@ -85,8 +98,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.mastersApi.deleteDocument(request).subscribe(
       response => {},
       () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData("emails"));
-        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+        this.appErrorHandler.handleError(AppError.DeleteDocumentFailed);
       },()=>{
         this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
       });

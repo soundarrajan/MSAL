@@ -9,10 +9,12 @@ import { IDocumentsListRequest, IDocumentsListResponse } from "@shiptech/core/se
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { IDocumentsUpdateIsVerifiedRequest, IDocumentsUpdateIsVerifiedResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest, IDocumentsDeleteResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
+import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 
 export namespace DocumentsApiPaths {
   export const getDocuments = () => `api/masters/documentupload/list`;
   export const updateIsVerifiedDocument = () => `api/masters/documentupload/update`;
+  export const updateNotesDocument = () => `api/masters/documentupload/notes`;
   export const deleteDocument = () => `api/masters/documentupload/delete`;
 }
 
@@ -35,6 +37,11 @@ export class DocumentsApi implements IDocumentsApiService {
   @ObservableException()
   updateIsVerifiedDocument(request: IDocumentsUpdateIsVerifiedRequest): Observable<IDocumentsUpdateIsVerifiedResponse> {
     return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateIsVerifiedDocument()}`, { payload: { ...request } });
+  }
+
+  @ObservableException()
+  updateNotesDocument(request: IDocumentsUpdateNotesRequest): Observable<IDocumentsUpdateNotesResponse> {
+    return this.http.post<IDocumentsUpdateNotesResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateNotesDocument()}`, { payload: { ...request } });
   }
 
   @ObservableException()
