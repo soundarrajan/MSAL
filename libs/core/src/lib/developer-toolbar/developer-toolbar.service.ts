@@ -16,6 +16,12 @@ import { UserProfileApi } from '@shiptech/core/services/user-profile/api/user-pr
 import { VesselMastersApi } from '@shiptech/core/services/masters-api/vessel-masters-api.service';
 import { VesselMastersApiMock } from '@shiptech/core/services/masters-api/vessel-masters-api.service.mock';
 import 'reflect-metadata';
+import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { EmailLogsApiMock } from "@shiptech/core/services/masters-api/email-logs-api.service.mock";
+import {AuditLogApi} from "@shiptech/core/services/admin-api/audit-log-api.service";
+import {AuditLogApiMock} from "@shiptech/core/services/admin-api/audit-log-api.service.mock";
+import { DocumentsApiMock } from "@shiptech/core/services/masters-api/documents-api.service.mock";
+import { DocumentsApi } from "@shiptech/core/services/masters-api/documents-api.service";
 
 export const DEV_SETTINGS_STORAGE_PREFIX = 'DeveloperToolbar_';
 
@@ -35,6 +41,9 @@ export class DeveloperToolbarService implements OnDestroy {
               private tenantSettingsApiMock: TenantSettingsApiMock,
               private userProfileApiMock: UserProfileApiMock,
               private vesselMastersApiServiceMock: VesselMastersApiMock,
+              private emailLogsApiServiceMock: EmailLogsApiMock,
+              private auditLogAdminApiServiceMock: AuditLogApiMock,
+              private documentsApiServiceMock: DocumentsApiMock,
               private appConfig: AppConfig) {
   }
 
@@ -111,6 +120,39 @@ export class DeveloperToolbarService implements OnDestroy {
         localApiUrl: 'http://localhost:44398',
         devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
         qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
+      });
+
+    this.registerApi(
+      {
+        id: EmailLogsApi.name,
+        displayName: 'Email Logs Api',
+        instance: this.emailLogsApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS
+      });
+
+    this.registerApi(
+      {
+        id: AuditLogApi.name,
+        displayName: 'Audit Logs Api',
+        instance: this.auditLogAdminApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_ADMIN
+      });
+
+    this.registerApi(
+      {
+        id: DocumentsApi.name,
+        displayName: 'Document Api',
+        instance: this.documentsApiServiceMock,
+        isRealService: false,
+        localApiUrl: 'http://localhost:44398',
+        devApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS,
+        qaApiUrl: this.appConfig.v1.API.BASE_URL_DATA_MASTERS
       });
   }
 

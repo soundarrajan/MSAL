@@ -7,9 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
-import { IVesselMasterDto, IVesselMasterRequest, IVesselMasterResponse } from '@shiptech/core/services/masters-api/dtos/vessel';
+import { IVesselMasterDto, IVesselMasterRequest, IVesselMasterResponse } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import { map } from 'rxjs/operators';
-import { IVesselPortCallMasterDto, IVesselPortCallMasterRequest, IVesselPortCallMasterResponse } from '@shiptech/core/services/masters-api/dtos/vessel-port-call';
+import { IVesselPortCallMasterDto, IVesselPortCallMasterRequest, IVesselPortCallMasterResponse } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import _ from 'lodash';
 
 enum VesselMastersApiPaths {

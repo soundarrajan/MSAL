@@ -80,4 +80,8 @@ export class UrlService {
   previewEmail(queryParams: Record<string, any>): string {
     return `${this.baseOrigin}/#/preview-email?${toQueryString(queryParams)}`;
   }
+
+  editEmail(emailId: number): string {
+    return `${this.baseOrigin}/#/masters/emaillogs/edit/${emailId}`;
+  }
 }
