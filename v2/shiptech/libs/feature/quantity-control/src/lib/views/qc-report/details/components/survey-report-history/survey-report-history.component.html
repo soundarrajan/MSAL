@@ -8,9 +8,9 @@
       </app-page-size-selector>
     </div>
     <div class="col-md-6">
-      <div class="summary" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
-        <div class="summary-item matched">
-          <i class="fa fa-check"></i>
+      <div class="match-status" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+        <div class="match-status-item matched">
+          <i class="fa fa-check" [ngStyle]="{ color: reconStatusLookups.matched.code}"></i>
           <span class="label">
             Matched:
           </span>
@@ -19,20 +19,20 @@
           </span>
         </div>
 
-        <div class="summary-item matched-withing-limit">
-          <i class="fa fa-check"></i>
+        <div class="match-status-item matched-withing-limit">
+          <i class="fa fa-check" [ngStyle]="{ color: reconStatusLookups.withinLimit.code}"></i>
           <span class="label">
-            Matched within limit:
+            Matched within Limit:
           </span>
           <span class="value">
             {{nbOfMatchedWithinLimit$ | async}}
           </span>
         </div>
 
-        <div class="summary-item not-matched">
-          <i class="fa fa-times"></i>
+        <div class="match-status-item not-matched">
+          <i class="fa fa-times" [ngStyle]="{ color: reconStatusLookups.notMatched.code}"></i>
           <span class="label">
-            Not matched:
+            Not Matched:
           </span>
           <span class="value">
             {{nbOfNotMatched$ | async}}

@@ -1,14 +1,7 @@
-﻿commit 84a766310498ff10ec917de25e90c37e1eca173f
+﻿commit 301b6996687fa8c1a5f5dda622ead06c50b10d27
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Wed Jan 15 18:47:59 2020 +0200
+Date:   Thu Jan 16 12:06:34 2020 +0200
 
-    Fixed unsaved changes guard showing for new reports when no data has been entered.
-    Fixed ag-grid filter presets not waiting for columns to be set *hack.workaround*
-    Fixed vessel-master-selector.component search not working
-    Fixed vessel-port-calls-master-selector.component search not working
-    Qc report details product types disable column reorder
-    Removed export csv from filter presets menu
-    Fixed filter presets menu, popup showing under primeng control
-    Implemented select-text-on-focus.directive to auto select text on any p-spinner, p-autocompelte, input, textarea
+    Fixed build
 
 branch: master
