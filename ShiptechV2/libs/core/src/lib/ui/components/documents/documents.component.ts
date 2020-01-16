@@ -65,19 +65,19 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.appErrorHandler.handleError(AppError.DocumentTypeNotSelected);
       this.clearUploadedFiles();
     } else {
-      const request: FormData =
+      const request: IDocumentsCreateUploadRequest =
       {
-        // file: event.files[0],
-        // request: {
-        //   name: event.files[0].name,
-        //   documentType: this.selectedDocumentType,
-        //   size: event.files[0].size,
-        //   fileType: event.files[0].type,
-        //   transactionType: {
-        //     id: this.entityId,
-        //     name: this.entityName
-        //   }
-        // }
+        file: event.files[0],
+        request: {
+          name: event.files[0].name,
+          documentType: this.selectedDocumentType,
+          size: event.files[0].size,
+          fileType: event.files[0].type,
+          transactionType: {
+            id: this.entityId,
+            name: this.entityName
+          }
+        }
       }
       this.mastersApi.uploadFile(request).subscribe(() => {
 
