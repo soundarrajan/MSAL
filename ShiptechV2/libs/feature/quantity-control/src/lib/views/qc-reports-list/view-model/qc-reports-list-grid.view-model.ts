@@ -120,7 +120,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
-    cellClass: 'cell-background',
     cellStyle: params => ({
       backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : params.data?.surveyStatus?.code,
       color: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
@@ -135,7 +134,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
       backgroundColor: params.data?.qtyMatchedStatus?.code ?? 'inherit',
-      color: !!params.data.qtyMatchedStatus ? '#fff' : 'inherit'
+      color: !!params.data?.qtyMatchedStatus ? '#fff' : 'inherit'
     }),
     width: 96
   };
