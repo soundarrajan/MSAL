@@ -105,8 +105,13 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
     this.reportService.markSludgeVerification$(item.id, isChecked).subscribe();
   }
 
+  print(): void {
+    window.print();
+  }
+
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
   }
+
 }

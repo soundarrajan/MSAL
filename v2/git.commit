@@ -1,7 +1,7 @@
-﻿commit 42ce56d9709894e969009f281c67c9001d5eb993
-Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 16 12:55:36 2020 +0200
+﻿commit 54a7cdffbf55b17ce1ed70134fffbe010a7e10b5
+Author: Radu.coman <Radu.coman@24software.ro>
+Date:   Thu Jan 16 11:27:56 2020 +0000
 
-    Fixed search performed twice
+    Merged PR 2529: email-audit-documents
 
 branch: master

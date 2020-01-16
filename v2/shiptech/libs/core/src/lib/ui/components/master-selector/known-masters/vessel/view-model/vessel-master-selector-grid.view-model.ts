@@ -4,7 +4,7 @@ import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
-import { IVesselMasterDto } from '@shiptech/core/services/masters-api/dtos/vessel';
+import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import {
   VesselMasterListColumns,
   VesselMasterListColumnServerKeys,
