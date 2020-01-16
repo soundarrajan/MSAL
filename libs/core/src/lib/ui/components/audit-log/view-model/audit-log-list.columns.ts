@@ -35,7 +35,7 @@ export const AuditLogColumnServerKeys: Record<AuditLogListColumns, string> = {
   [AuditLogListColumns.fieldName]: 'fieldName',
   [AuditLogListColumns.oldValue]: 'oldValue',
   [AuditLogListColumns.newValue]: 'newValue',
-  [AuditLogListColumns.modifiedBy]: 'modifiedBy',
+  [AuditLogListColumns.modifiedBy]: 'ModifiedBy_Name',
   [AuditLogListColumns.clientIpAddress]: 'clientIpAddress',
   [AuditLogListColumns.userAction]: 'userAction'
 };

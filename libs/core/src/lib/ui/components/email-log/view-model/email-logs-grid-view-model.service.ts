@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Inject, Injectable } from "@angular/core";
+import { ChangeDetectorRef, Inject, Injectable, Input } from "@angular/core";
 import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
@@ -12,10 +12,11 @@ import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-r
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
 import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
-import { EMAIL_LOGS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { EMAIL_LOGS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import {StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import { takeUntil } from "rxjs/operators";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -24,8 +25,30 @@ function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
 @Injectable()
 export class EmailLogsGridViewModel extends BaseGridViewModel {
 
-  entityId: number;
-  entityName: string;
+  private _entityId: number;
+  private _entityName: string;
+
+  get entityId(): number {
+    return this._entityId;
+  }
+
+  get entityName(): string {
+    return this._entityName;
+  }
+
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+    if (this.isReady) {
+      this.gridApi.purgeServerSideCache();
+    }
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    if (this.isReady) {
+      this.gridApi.purgeServerSideCache();
+    }
+  }
 
   private defaultColFilterParams = {
     clearButton: true,
@@ -37,7 +60,8 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     colId: EmailLogsListColumns.from,
     field: model("from"),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 400
+    minWidth: 250,
+    flex: 2
   };
 
   statusCol: ITypedColDef<IEmailLogsItemDto, IDisplayLookupDto> = {
@@ -50,21 +74,24 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
       backgroundColor: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : params.data?.status?.code,
       color: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
     }),
-    width: 200
+    minWidth: 100,
+    flex: 2
   };
 
   toCol: ITypedColDef<IEmailLogsItemDto, string> = {
     headerName: EmailLogsListColumnsLabels.to,
     colId: EmailLogsListColumns.to,
     field: model("to"),
-    width: 400
+    minWidth: 250,
+    flex: 2
   };
 
   subjectCol: ITypedColDef<IEmailLogsItemDto, string> = {
     headerName: EmailLogsListColumnsLabels.subject,
     colId: EmailLogsListColumns.subject,
     field: model("subject"),
-    width: 500
+    minWidth: 400,
+    flex: 2
   };
 
   sendAtCol: ITypedColDef<IEmailLogsItemDto, string> = {
@@ -73,7 +100,8 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     field: model("sentAt"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 180
+    minWidth: 180,
+    flex: 2
   };
 
   gridOptions: GridOptions = {
@@ -97,15 +125,16 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
       sortable: true,
       resizable: true,
       filter: "agTextColumnFilter",
-      filterParams: this.defaultColFilterParams
+      filterParams: this.defaultColFilterParams,
+      flex: 1
     }
   };
 
   getColumnsDefs(): ITypedColDef[] {
     return [
+      this.toCol,
       this.fromCol,
       this.statusCol,
-      this.toCol,
       this.subjectCol,
       this.sendAtCol
     ];
@@ -116,7 +145,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
-    @Inject(EMAIL_LOGS_MASTERS_API_SERVICE) private mastersApi: IEmailLogsApiService,
+    @Inject(EMAIL_LOGS_API_SERVICE) private emailLogsApi: IEmailLogsApiService,
     private format: TenantFormattingService,
     private appErrorHandler: AppErrorHandler
   ) {
@@ -135,7 +164,9 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.mastersApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters }).subscribe(
+    this.emailLogsApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);

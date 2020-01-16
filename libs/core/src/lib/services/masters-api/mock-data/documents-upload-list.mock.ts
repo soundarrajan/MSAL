@@ -1,5 +1,5 @@
 import { range } from "lodash";
-import { date, internet, random } from "faker";
+import { date, internet, name, random } from "faker";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 
 export function getMockDocuments(n: number): IDocumentsItemDto[] {
@@ -27,8 +27,8 @@ export function getMockDocumentItem(id: number): IDocumentsItemDto {
     referenceNo: random.number(),
     uploadedBy: {
       id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      name: name.firstName() + name.lastName(),
+      displayName: name.firstName() + name.lastName()
     },
     uploadedOn: date.past().toISOString(),
     notes: random.word(),
@@ -36,22 +36,21 @@ export function getMockDocumentItem(id: number): IDocumentsItemDto {
     verifiedOn: date.past().toISOString(),
     verifiedBy: {
       id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      name: name.firstName() + name.lastName(),
+      displayName: name.firstName() + name.lastName()
     },
     createdBy: {
       id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      name: name.firstName() + name.lastName(),
+      displayName: name.firstName() + name.lastName()
     },
     createdOn: date.past().toISOString(),
     lastModifiedOn: date.past().toISOString(),
     lastModifiedByUser: {
       id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      name: name.firstName() + name.lastName(),
+      displayName: name.firstName() + name.lastName()
     },
-    isDeleted: random.boolean(),
     isIncludedInMail: random.word(),
     totalCount: random.number(),
     inclusionInMail: random.word(),

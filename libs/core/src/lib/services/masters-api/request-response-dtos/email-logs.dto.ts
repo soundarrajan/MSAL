@@ -14,11 +14,6 @@ export interface IEmailLogsItemDto {
   body: string;
   subject: string;
   sentAt: Date | string;
-  totalCount: number;
-  isDeleted: boolean;
-  modulePathUrl: string;
-  clientIpAddress: string;
-  userAction: string;
 }
 
 export interface IEmailLogsRequest extends IServerGridInfo {
