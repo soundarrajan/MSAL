@@ -6,12 +6,11 @@
         <div class="col-md-4 min-hgt-50">
           <label>Document type</label>
           <shiptech-documents-autocomplete #documentsAutoComplete>
-            <p-autoComplete (onSelect)="updateVessel($event)"
+            <p-autoComplete (onSelect)="documentTypeSelection($event)"
                             [disabled]="documentsAutoComplete.disabled"
                             [readonly]="documentsAutoComplete.readonly"
                             (completeMethod)="documentsAutoComplete.filter($event.query)"
                             [suggestions]="documentsAutoComplete.suggestions"
-                            [ngModel]="vessel$ | async"
                             [size]="30"
                             [dataKey]="documentsAutoComplete.dataKey"
                             [field]="documentsAutoComplete.field"
@@ -24,7 +23,10 @@
         <div class="col-md-8">
           <div class="col-sm-6">
             <div class="file-upload-zone">
-              <p-fileUpload name="myfile[]" customUpload="true" (onSelect)="uploadHandlerDocuments($event)"></p-fileUpload>
+              <p-fileUpload #uploadComponent name="file2" customUpload="true" [auto]="true"
+                            (uploadHandler)="uploadFile($event)"
+              >
+              </p-fileUpload>
               <h3>Drop files here or click to upload</h3>
             </div>
           </div>
