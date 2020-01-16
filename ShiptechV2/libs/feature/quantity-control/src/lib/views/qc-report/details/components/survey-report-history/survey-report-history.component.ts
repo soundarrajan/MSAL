@@ -31,7 +31,7 @@ export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: QcSurveyHistoryListGridViewModel, private store: Store, private reconStatusLookups: ReconStatusLookup) {
+  constructor(public gridViewModel: QcSurveyHistoryListGridViewModel, private store: Store, public reconStatusLookups: ReconStatusLookup) {
     this.matchStatus$ = this.store.select(QcReportState.matchStatus).pipe(map(s => reconStatusLookups.toReconStatus(s)));
   }
 
