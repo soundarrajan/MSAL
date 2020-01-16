@@ -206,7 +206,9 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.auditLogsApi.getAuditLog({ ...transformLocalToServeGridInfo(this.gridApi, params, AuditLogColumnServerKeys), filters }).subscribe(
+    this.auditLogsApi.getAuditLog({ ...transformLocalToServeGridInfo(this.gridApi, params, AuditLogColumnServerKeys), filters })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadAuditLogFailed);
