@@ -166,7 +166,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
     private format: TenantFormattingService,
-    @Inject(AUDIT_LOG_API_SERVICE) private adminApi: IAuditLogApiService,
+    @Inject(AUDIT_LOG_API_SERVICE) private auditLogsApi: IAuditLogApiService,
     private appErrorHandler: AppErrorHandler
   ) {
     super("audit-log-grid", columnPreferences, changeDetector, loggerFactory.createLogger(AuditLogGridViewModel.name));
@@ -205,7 +205,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.adminApi.getAuditLog({ ...transformLocalToServeGridInfo(this.gridApi, params, AuditLogColumnServerKeys), filters }).subscribe(
+    this.auditLogsApi.getAuditLog({ ...transformLocalToServeGridInfo(this.gridApi, params, AuditLogColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadAuditLogFailed);

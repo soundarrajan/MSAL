@@ -206,7 +206,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
     private format: TenantFormattingService,
-    @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
+    @Inject(DOCUMENTS_API_SERVICE) private documentsApi: IDocumentsApiService,
     private appErrorHandler: AppErrorHandler
   ) {
     super("documents-grid", columnPreferences, changeDetector, loggerFactory.createLogger(DocumentsGridViewModel.name));
@@ -241,7 +241,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
         columnName: "ReferenceNo",
         value: this.entityId.toString(10)
       }];
-    this.mastersApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters }).subscribe(
+    this.documentsApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadDocumentsFailed);

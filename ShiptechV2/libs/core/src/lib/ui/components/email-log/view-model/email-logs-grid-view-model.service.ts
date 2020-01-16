@@ -144,7 +144,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
-    @Inject(EMAIL_LOGS_API_SERVICE) private mastersApi: IEmailLogsApiService,
+    @Inject(EMAIL_LOGS_API_SERVICE) private emailLogsApi: IEmailLogsApiService,
     private format: TenantFormattingService,
     private appErrorHandler: AppErrorHandler
   ) {
@@ -163,7 +163,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.mastersApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters }).subscribe(
+    this.emailLogsApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters }).subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);

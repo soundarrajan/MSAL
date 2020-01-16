@@ -18,7 +18,7 @@ export class DocumentTypeGridViewModel extends BaseGridViewModel {
               changeDetector: ChangeDetectorRef,
               loggerFactory: LoggerFactory,
               private format: TenantFormattingService,
-              @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
+              @Inject(DOCUMENTS_API_SERVICE) private documentsApi: IDocumentsApiService,
               private appErrorHandler: AppErrorHandler) {
     super("documents-grid", columnPreferences, changeDetector, loggerFactory.createLogger(DocumentTypeGridViewModel.name));
   }
