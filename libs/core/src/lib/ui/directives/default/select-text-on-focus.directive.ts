@@ -11,7 +11,7 @@ import { Directive, HostListener, NgModule } from '@angular/core';
 })
 /**
  * Auto select text on focus.
- * IMPORTANT: This directive is auto-applied and you need to be careful when you apply it. You can disable this behavior on specific elements by applying css class .disable-focus-select
+ * IMPORTANT: This directive is auto-applied and you need to be careful when you import the module. You can disable this behavior on specific elements by applying css class .disable-focus-select
  */
 export class SelectTextOnFocusDirective {
   constructor() {
