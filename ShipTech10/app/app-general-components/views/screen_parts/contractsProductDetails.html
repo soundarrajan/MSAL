@@ -351,7 +351,7 @@
                                                     ng-model="formValues.products[$index].price" ng-class="CM.invalid_form ? 'ng-touched' : ''"
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
                                                 <span class="input-group-addon uom_group pseudoSelect">
-                                                    <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
+                                                    <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].fixedPrice"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].priceUom"
                                                         ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
                                                         <option></option>
