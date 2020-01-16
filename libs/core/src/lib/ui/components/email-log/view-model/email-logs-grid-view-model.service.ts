@@ -16,6 +16,7 @@ import { EMAIL_LOGS_API_SERVICE } from "@shiptech/core/services/masters-api/emai
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import {StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import { takeUntil } from "rxjs/operators";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -59,7 +60,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     colId: EmailLogsListColumns.from,
     field: model("from"),
     cellRendererFramework: AgCellTemplateComponent,
-    minWidth: 400,
+    minWidth: 250,
     flex: 2
   };
 
@@ -73,7 +74,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
       backgroundColor: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : params.data?.status?.code,
       color: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
     }),
-    minWidth: 200,
+    minWidth: 100,
     flex: 2
   };
 
@@ -81,7 +82,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     headerName: EmailLogsListColumnsLabels.to,
     colId: EmailLogsListColumns.to,
     field: model("to"),
-    minWidth: 400,
+    minWidth: 250,
     flex: 2
   };
 
@@ -89,7 +90,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     headerName: EmailLogsListColumnsLabels.subject,
     colId: EmailLogsListColumns.subject,
     field: model("subject"),
-    minWidth: 500,
+    minWidth: 400,
     flex: 2
   };
 
@@ -131,9 +132,9 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
 
   getColumnsDefs(): ITypedColDef[] {
     return [
+      this.toCol,
       this.fromCol,
       this.statusCol,
-      this.toCol,
       this.subjectCol,
       this.sendAtCol
     ];
@@ -163,7 +164,9 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.emailLogsApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters }).subscribe(
+    this.emailLogsApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
         this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);
