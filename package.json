@@ -55,7 +55,7 @@
     "@ngx-loading-bar/router": "^4.2.0",
     "@ngxs/devtools-plugin": "^3.5.1",
     "@ngxs/logger-plugin": "^3.5.1",
-    "@ngxs/store": "^3.5.1",
+    "@ngxs/store": "^3.6.1",
     "@nrwl/angular": "8.2.0",
     "@types/dateformat": "^3.0.1",
     "@types/faker": "^4.1.6",
