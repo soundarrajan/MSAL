@@ -2,9 +2,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, Vie
 import { KnownQuantityControlRoutes } from '../../../../../known-quantity-control.routes';
 import { Observable, Subject } from 'rxjs';
 import { QcSurveyHistoryListGridViewModel } from './view-model/qc-survey-history-list-grid.view-model';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'shiptech-survey-report-history',
@@ -21,12 +24,15 @@ export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
   @Select(QcReportState.nbOfMatchedWithinLimit) nbOfMatchedWithinLimit$: Observable<number>;
   @Select(QcReportState.nbOfNotMatched) nbOfNotMatched$: Observable<number>;
 
+  matchStatus$: Observable<IReconStatusLookupDto>;
+
   knownRoutes = KnownQuantityControlRoutes;
 
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: QcSurveyHistoryListGridViewModel) {
+  constructor(public gridViewModel: QcSurveyHistoryListGridViewModel, private store: Store, private reconStatusLookups: ReconStatusLookup) {
+    this.matchStatus$ = this.store.select(QcReportState.matchStatus).pipe(map(s => reconStatusLookups.toReconStatus(s)));
   }
 
   onPageChange(page: number): void {
