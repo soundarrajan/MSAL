@@ -1,4 +1,4 @@
-import {date, random} from 'faker';
+import {date, random, name} from 'faker';
 import {IAuditLogItemDto} from "@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto";
 import {range} from "lodash";
 
@@ -20,11 +20,9 @@ export function getMockAuditLogItem(id: number): IAuditLogItemDto {
     newNameValue: random.word(),
     modifiedBy: {
       id: random.number(100),
-      name: random.word(),
-      displayName: random.word()
+      name: name.firstName() + name.lastName(),
+      displayName: name.firstName() + name.lastName()
     },
-    totalCount: random.number(100),
-    isDeleted: random.boolean(),
     modulePathUrl: random.word(),
     clientIpAddress: random.word(),
     userAction: random.word()

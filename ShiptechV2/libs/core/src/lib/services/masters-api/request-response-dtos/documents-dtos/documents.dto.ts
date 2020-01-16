@@ -1,7 +1,7 @@
 import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 
-export interface IDocumentsItemDto{
+export interface IDocumentsItemDto {
   name: string;
   documentType: IDisplayLookupDto;
   size: number;
@@ -18,7 +18,6 @@ export interface IDocumentsItemDto{
   lastModifiedByUser: IDisplayLookupDto;
   lastModifiedOn: string;
   id: number;
-  isDeleted: boolean;
   verifiedBy: IDisplayLookupDto;
   verifiedOn: string;
   inclusionInMail: string;

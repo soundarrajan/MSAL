@@ -18,12 +18,12 @@ export class QcReportDetailsUnsavedChangesGuard implements CanDeactivate<QcRepor
     currentState: RouterStateSnapshot,
     nextState: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const hasUnsavedChanges = this.store.selectSnapshot(QcReportState.hasUnsavedChanges);
+    const hasChanges = this.store.selectSnapshot(QcReportState.hasChanges);
 
-    if (hasUnsavedChanges) {
+    if (hasChanges) {
       return new Observable((observer: Observer<boolean>) => {
         this.confirmationService.confirm({
-          message: 'You have unsaved changed. Do you want to discard changes?',
+          message: 'You have unsaved changes. Do you want to discard changes?',
           accept: () => {
             observer.next(true);
             observer.complete();

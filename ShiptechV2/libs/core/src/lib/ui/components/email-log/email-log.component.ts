@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@a
 import { EmailLogsGridViewModel } from "./view-model/email-logs-grid-view-model.service";
 import { Subject } from "rxjs";
 import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
+import { UrlService } from "@shiptech/core/services/url/url.service";
 
 @Component({
   selector: "shiptech-email-log",
@@ -27,26 +28,18 @@ export class EmailLogComponent implements OnInit, OnDestroy {
   @Input() set entityId(value: number) {
     this._entityId = value;
     this.gridViewModel.entityId = this.entityId;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
   @Input() set entityName(value: string) {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
-  constructor(public gridViewModel: EmailLogsGridViewModel, private emailLogsApi: EmailLogsApi) {
+  constructor(public gridViewModel: EmailLogsGridViewModel, private emailLogsApi: EmailLogsApi, private urlService: UrlService) {
   }
 
   openEditEmail(emailId: number): void {
-    this.emailLogsApi.editEmail(emailId).subscribe();
+    window.open(this.urlService.editEmail(emailId));
   }
 
   ngOnInit(): void {

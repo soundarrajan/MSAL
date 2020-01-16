@@ -125,7 +125,7 @@ export class DeveloperToolbarService implements OnDestroy {
     this.registerApi(
       {
         id: EmailLogsApi.name,
-        displayName: 'Email Logs Masters Api',
+        displayName: 'Email Logs Api',
         instance: this.emailLogsApiServiceMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
@@ -136,7 +136,7 @@ export class DeveloperToolbarService implements OnDestroy {
     this.registerApi(
       {
         id: AuditLogApi.name,
-        displayName: 'Audit Logs Admin Api',
+        displayName: 'Audit Logs Api',
         instance: this.auditLogAdminApiServiceMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',
@@ -147,7 +147,7 @@ export class DeveloperToolbarService implements OnDestroy {
     this.registerApi(
       {
         id: DocumentsApi.name,
-        displayName: 'Document Masters Api',
+        displayName: 'Document Api',
         instance: this.documentsApiServiceMock,
         isRealService: false,
         localApiUrl: 'http://localhost:44398',

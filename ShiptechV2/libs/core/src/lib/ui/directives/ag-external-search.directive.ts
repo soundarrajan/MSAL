@@ -34,7 +34,7 @@ export class AgGridExternalSearchDirective implements OnDestroy {
   }
 
   processSearchBoxEvents(): void {
-    this.searchBox.valueChanged.pipe(
+    this.searchBox.search.pipe(
       tap(value => postal.publish({
         channel: PostalChannelsEnum.Search,
         topic: this.gridId,

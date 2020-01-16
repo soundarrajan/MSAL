@@ -5,7 +5,7 @@ import {IVesselMasterDto} from "@shiptech/core/services/masters-api/request-resp
 import {fromLegacyLookup} from "@shiptech/core/lookups/utils";
 import {QcReportService} from "../../../../../../feature/quantity-control/src/lib/services/qc-report.service";
 import { AppError } from "@shiptech/core/error-handling/app-error";
-import { DOCUMENTS_MASTERS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
+import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
@@ -36,29 +36,16 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   @Input() set entityId(value: number) {
     this._entityId = value;
     this.gridViewModel.entityId = this.entityId;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
   @Input() set entityName(value: string) {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
-
-    if (this.gridViewModel.isReady) {
-      this.gridViewModel.gridOptions.api.purgeServerSideCache();
-    }
   }
 
   constructor(public gridViewModel: DocumentsGridViewModel,
-              @Inject(DOCUMENTS_MASTERS_API_SERVICE) private mastersApi: IDocumentsApiService,
-              private appErrorHandler: AppErrorHandler,
-              private reportService: QcReportService) {
-  }
-
-  updateVessel(newVessel: IVesselMasterDto): void {
-    this.reportService.updateVessel$(fromLegacyLookup(newVessel)).subscribe();
+              @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
+              private appErrorHandler: AppErrorHandler) {
   }
 
   ngOnInit(): void {

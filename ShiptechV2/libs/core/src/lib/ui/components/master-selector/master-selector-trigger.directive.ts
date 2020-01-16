@@ -31,6 +31,7 @@ export class MasterSelectorTriggerDirective {
       height: this.height,
       showHeader: true,
       closeOnEscape: true,
+      baseZIndex: 500,
       header: this.header,
       ...(this.dialogConfig ?? {}),
       data: { // TODO: define dialog config type with prop master portal

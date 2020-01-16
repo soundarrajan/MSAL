@@ -3,5 +3,4 @@ import { IEmailLogsRequest, IEmailLogsResponse } from "./request-response-dtos/e
 
 export interface IEmailLogsApiService {
   getEmailLogs(request: IEmailLogsRequest): Observable<IEmailLogsResponse>;
-  editEmail(emailId: number): Observable<unknown>;
 }

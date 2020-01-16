@@ -13,8 +13,6 @@ export interface IAuditLogItemDto {
   oldNameValue: string;
   newNameValue: string;
   modifiedBy: IDisplayLookupDto;
-  totalCount: number;
-  isDeleted: boolean;
   modulePathUrl: string;
   clientIpAddress: string;
   userAction: string;

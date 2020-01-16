@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -10,9 +10,8 @@ import { Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchBoxComponent implements OnInit, OnDestroy {
-  @Input() value: any;
   @Input() placeholder: string;
-  @Output() valueChanged = new EventEmitter<string>();
+  @Output() search = new EventEmitter<string>();
 
   searchTextField = new FormControl();
 
@@ -24,7 +23,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
     this.search$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      tap(value => this.valueChanged.emit(value)),
+      tap(value => this.search.emit(value)),
       takeUntil(this._destroy$)
     ).subscribe();
   }
@@ -32,14 +31,14 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  search(): void {
+  onSearch(): void {
     this.search$.next(this.searchTextField.value);
   }
 
   clear(): void {
     this.searchTextField.setValue(undefined);
 
-    this.search();
+    this.onSearch();
   }
 
   ngOnDestroy(): void {

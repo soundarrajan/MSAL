@@ -1,5 +1,5 @@
-<input type="text" pInputText [formControl]="searchTextField" [placeholder]="placeholder" (keydown.enter)="search()" class="search-box">
-<button class="searchButton" type="submit" (click)="search()">
+<input type="text" pInputText [formControl]="searchTextField" [placeholder]="placeholder" (keydown.enter)="onSearch()" class="search-box">
+<button class="searchButton" type="submit" (click)="onSearch()">
   <i class="fa fa-search"></i>
 </button>
 

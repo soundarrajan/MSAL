@@ -22,6 +22,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import { takeUntil } from 'rxjs/operators';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -120,7 +121,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
-    cellClass: 'cell-background',
     cellStyle: params => ({
       backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : params.data?.surveyStatus?.code,
       color: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
@@ -135,7 +135,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
       backgroundColor: params.data?.qtyMatchedStatus?.code ?? 'inherit',
-      color: !!params.data.qtyMatchedStatus ? '#fff' : 'inherit'
+      color: !!params.data?.qtyMatchedStatus ? '#fff' : 'inherit'
     }),
     width: 96
   };
@@ -356,12 +356,14 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, QcReportsListColumnServerKeys, this.searchText)).subscribe(
-      response => params.successCallback(response.items, response.totalCount),
-      () => {
-        this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
-        params.failCallback();
-      });
+    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, QcReportsListColumnServerKeys, this.searchText))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => params.successCallback(response.items, response.totalCount),
+        () => {
+          this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
+          params.failCallback();
+        });
   }
 
   private toleranceMatchStyle(value: number): Partial<CSSStyleDeclaration> {

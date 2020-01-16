@@ -31,8 +31,6 @@ export class QcReportDetailsModel {
 
   emailTransactionTypeId: number;
 
-  entityTransactionType: IDisplayLookupDto;
-
   isSaving = false;
   isRaisingClaim: boolean;
   isVerifying: boolean;

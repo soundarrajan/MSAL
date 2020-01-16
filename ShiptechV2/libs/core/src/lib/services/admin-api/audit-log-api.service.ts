@@ -28,4 +28,4 @@ export class AuditLogApi implements IAuditLogApiService {
   }
 }
 
-export const AUDIT_LOG_ADMIN_API_SERVICE = new InjectionToken<IAuditLogApiService>('AUDIT_LOG_ADMIN_API_SERVICE');
+export const AUDIT_LOG_API_SERVICE = new InjectionToken<IAuditLogApiService>('AUDIT_LOG_API_SERVICE');
