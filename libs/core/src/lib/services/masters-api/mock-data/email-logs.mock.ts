@@ -23,10 +23,6 @@ export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
     bcc: internet.email(),
     body: random.word(),
     subject: random.word(),
-    sentAt: date.past().toISOString(),
-    totalCount: random.number(100),
-    modulePathUrl: random.word(),
-    clientIpAddress: random.word(),
-    userAction: random.word()
+    sentAt: date.past().toISOString()
   };
 }
