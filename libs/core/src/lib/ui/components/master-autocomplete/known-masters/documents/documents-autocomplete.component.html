@@ -1,12 +1,5 @@
 <div class="ui-inputgroup">
   <ng-content></ng-content>
-  <button pButton type="button" icon="pi pi-search" class="ui-button-warn" [disabled]="disabled"
-          appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" header="SELECT VESSEL">
+  <button pButton type="button" icon="pi pi-search" class="ui-button-warn" [disabled]="disabled" disabled>
   </button>
-  <ng-template cdkPortal #masterSelector="cdkPortal">
-    <shiptech-vessel-master-selector (selectedChange)="selectorSelectionChange($event); masterSelectorTrigger.close()"
-                                     [disabled]="disabled"
-                                     [readonly]="readonly"
-                                     [multiple]="autoComplete.multiple"></shiptech-vessel-master-selector>
-  </ng-template>
 </div>

@@ -26,4 +26,14 @@ export class DocumentsAutocompleteComponent extends MasterAutocompleteComponent 
       ? fromPromise(this.legacyLookupsDatabase.documentType.where(this.field).startsWithIgnoreCase(query).toArray())
       : throwError(`${DocumentsAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<DocumentsAutocompleteComponent>('field')}`);
   }
+
+  resetInputSelection(): void {
+    this.selectorSelectionChange({
+      id: null,
+      name: null,
+      displayName: null
+    });
+  }
+
+
 }
