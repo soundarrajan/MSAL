@@ -9,4 +9,5 @@ export interface IDocumentsApiService {
   updateIsVerifiedDocument(request: IDocumentsUpdateIsVerifiedRequest): Observable<IDocumentsUpdateIsVerifiedResponse>;
   updateNotesDocument(request: IDocumentsUpdateNotesRequest): Observable<IDocumentsUpdateNotesResponse>;
   deleteDocument(request: IDocumentsDeleteRequest): Observable<IDocumentsDeleteResponse>;
+  downloadDocument(id: number): string;
 }

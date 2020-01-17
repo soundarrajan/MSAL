@@ -49,4 +49,9 @@ export class DocumentsApiMock implements IDocumentsApiService {
       matchedCount: 10
     });
   }
+
+  @ApiCall()
+  downloadDocument(id: number): string {
+    return 'mockDownloadDocumentUrl';
+  }
 }

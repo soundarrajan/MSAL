@@ -7,6 +7,9 @@ import { IDocumentsApiService } from "@shiptech/core/services/masters-api/docume
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
+import { ConfirmationService, DialogService } from "primeng/primeng";
+import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
+import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
 import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 
 @Component({
@@ -42,7 +45,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   constructor(public gridViewModel: DocumentsGridViewModel,
               @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
-              private appErrorHandler: AppErrorHandler) {
+              private appErrorHandler: AppErrorHandler,
+              private confirmationService: ConfirmationService,
+              private dialogService: DialogService) {
   }
 
   ngOnInit(): void {
@@ -56,10 +61,14 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
-  updateIsVerifiedDocument(id: number, isVerified: boolean): void {
+  downloadDocument(id: number): void{
+    window.open(this.mastersApi.downloadDocument(id));
+  }
+
+  updateIsVerifiedDocument(item: IDocumentsItemDto, isChecked: boolean): void {
     const request: IDocumentsUpdateIsVerifiedRequest = {
-      id,
-      isVerified: !isVerified
+      id: item.id,
+      isVerified: isChecked
     };
     this.mastersApi.updateIsVerifiedDocument(request).subscribe(
       response => {},
@@ -71,29 +80,48 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   updateNotesDocument(id: number, notes: string): void {
-    const request: IDocumentsUpdateNotesRequest = {
-      id,
-      notes
-    };
-    this.mastersApi.updateNotesDocument(request).subscribe(
-      response => {},
-      () => {
-        this.appErrorHandler.handleError(AppError.UpdateNotesDocumentFailed);
-      },()=>{
-        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
-      });
+    const ref = this.dialogService.open(DocumentViewEditNotesComponent, {
+      data: {
+        comment: notes
+      },
+      width: '580px',
+      showHeader: true,
+      header: 'Comments',
+    });
+    ref.onClose.subscribe((comment: string) => {
+        console.log(comment);
+        if(comment && comment !== notes){
+          const request: IDocumentsUpdateNotesRequest = {
+            id,
+            notes: comment
+          };
+          this.mastersApi.updateNotesDocument(request).subscribe(
+            response => {},
+            () => {
+              this.appErrorHandler.handleError(AppError.UpdateNotesDocumentFailed);
+            },()=>{
+              this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+            });
+        }
+    });
+
   }
+
   deleteDocument(id: number): void{
-    const request: IDocumentsDeleteRequest = {
-      id
-    };
-    this.mastersApi.deleteDocument(request).subscribe(
-      response => {},
-      () => {
-        this.appErrorHandler.handleError(AppError.DeleteDocumentFailed);
-      },()=>{
-        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
-      });
+    this.confirmationService.confirm({
+      header: 'Confirm',
+      message: 'Are you sure you want to delete the document ?',
+      accept: () => {
+        const request: IDocumentsDeleteRequest = { id };
+        this.mastersApi.deleteDocument(request).subscribe(
+          response => {},
+          () => {
+            this.appErrorHandler.handleError(AppError.DeleteDocumentFailed);
+          },()=>{
+            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+          });
+      }
+    });
   }
 
   ngOnDestroy(): void {

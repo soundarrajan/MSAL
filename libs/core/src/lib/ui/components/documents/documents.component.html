@@ -43,9 +43,18 @@
 <ng-template [columnDef]="[gridViewModel.deleteCol]" appAgCellTemplate let-data="data" let-value="value">
   <span (click)="deleteDocument(data.id)"><i class="fas fa-trash-alt"></i></span>
 </ng-template>
-<ng-template [columnDef]="[gridViewModel.isVerifiedCol]" appAgCellTemplate let-data="data" let-value="value">
-  <input type="checkbox" [checked]="data?.isVerified" (click)="updateIsVerifiedDocument(data.id, data.isVerified)">
+
+<ng-template [columnDef]="[gridViewModel.nameCol]" appAgCellTemplate let-data="data" let-value="value">
+  <span (click)="downloadDocument(data.id)">{{data?.name}}</span>
 </ng-template>
+
+<ng-template [columnDef]="[gridViewModel.isVerifiedCol]" appAgCellTemplate let-data="data" let-value="value">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <p-checkbox binary="true" [(ngModel)]="data.isVerifiedCol" (ngModelChange)="updateIsVerifiedDocument(data, $event)">
+    </p-checkbox>
+  </div>
+</ng-template>
+
 <ng-template [columnDef]="[gridViewModel.notesCol]" appAgCellTemplate let-data="data" let-value="value">
   <span (click)="updateNotesDocument(data?.id, data?.notes)"><i class="fas fa-comments"></i></span>
 </ng-template>
