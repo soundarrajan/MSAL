@@ -1,8 +1,10 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation } from "@angular/core";
 
 @Component({
   selector: 'layout-main',
-  templateUrl: './layout-main.component.html'
+  styleUrls: ["./layout-main.component.scss"],
+  templateUrl: './layout-main.component.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class LayoutMainComponent implements AfterViewInit {
   menuMode = 'static';

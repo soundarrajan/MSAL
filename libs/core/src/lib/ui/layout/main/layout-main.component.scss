@@ -1,0 +1,16 @@
+p-fileUpload{
+  position: absolute;
+  top: 0;
+  left: 15px;
+  right: 15px;
+  bottom: 0;
+  opacity: 0;
+  .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose{
+    background-color: #fff !important;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
+}
