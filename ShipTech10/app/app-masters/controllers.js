@@ -7898,7 +7898,7 @@ APP_MASTERS.controller("Controller_Master", [
                                     
                                 });
                             } else {
-                                $scope.formValues.products[index].conversionFactors = [];
+                                $scope.formValues.products[index].conversionFactors[0].isDeleted = true;
 
                             }
                     }
