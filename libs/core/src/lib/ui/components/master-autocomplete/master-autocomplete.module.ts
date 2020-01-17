@@ -6,6 +6,7 @@ import { VesselAutocompleteComponent } from '@shiptech/core/ui/components/master
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { PrimeNGModule } from '../../primeng.module';
 import { VesselPortCallsAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/vessel-port-calls/vessel-port-calls-autocomplete.component';
+import {DocumentsAutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -22,11 +23,13 @@ export function getDefaultStorage(defaultStorage: any): any {
   ],
   declarations: [
     VesselAutocompleteComponent,
-    VesselPortCallsAutocompleteComponent
+    VesselPortCallsAutocompleteComponent,
+    DocumentsAutocompleteComponent
   ],
   exports: [
     VesselAutocompleteComponent,
-    VesselPortCallsAutocompleteComponent
+    VesselPortCallsAutocompleteComponent,
+    DocumentsAutocompleteComponent
   ],
   entryComponents: []
 })

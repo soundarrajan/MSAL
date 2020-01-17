@@ -12,6 +12,7 @@ import { AgDatePickerComponent } from "@shiptech/core/ui/components/ag-grid/ag-d
 import { AgFilterDisplayModule } from "@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module";
 import { DocumentsComponent } from "@shiptech/core/ui/components/documents/documents.component";
 import { DocumentViewEditNotesComponent } from "./document-view-edit-notes/document-view-edit-notes.component";
+import { MasterAutocompleteModule } from "@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module";
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { DocumentViewEditNotesComponent } from "./document-view-edit-notes/docum
     MasterSelectorModule,
     AgGridExtensionsModule,
     AgGridModule.withComponents([AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent]),
-    AgFilterDisplayModule
+    AgFilterDisplayModule,
+    MasterAutocompleteModule
   ],
   declarations: [
     DocumentsComponent,

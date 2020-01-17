@@ -67,6 +67,17 @@ export class AppError<T = any> implements IAppError {
     message: 'Could not update the notes of the document. Please try again later.'
   });
 
+  static readonly UploadDocumentFailed = new AppError({
+    code: AppErrorCode.UploadDocumentFailed,
+    message: 'Could not upload the document. Please try again later.'
+  });
+
+  static readonly DocumentTypeNotSelected = new AppError({
+    code: AppErrorCode.DocumentTypeNotSelected,
+    message: 'Please select a Document Type and upload a file again.',
+    treatAsWarning: true
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;

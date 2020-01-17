@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken } from "@angular/core";
 import { ApiCallUrl } from "@shiptech/core/utils/decorators/api-call.decorator";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AppConfig } from "@shiptech/core/config/app-config";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
 import { Observable } from "rxjs";
@@ -10,13 +10,15 @@ import { IDocumentsApiService } from "@shiptech/core/services/masters-api/docume
 import { IDocumentsUpdateIsVerifiedRequest, IDocumentsUpdateIsVerifiedResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest, IDocumentsDeleteResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
 import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
+import { IDocumentsCreateUploadRequest, IDocumentsCreateUploadResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 
 export namespace DocumentsApiPaths {
-  export const getDocuments = () => `api/masters/documentupload/list`;
-  export const updateIsVerifiedDocument = () => `api/masters/documentupload/update`;
-  export const updateNotesDocument = () => `api/masters/documentupload/notes`;
-  export const deleteDocument = () => `api/masters/documentupload/delete`;
-  export const downloadDocument = () => `api/masters/documentupload/downloadGet`;
+  export const getDocuments = `api/masters/documentupload/list`;
+  export const updateIsVerifiedDocument = `api/masters/documentupload/update`;
+  export const updateNotesDocument = `api/masters/documentupload/notes`;
+  export const deleteDocument = `api/masters/documentupload/delete`;
+  export const downloadDocument = `api/masters/documentupload/downloadGet`;
+  export const uploadDocument = "api/masters/documentupload/create";
 }
 
 @Injectable({
@@ -32,26 +34,35 @@ export class DocumentsApi implements IDocumentsApiService {
 
   @ObservableException()
   getDocumentList(request: IDocumentsListRequest): Observable<IDocumentsListResponse> {
-    return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments()}`, { payload: { ...request } });
+    return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocuments}`, { payload: { ...request } });
   }
 
   @ObservableException()
   updateIsVerifiedDocument(request: IDocumentsUpdateIsVerifiedRequest): Observable<IDocumentsUpdateIsVerifiedResponse> {
-    return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateIsVerifiedDocument()}`, { payload: { ...request } });
+    return this.http.post<IDocumentsListResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateIsVerifiedDocument}`, { payload: { ...request } });
   }
 
   @ObservableException()
   updateNotesDocument(request: IDocumentsUpdateNotesRequest): Observable<IDocumentsUpdateNotesResponse> {
-    return this.http.post<IDocumentsUpdateNotesResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateNotesDocument()}`, { payload: { ...request } });
+    return this.http.post<IDocumentsUpdateNotesResponse>(`${this._apiUrl}/${DocumentsApiPaths.updateNotesDocument}`, { payload: { ...request } });
   }
 
   @ObservableException()
   deleteDocument(request: IDocumentsDeleteRequest): Observable<IDocumentsDeleteResponse> {
-    return this.http.post<IDocumentsDeleteResponse>(`${this._apiUrl}/${DocumentsApiPaths.deleteDocument()}`, { payload: { ...request } });
+    return this.http.post<IDocumentsDeleteResponse>(`${this._apiUrl}/${DocumentsApiPaths.deleteDocument}`, { payload: { ...request } });
   }
 
-  downloadDocument(id: number): string{
-    return `${this._apiUrl}/${DocumentsApiPaths.downloadDocument()}`;
+  @ObservableException()
+  uploadFile(request: IDocumentsCreateUploadRequest): Observable<IDocumentsCreateUploadResponse> {
+    let newHeaders = new HttpHeaders();
+    newHeaders = newHeaders.append("Content-Type", "multipart/form-data");
+    return this.http.post<IDocumentsCreateUploadResponse>(`${this._apiUrl}/${DocumentsApiPaths.uploadDocument}`, { ...request }, {
+      headers: newHeaders
+    });
+  }
+
+  downloadDocument(id: number): string {
+    return `${this._apiUrl}/${DocumentsApiPaths.downloadDocument}`;
   }
 }
 
