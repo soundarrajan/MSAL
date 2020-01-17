@@ -6,11 +6,11 @@ export interface IDocumentsCreateUploadDetails {
   size: number;
   fileType: string;
   transactionType: ILookupDto;
+  referenceNo: number;
 }
 
 export interface IDocumentsCreateUploadRequest {
-  file: string | Blob;
-  request: IDocumentsCreateUploadDetails;
+  Payload: IDocumentsCreateUploadDetails
 }
 
 export interface IDocumentsCreateUploadResponse {

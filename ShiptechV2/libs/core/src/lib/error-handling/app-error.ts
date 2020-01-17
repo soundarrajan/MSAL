@@ -78,6 +78,11 @@ export class AppError<T = any> implements IAppError {
     treatAsWarning: true
   });
 
+  static readonly DocumentDownloadError = new AppError({
+    code: AppErrorCode.DocumentDownloadError,
+    message: 'Could not download the document. Please try again later.'
+  });
+
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;

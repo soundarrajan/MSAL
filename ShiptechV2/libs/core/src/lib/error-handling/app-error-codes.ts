@@ -22,5 +22,6 @@ export enum AppErrorCode {
   UpdateIsVerifiedDocumentFailed = 502,
   UpdateNotesDocumentFailed = 503,
   UploadDocumentFailed = 504,
-  DocumentTypeNotSelected = 505
+  DocumentTypeNotSelected = 505,
+  DocumentDownloadError = 506
 }
