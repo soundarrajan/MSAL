@@ -238,8 +238,8 @@ APP_CLAIMS.controller("Controller_Claims", [
                 $("#NoClaimAmmount").val($(this).val());
             });
             if ($scope.formValues && $scope.formValues.claimType && $scope.formValues.claimType.claimType.name) {
-                var type = $scope.formValues.claimType.claimType.name.toLowerCase();
-                if (type == "debunker") {
+                var type = $scope.formValues.claimType.claimType.name;
+                if (type.toLowerCase() == "debunker") {
                     $(".group_debunkerDetails").show();
                 } else {
                     $(".group_debunkerDetails").hide();
@@ -248,7 +248,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                 // $scope.formValues.densitySubtypes = [];
                 // $scope.formValues.qualitySubtypes = [];
                 // $scope.formValues.quantitySubtypes = [];
-                if (type == "debunker" && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual)) {
+                if (type.toLowerCase() == "debunker" && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual)) {
                     if (!$scope.formValues.claimDebunkerDetails || typeof $scope.formValues.claimDebunkerDetails == "undefined") {
                         $scope.formValues.claimDebunkerDetails = {};
                     }
@@ -654,9 +654,8 @@ APP_CLAIMS.controller("Controller_Claims", [
         	}
         });      
         $scope.disabledCreateDebunker = function() {
-            // var object = $filter("filter")(vm.listsCache.ClaimType, {name: 'Debunker'})[0];
-            var indexObject = _.findIndex(vm.listsCache.ClaimType, function(o) { return o.name.toLowerCase() == "debunker"});
-            if (indexObject != -1) {
+            var object = $filter("filter")(vm.listsCache.ClaimType, {name: 'Debunker'})[0];
+            if (typeof(object) != "undefined") {
                 return false;
             } else {
                 return true;
