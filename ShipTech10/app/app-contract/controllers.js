@@ -11,6 +11,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
     vm.response = "";
     vm.ids = '';
     $scope.tenantCurrency = $tenantSettings.tenantFormats.currency;
+    $scope.tenantUom = $tenantSettings.tenantFormats.uom;
 
     if ($state.params.path) {
         vm.app_id = $state.params.path[0].uisref.split('.')[0];

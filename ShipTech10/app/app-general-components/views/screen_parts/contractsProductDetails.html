@@ -350,6 +350,7 @@
                                                 <input type="text" name="Product_{{ index_0 + 1 }}_Price" ng-required="formValues.products[index_0].fixedPrice" class="form-control price_{{ $index }}"
                                                     ng-model="formValues.products[$index].price" ng-class="CM.invalid_form ? 'ng-touched' : ''"
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
+                                                <span ng-if="!formValues.products[$index].priceUom.id" ng-init="formValues.products[$index].priceUom = tenantUom"></span>
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].fixedPrice"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].priceUom"
@@ -422,6 +423,7 @@
                                                 <input type="text" name="Product_{{ index_0 + 1 }}_MTM_Price" ng-required="formValues.products[index_0].mtmFixed" class="form-control MTMprice_{{ $index }}"
                                                     ng-model="formValues.products[$index].mtmPrice" ng-class="CM.invalid_form ? 'ng-touched' : ''"
                                                     format="number:{{CM.tenantSetting.defaultValues.pricePrecision}}" />
+                                                <span ng-if="!formValues.products[$index].mtmPriceUom.id" ng-init="formValues.products[$index].mtmPriceUom = tenantUom"></span>
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].mtmPriceUom"
