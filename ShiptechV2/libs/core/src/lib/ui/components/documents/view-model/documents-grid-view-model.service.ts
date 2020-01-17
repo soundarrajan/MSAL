@@ -22,6 +22,7 @@ import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/st
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 import { takeUntil } from "rxjs/operators";
+import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -82,7 +83,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
       sortable: true,
       resizable: true,
       filter: "agTextColumnFilter",
-      filterParams: this.defaultColFilterParams
+      filterParams: this.defaultColFilterParams,
+      flex: 1
     }
   };
 
@@ -112,14 +114,17 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     headerName: DocumentsListColumnsLabels.name,
     colId: DocumentsListColumns.name,
     field: model("name"),
-    width: 400
+    cellRendererFramework: AgCellTemplateComponent,
+    minWidth: 200,
+    flex:2
   };
 
   sizeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.size,
     colId: DocumentsListColumns.size,
     field: model("size"),
-    width: 100
+    minWidth: 80,
+    flex:2
   };
 
   documentTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -127,14 +132,16 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.documentType,
     field: model("documentType"),
     valueFormatter: params => params.value?.name,
-    width: 400
+    minWidth: 300,
+    flex:2
   };
 
   fileTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.fileType,
     colId: DocumentsListColumns.fileType,
     field: model("fileType"),
-    width: 100
+    minWidth: 130,
+    flex:2
   };
 
   transactionTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -142,14 +149,16 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.transactionType,
     field: model("transactionType"),
     valueFormatter: params => params.value?.name,
-    width: 150
+    minWidth: 200,
+    flex:2
   };
 
   referenceNoCol: ITypedColDef<IDocumentsItemDto, string> = {
     headerName: DocumentsListColumnsLabels.referenceNo,
     colId: DocumentsListColumns.referenceNo,
     field: model("referenceNo"),
-    width: 130
+    minWidth: 130,
+    flex:2
   };
 
   uploadedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -157,7 +166,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.uploadedBy,
     field: model("uploadedBy"),
     valueFormatter: params => params.value?.name,
-    width: 400
+    minWidth: 300,
+    flex:2
   };
 
   uploadedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -166,7 +176,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("uploadedOn"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 180
+    minWidth: 180,
+    flex:2
   };
 
   notesCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -174,7 +185,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.notes,
     field: model("notes"),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 150
+    minWidth: 150,
+    flex:2
   };
 
   isVerifiedCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -182,7 +194,12 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.isVerified,
     field: model("isVerified"),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 100
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    },
+    minWidth: 90,
+    flex:2
   };
 
   verifiedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -191,7 +208,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("verifiedOn"),
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
-    width: 180
+    minWidth: 150,
+    flex:2
   };
 
   verifiedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -199,7 +217,8 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.verifiedBy,
     field: model("verifiedBy"),
     valueFormatter: params => params.value?.name,
-    width: 400
+    minWidth: 200,
+    flex:2
   };
 
   constructor(

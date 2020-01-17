@@ -17,6 +17,7 @@ import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import {StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 import { takeUntil } from "rxjs/operators";
+import { IQcReportsListItemDto } from "../../../../../../../feature/quantity-control/src/lib/services/api/dto/qc-reports-list-item.dto";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -55,11 +56,32 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     applyButton: true
   };
 
+  editCol: ITypedColDef<IQcReportsListItemDto> = {
+    colId: 'editCol',
+    editable: false,
+    filter: false,
+    sortable: false,
+    suppressMenu: true,
+    resizable: false,
+    suppressAutoSize: true,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    suppressNavigable: true,
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true,
+    suppressCellFlash: true,
+    suppressPaste: true,
+    lockPosition: true,
+    lockVisible: true,
+    cellClass: 'text-align-center',
+    cellRendererFramework: AgCellTemplateComponent,
+    width: 20
+  };
+
   fromCol: ITypedColDef<IEmailLogsItemDto, string> = {
     headerName: EmailLogsListColumnsLabels.from,
     colId: EmailLogsListColumns.from,
     field: model("from"),
-    cellRendererFramework: AgCellTemplateComponent,
     minWidth: 250,
     flex: 2
   };
@@ -125,13 +147,13 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
       sortable: true,
       resizable: true,
       filter: "agTextColumnFilter",
-      filterParams: this.defaultColFilterParams,
-      flex: 1
+      filterParams: this.defaultColFilterParams
     }
   };
 
   getColumnsDefs(): ITypedColDef[] {
     return [
+      this.editCol,
       this.toCol,
       this.fromCol,
       this.statusCol,

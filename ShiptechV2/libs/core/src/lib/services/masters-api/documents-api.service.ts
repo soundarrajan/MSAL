@@ -16,6 +16,7 @@ export namespace DocumentsApiPaths {
   export const updateIsVerifiedDocument = () => `api/masters/documentupload/update`;
   export const updateNotesDocument = () => `api/masters/documentupload/notes`;
   export const deleteDocument = () => `api/masters/documentupload/delete`;
+  export const downloadDocument = () => `api/masters/documentupload/downloadGet`;
 }
 
 @Injectable({
@@ -47,6 +48,10 @@ export class DocumentsApi implements IDocumentsApiService {
   @ObservableException()
   deleteDocument(request: IDocumentsDeleteRequest): Observable<IDocumentsDeleteResponse> {
     return this.http.post<IDocumentsDeleteResponse>(`${this._apiUrl}/${DocumentsApiPaths.deleteDocument()}`, { payload: { ...request } });
+  }
+
+  downloadDocument(id: number): string{
+    return `${this._apiUrl}/${DocumentsApiPaths.downloadDocument()}`;
   }
 }
 
