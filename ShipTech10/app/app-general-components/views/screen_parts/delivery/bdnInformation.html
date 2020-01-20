@@ -97,7 +97,9 @@
                         id="bargePumpingRateStartTime"
                         new-date-picker
                         picker-type="dynamic"
-                        class="form-control date-mask new-date-picker"> 
+                        class="form-control date-mask new-date-picker"
+                        ng-change="validateDeliveryDateFields()"> 
+
                 </div>
                 <span class="help-block">
                     {{ field.Description }}
@@ -106,9 +108,9 @@
         </div>
     </div>
 
-	<span class="hidden">
+	<!-- <span class="hidden">
     	{{formValues.bargePumpingRateEndTime < formValues.bargePumpingRateStartTime ? formValues.bargePumpingRateEndTime = formValues.bargePumpingRateStartTime : ''}}
-	</span>
+	</span> -->
     <!-- pumping end -->
     <div class="col-md-4">
         <div class="form-group row">
@@ -125,7 +127,10 @@
                         id="bargePumpingRateEndTime"
                         new-date-picker
                         picker-type="dynamic"
-                        class="form-control date-mask new-date-picker"> 
+                        class="form-control date-mask new-date-picker"
+                        ng-change="validateDeliveryDateFields()"> 
+
+
                 </div>
                 <span class="help-block">
                     {{ field.Description }}

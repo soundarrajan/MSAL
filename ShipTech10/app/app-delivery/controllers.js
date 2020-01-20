@@ -2279,4 +2279,42 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             }
         }
     })
+
+     $scope.validateDeliveryDateFields = function() {
+            $timeout(function() {
+                function toggleInvalid(elm, action) {
+                    if (action === 'add') {
+                        $('#' + elm + '_dateinput').parent().find('input').addClass('invalid');
+                        $('#' + elm + '_dateinput').addClass('invalid');
+                    }
+                    if (action === 'remove') {
+                        $('#' + elm + '_dateinput').parent().find('input').removeClass('invalid');
+                        $('#' + elm + '_dateinput').removeClass('invalid');
+                    }
+                }
+
+                var hasError = false;
+                var errorMessage = '';
+
+                if (moment.utc($scope.formValues.bargePumpingRateEndTime).isBefore(moment.utc($scope.formValues.bargePumpingRateStartTime))) {
+                    errorMessage = "Pumping Start must be lower or equal to Pumping End.";
+                    toastr.error(errorMessage);
+                    toggleInvalid('bargePumpingRateEndTime', 'add');
+                    hasError = true;
+                } else {
+                    if ($scope.formValues.bargePumpingRateEndTime) {
+                        toggleInvalid('bargePumpingRateEndTime', 'remove');
+                    }
+                }
+
+                if (hasError) {
+                    toggleInvalid('bargePumpingRateStartTime', 'add');
+                } else {
+                    if ($scope.formValues.bargePumpingRateStartTime) {
+                        toggleInvalid('bargePumpingRateStartTime', 'remove');
+                    }
+                }
+
+            });
+        }
 }]);
