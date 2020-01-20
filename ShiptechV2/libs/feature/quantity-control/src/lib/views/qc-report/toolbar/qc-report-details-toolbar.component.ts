@@ -12,7 +12,7 @@ import { filter, takeUntil } from "rxjs/operators";
   selector: "shiptech-qc-report-details-toolbar",
   templateUrl: "./qc-report-details-toolbar.component.html",
   styleUrls: ["./qc-report-details-toolbar.component.css"],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, AfterViewInit {
 

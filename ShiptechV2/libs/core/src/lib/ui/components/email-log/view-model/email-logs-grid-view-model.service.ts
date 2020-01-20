@@ -15,9 +15,8 @@ import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-
 import { EMAIL_LOGS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
-import {StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 import { takeUntil } from "rxjs/operators";
-import { IQcReportsListItemDto } from "../../../../../../../feature/quantity-control/src/lib/services/api/dto/qc-reports-list-item.dto";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -56,7 +55,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     applyButton: true
   };
 
-  editCol: ITypedColDef<IQcReportsListItemDto> = {
+  editCol: ITypedColDef<IEmailLogsItemDto> = {
     colId: 'editCol',
     editable: false,
     filter: false,

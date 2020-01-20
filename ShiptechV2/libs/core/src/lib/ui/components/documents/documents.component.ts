@@ -158,7 +158,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       header: 'Comments',
     });
     ref.onClose.subscribe((comment: string) => {
-      console.log(comment);
       if (comment && comment !== notes) {
         const request: IDocumentsUpdateNotesRequest = {
           id,
