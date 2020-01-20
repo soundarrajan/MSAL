@@ -13,6 +13,8 @@ export class QcReportDetailsModel {
   vessel: IDisplayLookupDto;
   status: IStatusLookupDto;
 
+  hasEmailSent: boolean;
+
   uoms: IDisplayLookupDto[];
   productTypes: number[];
   productTypesById: Record<number, IQcProductTypeListItemState>;

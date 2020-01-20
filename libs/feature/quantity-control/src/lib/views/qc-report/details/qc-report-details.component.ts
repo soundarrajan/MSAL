@@ -62,7 +62,6 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   @Select(QcReportState.isNew) isNew$: Observable<boolean>;
 
   hasVerifiedStatus$ = new BehaviorSubject<boolean>(false);
-  hasNewStatus$ = new BehaviorSubject<boolean>(false);
 
   private quantityPrecision: number;
 
@@ -96,7 +95,6 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(status => {
         this.hasVerifiedStatus$.next(status.name === StatusLookupEnum.Verified);
-        this.hasNewStatus$.next(status.name === StatusLookupEnum.New);
 
         this.entityStatus.setStatus({
           name: status.displayName,
@@ -197,7 +195,6 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.hasNewStatus$.complete();
     this.hasVerifiedStatus$.complete();
 
     this._destroy$.next();
