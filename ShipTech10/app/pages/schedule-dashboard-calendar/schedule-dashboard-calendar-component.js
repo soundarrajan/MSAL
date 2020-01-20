@@ -1107,7 +1107,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         ctrl.initPopovers = initPopovers;
 
         ctrl.initPopover = function(el) {
-            console.log(el);
+            //console.log(el);
             if (!$("div.contextmenu").is(":visible")) {
 	            $("#" + el).popover({
 	                container: 'body',

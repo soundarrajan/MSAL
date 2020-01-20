@@ -873,7 +873,7 @@
 	                        </div>
 	                        <div class="col-md-12" ng-init="$index1 = $index">
                                 <!-- {{$index1}} -->
-	                            <form class="form-horizontal collapse in row" name="forms.productForm[$index]" novalidate  autocomplete="off" name="forms.productsForm">
+	                            <form class="form-horizontal collapse in row" name="forms.productForm[$index]" style="overflow:auto" novalidate  autocomplete="off" name="forms.productsForm">
 	                                <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table" id="product_info_table_{{ $index + 1 }} new_request_products">
 	                                    <thead>
 	                                        <tr>
@@ -921,7 +921,7 @@
 	                                                </label>
 	                                            </td> -->
 
-	                                            <td ng-if="$ctrl.productInfoColumns.Product.visible" width="11%" style="min-width: 160px;" ng-init="CM.getOptions({'Name': 'Product', 'masterSource': 'Product'})">
+	                                            <td ng-if="$ctrl.productInfoColumns.Product.visible" width="11%" style="min-width: 190px;" ng-init="CM.getOptions({'Name': 'Product', 'masterSource': 'Product'})">
 	                                                <div class="input-group" tooltip tooltiptrigger="hover" data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) }}">
 	                                                    <input name="{{ $ctrl.productInfoColumns.Product.name }}" id="product_product_{{ $index }}" placeholder="{{ $ctrl.productInfoColumns.Product.placeholder }}" class="typeahead form-control" uib-typeahead="prod as prod.name for prod in options.Product | filter:$viewValue | limitTo:10" typeahead-on-select="$ctrl.selectProduct($item.id); $ctrl.changeScroll($index1)" typeahead-editable="false" ng-model="product.product" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-click="$ctrl.setLookupInput(product); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx} " ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI;" >
 
@@ -947,11 +947,11 @@
 	                                                </a>
 	                                                <!-- ng-click="$ctrl.editSpecGroup()" -->
 	                                            </td>
-	                                            <td ng-if="$ctrl.productInfoColumns.RobOnArrival.visible" style="max-width: 250px; min-width: 180px">
+	                                            <td ng-if="$ctrl.productInfoColumns.RobOnArrival.visible" style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
-                                                        <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="product_RobOnArrival_{{ $index }}" class="form-control input-md" ng-model="product.robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
+                                                        <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="product_RobOnArrival_{{ $index }}" class="form-control input-md" ng-model="product.robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                         <div class="input-group-btn" ng-init="!product.robOnArrivalUom.id ? product.robOnArrivalUom = product.uom : '' ">
-                                                            <select style="min-width: 60px; max-width: 60px;"
+                                                            <select style="min-width: 60px; max-width: 60px; font-size: 12px;"
                                                                 ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.robOnArrivalUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.robOnArrivalUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                                 id="product_robOnArrivalUom_{{ $index }}"></select>
                                                         </div>
@@ -985,11 +985,11 @@
 	                                            <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" width="10%">
 	                                                {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
 	                                            </td>
-                                                <td style="max-width: 250px; min-width: 200px">
+                                                <td style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
-                                                        <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption"  data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
+                                                        <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption"  data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                         <div class="input-group-btn" ng-init="!product.roundVoyageConsumptionUom.id ? product.roundVoyageConsumptionUom = product.uom : '' ">
-                                                            <select style="min-width: 60px; max-width: 60px;"
+                                                            <select style="min-width: 60px; max-width: 60px; font-size: 12px;"
                                                                 ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.roundVoyageConsumptionUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.roundVoyageConsumptionUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                                 id="product_roundVoyageConsumptionUom_{{ $index }}"></select>
                                                         </div>
