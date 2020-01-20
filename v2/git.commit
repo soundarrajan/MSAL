@@ -1,7 +1,7 @@
-﻿commit 60efe498d4a8c49f4335d62f3cd2359b75e8ef36
+﻿commit c8ef7ecd6704d765144e7565c1c694053ee4f523
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 16 16:01:28 2020 +0200
+Date:   Mon Jan 20 12:14:04 2020 +0200
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Fixed Verify button is not available in the "Pending" status.
 
 branch: master

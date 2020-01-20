@@ -34,6 +34,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       id: 0,
       nbOfClaims: 0,
       nbOfDeliveries: 0,
+      hasEmailSent: false,
       status: MockStatusLookupEnumMap[StatusLookupEnum.New],
       uoms: {
         options: mockUomsLookup
