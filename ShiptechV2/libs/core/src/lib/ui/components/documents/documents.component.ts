@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {Subject} from "rxjs";
+import { Observable, of, Subject } from "rxjs";
 import {DocumentsGridViewModel} from "./view-model/documents-grid-view-model.service";
 import {AppError} from "@shiptech/core/error-handling/app-error";
 import {DOCUMENTS_API_SERVICE} from "@shiptech/core/services/masters-api/documents-api.service";
@@ -143,6 +143,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       },
       () => {
         this.appErrorHandler.handleError(AppError.UpdateIsVerifiedDocumentFailed);
+        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
       }, () => {
         this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
       });
@@ -168,6 +169,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           },
           () => {
             this.appErrorHandler.handleError(AppError.UpdateNotesDocumentFailed);
+            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
           }, () => {
             this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
           });
