@@ -706,23 +706,25 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "deliveryAmount",
                         displayName: "Delivered Amount",
                         cellTemplate: $scope.dataTableTemplates.tenantFormattedText,
-                        tenantFormat: "amount"
+                        tenantFormat: $tenantSettings.defaultValues.amountPrecision,
                     },
                     {
                         name: "invoiceAmountInOrderCurrency",
-                        displayName: "Invoice Amnt in Order Curr"
+                        displayName: "Invoice Amnt in Order Curr",
+                        cellTemplate: $scope.dataTableTemplates.tenantFormattedText,
+                        tenantFormat: $tenantSettings.defaultValues.amountPrecision,
                     },
                     {
                         name: "invoiceAmount",
                         displayName: "Invoice Amnt",
                         cellTemplate: $scope.dataTableTemplates.tenantFormattedText,
-                        tenantFormat: "amount"
+                        tenantFormat: $tenantSettings.defaultValues.amountPrecision,
                     },
                     {
                         name: "variance",
                         displayName: "Variance",
                         cellTemplate: $scope.dataTableTemplates.tenantFormattedText,
-                        tenantFormat: "amount"
+                        tenantFormat: $tenantSettings.defaultValues.amountPrecision,
                     },
                     {
                         name: "matched",
@@ -894,6 +896,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "orderQuantity",
                         displayName: "Ord. Qty",
                         cellTemplate: $scope.dataTableTemplates.textUOM,
+                        format: $tenantSettings.defaultValues.quantityPrecision,
                         cellObject: {
                             Name: "Uom",
                             Type: "dropdown",
@@ -905,6 +908,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "buyerQuantityAmount",
                         displayName: "Vessel Qty",
                         cellTemplate: $scope.dataTableTemplates.textUOM,
+                        format: $tenantSettings.defaultValues.quantityPrecision,
                         cellObject: {
                             Name: "Uom",
                             Type: "dropdown",
@@ -916,6 +920,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "sellerQuantityAmount",
                         displayName: "BDN Qty",
                         cellTemplate: $scope.dataTableTemplates.textUOM,
+                        format: $tenantSettings.defaultValues.quantityPrecision,
                         cellObject: {
                             Name: "Uom",
                             Type: "dropdown",
@@ -927,6 +932,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         name: "variance",
                         displayName: "Variance",
                         cellTemplate: $scope.dataTableTemplates.textUOM,
+                        format: $tenantSettings.defaultValues.quantityPrecision,
                         cellObject: {
                             Name: "Uom",
                             Type: "dropdown",
