@@ -1,7 +1,7 @@
-﻿commit c8ef7ecd6704d765144e7565c1c694053ee4f523
+﻿commit 5ec99c7bdce91464c7bb9ef1374411718eb431ad
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Mon Jan 20 12:14:04 2020 +0200
+Date:   Mon Jan 20 20:18:08 2020 +0200
 
-    Fixed Verify button is not available in the "Pending" status.
+    QC report table- Focus for UOM dropdown is not in place (focus placed in M instead of dropdown)
 
 branch: master
