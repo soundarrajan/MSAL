@@ -10,10 +10,10 @@
               class="ui-button-warning mr-1 btn-i-yellow"
               label="Raise Caim"
               pButton type="button"></button>
-      <button (click)="verifyVessel()" [disabled]="isBusy$ | async" *ngIf="(hasNewStatus$ | async) && !(isNew$ | async)"
+      <button (click)="verifyVessel()" [disabled]="isBusy$ | async" *ngIf="!(isNew$ | async) && !(hasVerifiedStatus$ | async)"
               class="ui-button-success mr-1 btn-i-success" label="Verify"
               pButton type="button"></button>
-      <button (click)="revertVerifyVessel()" [disabled]="isBusy$ | async" *ngIf="(hasVerifiedStatus$ | async) && !(isNew$ | async)"
+      <button (click)="revertVerifyVessel()" [disabled]="isBusy$ | async" *ngIf="hasVerifiedStatus$ | async"
               class="ui-button-success mr-1 btn-i-success" label="Revert Verify"
               pButton type="button"></button>
     </div>
