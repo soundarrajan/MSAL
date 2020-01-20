@@ -2459,7 +2459,7 @@
             .st-email-input .bootstrap-tagsinput.expanded {
                 border: 1px solid #ccc;
                 box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-                position: absolute;
+                position: relative;
                 z-index: 30;
             }
 
