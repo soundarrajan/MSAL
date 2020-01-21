@@ -48,7 +48,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.get(request.key)}`;
     return this.getSettingsCached(requestUrl).pipe(catchError((e) => {
-        return throwError(AppError.FailedToLoadUserSettings);
+        return throwError(AppError.FailedToLoadUserSettings(e));
       }
     ));
   }

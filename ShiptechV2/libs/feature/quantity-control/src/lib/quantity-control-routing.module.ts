@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 import { MainQuantityControlComponent } from './views/main-quantity-control.component';
 import { QcReportsListComponent } from './views/qc-reports-list/qc-reports-list.component';
 import { QcReportDetailsComponent } from './views/qc-report/details/qc-report-details.component';
@@ -12,6 +12,11 @@ import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-u
 import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
 import { QcReportDetailsAuditLogsComponent } from "./views/qc-report/audit-logs/qc-report-details-audit-logs.component";
 import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/qc-report-details-documents.component";
+
+
+ interface IQcReportDetailsRouteData {
+   [KnownQuantityControlRoutes.ReportIdParam]: Type<QcReportDetailsRouteResolver>;
+ }
 
 const routes: Routes = [
   {
@@ -44,9 +49,9 @@ const routes: Routes = [
             path: KnownQuantityControlRoutes.ReportDetails,
             canDeactivate: [QcReportDetailsUnsavedChangesGuard],
             component: QcReportDetailsComponent,
-            resolve: {
+            resolve: <IQcReportDetailsRouteData>{
               // Note: ReportId is expected in child routes in the data.
-              ...getTypedResolverPropertyName(KnownQuantityControlRoutes.ReportIdParam)
+              reportId: QcReportDetailsRouteResolver,
             },
             data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' }
           },
@@ -79,11 +84,6 @@ const routes: Routes = [
 ];
 
 
-export function getTypedResolverPropertyName(value: string): Object {
-  return {
-    [value]: QcReportDetailsRouteResolver
-  };
-}
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

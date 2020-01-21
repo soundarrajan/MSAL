@@ -76,7 +76,10 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
 
     this.reportService.verifyVesselReports$(reportIds)
       .subscribe(() => {
-        selectedReports.forEach(r => r.data.surveyStatus = this.surveyStatusLookups.verified);
+        gridApi.deselectAll();
+        selectedReports.forEach(r => r.updateData({...r.data, surveyStatus: this.surveyStatusLookups.verified}));
+
+        // Note: Force redraw of checkbox.
         gridApi.redrawRows({
           rowNodes: selectedReports as RowNode[]
         });
