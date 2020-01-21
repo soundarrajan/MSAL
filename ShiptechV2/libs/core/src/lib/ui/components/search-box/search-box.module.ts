@@ -3,13 +3,15 @@ import { SearchBoxComponent } from './search-box.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/primeng';
 import { CommonModule } from '@angular/common';
+import { SelectTextOnFocusDirectiveModule } from '../../directives/default/select-text-on-focus.directive';
 
 @NgModule({
   imports: [
     FormsModule,
     ReactiveFormsModule,
     InputTextModule,
-    CommonModule
+    CommonModule,
+    SelectTextOnFocusDirectiveModule
   ],
   declarations: [
     SearchBoxComponent
