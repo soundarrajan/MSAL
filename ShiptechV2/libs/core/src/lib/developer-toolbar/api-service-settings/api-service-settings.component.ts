@@ -201,7 +201,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     const allSameDelay = this.methods.every((method, i, arr) => method.settings.delay === arr[0].settings.delay);
 
     if (this.methods.length) {
-      this.selectedDelayAll = allSameDelay ? this.methods[0].settings.delay : undefined;
+      this.selectedDelayAll = this.methods.length > 0 && allSameDelay ? this.methods[0].settings.delay : undefined;
     }
 
     this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
