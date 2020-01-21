@@ -19,6 +19,9 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import {NgHttpLoaderModule} from "ng-http-loader";
+import {LoaderModule} from "@shiptech/core/ui/components/loader/loader.module";
+import {LoaderComponent} from "@shiptech/core/ui/components/loader/loader.component";
 
 // Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
 export function getAppBaseHref(doc: Document): string {
@@ -38,14 +41,17 @@ export function getAppBaseHref(doc: Document): string {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgHttpLoaderModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     PrimeNGModule,
+    LoaderModule,
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
+
     NgxsModule.forRoot([], { developmentMode: !environment.production , selectorOptions: { injectContainerState: false, suppressErrors: false}}),
     NgxsLoggerPluginModule.forRoot(),
     DeveloperToolbarModule,
@@ -64,6 +70,9 @@ export function getAppBaseHref(doc: Document): string {
       multi: true,
       deps: [BootstrapService]
     }
+  ],
+  entryComponents: [
+    LoaderComponent
   ],
   bootstrap: [AppComponent]
 })

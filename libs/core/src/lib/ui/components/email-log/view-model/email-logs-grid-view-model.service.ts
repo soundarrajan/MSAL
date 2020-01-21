@@ -1,22 +1,22 @@
-import { ChangeDetectorRef, Inject, Injectable, Input } from "@angular/core";
-import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
-import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
-import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
-import { AppError } from "@shiptech/core/error-handling/app-error";
-import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { EmailLogsListColumns, EmailLogsListColumnServerKeys, EmailLogsListColumnsLabels } from "./email-logs-list.columns";
-import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
-import { TenantFormattingService } from "@shiptech/core/services/formatting/tenant-formatting.service";
-import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
-import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
-import { IEmailLogsApiService } from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
-import { EMAIL_LOGS_API_SERVICE } from "@shiptech/core/services/masters-api/email-logs-api.service";
-import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
-import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
-import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
-import { takeUntil } from "rxjs/operators";
+import {ChangeDetectorRef, Inject, Injectable, Input} from "@angular/core";
+import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
+import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
+import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
+import {AppError} from "@shiptech/core/error-handling/app-error";
+import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
+import {EmailLogsListColumns, EmailLogsListColumnServerKeys, EmailLogsListColumnsLabels} from "./email-logs-list.columns";
+import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
+import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
+import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
+import {IEmailLogsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
+import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
+import {AgCellTemplateComponent} from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
+import {IEmailLogsApiService} from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
+import {EMAIL_LOGS_API_SERVICE} from "@shiptech/core/services/masters-api/email-logs-api.service";
+import {ServerQueryFilter} from "@shiptech/core/grid/server-grid/server-query.filter";
+import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
+import {takeUntil} from "rxjs/operators";
+import {EmailStatusLookup} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -92,8 +92,8 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.name,
     cellClass: 'cell-background',
     cellStyle: params => ({
-      backgroundColor: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : params.data?.status?.code,
-      color: params.data?.status?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
+      backgroundColor: this.emailStatusLookpup.returnObject(params.data?.status?.name).code ? this.emailStatusLookpup.returnObject(params.data?.status?.name).code : '#fff',
+      color: this.emailStatusLookpup.returnObject(params.data?.status?.name).code ? '#fff' : '#555'
     }),
     minWidth: 100,
     flex: 2
@@ -168,10 +168,12 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     loggerFactory: LoggerFactory,
     @Inject(EMAIL_LOGS_API_SERVICE) private emailLogsApi: IEmailLogsApiService,
     private format: TenantFormattingService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private emailStatusLookpup: EmailStatusLookup
   ) {
     super("email-logs-grid", columnPreferences, changeDetector, loggerFactory.createLogger(EmailLogsGridViewModel.name));
     this.init(this.gridOptions, false);
+    this.emailStatusLookpup.load();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -185,14 +187,13 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
         value: this.entityName
       }];
 
-    this.emailLogsApi.getEmailLogs({ ...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters })
+    this.emailLogsApi.getEmailLogs({...transformLocalToServeGridInfo(this.gridApi, params, EmailLogsListColumnServerKeys), filters})
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-      response => params.successCallback(response.payload, response.matchedCount),
-      () => {
-        this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);
-        params.failCallback();
-      });
+        response => params.successCallback(response.payload, response.matchedCount),
+        () => {
+          this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);
+          params.failCallback();
+        });
   }
-
 }
