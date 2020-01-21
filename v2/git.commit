@@ -1,7 +1,7 @@
-﻿commit 1493d31fb776b08a0c548149f17067bf4b32e3ae
-Author: Radu Coman <radu.coman@24software.ro>
-Date:   Tue Jan 21 11:19:11 2020 +0200
+﻿commit 6b564273ce6a4f9aad3037995e480069b9e62fba
+Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
+Date:   Tue Jan 21 12:13:23 2020 +0200
 
-    fix autofocus bug on global search
+    Fixed dev toolbar missing length check
 
 branch: master
