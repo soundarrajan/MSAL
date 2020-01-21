@@ -1,7 +1,12 @@
-﻿commit 812851d180678dd2ff4dc9455cfa579bf91688dd
+﻿commit f5414a570b459da417d9f7a74b17e2aca98b7a6d
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Tue Jan 21 14:31:40 2020 +0200
+Date:   Tue Jan 21 23:15:02 2020 +0200
 
-    Qc Verified reports are read-only
+    New feature AgGrid custom Checkbox selection column and header for server side row models.
+    Fixed qc report details props undefined race condition prod/dev
+    Fixed dev toolbar showing for prod mode
+    Fixed ngxs logging module logging for prod mode
+    Foxed jsnlog ajax appender still working for prod mode.
+    Fixed qc report details router guard not loading when prod mode and props are dynamic
 
 branch: master

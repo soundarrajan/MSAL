@@ -23,14 +23,14 @@ export const LoggerSettings: ILoggerSettings = {
 
 const rootAjaxAppenderReady = new ReplaySubject<JL.JSNLogAjaxAppenderOptions>(1);
 const rootAjaxAppender = new LazyAjaxAppender('GlobalAjaxAppender', rootAjaxAppenderReady);
+const rootConsoleAppender = new StructuredConsoleAppender('StructuredConsole');
 
 function createRootLogger(): JL.JSNLogLogger {
   const logger = JL();
 
-  // TODO: Disabled until we have a backend service which saves logs
-  // logger.setOptions({
-  //   appenders: [rootAjaxAppender]
-  // });
+   logger.setOptions({
+     appenders: [rootConsoleAppender]
+   });
 
   return logger;
 }
@@ -47,13 +47,6 @@ export class LoggerFactory implements ILoggerFactory {
   constructor(protected appContext: AppContext) {}
 
   public init(settings: ILoggerSettings): void {
-    if (settings.developmentMode) {
-      jsnLogLogger.setOptions({
-        //appenders: [new StructuredConsoleAppender('StructuredConsole'), rootAjaxAppender]
-        appenders: [new StructuredConsoleAppender('StructuredConsole')]
-      });
-    }
-
     // rootAjaxAppenderReady.next({
     //   bufferSize: 20,
     //   storeInBufferLevel: 1000,

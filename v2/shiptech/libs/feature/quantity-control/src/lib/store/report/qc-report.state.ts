@@ -60,11 +60,11 @@ export class QcReportState {
   @Selector([QcReportState])
   static isBusy(state: IQcReportState): boolean {
     const isBusy = [
-      state.details._isLoading,
-      state.details.isSaving,
-      state.details.isVerifying,
-      state.details.isRevertVerifying,
-      state.details.isUpdatingPortCallBtn
+      state.details?._isLoading,
+      state.details?.isSaving,
+      state.details?.isVerifying,
+      state.details?.isRevertVerifying,
+      state.details?.isUpdatingPortCallBtn
     ];
     return isBusy.some(s => s);
   }
@@ -81,17 +81,17 @@ export class QcReportState {
 
   @Selector([QcReportState])
   static isNew(state: IQcReportState): boolean {
-    return state.details.isNew;
+    return state.details?.isNew;
   }
 
   @Selector([QcReportState])
   static hasChanges(state: IQcReportState): boolean {
-    return state.details.hasChanges;
+    return state.details?.hasChanges;
   }
 
   @Selector([QcReportState])
   static reportDetailsId(state: IQcReportState): number {
-    return state.details.id;
+    return state.details?.id;
   }
 
   @Selector([QcReportState])
@@ -126,17 +126,17 @@ export class QcReportState {
 
   @Selector([QcReportState])
   static nbOfMatched(state: IQcReportState): number {
-    return state.details.surveyHistory.nbOfMatched;
+    return state.details?.surveyHistory?.nbOfMatched;
   }
 
   @Selector([QcReportState])
   static nbOfMatchedWithinLimit(state: IQcReportState): number {
-    return state.details.surveyHistory.nbOfMatchedWithinLimit;
+    return state.details?.surveyHistory?.nbOfMatchedWithinLimit;
   }
 
   @Selector([QcReportState])
   static nbOfNotMatched(state: IQcReportState): number {
-    return state.details.surveyHistory.nbOfNotMatched;
+    return state.details?.surveyHistory?.nbOfNotMatched;
   }
 
   static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): ReconStatusLookupEnum | undefined {

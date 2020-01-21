@@ -8,12 +8,16 @@ import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
+import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
+import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AgGridExtensionsModule,
-    AgGridModule.withComponents([AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent]),
+    AgGridModule.withComponents([
+      AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent, AgCheckBoxHeaderComponent, AgCheckBoxRendererComponent
+    ]),
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
