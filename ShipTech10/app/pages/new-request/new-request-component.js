@@ -123,7 +123,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         }
 
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            ctrl.contractHasProduct = false;
+            // ctrl.contractHasProduct = false;
         });
 
         ctrl.defaultProductsTooltip = function () {

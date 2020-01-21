@@ -2216,14 +2216,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (typeof vm.changedfields[entityId] == "undefined") {
                         vm.changedfields[entityId] = {};
                     }
+                    // if (rowObject.id == 1) {
+                    // 	rowObject.isAssignedContract = true
+                    // }
                     vm.changedfields[rowObject.id]["isChecked"] = cellValue || rowObject.isAssignedContract;
                     if (!$rootScope.defaultSelectedBestContracts) {
                         $rootScope.defaultSelectedBestContracts = vm.changedfields;
                     }
-                    // if (rowObject.isAssignedContract) {
-                    //  $rootScope.$emit('best_contracts_checkbox', {isChecked: true});
-                       //  vm.checkChange(entityId);
-                    // }
+                    if (rowObject.isAssignedContract) {
+                        $rootScope.defaultSelectedBestContracts = vm.changedfields;
+                    }
 
                   
                     var tpl = "<input class='best_contracts_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + ");' /><label class='best_contracts_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";

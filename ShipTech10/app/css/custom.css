@@ -4181,8 +4181,8 @@ Uncomment to see border around all .col-*
 #gbox_flat_contract_planning table tbody tr td:nth-child(1),
 #gbox_flat_contract_planning table thead th:nth-child(2) .colMenu,
 #gbox_flat_contract_planning table thead th:nth-child(2) .ui-jqgrid-sortable,
-#gbox_flat_contract_planning table thead th:nth-child(3) .colMenu,
-#gbox_flat_contract_planning table thead th:nth-child(3) .ui-jqgrid-sortable{
+#gbox_flat_contract_planning table thead th:nth-child(2) .colMenu,
+#gbox_flat_contract_planning table thead th:nth-child(2) .ui-jqgrid-sortable{
     display: none;
 }
 

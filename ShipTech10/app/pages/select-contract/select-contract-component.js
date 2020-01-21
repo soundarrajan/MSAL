@@ -21,7 +21,7 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
         ctrl.productTabs = [];
         ctrl.isRequest = true;
 
-        ctrl.$onInit = function(){
+        ctrl.$onChanges = function(){
             // debugger;
             // $rootScope.defaultSelectedBestContracts = [];
             ctrl.checkboxes = [];
@@ -148,7 +148,7 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
         $rootScope.$on("gridDataDone", function(data,res) {
         	setTimeout(function(){
 	        	$rootScope.$broadcast('best_contracts_checkbox', $rootScope.defaultSelectedBestContracts);
-                $rootScope.defaultSelectedBestContracts = [];
+          //       $rootScope.defaultSelectedBestContracts = [];
         	})
     //     	setTimeout(function(){
 	   //          $scope.resetTreasuryCheckboxes();
@@ -352,7 +352,7 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
         }
 
 	    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-			ctrl.contractHasProduct = false;
+			// ctrl.contractHasProduct = false;
 	    });
 
 

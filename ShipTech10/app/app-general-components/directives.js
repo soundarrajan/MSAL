@@ -154,6 +154,9 @@ window.increment = 0;
 			                                            });
                                                         $rootScope.$broadcast("tableLayoutLoaded", initialLayout);
                                                         Layout = layout.clc;
+                                                        if (!Layout.rowActions) {
+                                                        	Layout.rowActions = [];
+                                                        }
                                                         Layout.rowActions = Layout.rowActions.concat(callback.clc.rowActions);
                                                         Layout.rowActions = _.uniqBy(Layout.rowActions, "label");
                                                         Layout.table_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase();
