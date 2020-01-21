@@ -1,1 +1,3 @@
-<p-checkbox binary="true" [ngModel]="isSelected" [readonly]="isReadOnly" *ngIf="isVisible" (onChange)="onSelected($event)"></p-checkbox>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <mat-checkbox class="checkboxField" [ngModel]="isSelected" (ngModelChange)="onSelected($event)" [disabled]="disabled" *ngIf="isVisible"></mat-checkbox>
+</div>

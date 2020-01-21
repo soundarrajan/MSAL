@@ -7,7 +7,7 @@ import { AgGridEventsEnum } from '../ag-grid.events';
 export interface IAgCheckBoxRendererParams<TData = any, TField = any> extends Partial<ITypedCellRendererParams<TData, TField>> {
   selectionChange?: (isSelected: boolean, params?: IAgCheckBoxRendererParams<TData, TField>) => void;
   isVisible?: (params?: IAgCheckBoxRendererParams<TData, TField>) => boolean;
-  isReadOnly?: (params?: IAgCheckBoxRendererParams<TData, TField>) => boolean;
+  disabled?: (params?: IAgCheckBoxRendererParams<TData, TField>) => boolean;
 }
 
 @Component({
@@ -20,7 +20,7 @@ export interface IAgCheckBoxRendererParams<TData = any, TField = any> extends Pa
 export class AgCheckBoxRendererComponent implements OnInit, OnDestroy, ICellRendererAngularComp {
   isSelected: boolean = false;
   isVisible: boolean = true;
-  isReadOnly: boolean = false;
+  disabled: boolean = false;
 
   private _nodeId: string;
   private initParams: IAgCheckBoxRendererParams;
@@ -45,7 +45,7 @@ export class AgCheckBoxRendererComponent implements OnInit, OnDestroy, ICellRend
     this.gridApi = params.api;
     this._nodeId = params.node.id;
 
-    this.isReadOnly = this.initParams.isReadOnly?.(this.initParams) ?? false;
+    this.disabled = this.initParams.disabled?.(this.initParams) ?? false;
     this.isVisible = this.initParams.isVisible?.(this.initParams) ?? true;
     this.isSelected = params.node.isSelected();
 
@@ -72,7 +72,7 @@ export class AgCheckBoxRendererComponent implements OnInit, OnDestroy, ICellRend
   refresh(params: any): boolean {
     /** Get the cell to refresh. Return true if successful. Return false if not (or you don't have refresh logic),
      * then the grid will refresh the cell for you. */
-    this.isReadOnly = this.initParams.isReadOnly?.(this.initParams) ?? false;
+    this.disabled = this.initParams.disabled?.(this.initParams) ?? false;
     this.isVisible = this.initParams.isVisible?.(this.initParams) ?? true;
 
     this.changeDetector.markForCheck();
