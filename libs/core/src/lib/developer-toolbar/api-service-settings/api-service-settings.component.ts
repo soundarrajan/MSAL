@@ -266,7 +266,7 @@ export class ApiServiceSettingsComponent implements OnDestroy {
   updateOverrideAll(): void {
     const allSameValue = this.methods.every((method, i, arr) => method.settings.apiUrl === arr[0].settings.apiUrl);
 
-    this.overrideAllUrls = allSameValue ? this.methods[0].settings.apiUrl : undefined;
+    this.overrideAllUrls = this.methods.length > 0 && allSameValue ? this.methods[0].settings.apiUrl : undefined;
     this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
   }
 
