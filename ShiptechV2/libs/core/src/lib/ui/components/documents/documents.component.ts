@@ -58,7 +58,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               private appErrorHandler: AppErrorHandler,
               private toastrService: ToastrService,
               private confirmationService: ConfirmationService,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -69,10 +70,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   uploadFile(event: FileUpload): void {
-    if (!this.selectedDocumentType) {
+    if (!this.selectedDocumentType || !this.checkDocumentTypeSelected()) {
       this.appErrorHandler.handleError(AppError.DocumentTypeNotSelected);
       this.clearUploadedFiles();
     } else {
+      console.log(this.selectedDocumentType);
       const requestPayload: IDocumentsCreateUploadRequest = {
         Payload: {
           name: event.files[0].name,
@@ -103,6 +105,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkDocumentTypeSelected(): boolean {
+    return Object.values(this.selectedDocumentType).every((value: string | number) => value);
+  }
+
   documentTypeSelection(event: IDisplayLookupDto): void {
     this.selectedDocumentType = event;
   }
@@ -124,7 +130,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       file = response;
     }, (error) => {
       this.appErrorHandler.handleError(AppError.DocumentDownloadError);
-      if(error?.error?.text) {
+      if (error?.error?.text) {
         file = new Blob([error.error.text]);
       }
     }, () => {
@@ -165,6 +171,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         };
         this.mastersApi.updateNotesDocument(request).subscribe(
           () => {
+            this.toastrService.success('Successfully updated note');
           },
           () => {
             this.appErrorHandler.handleError(AppError.UpdateNotesDocumentFailed);
@@ -173,7 +180,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           });
       }
     });
-
   }
 
   deleteDocument(id: number): void {

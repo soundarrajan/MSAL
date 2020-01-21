@@ -27,6 +27,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly vessel: Dexie.Table<IDisplayLookupDto, number>;
   readonly reconMatch: Dexie.Table<IReconStatusLookupDto, number>;
   readonly documentType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly emailStatus: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -59,7 +60,8 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('status')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('vessel')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('reconMatch')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('documentType')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>('documentType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('emailStatus')]: lookupSchema,
     };
   }
 
