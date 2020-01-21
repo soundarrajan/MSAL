@@ -64,7 +64,7 @@ import {
   ToolbarModule,
   TooltipModule,
   TreeModule,
-  TreeTableModule
+  TreeTableModule, TriStateCheckboxModule
 } from 'primeng/primeng';
 import { PortalModule } from '@angular/cdk/portal';
 import { TableModule } from 'primeng/table';
@@ -143,7 +143,8 @@ const MODULES = [
   TreeTableModule,
   VirtualScrollerModule,
   KeyFilterModule,
-  PortalModule
+  PortalModule,
+  TriStateCheckboxModule
 ];
 
 @NgModule({

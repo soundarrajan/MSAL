@@ -1,6 +1,6 @@
-import { AppErrorHandlingStrategy } from "./app-error-handling-strategy";
-import { AppErrorCode } from "./app-error-codes";
-import { TenantSettingsModuleName } from "@shiptech/core/store/states/tenant/tenant-settings.interface";
+import { AppErrorHandlingStrategy } from './app-error-handling-strategy';
+import { AppErrorCode } from './app-error-codes';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 export interface IAppError<T = any> {
   readonly message?: string;
@@ -12,16 +12,13 @@ export interface IAppError<T = any> {
 
 export class AppError<T = any> implements IAppError {
   static readonly Unknown: AppError = new AppError();
-  static readonly UnknownServerError: AppError = new AppError({code: AppErrorCode.ServerUnknown});
-  static readonly Unauthorized: AppError = new AppError({message: 'You do not have sufficient privileges to perform the requested action.'});
+  static readonly UnknownServerError: AppError = new AppError({ code: AppErrorCode.ServerUnknown });
+  static readonly Unauthorized: AppError = new AppError({ message: 'You do not have sufficient privileges to perform the requested action.' });
   static readonly FailedToSaveUserSettings = new AppError({
     code: AppErrorCode.FailedToSaveUserSettings,
     message: 'Could not save User Settings.'
   });
-  static readonly FailedToLoadUserSettings = new AppError({
-    code: AppErrorCode.FailedToLoadUserSettings,
-    message: 'Could not load User Settings.'
-  });
+
   static readonly FailedToPurgeUserSettings = new AppError({
     code: AppErrorCode.FailedToPurgeUserSettings,
     message: 'Could not purge User Settings.'
@@ -73,7 +70,7 @@ export class AppError<T = any> implements IAppError {
   readonly message: string;
   readonly treatAsWarning: boolean;
 
-  constructor({code, data, handleStrategy, treatAsWarning, message}: Partial<IAppError> = {}) {
+  constructor({ code, data, handleStrategy, treatAsWarning, message }: Partial<IAppError> = {}) {
     this.code = code || AppErrorCode.Unknown;
     this.data = data;
     this.handleStrategy = handleStrategy || AppErrorHandlingStrategy.Toastr;
@@ -90,11 +87,11 @@ export class AppError<T = any> implements IAppError {
   }
 
   static UnknownWithData<T = any>(data: T): AppError<T> {
-    return new AppError<T>({data});
+    return new AppError<T>({ data });
   }
 
   static UnknownServerErrorWithData<T = any>(data: T): AppError<T> {
-    return new AppError<T>({code: AppErrorCode.ServerUnknown, data});
+    return new AppError<T>({ code: AppErrorCode.ServerUnknown, data });
   }
 
 
@@ -125,4 +122,12 @@ export class AppError<T = any> implements IAppError {
       message: `Could not load ${masterName} master data. Please retry.`
     });
   };
+
+  static FailedToLoadUserSettings(exception: any): AppError {
+    return new AppError({
+      code: AppErrorCode.FailedToLoadUserSettings,
+      message: 'Could not load User Settings.',
+      data: exception
+    });
+  }
 }
