@@ -58,6 +58,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   matchStatus$: Observable<IReconStatusLookupDto>;
 
+  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
   @Select(QcReportState.isNew) isNew$: Observable<boolean>;
 
