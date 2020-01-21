@@ -40,6 +40,7 @@ import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -66,6 +67,16 @@ export class QcReportState {
       state.details.isUpdatingPortCallBtn
     ];
     return isBusy.some(s => s);
+  }
+
+  @Selector([QcReportState])
+  static isVerified(state: IQcReportState): boolean {
+    return state?.details?.status?.name === StatusLookupEnum.Verified;
+  }
+
+  @Selector([QcReportState.isBusy, QcReportState.isVerified])
+  static isReadOnly(isBusy: boolean, isVerified: boolean): boolean {
+    return isBusy || isVerified;
   }
 
   @Selector([QcReportState])

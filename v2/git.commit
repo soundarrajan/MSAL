@@ -1,7 +1,7 @@
-﻿commit 6b564273ce6a4f9aad3037995e480069b9e62fba
+﻿commit 812851d180678dd2ff4dc9455cfa579bf91688dd
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Tue Jan 21 12:13:23 2020 +0200
+Date:   Tue Jan 21 14:31:40 2020 +0200
 
-    Fixed dev toolbar missing length check
+    Qc Verified reports are read-only
 
 branch: master
