@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
+  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
 
   constructor(public viewModel: ProductDetailsViewModel) {
   }
