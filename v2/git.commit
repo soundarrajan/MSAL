@@ -1,7 +1,7 @@
-﻿commit 5ec99c7bdce91464c7bb9ef1374411718eb431ad
-Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Mon Jan 20 20:18:08 2020 +0200
+﻿commit 1493d31fb776b08a0c548149f17067bf4b32e3ae
+Author: Radu Coman <radu.coman@24software.ro>
+Date:   Tue Jan 21 11:19:11 2020 +0200
 
-    QC report table- Focus for UOM dropdown is not in place (focus placed in M instead of dropdown)
+    fix autofocus bug on global search
 
 branch: master
