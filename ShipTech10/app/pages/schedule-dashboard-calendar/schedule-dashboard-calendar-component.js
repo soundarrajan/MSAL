@@ -742,6 +742,9 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
             dataJSON = JSON.parse('{ "vessels": [' + data + "]}");
             var bunkerPlans = JSON.parse('{ "bunkerPlans": [' + ctrl.calendarData.bunkerPlans + "]}").bunkerPlans;
+            if (!bunkerPlans[0]) {
+            	bunkerPlans = [];
+            }
             ctrl.voyagesStrategyGrouped = ctrl.checkIfHasStrategyOptimized(dataJSON.vessels);
             dates = angular.copy(calendarDates);
             var result = [],
