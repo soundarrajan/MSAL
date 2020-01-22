@@ -14,6 +14,8 @@ import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.int
 import { IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import { ToastrService } from "ngx-toastr";
 import { DocumentsAutocompleteComponent } from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
+import { FileSaverService } from "ngx-filesaver";
+import { DatabaseManipulation, DatabaseManipulationEnum } from "@shiptech/core/legacy-cache/database-manipulation.service";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
 import { values } from "lodash";
 
@@ -58,7 +60,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               private appErrorHandler: AppErrorHandler,
               private toastrService: ToastrService,
               private confirmationService: ConfirmationService,
-              private dialogService: DialogService
+              private dialogService: DialogService,
+              private _FileSaverService: FileSaverService,
+              private databaseManipulation: DatabaseManipulation
   ) {
   }
 
@@ -120,22 +124,17 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
-  downloadDocument(id: number): any {
-    let file = new Blob();
+  downloadDocument(id: number, name: string): any {
+    this.databaseManipulation.getStatusIdByName(DatabaseManipulationEnum.Status, "Sent").then((result) => console.log(result));
+    this.databaseManipulation.getStatusColorFromDashboard(1, 2).then((result) => console.log(result));
     const request = {
       Payload: id
     };
     this.mastersApi.downloadDocument(request).subscribe((response) => {
-      file = response;
-    }, (error) => {
-      this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
-      if (error?.error?.text) {
-        file = new Blob([error.error.text]);
-      }
+      this._FileSaverService.save(response, name);
     }, () => {
+      this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
     });
-    const fileUrl = URL.createObjectURL(file);
-    window.open(fileUrl);
   }
 
   updateIsVerifiedDocument(item: IDocumentsItemDto, isChecked: boolean): void {

@@ -1,22 +1,22 @@
-import { ChangeDetectorRef, Inject, Injectable, Input } from "@angular/core";
-import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
-import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
-import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
-import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
-import { TenantFormattingService } from "@shiptech/core/services/formatting/tenant-formatting.service";
-import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
-import { DocumentsListColumns, DocumentsListColumnServerKeys, DocumentsListColumnsLabels } from "./documents-list.columns";
-import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
-import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
-import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
-import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
-import { takeUntil } from "rxjs/operators";
-import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
-import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
+import {ChangeDetectorRef, Inject, Injectable, Input} from "@angular/core";
+import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
+import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
+import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
+import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
+import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
+import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
+import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
+import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
+import {DocumentsListColumns, DocumentsListColumnServerKeys, DocumentsListColumnsLabels} from "./documents-list.columns";
+import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
+import {DOCUMENTS_API_SERVICE} from "@shiptech/core/services/masters-api/documents-api.service";
+import {IDocumentsApiService} from "@shiptech/core/services/masters-api/documents-api.service.interface";
+import {ServerQueryFilter} from "@shiptech/core/grid/server-grid/server-query.filter";
+import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
+import {AgCellTemplateComponent} from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
+import {takeUntil} from "rxjs/operators";
+import {BooleanFilterParams} from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
+import {ModuleError} from "@shiptech/core/ui/components/documents/error-handling/module-error";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -109,8 +109,9 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.name,
     field: model("name"),
     cellRendererFramework: AgCellTemplateComponent,
+    cellClass: 'download-document',
     minWidth: 200,
-    flex:2
+    flex: 2
   };
 
   sizeCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -118,7 +119,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.size,
     field: model("size"),
     minWidth: 80,
-    flex:2
+    flex: 2
   };
 
   documentTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -127,7 +128,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("documentType"),
     valueFormatter: params => params.value?.name,
     minWidth: 300,
-    flex:2
+    flex: 2
   };
 
   fileTypeCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -135,7 +136,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.fileType,
     field: model("fileType"),
     minWidth: 130,
-    flex:2
+    flex: 2
   };
 
   transactionTypeCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -144,7 +145,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("transactionType"),
     valueFormatter: params => params.value?.name,
     minWidth: 200,
-    flex:2
+    flex: 2
   };
 
   referenceNoCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -152,7 +153,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     colId: DocumentsListColumns.referenceNo,
     field: model("referenceNo"),
     minWidth: 130,
-    flex:2
+    flex: 2
   };
 
   uploadedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -161,7 +162,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("uploadedBy"),
     valueFormatter: params => params.value?.name,
     minWidth: 300,
-    flex:2
+    flex: 2
   };
 
   uploadedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -171,7 +172,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
     minWidth: 180,
-    flex:2
+    flex: 2
   };
 
   notesCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -180,7 +181,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("notes"),
     cellRendererFramework: AgCellTemplateComponent,
     minWidth: 150,
-    flex:2
+    flex: 2
   };
 
   isVerifiedCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -193,7 +194,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
       ...BooleanFilterParams
     },
     minWidth: 90,
-    flex:2
+    flex: 2
   };
 
   verifiedOnCol: ITypedColDef<IDocumentsItemDto, string> = {
@@ -203,7 +204,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     filter: "agDateColumnFilter",
     valueFormatter: params => this.format.date(params.value),
     minWidth: 150,
-    flex:2
+    flex: 2
   };
 
   verifiedByCol: ITypedColDef<IDocumentsItemDto, IDisplayLookupDto> = {
@@ -212,7 +213,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     field: model("verifiedBy"),
     valueFormatter: params => params.value?.name,
     minWidth: 200,
-    flex:2
+    flex: 2
   };
 
   constructor(
@@ -255,13 +256,13 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
         columnName: "ReferenceNo",
         value: this.entityId.toString(10)
       }];
-    this.documentsApi.getDocumentList({ ...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters })
+    this.documentsApi.getDocumentList({...transformLocalToServeGridInfo(this.gridApi, params, DocumentsListColumnServerKeys), filters})
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-      response => params.successCallback(response.payload, response.matchedCount),
-      () => {
-        this.appErrorHandler.handleError(ModuleError.LoadDocumentsFailed);
-        params.failCallback();
-      });
+        response => params.successCallback(response.payload, response.matchedCount),
+        () => {
+          this.appErrorHandler.handleError(ModuleError.LoadDocumentsFailed);
+          params.failCallback();
+        });
   }
 }
