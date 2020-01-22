@@ -130,6 +130,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   protected getSettingsCached(url: string): Observable<IUserSettingResponse> {
     return this.http.get<IUserSettingResponse>(url, {
       observe: 'response',
+      // Note: If the interceptor is not installed, the header will go through which might break CORS allowed headers
       headers: { [LoggingInterceptorHeader]: '404' }
     }).pipe(
       catchError(response =>
