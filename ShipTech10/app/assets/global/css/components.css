@@ -7704,8 +7704,8 @@ Custom color buttons
 }
 
 .mt-radio.mt-radio-outline:hover>input:not([disabled])~span, .mt-radio.mt-radio-outline>input:focus~span, .mt-radio.mt-checkbox-outline:hover>input:not([disabled])~span, .mt-radio.mt-checkbox-outline>input:focus~span, .mt-checkbox.mt-radio-outline:hover>input:not([disabled])~span, .mt-checkbox.mt-radio-outline>input:focus~span, .mt-checkbox.mt-checkbox-outline:hover>input:not([disabled])~span, .mt-checkbox.mt-checkbox-outline>input:focus~span {
-    border: 1px solid #d9d9d9;
-    background: none;
+    /*border: 1px solid #d9d9d9;*/
+    background: #fff;
 }
 
 .mt-radio.mt-radio-outline>input:checked~span, .mt-radio.mt-checkbox-outline>input:checked~span, .mt-checkbox.mt-radio-outline>input:checked~span, .mt-checkbox.mt-checkbox-outline>input:checked~span {
