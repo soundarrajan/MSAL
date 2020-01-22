@@ -18,7 +18,7 @@ export class AppComponent {
   constructor(router: Router, changeDetector: ChangeDetectorRef) {
     router.events.subscribe(
       (event: RouterEvent): void => {
-        if ((event instanceof NavigationEnd) || (event instanceof  NavigationCancel) || (event instanceof  NavigationError)) {
+        if ((event instanceof NavigationEnd) || (event instanceof NavigationCancel) || (event instanceof NavigationError)) {
           this.isLoading = false;
           changeDetector.markForCheck();
         }

@@ -5,5 +5,4 @@ export interface IDocumentsUpdateIsVerifiedRequest {
 }
 
 export interface IDocumentsUpdateIsVerifiedResponse {
-  matchedCount: number;
 }

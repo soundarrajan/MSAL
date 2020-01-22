@@ -8,6 +8,7 @@ import { LegacyLookupsDatabase } from './legacy-lookups-database.service';
 import { AppConfig } from '../config/app-config';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
+import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
 
 interface ILegacyListStatus {
   name: string;
@@ -90,6 +91,13 @@ export class LookupsCacheService {
       .filter(s => lookupsToUpdate.some(l => s.name.toUpperCase() === l.toUpperCase()))
       .map(s => {
         const tableName = this.mapToTableName(s.name);
+        if(tableName === 'scheduleDashboardLabelConfiguration') {
+          let counter = 0;
+          s.items.forEach((item: IScheduleDashboardLabelConfigurationDto) => {
+            item.index = counter;
+            counter++;
+          });
+        }
         return { ...s, name: tableName, table: this.db.table(tableName) };
       });
 

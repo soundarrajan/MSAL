@@ -1,7 +1,7 @@
-﻿commit 60a38cf56df26446f8232f58b0f2ba5d175f214e
-Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Wed Jan 22 11:21:03 2020 +0200
+﻿commit 5bad00ac3e86181480d1841595fedd321bfa549a
+Author: Radu.coman <Radu.coman@24software.ro>
+Date:   Wed Jan 22 13:35:52 2020 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 2555: email-audit-documents(documents-updated)
 
 branch: master
