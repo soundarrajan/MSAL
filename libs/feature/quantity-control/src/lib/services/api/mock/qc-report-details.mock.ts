@@ -34,7 +34,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       id: 0,
       nbOfClaims: 0,
       nbOfDeliveries: 0,
-      hasEmailSent: false,
+      hasSentEmail: false,
       status: MockStatusLookupEnumMap[StatusLookupEnum.New],
       uoms: {
         options: mockUomsLookup
@@ -81,7 +81,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       }
     },
     comments: random.words(random.number({ min: 10, max: 40 })),
-    hasEmailSent: random.boolean(),
+    hasSentEmail: random.boolean(),
     emailTransactionTypeId: random.number()
   };
 }

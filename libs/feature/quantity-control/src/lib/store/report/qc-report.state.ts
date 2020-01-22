@@ -371,7 +371,7 @@ export class QcReportState {
           vessel: detailsDto.vessel || undefined,// Note: BE returns null, we want to stay consistent and not trigger any selectors
           portCall: detailsDto.portCall || undefined, // Note: BE returns null, we want to stay consistent and not trigger any selectors
           productTypes: detailsDto.productTypeCategories.map(c => c.productType.id),
-          hasEmailSent: detailsDto.hasEmailSent,
+          hasSentEmail: detailsDto.hasSentEmail,
           productTypesById: productTypesMap,
           uoms: detailsDto.uoms.options,
           comment: detailsDto.comments,
@@ -597,7 +597,7 @@ export class QcReportState {
   revertVerifyReportAction({getState, patchState}: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): void {
     const state = getState();
 
-    if (isAction(action, QcVerifyReportAction)) {
+    if (isAction(action, QcRevertVerifyReportAction)) {
       patchState({
         details: {...state.details, isRevertVerifying: true}
       });
@@ -605,7 +605,7 @@ export class QcReportState {
       patchState({
         details: {
           ...state.details,
-          status: state.details.hasEmailSent ? this.surveyStatusLookups.pending : this.surveyStatusLookups.new,
+          status: state.details.hasSentEmail ? this.surveyStatusLookups.pending : this.surveyStatusLookups.new,
           isRevertVerifying: false
         }
       });
