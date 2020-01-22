@@ -11,7 +11,7 @@ import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-r
 import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
 import { FileUpload } from "primeng/fileupload";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
+import { IDocumentsCreateUploadDetails, IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import { ToastrService } from "ngx-toastr";
 import { DocumentsAutocompleteComponent } from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
 import { FileSaverService } from "ngx-filesaver";
@@ -76,18 +76,19 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
       this.clearUploadedFiles();
     } else {
-      const requestPayload: IDocumentsCreateUploadRequest = {
-        Payload: {
-          name: event.files[0].name,
-          documentType: this.selectedDocumentType,
-          size: event.files[0].size,
-          fileType: event.files[0].type,
-          referenceNo: this.entityId,
-          transactionType: {
-            id: 0,
-            name: this.entityName
-          }
+      const item: IDocumentsCreateUploadDetails = {
+        name: event.files[0].name,
+        documentType: this.selectedDocumentType,
+        size: event.files[0].size,
+        fileType: event.files[0].type,
+        referenceNo: this.entityId,
+        transactionType: {
+          id: 0,
+          name: this.entityName
         }
+      };
+      const requestPayload: IDocumentsCreateUploadRequest = {
+        Payload: item
       };
       const formRequest: FormData = new FormData();
       formRequest.append("file", event.files[0]);

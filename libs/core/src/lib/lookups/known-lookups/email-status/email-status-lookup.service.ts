@@ -55,6 +55,7 @@ export class EmailStatusLookup {
   }
 
   public toEmailStatus(status: EmailStatusLookupEnum): IEmailStatusLookupDto | undefined {
+
     if (status === null || status === undefined)
       return undefined;
 
@@ -66,7 +67,10 @@ export class EmailStatusLookup {
       case EmailStatusLookupEnum.Pending:
         return this._pending;
       default:
-        return null;
+        return <IEmailStatusLookupDto> {
+          name: <string>status,
+          code: '#fff'
+        };
     }
   }
 }

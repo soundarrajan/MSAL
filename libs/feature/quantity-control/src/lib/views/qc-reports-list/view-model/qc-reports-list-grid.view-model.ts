@@ -129,8 +129,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
-      backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : this.statusLookup.getStatusByName(params.data?.surveyStatus?.name).code,
-      color: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
+      backgroundColor: this.statusLookup.getStatusByName(params.data?.surveyStatus?.name).code,
+      color: '#fff'
     }),
     width: 85
   };
