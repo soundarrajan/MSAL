@@ -302,6 +302,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 { 
                     ColumnName: "ProductId", 
                     Value: product.product.id
+                },                
+                { 
+                    ColumnName: "OrderProductId", 
+                    Value: product.id
                 },
                 { 
                     ColumnName: "SellerId", 
