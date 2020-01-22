@@ -1,37 +1,36 @@
-
 <div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
   <div class="row">
     <div class="col-md-12 portlet-light">
-        <div class="row">
-          <div class="col-md-4 min-hgt-50">
-            <label>Document type</label>
-            <shiptech-documents-autocomplete #documentsAutoComplete>
-              <p-autoComplete (onSelect)="documentTypeSelection($event)"
-                              [disabled]="documentsAutoComplete.disabled"
-                              [readonly]="documentsAutoComplete.readonly"
-                              (completeMethod)="documentsAutoComplete.filter($event.query)"
-                              [suggestions]="documentsAutoComplete.suggestions"
-                              [size]="30"
-                              [dataKey]="documentsAutoComplete.dataKey"
-                              [field]="documentsAutoComplete.field"
-                              [forceSelection]="true"
-                              [minLength]="0"
-                              placeholder="Document type">
-              </p-autoComplete>
-            </shiptech-documents-autocomplete>
-          </div>
-          <div class="col-md-8">
-            <div class="col-sm-6">
-              <div class="file-upload-zone">
-                <p-fileUpload #uploadComponent name="file2" customUpload="true" [auto]="true"
-                              (uploadHandler)="uploadFile($event)"
-                >
-                </p-fileUpload>
-                <h3>Drop files here or click to upload</h3>
-              </div>
+      <div class="row">
+        <div class="col-md-4 min-hgt-50">
+          <label>Document type</label>
+          <shiptech-documents-autocomplete #documentsAutoComplete>
+            <p-autoComplete (onSelect)="documentTypeSelection($event)"
+                            [disabled]="documentsAutoComplete.disabled"
+                            [readonly]="documentsAutoComplete.readonly"
+                            (completeMethod)="documentsAutoComplete.filter($event.query)"
+                            [suggestions]="documentsAutoComplete.suggestions"
+                            [size]="30"
+                            [dataKey]="documentsAutoComplete.dataKey"
+                            [field]="documentsAutoComplete.field"
+                            [forceSelection]="true"
+                            [minLength]="0"
+                            placeholder="Document type">
+            </p-autoComplete>
+          </shiptech-documents-autocomplete>
+        </div>
+        <div class="col-md-8">
+          <div class="col-sm-6">
+            <div class="file-upload-zone">
+              <p-fileUpload #uploadComponent name="file2" customUpload="true" [auto]="true"
+                            (uploadHandler)="uploadFile($event)"
+              >
+              </p-fileUpload>
+              <h3>Drop files here or click to upload</h3>
             </div>
           </div>
         </div>
+      </div>
 
     </div>
   </div>
@@ -81,7 +80,7 @@
 </ng-template>
 
 <ng-template [columnDef]="[gridViewModel.nameCol]" appAgCellTemplate let-data="data" let-value="value">
-  <span (click)="downloadDocument(data.id)">{{data?.name}}</span>
+  <span (click)="downloadDocument(data.id, data?.name)">{{data?.name}}</span>
 </ng-template>
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedCol]" appAgCellTemplate let-data="data" let-value="value">

@@ -1,21 +1,24 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { Subject } from "rxjs";
-import { DocumentsGridViewModel } from "./view-model/documents-grid-view-model.service";
-import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
-import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
-import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
-import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
-import { ConfirmationService, DialogService } from "primeng/primeng";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
-import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
-import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
-import { FileUpload } from "primeng/fileupload";
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
-import { ToastrService } from "ngx-toastr";
-import { DocumentsAutocompleteComponent } from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
-import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
+import {ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Subject} from "rxjs";
+import {DocumentsGridViewModel} from "./view-model/documents-grid-view-model.service";
+import {DOCUMENTS_API_SERVICE} from "@shiptech/core/services/masters-api/documents-api.service";
+import {IDocumentsApiService} from "@shiptech/core/services/masters-api/documents-api.service.interface";
+import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
+import {IDocumentsUpdateIsVerifiedRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
+import {IDocumentsDeleteRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
+import {ConfirmationService, DialogService} from "primeng/primeng";
+import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
+import {DocumentViewEditNotesComponent} from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
+import {IDocumentsUpdateNotesRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
+import {FileUpload} from "primeng/fileupload";
+import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
+import {IDocumentsCreateUploadRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
+import {ToastrService} from "ngx-toastr";
+import {DocumentsAutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
+import {FileSaverService} from "ngx-filesaver";
+import {DatabaseManipulation, DatabaseManipulationEnum} from "@shiptech/core/legacy-cache/database-manipulation.service";
+import {LegacyLookupsDatabase} from "@shiptech/core/legacy-cache/legacy-lookups-database.service";
+import {ModuleError} from "@shiptech/core/ui/components/documents/error-handling/module-error";
 
 @Component({
   selector: "shiptech-documents",
@@ -31,8 +34,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   private _entityName: string;
   private selectedDocumentType: IDisplayLookupDto;
 
-  @ViewChild("uploadComponent", { static: false }) uploadedFiles: FileUpload;
-  @ViewChild("documentsAutoComplete", { static: false }) inputAutoComplete: DocumentsAutocompleteComponent;
+  @ViewChild('uploadComponent', {static: false}) uploadedFiles: FileUpload;
+  @ViewChild('documentsAutoComplete', {static: false}) inputAutoComplete: DocumentsAutocompleteComponent;
 
 
   get entityId(): number {
@@ -58,7 +61,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               private appErrorHandler: AppErrorHandler,
               private toastrService: ToastrService,
               private confirmationService: ConfirmationService,
-              private dialogService: DialogService
+              private dialogService: DialogService,
+              private _FileSaverService: FileSaverService,
+              private databaseManipulation: DatabaseManipulation
   ) {
   }
 
@@ -88,10 +93,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         }
       };
       const formRequest: FormData = new FormData();
-      formRequest.append("file", event.files[0]);
-      formRequest.append("request", JSON.stringify(requestPayload));
+      formRequest.append('file', event.files[0]);
+      formRequest.append('request', JSON.stringify(requestPayload));
       this.mastersApi.uploadFile(formRequest).subscribe(() => {
-        this.toastrService.success("Document saved !");
+        this.toastrService.success('Document saved !');
       }, () => {
         this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
         this.clearUploadedFiles();
@@ -120,22 +125,17 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
-  downloadDocument(id: number): any {
-    let file = new Blob();
+  downloadDocument(id: number, name: string): any {
+    this.databaseManipulation.getStatusIdByName(DatabaseManipulationEnum.Status, 'Sent').then((result) => console.log(result));
+    this.databaseManipulation.getStatusColorFromDashboard(1, 2).then((result) => console.log(result));
     const request = {
       Payload: id
     };
     this.mastersApi.downloadDocument(request).subscribe((response) => {
-      file = response;
-    }, (error) => {
-      this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
-      if (error?.error?.text) {
-        file = new Blob([error.error.text]);
-      }
+      this._FileSaverService.save(response, name);
     }, () => {
+      this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
     });
-    const fileUrl = URL.createObjectURL(file);
-    window.open(fileUrl);
   }
 
   updateIsVerifiedDocument(item: IDocumentsItemDto, isChecked: boolean): void {
@@ -159,9 +159,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       data: {
         comment: notes
       },
-      width: "580px",
+      width: '580px',
       showHeader: true,
-      header: "Comments"
+      header: 'Comments',
     });
     ref.onClose.subscribe((comment: string) => {
       if (comment && comment !== notes) {
@@ -171,7 +171,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         };
         this.mastersApi.updateNotesDocument(request).subscribe(
           () => {
-            this.toastrService.success("Successfully updated note");
+            this.toastrService.success('Successfully updated note');
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.UpdateNotesDocumentFailed);
@@ -185,10 +185,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   deleteDocument(id: number): void {
     this.confirmationService.confirm({
-      header: "Confirm",
-      message: "Are you sure you want to delete the document ?",
+      header: 'Confirm',
+      message: 'Are you sure you want to delete the document ?',
       accept: () => {
-        const request: IDocumentsDeleteRequest = { id };
+        const request: IDocumentsDeleteRequest = {id};
         this.mastersApi.deleteDocument(request).subscribe(
           () => {
           },
