@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 export class EventsLogComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
-  @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
+  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
 
   constructor(public gridViewModel: EventsLogGridViewModel,
               private detailsService: QcReportService,

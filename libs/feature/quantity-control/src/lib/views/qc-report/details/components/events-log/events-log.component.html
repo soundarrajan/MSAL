@@ -19,7 +19,7 @@
              appAgColumnHeaderTemplate>
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center " class="event-add">
-      <p-button (onClick)="add()" icon="fa fa-plus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
+      <p-button (onClick)="add()" icon="fa fa-plus" iconPos="left" [disabled]="isReadOnly$ | async"></p-button>
     </div>
   </ng-container>
 </ng-template>
@@ -29,7 +29,7 @@
              appAgCellTemplate let-item="data">
   <ng-container>
     <div fxLayout="row" fxLayoutAlign="center center"  class="event-minus">
-      <p-button (onClick)="remove(item)" icon="fa fa-minus" iconPos="left" [disabled]="isBusy$ | async"></p-button>
+      <p-button (onClick)="remove(item)" icon="fa fa-minus" iconPos="left" [disabled]="isReadOnly$ | async"></p-button>
     </div>
   </ng-container>
 </ng-template>
@@ -43,7 +43,7 @@
                 (ngModelChange)="update(item, $event)"
                 [ngModelOptions]="{updateOn: 'blur'}"
                 [ngModel]="value"
-                [disabled]="isBusy$ | async"
+                [disabled]="isReadOnly$ | async"
                 class="editable-textarea"
       ></textarea>
     </div>

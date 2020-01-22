@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { ITypedColDef, RowModelType, RowSelection, TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
 import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
@@ -23,6 +23,8 @@ import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-st
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 import { takeUntil } from 'rxjs/operators';
+import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
+import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -53,6 +55,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
     multiSortKey: 'ctrl',
 
+    isRowSelectable: (params: TypedRowNode<IQcReportsListItemDto>) => params.data?.surveyStatus?.name !== StatusLookupEnum.Verified,
     enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: (data: IQcReportsListItemDto) => data?.id?.toString() ?? Math.random().toString(),
@@ -67,7 +70,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   selectCol: ITypedColDef<IQcReportsListItemDto> = {
     colId: QcReportsListColumns.selection,
     width: 50,
-    checkboxSelection: params => params.data?.surveyStatus?.name === StatusLookupEnum.New || params.data?.surveyStatus?.name === StatusLookupEnum.Pending,
+    ...AgCheckBoxHeaderComponent.withParams({ }),
+    ...AgCheckBoxRendererComponent.withParams<IQcReportsListItemDto>({
+      isVisible: params => params.data?.surveyStatus?.name !== StatusLookupEnum.Verified
+    }),
     editable: false,
     filter: false,
     sortable: false,
@@ -122,7 +128,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
-      backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : params.data?.surveyStatus?.code,
+      backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : params.data?.surveyStatus?.code ?? '#b388ff',
       color: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
     }),
     width: 85

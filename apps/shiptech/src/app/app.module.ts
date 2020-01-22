@@ -46,9 +46,8 @@ export function getAppBaseHref(doc: Document): string {
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
-
-    NgxsModule.forRoot([], { developmentMode: !environment.production , selectorOptions: { injectContainerState: false, suppressErrors: false}}),
-    NgxsLoggerPluginModule.forRoot(),
+    NgxsModule.forRoot([], { developmentMode: !environment.production, selectorOptions: { injectContainerState: false, suppressErrors: false } }),
+    NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     DeveloperToolbarModule,
     LoadingBarModule,
     LoadingBarRouterModule

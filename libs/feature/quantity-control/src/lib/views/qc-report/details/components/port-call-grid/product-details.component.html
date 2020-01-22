@@ -38,7 +38,7 @@
     <div>
       <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
                              [selectedUom]="viewModel.gridViewModel.getSelectedUomValue$(groupDef.groupId) | async"
-                             [disabled]="isBusy$ | async"
+                             [disabled]="isReadOnly$ | async"
                              [uoms]="viewModel.uoms$ | async"></shiptech-uom-selector>
     </div>
   </div>
@@ -59,7 +59,7 @@
                disable-keys-spin
                [inputStyle]="{width:'100%' }"
                tenant-format="quantity"
-               [disabled]="isBusy$ | async"
+               [disabled]="isReadOnly$ | async"
                [ngModelOptions]="{updateOn: 'blur'}"
                [ngModel]="value"></p-spinner>
   </div>

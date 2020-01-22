@@ -40,6 +40,7 @@ import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -59,28 +60,38 @@ export class QcReportState {
   @Selector([QcReportState])
   static isBusy(state: IQcReportState): boolean {
     const isBusy = [
-      state.details._isLoading,
-      state.details.isSaving,
-      state.details.isVerifying,
-      state.details.isRevertVerifying,
-      state.details.isUpdatingPortCallBtn
+      state.details?._isLoading,
+      state.details?.isSaving,
+      state.details?.isVerifying,
+      state.details?.isRevertVerifying,
+      state.details?.isUpdatingPortCallBtn
     ];
     return isBusy.some(s => s);
   }
 
   @Selector([QcReportState])
+  static isVerified(state: IQcReportState): boolean {
+    return state?.details?.status?.name === StatusLookupEnum.Verified;
+  }
+
+  @Selector([QcReportState.isBusy, QcReportState.isVerified])
+  static isReadOnly(isBusy: boolean, isVerified: boolean): boolean {
+    return isBusy || isVerified;
+  }
+
+  @Selector([QcReportState])
   static isNew(state: IQcReportState): boolean {
-    return state.details.isNew;
+    return state.details?.isNew;
   }
 
   @Selector([QcReportState])
   static hasChanges(state: IQcReportState): boolean {
-    return state.details.hasChanges;
+    return state.details?.hasChanges;
   }
 
   @Selector([QcReportState])
   static reportDetailsId(state: IQcReportState): number {
-    return state.details.id;
+    return state.details?.id;
   }
 
   @Selector([QcReportState])
@@ -115,17 +126,17 @@ export class QcReportState {
 
   @Selector([QcReportState])
   static nbOfMatched(state: IQcReportState): number {
-    return state.details.surveyHistory.nbOfMatched;
+    return state.details?.surveyHistory?.nbOfMatched;
   }
 
   @Selector([QcReportState])
   static nbOfMatchedWithinLimit(state: IQcReportState): number {
-    return state.details.surveyHistory.nbOfMatchedWithinLimit;
+    return state.details?.surveyHistory?.nbOfMatchedWithinLimit;
   }
 
   @Selector([QcReportState])
   static nbOfNotMatched(state: IQcReportState): number {
-    return state.details.surveyHistory.nbOfNotMatched;
+    return state.details?.surveyHistory?.nbOfNotMatched;
   }
 
   static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): ReconStatusLookupEnum | undefined {

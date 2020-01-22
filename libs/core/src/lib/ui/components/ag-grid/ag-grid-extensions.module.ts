@@ -18,6 +18,10 @@ import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-d
 import { Utils } from 'ag-grid-community';
 import moment from 'moment';
 import { AgGridClearAllFiltersDirective } from '@shiptech/core/ui/components/ag-grid/directives/clear-all-filters.directive';
+import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
+import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
+import { MatCheckboxModule } from '@angular/material';
+import { FlexModule } from '@angular/flex-layout';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -34,7 +38,9 @@ const COMPONENTS = [
   PageSizeSelectorComponent,
   AgGridFirstColumnLockedDirective,
   AgGridDeselectFilteredRowsDirective,
-  AgDatePickerComponent
+  AgDatePickerComponent,
+  AgCheckBoxHeaderComponent,
+  AgCheckBoxRendererComponent,
 ];
 
 @NgModule({
@@ -43,7 +49,9 @@ const COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     AgPagingModule,
-    PrimeNGModule
+    PrimeNGModule,
+    MatCheckboxModule,
+    FlexModule
   ],
   declarations: [
     ...COMPONENTS
