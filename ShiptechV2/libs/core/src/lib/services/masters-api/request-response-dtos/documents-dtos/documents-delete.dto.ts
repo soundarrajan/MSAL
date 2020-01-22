@@ -3,5 +3,4 @@ export interface IDocumentsDeleteRequest {
 }
 
 export interface IDocumentsDeleteResponse {
-  matchedCount: number;
 }

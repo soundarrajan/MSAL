@@ -21,6 +21,7 @@ import { UserProfileService } from '@shiptech/core/services/user-profile/user-pr
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { fromPromise } from 'rxjs/internal-compatibility';
+import { EmailStatusLookup } from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service";
 
 @Injectable({
   providedIn: 'root'
@@ -146,10 +147,13 @@ export class BootstrapService {
   private loadKnownLookups(): Observable<unknown>{
     const surveyStatusLookups = this.injector.get(StatusLookup);
     const reconStatusLookups = this.injector.get(ReconStatusLookup);
+    const emailStatusLookups = this.injector.get(EmailStatusLookup);
 
     return forkJoin(
       fromPromise(surveyStatusLookups.load()),
-      fromPromise(reconStatusLookups.load()));
+      fromPromise(reconStatusLookups.load()),
+      fromPromise(emailStatusLookups.load())
+    );
   }
 }
 

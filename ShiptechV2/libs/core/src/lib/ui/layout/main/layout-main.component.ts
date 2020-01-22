@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation } from "@angular/core";
 
 @Component({
   selector: 'layout-main',

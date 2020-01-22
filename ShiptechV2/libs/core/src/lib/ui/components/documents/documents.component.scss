@@ -1,1 +1,39 @@
+.portlet-light {
+  padding: 25px 20px 0 20px;
+  background-color: #fff;
+  margin-bottom: 5px;
+
+  .label {
+    width: 125px;
+    float: left;
+    padding-right: 3px;
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: left;
+    color: #686161;
+  }
+
+  .file-upload-zone {
+    border: 2px dashed #028AF4;
+    background: #fff;
+    padding: 20px;
+    margin: 0 auto;
+    text-align: center;
+
+    .ui-fileupload {
+      width: 150px!important;
+    }
+  }
+
+}
+
+.min-hgt-50 {
+  min-height: 50px;
+}
+
+.download-document {
+  cursor: pointer;
+}
+
 
