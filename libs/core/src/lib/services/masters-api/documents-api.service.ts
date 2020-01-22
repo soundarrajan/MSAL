@@ -58,7 +58,9 @@ export class DocumentsApi implements IDocumentsApiService {
   }
 
   downloadDocument(request: IDocumentsDownloadRequest): Observable<Blob> {
-    return this.http.post<Blob>(`${this._apiUrl}/${DocumentsApiPaths.downloadDocument}`, request);
+    return this.http.post(`${this._apiUrl}/${DocumentsApiPaths.downloadDocument}`, request, {
+      responseType: 'blob'
+    });
   }
 }
 

@@ -46,4 +46,6 @@ export class StatusLookup {
     if (!this._pending)
       throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>('status'), StatusLookupEnum.Pending);
   }
+
+  // public getColorByStatusName(statusName: string, transa)
 }
