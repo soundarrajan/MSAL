@@ -1,17 +1,15 @@
 <div class="row">
   <div class="col-md-12">
     <div class="form_input form_input_note">
-      <textarea [(ngModel)]="comment"></textarea>
+      <textarea [(ngModel)]="notes"></textarea>
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12">
-    <button class="float-right ui-button-info btn-i-yellow ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-            label="Save"
-            (click)="save()"
+    <button (click)="save()" class="ui-button-info btn-i-yellow float-right" label="Save"
+            pButton
             type="button">
-      <span class="ui-button-text ui-clickable">Save</span>
     </button>
   </div>
 </div>

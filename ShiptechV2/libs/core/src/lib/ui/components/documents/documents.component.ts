@@ -9,13 +9,13 @@ import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/req
 import { ConfirmationService, DialogService } from "primeng/primeng";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
-import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 import { FileUpload } from "primeng/fileupload";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import { ToastrService } from "ngx-toastr";
 import { DocumentsAutocompleteComponent } from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
+import { values } from "lodash";
 
 @Component({
   selector: "shiptech-documents",
@@ -105,7 +105,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   checkDocumentTypeSelected(): boolean {
-    return Object.values(this.selectedDocumentType).every((value: string | number) => value);
+    return values(this.selectedDocumentType).every((value: string | number) => value);
   }
 
   documentTypeSelection(event: IDisplayLookupDto): void {
@@ -148,37 +148,22 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       },
       () => {
         this.appErrorHandler.handleError(ModuleError.UpdateIsVerifiedDocumentFailed);
-        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
-      }, () => {
-        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+        item.isVerified = !isChecked;
+        this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10)).setData(item);
+        this.gridViewModel.gridOptions.api.redrawRows({ rowNodes: [this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10))] });
       });
   }
 
-  updateNotesDocument(id: number, notes: string): void {
+  updateNotesDocument(item: IDocumentsItemDto): void {
     const ref = this.dialogService.open(DocumentViewEditNotesComponent, {
-      data: {
-        comment: notes
-      },
+      data: item,
       width: "580px",
       showHeader: true,
       header: "Comments"
     });
-    ref.onClose.subscribe((comment: string) => {
-      if (comment && comment !== notes) {
-        const request: IDocumentsUpdateNotesRequest = {
-          id,
-          notes: comment
-        };
-        this.mastersApi.updateNotesDocument(request).subscribe(
-          () => {
-            this.toastrService.success("Successfully updated note");
-          },
-          () => {
-            this.appErrorHandler.handleError(ModuleError.UpdateNotesDocumentFailed);
-            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
-          }, () => {
-            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
-          });
+    ref.onClose.subscribe((newItem: IDocumentsItemDto) => {
+      if (newItem) {
+        this.gridViewModel.gridOptions.api.getRowNode(newItem.id.toString(10)).setData(newItem);
       }
     });
   }
@@ -191,11 +176,10 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         const request: IDocumentsDeleteRequest = { id };
         this.mastersApi.deleteDocument(request).subscribe(
           () => {
+            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.DeleteDocumentFailed);
-          }, () => {
-            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
           });
       }
     });
