@@ -86,13 +86,13 @@
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedCol]" appAgCellTemplate let-data="data" let-value="value">
   <div fxLayout="row" fxLayoutAlign="center center">
-    <p-checkbox binary="true" [(ngModel)]="data.isVerifiedCol" (ngModelChange)="updateIsVerifiedDocument(data, $event)">
+    <p-checkbox binary="true" [ngModel]="data.isVerifiedCol" (ngModelChange)="updateIsVerifiedDocument(data, $event)">
     </p-checkbox>
   </div>
 </ng-template>
 
 <ng-template [columnDef]="[gridViewModel.notesCol]" appAgCellTemplate let-data="data" let-value="value">
-  <span (click)="updateNotesDocument(data?.id, data?.notes)"><i class="fas fa-comments"></i></span>
+  <span (click)="updateNotesDocument(data)"><i class="fas fa-comments"></i></span>
 </ng-template>
 
 

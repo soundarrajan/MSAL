@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Inject, Injectable, Input} from "@angular/core";
 import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
 import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
-import {AppError} from "@shiptech/core/error-handling/app-error";
 import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
 import {EmailLogsListColumns, EmailLogsListColumnServerKeys, EmailLogsListColumnsLabels} from "./email-logs-list.columns";
 import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
