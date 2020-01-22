@@ -1,7 +1,7 @@
-﻿commit 7f16f03be7667c9cb0e57e4b8b3b91114553053d
-Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Wed Jan 22 00:43:30 2020 +0200
+﻿commit 33a004b12a32eb030df4f0fcf7a610163f0b51b6
+Author: Radu Coman <radu.coman@24software.ro>
+Date:   Wed Jan 22 10:38:35 2020 +0200
 
-    re-enabled logging interceptor
+    email filter typo name changed
 
 branch: master

@@ -160,7 +160,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
         value: this.entityId.toString(10)
       },
       {
-        columnName: "EmailTransactionTypeName",
+        columnName: "EmailTransactionTypesName",
         value: this.entityName
       }];
 
