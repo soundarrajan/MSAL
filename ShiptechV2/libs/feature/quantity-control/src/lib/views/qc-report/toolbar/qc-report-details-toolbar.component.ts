@@ -27,7 +27,9 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+    this.route.params.pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((params) => {
       const reportId = params.reportId;
       const routeLinkToReportDetails = ["/", KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.Report, reportId];
       this.menuItems = [
