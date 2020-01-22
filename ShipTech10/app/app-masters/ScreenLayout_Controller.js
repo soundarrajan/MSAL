@@ -645,7 +645,13 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                             });
                                             $.each(v.additionalCosts, function(k1, v1) {
                                                 v1.id = 0;
-                                            });                                            
+                                            });
+                                            $.each(v.conversionFactors, function(k1, v1) {
+                                                v1.id = 0;
+                                                if (v1.contractProduct) {
+	                                                v1.contractProduct.id = 0;
+                                                }
+                                            });                                                                                        
                                             v.formula = null;
                                             v.mtmFormula = null;
                                             v.price = null;
