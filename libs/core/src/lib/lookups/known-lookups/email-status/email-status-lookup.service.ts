@@ -4,8 +4,6 @@ import {AppError} from '@shiptech/core/error-handling/app-error';
 import {nameof} from '@shiptech/core/utils/type-definitions';
 import {EmailStatusLookupEnum, MockEmailStatusLookupEnumMap} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.enum";
 import {IEmailStatusLookupDto} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.interface";
-import { ReconStatusLookupEnum } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum";
-import { IReconStatusLookupDto } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface";
 
 const nameField = nameof<IEmailStatusLookupDto>('name');
 

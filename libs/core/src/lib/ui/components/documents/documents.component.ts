@@ -15,7 +15,6 @@ import { IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-a
 import { ToastrService } from "ngx-toastr";
 import { DocumentsAutocompleteComponent } from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
 import { FileSaverService } from "ngx-filesaver";
-import { DatabaseManipulation, DatabaseManipulationEnum } from "@shiptech/core/legacy-cache/database-manipulation.service";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
 import { values } from "lodash";
 
@@ -61,8 +60,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
               private toastrService: ToastrService,
               private confirmationService: ConfirmationService,
               private dialogService: DialogService,
-              private _FileSaverService: FileSaverService,
-              private databaseManipulation: DatabaseManipulation
+              private _FileSaverService: FileSaverService
   ) {
   }
 
@@ -125,8 +123,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   downloadDocument(id: number, name: string): any {
-    this.databaseManipulation.getStatusIdByName(DatabaseManipulationEnum.Status, "Sent").then((result) => console.log(result));
-    this.databaseManipulation.getStatusColorFromDashboard(1, 2).then((result) => console.log(result));
     const request = {
       Payload: id
     };
