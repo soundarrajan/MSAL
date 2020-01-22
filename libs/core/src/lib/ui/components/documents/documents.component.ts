@@ -122,7 +122,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
-  downloadDocument(id: number, name: string): any {
+  downloadDocument(id: number, name: string): void {
     const request = {
       Payload: id
     };
