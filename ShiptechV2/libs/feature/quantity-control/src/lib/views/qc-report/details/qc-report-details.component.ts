@@ -58,6 +58,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   matchStatus$: Observable<IReconStatusLookupDto>;
 
+  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
   @Select(QcReportState.isNew) isNew$: Observable<boolean>;
 
@@ -104,15 +105,15 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe();
 
-    this.categories$ = this.selectReportDetails(state => state.vesselResponse.categories);
+    this.categories$ = this.selectReportDetails(state => state.vesselResponse?.categories);
 
-    this.bunkerSelectedCategory$ = this.selectReportDetails(state => state.vesselResponse.bunker.activeCategory);
-    this.bunkerDescription$ = this.selectReportDetails(state => state.vesselResponse.bunker.description);
+    this.bunkerSelectedCategory$ = this.selectReportDetails(state => state.vesselResponse?.bunker?.activeCategory);
+    this.bunkerDescription$ = this.selectReportDetails(state => state.vesselResponse?.bunker?.description);
 
-    this.sludgeSelectedCategory$ = this.selectReportDetails(state => state.vesselResponse.sludge.activeCategory);
-    this.sludge$ = this.selectReportDetails(state => state.vesselResponse.sludge.sludge);
-    this.sludgeVerified$ = this.selectReportDetails(state => state.vesselResponse.sludge.sludgeVerified);
-    this.sludgeDescription$ = this.selectReportDetails(state => state.vesselResponse.sludge.description);
+    this.sludgeSelectedCategory$ = this.selectReportDetails(state => state.vesselResponse?.sludge?.activeCategory);
+    this.sludge$ = this.selectReportDetails(state => state.vesselResponse?.sludge?.sludge);
+    this.sludgeVerified$ = this.selectReportDetails(state => state.vesselResponse?.sludge?.sludgeVerified);
+    this.sludgeDescription$ = this.selectReportDetails(state => state.vesselResponse?.sludge?.description);
 
     this.nbOfClaims$ = this.selectReportDetails(state => state.nbOfClaims);
     this.nbOfDeliveries$ = this.selectReportDetails(state => state.nbOfDeliveries);
