@@ -25,6 +25,7 @@ import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/st
 import { takeUntil } from 'rxjs/operators';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
+import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -128,7 +129,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
-      backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : params.data?.surveyStatus?.code ?? '#b388ff',
+      backgroundColor: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : this.statusLookup.getStatusByName(params.data?.surveyStatus?.name).code,
       color: params.data?.surveyStatus?.name === StatusLookupEnum.New ? 'inherit' : '#fff'
     }),
     width: 85
@@ -315,7 +316,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     private format: TenantFormattingService,
     private reconStatusLookups: ReconStatusLookup,
     private reportService: QcReportService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private statusLookup: StatusLookup
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
     this.init(this.gridOptions, true);
