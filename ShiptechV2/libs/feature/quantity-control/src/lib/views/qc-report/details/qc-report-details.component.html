@@ -6,7 +6,7 @@
       <button (click)="save()" [disabled]="isReadOnly$ | async" class="ui-button-info mr-1 btn-i-yellow" label="Save"
               pButton
               type="button"></button>
-      <button (click)="raiseClaim()" [disabled]="isReadOnly$ | async" *ngIf="!(isNew$ | async)"
+      <button (click)="raiseClaim()" [disabled]="isBusy$ | async" *ngIf="!(isNew$ | async)"
               class="ui-button-warning mr-1 btn-i-yellow"
               label="Raise Caim"
               pButton type="button"></button>
