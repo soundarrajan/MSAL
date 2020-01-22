@@ -2,11 +2,12 @@ import {LegacyLookupsDatabase} from '@shiptech/core/legacy-cache/legacy-lookups-
 import {Injectable} from '@angular/core';
 import {AppError} from '@shiptech/core/error-handling/app-error';
 import {nameof} from '@shiptech/core/utils/type-definitions';
-import {IReconStatusLookupDto} from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import {EmailStatusLookupEnum, MockEmailStatusLookupEnumMap} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.enum";
 import {IEmailStatusLookupDto} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.interface";
+import { ReconStatusLookupEnum } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum";
+import { IReconStatusLookupDto } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface";
 
-const nameField = nameof<IReconStatusLookupDto>('name');
+const nameField = nameof<IEmailStatusLookupDto>('name');
 
 @Injectable({providedIn: 'root'})
 export class EmailStatusLookup {
@@ -55,8 +56,11 @@ export class EmailStatusLookup {
       throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>('emailStatus'), EmailStatusLookupEnum.Pending);
   }
 
-  public returnObject(name: string): IEmailStatusLookupDto {
-    switch(name) {
+  public toEmailStatus(status: EmailStatusLookupEnum): IEmailStatusLookupDto | undefined {
+    if (status === null || status === undefined)
+      return undefined;
+
+    switch (status) {
       case EmailStatusLookupEnum.Sent:
         return this._sent;
       case EmailStatusLookupEnum.Failed:

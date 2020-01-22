@@ -6,23 +6,17 @@ import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid
 import { TenantFormattingService } from "@shiptech/core/services/formatting/tenant-formatting.service";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
-import { AppError } from "@shiptech/core/error-handling/app-error";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import { DocumentsListColumns, DocumentsListColumnServerKeys, DocumentsListColumnsLabels } from "./documents-list.columns";
-import { Store } from "@ngxs/store";
 import { LoggerFactory } from "@shiptech/core/logging/logger-factory.service";
 import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
 import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.filter";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
-import { IQcReportsListItemDto } from "../../../../../../../feature/quantity-control/src/lib/services/api/dto/qc-reports-list-item.dto";
-import { QcReportsListColumns } from "../../../../../../../feature/quantity-control/src/lib/views/qc-reports-list/view-model/qc-reports-list.columns";
-import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
-import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
-import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 import { takeUntil } from "rxjs/operators";
 import { BooleanFilterParams } from "@shiptech/core/ui/components/ag-grid/ag-grid-utils";
+import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
 
 function model(prop: keyof IDocumentsItemDto): keyof IDocumentsItemDto {
   return prop;
@@ -88,7 +82,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
     }
   };
 
-  deleteCol: ITypedColDef<IQcReportsListItemDto> = {
+  deleteCol: ITypedColDef<IDocumentsItemDto> = {
     colId: 'deleteCol',
     width: 50,
     editable: false,
@@ -266,7 +260,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
       .subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.LoadDocumentsFailed);
+        this.appErrorHandler.handleError(ModuleError.LoadDocumentsFailed);
         params.failCallback();
       });
   }

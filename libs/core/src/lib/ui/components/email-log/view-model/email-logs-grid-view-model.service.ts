@@ -17,6 +17,7 @@ import {ServerQueryFilter} from "@shiptech/core/grid/server-grid/server-query.fi
 import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
 import {takeUntil} from "rxjs/operators";
 import {EmailStatusLookup} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service";
+import { ModuleError } from "@shiptech/core/ui/components/email-log/error-handling/module-error";
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -92,8 +93,8 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.name,
     cellClass: 'cell-background',
     cellStyle: params => ({
-      backgroundColor: this.emailStatusLookpup.returnObject(params.data?.status?.name).code ? this.emailStatusLookpup.returnObject(params.data?.status?.name).code : '#fff',
-      color: this.emailStatusLookpup.returnObject(params.data?.status?.name).code ? '#fff' : '#555'
+      backgroundColor: this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code ? this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code : '#fff',
+      color: this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code ? '#fff' : '#333'
     }),
     minWidth: 100,
     flex: 2
@@ -173,7 +174,6 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
   ) {
     super("email-logs-grid", columnPreferences, changeDetector, loggerFactory.createLogger(EmailLogsGridViewModel.name));
     this.init(this.gridOptions, false);
-    this.emailStatusLookpup.load();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -192,7 +192,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),
         () => {
-          this.appErrorHandler.handleError(AppError.LoadEmailLogsFailed);
+          this.appErrorHandler.handleError(ModuleError.LoadEmailLogsFailed);
           params.failCallback();
         });
   }

@@ -4,7 +4,6 @@ import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "@shiptech/core/config/app-config";
 import {ObservableException} from "@shiptech/core/utils/decorators/observable-exception.decorator";
 import {Observable} from "rxjs";
-import {IEmailLogsApiService} from "./email-logs-api.service.interface";
 import {IDocumentsListRequest, IDocumentsListResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import {IDocumentsApiService} from "@shiptech/core/services/masters-api/documents-api.service.interface";
 import {IDocumentsUpdateIsVerifiedRequest, IDocumentsUpdateIsVerifiedResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
@@ -63,4 +62,4 @@ export class DocumentsApi implements IDocumentsApiService {
   }
 }
 
-export const DOCUMENTS_API_SERVICE = new InjectionToken<IEmailLogsApiService>("DOCUMENTS_API_SERVICE");
+export const DOCUMENTS_API_SERVICE = new InjectionToken<IDocumentsApiService>("DOCUMENTS_API_SERVICE");

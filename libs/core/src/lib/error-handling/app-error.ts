@@ -37,52 +37,6 @@ export class AppError<T = any> implements IAppError {
     message: 'Could not load user profile.'
   });
 
-  static readonly LoadEmailLogsFailed = new AppError({
-    code: AppErrorCode.LoadEmailLogsFailed,
-    message: 'Could not load email list. Please try again later.'
-  });
-
-  static readonly LoadAuditLogFailed = new AppError({
-    code: AppErrorCode.LoadAuditLogFailed,
-    message: 'Could not load audit log list. Please try again later.'
-  });
-
-  static readonly LoadDocumentsFailed = new AppError({
-    code: AppErrorCode.LoadDocumentsFailed,
-    message: 'Could not load document list. Please try again later.'
-  });
-
-  static readonly DeleteDocumentFailed = new AppError({
-    code: AppErrorCode.DeleteDocumentFailed,
-    message: 'Could not delete the document. Please try again later.'
-  });
-
-  static readonly UpdateIsVerifiedDocumentFailed = new AppError({
-    code: AppErrorCode.UpdateIsVerifiedDocumentFailed,
-    message: 'Could not update the verification of the document. Please try again later.'
-  });
-
-  static readonly UpdateNotesDocumentFailed = new AppError({
-    code: AppErrorCode.UpdateNotesDocumentFailed,
-    message: 'Could not update the notes of the document. Please try again later.'
-  });
-
-  static readonly UploadDocumentFailed = new AppError({
-    code: AppErrorCode.UploadDocumentFailed,
-    message: 'Could not upload the document. Please try again later.'
-  });
-
-  static readonly DocumentTypeNotSelected = new AppError({
-    code: AppErrorCode.DocumentTypeNotSelected,
-    message: 'Please select a Document Type and upload a file again.',
-    treatAsWarning: true
-  });
-
-  static readonly DocumentDownloadError = new AppError({
-    code: AppErrorCode.DocumentDownloadError,
-    message: 'Could not download the document. Please try again later.'
-  });
-
   readonly code: number;
   readonly data?: T;
   readonly handleStrategy: AppErrorHandlingStrategy;

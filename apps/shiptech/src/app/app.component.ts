@@ -1,7 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding} from '@angular/core';
-import {environment} from '@shiptech/environment';
 import {NavigationCancel, NavigationEnd, NavigationError, Router, RouterEvent} from '@angular/router';
-import {LoaderComponent} from "@shiptech/core/ui/components/loader/loader.component";
 
 @Component({
   selector: 'shiptech-root',
@@ -13,9 +11,7 @@ export class AppComponent {
   @HostBinding('@.disabled')
   public animationsDisabled = true;
   title = 'Shiptech';
-  isProduction = environment.production;
   public isLoading = true;
-  public loaderShiptech = LoaderComponent;
 
   constructor(router: Router, changeDetector: ChangeDetectorRef) {
     router.events.subscribe(
