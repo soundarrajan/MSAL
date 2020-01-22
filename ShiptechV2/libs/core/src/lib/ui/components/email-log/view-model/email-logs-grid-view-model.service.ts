@@ -92,8 +92,8 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.name,
     cellClass: 'cell-background',
     cellStyle: params => ({
-      backgroundColor: this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code ? this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code : '#fff',
-      color: this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code ? '#fff' : '#333'
+      backgroundColor: this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).code,
+      color: this.emailStatusLookpup.toEmailStatus(params.data?.status?.name).id ? '#fff' : '#333'
     }),
     minWidth: 100,
     flex: 2
