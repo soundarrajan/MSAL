@@ -16,8 +16,8 @@ import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-r
 })
 export class DocumentViewEditNotesComponent implements OnInit {
 
+  private isReadOnly: boolean;
   data: IDocumentsItemDto;
-
   notes: string;
 
   constructor(public dialogRef: DynamicDialogRef,
@@ -30,10 +30,12 @@ export class DocumentViewEditNotesComponent implements OnInit {
   ngOnInit(): void {
     this.data = this.config.data;
     this.notes = this.config.data.notes;
+    this.isReadOnly = false;
   }
 
   save(): void {
     if (this.notes !== this.data.notes) {
+      this.isReadOnly = true;
       this.data.notes = this.notes;
       const request: IDocumentsUpdateNotesRequest = {
         id: this.data.id,
@@ -41,6 +43,7 @@ export class DocumentViewEditNotesComponent implements OnInit {
       };
       this.mastersApi.updateNotesDocument(request).subscribe(
         () => {
+          this.isReadOnly = false;
           this.toastrService.success("Successfully updated note");
           this.dialogRef.close(this.data);
         },
