@@ -44,6 +44,7 @@ import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/q
 import { SelectTextOnFocusDirectiveModule } from "@shiptech/core/ui/directives/default/select-text-on-focus.directive";
 import { EmailLogModule } from "@shiptech/core/ui/components/email-log/email-log.module";
 import { AuditLogModule } from "@shiptech/core/ui/components/audit-log/audit-log.module";
+import { DocumentsModule } from "@shiptech/core/ui/components/documents/documents.module";
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { AuditLogModule } from "@shiptech/core/ui/components/audit-log/audit-log
     AgFilterDisplayModule,
     SelectTextOnFocusDirectiveModule,
     EmailLogModule,
-    AuditLogModule
+    AuditLogModule,
+    DocumentsModule
   ],
   declarations: [
     MainQuantityControlComponent,
@@ -80,7 +82,6 @@ import { AuditLogModule } from "@shiptech/core/ui/components/audit-log/audit-log
     QcReportDetailsEmailLogsComponent,
     QcReportDetailsAuditLogsComponent,
     QcReportDetailsDocumentsComponent,
-    DocumentsComponent,
     UomSelectorComponent,
     RaiseClaimComponent
   ],

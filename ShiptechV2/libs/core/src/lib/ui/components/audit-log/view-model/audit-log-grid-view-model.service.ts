@@ -15,6 +15,7 @@ import { ServerQueryFilter } from "@shiptech/core/grid/server-grid/server-query.
 import { IAuditLogApiService } from "@shiptech/core/services/admin-api/audit-log-api.service.interface";
 import { AUDIT_LOG_API_SERVICE } from "@shiptech/core/services/admin-api/audit-log-api.service";
 import { takeUntil } from 'rxjs/operators';
+import { ModuleError } from "@shiptech/core/ui/components/audit-log/error-handling/module-error";
 
 function model(prop: keyof IAuditLogItemDto): keyof IAuditLogItemDto {
   return prop;
@@ -211,7 +212,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
       .subscribe(
       response => params.successCallback(response.payload, response.matchedCount),
       () => {
-        this.appErrorHandler.handleError(AppError.LoadAuditLogFailed);
+        this.appErrorHandler.handleError(ModuleError.LoadAuditLogFailed);
         params.failCallback();
       });
   }

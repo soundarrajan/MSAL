@@ -1,4 +1,4 @@
-import { range } from "lodash";
+import { sample, range, values } from "lodash";
 import { date, internet, name, random } from "faker";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 

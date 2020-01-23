@@ -1,25 +1,25 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
-import { MenuItem, TabMenu } from 'primeng/primeng';
-import { ActivatedRoute, NavigationCancel, NavigationError, Router } from '@angular/router';
-import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
-import { Select } from '@ngxs/store';
-import { QcReportState } from '../../../store/report/qc-report.state';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { KnownQuantityControlRoutes } from "../../../known-quantity-control.routes";
+import { MenuItem, TabMenu } from "primeng/primeng";
+import { ActivatedRoute, NavigationCancel, NavigationError, Router } from "@angular/router";
+import { KnownPrimaryRoutes } from "@shiptech/core/enums/known-modules-routes.enum";
+import { Select } from "@ngxs/store";
+import { QcReportState } from "../../../store/report/qc-report.state";
+import { Observable, Subject } from "rxjs";
+import { filter, takeUntil } from "rxjs/operators";
 
 @Component({
-  selector: 'shiptech-qc-report-details-toolbar',
-  templateUrl: './qc-report-details-toolbar.component.html',
-  styleUrls: ['./qc-report-details-toolbar.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: "shiptech-qc-report-details-toolbar",
+  templateUrl: "./qc-report-details-toolbar.component.html",
+  styleUrls: ["./qc-report-details-toolbar.component.css"],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
   public menuItems: MenuItem[];
 
-  @ViewChild(TabMenu, { static: true }) tabMenu: TabMenu;
+  @ViewChild(TabMenu, { static: false }) tabMenu: TabMenu;
 
   private _destroy$ = new Subject();
 
@@ -27,31 +27,34 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
   }
 
   ngOnInit(): void {
-    const reportId = this.route.snapshot.params[KnownQuantityControlRoutes.ReportIdParam];
-    const routeLinkToReportDetails = ['/', KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.Report, reportId];
-
-    this.menuItems = [
-      {
-        label: 'Main Page',
-        routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportDetails],
-        routerLinkActiveOptions: { exact: true }
-      },
-      {
-        label: 'Documents',
-        routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportDocumentsPath],
-        routerLinkActiveOptions: { exact: true }
-      },
-      {
-        label: 'Email Log',
-        routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportEmailLogPath],
-        routerLinkActiveOptions: { exact: true }
-      },
-      {
-        label: 'Audit Log',
-        routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportAuditPath],
-        routerLinkActiveOptions: { exact: true }
-      }
-    ];
+    this.route.params.pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((params) => {
+      const reportId = params.reportId;
+      const routeLinkToReportDetails = ["/", KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.Report, reportId];
+      this.menuItems = [
+        {
+          label: "Main Page",
+          routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportDetails],
+          routerLinkActiveOptions: { exact: true }
+        },
+        {
+          label: "Documents",
+          routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportDocumentsPath],
+          routerLinkActiveOptions: { exact: true }
+        },
+        {
+          label: "Email Log",
+          routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportEmailLogPath],
+          routerLinkActiveOptions: { exact: true }
+        },
+        {
+          label: "Audit Log",
+          routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportAuditPath],
+          routerLinkActiveOptions: { exact: true }
+        }
+      ];
+    });
   }
 
   ngOnDestroy(): void {
