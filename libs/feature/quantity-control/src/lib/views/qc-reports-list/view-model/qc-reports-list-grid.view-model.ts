@@ -129,8 +129,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
-      backgroundColor: this.statusLookup.getStatusByName(params.data?.surveyStatus?.name).code,
-      color: '#fff'
+      backgroundColor: this.statusLookup.getStatus(params.data?.surveyStatus).code,
+      color: this.statusLookup.getStatus(params.data?.surveyStatus).id ? '#fff' : '#333'
     }),
     width: 85
   };

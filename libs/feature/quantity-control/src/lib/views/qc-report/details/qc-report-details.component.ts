@@ -100,8 +100,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
         // TODO: to be read from StatusLookup
         this.entityStatus.setStatus({
-          name: this.statusLookup.getStatusByName(status.name).displayName,
-          backgroundColor: this.statusLookup.getStatusByName(status.name).code
+          name: this.statusLookup.getStatus(status).displayName,
+          backgroundColor: this.statusLookup.getStatus(status).code
         });
       }),
       takeUntil(this._destroy$)

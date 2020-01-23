@@ -6,8 +6,9 @@ import { nameof } from "@shiptech/core/utils/type-definitions";
 import { IReconStatusLookupDto } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface";
 import { StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
 import { DatabaseManipulation } from "@shiptech/core/legacy-cache/database-manipulation.service";
+import {IEmailStatusLookupDto} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.interface";
 
-const nameField = nameof<IReconStatusLookupDto>("name");
+const nameField = nameof<IStatusLookupDto>("name");
 // TODO: to be read from entity types and remove this hardcoded id
 const TRANSACTION_TYPE_ID: number = 46;
 
@@ -37,22 +38,23 @@ export class StatusLookup {
 
   }
 
-  public getStatusByName(name: string): IStatusLookupDto{
-    let result: IStatusLookupDto;
-    switch (name) {
+  public getStatus(status: IStatusLookupDto): IStatusLookupDto | undefined {
+    const result: IStatusLookupDto = {
+      id: null,
+      name: <string>status.name,
+      displayName:<string>status.displayName,
+      code: "#fff"
+    };
+    switch (status.name) {
       case this._verified.name:
-        result = this._verified;
-        break;
+        return this._verified;
       case this._new.name:
-        result = this._new;
-        break;
+        return this._new;
       case this._pending.name:
-        result = this._pending;
-        break;
+        return this._pending;
       default:
-        break;
+        return result;
     }
-    return result;
   }
 
   public async load(): Promise<any> {
