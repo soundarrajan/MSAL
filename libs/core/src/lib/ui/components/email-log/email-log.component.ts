@@ -3,6 +3,7 @@ import { EmailLogsGridViewModel } from "./view-model/email-logs-grid-view-model.
 import { Subject } from "rxjs";
 import { EmailLogsApi } from "@shiptech/core/services/masters-api/email-logs-api.service";
 import { UrlService } from "@shiptech/core/services/url/url.service";
+import { AppConfig } from "@shiptech/core/config/app-config";
 
 @Component({
   selector: "shiptech-email-log",
@@ -35,11 +36,14 @@ export class EmailLogComponent implements OnInit, OnDestroy {
     this.gridViewModel.entityName = this.entityName;
   }
 
-  constructor(public gridViewModel: EmailLogsGridViewModel, private emailLogsApi: EmailLogsApi, private urlService: UrlService) {
+  constructor(public gridViewModel: EmailLogsGridViewModel,
+              private emailLogsApi: EmailLogsApi,
+              private appConfig: AppConfig,
+              private urlService: UrlService) {
   }
 
   openEditEmail(emailId: number): void {
-    window.open(this.urlService.editEmail(emailId));
+    window.open(this.urlService.editEmail(emailId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
   }
 
   ngOnInit(): void {

@@ -4,5 +4,4 @@ export interface IDocumentsUpdateNotesRequest {
 }
 
 export interface IDocumentsUpdateNotesResponse {
-  matchedCount: number;
 }
