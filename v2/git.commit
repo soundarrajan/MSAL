@@ -1,7 +1,7 @@
-﻿commit 2c63c0d51175ff633f7fe05a39bbe92cb3f54017
-Author: Radu Coman <radu.coman@24software.ro>
-Date:   Wed Jan 22 16:28:53 2020 +0200
+﻿commit a7494d33edfe49c570cf3f7f627a4dc766c28d96
+Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
+Date:   Thu Jan 23 15:24:47 2020 +0200
 
-    bug fixed
+    Fixed status types
 
 branch: master

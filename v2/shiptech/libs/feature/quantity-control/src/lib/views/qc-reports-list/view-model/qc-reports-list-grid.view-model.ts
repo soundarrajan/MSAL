@@ -4,21 +4,17 @@ import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { ITypedColDef, RowModelType, RowSelection, TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
-import { IQcReportsListItemDto } from '../../../services/api/dto/qc-reports-list-item.dto';
+import { IQcReportsListItemDto, IToleranceUomDto } from '../../../services/api/dto/qc-reports-list-item.dto';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { QcReportService } from '../../../services/qc-report.service';
 import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { AppError } from '@shiptech/core/error-handling/app-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { IDeliveryTenantSettings } from '../../../core/settings/delivery-tenant-settings';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
@@ -71,7 +67,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   selectCol: ITypedColDef<IQcReportsListItemDto> = {
     colId: QcReportsListColumns.selection,
     width: 50,
-    ...AgCheckBoxHeaderComponent.withParams({ }),
+    ...AgCheckBoxHeaderComponent.withParams({}),
     ...AgCheckBoxRendererComponent.withParams<IQcReportsListItemDto>({
       isVisible: params => params.data?.surveyStatus?.name !== StatusLookupEnum.Verified
     }),
@@ -171,11 +167,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobBeforeDelivery),
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobBeforeDelivery, params.data?.qtyBeforeDeliveryUom),
     width: 140
   };
 
-  qtyBeforeDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyBeforeDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
@@ -204,10 +200,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffDeliveredQty)
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffDeliveredQty, params.data?.qtyDeliveredUom)
   };
 
-  qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
@@ -236,10 +232,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobAfterDelivery)
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobAfterDelivery, params?.data?.qtyAfterDeliveryUom)
   };
 
-  qtyAfterDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtyAfterDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
@@ -268,7 +264,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffSludgeRobBeforeDischarge)
+    cellStyle: params => this.toleranceMatchStyle(params.data?.diffSludgeRobBeforeDischarge, params?.data?.qtySludgeDischargedUom)
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -279,7 +275,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  qtySludgeDischargedUomCol: ITypedColDef<IQcReportsListItemDto, IDisplayLookupDto> = {
+  qtySludgeDischargedUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
@@ -305,14 +301,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  private readonly minToleranceLimit;
-  private readonly maxToleranceLimit;
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
-    tenantSettings: TenantSettingsService,
     private format: TenantFormattingService,
     private reconStatusLookups: ReconStatusLookup,
     private reportService: QcReportService,
@@ -321,10 +313,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   ) {
     super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
     this.init(this.gridOptions, true);
-
-    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
-    this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
-    this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
   }
 
   getColumnsDefs(): ITypedColDef[] {
@@ -374,8 +362,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
         });
   }
 
-  private toleranceMatchStyle(value: number): Partial<CSSStyleDeclaration> {
-    if (value === null || value === undefined)
+  private toleranceMatchStyle(value: number, toleranceUom: IToleranceUomDto): Partial<CSSStyleDeclaration> {
+    if (value === null || value === undefined || toleranceUom === null || toleranceUom === undefined)
       return {
         backgroundColor: 'inherit',
         color: 'inherit'
@@ -383,10 +371,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
     let status = this.reconStatusLookups.matched;
 
-    if (Math.abs(value) >= this.maxToleranceLimit)
+    if (Math.abs(value) >= toleranceUom.maxTolerance)
       status = this.reconStatusLookups.notMatched;
 
-    if (Math.abs(value) > this.minToleranceLimit && Math.abs(value) < this.maxToleranceLimit)
+    if (Math.abs(value) > toleranceUom.minTolerance && Math.abs(value) < toleranceUom.maxTolerance)
       status = this.reconStatusLookups.withinLimit;
 
     return {

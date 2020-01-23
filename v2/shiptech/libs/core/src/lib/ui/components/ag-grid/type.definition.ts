@@ -67,7 +67,7 @@ export interface ITypedColDef<TData = any, TField = any> extends Omit<ColDef, 'f
   valueFormatter?: (params: ITypedValueFormatterParams<TField>) => string;
   valueGetter?: ((params: ITypedBaseColDefParams<TData>) => any) | string;
   cellClassRules?: IAgGridCellClassRules;
-  cellStyle?: (params: ITypedValueFormatterParams<TField>) => Partial<CSSStyleDeclaration>;
+  cellStyle?: (params: ITypedValueParams<TData, TField>) => Partial<CSSStyleDeclaration>;
   field?: keyof TData,
   cellRendererSelector?: (params: ITypedCellRendererParams<TData, TField>) => ComponentSelectorResult;
   onCellValueChanged?: (params: ITypedValueParams<TData, TField>) => void;
