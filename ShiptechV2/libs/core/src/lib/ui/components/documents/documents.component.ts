@@ -15,6 +15,7 @@ import {IDocumentsCreateUploadDetails, IDocumentsCreateUploadRequest} from "@shi
 import {ToastrService} from "ngx-toastr";
 import {FileSaverService} from "ngx-filesaver";
 import {ModuleError} from "@shiptech/core/ui/components/documents/error-handling/module-error";
+import { values } from "lodash";
 
 @Component({
   selector: "shiptech-documents",
