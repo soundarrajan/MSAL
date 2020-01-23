@@ -17,8 +17,13 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     const reportIdParam = route.params[KnownQuantityControlRoutes.ReportIdParam];
+    const reportId = Number(reportIdParam ?? 0);
 
-    return this.reportService.loadReportDetails$(Number(reportIdParam ?? 0))
+    if(!Number.isInteger(reportId)){
+      return this.router.navigate([KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.ReportList]);
+    }
+
+    return this.reportService.loadReportDetails$(reportId)
       .pipe(
         catchError(error => {
           // Note: If the user navigated directly to this route, we need to redirect to root and show and error
