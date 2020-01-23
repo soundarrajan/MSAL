@@ -30,7 +30,7 @@ const routes: Routes = [
       {
         path: '',
         data: {
-          breadcrumb: 'Quantity Control List'
+          breadcrumb: 'Quantity Control List',
         },
         children: [
           {
@@ -41,7 +41,7 @@ const routes: Routes = [
           {
             path: KnownQuantityControlRoutes.ReportList,
             component: QcReportsListComponent,
-            data: { title: 'Quantity Control', breadcrumb: null }
+            data: { title: 'Quantity Control List', breadcrumb: null }
           },
           {
             path: `${KnownQuantityControlRoutes.Report}/:${KnownQuantityControlRoutes.ReportIdParam}`,
@@ -61,7 +61,7 @@ const routes: Routes = [
                   // Note: ReportId is expected in child routes in the data.
                   reportId: QcReportDetailsRouteResolver,
                 },
-                data: { title: 'Quantity Control - Vessel', breadcrumb: 'Details' }
+                data: { title: 'Quantity Control - Vessel', breadcrumb: 'Vessel Details' }
               },
               {
                 path: KnownQuantityControlRoutes.ReportDocumentsPath,
