@@ -1,7 +1,7 @@
-﻿commit a7494d33edfe49c570cf3f7f627a4dc766c28d96
+﻿commit 28bf76d2f15098b307a6fef3e1245da3751d69cb
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 23 15:24:47 2020 +0200
+Date:   Thu Jan 23 15:53:25 2020 +0200
 
-    Fixed status types
+    Fixed ag grid not saving preferences and not resetting qc list column widths
 
 branch: master

@@ -17,7 +17,7 @@ export const DefaultPageSize = 25;
 export const colGroupMarginClass = 'col-group-border';
 
 export abstract class BaseGridViewModel implements OnDestroy {
-  saveColumnPreferences = false;
+  saveColumnPreferences = true;
   pageSizeOptions = PageSizeOptions;
 
   protected constructor(protected gridId: string, protected columnPreferences: AgColumnPreferencesService, protected changeDetector: ChangeDetectorRef, protected logger: Logger) {

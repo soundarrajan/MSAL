@@ -70,7 +70,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.portCallId,
     colId: QcSurveyHistoryListColumns.portCallId,
     field: model('portCallId'),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    width: 200,
   };
 
   portNameCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
