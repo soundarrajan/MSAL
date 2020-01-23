@@ -93,7 +93,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.portCallId,
     colId: QcReportsListColumns.portCallId,
     field: model('portCallId'),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    width: 200,
   };
 
   portNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
