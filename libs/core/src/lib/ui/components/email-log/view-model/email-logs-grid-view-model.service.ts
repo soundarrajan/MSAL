@@ -17,6 +17,8 @@ import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
 import {takeUntil} from "rxjs/operators";
 import {EmailStatusLookup} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service";
 import { ModuleError } from "@shiptech/core/ui/components/email-log/error-handling/module-error";
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import { EmailStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.enum';
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;
@@ -85,15 +87,15 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-  statusCol: ITypedColDef<IEmailLogsItemDto, IDisplayLookupDto> = {
+  statusCol: ITypedColDef<IEmailLogsItemDto, IStatusLookupDto> = {
     headerName: EmailLogsListColumnsLabels.status,
     colId: EmailLogsListColumns.status,
     field: model("status"),
     valueFormatter: params => params.value?.name,
     cellClass: 'cell-background',
     cellStyle: params => ({
-      backgroundColor: this.emailStatusLookpup.getEmailStatus(params.data?.status).code,
-      color: this.emailStatusLookpup.getEmailStatus(params.data?.status).id ? '#fff' : '#333'
+      backgroundColor: this.emailStatusLookpup.getEmailStatus(<EmailStatusLookupEnum>params.data?.status?.name).code,
+      color: this.emailStatusLookpup.getEmailStatus(<EmailStatusLookupEnum>params.data?.status?.name).id ? '#fff' : '#333'
     }),
     minWidth: 100,
     flex: 2
