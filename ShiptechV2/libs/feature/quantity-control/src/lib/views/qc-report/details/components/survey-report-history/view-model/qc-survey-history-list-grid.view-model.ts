@@ -25,6 +25,7 @@ import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/ten
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IQcReportsListItemDto } from '../../../../../../services/api/dto/qc-reports-list-item.dto';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 function model(prop: keyof IQcSurveyHistoryListItemDto): keyof IQcSurveyHistoryListItemDto {
   return prop;
@@ -69,7 +70,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.portCallId,
     colId: QcSurveyHistoryListColumns.portCallId,
     field: model('portCallId'),
-    cellRendererFramework: AgCellTemplateComponent
+    cellRendererFramework: AgCellTemplateComponent,
+    width: 200,
   };
 
   portNameCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
@@ -95,7 +97,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-  surveyStatusCol: ITypedColDef<IQcSurveyHistoryListItemDto, IDisplayLookupDto> = {
+  surveyStatusCol: ITypedColDef<IQcSurveyHistoryListItemDto, IStatusLookupDto> = {
     headerName: QcSurveyHistoryListColumnsLabels.surveyStatus,
     colId: QcSurveyHistoryListColumns.surveyStatus,
     field: model('surveyStatus'),
