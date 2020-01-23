@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { filter, takeUntil } from "rxjs/operators";
-import { IBreadcrumb } from "./breadcrumbs.model";
-import { BreadcrumbsService } from "./breadcrumbs.service";
 import { Subject } from "rxjs";
 import { MenuItem } from "primeng/primeng";
 import { isNull, isUndefined } from "lodash";
@@ -29,7 +27,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   // All the breadcrumbs
   public breadcrumbs: MenuItem[];
 
-  public constructor(private breadcrumbService: BreadcrumbsService, private activatedRoute: ActivatedRoute, private router: Router) {
+  public constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd
       ),
@@ -37,10 +35,6 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     ).subscribe(event => {
       this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
     });
-  }
-
-  public hasParams(breadcrumb: IBreadcrumb): any {
-    return Object.keys(breadcrumb.params).length ? [breadcrumb.url, breadcrumb.params] : [breadcrumb.url];
   }
 
   public ngOnInit(): void {
