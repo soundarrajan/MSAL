@@ -1405,9 +1405,12 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             });
                         }
                     }
-                    ctrl.request.locations[ctrl.request.locations.length - 1].products = angular.copy(_.orderBy(ctrl.request.locations[ctrl.request.locations.length - 1].products, ['productTypeId', 'product.name'], ['asc', 'asc']));
+                    ctrl.request.locations[ctrl.request.locations.length - 1].products = (_.orderBy(ctrl.request.locations[ctrl.request.locations.length - 1].products, ['productTypeId', 'product.name'], ['asc', 'asc']));
 		            _.each(ctrl.request.locations[ctrl.request.locations.length - 1].products, function(value, key) {
-		                value.product.name = String(key + 1) + ' - ' + angular.copy(value.product.name);
+		                if (!value.product.originalName) {
+		                	value.product.originalName = value.product.name;
+		                }
+		                value.product.name = String(key + 1) + ' - ' + angular.copy(value.product.originalName);
 		            });    
                     deferred.resolve();
                     ctrl.getLowestEtaForDestinationInLocation(ctrl.request.locations.length - 1);
