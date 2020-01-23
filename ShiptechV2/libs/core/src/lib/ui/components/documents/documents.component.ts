@@ -152,6 +152,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.gridViewModel.gridOptions.api.redrawRows({ rowNodes: [this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10))] });
         this.isCheckboxDisabled = false;
       }, () => {
+        this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
         this.isCheckboxDisabled = false;
       });
   }
