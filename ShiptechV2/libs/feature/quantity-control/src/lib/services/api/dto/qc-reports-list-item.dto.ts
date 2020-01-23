@@ -1,6 +1,11 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
+export interface IToleranceUomDto extends IDisplayLookupDto{
+  minTolerance: number;
+  maxTolerance: number;
+}
+
 export interface IQcReportsListItemDto {
   id: number;
   nbOfMatched: number;
@@ -15,20 +20,20 @@ export interface IQcReportsListItemDto {
   logBookRobBeforeDelivery: number;
   measuredRobBeforeDelivery: number;
   diffRobBeforeDelivery: number;
-  qtyBeforeDeliveryUom: IDisplayLookupDto;
+  qtyBeforeDeliveryUom: IToleranceUomDto;
   bdnQuantity: number;
   measuredDeliveredQty: number;
   diffDeliveredQty: number;
-  qtyDeliveredUom: IDisplayLookupDto;
+  qtyDeliveredUom: IToleranceUomDto;
   logBookRobAfterDelivery: number;
   measuredRobAfterDelivery: number;
   diffRobAfterDelivery: number;
-  qtyAfterDeliveryUom: IDisplayLookupDto;
+  qtyAfterDeliveryUom: IToleranceUomDto;
   logBookSludgeRobBeforeDischarge: number;
   measuredSludgeRobBeforeDischarge: number;
   diffSludgeRobBeforeDischarge: number;
   sludgeDischargedQty: number;
-  qtySludgeDischargedUom: IDisplayLookupDto;
+  qtySludgeDischargedUom: IToleranceUomDto;
   comment: string;
   isVerifiedSludgeQty: boolean;
   totalCount: number;
