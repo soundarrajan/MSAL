@@ -8,7 +8,7 @@ import {getMockDocuments} from "@shiptech/core/services/masters-api/mock-data/do
 import {IDocumentsUpdateIsVerifiedRequest, IDocumentsUpdateIsVerifiedResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import {IDocumentsDeleteRequest, IDocumentsDeleteResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
 import {IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
-import {IDocumentsCreateUploadResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
+import { IDocumentsCreateUploadRequest, IDocumentsCreateUploadResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import {IDocumentsDownloadRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto";
 
 @Injectable({
@@ -52,7 +52,7 @@ export class DocumentsApiMock implements IDocumentsApiService {
   }
 
   @ApiCall()
-  uploadFile(request: FormData): Observable<IDocumentsCreateUploadResponse> {
+  uploadFile(request: IDocumentsCreateUploadRequest): Observable<IDocumentsCreateUploadResponse> {
     return of(undefined);
   }
 }

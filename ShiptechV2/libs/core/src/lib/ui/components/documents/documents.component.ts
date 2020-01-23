@@ -11,7 +11,7 @@ import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-r
 import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
 import { FileUpload } from "primeng/fileupload";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IDocumentsCreateUploadDetails, IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
+import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import { ToastrService } from "ngx-toastr";
 import { DocumentsAutocompleteComponent } from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
 import { FileSaverService } from "ngx-filesaver";
@@ -78,7 +78,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
       this.clearUploadedFiles();
     } else {
-      const item: IDocumentsCreateUploadDetails = {
+      const item: IDocumentsCreateUploadDetailsDto = {
         name: event.files[0].name,
         documentType: this.selectedDocumentType,
         size: event.files[0].size,
@@ -89,7 +89,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           name: this.entityName
         }
       };
-      const requestPayload: IDocumentsCreateUploadRequest = {
+      const requestPayload: IDocumentsCreateUploadDto = {
         Payload: item
       };
       const formRequest: FormData = new FormData();
