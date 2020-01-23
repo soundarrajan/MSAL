@@ -1,7 +1,9 @@
-﻿commit 28bf76d2f15098b307a6fef3e1245da3751d69cb
+﻿commit 40ed17fd583527ae702d02a9f62259b11cfd1fb9
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Thu Jan 23 15:53:25 2020 +0200
+Date:   Thu Jan 23 16:08:02 2020 +0200
 
-    Fixed ag grid not saving preferences and not resetting qc list column widths
+    Qc Report List - column preferences regression. Preferences are not loaded. After fix, make sure they are requested just once!
+    When you navigate to port call details directly by typing in the browser url, if the route fails to load the page remains in loading
+    Direct navigation to http://localhost:4200/v2/report/undefined does not redirect to home + error messages
 
 branch: master

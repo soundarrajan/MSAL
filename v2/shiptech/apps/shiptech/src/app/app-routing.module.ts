@@ -6,6 +6,7 @@ import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard'
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 const routes: Routes = [
+
   { path: '', component: LayoutMainComponent, pathMatch: 'full' },
   {
     path: KnownPrimaryRoutes.QuantityControl,
@@ -16,7 +17,8 @@ const routes: Routes = [
     path: KnownPrimaryRoutes.LazyLoad,
     canActivate: [AuthenticationGuard],
     loadChildren: () => import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)
-  }
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
