@@ -31,6 +31,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   private _entityId: number;
   private _entityName: string;
   private selectedDocumentType: IDisplayLookupDto;
+  private isCheckboxDisabled: boolean;
 
   @ViewChild("uploadComponent", { static: false }) uploadedFiles: FileUpload;
   @ViewChild("documentsAutoComplete", { static: false }) inputAutoComplete: DocumentsAutocompleteComponent;
@@ -65,6 +66,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isCheckboxDisabled = false;
   }
 
   onPageChange(page: number): void {
@@ -135,6 +137,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   updateIsVerifiedDocument(item: IDocumentsItemDto, isChecked: boolean): void {
+    this.isCheckboxDisabled = true;
     const request: IDocumentsUpdateIsVerifiedRequest = {
       id: item.id,
       isVerified: isChecked
@@ -147,6 +150,9 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         item.isVerified = !isChecked;
         this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10)).setData(item);
         this.gridViewModel.gridOptions.api.redrawRows({ rowNodes: [this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10))] });
+        this.isCheckboxDisabled = false;
+      }, () => {
+        this.isCheckboxDisabled = false;
       });
   }
 

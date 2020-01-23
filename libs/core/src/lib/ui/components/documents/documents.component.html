@@ -85,7 +85,7 @@
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedCol]" appAgCellTemplate let-data="data" let-value="value">
   <div fxLayout="row" fxLayoutAlign="center center">
-    <p-checkbox binary="true" [ngModel]="data.isVerifiedCol" (ngModelChange)="updateIsVerifiedDocument(data, $event)">
+    <p-checkbox binary="true" [ngModel]="data?.isVerified"  (ngModelChange)="updateIsVerifiedDocument(data, $event)" [disabled]="isCheckboxDisabled">
     </p-checkbox>
   </div>
 </ng-template>
