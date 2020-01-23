@@ -11,11 +11,10 @@ import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-res
 import {DocumentViewEditNotesComponent} from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
 import {FileUpload} from "primeng/fileupload";
 import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
-import {IDocumentsCreateUploadDetails, IDocumentsCreateUploadRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
+import {IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import {ToastrService} from "ngx-toastr";
 import {FileSaverService} from "ngx-filesaver";
 import {ModuleError} from "@shiptech/core/ui/components/documents/error-handling/module-error";
-import { values } from "lodash";
 
 @Component({
   selector: "shiptech-documents",
@@ -136,6 +135,7 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
         const request: IDocumentsDeleteRequest = {id};
         this.mastersApi.deleteDocument(request).subscribe(
           () => {
+            this.toastrService.success("Delete done");
             this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
           },
           () => {
@@ -154,8 +154,8 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       } else {
 
-        const requestPayload: IDocumentsCreateUploadRequest = {
-          Payload: <IDocumentsCreateUploadDetails>{
+        const requestPayload: IDocumentsCreateUploadDto = {
+          Payload: <IDocumentsCreateUploadDetailsDto>{
             name: event.files[0].name,
             documentType: this.selectedDocumentType,
             size: event.files[0].size,
