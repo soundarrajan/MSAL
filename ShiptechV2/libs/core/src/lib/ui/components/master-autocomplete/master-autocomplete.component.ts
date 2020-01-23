@@ -1,11 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, ContentChild, Input, OnDestroy } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { nameof } from '@shiptech/core/utils/type-definitions';
-import { AgGridKnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
-import { AutoComplete } from 'primeng/primeng';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import {AfterViewInit, ChangeDetectorRef, ContentChild, Input, OnDestroy} from '@angular/core';
+import {Observable, of, Subject} from 'rxjs';
+import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {nameof} from '@shiptech/core/utils/type-definitions';
+import {AgGridKnownFilterTypes} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {ServerGridConditionFilterEnum} from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
+import {AutoComplete} from 'primeng/primeng';
+import {switchMap, takeUntil, tap} from 'rxjs/operators';
 
 export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
   protected _destroy$ = new Subject();
@@ -20,7 +20,7 @@ export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
 
   suggestions: IDisplayLookupDto[];
 
-  @ContentChild(AutoComplete, { static: true }) autoComplete: AutoComplete;
+  @ContentChild(AutoComplete, {static: true}) autoComplete: AutoComplete;
 
   private filter$ = new Subject<string>();
 

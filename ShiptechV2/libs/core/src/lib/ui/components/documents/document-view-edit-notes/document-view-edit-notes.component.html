@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-md-12">
     <div class="form_input form_input_note">
-      <textarea [(ngModel)]="notes"></textarea>
+      <textarea [(ngModel)]="notes" [disabled]="isReadOnly"></textarea>
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12">
-    <button (click)="save()" class="ui-button-info btn-i-yellow float-right" label="Save"
+    <button (click)="save()" [disabled]="isReadOnly" class="ui-button-info btn-i-yellow float-right" label="Save"
             pButton
             type="button">
     </button>
