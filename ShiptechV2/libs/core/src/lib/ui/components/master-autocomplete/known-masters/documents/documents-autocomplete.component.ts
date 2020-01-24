@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@angular/core';
 import {nameof} from '@shiptech/core/utils/type-definitions';
 import {LegacyLookupsDatabase} from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import {Observable, throwError} from 'rxjs';
@@ -16,8 +16,27 @@ import {MasterAutocompleteComponent} from '@shiptech/core/ui/components/master-a
 })
 export class DocumentsAutocompleteComponent extends MasterAutocompleteComponent {
 
+  private _entityId: number;
+  private _entityName: string;
+
   constructor(private legacyLookupsDatabase: LegacyLookupsDatabase, changeDetectorRef: ChangeDetectorRef) {
     super(changeDetectorRef);
+  }
+
+  get entityId(): number {
+    return this._entityId;
+  }
+
+  get entityName(): string {
+    return this._entityName;
+  }
+
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
   }
 
   protected getFilterResults(query: string): Observable<IDisplayLookupDto[]> {
