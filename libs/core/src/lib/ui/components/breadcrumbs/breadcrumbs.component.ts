@@ -48,7 +48,6 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
     const child = children[0];
     const routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
-
     if (routeURL !== "") {
       if (url !== "") {
         url += `/`;

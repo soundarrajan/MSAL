@@ -24,7 +24,7 @@ const routes: Routes = [
         path: KnownPrimaryRoutes.QuantityControl,
         canActivate: [AuthenticationGuard],
         data: {
-          breadcrumb: null
+          breadcrumb: undefined
         },
         loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
       }
