@@ -2,48 +2,45 @@ import { Injectable, OnDestroy, OnInit } from "@angular/core";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { filter, map, switchMap, takeUntil } from "rxjs/operators";
+import { filter, map, switchMap, takeUntil, tap } from "rxjs/operators";
 
 @Injectable()
 export class TitleService implements OnDestroy {
 
-  private _title$ = new BehaviorSubject('');
+  private _title$ = new BehaviorSubject<string>("");
   private _destroy$ = new Subject();
 
   constructor(private titleService: Title,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
 
-    const onNavigationEnd = this.router.events.pipe(filter(event => event instanceof NavigationEnd));
-
     // Change page title on navigation based on route data
-    onNavigationEnd.pipe(
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
       map(() => {
         let route = this.activatedRoute;
         while (route.firstChild) {
           route = route.firstChild;
         }
-        return route;
+        return route.snapshot;
       }),
       filter(route => route.outlet === 'primary'),
-      switchMap(route => route.data),
+      tap(title => this.title = title.data.title),
       takeUntil(this._destroy$)
-    )
-      .subscribe(event => {
-        const title = event.title;
-        if (title) {
-          this.setSubject(title);
-        }
-      });
+    ).subscribe();
+  }
+
+  get title(): string {
+    return this._title$.getValue();
+  }
+
+  set title(value: string) {
+    this._title$.next(value);
+    this.titleService.setTitle(value);
   }
 
   getSubject(): Observable<string> {
     return this._title$.asObservable();
-  }
-
-  setSubject(value: string): void {
-    this._title$.next(value);
-    this.titleService.setTitle(value);
   }
 
   ngOnDestroy(): void {
