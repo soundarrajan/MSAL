@@ -11,6 +11,7 @@ import {IDocumentsDeleteRequest, IDocumentsDeleteResponse} from "@shiptech/core/
 import {IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 import { IDocumentsCreateUploadRequest, IDocumentsCreateUploadResponse } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import {IDocumentsDownloadRequest} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto";
+import {IDocumentsMasterRequest, IDocumentsMasterResponse} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto";
 
 export namespace DocumentsApiPaths {
   export const getDocuments = `api/masters/documentupload/list`;
@@ -19,6 +20,7 @@ export namespace DocumentsApiPaths {
   export const deleteDocument = `api/masters/documentupload/delete`;
   export const downloadDocument = `api/masters/documentupload/download`;
   export const uploadDocument = "api/masters/documentupload/create";
+  export const getDocumentsType = 'api/masters/documenttype/list';
 }
 
 @Injectable({
@@ -61,6 +63,11 @@ export class DocumentsApi implements IDocumentsApiService {
     return this.http.post(`${this._apiUrl}/${DocumentsApiPaths.downloadDocument}`, request, {
       responseType: 'blob'
     });
+  }
+
+  @ObservableException()
+  getDocumentsMaster(request: IDocumentsMasterRequest): Observable<IDocumentsMasterResponse> {
+    return this.http.post<IDocumentsMasterResponse>(`${this._apiUrl}/${DocumentsApiPaths.getDocumentsType}`, {payload: {...request}});
   }
 }
 

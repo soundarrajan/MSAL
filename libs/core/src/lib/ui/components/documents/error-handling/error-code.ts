@@ -5,5 +5,6 @@ export enum ErrorCode {
   UpdateNotesDocumentFailed = 503,
   UploadDocumentFailed = 504,
   DocumentTypeNotSelected = 505,
-  DocumentDownloadError = 506
+  DocumentDownloadError = 506,
+  DocumentsTypeLoadError = 507
 }
