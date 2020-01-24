@@ -10,7 +10,7 @@ import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   @HostBinding('@.disabled')
   public animationsDisabled = true;
   title = 'Shiptech';
@@ -18,9 +18,7 @@ export class AppComponent implements OnInit{
   public isLoading = true;
 
   constructor(private router: Router,
-              changeDetector: ChangeDetectorRef,
-              private titleService: Title,
-              private activatedRoute: ActivatedRoute) {
+              changeDetector: ChangeDetectorRef) {
     router.events.subscribe(
       (event: RouterEvent): void => {
         if ((event instanceof NavigationEnd) || (event instanceof NavigationCancel) || (event instanceof NavigationError)) {
@@ -29,28 +27,5 @@ export class AppComponent implements OnInit{
         }
       }
     );
-  }
-
-  ngOnInit(): void {
-    const onNavigationEnd = this.router.events.pipe(filter(event => event instanceof NavigationEnd));
-
-    // Change page title on navigation based on route data
-    onNavigationEnd.pipe(
-        map(() => {
-          let route = this.activatedRoute;
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-        filter(route => route.outlet === 'primary'),
-        switchMap(route => route.data)
-      )
-      .subscribe(event => {
-        const title = event.title;
-        if (title) {
-          this.titleService.setTitle(event.title);
-        }
-      });
   }
 }

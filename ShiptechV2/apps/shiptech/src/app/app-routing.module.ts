@@ -6,7 +6,14 @@ import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard'
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 const routes: Routes = [
-  { path: '', component: LayoutMainComponent, pathMatch: 'full' },
+  {
+    path: '',
+    component: LayoutMainComponent,
+    pathMatch: 'full',
+    data: {
+      title: 'Shiptech'
+    },
+  },
   {
     path: '',
     data: {

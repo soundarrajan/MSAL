@@ -9,7 +9,7 @@
   </a>
 
   <span class="navbar-text">
-    {{pageTitle.getTitle()}}
+    {{pageTitle | async}}
   </span>
   <router-outlet name="topbar"></router-outlet>
 

@@ -19,6 +19,7 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import { TitleModule } from "@shiptech/core/services/title/title.module";
 
 // Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
 export function getAppBaseHref(doc: Document): string {
@@ -46,6 +47,7 @@ export function getAppBaseHref(doc: Document): string {
     AuthenticationModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
+    TitleModule,
     NgxsModule.forRoot([], { developmentMode: !environment.production, selectorOptions: { injectContainerState: false, suppressErrors: false } }),
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     DeveloperToolbarModule,
