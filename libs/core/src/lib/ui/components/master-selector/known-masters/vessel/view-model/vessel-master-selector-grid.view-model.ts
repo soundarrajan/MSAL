@@ -345,11 +345,11 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.status,
     colId: VesselMasterListColumns.status,
     field: model('isDeleted'),
-    valueFormatter: params => params.value ? 'ACTIVE' : 'INACTIVE', // TODO hardcoded values
-    cellClass: 'cell-background',
+    valueFormatter: params => params.value ? 'INACTIVE' : 'ACTIVE', // TODO hardcoded values
+    cellClass: 'vessel-master-cell-background',
     cellClassRules: {
-      'active': params => params.data?.isDeleted ?? false,
-      'inactive': params => !(params.data?.isDeleted ?? false)
+      'active': params => !(params.data?.isDeleted ?? false),
+      'inactive': params => (params.data?.isDeleted ?? false)
     }
   };
 
