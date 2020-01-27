@@ -1,18 +1,21 @@
-.cell-background {
-  color: white;
+::ng-deep{
+  .vessel-master-cell-background {
+    color: white !important;
 
-  &.bad {
-    background-color: #e9585a;
+    &.bad {
+      background-color: #e9585a;
+    }
+
+    &.active {
+      background-color: #99cb82;
+    }
+
+    &.inactive {
+      background-color: #e9585a;
+    }
+  }
+  .btn-select{
+    margin-left: auto;
   }
 
-  &.active {
-    background-color: #99cb82;
-  }
-
-  &.inactive {
-    background-color: #e9585a;
-  }
-}
-.btn-select{
-  margin-left: auto;
 }
