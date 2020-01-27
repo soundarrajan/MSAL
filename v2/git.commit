@@ -1,7 +1,7 @@
-﻿commit 37f36369f60312c3c769c4c30b1f2a6b157ea173
+﻿commit 992168d5ab8e49ee61f4e322e3422a00b8fc9a9f
 Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Mon Jan 27 15:32:34 2020 +0200
+Date:   Mon Jan 27 16:31:42 2020 +0200
 
-    20495  Quantity control - Status in the Vessel list is showing as inactive for all the Vessels
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
