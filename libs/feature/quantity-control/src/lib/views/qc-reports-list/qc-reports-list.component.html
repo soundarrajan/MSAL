@@ -89,8 +89,7 @@
 
   <div class="row mt-2">
     <div class="col-md-6">
-      Showing {{((gridViewModel.page - 1) * gridViewModel.pageSize) + 1}}
-      to {{gridViewModel.page * gridViewModel.pageSize}} of {{gridViewModel.totalItems}} entries
+      to {{gridViewModel.page * gridViewModel.pageSize > gridViewModel.totalItems ?  gridViewModel.totalItems : gridViewModel.page * gridViewModel.pageSize }} of {{gridViewModel.totalItems}} entries
     </div>
     <div class="col-md-6">
       <div style="float:right">
