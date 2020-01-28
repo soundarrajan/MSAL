@@ -17,15 +17,13 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      breadcrumb: 'Delivery'
+      breadcrumb: 'Delivery',
+      breadcrumbUrl: '/#/delivery'
     },
     children: [
       {
         path: KnownPrimaryRoutes.QuantityControl,
         canActivate: [AuthenticationGuard],
-        data: {
-          breadcrumb: undefined
-        },
         loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
       }
     ]
