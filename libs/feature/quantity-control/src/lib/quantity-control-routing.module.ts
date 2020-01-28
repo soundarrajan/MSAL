@@ -23,9 +23,6 @@ const routes: Routes = [
     path: '',
     component: MainQuantityControlComponent,
     resolve: { moduleInit: QuantityControlModuleResolver },
-    data: {
-      breadcrumb: undefined
-    },
     children: [
       {
         path: '',
@@ -41,17 +38,15 @@ const routes: Routes = [
           {
             path: KnownQuantityControlRoutes.ReportList,
             component: QcReportsListComponent,
-            data: { title: 'Quantity Control List', breadcrumb: undefined }
+            data: { title: 'Quantity Control List' }
           },
           {
             path: `${KnownQuantityControlRoutes.Report}/:${KnownQuantityControlRoutes.ReportIdParam}`,
-            data: { breadcrumb: undefined },
             children: [
               {
                 path: '',
                 redirectTo: KnownQuantityControlRoutes.ReportDetails,
                 pathMatch: 'full',
-                data: { breadcrumb: undefined }
               },
               {
                 path: KnownQuantityControlRoutes.ReportDetails,
