@@ -1,21 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding } from '@angular/core';
-import { environment } from '@shiptech/environment';
-import { NavigationCancel, NavigationEnd, NavigationError, Router, RouterEvent } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding } from "@angular/core";
+import { environment } from "@shiptech/environment";
+import { NavigationCancel, NavigationEnd, NavigationError, Router, RouterEvent } from "@angular/router";
 
 @Component({
-  selector: 'shiptech-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "shiptech-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  @HostBinding('@.disabled')
+  @HostBinding("@.disabled")
   public animationsDisabled = true;
-  title = 'Shiptech';
+  title = "Shiptech";
   isProduction = environment.production;
   public isLoading = true;
 
-  constructor(router: Router, changeDetector: ChangeDetectorRef) {
+  constructor(private router: Router,
+              changeDetector: ChangeDetectorRef) {
     router.events.subscribe(
       (event: RouterEvent): void => {
         if ((event instanceof NavigationEnd) || (event instanceof NavigationCancel) || (event instanceof NavigationError)) {

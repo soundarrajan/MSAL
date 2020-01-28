@@ -23,60 +23,65 @@ const routes: Routes = [
     path: '',
     component: MainQuantityControlComponent,
     resolve: { moduleInit: QuantityControlModuleResolver },
-    data: {
-      breadcrumb: 'Delivery'
-    },
     children: [
       {
         path: '',
-        redirectTo: KnownQuantityControlRoutes.ReportList,
-        pathMatch: 'full'
-      },
-      {
-        path: KnownQuantityControlRoutes.ReportList,
-        component: QcReportsListComponent,
-        data: { title: 'Quantity Control', breadcrumb: 'Quantity Control' }
-      },
-      {
-        path: `${KnownQuantityControlRoutes.Report}/:${KnownQuantityControlRoutes.ReportIdParam}`,
+        data: {
+          breadcrumb: 'Quantity Control List',
+        },
         children: [
           {
             path: '',
-            redirectTo: KnownQuantityControlRoutes.ReportDetails,
+            redirectTo: KnownQuantityControlRoutes.ReportList,
             pathMatch: 'full'
           },
           {
-            path: KnownQuantityControlRoutes.ReportDetails,
-            canDeactivate: [QcReportDetailsUnsavedChangesGuard],
-            component: QcReportDetailsComponent,
-            resolve: <IQcReportDetailsRouteData>{
-              // Note: ReportId is expected in child routes in the data.
-              reportId: QcReportDetailsRouteResolver,
-            },
-            data: { title: 'Quantity Control - Vessel', breadcrumb: 'Quantity Control' }
+            path: KnownQuantityControlRoutes.ReportList,
+            component: QcReportsListComponent,
+            data: { title: 'Quantity Control List' }
           },
           {
-            path: KnownQuantityControlRoutes.ReportDocumentsPath,
-            component: QcReportDetailsDocumentsComponent,
-            data: { title: 'Quantity Control - Documents', breadcrumb: 'Documents' }
-          },
-          {
-            path: KnownQuantityControlRoutes.ReportEmailLogPath,
-            component: QcReportDetailsEmailLogsComponent,
-            data: { title: 'Quantity Control - Email Log', breadcrumb: 'Email Log' }
-          },
-          {
-            path: KnownQuantityControlRoutes.ReportAuditPath,
-            component: QcReportDetailsAuditLogsComponent,
-            data: { title: 'Quantity Control - Audit Log', breadcrumb: 'Audit Log' }
-          },
-          {
-            path: '',
-            outlet: KnownNamedRouterOutlets.topbar,
-            component: EntityStatusComponent
-          },
-          // Note: Left here just for reference, QC does not have related links.
-          // relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
+            path: `${KnownQuantityControlRoutes.Report}/:${KnownQuantityControlRoutes.ReportIdParam}`,
+            children: [
+              {
+                path: '',
+                redirectTo: KnownQuantityControlRoutes.ReportDetails,
+                pathMatch: 'full',
+              },
+              {
+                path: KnownQuantityControlRoutes.ReportDetails,
+                canDeactivate: [QcReportDetailsUnsavedChangesGuard],
+                component: QcReportDetailsComponent,
+                resolve: <IQcReportDetailsRouteData>{
+                  // Note: ReportId is expected in child routes in the data.
+                  reportId: QcReportDetailsRouteResolver,
+                },
+                data: { title: 'Quantity Control - Vessel', breadcrumb: 'Vessel Details' }
+              },
+              {
+                path: KnownQuantityControlRoutes.ReportDocumentsPath,
+                component: QcReportDetailsDocumentsComponent,
+                data: { title: 'Quantity Control - Documents', breadcrumb: 'Documents' }
+              },
+              {
+                path: KnownQuantityControlRoutes.ReportEmailLogPath,
+                component: QcReportDetailsEmailLogsComponent,
+                data: { title: 'Quantity Control - Email Log', breadcrumb: 'Email Log' }
+              },
+              {
+                path: KnownQuantityControlRoutes.ReportAuditPath,
+                component: QcReportDetailsAuditLogsComponent,
+                data: { title: 'Quantity Control - Audit Log', breadcrumb: 'Audit Log' }
+              },
+              {
+                path: '',
+                outlet: KnownNamedRouterOutlets.topbar,
+                component: EntityStatusComponent
+              },
+              // Note: Left here just for reference, QC does not have related links.
+              // relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
+            ]
+          }
         ]
       }
     ]

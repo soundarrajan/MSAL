@@ -1,22 +1,18 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, takeUntil } from 'rxjs/operators';
-import { IBreadcrumb } from './breadcrumbs.model';
-import { BreadcrumbsService } from './breadcrumbs.service';
-import { Subject } from 'rxjs';
-import { MenuItem } from 'primeng/primeng';
-
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { filter, takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { MenuItem } from "primeng/primeng";
+import { AppConfig } from "@shiptech/core/config/app-config";
 
 @Component({
-  selector: 'shiptech-breadcrumbs',
+  selector: "shiptech-breadcrumbs",
   template: `
-      <div fxLayout="row" fxLayoutAlign="start center" class="breadcrumbs-container">
-          <p-breadcrumb fxFlex="auto" [model]="breadcrumbs" [home]="{ routerLink: '/', icon: 'fa fa-home'}"></p-breadcrumb>
-          <router-outlet class="breadcrumbs-right" fxFlex="initial" fxLayoutAlign="end start"
-                         name="breadcrumbs-right"></router-outlet>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="breadcrumbs-container">
+      <p-breadcrumb fxFlex="auto" [model]="breadcrumbs" [home]="{ routerLink: '/', icon: 'fa fa-home'}"></p-breadcrumb>
+    </div>
   `,
-  styleUrls: ['./breadcrumbs.scss'],
+  styleUrls: ["./breadcrumbs.scss"],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -24,103 +20,55 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  private ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
-  private ROUTE_PARAM_BREADCRUMB: string = 'breadcrumb';
-  private PREFIX_BREADCRUMB: string = 'prefixBreadcrumb';
+  private ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
+  private ROUTE_DATA_BREADCRUMB_URL: string = "breadcrumbUrl";
 
-  // The breadcrumbs of the current route
-  private currentBreadcrumbs: IBreadcrumb[];
   // All the breadcrumbs
   public breadcrumbs: MenuItem[];
 
-  public constructor(private breadcrumbService: BreadcrumbsService, private activatedRoute: ActivatedRoute, private router: Router) {
-    breadcrumbService.get().pipe(takeUntil(this._destroy$)).subscribe((breadcrumbs: IBreadcrumb[]) => {
-      this.breadcrumbs = breadcrumbs.map(breadcrumb => ({ label: breadcrumb.label, routerLink: breadcrumb.url }));
-    });
-  }
+  public constructor(private activatedRoute: ActivatedRoute,
+                     private router: Router,
+                     private appConfig: AppConfig) {
 
-  public hasParams(breadcrumb: IBreadcrumb): any {
-    return Object.keys(breadcrumb.params).length ? [breadcrumb.url, breadcrumb.params] : [breadcrumb.url];
-  }
-
-
-  public ngOnInit(): void {
-    if (this.router.navigated) {
-      this.generateBreadcrumbTrail();
-    }
-
-    // subscribe to the NavigationEnd event
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd
       ),
       takeUntil(this._destroy$)
-    ).subscribe(event => {
-      this.generateBreadcrumbTrail();
+    ).subscribe(() => {
+      this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
     });
   }
 
-  private generateBreadcrumbTrail(): void {
-    // // reset currentBreadcrumbs
-    // this.currentBreadcrumbs = [];
-    //
-    // // get the root of the current route
-    // let currentRoute: ActivatedRoute = this.activatedRoute.root;
-    //
-    // // set the url to an empty string
-    // let url: string = '';
-    //
-    // // iterate from activated route to children
-    // while (currentRoute.children.length > 0) {
-    //   const childrenRoutes: ActivatedRoute[] = currentRoute.children;
-    //   let breadCrumbLabel: string = '';
-    //
-    //   // iterate over each children
-    //   childrenRoutes.forEach(route => {
-    //     // Set currentRoute to this route
-    //     currentRoute = route;
-    //     // Verify this is the primary route
-    //     if (route.outlet !== PRIMARY_OUTLET) {
-    //       return;
-    //     }
-    //     const hasData = (route.routeConfig && route.routeConfig.data);
-    //     const hasDynamicBreadcrumb: boolean = route.snapshot.params.hasOwnProperty(this.ROUTE_PARAM_BREADCRUMB);
-    //
-    //     if (hasData || hasDynamicBreadcrumb) {
-    //       /*
-    //       Verify the custom data property "breadcrumb"
-    //       is specified on the route or in its parameters.
-    //
-    //       Route parameters take precedence over route data
-    //       attributes.
-    //       */
-    //       if (hasDynamicBreadcrumb) {
-    //         breadCrumbLabel = route.snapshot.params[this.ROUTE_PARAM_BREADCRUMB].replace(/_/g, ' ');
-    //       } else if (route.snapshot.data.hasOwnProperty(this.ROUTE_DATA_BREADCRUMB)) {
-    //         breadCrumbLabel = route.snapshot.data[this.ROUTE_DATA_BREADCRUMB];
-    //       }
-    //       // Get the route's URL segment
-    //       const routeURL: string = route.snapshot.url.map(segment => segment.path).join('/');
-    //       url += `/${routeURL}`;
-    //       // Cannot have parameters on a root route
-    //       if (routeURL.length === 0) {
-    //         route.snapshot.params = {};
-    //       }
-    //       // Add breadcrumb
-    //       const breadcrumb: IBreadcrumb = {
-    //         label: breadCrumbLabel,
-    //         params: route.snapshot.params,
-    //         url: url
-    //       };
-    //       // Add the breadcrumb as 'prefixed'. It will appear before all breadcrumbs
-    //       if (route.snapshot.data.hasOwnProperty(this.PREFIX_BREADCRUMB)) {
-    //         this.breadcrumbService.storePrefixed(breadcrumb);
-    //       } else {
-    //         this.currentBreadcrumbs.push(breadcrumb);
-    //       }
-    //     }
-    //   });
-    //   this.breadcrumbService.store(this.currentBreadcrumbs);
-    // }
+  public ngOnInit(): void {
+  }
+
+  private createBreadcrumbs(route: ActivatedRoute, url: string = "", breadcrumbs: MenuItem[] = []): MenuItem[] {
+
+    const children: ActivatedRoute[] = route.children;
+    if (children.length === 0) {
+      return breadcrumbs;
+    }
+
+    const child = children[0];
+    const routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
+    if (routeURL !== "") {
+      url += `/${routeURL}`;
+    }
+    const newBreadCrumb: MenuItem = {};
+    newBreadCrumb.target = this.appConfig.openLinksInNewTab ? "_blank" : "_self";
+    newBreadCrumb.routerLink = url;
+    const data = child.snapshot.routeConfig.data;
+    if (data) {
+      if (data[this.ROUTE_DATA_BREADCRUMB]) {
+        if (data[this.ROUTE_DATA_BREADCRUMB_URL]) {
+          newBreadCrumb.url = data[this.ROUTE_DATA_BREADCRUMB_URL];
+        }
+        newBreadCrumb.label = data[this.ROUTE_DATA_BREADCRUMB];
+        breadcrumbs.push(newBreadCrumb);
+      }
+    }
+
+    return this.createBreadcrumbs(child, url, breadcrumbs);
   }
 
   ngOnDestroy(): void {
