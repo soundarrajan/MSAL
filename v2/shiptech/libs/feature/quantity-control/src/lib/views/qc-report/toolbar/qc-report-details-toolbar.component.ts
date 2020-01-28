@@ -31,6 +31,7 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
       takeUntil(this._destroy$)
     ).subscribe((params) => {
       const reportId = params.reportId;
+      const disabled = reportId === '0';
       const routeLinkToReportDetails = ["/", KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.Report, reportId];
       this.menuItems = [
         {
@@ -41,17 +42,20 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
         {
           label: "Documents",
           routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportDocumentsPath],
-          routerLinkActiveOptions: { exact: true }
+          routerLinkActiveOptions: { exact: true },
+          disabled
         },
         {
           label: "Email Log",
           routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportEmailLogPath],
-          routerLinkActiveOptions: { exact: true }
+          routerLinkActiveOptions: { exact: true },
+          disabled
         },
         {
           label: "Audit Log",
           routerLink: [...routeLinkToReportDetails, KnownQuantityControlRoutes.ReportAuditPath],
-          routerLinkActiveOptions: { exact: true }
+          routerLinkActiveOptions: { exact: true },
+          disabled
         }
       ];
     });
@@ -68,6 +72,6 @@ export class QcReportDetailsToolbarComponent implements OnInit, OnDestroy, After
     this.router.events.pipe(
       filter(event => event instanceof NavigationCancel || event instanceof NavigationError),
       takeUntil(this._destroy$)
-    ).subscribe(event => this.tabMenu.activeItem = undefined);
+    ).subscribe(() => this.tabMenu.activeItem = undefined);
   }
 }
