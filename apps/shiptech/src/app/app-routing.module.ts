@@ -6,12 +6,27 @@ import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard'
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 const routes: Routes = [
-
-  { path: '', component: LayoutMainComponent, pathMatch: 'full' },
   {
-    path: KnownPrimaryRoutes.QuantityControl,
-    canActivate: [AuthenticationGuard],
-    loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
+    path: '',
+    component: LayoutMainComponent,
+    pathMatch: 'full',
+    data: {
+      title: 'Shiptech'
+    },
+  },
+  {
+    path: '',
+    data: {
+      breadcrumb: 'Delivery',
+      breadcrumbUrl: '/#/delivery'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.QuantityControl,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
+      }
+    ]
   },
   {
     path: KnownPrimaryRoutes.LazyLoad,
