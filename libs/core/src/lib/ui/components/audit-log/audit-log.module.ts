@@ -9,6 +9,7 @@ import { AgColumnGroupHeaderComponent } from "@shiptech/core/ui/components/ag-gr
 import { AgDatePickerComponent } from "@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component";
 import { AgFilterDisplayModule } from "@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module";
 import { AuditLogComponent } from "@shiptech/core/ui/components/audit-log/audit-log.component";
+import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { AuditLogComponent } from "@shiptech/core/ui/components/audit-log/audit-
     UIModule,
     AgGridExtensionsModule,
     AgGridModule.withComponents([AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent]),
-    AgFilterDisplayModule
+    AgFilterDisplayModule,
+    AgFooterModule
   ],
   declarations: [
     AuditLogComponent

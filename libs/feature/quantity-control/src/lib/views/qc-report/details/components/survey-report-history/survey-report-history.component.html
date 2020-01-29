@@ -62,26 +62,12 @@
     </div>
   </div>
 
-  <div class="row mt-2">
-    <div class="col-md-6">
-      to {{gridViewModel.page * gridViewModel.pageSize > gridViewModel.totalItems ?  gridViewModel.totalItems : gridViewModel.page * gridViewModel.pageSize }} of {{gridViewModel.totalItems}} entries
-    </div>
-    <div class="col-md-6">
-      <div style="float:right">
-        Page
-        <app-ag-paging style="width: 150px;"
-                       [pagerLeftArrowIcon]="'fa fa-chevron-left'"
-                       [pagerRightArrowIcon]="'fa fa-chevron-right'"
-                       [count]="gridViewModel.totalItems"
-                       [page]="gridViewModel.page"
-                       [size]="gridViewModel.pageSize"
-                       [useInputAsPageSelect]="true"
-                       (pageChange)="onPageChange($event.page)">
-        </app-ag-paging>
-        of {{ gridViewModel.totalPages }}
-      </div>
-    </div>
-  </div>
+  <app-ag-footer
+    [page]="gridViewModel.page"
+    [size]="gridViewModel.pageSize"
+    [count]="gridViewModel.totalItems"
+    (pageChange)="onPageChange($event.page)">
+  </app-ag-footer>
 </div>
 
 
