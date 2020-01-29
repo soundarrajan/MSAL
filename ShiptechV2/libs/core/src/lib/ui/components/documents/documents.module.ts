@@ -15,6 +15,7 @@ import { MasterAutocompleteModule } from "@shiptech/core/ui/components/master-au
 import { AutoCompleteModule, CheckboxModule, FileUploadModule } from "primeng/primeng";
 import { FormsModule } from "@angular/forms";
 import { FileSaverModule } from "ngx-filesaver";
+import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { FileSaverModule } from "ngx-filesaver";
     FileSaverModule,
     AgGridModule.withComponents([AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent]),
     AgFilterDisplayModule,
-    MasterAutocompleteModule
+    MasterAutocompleteModule,
+    AgFooterModule
   ],
   declarations: [
     DocumentsComponent,

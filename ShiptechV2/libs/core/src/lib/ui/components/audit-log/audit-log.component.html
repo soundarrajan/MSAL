@@ -19,21 +19,10 @@
     id="audit-log-grid" class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
-  <div class="row mt-2">
-    <div class="col-md-6">
-      to {{gridViewModel.page * gridViewModel.pageSize > gridViewModel.totalItems ?  gridViewModel.totalItems : gridViewModel.page * gridViewModel.pageSize }} of {{gridViewModel.totalItems}} entries
-    </div>
-    <div class="col-md-6">
-      <div style="float:right">
-        <span class="f-s-10">Page</span>
-        <app-ag-paging style="width: 150px;" [pagerLeftArrowIcon]="'fa fa-chevron-left'"
-                       [pagerRightArrowIcon]="'fa fa-chevron-right'" [count]="gridViewModel.totalItems" [page]="gridViewModel.page"
-                       [size]="gridViewModel.pageSize" [useInputAsPageSelect]="true" (pageChange)="onPageChange($event.page)">
-        </app-ag-paging>
-        <span class="f-s-10">
-        of {{ gridViewModel.totalPages }}
-      </span>
-      </div>
-    </div>
-  </div>
+  <app-ag-footer
+    [page]="gridViewModel.page"
+    [size]="gridViewModel.pageSize"
+    [count]="gridViewModel.totalItems"
+    (pageChange)="onPageChange($event.page)">
+  </app-ag-footer>
 </div>

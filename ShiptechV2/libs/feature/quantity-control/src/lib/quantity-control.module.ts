@@ -45,6 +45,7 @@ import { SelectTextOnFocusDirectiveModule } from "@shiptech/core/ui/directives/d
 import { EmailLogModule } from "@shiptech/core/ui/components/email-log/email-log.module";
 import { AuditLogModule } from "@shiptech/core/ui/components/audit-log/audit-log.module";
 import { DocumentsModule } from "@shiptech/core/ui/components/documents/documents.module";
+import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { DocumentsModule } from "@shiptech/core/ui/components/documents/document
     NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
+    AgFooterModule,
     SelectTextOnFocusDirectiveModule,
     EmailLogModule,
     AuditLogModule,
