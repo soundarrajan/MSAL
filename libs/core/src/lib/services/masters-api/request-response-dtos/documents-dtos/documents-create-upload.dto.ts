@@ -1,6 +1,6 @@
 import { ILookupDto } from "@shiptech/core/lookups/lookup-dto.interface";
 
-export interface IDocumentsCreateUploadDetails {
+export interface IDocumentsCreateUploadDetailsDto {
   name: string;
   documentType: ILookupDto;
   size: number;
@@ -9,8 +9,11 @@ export interface IDocumentsCreateUploadDetails {
   referenceNo: number;
 }
 
-export interface IDocumentsCreateUploadRequest {
-  Payload: IDocumentsCreateUploadDetails
+export interface IDocumentsCreateUploadDto {
+  Payload: IDocumentsCreateUploadDetailsDto
+}
+
+export interface IDocumentsCreateUploadRequest extends FormData{
 }
 
 export interface IDocumentsCreateUploadResponse {
