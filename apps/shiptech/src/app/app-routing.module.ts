@@ -18,7 +18,8 @@ const routes: Routes = [
     path: '',
     data: {
       breadcrumb: 'Delivery',
-      breadcrumbUrl: '/#/delivery'
+      breadcrumbUrl: '/#/delivery',
+      breadcrumbIcon: 'fa fa-home'
     },
     children: [
       {
