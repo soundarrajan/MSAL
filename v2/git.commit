@@ -1,7 +1,7 @@
-﻿commit 2b03816eed3ae1ed0f6cfa959f9a754d2068aa1c
+﻿commit da122bf48e749690ed427150fe1dd641069125f4
 Author: Radu Coman <radu.coman@24software.ro>
-Date:   Tue Jan 28 15:27:03 2020 +0200
+Date:   Wed Jan 29 15:55:44 2020 +0200
 
-    disable documents email log and audit log buttons for new reports
+    remove home breadcrumb link and added icon feature
 
 branch: master

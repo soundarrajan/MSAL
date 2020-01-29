@@ -9,7 +9,7 @@ import { AppConfig } from "@shiptech/core/config/app-config";
   selector: "shiptech-breadcrumbs",
   template: `
     <div fxLayout="row" fxLayoutAlign="start center" class="breadcrumbs-container">
-      <p-breadcrumb fxFlex="auto" [model]="breadcrumbs" [home]="{ routerLink: '/', icon: 'fa fa-home'}"></p-breadcrumb>
+      <p-breadcrumb fxFlex="auto" [model]="breadcrumbs"></p-breadcrumb>
     </div>
   `,
   styleUrls: ["./breadcrumbs.scss"],
@@ -22,6 +22,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
   private ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
   private ROUTE_DATA_BREADCRUMB_URL: string = "breadcrumbUrl";
+  private ROUTE_DATA_BREADCRUMB_ICON: string = "breadcrumbIcon";
 
   // All the breadcrumbs
   public breadcrumbs: MenuItem[];
@@ -62,6 +63,9 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       if (data[this.ROUTE_DATA_BREADCRUMB]) {
         if (data[this.ROUTE_DATA_BREADCRUMB_URL]) {
           newBreadCrumb.url = data[this.ROUTE_DATA_BREADCRUMB_URL];
+        }
+        if (data[this.ROUTE_DATA_BREADCRUMB_ICON]) {
+          newBreadCrumb.icon = data[this.ROUTE_DATA_BREADCRUMB_ICON];
         }
         newBreadCrumb.label = data[this.ROUTE_DATA_BREADCRUMB];
         breadcrumbs.push(newBreadCrumb);
