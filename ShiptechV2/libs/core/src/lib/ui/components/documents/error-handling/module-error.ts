@@ -40,6 +40,11 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not download the document. Please try again later.'
   });
 
+  static readonly DocumentsTypeLoadError = new AppError({
+    code: ErrorCode.DocumentsTypeLoadError,
+    message: 'Could not load documents types list. Please try again later.'
+  });
+
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);
   }

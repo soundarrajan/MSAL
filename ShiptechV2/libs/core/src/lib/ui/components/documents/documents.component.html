@@ -4,9 +4,9 @@
       <div class="row">
         <div class="col-md-4 min-hgt-50">
           <label>Document type</label>
-          <shiptech-documents-autocomplete #documentsAutoComplete>
+          <shiptech-documents-autocomplete #documentsAutoComplete [entityId]="entityId" [entityName]="entityName">
             <p-autoComplete (onSelect)="documentTypeSelection($event)"
-                            [disabled]="documentsAutoComplete.disabled"
+                            [disabled]="isReadOnly"
                             [readonly]="documentsAutoComplete.readonly"
                             (completeMethod)="documentsAutoComplete.filter($event.query)"
                             [suggestions]="documentsAutoComplete.suggestions"
@@ -15,15 +15,15 @@
                             [field]="documentsAutoComplete.field"
                             [forceSelection]="true"
                             [minLength]="0"
-                            placeholder="Document type">
+                            [ngModel]="selectedDocumentType"
+                            placeholder="">
             </p-autoComplete>
           </shiptech-documents-autocomplete>
         </div>
         <div class="col-md-8">
           <div class="col-sm-6">
             <div class="file-upload-zone">
-              <p-fileUpload #uploadComponent name="file2" customUpload="true" [auto]="true"
-                            (uploadHandler)="uploadFile($event)"
+              <p-fileUpload #uploadComponent name="file2" customUpload="true" [auto]="true" [disabled]="isReadOnly"
               >
               </p-fileUpload>
               <h3>Drop files here or click to upload</h3>
@@ -84,7 +84,7 @@
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedCol]" appAgCellTemplate let-data="data" let-value="value">
   <div fxLayout="row" fxLayoutAlign="center center">
-    <p-checkbox binary="true" [ngModel]="data.isVerifiedCol" (ngModelChange)="updateIsVerifiedDocument(data, $event)">
+    <p-checkbox binary="true" [ngModel]="data?.isVerified"  (ngModelChange)="updateIsVerifiedDocument(data, $event)" [disabled]="isReadOnly">
     </p-checkbox>
   </div>
 </ng-template>
