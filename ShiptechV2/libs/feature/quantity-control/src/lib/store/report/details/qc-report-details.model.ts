@@ -3,13 +3,13 @@ import { IQcEventsLogState, QcEventsLogStateModel } from './qc-events-log-state.
 import { IQcProductTypeListItemState } from './qc-product-type-list-item-state.model';
 import { IQcSurveyHistoryState, QcSurveyHistoryStateModel } from './qc-survey-history-state.model';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
+import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 export class QcReportDetailsModel {
   isNew: boolean;
   id: number;
-  portCall: IQcVesselPortCall;
+  portCall: IQcVesselPortCallDto;
   vessel: IDisplayLookupDto;
   status: IStatusLookupDto;
 

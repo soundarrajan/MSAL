@@ -5,11 +5,6 @@ import { AuthenticationService } from './authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthenticationInterceptor } from '../interceptors/authentication-http.interceptor.service.';
 
-// Note: Workaround angular aot: Function calls are not supported in decorators
-export function authContextFactory(): AuthenticationContext {
-  return AuthenticationContext.instance;
-}
-
 @NgModule()
 export class AuthenticationModule {
   static forRoot(): ModuleWithProviders {
@@ -20,7 +15,7 @@ export class AuthenticationModule {
         AuthenticationService,
         {
           provide: AuthenticationContext,
-          useFactory: authContextFactory
+          useValue: AuthenticationContext.instance
         },
         {
           provide: HTTP_INTERCEPTORS,
