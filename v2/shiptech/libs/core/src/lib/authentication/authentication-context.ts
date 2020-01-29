@@ -1,13 +1,9 @@
-const tokenKey = 'adal.idtoken';
-const tenantIdKey = 'TenantId';
-const userIdKey = 'UserId';
-
 export class AuthenticationContext {
   public static instance = new AuthenticationContext();
-  tenantId: string;
+  isAuthenticated: boolean;
   userId: string;
 
   constructor() {}
 }
-//TODO: AuthenticationContext should be reachable even from non-angular places. Init this from the AuthenticationService
+//Note: AuthenticationContext should be reachable even from non-angular places.
 export const AuthContext = AuthenticationContext.instance;

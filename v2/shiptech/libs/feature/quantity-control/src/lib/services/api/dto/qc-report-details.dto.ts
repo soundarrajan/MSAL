@@ -1,11 +1,11 @@
 import { IQcVesselResponsesDto } from './qc-vessel-response.dto';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
+import { IQcVesselPortCallDto } from './qc-vessel-port-call.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 export interface IQcReportDetailsDto {
   id: number
-  portCall?: IQcVesselPortCall;
+  portCall?: IQcVesselPortCallDto;
   vessel?: IDisplayLookupDto,
   nbOfClaims: number;
   nbOfDeliveries: number;

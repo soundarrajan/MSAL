@@ -1,7 +1,7 @@
-﻿commit 66951e8f1856116a927db1ec4e40589526b976f9
-Author: Radu Coman <radu.coman@24software.ro>
-Date:   Wed Jan 29 18:02:26 2020 +0200
+﻿commit be19481bcfb3a4b01c0233501e842e72e523ef72
+Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
+Date:   Wed Jan 29 19:58:56 2020 +0200
 
-    code review implementation
+    Build fix error
 
 branch: master

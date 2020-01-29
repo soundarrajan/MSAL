@@ -3,11 +3,16 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { AuthenticationService } from '../authentication/authentication.service';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
+import { ILogger } from '@shiptech/core/logging/logger';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthenticationService) {
+  private logger: ILogger;
+
+  constructor(private authService: AuthenticationService, loggerFactory: LoggerFactory) {
+    this.logger = loggerFactory.createLogger(AuthenticationInterceptor.name)
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -17,7 +22,14 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     // get api url from adal config
     const resource = this.authService.getResourceForEndpoint(req.url);
+
     if (!resource || !this.authService.isAuthenticated) {
+
+      if(!resource)
+        this.logger.warn(`Adal returned no endpoint for url: ${req.url}`);
+
+      if(!this.authService.isAuthenticated)
+        this.logger.warn(`User not authenticated. Redirecting to login. `);
 
       this.authService.login();
 
@@ -37,6 +49,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       catchError(error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
+            this.logger.warn(`Api not authenticated. Logging out. `);
             this.authService.logout();
           }
         }
