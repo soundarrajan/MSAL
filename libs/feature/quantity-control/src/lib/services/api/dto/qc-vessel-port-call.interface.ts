@@ -1,4 +1,4 @@
-export interface IQcVesselPortCall { // TODO: check if this should b here
+export interface IQcVesselPortCallDto {
   vesselVoyageDetailId: number;
   portCallId: string;
   voyageReference: string;

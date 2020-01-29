@@ -41,7 +41,7 @@ import { IQcReportState } from "../store/report/qc-report.state.model";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { UpdateQcReportPortCall, UpdateQcReportVessel } from "../store/report/details/actions/qc-vessel.action";
 import { EMPTY$ } from "@shiptech/core/utils/rxjs-operators";
-import { IQcVesselPortCall } from "../guards/qc-vessel-port-call.interface";
+import { IQcVesselPortCallDto } from "./api/dto/qc-vessel-port-call.interface";
 import { map } from "rxjs/operators";
 import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from "../store/report/details/actions/update-port-call-bdn.actions";
 
@@ -144,7 +144,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  updatePortCallId$(portCall: IQcVesselPortCall): Observable<unknown> {
+  updatePortCallId$(portCall: IQcVesselPortCallDto): Observable<unknown> {
     return this.store.dispatch(new UpdateQcReportPortCall(portCall));
   }
 
@@ -303,7 +303,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  loadPortCallBdn$(portCall: IQcVesselPortCall): Observable<unknown> {
+  loadPortCallBdn$(portCall: IQcVesselPortCallDto): Observable<unknown> {
     if (!portCall) {
       return this.store.dispatch(QcClearPortCallBdnAction);
     }

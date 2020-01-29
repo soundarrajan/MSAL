@@ -106,12 +106,4 @@ import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer
   ]
 })
 export class QuantityControlModule {
-
-  // TODO: Workaround to jump start creation of the Mock Service in order for it to register it with the developer toolbar.
-  // TODO: This doesn t work, for some reason QuantityControlApiService is created, and the appConfig is not yet loaded
-  // constructor(bootStrap : BootstrapService, devService: DeveloperToolbarService, injector: Injector) {
-  //   bootStrap.initialized.pipe(tap(() => {
-  //     injector.get(QuantityControlMockApiService);
-  //   })).subscribe()
-  // }
 }
