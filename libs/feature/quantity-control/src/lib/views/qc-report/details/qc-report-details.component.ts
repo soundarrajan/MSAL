@@ -98,7 +98,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     this.store.select((appState: IAppState) => appState?.quantityControl?.report?.details?.status).pipe(filter(status => !!status), tap(s => {
         this.hasVerifiedStatus$.next(s.name === StatusLookupEnum.Verified);
 
-        const status = this.statusLookup.getStatusByName(s.name);
+        const status = this.statusLookup.getStatus(s);
         if (status)
           this.entityStatus.setStatus({
             name: status.displayName,
