@@ -6,10 +6,9 @@ import { IDocumentsApiService } from "@shiptech/core/services/masters-api/docume
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
-import { ConfirmationService, DialogService } from "primeng/primeng";
+import { ConfirmationService, DialogService, FileUpload } from "primeng/primeng";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
-import { FileUpload } from "primeng/fileupload";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { IDocumentsCreateUploadDetails, IDocumentsCreateUploadRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
 import { ToastrService } from "ngx-toastr";
