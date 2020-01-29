@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AdalService } from 'adal-angular-wrapper';
 import { Observable } from 'rxjs';
+import { AuthenticationContext } from '@shiptech/core/authentication/authentication-context';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthenticationService {
   private _isInitialized = false;
 
@@ -12,7 +11,6 @@ export class AuthenticationService {
     return this._isInitialized;
   }
 
-  // TODO: Do not expose adal, create custom object model
   get config(): adal.Config {
     return (this.adalService || <AdalService>{}).config;
   }
@@ -25,8 +23,7 @@ export class AuthenticationService {
     return ((this.adalService || <AdalService>{}).userInfo || <adal.User>{}).authenticated;
   }
 
-  constructor(private adalService: AdalService) {
-    //TODO: setup AuthenticationContext
+  constructor(private adalService: AdalService, public authenticationContext: AuthenticationContext) {
   }
 
   public init(configOptions: adal.Config): void {
@@ -35,6 +32,11 @@ export class AuthenticationService {
     this._isInitialized = true;
 
     this.adalService.handleWindowCallback();
+
+    if(this.isAuthenticated){
+      this.authenticationContext.userId = this.userInfo?.userName;
+      this.authenticationContext.isAuthenticated = this.isAuthenticated;
+    }
   }
 
   public login(): void {
@@ -43,6 +45,9 @@ export class AuthenticationService {
 
   public logout(): void {
     this.adalService.logOut();
+
+    this.authenticationContext.userId = undefined;
+    this.authenticationContext.isAuthenticated = false;
   }
 
   public acquireToken(resource: string): Observable<string | null> {

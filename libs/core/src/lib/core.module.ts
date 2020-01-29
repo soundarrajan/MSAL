@@ -15,7 +15,7 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 @NgModule({
   imports: [
     CommonModule,
-    AppContextModule,
+    AppContextModule.forRoot(),
     AppServicesModule.forRoot(),
     ToastrModule.forRoot(),
     UIModule,

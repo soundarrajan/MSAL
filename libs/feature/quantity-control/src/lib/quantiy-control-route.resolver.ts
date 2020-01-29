@@ -21,7 +21,7 @@ export class QuantityControlModuleResolver implements Resolve<any> {
     appConfig: AppConfig,
     devService: DeveloperToolbarService
   ) {
-    // TODO: Workaround to jump start creation of the Mock Service in order for it to register it with the developer toolbar.
+    // Note: Workaround to jump start creation of the Mock Service in order for it to register it with the developer toolbar.
     // Note: It's important to register this only once, and in the root module. We currently don't support multiple services in child providers
     devService.registerApi({
       id: QuantityControlApi.name,
