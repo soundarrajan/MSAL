@@ -27,8 +27,8 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
   private _destroy$ = new Subject();
   private _entityId: number;
   private _entityName: string;
-  private selectedDocumentType: IDisplayLookupDto;
-  private isReadOnly: boolean;
+  public selectedDocumentType: IDisplayLookupDto;
+  public isReadOnly: boolean;
 
   @ViewChild("uploadComponent", { static: false }) uploadedFiles: FileUpload;
 
