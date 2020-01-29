@@ -1,7 +1,7 @@
 import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
 import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from '../dto/qc-event-log-list-item.dto';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IQcVesselPortCall } from '../../../guards/qc-vessel-port-call.interface';
+import { IQcVesselPortCallDto } from '../dto/qc-vessel-port-call.interface';
 import { IQcReportProductTypeDto } from '../dto/qc-report-details.dto';
 
 export interface IQcReportSaveProductDetailsDto {
@@ -19,7 +19,7 @@ export interface IQcReportSaveProductDetailsDto {
 
 export interface ISaveReportDetailsRequest extends IBaseQuantityControlRequest {
   id: number;
-  portCall: IQcVesselPortCall,
+  portCall: IQcVesselPortCallDto,
   isVerifiedSludgeQty: boolean;
   sludgePercentage: number;
   comments: string;
