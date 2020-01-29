@@ -54,7 +54,7 @@ export class EmailStatusLookup {
       throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>("emailStatus"), EmailStatusLookupEnum.Pending);
   }
 
-  public toEmailStatus(status: EmailStatusLookupEnum): IEmailStatusLookupDto | undefined {
+  public getEmailStatus(status: EmailStatusLookupEnum): IEmailStatusLookupDto | undefined {
 
     const defaultResponse: IEmailStatusLookupDto = {
       id: null,
