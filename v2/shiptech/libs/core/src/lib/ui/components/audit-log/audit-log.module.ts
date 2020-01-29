@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { UIModule } from "@shiptech/core/ui/ui.module";
-import { MasterSelectorModule } from "@shiptech/core/ui/components/master-selector/master-selector.module";
-import { PrimeNGModule } from "../../primeng.module";
 import { AgGridExtensionsModule } from "@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module";
 import { AgGridModule } from "ag-grid-angular";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
@@ -16,8 +14,6 @@ import { AuditLogComponent } from "@shiptech/core/ui/components/audit-log/audit-
   imports: [
     CommonModule,
     UIModule,
-    PrimeNGModule,
-    MasterSelectorModule,
     AgGridExtensionsModule,
     AgGridModule.withComponents([AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent]),
     AgFilterDisplayModule

@@ -1,7 +1,7 @@
-﻿commit da122bf48e749690ed427150fe1dd641069125f4
+﻿commit 66951e8f1856116a927db1ec4e40589526b976f9
 Author: Radu Coman <radu.coman@24software.ro>
-Date:   Wed Jan 29 15:55:44 2020 +0200
+Date:   Wed Jan 29 18:02:26 2020 +0200
 
-    remove home breadcrumb link and added icon feature
+    code review implementation
 
 branch: master

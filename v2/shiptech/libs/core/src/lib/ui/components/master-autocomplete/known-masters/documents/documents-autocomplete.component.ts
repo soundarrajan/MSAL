@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { nameof } from '@shiptech/core/utils/type-definitions';
-import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-import { Observable, throwError } from 'rxjs';
-import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { fromPromise } from 'rxjs/internal-compatibility';
-import { MasterAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.component';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@angular/core';
+import {nameof} from '@shiptech/core/utils/type-definitions';
+import {LegacyLookupsDatabase} from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import {Observable, throwError} from 'rxjs';
+import {ServerGridConditionFilterEnum} from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
+import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {MasterAutocompleteComponent} from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.component';
 
 @Component({
   selector: 'shiptech-documents-autocomplete',
@@ -16,8 +16,27 @@ import { MasterAutocompleteComponent } from '@shiptech/core/ui/components/master
 })
 export class DocumentsAutocompleteComponent extends MasterAutocompleteComponent {
 
+  private _entityId: number;
+  private _entityName: string;
+
   constructor(private legacyLookupsDatabase: LegacyLookupsDatabase, changeDetectorRef: ChangeDetectorRef) {
     super(changeDetectorRef);
+  }
+
+  get entityId(): number {
+    return this._entityId;
+  }
+
+  get entityName(): string {
+    return this._entityName;
+  }
+
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
   }
 
   protected getFilterResults(query: string): Observable<IDisplayLookupDto[]> {
@@ -26,14 +45,5 @@ export class DocumentsAutocompleteComponent extends MasterAutocompleteComponent 
       ? fromPromise(this.legacyLookupsDatabase.documentType.where(this.field).startsWithIgnoreCase(query).toArray())
       : throwError(`${DocumentsAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<DocumentsAutocompleteComponent>('field')}`);
   }
-
-  resetInputSelection(): void {
-    this.selectorSelectionChange({
-      id: null,
-      name: null,
-      displayName: null
-    });
-  }
-
 
 }

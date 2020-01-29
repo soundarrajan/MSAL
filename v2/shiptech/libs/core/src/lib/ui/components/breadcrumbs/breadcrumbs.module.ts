@@ -2,8 +2,8 @@ import { NgModule } from "@angular/core";
 import { BreadcrumbComponent } from "./breadcrumbs.component";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
-import { PrimeNGModule } from "../../primeng.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { BreadcrumbModule } from "primeng/primeng";
 
 @NgModule({
 
@@ -13,7 +13,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
   imports: [
     RouterModule,
     CommonModule,
-    PrimeNGModule,
+    BreadcrumbModule,
     FlexLayoutModule
   ],
   exports: [BreadcrumbComponent]
