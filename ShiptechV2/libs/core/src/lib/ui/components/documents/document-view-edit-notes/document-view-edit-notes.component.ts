@@ -16,7 +16,7 @@ import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-r
 })
 export class DocumentViewEditNotesComponent implements OnInit {
 
-  private isReadOnly: boolean;
+  public isReadOnly: boolean;
   data: IDocumentsItemDto;
   notes: string;
 
