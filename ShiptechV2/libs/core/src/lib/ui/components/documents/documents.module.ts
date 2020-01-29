@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { UIModule } from "@shiptech/core/ui/ui.module";
 import { MasterSelectorModule } from "@shiptech/core/ui/components/master-selector/master-selector.module";
-import { PrimeNGModule } from "../../primeng.module";
 import { AgGridExtensionsModule } from "@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module";
 import { AgGridModule } from "ag-grid-angular";
 import { AgCellTemplateComponent } from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
@@ -13,13 +12,18 @@ import { AgFilterDisplayModule } from "@shiptech/core/ui/components/ag-filter-di
 import { DocumentsComponent } from "@shiptech/core/ui/components/documents/documents.component";
 import { DocumentViewEditNotesComponent } from "./document-view-edit-notes/document-view-edit-notes.component";
 import { MasterAutocompleteModule } from "@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module";
-import {FileSaverModule} from "ngx-filesaver";
+import { AutoCompleteModule, CheckboxModule, FileUploadModule } from "primeng/primeng";
+import { FormsModule } from "@angular/forms";
+import { FileSaverModule } from "ngx-filesaver";
 
 @NgModule({
   imports: [
     CommonModule,
     UIModule,
-    PrimeNGModule,
+    FormsModule,
+    CheckboxModule,
+    AutoCompleteModule,
+    FileUploadModule,
     MasterSelectorModule,
     AgGridExtensionsModule,
     FileSaverModule,
