@@ -1,7 +1,7 @@
-﻿commit be19481bcfb3a4b01c0233501e842e72e523ef72
-Author: Narcis Dumitrescu <narcis_dumitrescu@yahoo.com>
-Date:   Wed Jan 29 19:58:56 2020 +0200
+﻿commit 50143c6d2e4500cd8cce9361a59f05745bd405e4
+Author: Radu Coman <radu.coman@24software.ro>
+Date:   Thu Jan 30 13:17:38 2020 +0200
 
-    Build fix error
+    Merge remote-tracking branch 'origin/master'
 
 branch: master

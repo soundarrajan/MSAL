@@ -13,6 +13,7 @@ import { VesselPortCallsMasterSelectorComponent } from '@shiptech/core/ui/compon
 import { PrimeNGModule } from '../../primeng.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import {DocumentsMasterSelectorComponent} from "@shiptech/core/ui/components/master-selector/known-masters/documents/documents-master-selector.component";
+import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -29,7 +30,8 @@ export function getDefaultStorage(defaultStorage: any): any {
     SearchBoxModule,
     AgGridExtensionsModule,
     AgGridModule,
-    AgFilterDisplayModule
+    AgFilterDisplayModule,
+    AgFooterModule
   ],
   declarations: [
     MasterSelectorHostComponent,
