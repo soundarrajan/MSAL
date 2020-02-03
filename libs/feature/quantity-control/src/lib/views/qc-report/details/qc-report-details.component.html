@@ -28,7 +28,7 @@
           <div fxLayout="row">
             <div fxLayout="row" fxLayoutGap="20px">
               <span>QUANTITY CONTROL REPORT</span>
-              <shiptech-vessel-autocomplete [disabled]="(isReadOnly$ | async) || !(isNew$ | async)" #vesselAutoComplete>
+              <shiptech-autocomplete [autocompleteType]="autocompleteVessel" [disabled]="(isReadOnly$ | async) || !(isNew$ | async)" #vesselAutoComplete>
                 <p-autoComplete (onSelect)="updateVessel($event)"
                                 [disabled]="vesselAutoComplete.disabled"
                                 [readonly]="vesselAutoComplete.readonly"
@@ -43,8 +43,8 @@
                                 [minLength]="0"
                                 placeholder="Vessel Name">
                 </p-autoComplete>
-              </shiptech-vessel-autocomplete>
-              <shiptech-vessel-port-calls-master-autocomplete [vesselId]="(vessel$ | async)?.id"
+              </shiptech-autocomplete>
+              <shiptech-autocomplete [vesselId]="(vessel$ | async)?.id" [autocompleteType]="autocompleteVesselPort"
                                                               [disabled]="(isReadOnly$ | async) || !(isNew$ | async) || !(vessel$ | async)" #portCallAutoComplete>
                 <p-autoComplete (onSelect)="updatePortCall($event)"
                                 [disabled]="portCallAutoComplete.disabled"
@@ -60,7 +60,7 @@
                                 [minLength]="0"
                                 placeholder="Port Call ID">
                 </p-autoComplete>
-              </shiptech-vessel-port-calls-master-autocomplete>
+              </shiptech-autocomplete>
             </div>
             <div style="margin-left: auto">
               <span class="badge" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined"

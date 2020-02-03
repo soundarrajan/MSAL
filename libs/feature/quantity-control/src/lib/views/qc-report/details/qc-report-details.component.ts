@@ -28,6 +28,7 @@ import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-st
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
+import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/known-masters/known-masters-autocomplete.enum";
 
 @Component({
   selector: 'shiptech-port-call',
@@ -40,6 +41,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   categories$: Observable<IDisplayLookupDto[]>;
+
+  autocompleteVessel: string;
+  autocompleteVesselPort: string;
 
   bunkerSelectedCategory$: Observable<IDisplayLookupDto>;
   bunkerDescription$: Observable<string>;
@@ -85,6 +89,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     this.portCall$ = this.selectReportDetails(state => state.portCall);
 
     this.matchStatus$ = this.store.select(QcReportState.matchStatus).pipe(map(s => reconStatusLookups.toReconStatus(s)));
+
+    this.autocompleteVessel = knownMastersAutocomplete.vessel;
+    this.autocompleteVesselPort = knownMastersAutocomplete.vesselPort;
 
     // Note: Since the PortCall can change multiple times (autocomplete) we want to load BDN / nbOfClaims / ndOfDeliveries just for the last call and cancel previous.
     // Note: That's why we update it here, via an observable, instead of on UpdatePortCall.
