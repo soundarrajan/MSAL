@@ -3,15 +3,15 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 import _ from 'lodash';
 import {RowSelection} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {DocumentsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/masters-models/documents-model/documents-master-selector-grid.view-model';
+import {DocumentsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/view-models/documents-model/documents-master-selector-grid.view-model';
 import {IDocumentsMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto';
-import {VesselMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/masters-models/vessel-model/vessel-master-selector-grid.view-model';
+import {VesselMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-selector-grid.view-model';
 import {knownMastersAutocomplete} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import {IVesselMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
-import {VesselPortCallsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/masters-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
+import {VesselPortCallsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
 import {IVesselPortCallMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import {throwError} from 'rxjs';
-import {IMasterModelInterface} from '@shiptech/core/ui/components/master-selector/masters-models/master-model.interface';
+import {IMasterModelInterface} from '@shiptech/core/ui/components/master-selector/view-models/master-model.interface';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -111,7 +111,6 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
       default:
         throwError(`${SelectorComponent.name} hasn't defined the selector type`);
     }
-    console.log(this.gridViewModel);
   }
 
   onModelChange: Function = () => {
@@ -121,7 +120,6 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
   };
 
   ngOnInit(): void {
-    // this.setGridModelType();
     this.gridViewModel.gridOptions.rowSelection = this.multiple ? RowSelection.Multiple : RowSelection.Single;
   }
 

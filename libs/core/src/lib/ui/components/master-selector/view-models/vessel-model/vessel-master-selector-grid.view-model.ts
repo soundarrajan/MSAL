@@ -9,7 +9,7 @@ import {
   VesselMasterListColumns,
   VesselMasterListColumnServerKeys,
   VesselMasterListColumnsLabels
-} from '@shiptech/core/ui/components/master-selector/masters-models/vessel-model/vessel-master-list.columns';
+} from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-list.columns';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
