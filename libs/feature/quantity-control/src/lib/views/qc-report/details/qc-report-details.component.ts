@@ -28,7 +28,7 @@ import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-st
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
-import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/known-masters/known-masters-autocomplete.enum";
+import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
 
 @Component({
   selector: 'shiptech-port-call',

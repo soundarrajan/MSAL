@@ -7,7 +7,7 @@ import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.inter
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {MasterAutocompleteComponent} from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.component';
 import {IVesselMastersApi, VESSEL_MASTERS_API_SERVICE} from "@shiptech/core/services/masters-api/vessel-masters-api.service.interface";
-import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/known-masters/known-masters-autocomplete.enum";
+import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
 import {DefaultPageSize} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import {ServerGridSortParametersEnum} from "@shiptech/core/grid/server-grid/server-grid-sort-parameters.enum";
 import {map} from "rxjs/operators";
@@ -55,16 +55,15 @@ export class AutocompleteComponent extends MasterAutocompleteComponent implement
   }
 
   protected getFilterResults(query: string): Observable<IDisplayLookupDto[]> {
-    console.log(this._autocompleteType);
     switch(this._autocompleteType) {
       case knownMastersAutocomplete.documents :
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH
           ? fromPromise(this.legacyLookupsDatabase.documentType.where(this.field).startsWithIgnoreCase(query).toArray())
-          : throwError(`${AutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<AutocompleteComponent>('field')}`);
+          : throwError(`${MasterAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<MasterAutocompleteComponent>('field')}`);
       case knownMastersAutocomplete.vessel :
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH
           ? fromPromise(this.legacyLookupsDatabase.vessel.where(this.field).startsWithIgnoreCase(query).toArray())
-          : throwError(`${AutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<AutocompleteComponent>('field')}`);
+          : throwError(`${MasterAutocompleteComponent.name} supports only ${ServerGridConditionFilterEnum.STARTS_WITH} values for ${nameof<MasterAutocompleteComponent>('field')}`);
       case knownMastersAutocomplete.vesselPort :
         return this.mastersApi.getVesselPortCalls({
           id: this.vesselId,
@@ -87,7 +86,7 @@ export class AutocompleteComponent extends MasterAutocompleteComponent implement
           }
         }).pipe(map(response => response.items));
       default:
-        throwError(`${AutocompleteComponent.name} hasn't defined the autocomplete type`);
+        throwError(`${MasterAutocompleteComponent.name} hasn't defined the autocomplete type`);
     }
   }
 

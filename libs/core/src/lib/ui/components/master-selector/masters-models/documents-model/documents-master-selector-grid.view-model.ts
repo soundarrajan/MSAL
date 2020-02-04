@@ -7,14 +7,14 @@ import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/a
 import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
 import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
 import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
-import {VesselMasterListColumns, VesselMasterListColumnsLabels} from "@shiptech/core/ui/components/master-selector/known-masters/vessel/view-model/vessel-master-list.columns";
+import {VesselMasterListColumns, VesselMasterListColumnsLabels} from "@shiptech/core/ui/components/master-selector/masters-models/vessel-model/vessel-master-list.columns";
 import {takeUntil} from "rxjs/operators";
 import {IDocumentsMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto";
 import {
   DocumentsMasterListColumns,
   DocumentsMasterListColumnServerKeys,
   DocumentsMasterListColumnsLabels
-} from "@shiptech/core/ui/components/master-selector/known-masters/documents/view-model/documents-master-list.columns";
+} from "@shiptech/core/ui/components/master-selector/masters-models/documents-model/documents-master-list.columns";
 import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
 import {DOCUMENTS_API_SERVICE} from "@shiptech/core/services/masters-api/documents-api.service";
 import {IDocumentsApiService} from "@shiptech/core/services/masters-api/documents-api.service.interface";
