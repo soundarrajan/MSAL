@@ -3,14 +3,15 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 import _ from 'lodash';
 import {RowSelection} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {DocumentsMasterSelectorGridViewModel} from "@shiptech/core/ui/components/master-selector/masters-models/documents-model/documents-master-selector-grid.view-model";
-import {IDocumentsMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto";
-import {VesselMasterSelectorGridViewModel} from "@shiptech/core/ui/components/master-selector/masters-models/vessel-model/vessel-master-selector-grid.view-model";
-import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
-import {IVesselMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/vessel";
-import {VesselPortCallsMasterSelectorGridViewModel} from "@shiptech/core/ui/components/master-selector/masters-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model";
-import {IVesselPortCallMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call";
-import {throwError} from "rxjs";
+import {DocumentsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/masters-models/documents-model/documents-master-selector-grid.view-model';
+import {IDocumentsMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto';
+import {VesselMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/masters-models/vessel-model/vessel-master-selector-grid.view-model';
+import {knownMastersAutocomplete} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {IVesselMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
+import {VesselPortCallsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/masters-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
+import {IVesselPortCallMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
+import {throwError} from 'rxjs';
+import {IMasterModelInterface} from '@shiptech/core/ui/components/master-selector/masters-models/master-model.interface';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -40,11 +41,11 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
   @Input() multiple: boolean = false;
-  @Input() selected: IDocumentsMasterDto | IDocumentsMasterDto[] | IVesselMasterDto | IVesselMasterDto[] | IVesselPortCallMasterDto | IVesselPortCallMasterDto[];
+  @Input() selected: IDocumentsMasterDto | IVesselMasterDto | IVesselPortCallMasterDto | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[];
 
-  gridViewModel: any;
+  gridViewModel: IMasterModelInterface;
 
-  @Output() selectedChange = new EventEmitter<IDocumentsMasterDto | IDocumentsMasterDto[] | IVesselMasterDto | IVesselMasterDto[] | IVesselPortCallMasterDto | IVesselPortCallMasterDto[]>();
+  @Output() selectedChange = new EventEmitter<IDocumentsMasterDto | IVesselMasterDto | IVesselPortCallMasterDto | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[]>();
 
   constructor(private gridViewModelDocuments: DocumentsMasterSelectorGridViewModel,
               private gridViewModelVessel: VesselMasterSelectorGridViewModel,
@@ -71,7 +72,6 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
 
   @Input() set entityId(value: number) {
     this._entityId = value;
-    // this.gridViewModel.entityId = this.entityId;
   }
 
   @Input() set entityName(value: string) {
@@ -111,6 +111,7 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
       default:
         throwError(`${SelectorComponent.name} hasn't defined the selector type`);
     }
+    console.log(this.gridViewModel);
   }
 
   onModelChange: Function = () => {
