@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { ColDef, ColumnApi, GridApi, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
-import { Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { observe } from 'rxjs-observe';
-import { catchError, filter, finalize, first, takeUntil, tap } from 'rxjs/operators';
-import { AgColumnPreferencesService } from './ag-column-preferences/ag-column-preferences.service';
-import { Logger } from '../../../logging/logger';
-import { defaultComparer } from './ag-grid.comparators';
-import { AgGridEventsEnum } from './ag-grid.events';
-import { AppError } from '../../../error-handling/app-error';
-import { nameof } from '@shiptech/core/utils/type-definitions';
-import { ITypedColDef, ITypedColGroupDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
+import {ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {ColDef, ColumnApi, GridApi, GridOptions, IServerSideGetRowsParams} from 'ag-grid-community';
+import {Observable, of, ReplaySubject, Subject} from 'rxjs';
+import {observe} from 'rxjs-observe';
+import {catchError, filter, finalize, first, takeUntil, tap} from 'rxjs/operators';
+import {AgColumnPreferencesService} from './ag-column-preferences/ag-column-preferences.service';
+import {Logger} from '../../../logging/logger';
+import {defaultComparer} from './ag-grid.comparators';
+import {AgGridEventsEnum} from './ag-grid.events';
+import {AppError} from '../../../error-handling/app-error';
+import {nameof} from '@shiptech/core/utils/type-definitions';
+import {ITypedColDef, ITypedColGroupDef} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {EMPTY$} from '@shiptech/core/utils/rxjs-operators';
 
 export const PageSizeOptions = [25, 50, 75, 100];
 export const DefaultPageSize = 25;
@@ -105,7 +105,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
   /**
    * See docs for {@link preServerSideDataSourcePipe$}
    */
-  public enablePreServerSideDataSourcePipe: boolean =  false;
+  public enablePreServerSideDataSourcePipe: boolean = false;
 
   public syncPagination(): void {
     if (!this.gridOptions.pagination) {
@@ -140,7 +140,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
   }
 
   public init(gridOptions: GridOptions, enablePreServerSideDataSourcePipe: boolean = false): void {
-    const { observables, proxy } = observe(gridOptions);
+    const {observables, proxy} = observe(gridOptions);
     this.gridOptions = proxy;
     this.gridOptions.defaultColDef = this.gridOptions.defaultColDef || {};
     this.enablePreServerSideDataSourcePipe = enablePreServerSideDataSourcePipe;
@@ -229,7 +229,9 @@ export abstract class BaseGridViewModel implements OnDestroy {
       this.columnPreferences.unregisterWatch(this.gridId);
     }
 
-    this.gridApi.removeEventListener(AgGridEventsEnum.columnVisible, this.onGridColumnVisible);
+    if (this.gridApi) {
+      this.gridApi.removeEventListener(AgGridEventsEnum.columnVisible, this.onGridColumnVisible);
+    }
 
     this._gridReady$.complete();
     this.isLoading$.complete();
@@ -291,7 +293,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
       tap(() => {
         this.gridApi.setServerSideDatasource({
           getRows: params => {
-            const paramsProxy = { ...params };
+            const paramsProxy = {...params};
 
             paramsProxy.successCallback = (rowsThisPage: any[], lastRow: number) => {
               try {
@@ -338,8 +340,8 @@ export abstract class BaseGridViewModel implements OnDestroy {
    * See docs for {@link preServerSideDataSourcePipe$}
    */
   markServerSideDataSourceReady(): void {
-    if(!this.enablePreServerSideDataSourcePipe){
-      console.warn(`${nameof<BaseGridViewModel>('markServerSideDataSourceReady')} was called while ${nameof<BaseGridViewModel>('enablePreServerSideDataSourcePipe')} is false. Did you forget to enable it?`)
+    if (!this.enablePreServerSideDataSourcePipe) {
+      console.warn(`${nameof<BaseGridViewModel>('markServerSideDataSourceReady')} was called while ${nameof<BaseGridViewModel>('enablePreServerSideDataSourcePipe')} is false. Did you forget to enable it?`);
       return;
     }
 

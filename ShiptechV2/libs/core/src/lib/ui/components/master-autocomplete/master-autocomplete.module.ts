@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {UIModule} from '@shiptech/core/ui/ui.module';
 import {MasterSelectorModule} from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import {PrimeNGModule} from '../../primeng.module';
-import {AutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/known-masters/autocomplete/autocomplete.component";
+import {AutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/autocomplete/autocomplete.component";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;

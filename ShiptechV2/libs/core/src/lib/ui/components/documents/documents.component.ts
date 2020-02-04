@@ -14,7 +14,7 @@ import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from "@sh
 import { ToastrService } from "ngx-toastr";
 import { FileSaverService } from "ngx-filesaver";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
-import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/known-masters/known-masters-autocomplete.enum";
+import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
 
 @Component({
   selector: "shiptech-documents",

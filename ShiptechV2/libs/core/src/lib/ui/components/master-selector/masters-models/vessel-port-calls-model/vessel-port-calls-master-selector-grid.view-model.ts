@@ -11,7 +11,7 @@ import {
   VesselPortCallsMasterListColumns,
   VesselPortCallsMasterListColumnServerKeys,
   VesselPortCallsMasterListColumnsLabels
-} from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/view-model/vessel-port-calls-master-list.columns';
+} from '@shiptech/core/ui/components/master-selector/masters-models/vessel-port-calls-model/vessel-port-calls-master-list.columns';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { takeUntil } from 'rxjs/operators';
