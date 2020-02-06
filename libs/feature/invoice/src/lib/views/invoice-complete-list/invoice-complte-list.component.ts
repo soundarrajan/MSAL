@@ -7,11 +7,11 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
 
 @Component({
   selector: 'shiptech-invoice-complete-list',
-  templateUrl: './feature-invoice.component.html',
+  templateUrl: './invoice-complete-list.component.html',
   providers: [CompleteListGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FeatureInvoiceComponent implements OnInit, OnDestroy {
+export class InvoiceComplteListComponent implements OnInit, OnDestroy {
 
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
