@@ -18,6 +18,7 @@ import {InvoiceListColumns, InvoiceListColumnsLabels} from "./invoice-list.colum
 import {ILookupDto} from "@shiptech/core/lookups/lookup-dto.interface";
 import {AgCellTemplateComponent} from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
 import {IInvoiceListItemDto} from "../../../services/api/dto/invoice-list-item.dto";
+import {IStatusLookupDto} from "@shiptech/core/lookups/known-lookups/status/status-lookup.interface";
 
 function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
   return prop;
@@ -72,6 +73,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     colId: InvoiceListColumns.orderProductId,
     field: model('orderProductId'),
     cellRendererFramework: AgCellTemplateComponent,
+    filter: 'agNumberColumnFilter',
     width: 150
   };
 
@@ -97,6 +99,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.documentNo,
     colId: InvoiceListColumns.documentNo,
     field: model('documentNo'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -200,6 +203,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.invoiceQuantity,
     colId: InvoiceListColumns.invoiceQuantity,
     field: model('invoiceQuantity'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -207,6 +211,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.price,
     colId: InvoiceListColumns.price,
     field: model('price'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -214,6 +219,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.sumOfCosts,
     colId: InvoiceListColumns.sumOfCosts,
     field: model('sumOfCosts'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -221,6 +227,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.invoiceAmount,
     colId: InvoiceListColumns.invoiceAmount,
     field: model('invoiceAmount'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -228,6 +235,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.confirmedQuantity,
     colId: InvoiceListColumns.confirmedQuantity,
     field: model('confirmedQuantity'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -235,6 +243,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.orderPrice,
     colId: InvoiceListColumns.orderPrice,
     field: model('orderPrice'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -242,6 +251,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.orderAmount,
     colId: InvoiceListColumns.orderAmount,
     field: model('orderAmount'),
+    filter: 'agNumberColumnFilter',
     width: 110
   };
 
@@ -249,6 +259,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     headerName: InvoiceListColumnsLabels.invoiceStatus,
     colId: InvoiceListColumns.invoiceStatus,
     field: model('invoiceStatus'),
+    valueFormatter: params => params.value?.name,
     width: 110
   };
 
@@ -315,7 +326,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceApprovalStatusCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  invoiceApprovalStatusCol: ITypedColDef<IInvoiceListItemDto, IStatusLookupDto> = {
     headerName: InvoiceListColumnsLabels.invoiceApprovalStatus,
     colId: InvoiceListColumns.invoiceApprovalStatus,
     field: model('invoiceApprovalStatus'),
@@ -339,7 +350,40 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
 
   getColumnsDefs(): ITypedColDef[] {
     return [
-
+      this.orderNoCol,
+      this.orderProductIdCol,
+      this.deliveryCol,
+      this.invoiceCol,
+      this.documentNoCol,
+      this.customStatusCol,
+      this.buyerCol,
+      this.supplierCol,
+      this.vesselCol,
+      this.carrierCompanyCol,
+      this.paymentCompanyCol,
+      this.agreementTypeCol,
+      this.portCol,
+      this.etaCol,
+      this.deliveryDateCol,
+      this.lineCol,
+      this.productCol,
+      this.invoiceQuantityCol,
+      this.priceCol,
+      this.sumOfCostsCol,
+      this.invoiceAmountCol,
+      this.confirmedQuantityCol,
+      this.orderPriceCol,
+      this.orderAmountCol,
+      this.invoiceStatusCol,
+      this.dueDateCol,
+      this.workingDueDateCol,
+      this.approvedDateCol,
+      this.paymentDateCol,
+      this.backOfficeCommentsCol,
+      this.receivedDateCol,
+      this.orderStatusCol,
+      this.productTypeCol,
+      this.invoiceApprovalStatusCol
     ];
   }
 
@@ -349,7 +393,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, CompleteListColumnServerKeys, this.searchText))
+    this.reportService.getInvoiceList$(transformLocalToServeGridInfo(this.gridApi, params, CompleteListColumnServerKeys, this.searchText))
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),

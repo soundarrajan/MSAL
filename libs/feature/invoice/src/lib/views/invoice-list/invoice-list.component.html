@@ -59,3 +59,20 @@
   </app-ag-footer>
 </div>
 
+<ng-template [columnDef]="[gridViewModel.orderNoCol]" appAgCellTemplate let-data="data" let-value="value">
+  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{value?.id}}</a>
+</ng-template>
+
+<ng-template [columnDef]="[gridViewModel.orderProductIdCol]" appAgCellTemplate let-data="data" let-value="value">
+  <p *ngIf="data && data?.order?.id">{{value}}</p>
+</ng-template>
+
+<ng-template [columnDef]="[gridViewModel.deliveryCol]" appAgCellTemplate let-data="data" let-value="value">
+  <a *ngIf="value && value?.id" (click)="openEditDelivery(value.id)">{{value.id}}</a>
+</ng-template>
+
+<ng-template [columnDef]="[gridViewModel.invoiceCol]" appAgCellTemplate let-data="data" let-value="value">
+  <a *ngIf="value && value?.id" (click)="openEditInvoice(value.id)">{{value.id}}</a>
+</ng-template>
+
+
