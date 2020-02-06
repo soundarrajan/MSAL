@@ -32,6 +32,7 @@ import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-d
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
+import {InvoiceListComponent} from "./views/invoice-list/invoice-list.component";
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
   declarations: [
     FeatureInvoiceComponent,
     MainInvoiceComponent,
+    InvoiceListComponent,
     WunderBarComponent
   ],
   providers: [

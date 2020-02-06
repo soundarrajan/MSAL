@@ -20,6 +20,7 @@ import { InvoiceCompleteService } from '../../../services/invoice-complete.servi
 import { ModuleLoggerFactory } from 'libs/feature/quantity-control/src/lib/core/logging/module-logger-factory';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import {IStatusLookupDto} from "@shiptech/core/lookups/known-lookups/status/status-lookup.interface";
 
 function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
   return prop;
@@ -158,7 +159,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  vesselCodeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+  vesselCodeCol: ITypedColDef<ICompleteListItemDto, IStatusLookupDto> = {
     headerName: CompleteListColumnsLabels.vesselCode,
     colId: InvoiceCompleteListColumns.vesselCode,
     field: model('vessel'),
