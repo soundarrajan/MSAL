@@ -26,7 +26,17 @@ const routes: Routes = [
         path: KnownPrimaryRoutes.QuantityControl,
         canActivate: [AuthenticationGuard],
         loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
-      },
+      }
+    ]
+  },
+  {
+    path: '',
+    data: {
+      breadcrumb: 'Invoice List',
+      breadcrumbUrl: '/#/invoice',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
       {
         path: KnownPrimaryRoutes.Invoices,
         canActivate: [AuthenticationGuard],

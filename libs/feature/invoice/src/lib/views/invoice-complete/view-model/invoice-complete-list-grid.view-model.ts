@@ -162,7 +162,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.vesselCode,
     colId: InvoiceCompleteListColumns.vesselCode,
     field: model('vessel'),
-    valueFormatter: params => params.value?.code,
+    valueFormatter: params => params.value?.name,
     width: 110
   };
 
@@ -524,7 +524,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     private appErrorHandler: AppErrorHandler,
     private statusLookup: StatusLookup
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(CompleteListGridViewModel.name));
+    super('invoice-complete-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(CompleteListGridViewModel.name));
     this.init(this.gridOptions, true);
   }
 
