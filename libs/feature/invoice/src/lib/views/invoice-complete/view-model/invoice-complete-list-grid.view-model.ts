@@ -74,7 +74,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     colId: InvoiceCompleteListColumns.orderProductId,
     field: model('orderProductId'),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter'
   };
 
   deliveryCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -100,14 +101,16 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     colId: InvoiceCompleteListColumns.sellerInvoiceNo,
     field: model('sellerInvoiceNo'),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   documentNoCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.documentNo,
     colId: InvoiceCompleteListColumns.documentNo,
     field: model('documentNo'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   customStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -234,35 +237,40 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.invoiceQuantity,
     colId: InvoiceCompleteListColumns.invoiceQuantity,
     field: model('invoiceQuantity'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   priceCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.price,
     colId: InvoiceCompleteListColumns.price,
     field: model('price'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   invoiceProductAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.invoiceProductAmount,
     colId: InvoiceCompleteListColumns.invoiceProductAmount,
     field: model('invoiceProductAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   sumOfCostsCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.sumOfCosts,
     colId: InvoiceCompleteListColumns.sumOfCosts,
     field: model('sumOfCosts'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   invoiceAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.invoiceAmount,
     colId: InvoiceCompleteListColumns.invoiceAmount,
     field: model('invoiceAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   invoiceCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -285,21 +293,24 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.confirmedQuantity,
     colId: InvoiceCompleteListColumns.confirmedQuantity,
     field: model('confirmedQuantity'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   finalQuantityAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.finalQuantityAmount,
     colId: InvoiceCompleteListColumns.finalQuantityAmount,
     field: model('finalQuantityAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   orderPriceCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.orderPrice,
     colId: InvoiceCompleteListColumns.orderPrice,
     field: model('orderPrice'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   orderPriceCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -314,7 +325,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.invoiceProductAmountInOrderCurrency,
     colId: InvoiceCompleteListColumns.invoiceProductAmountInOrderCurrency,
     field: model('invoiceProductAmountInOrderCurrency'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   convertedCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -329,28 +341,32 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.orderCost,
     colId: InvoiceCompleteListColumns.orderCost,
     field: model('orderCost'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   orderProductAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.orderProductAmount,
     colId: InvoiceCompleteListColumns.orderProductAmount,
     field: model('orderProductAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   totalOrderProductAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.totalOrderProductAmount,
     colId: InvoiceCompleteListColumns.totalOrderProductAmount,
     field: model('totalOrderProductAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   orderAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.orderAmount,
     colId: InvoiceCompleteListColumns.orderAmount,
     field: model('orderAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   orderCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -389,7 +405,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.accountNumber,
     colId: InvoiceCompleteListColumns.accountNumber,
     field: model('accountNumber'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   paymentDateCol: ITypedColDef<ICompleteListItemDto, string> = {
@@ -411,7 +428,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.claimNo,
     colId: InvoiceCompleteListColumns.claimNo,
     field: model('claimNo'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   claimDateCol: ITypedColDef<ICompleteListItemDto, string> = {
@@ -442,14 +460,16 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.debunkerAmount,
     colId: InvoiceCompleteListColumns.debunkerAmount,
     field: model('debunkerAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   resaleAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
     headerName: CompleteListColumnsLabels.resaleAmount,
     colId: InvoiceCompleteListColumns.resaleAmount,
     field: model('resaleAmount'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   invoiceTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
@@ -488,7 +508,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.contractId,
     colId: InvoiceCompleteListColumns.contractId,
     field: model('contractId'),
-    width: 110
+    width: 110,
+    filter: 'agNumberColumnFilter'
   };
 
   productTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
