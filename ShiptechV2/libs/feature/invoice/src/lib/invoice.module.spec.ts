@@ -1,14 +1,14 @@
 import { async, TestBed } from '@angular/core/testing';
-import { FeatureInvoiceModule } from './feature-invoice.module';
+import { InvoiceModule } from './invoice.module';
 
-describe('FeatureInvoiceModule', () => {
+describe('InvoiceModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureInvoiceModule]
+      imports: [InvoiceModule]
     }).compileComponents();
   }));
 
   it('should create', () => {
-    expect(FeatureInvoiceModule).toBeDefined();
+    expect(InvoiceModule).toBeDefined();
   });
 });

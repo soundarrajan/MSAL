@@ -3,7 +3,7 @@ import {ChangeDetectorRef, Injectable} from "@angular/core";
 import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
 import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
-import {CompleteListColumnServerKeys} from "../../invoice-complete/view-model/invoice-complete-list.columns";
+import {CompleteListColumnServerKeys} from "../../invoice-complete-list/view-model/invoice-complete-list.columns";
 import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import {ModuleLoggerFactory} from "../../../../../../quantity-control/src/lib/core/logging/module-logger-factory";
 import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
