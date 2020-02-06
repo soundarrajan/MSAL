@@ -7,11 +7,11 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
 
 @Component({
   selector: 'shiptech-invoice-complete-list',
-  templateUrl: './feature-invoice.component.html',
+  templateUrl: './invoice-complete-list.component.html',
   providers: [CompleteListGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FeatureInvoiceComponent implements OnInit, OnDestroy {
+export class InvoiceComplteListComponent implements OnInit, OnDestroy {
 
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
@@ -41,6 +41,10 @@ export class FeatureInvoiceComponent implements OnInit, OnDestroy {
 
   openEditInvoice(invoiceId: number): void {
     window.open(this.urlService.editInvoice(invoiceId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+  }
+
+  openEditContract(contractId: number): void {
+    window.open(this.urlService.editContract(contractId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
   }
 
   ngOnInit(): void {
