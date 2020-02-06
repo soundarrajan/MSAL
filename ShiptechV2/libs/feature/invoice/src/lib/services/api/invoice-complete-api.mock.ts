@@ -28,11 +28,8 @@ export class InvoiceCompleteApiMock implements IInvoiceCompleteApiService {
     const firstItem = (_.first(items) || <ICompleteListItemDto>{});
 
     return of({
-      items: items,
-      totalCount: items.length,
-      nbOfMatched: firstItem.nbOfMatched || 0,
-      nbOfMatchedWithinLimit: firstItem.nbOfMatchedWithinLimit || 0,
-      nbOfNotMatched: firstItem.nbOfNotMatched || 0
+      payload: items,
+      matchedCount: items.length
     });
   }
 
