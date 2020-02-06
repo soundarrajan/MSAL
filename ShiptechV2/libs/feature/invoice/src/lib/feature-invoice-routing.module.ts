@@ -10,9 +10,6 @@ const routes: Routes = [
   {
     path: '',
     component: MainInvoiceComponent,
-    data: {
-      breadcrumb: 'Complete View List'
-    },
     resolve: { moduleInit: FeatureInvoiceModuleResolver },
     children: [
       {
