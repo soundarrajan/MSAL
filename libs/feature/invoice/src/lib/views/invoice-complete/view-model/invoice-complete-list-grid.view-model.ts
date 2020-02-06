@@ -400,6 +400,120 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
+  backOfficeCommentsCol: ITypedColDef<ICompleteListItemDto, string> = {
+    headerName: CompleteListColumnsLabels.backOfficeComments,
+    colId: InvoiceCompleteListColumns.backOfficeComments,
+    field: model('backOfficeComments'),
+    width: 110
+  };
+
+  claimNoCol: ITypedColDef<ICompleteListItemDto, number> = {
+    headerName: CompleteListColumnsLabels.claimNo,
+    colId: InvoiceCompleteListColumns.claimNo,
+    field: model('claimNo'),
+    width: 110
+  };
+
+  claimDateCol: ITypedColDef<ICompleteListItemDto, string> = {
+    headerName: CompleteListColumnsLabels.claimDate,
+    colId: InvoiceCompleteListColumns.claimDate,
+    field: model('claimDate'),
+    valueFormatter: params => this.format.date(params.value),
+    width: 110
+  };
+
+  claimStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+    headerName: CompleteListColumnsLabels.claimStatus,
+    colId: InvoiceCompleteListColumns.claimStatus,
+    field: model('claimStatus'),
+    valueFormatter: params => params.value?.name,
+    width: 110
+  };
+
+  actualSettlementDateCol: ITypedColDef<ICompleteListItemDto, string> = {
+    headerName: CompleteListColumnsLabels.actualSettlementDate,
+    colId: InvoiceCompleteListColumns.actualSettlementDate,
+    field: model('actualSettlementDate'),
+    valueFormatter: params => this.format.date(params.value),
+    width: 110
+  };
+
+  debunkerAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
+    headerName: CompleteListColumnsLabels.debunkerAmount,
+    colId: InvoiceCompleteListColumns.debunkerAmount,
+    field: model('debunkerAmount'),
+    width: 110
+  };
+
+  resaleAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
+    headerName: CompleteListColumnsLabels.resaleAmount,
+    colId: InvoiceCompleteListColumns.resaleAmount,
+    field: model('resaleAmount'),
+    width: 110
+  };
+
+  invoiceTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+    headerName: CompleteListColumnsLabels.invoiceType,
+    colId: InvoiceCompleteListColumns.invoiceType,
+    field: model('invoiceType'),
+    valueFormatter: params => params.value?.name,
+    width: 110
+  };
+
+  receivedDateCol: ITypedColDef<ICompleteListItemDto, string> = {
+    headerName: CompleteListColumnsLabels.receivedDate,
+    colId: InvoiceCompleteListColumns.receivedDate,
+    field: model('receivedDate'),
+    valueFormatter: params => this.format.date(params.value),
+    width: 110
+  };
+
+  sellerDueDateCol: ITypedColDef<ICompleteListItemDto, string> = {
+    headerName: CompleteListColumnsLabels.sellerDueDate,
+    colId: InvoiceCompleteListColumns.sellerDueDate,
+    field: model('sellerDueDate'),
+    valueFormatter: params => this.format.date(params.value),
+    width: 110
+  };
+
+  orderStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+    headerName: CompleteListColumnsLabels.orderStatus,
+    colId: InvoiceCompleteListColumns.orderStatus,
+    field: model('orderStatus'),
+    valueFormatter: params => params.value?.name,
+    width: 110
+  };
+
+  contractIdCol: ITypedColDef<ICompleteListItemDto, number> = {
+    headerName: CompleteListColumnsLabels.contractId,
+    colId: InvoiceCompleteListColumns.contractId,
+    field: model('contractId'),
+    width: 110
+  };
+
+  productTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+    headerName: CompleteListColumnsLabels.productType,
+    colId: InvoiceCompleteListColumns.productType,
+    field: model('productType'),
+    valueFormatter: params => params.value?.name,
+    width: 110
+  };
+
+  fuelPriceItemDescriptionCol: ITypedColDef<ICompleteListItemDto, string> = {
+    headerName: CompleteListColumnsLabels.fuelPriceItemDescription,
+    colId: InvoiceCompleteListColumns.fuelPriceItemDescription,
+    field: model('fuelPriceItemDescription'),
+    width: 110
+  };
+
+  invoiceApprovalStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+    headerName: CompleteListColumnsLabels.invoiceApprovalStatus,
+    colId: InvoiceCompleteListColumns.invoiceApprovalStatus,
+    field: model('invoiceApprovalStatus'),
+    valueFormatter: params => params.value?.name,
+    width: 110
+  };
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -460,6 +574,21 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
       this.approvedDateCol,
       this.accountNumberCol,
       this.paymentDateCol,
+      this.backOfficeCommentsCol,
+      this.claimNoCol,
+      this.claimDateCol,
+      this.claimStatusCol,
+      this.actualSettlementDateCol,
+      this.debunkerAmountCol,
+      this.resaleAmountCol,
+      this.invoiceTypeCol,
+      this.receivedDateCol,
+      this.sellerDueDateCol,
+      this.orderStatusCol,
+      this.contractIdCol,
+      this.productTypeCol,
+      this.fuelPriceItemDescriptionCol,
+      this.invoiceApprovalStatusCol,
     ];
   }
 
@@ -472,7 +601,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, CompleteListColumnServerKeys, this.searchText))
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => params.successCallback(response.items, response.totalCount),
+        response => params.successCallback(response.payload, response.matchedCount),
         () => {
           this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('completed'));
           params.failCallback();
