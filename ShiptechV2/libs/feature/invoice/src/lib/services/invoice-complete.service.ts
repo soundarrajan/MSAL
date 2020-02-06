@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { IInvoiceCompleteApiService } from './api/invoice-complete.api.service.interface';
 import { IGetInvoiceCompletesListResponse } from './api/dto/invoice-complete-list-item.dto';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
+import {IGetInvoiceListResponse} from "./api/dto/invoice-list-item.dto";
 
 @Injectable()
 export class InvoiceCompleteService extends BaseStoreService implements OnDestroy {
@@ -25,6 +26,11 @@ export class InvoiceCompleteService extends BaseStoreService implements OnDestro
   @ObservableException()
   getReportsList$(gridRequest: IServerGridInfo): Observable<IGetInvoiceCompletesListResponse> {
     return this.api.getReportList({ ...gridRequest });
+  }
+
+  @ObservableException()
+  getInvoiceList$(gridRequest: IServerGridInfo): Observable<IGetInvoiceListResponse> {
+    return this.api.getInvoiceList({ ...gridRequest });
   }
 
   ngOnDestroy(): void {

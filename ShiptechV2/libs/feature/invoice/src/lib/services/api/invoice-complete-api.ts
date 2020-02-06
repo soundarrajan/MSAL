@@ -9,9 +9,11 @@ import {
   IGetInvoiceCompletesListRequest,
   IGetInvoiceCompletesListResponse
 } from './dto/invoice-complete-list-item.dto';
+import {IGetInvoiceListRequest, IGetInvoiceListResponse} from "./dto/invoice-list-item.dto";
 
 export namespace InvoiceApiPaths {
   export const getCompletesList = () => `api/invoice/completeViewList`;
+  export const getInvoicesList = () => `api/invoice/list`;
 }
 
 @Injectable({
@@ -29,6 +31,10 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<IGetInvoiceCompletesListResponse>(`${this._apiUrl}/${InvoiceApiPaths.getCompletesList()}`, { payload: request });
   }
 
+  @ObservableException()
+  getInvoiceList(request: IGetInvoiceListRequest): Observable<IGetInvoiceListResponse> {
+    return this.http.post<IGetInvoiceListResponse>(`${this._apiUrl}/${InvoiceApiPaths.getInvoicesList()}`, { payload: request })
+  }
 }
 
 export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<IInvoiceCompleteApiService>('INVOICE_COMPLETE_API_SERVICE');
