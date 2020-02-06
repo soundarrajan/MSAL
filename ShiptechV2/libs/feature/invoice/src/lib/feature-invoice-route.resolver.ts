@@ -25,12 +25,12 @@ export class FeatureInvoiceModuleResolver implements Resolve<any> {
     // Note: It's important to register this only once, and in the root module. We currently don't support multiple services in child providers
     devService.registerApi({
       id: InvoiceCompleteService.name,
-      displayName: 'Quantity Control Api',
+      displayName: 'Invoices API',
       instance: mockApi,
       isRealService: false,
       localApiUrl: 'http://localhost:44398',
-      devApiUrl: appConfig.robApi,
-      qaApiUrl: appConfig.robApi
+      devApiUrl: appConfig.v1.API.BASE_URL_DATA_INVOICES,
+      qaApiUrl: appConfig.v1.API.BASE_URL_DATA_INVOICES
     });
   }
 
