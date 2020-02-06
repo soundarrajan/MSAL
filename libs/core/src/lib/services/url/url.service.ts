@@ -84,4 +84,8 @@ export class UrlService {
   editEmail(emailId: number): string {
     return `${this.baseOrigin}/#/masters/emaillogs/edit/${emailId}`;
   }
+
+  editContract(contractId: number): string {
+    return `${this.baseOrigin}/#/contracts/contract/edit/${contractId}`;
+  }
 }

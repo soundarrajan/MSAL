@@ -509,6 +509,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.contractId,
     colId: InvoiceCompleteListColumns.contractId,
     field: model('contractId'),
+    cellRendererFramework: AgCellTemplateComponent,
     width: 110,
     filter: 'agNumberColumnFilter'
   };
@@ -546,7 +547,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     private appErrorHandler: AppErrorHandler,
     private statusLookup: StatusLookup
   ) {
-    super('invoice-complete-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(CompleteListGridViewModel.name));
+    super('invoice-complete-list-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(CompleteListGridViewModel.name));
     this.init(this.gridOptions, true);
   }
 

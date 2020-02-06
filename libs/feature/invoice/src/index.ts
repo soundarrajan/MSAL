@@ -1,1 +1,1 @@
-export * from './lib/feature-invoice.module';
+export * from './lib/invoice.module';

@@ -61,7 +61,7 @@
 </div>
 
 <ng-template [columnDef]="[gridViewModel.orderNoCol]" appAgCellTemplate let-data="data" let-value="value">
-  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{value?.id}}</a>
+  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{value.id}}</a>
 </ng-template>
 
 <ng-template [columnDef]="[gridViewModel.orderProductIdCol]" appAgCellTemplate let-data="data" let-value="value">
@@ -78,4 +78,8 @@
 
 <ng-template [columnDef]="[gridViewModel.sellerInvoiceNoCol]" appAgCellTemplate let-data="data" let-value="value">
   <a *ngIf="value" (click)="openEditInvoice(value)">{{value}}</a>
+</ng-template>
+
+<ng-template [columnDef]="[gridViewModel.contractIdCol]" appAgCellTemplate let-data="data" let-value="value">
+  <a *ngIf="value" (click)="openEditContract(value)">{{value}}</a>
 </ng-template>

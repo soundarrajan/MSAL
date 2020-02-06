@@ -40,7 +40,7 @@ const routes: Routes = [
       {
         path: KnownPrimaryRoutes.Invoices,
         canActivate: [AuthenticationGuard],
-        loadChildren: () => import('@shiptech/feature/invoice').then(m => m.FeatureInvoiceModule)
+        loadChildren: () => import('@shiptech/feature/invoice').then(m => m.InvoiceModule)
       }
     ]
   },

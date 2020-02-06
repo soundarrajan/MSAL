@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { FeatureInvoiceModuleResolver } from './feature-invoice-route.resolver';
-import { FeatureInvoiceComponent } from './views/invoice-complete/feature-invoice.component';
+import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
+import { InvoiceComplteListComponent } from './views/invoice-complete-list/invoice-complte-list.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import {InvoiceListComponent} from "./views/invoice-list/invoice-list.component";
 import {KnownInvoiceRoutes} from "./known-invoice.routes";
@@ -19,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: KnownInvoiceRoutes.CompleteView,
-        component: FeatureInvoiceComponent,
+        component: InvoiceComplteListComponent,
         data: { title: 'COMPLETE VIEW LIST', breadcrumb: 'Complete View List' }
       },
       {
@@ -36,5 +36,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FeatureInvoiceRoutingModule {
+export class InvoiceRoutingModule {
 }

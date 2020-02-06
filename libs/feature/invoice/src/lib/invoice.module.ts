@@ -16,12 +16,12 @@ import { AgFooterModule } from '@shiptech/core/ui/components/ag-footer/ag-footer
 import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
 import { ModuleLoggerFactory } from '../../../quantity-control/src/lib/core/logging/module-logger-factory';
 import { environment } from '@shiptech/environment';
-import { FeatureInvoiceRoutingModule } from './feature-invoice-routing.module';
+import { InvoiceRoutingModule } from './invoice-routing.module';
 import { InvoiceCompleteService } from './services/invoice-complete.service';
 import { INVOICE_COMPLETE_API_SERVICE, InvoiceCompleteApi } from './services/api/invoice-complete-api';
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
-import { FeatureInvoiceModuleResolver } from './feature-invoice-route.resolver';
-import { FeatureInvoiceComponent } from './views/invoice-complete/feature-invoice.component';
+import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
+import { InvoiceComplteListComponent } from './views/invoice-complete-list/invoice-complte-list.component';
 import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AgGridModule } from 'ag-grid-angular';
@@ -37,7 +37,7 @@ import {InvoiceListComponent} from "./views/invoice-list/invoice-list.component"
 @NgModule({
   imports: [
     CommonModule,
-    FeatureInvoiceRoutingModule,
+    InvoiceRoutingModule,
     LoggingModule,
     AuthenticationModule.forFeature(),
     SearchBoxModule,
@@ -58,7 +58,7 @@ import {InvoiceListComponent} from "./views/invoice-list/invoice-list.component"
     SelectTextOnFocusDirectiveModule
   ],
   declarations: [
-    FeatureInvoiceComponent,
+    InvoiceComplteListComponent,
     MainInvoiceComponent,
     InvoiceListComponent,
     WunderBarComponent
@@ -73,5 +73,5 @@ import {InvoiceListComponent} from "./views/invoice-list/invoice-list.component"
     InvoiceCompleteService
   ]
 })
-export class FeatureInvoiceModule {
+export class InvoiceModule {
 }
