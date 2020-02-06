@@ -1,8 +1,9 @@
+
 <shiptech-wunderbar>
   <div class="row" style="margin: 5px 0;">
     <div class="col-6 d-flex">
       <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
-      <app-filter-preferences appAgGridFilterPresets groupId="qc-report-list-filter-presets" id="qc-report-list" (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"></app-filter-preferences>
+      <app-filter-preferences appAgGridFilterPresets groupId="invoice-complete-list-filter-presets" id="qc-report-list" (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"></app-filter-preferences>
     </div>
     <div class="col-6">
       <div style="float:right">
@@ -46,7 +47,7 @@
     appExternalSearch
     appAgGridEmptyFilterOption
     #search="search-id"
-    id="invoice-completed-list-grid" class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
+    id="invoice-complete-list-grid" class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
 
