@@ -43,6 +43,10 @@ export class InvoiceComplteListComponent implements OnInit, OnDestroy {
     window.open(this.urlService.editInvoice(invoiceId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
   }
 
+  openEditContract(contractId: number): void {
+    window.open(this.urlService.editContract(contractId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+  }
+
   ngOnInit(): void {
   }
 

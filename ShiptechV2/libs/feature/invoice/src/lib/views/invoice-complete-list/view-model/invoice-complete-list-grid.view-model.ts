@@ -509,6 +509,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     headerName: CompleteListColumnsLabels.contractId,
     colId: InvoiceCompleteListColumns.contractId,
     field: model('contractId'),
+    cellRendererFramework: AgCellTemplateComponent,
     width: 110,
     filter: 'agNumberColumnFilter'
   };
