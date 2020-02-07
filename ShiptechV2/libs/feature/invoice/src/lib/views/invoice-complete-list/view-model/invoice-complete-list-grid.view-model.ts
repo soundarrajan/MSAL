@@ -3,14 +3,13 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
+  InvoiceListColumns,
   InvoiceListColumnServerKeys,
-  InvoiceListColumnsLabels,
-  InvoiceListColumns
+  InvoiceListColumnsLabels
 } from '../../view-model/invoice-list.columns';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
-import { AppError } from '@shiptech/core/error-handling/app-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { takeUntil } from 'rxjs/operators';
 import { ICompleteListItemDto } from '../../../services/api/dto/invoice-complete-list-item.dto';
@@ -19,6 +18,7 @@ import { ModuleLoggerFactory } from 'libs/feature/quantity-control/src/lib/core/
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import { ModuleError } from '../../../core/error-handling/module-error';
 
 function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
   return prop;
@@ -631,7 +631,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),
         () => {
-          this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('invoice complete list from'));
+          this.appErrorHandler.handleError(ModuleError.LoadInvoiceCompleteViewListFailed);
           params.failCallback();
         });
   }
