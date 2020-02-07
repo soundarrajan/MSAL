@@ -3,7 +3,11 @@ import {ChangeDetectorRef, Injectable} from "@angular/core";
 import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
 import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
-import {CompleteListColumnServerKeys} from "../../invoice-complete-list/view-model/invoice-complete-list.columns";
+import {
+  InvoiceListColumnServerKeys,
+  InvoiceListColumns,
+  InvoiceListColumnsLabels
+} from '../../view-model/invoice-list.columns';
 import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import {ModuleLoggerFactory} from "../../../../../../quantity-control/src/lib/core/logging/module-logger-factory";
 import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
@@ -14,7 +18,6 @@ import {StatusLookup} from "@shiptech/core/lookups/known-lookups/status/status-l
 import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import {takeUntil} from "rxjs/operators";
 import {AppError} from "@shiptech/core/error-handling/app-error";
-import {InvoiceListColumns, InvoiceListColumnsLabels} from "./invoice-list.columns";
 import {ILookupDto} from "@shiptech/core/lookups/lookup-dto.interface";
 import {AgCellTemplateComponent} from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
 import {IInvoiceListItemDto} from "../../../services/api/dto/invoice-list-item.dto";
@@ -256,8 +259,8 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   };
 
   invoiceStatusCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
-    headerName: InvoiceListColumnsLabels.invoiceStatus,
-    colId: InvoiceListColumns.invoiceStatus,
+    headerName: InvoiceListColumnsLabels.customStatus,
+    colId: InvoiceListColumns.customStatus,
     field: model('invoiceStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
@@ -393,7 +396,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getInvoiceList$(transformLocalToServeGridInfo(this.gridApi, params, CompleteListColumnServerKeys, this.searchText))
+    this.reportService.getInvoiceList$(transformLocalToServeGridInfo(this.gridApi, params, InvoiceListColumnServerKeys, this.searchText))
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),

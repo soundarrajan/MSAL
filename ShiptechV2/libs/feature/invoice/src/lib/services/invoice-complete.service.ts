@@ -5,19 +5,15 @@ import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { Store } from '@ngxs/store';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import { UrlService } from '@shiptech/core/services/url/url.service';
-import { Router } from '@angular/router';
 import { IInvoiceCompleteApiService } from './api/invoice-complete.api.service.interface';
 import { IGetInvoiceCompletesListResponse } from './api/dto/invoice-complete-list-item.dto';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
-import {IGetInvoiceListResponse} from "./api/dto/invoice-list-item.dto";
+import { IGetInvoiceListResponse } from './api/dto/invoice-list-item.dto';
 
 @Injectable()
 export class InvoiceCompleteService extends BaseStoreService implements OnDestroy {
   constructor(
     protected store: Store,
-    private urlService: UrlService,
-    private router: Router,
     loggerFactory: ModuleLoggerFactory,
     @Inject(INVOICE_COMPLETE_API_SERVICE) private api: IInvoiceCompleteApiService) {
     super(store, loggerFactory.createLogger(InvoiceCompleteService.name));
