@@ -1,5 +1,6 @@
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
 
 export interface ICompleteListItemDto {
   id: number;
@@ -46,6 +47,7 @@ export interface ICompleteListItemDto {
   totalOrderProductAmount: number;
   orderAmount: number;
   orderCurrency: ILookupDto;
+  invoiceStatus: IDisplayLookupDto;
   dueDate: Date | string;
   workingDueDate: Date | string;
   approvedDate: Date | string;
