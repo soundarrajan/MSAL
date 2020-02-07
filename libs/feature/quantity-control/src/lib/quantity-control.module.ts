@@ -46,6 +46,7 @@ import { EmailLogModule } from "@shiptech/core/ui/components/email-log/email-log
 import { AuditLogModule } from "@shiptech/core/ui/components/audit-log/audit-log.module";
 import { DocumentsModule } from "@shiptech/core/ui/components/documents/documents.module";
 import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
+import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
 
 @NgModule({
   imports: [
@@ -69,11 +70,11 @@ import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer
     SelectTextOnFocusDirectiveModule,
     EmailLogModule,
     AuditLogModule,
-    DocumentsModule
+    DocumentsModule,
+    WunderBarModule
   ],
   declarations: [
     MainQuantityControlComponent,
-    WunderBarComponent,
     QcReportsListComponent,
     QcReportDetailsComponent,
     SoundingReportsComponent,
