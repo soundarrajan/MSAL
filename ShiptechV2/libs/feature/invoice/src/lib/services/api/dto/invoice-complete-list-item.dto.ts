@@ -1,6 +1,7 @@
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
+import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
 
 export interface ICompleteListItemDto {
   id: number;
@@ -14,7 +15,7 @@ export interface ICompleteListItemDto {
   sellerInvoiceNo: number;
   documentNo: number;
   customStatus: ILookupDto;
-  orderProductStatus: ILookupDto;
+  orderProductStatus: IScheduleDashboardLabelConfigurationDto;
   buyer: ILookupDto;
   supplier: ILookupDto;
   orderPhysicalSupplier: ILookupDto;
@@ -47,7 +48,7 @@ export interface ICompleteListItemDto {
   totalOrderProductAmount: number;
   orderAmount: number;
   orderCurrency: ILookupDto;
-  invoiceStatus: IDisplayLookupDto;
+  invoiceStatus: IScheduleDashboardLabelConfigurationDto;
   dueDate: Date | string;
   workingDueDate: Date | string;
   approvedDate: Date | string;
@@ -63,11 +64,11 @@ export interface ICompleteListItemDto {
   invoiceType: ILookupDto;
   receivedDate: Date | string;
   sellerDueDate: Date | string;
-  orderStatus: ILookupDto;
+  orderStatus: IScheduleDashboardLabelConfigurationDto;
   contractId: number;
   productType: ILookupDto;
   fuelPriceItemDescription: string;
-  invoiceApprovalStatus: ILookupDto;
+  invoiceApprovalStatus: IScheduleDashboardLabelConfigurationDto;
 }
 
 export interface IGetInvoiceCompletesListRequest extends IServerGridInfo {
