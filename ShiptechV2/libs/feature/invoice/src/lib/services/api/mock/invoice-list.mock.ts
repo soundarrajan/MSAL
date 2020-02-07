@@ -34,15 +34,36 @@ export function getMockInvoiceListItem(id: number): IInvoiceListItemDto {
     confirmedQuantity: random.number(100),
     orderPrice: random.number(100),
     orderAmount: random.number(100),
-    invoiceStatus: sample(values(MockStatusLookupEnumMap)),
+    invoiceStatus: {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    },
     dueDate: date.past().toISOString(),
     workingDueDate: date.past().toISOString(),
     paymentDate: date.past().toISOString(),
     receivedDate: date.past().toISOString(),
     approvedDate: date.past().toISOString(),
     backOfficeComments: random.word(),
-    orderStatus: sample(values(MockStatusLookupEnumMap)),
+    orderStatus: {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    },
     productType: sample(values(MockStatusLookupEnumMap)),
-    invoiceApprovalStatus: sample(values(MockStatusLookupEnumMap))
+    invoiceApprovalStatus: {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    }
   };
 }
