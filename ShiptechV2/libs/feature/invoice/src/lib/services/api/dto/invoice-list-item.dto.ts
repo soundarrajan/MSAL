@@ -1,10 +1,9 @@
-import {IServerGridInfo} from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
-import {IStatusLookupDto} from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 export interface IInvoiceListItemDto {
   id: number;
-
   order: IDisplayLookupDto;
   orderProductId: number;
   delivery: IDisplayLookupDto;
@@ -39,7 +38,6 @@ export interface IInvoiceListItemDto {
   orderStatus: IDisplayLookupDto;
   productType: IDisplayLookupDto;
   invoiceApprovalStatus: IStatusLookupDto;
-
 }
 
 export interface IGetInvoiceListRequest extends IServerGridInfo {
@@ -49,40 +47,3 @@ export interface IGetInvoiceListResponse {
   payload: IInvoiceListItemDto[];
   matchedCount: number;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

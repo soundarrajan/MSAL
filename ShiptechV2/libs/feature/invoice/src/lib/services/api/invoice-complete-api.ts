@@ -9,7 +9,7 @@ import {
   IGetInvoiceCompletesListRequest,
   IGetInvoiceCompletesListResponse
 } from './dto/invoice-complete-list-item.dto';
-import {IGetInvoiceListRequest, IGetInvoiceListResponse} from "./dto/invoice-list-item.dto";
+import { IGetInvoiceListRequest, IGetInvoiceListResponse } from './dto/invoice-list-item.dto';
 
 export namespace InvoiceApiPaths {
   export const getCompletesList = () => `api/invoice/completeViewList`;
@@ -33,7 +33,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   getInvoiceList(request: IGetInvoiceListRequest): Observable<IGetInvoiceListResponse> {
-    return this.http.post<IGetInvoiceListResponse>(`${this._apiUrl}/${InvoiceApiPaths.getInvoicesList()}`, { payload: request })
+    return this.http.post<IGetInvoiceListResponse>(`${this._apiUrl}/${InvoiceApiPaths.getInvoicesList()}`, { payload: request });
   }
 }
 

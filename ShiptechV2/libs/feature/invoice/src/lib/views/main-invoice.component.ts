@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-main-invoice',
@@ -11,7 +10,7 @@ import { Store } from '@ngxs/store';
 export class MainInvoiceComponent implements OnDestroy {
   private _destroy$ = new Subject();
 
-  constructor(private store: Store) {
+  constructor() {
   }
 
   ngOnDestroy(): void {
@@ -19,4 +18,3 @@ export class MainInvoiceComponent implements OnDestroy {
     this._destroy$.complete();
   }
 }
-
