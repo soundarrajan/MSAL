@@ -53,6 +53,7 @@ export function getMockInvoiceCompletesListItem(id: number): ICompleteListItemDt
     totalOrderProductAmount: random.number(100),
     orderAmount: random.number(100),
     orderCurrency: sample(values(MockStatusLookupEnumMap)),
+    invoiceStatus: sample(values(MockStatusLookupEnumMap)),
     dueDate: date.past().toISOString(),
     workingDueDate: date.past().toISOString(),
     approvedDate: date.past().toISOString(),

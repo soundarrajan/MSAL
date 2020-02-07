@@ -1,6 +1,6 @@
-import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import {IServerGridInfo} from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
 
 export interface IInvoiceListItemDto {
   id: number;
@@ -28,16 +28,16 @@ export interface IInvoiceListItemDto {
   confirmedQuantity: number;
   orderPrice: number;
   orderAmount: number;
-  invoiceStatus: IDisplayLookupDto;
+  invoiceStatus: IScheduleDashboardLabelConfigurationDto;
   dueDate: string;
   workingDueDate: string;
   paymentDate: string;
   receivedDate: string;
   approvedDate: string;
   backOfficeComments: string;
-  orderStatus: IDisplayLookupDto;
+  orderStatus: IScheduleDashboardLabelConfigurationDto;
   productType: IDisplayLookupDto;
-  invoiceApprovalStatus: IStatusLookupDto;
+  invoiceApprovalStatus: IScheduleDashboardLabelConfigurationDto;
 }
 
 export interface IGetInvoiceListRequest extends IServerGridInfo {

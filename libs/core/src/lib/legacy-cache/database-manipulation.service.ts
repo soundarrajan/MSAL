@@ -1,8 +1,6 @@
 import {Injectable} from "@angular/core";
 import {LegacyLookupsDatabase} from "@shiptech/core/legacy-cache/legacy-lookups-database.service";
 import Dexie from "dexie";
-import {LookupsCacheService} from "@shiptech/core/legacy-cache/legacy-cache.service";
-import {fromPromise} from "rxjs/internal-compatibility";
 
 export enum DatabaseManipulationEnum {
   DashboardLabelConfiguration = 'scheduleDashboardLabelConfiguration',
@@ -27,7 +25,7 @@ export class DatabaseManipulation extends Dexie {
     return entityId;
   }
 
-  async getStatusColorFromDashboard(statusId: number, transactionTypeId: number): Promise<string> {
+  public async getStatusColorFromDashboard(statusId: number, transactionTypeId: number): Promise<string> {
     let color = null;
     await this.db[DatabaseManipulationEnum.DashboardLabelConfiguration].where('id').equals(statusId).and((item) => item.transactionTypeId === transactionTypeId).each((item) => {
       color = item.code;
