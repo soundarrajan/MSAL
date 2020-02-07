@@ -1,48 +1,48 @@
-import * as faker from 'faker';
-import * as _ from 'lodash';
-import {MockStatusLookupEnumMap} from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
-import {IInvoiceListItemDto} from "../dto/invoice-list-item.dto";
+import { date, random } from 'faker';
+import { range, sample, values } from 'lodash';
+import { MockStatusLookupEnumMap } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { IInvoiceListItemDto } from '../dto/invoice-list-item.dto';
 
 export function getMockInvoiceList(n: number): IInvoiceListItemDto[] {
-  return _.range(1, n).map(id => getMockInvoiceListItem(id));
+  return range(1, n).map(id => getMockInvoiceListItem(id));
 }
 
 export function getMockInvoiceListItem(id: number): IInvoiceListItemDto {
   return {
     id,
-    order: _.sample(_.values(MockStatusLookupEnumMap)),
-    orderProductId: faker.random.number(100),
-    delivery: _.sample(_.values(MockStatusLookupEnumMap)),
-    invoice: _.sample(_.values(MockStatusLookupEnumMap)),
-    documentNo: faker.random.number(100),
-    customStatus: _.sample(_.values(MockStatusLookupEnumMap)),
-    buyer: _.sample(_.values(MockStatusLookupEnumMap)),
-    supplier: _.sample(_.values(MockStatusLookupEnumMap)),
-    vessel: _.sample(_.values(MockStatusLookupEnumMap)),
-    carrierCompany: _.sample(_.values(MockStatusLookupEnumMap)),
-    paymentCompany: _.sample(_.values(MockStatusLookupEnumMap)),
-    agreementType: _.sample(_.values(MockStatusLookupEnumMap)),
-    port: _.sample(_.values(MockStatusLookupEnumMap)),
-    eta: faker.date.past().toISOString(),
-    deliveryDate: faker.date.past().toISOString(),
-    line: _.sample(_.values(MockStatusLookupEnumMap)),
-    product: _.sample(_.values(MockStatusLookupEnumMap)),
-    invoiceQuantity: faker.random.number(100),
-    price: faker.random.number(100),
-    sumOfCosts: faker.random.number(100),
-    invoiceAmount: faker.random.number(100),
-    confirmedQuantity: faker.random.number(100),
-    orderPrice: faker.random.number(100),
-    orderAmount: faker.random.number(100),
-    invoiceStatus: _.sample(_.values(MockStatusLookupEnumMap)),
-    dueDate: faker.date.past().toISOString(),
-    workingDueDate: faker.date.past().toISOString(),
-    paymentDate: faker.date.past().toISOString(),
-    receivedDate: faker.date.past().toISOString(),
-    approvedDate: faker.date.past().toISOString(),
-    backOfficeComments: faker.random.word(),
-    orderStatus: _.sample(_.values(MockStatusLookupEnumMap)),
-    productType: _.sample(_.values(MockStatusLookupEnumMap)),
-    invoiceApprovalStatus: _.sample(_.values(MockStatusLookupEnumMap))
+    order: sample(values(MockStatusLookupEnumMap)),
+    orderProductId: random.number(100),
+    delivery: sample(values(MockStatusLookupEnumMap)),
+    invoice: sample(values(MockStatusLookupEnumMap)),
+    documentNo: random.number(100),
+    customStatus: sample(values(MockStatusLookupEnumMap)),
+    buyer: sample(values(MockStatusLookupEnumMap)),
+    supplier: sample(values(MockStatusLookupEnumMap)),
+    vessel: sample(values(MockStatusLookupEnumMap)),
+    carrierCompany: sample(values(MockStatusLookupEnumMap)),
+    paymentCompany: sample(values(MockStatusLookupEnumMap)),
+    agreementType: sample(values(MockStatusLookupEnumMap)),
+    port: sample(values(MockStatusLookupEnumMap)),
+    eta: date.past().toISOString(),
+    deliveryDate: date.past().toISOString(),
+    line: sample(values(MockStatusLookupEnumMap)),
+    product: sample(values(MockStatusLookupEnumMap)),
+    invoiceQuantity: random.number(100),
+    price: random.number(100),
+    sumOfCosts: random.number(100),
+    invoiceAmount: random.number(100),
+    confirmedQuantity: random.number(100),
+    orderPrice: random.number(100),
+    orderAmount: random.number(100),
+    invoiceStatus: sample(values(MockStatusLookupEnumMap)),
+    dueDate: date.past().toISOString(),
+    workingDueDate: date.past().toISOString(),
+    paymentDate: date.past().toISOString(),
+    receivedDate: date.past().toISOString(),
+    approvedDate: date.past().toISOString(),
+    backOfficeComments: random.word(),
+    orderStatus: sample(values(MockStatusLookupEnumMap)),
+    productType: sample(values(MockStatusLookupEnumMap)),
+    invoiceApprovalStatus: sample(values(MockStatusLookupEnumMap))
   };
 }

@@ -1,23 +1,25 @@
-import {ICompleteListItemDto} from "../../../services/api/dto/invoice-complete-list-item.dto";
-import {ChangeDetectorRef, Injectable} from "@angular/core";
-import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
-import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
-import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
-import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
-import {ModuleLoggerFactory} from "../../../../../../quantity-control/src/lib/core/logging/module-logger-factory";
-import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
-import {ReconStatusLookup} from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service";
-import {InvoiceCompleteService} from "../../../services/invoice-complete.service";
-import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
-import {StatusLookup} from "@shiptech/core/lookups/known-lookups/status/status-lookup.service";
-import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
-import {takeUntil} from "rxjs/operators";
-import {AppError} from "@shiptech/core/error-handling/app-error";
-import {InvoiceListColumns, InvoiceListColumnServerKeys, InvoiceListColumnsLabels} from "./invoice-list.columns";
-import {ILookupDto} from "@shiptech/core/lookups/lookup-dto.interface";
-import {AgCellTemplateComponent} from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
-import {IInvoiceListItemDto} from "../../../services/api/dto/invoice-list-item.dto";
-import {IStatusLookupDto} from "@shiptech/core/lookups/known-lookups/status/status-lookup.interface";
+import { ICompleteListItemDto } from '../../../services/api/dto/invoice-complete-list-item.dto';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
+import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
+import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  InvoiceListColumns,
+  InvoiceListColumnServerKeys,
+  InvoiceListColumnsLabels
+} from '../../view-model/invoice-list.columns';
+import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
+import { ModuleLoggerFactory } from '../../../../../../quantity-control/src/lib/core/logging/module-logger-factory';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { InvoiceCompleteService } from '../../../services/invoice-complete.service';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import { takeUntil } from 'rxjs/operators';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
+import { IInvoiceListItemDto } from '../../../services/api/dto/invoice-list-item.dto';
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import { ModuleError } from '../../../core/error-handling/module-error';
 
 function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
   return prop;
@@ -255,8 +257,8 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   };
 
   invoiceStatusCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
-    headerName: InvoiceListColumnsLabels.invoiceStatus,
-    colId: InvoiceListColumns.invoiceStatus,
+    headerName: InvoiceListColumnsLabels.customStatus,
+    colId: InvoiceListColumns.customStatus,
     field: model('invoiceStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
@@ -338,10 +340,8 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private format: TenantFormattingService,
-    private reconStatusLookups: ReconStatusLookup,
     private reportService: InvoiceCompleteService,
-    private appErrorHandler: AppErrorHandler,
-    private statusLookup: StatusLookup
+    private appErrorHandler: AppErrorHandler
   ) {
     super('invoice-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(InvoiceListGridViewModel.name));
     this.init(this.gridOptions, true);
@@ -397,7 +397,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),
         () => {
-          this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('completed'));
+          this.appErrorHandler.handleError(ModuleError.LoadInvoiceListFailed);
           params.failCallback();
         });
   }
