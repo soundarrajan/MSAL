@@ -1,13 +1,11 @@
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
-import { IDocumentsMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto';
 
 export interface ICompleteListItemDto {
   id: number;
   nbOfMatched: number;
   nbOfMatchedWithinLimit: number;
   nbOfNotMatched: number;
-
   order: ILookupDto;
   orderProductId: number;
   delivery: ILookupDto;
@@ -17,7 +15,6 @@ export interface ICompleteListItemDto {
   customStatus: ILookupDto;
   orderProductStatus: ILookupDto;
   buyer: ILookupDto;
-
   supplier: ILookupDto;
   orderPhysicalSupplier: ILookupDto;
   invoicePhysicalSupplier: ILookupDto;
@@ -69,7 +66,6 @@ export interface ICompleteListItemDto {
   productType: ILookupDto;
   fuelPriceItemDescription: string;
   invoiceApprovalStatus: ILookupDto;
-
 }
 
 export interface IGetInvoiceCompletesListRequest extends IServerGridInfo {

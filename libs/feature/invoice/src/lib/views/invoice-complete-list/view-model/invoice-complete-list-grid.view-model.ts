@@ -3,24 +3,22 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
 import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
-  CompleteListColumnServerKeys,
-  CompleteListColumnsLabels,
-  InvoiceCompleteListColumns
-} from './invoice-complete-list.columns';
+  InvoiceListColumnServerKeys,
+  InvoiceListColumnsLabels,
+  InvoiceListColumns
+} from '../../view-model/invoice-list.columns';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { AppError } from '@shiptech/core/error-handling/app-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { takeUntil } from 'rxjs/operators';
-import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { ICompleteListItemDto } from '../../../services/api/dto/invoice-complete-list-item.dto';
 import { InvoiceCompleteService } from '../../../services/invoice-complete.service';
 import { ModuleLoggerFactory } from 'libs/feature/quantity-control/src/lib/core/logging/module-logger-factory';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
-import {IStatusLookupDto} from "@shiptech/core/lookups/known-lookups/status/status-lookup.interface";
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
   return prop;
@@ -63,16 +61,16 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   };
 
   orderNoCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.order,
-    colId: InvoiceCompleteListColumns.order,
+    headerName: InvoiceListColumnsLabels.order,
+    colId: InvoiceListColumns.order,
     field: model('order'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 200
   };
 
   orderProductIdCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.orderProductId,
-    colId: InvoiceCompleteListColumns.orderProductId,
+    headerName: InvoiceListColumnsLabels.orderProductId,
+    colId: InvoiceListColumns.orderProductId,
     field: model('orderProductId'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 150,
@@ -80,8 +78,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   };
 
   deliveryCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.delivery,
-    colId: InvoiceCompleteListColumns.delivery,
+    headerName: InvoiceListColumnsLabels.delivery,
+    colId: InvoiceListColumns.delivery,
     field: model('delivery'),
     valueFormatter: params => params.value?.id.toString(),
     cellRendererFramework: AgCellTemplateComponent,
@@ -89,8 +87,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   };
 
   invoiceCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.invoice,
-    colId: InvoiceCompleteListColumns.invoice,
+    headerName: InvoiceListColumnsLabels.invoice,
+    colId: InvoiceListColumns.invoice,
     field: model('invoice'),
     valueFormatter: params => params.value?.id.toString(),
     cellRendererFramework: AgCellTemplateComponent,
@@ -98,8 +96,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   };
 
   sellerInvoiceNoCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.sellerInvoiceNo,
-    colId: InvoiceCompleteListColumns.sellerInvoiceNo,
+    headerName: InvoiceListColumnsLabels.sellerInvoiceNo,
+    colId: InvoiceListColumns.sellerInvoiceNo,
     field: model('sellerInvoiceNo'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 110,
@@ -107,407 +105,415 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   };
 
   documentNoCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.documentNo,
-    colId: InvoiceCompleteListColumns.documentNo,
+    headerName: InvoiceListColumnsLabels.documentNo,
+    colId: InvoiceListColumns.documentNo,
     field: model('documentNo'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   customStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.customStatus,
-    colId: InvoiceCompleteListColumns.customStatus,
+    headerName: InvoiceListColumnsLabels.customStatus,
+    colId: InvoiceListColumns.customStatus,
     field: model('customStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   orderProductStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.orderProductStatus,
-    colId: InvoiceCompleteListColumns.orderProductStatus,
+    headerName: InvoiceListColumnsLabels.orderProductStatus,
+    colId: InvoiceListColumns.orderProductStatus,
     field: model('orderProductStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   buyerCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.buyer,
-    colId: InvoiceCompleteListColumns.buyer,
+    headerName: InvoiceListColumnsLabels.buyer,
+    colId: InvoiceListColumns.buyer,
     field: model('buyer'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   supplierCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.supplier,
-    colId: InvoiceCompleteListColumns.supplier,
+    headerName: InvoiceListColumnsLabels.supplier,
+    colId: InvoiceListColumns.supplier,
     field: model('buyer'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   orderPhysicalSupplierCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.orderPhysicalSupplier,
-    colId: InvoiceCompleteListColumns.orderPhysicalSupplier,
+    headerName: InvoiceListColumnsLabels.orderPhysicalSupplier,
+    colId: InvoiceListColumns.orderPhysicalSupplier,
     field: model('orderPhysicalSupplier'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
+  invoicePhysicalSupplierCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+    headerName: InvoiceListColumnsLabels.invoicePhysicalSupplier,
+    colId: InvoiceListColumns.invoicePhysicalSupplier,
+    field: model('invoicePhysicalSupplier'),
+    valueFormatter: params => params.value?.name,
+    width: 110
+  };
+
   vesselCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.vessel,
-    colId: InvoiceCompleteListColumns.vessel,
+    headerName: InvoiceListColumnsLabels.vessel,
+    colId: InvoiceListColumns.vessel,
     field: model('vessel'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   vesselCodeCol: ITypedColDef<ICompleteListItemDto, IStatusLookupDto> = {
-    headerName: CompleteListColumnsLabels.vesselCode,
-    colId: InvoiceCompleteListColumns.vesselCode,
+    headerName: InvoiceListColumnsLabels.vesselCode,
+    colId: InvoiceListColumns.vesselCode,
     field: model('vessel'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   carrierCompanyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.carrierCompany,
-    colId: InvoiceCompleteListColumns.carrierCompany,
+    headerName: InvoiceListColumnsLabels.carrierCompany,
+    colId: InvoiceListColumns.carrierCompany,
     field: model('carrierCompany'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   paymentCompanyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.paymentCompany,
-    colId: InvoiceCompleteListColumns.paymentCompany,
+    headerName: InvoiceListColumnsLabels.paymentCompany,
+    colId: InvoiceListColumns.paymentCompany,
     field: model('paymentCompany'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   portCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.port,
-    colId: InvoiceCompleteListColumns.port,
+    headerName: InvoiceListColumnsLabels.port,
+    colId: InvoiceListColumns.port,
     field: model('port'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   etaCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.eta,
-    colId: InvoiceCompleteListColumns.eta,
+    headerName: InvoiceListColumnsLabels.eta,
+    colId: InvoiceListColumns.eta,
     field: model('eta'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   deliveryDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.deliveryDate,
-    colId: InvoiceCompleteListColumns.deliveryDate,
+    headerName: InvoiceListColumnsLabels.deliveryDate,
+    colId: InvoiceListColumns.deliveryDate,
     field: model('deliveryDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   lineCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.line,
-    colId: InvoiceCompleteListColumns.line,
+    headerName: InvoiceListColumnsLabels.line,
+    colId: InvoiceListColumns.line,
     field: model('line'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   agreementTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.agreementType,
-    colId: InvoiceCompleteListColumns.agreementType,
+    headerName: InvoiceListColumnsLabels.agreementType,
+    colId: InvoiceListColumns.agreementType,
     field: model('agreementType'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   productCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.product,
-    colId: InvoiceCompleteListColumns.product,
+    headerName: InvoiceListColumnsLabels.product,
+    colId: InvoiceListColumns.product,
     field: model('product'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   invoiceQuantityCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.invoiceQuantity,
-    colId: InvoiceCompleteListColumns.invoiceQuantity,
+    headerName: InvoiceListColumnsLabels.invoiceQuantity,
+    colId: InvoiceListColumns.invoiceQuantity,
     field: model('invoiceQuantity'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   priceCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.price,
-    colId: InvoiceCompleteListColumns.price,
+    headerName: InvoiceListColumnsLabels.price,
+    colId: InvoiceListColumns.price,
     field: model('price'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   invoiceProductAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.invoiceProductAmount,
-    colId: InvoiceCompleteListColumns.invoiceProductAmount,
+    headerName: InvoiceListColumnsLabels.invoiceProductAmount,
+    colId: InvoiceListColumns.invoiceProductAmount,
     field: model('invoiceProductAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   sumOfCostsCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.sumOfCosts,
-    colId: InvoiceCompleteListColumns.sumOfCosts,
+    headerName: InvoiceListColumnsLabels.sumOfCosts,
+    colId: InvoiceListColumns.sumOfCosts,
     field: model('sumOfCosts'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   invoiceAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.invoiceAmount,
-    colId: InvoiceCompleteListColumns.invoiceAmount,
+    headerName: InvoiceListColumnsLabels.invoiceAmount,
+    colId: InvoiceListColumns.invoiceAmount,
     field: model('invoiceAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   invoiceCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.invoiceCurrency,
-    colId: InvoiceCompleteListColumns.invoiceCurrency,
+    headerName: InvoiceListColumnsLabels.invoiceCurrency,
+    colId: InvoiceListColumns.invoiceCurrency,
     field: model('invoiceCurrency'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   orderProductCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.orderProduct,
-    colId: InvoiceCompleteListColumns.orderProduct,
+    headerName: InvoiceListColumnsLabels.orderProduct,
+    colId: InvoiceListColumns.orderProduct,
     field: model('orderProduct'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   confirmedQuantityCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.confirmedQuantity,
-    colId: InvoiceCompleteListColumns.confirmedQuantity,
+    headerName: InvoiceListColumnsLabels.confirmedQuantity,
+    colId: InvoiceListColumns.confirmedQuantity,
     field: model('confirmedQuantity'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   finalQuantityAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.finalQuantityAmount,
-    colId: InvoiceCompleteListColumns.finalQuantityAmount,
+    headerName: InvoiceListColumnsLabels.finalQuantityAmount,
+    colId: InvoiceListColumns.finalQuantityAmount,
     field: model('finalQuantityAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   orderPriceCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.orderPrice,
-    colId: InvoiceCompleteListColumns.orderPrice,
+    headerName: InvoiceListColumnsLabels.orderPrice,
+    colId: InvoiceListColumns.orderPrice,
     field: model('orderPrice'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   orderPriceCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.orderPriceCurrency,
-    colId: InvoiceCompleteListColumns.orderPriceCurrency,
+    headerName: InvoiceListColumnsLabels.orderPriceCurrency,
+    colId: InvoiceListColumns.orderPriceCurrency,
     field: model('orderPriceCurrency'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   invoiceProductAmountInOrderCurrencyCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.invoiceProductAmountInOrderCurrency,
-    colId: InvoiceCompleteListColumns.invoiceProductAmountInOrderCurrency,
+    headerName: InvoiceListColumnsLabels.invoiceProductAmountInOrderCurrency,
+    colId: InvoiceListColumns.invoiceProductAmountInOrderCurrency,
     field: model('invoiceProductAmountInOrderCurrency'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   convertedCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.convertedCurrency,
-    colId: InvoiceCompleteListColumns.convertedCurrency,
+    headerName: InvoiceListColumnsLabels.convertedCurrency,
+    colId: InvoiceListColumns.convertedCurrency,
     field: model('convertedCurrency'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   orderCostCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.orderCost,
-    colId: InvoiceCompleteListColumns.orderCost,
+    headerName: InvoiceListColumnsLabels.orderCost,
+    colId: InvoiceListColumns.orderCost,
     field: model('orderCost'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   orderProductAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.orderProductAmount,
-    colId: InvoiceCompleteListColumns.orderProductAmount,
+    headerName: InvoiceListColumnsLabels.orderProductAmount,
+    colId: InvoiceListColumns.orderProductAmount,
     field: model('orderProductAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   totalOrderProductAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.totalOrderProductAmount,
-    colId: InvoiceCompleteListColumns.totalOrderProductAmount,
+    headerName: InvoiceListColumnsLabels.totalOrderProductAmount,
+    colId: InvoiceListColumns.totalOrderProductAmount,
     field: model('totalOrderProductAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   orderAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.orderAmount,
-    colId: InvoiceCompleteListColumns.orderAmount,
+    headerName: InvoiceListColumnsLabels.orderAmount,
+    colId: InvoiceListColumns.orderAmount,
     field: model('orderAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   orderCurrencyCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.orderCurrency,
-    colId: InvoiceCompleteListColumns.orderCurrency,
+    headerName: InvoiceListColumnsLabels.orderCurrency,
+    colId: InvoiceListColumns.orderCurrency,
     field: model('orderCurrency'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   dueDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.dueDate,
-    colId: InvoiceCompleteListColumns.dueDate,
+    headerName: InvoiceListColumnsLabels.dueDate,
+    colId: InvoiceListColumns.dueDate,
     field: model('dueDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   workingDueDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.workingDueDate,
-    colId: InvoiceCompleteListColumns.workingDueDate,
+    headerName: InvoiceListColumnsLabels.workingDueDate,
+    colId: InvoiceListColumns.workingDueDate,
     field: model('workingDueDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   approvedDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.approvedDate,
-    colId: InvoiceCompleteListColumns.approvedDate,
+    headerName: InvoiceListColumnsLabels.approvedDate,
+    colId: InvoiceListColumns.approvedDate,
     field: model('approvedDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   accountNumberCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.accountNumber,
-    colId: InvoiceCompleteListColumns.accountNumber,
+    headerName: InvoiceListColumnsLabels.accountNumber,
+    colId: InvoiceListColumns.accountNumber,
     field: model('accountNumber'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   paymentDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.paymentDate,
-    colId: InvoiceCompleteListColumns.paymentDate,
+    headerName: InvoiceListColumnsLabels.paymentDate,
+    colId: InvoiceListColumns.paymentDate,
     field: model('paymentDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   backOfficeCommentsCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.backOfficeComments,
-    colId: InvoiceCompleteListColumns.backOfficeComments,
+    headerName: InvoiceListColumnsLabels.backOfficeComments,
+    colId: InvoiceListColumns.backOfficeComments,
     field: model('backOfficeComments'),
     width: 110
   };
 
   claimNoCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.claimNo,
-    colId: InvoiceCompleteListColumns.claimNo,
+    headerName: InvoiceListColumnsLabels.claimNo,
+    colId: InvoiceListColumns.claimNo,
     field: model('claimNo'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   claimDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.claimDate,
-    colId: InvoiceCompleteListColumns.claimDate,
+    headerName: InvoiceListColumnsLabels.claimDate,
+    colId: InvoiceListColumns.claimDate,
     field: model('claimDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   claimStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.claimStatus,
-    colId: InvoiceCompleteListColumns.claimStatus,
+    headerName: InvoiceListColumnsLabels.claimStatus,
+    colId: InvoiceListColumns.claimStatus,
     field: model('claimStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   actualSettlementDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.actualSettlementDate,
-    colId: InvoiceCompleteListColumns.actualSettlementDate,
+    headerName: InvoiceListColumnsLabels.actualSettlementDate,
+    colId: InvoiceListColumns.actualSettlementDate,
     field: model('actualSettlementDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   debunkerAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.debunkerAmount,
-    colId: InvoiceCompleteListColumns.debunkerAmount,
+    headerName: InvoiceListColumnsLabels.debunkerAmount,
+    colId: InvoiceListColumns.debunkerAmount,
     field: model('debunkerAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   resaleAmountCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.resaleAmount,
-    colId: InvoiceCompleteListColumns.resaleAmount,
+    headerName: InvoiceListColumnsLabels.resaleAmount,
+    colId: InvoiceListColumns.resaleAmount,
     field: model('resaleAmount'),
     width: 110,
     filter: 'agNumberColumnFilter'
   };
 
   invoiceTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.invoiceType,
-    colId: InvoiceCompleteListColumns.invoiceType,
+    headerName: InvoiceListColumnsLabels.invoiceType,
+    colId: InvoiceListColumns.invoiceType,
     field: model('invoiceType'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   receivedDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.receivedDate,
-    colId: InvoiceCompleteListColumns.receivedDate,
+    headerName: InvoiceListColumnsLabels.receivedDate,
+    colId: InvoiceListColumns.receivedDate,
     field: model('receivedDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   sellerDueDateCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.sellerDueDate,
-    colId: InvoiceCompleteListColumns.sellerDueDate,
+    headerName: InvoiceListColumnsLabels.sellerDueDate,
+    colId: InvoiceListColumns.sellerDueDate,
     field: model('sellerDueDate'),
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
 
   orderStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.orderStatus,
-    colId: InvoiceCompleteListColumns.orderStatus,
+    headerName: InvoiceListColumnsLabels.orderStatus,
+    colId: InvoiceListColumns.orderStatus,
     field: model('orderStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   contractIdCol: ITypedColDef<ICompleteListItemDto, number> = {
-    headerName: CompleteListColumnsLabels.contractId,
-    colId: InvoiceCompleteListColumns.contractId,
+    headerName: InvoiceListColumnsLabels.contractId,
+    colId: InvoiceListColumns.contractId,
     field: model('contractId'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 110,
@@ -515,23 +521,23 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   };
 
   productTypeCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.productType,
-    colId: InvoiceCompleteListColumns.productType,
+    headerName: InvoiceListColumnsLabels.productType,
+    colId: InvoiceListColumns.productType,
     field: model('productType'),
     valueFormatter: params => params.value?.name,
     width: 110
   };
 
   fuelPriceItemDescriptionCol: ITypedColDef<ICompleteListItemDto, string> = {
-    headerName: CompleteListColumnsLabels.fuelPriceItemDescription,
-    colId: InvoiceCompleteListColumns.fuelPriceItemDescription,
+    headerName: InvoiceListColumnsLabels.fuelPriceItemDescription,
+    colId: InvoiceListColumns.fuelPriceItemDescription,
     field: model('fuelPriceItemDescription'),
     width: 110
   };
 
   invoiceApprovalStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
-    headerName: CompleteListColumnsLabels.invoiceApprovalStatus,
-    colId: InvoiceCompleteListColumns.invoiceApprovalStatus,
+    headerName: InvoiceListColumnsLabels.invoiceApprovalStatus,
+    colId: InvoiceListColumns.invoiceApprovalStatus,
     field: model('invoiceApprovalStatus'),
     valueFormatter: params => params.value?.name,
     width: 110
@@ -542,10 +548,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private format: TenantFormattingService,
-    private reconStatusLookups: ReconStatusLookup,
     private reportService: InvoiceCompleteService,
-    private appErrorHandler: AppErrorHandler,
-    private statusLookup: StatusLookup
+    private appErrorHandler: AppErrorHandler
   ) {
     super('invoice-complete-list-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(CompleteListGridViewModel.name));
     this.init(this.gridOptions, true);
@@ -564,6 +568,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
       this.buyerCol,
       this.supplierCol,
       this.orderPhysicalSupplierCol,
+      this.invoicePhysicalSupplierCol,
       this.vesselCol,
       this.vesselCodeCol,
       this.carrierCompanyCol,
@@ -611,7 +616,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
       this.contractIdCol,
       this.productTypeCol,
       this.fuelPriceItemDescriptionCol,
-      this.invoiceApprovalStatusCol,
+      this.invoiceApprovalStatusCol
     ];
   }
 
@@ -621,12 +626,12 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, CompleteListColumnServerKeys, this.searchText))
+    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, InvoiceListColumnServerKeys, this.searchText))
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => params.successCallback(response.payload, response.matchedCount),
         () => {
-          this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('completed'));
+          this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('invoice complete list from'));
           params.failCallback();
         });
   }

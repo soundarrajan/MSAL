@@ -1,9 +1,8 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Subject} from 'rxjs';
-import {AppConfig} from '@shiptech/core/config/app-config';
-import {ReconStatusLookup} from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
-import {InvoiceListGridViewModel} from "./view-model/invoice-list-grid-view-model.service";
-import {UrlService} from "@shiptech/core/services/url/url.service";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { AppConfig } from '@shiptech/core/config/app-config';
+import { InvoiceListGridViewModel } from './view-model/invoice-list-grid-view-model.service';
+import { UrlService } from '@shiptech/core/services/url/url.service';
 
 @Component({
   selector: 'shiptech-invoice-list',
@@ -13,12 +12,11 @@ import {UrlService} from "@shiptech/core/services/url/url.service";
 })
 export class InvoiceListComponent implements OnInit, OnDestroy {
 
-  @ViewChild('popup', {static: false}) popupTemplate: TemplateRef<any>;
+  @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
   constructor(public gridViewModel: InvoiceListGridViewModel,
               public appConfig: AppConfig,
-              public reconStatusLookups: ReconStatusLookup,
               private urlService: UrlService
   ) {
   }
@@ -50,5 +48,4 @@ export class InvoiceListComponent implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 }
