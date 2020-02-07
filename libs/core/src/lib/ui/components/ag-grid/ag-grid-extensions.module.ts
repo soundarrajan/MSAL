@@ -20,6 +20,7 @@ import { AgCheckBoxRendererComponent } from "@shiptech/core/ui/components/ag-gri
 import { AgCheckBoxHeaderComponent } from "@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component";
 import { MatCheckboxModule } from "@angular/material";
 import { FlexModule } from "@angular/flex-layout";
+import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -39,6 +40,7 @@ const COMPONENTS = [
   AgDatePickerComponent,
   AgCheckBoxHeaderComponent,
   AgCheckBoxRendererComponent,
+  AgAsyncBackgroundFillComponent
 ];
 
 @NgModule({

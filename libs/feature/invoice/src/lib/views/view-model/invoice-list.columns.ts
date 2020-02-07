@@ -40,6 +40,7 @@ export enum InvoiceListColumns {
   totalOrderProductAmount = 'totalOrderProductAmount',
   orderAmount = 'orderAmount',
   orderCurrency = 'orderCurrency',
+  invoiceStatus = 'invoiceStatus',
   dueDate = 'dueDate',
   workingDueDate = 'workingDueDate',
   approvedDate = 'approvedDate',
@@ -82,7 +83,7 @@ export enum InvoiceListColumnsLabels {
   port = 'Port Name',
   eta = 'ETA',
   deliveryDate = 'Delivery Date',
-  line = 'Service',
+  line = 'Line',
   agreementType = 'Agreement Type',
   product = 'Inv. Product',
   invoiceQuantity = 'Inv. Qty',
@@ -104,6 +105,7 @@ export enum InvoiceListColumnsLabels {
   totalOrderProductAmount = 'Total Order Product Amount',
   orderAmount = 'Order Amount',
   orderCurrency = 'Order Currency',
+  invoiceStatus = 'Invoice Approval Status',
   dueDate = 'Due Date',
   workingDueDate = 'Working Due Date',
   approvedDate = 'Validate Date',
@@ -171,6 +173,7 @@ export const InvoiceListColumnServerKeys: Record<InvoiceListColumns, string> = {
   [InvoiceListColumns.totalOrderProductAmount]: 'totalOrderProductAmount',
   [InvoiceListColumns.orderAmount]: 'orderAmount',
   [InvoiceListColumns.orderCurrency]: 'orderCurrency_Name',
+  [InvoiceListColumns.invoiceStatus]: 'invoiceStatus_DisplayName',
   [InvoiceListColumns.dueDate]: 'dueDate',
   [InvoiceListColumns.workingDueDate]: 'workingDueDate',
   [InvoiceListColumns.approvedDate]: 'approvedDate',
@@ -190,5 +193,5 @@ export const InvoiceListColumnServerKeys: Record<InvoiceListColumns, string> = {
   [InvoiceListColumns.contractId]: 'contractId',
   [InvoiceListColumns.productType]: 'productType_Name',
   [InvoiceListColumns.fuelPriceItemDescription]: 'fuelPriceItemDescription',
-  [InvoiceListColumns.invoiceApprovalStatus]: 'invoiceApprovalStatus_Name'
+  [InvoiceListColumns.invoiceApprovalStatus]: 'invoiceApprovalStatus'
 };

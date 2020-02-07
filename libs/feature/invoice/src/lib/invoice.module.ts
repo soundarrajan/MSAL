@@ -33,6 +33,7 @@ import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-gri
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
+import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
 
 @NgModule({
   imports: [
@@ -51,7 +52,7 @@ import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-
     NgxsResetPluginModule.forRoot(),
     AgGridExtensionsModule,
     AgGridModule.withComponents([
-      AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent, AgCheckBoxHeaderComponent, AgCheckBoxRendererComponent
+      AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent, AgCheckBoxHeaderComponent, AgCheckBoxRendererComponent, AgAsyncBackgroundFillComponent
     ]),
     AgFilterDisplayModule,
     AgFooterModule,
