@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
-import { InvoiceListGridViewModel } from './view-model/invoice-list-grid-view-model.service';
+import { InvoiceListGridViewModel } from './view-model/invoice-list-grid.view-model';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 
 @Component({
