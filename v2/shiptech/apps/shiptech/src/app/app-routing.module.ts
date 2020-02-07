@@ -30,6 +30,21 @@ const routes: Routes = [
     ]
   },
   {
+    path: '',
+    data: {
+      breadcrumb: 'Invoice List',
+      breadcrumbUrl: '/#/invoice',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.Invoices,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('@shiptech/feature/invoice').then(m => m.InvoiceModule)
+      }
+    ]
+  },
+  {
     path: KnownPrimaryRoutes.LazyLoad,
     canActivate: [AuthenticationGuard],
     loadChildren: () => import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)

@@ -19,6 +19,9 @@
     },
     "lazy-load-poc": {
       "tags": []
+    },
+    "feature-invoice": {
+      "tags": []
     }
   }
 }

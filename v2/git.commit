@@ -1,7 +1,9 @@
-﻿commit 50143c6d2e4500cd8cce9361a59f05745bd405e4
-Author: Radu Coman <radu.coman@24software.ro>
-Date:   Thu Jan 30 13:17:38 2020 +0200
+﻿commit 0028f72f91397f6788908b1cdd047a63d965beb1
+Author: Radu.coman <Radu.coman@24software.ro>
+Date:   Fri Feb 7 13:13:31 2020 +0000
 
-    Merge remote-tracking branch 'origin/master'
+    Merged PR 2884: create module for wunderbar component
+    
+    create module for wunderbar component
 
 branch: master
