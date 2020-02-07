@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: KnownInvoiceRoutes.CompleteView,
+        redirectTo: KnownInvoiceRoutes.InvoiceList,
         pathMatch: 'full'
       },
       {
