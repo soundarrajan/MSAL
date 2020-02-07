@@ -24,18 +24,16 @@
       "@shiptech/feature/quantity-control": [
         "libs/feature/quantity-control/src/index.ts"
       ],
-      "@shiptech/feature/lazy-load-poc": ["libs/feature/lazy-load-poc/src/index.ts"]
+      "@shiptech/feature/lazy-load-poc": [
+        "libs/feature/lazy-load-poc/src/index.ts"
+      ],
+      "@shiptech/feature/invoice": ["libs/feature/invoice/src/index.ts"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": [
-      "reflect-metadata"
-    ]
+    "types": ["reflect-metadata"]
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ],
+  "exclude": ["node_modules", "tmp"],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "disableTypeScriptVersionCheck": true,

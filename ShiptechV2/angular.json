@@ -46,7 +46,7 @@
               },
               "apps/shiptech/src/web.config"
             ],
-            "styles": [              
+            "styles": [
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
@@ -55,7 +55,7 @@
               "node_modules/ag-grid-community/dist/styles/ag-theme-balham.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "apps/shiptech/src/styles.scss",
-              "assets/sass/skinning/base-skinning.scss"          
+              "assets/sass/skinning/base-skinning.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -208,6 +208,37 @@
             "jestConfig": "libs/feature/lazy-load-poc/jest.config.js",
             "tsConfig": "libs/feature/lazy-load-poc/tsng serveconfig.spec.json",
             "setupFile": "libs/feature/lazy-load-poc/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "feature-invoice": {
+      "projectType": "library",
+      "root": "libs/feature/invoice",
+      "sourceRoot": "libs/feature/invoice/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/invoice/tsconfig.lib.json",
+              "libs/feature/invoice/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/feature/invoice/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/invoice/jest.config.js",
+            "tsConfig": "libs/feature/invoice/tsconfig.spec.json",
+            "setupFile": "libs/feature/invoice/src/test-setup.ts"
           }
         }
       },
