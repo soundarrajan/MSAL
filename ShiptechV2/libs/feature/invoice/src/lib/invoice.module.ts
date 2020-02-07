@@ -22,7 +22,6 @@ import { INVOICE_COMPLETE_API_SERVICE, InvoiceCompleteApi } from './services/api
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
-import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
@@ -33,6 +32,7 @@ import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
+import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
 
 @NgModule({
   imports: [
@@ -55,13 +55,13 @@ import { InvoiceListComponent } from './views/invoice-list/invoice-list.componen
     ]),
     AgFilterDisplayModule,
     AgFooterModule,
-    SelectTextOnFocusDirectiveModule
+    SelectTextOnFocusDirectiveModule,
+    WunderBarModule
   ],
   declarations: [
     MainInvoiceComponent,
     InvoiceListComponent,
-    InvoiceCompleteListComponent,
-    WunderBarComponent
+    InvoiceCompleteListComponent
   ],
   providers: [
     ModuleLoggerFactory,
