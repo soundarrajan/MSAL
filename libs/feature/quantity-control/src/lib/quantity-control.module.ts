@@ -5,7 +5,6 @@ import { ModuleLoggerFactory } from "./core/logging/module-logger-factory";
 import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApi } from "./services/api/quantity-control-api";
 import { SearchBoxModule } from "@shiptech/core/ui/components/search-box/search-box.module";
 import { FilterPresetsModule } from "@shiptech/core/ui/components/filter-preferences/filter-presets.module";
-import { WunderBarComponent } from "@shiptech/core/ui/components/wonder-bar/wunder-bar.component";
 import { UIModule } from "@shiptech/core/ui/ui.module";
 import { MessageBoxModule } from "@shiptech/core/ui/components/message-box/message-box.module";
 import { MainQuantityControlComponent } from "./views/main-quantity-control.component";
@@ -39,7 +38,6 @@ import { MasterAutocompleteModule } from "@shiptech/core/ui/components/master-au
 import { AgFilterDisplayModule } from "@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module";
 import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
 import { QcReportDetailsAuditLogsComponent } from "./views/qc-report/audit-logs/qc-report-details-audit-logs.component";
-import { DocumentsComponent } from "@shiptech/core/ui/components/documents/documents.component";
 import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/qc-report-details-documents.component";
 import { SelectTextOnFocusDirectiveModule } from "@shiptech/core/ui/directives/default/select-text-on-focus.directive";
 import { EmailLogModule } from "@shiptech/core/ui/components/email-log/email-log.module";

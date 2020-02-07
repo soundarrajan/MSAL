@@ -22,7 +22,6 @@ import { INVOICE_COMPLETE_API_SERVICE, InvoiceCompleteApi } from './services/api
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
-import { WunderBarComponent } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.component';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
