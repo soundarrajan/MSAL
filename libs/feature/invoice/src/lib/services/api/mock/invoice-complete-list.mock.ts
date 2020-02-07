@@ -20,7 +20,14 @@ export function getMockInvoiceCompletesListItem(id: number): ICompleteListItemDt
     sellerInvoiceNo: random.number(100),
     documentNo: random.number(100),
     customStatus: sample(values(MockStatusLookupEnumMap)),
-    orderProductStatus: sample(values(MockStatusLookupEnumMap)),
+    orderProductStatus:  {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    },
     buyer: sample(values(MockStatusLookupEnumMap)),
     supplier: sample(values(MockStatusLookupEnumMap)),
     orderPhysicalSupplier: sample(values(MockStatusLookupEnumMap)),
@@ -53,7 +60,6 @@ export function getMockInvoiceCompletesListItem(id: number): ICompleteListItemDt
     totalOrderProductAmount: random.number(100),
     orderAmount: random.number(100),
     orderCurrency: sample(values(MockStatusLookupEnumMap)),
-    invoiceStatus: sample(values(MockStatusLookupEnumMap)),
     dueDate: date.past().toISOString(),
     workingDueDate: date.past().toISOString(),
     approvedDate: date.past().toISOString(),
@@ -69,10 +75,32 @@ export function getMockInvoiceCompletesListItem(id: number): ICompleteListItemDt
     invoiceType: sample(values(MockStatusLookupEnumMap)),
     receivedDate: date.past().toISOString(),
     sellerDueDate: date.past().toISOString(),
-    orderStatus: sample(values(MockStatusLookupEnumMap)),
+    orderStatus: {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    },
+    invoiceStatus: {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    },
     contractId: random.number(100),
     productType: sample(values(MockStatusLookupEnumMap)),
     fuelPriceItemDescription: random.word(),
-    invoiceApprovalStatus: sample(values(MockStatusLookupEnumMap))
+    invoiceApprovalStatus: {
+      id: random.number(10),
+      transactionTypeId: random.number(10),
+      displayName: random.word(),
+      code: null,
+      index: null,
+      name: random.word()
+    }
   };
 }

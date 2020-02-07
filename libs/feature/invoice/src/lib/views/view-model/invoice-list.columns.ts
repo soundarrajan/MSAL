@@ -125,7 +125,7 @@ export enum InvoiceListColumnsLabels {
   contractId = 'Contract ID',
   productType = 'Product Type',
   fuelPriceItemDescription = 'Fuel Price Item Description',
-  invoiceApprovalStatus = 'Invoice Approval Status'
+  invoiceApprovalStatus = 'Recon Status'
 }
 
 /**
@@ -173,7 +173,7 @@ export const InvoiceListColumnServerKeys: Record<InvoiceListColumns, string> = {
   [InvoiceListColumns.totalOrderProductAmount]: 'totalOrderProductAmount',
   [InvoiceListColumns.orderAmount]: 'orderAmount',
   [InvoiceListColumns.orderCurrency]: 'orderCurrency_Name',
-  [InvoiceListColumns.invoiceStatus]: 'invoiceStatus_DisplayName',
+  [InvoiceListColumns.invoiceStatus]: 'invoiceStatus',
   [InvoiceListColumns.dueDate]: 'dueDate',
   [InvoiceListColumns.workingDueDate]: 'workingDueDate',
   [InvoiceListColumns.approvedDate]: 'approvedDate',
