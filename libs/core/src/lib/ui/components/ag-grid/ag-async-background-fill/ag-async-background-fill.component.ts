@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {ICellRendererAngularComp} from "ag-grid-angular";
 import {DatabaseManipulation} from "@shiptech/core/legacy-cache/database-manipulation.service";
-import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
+import {IScheduleDashboardLabelConfigurationDto, IScheduleDashboardLabelConfigurationWithPromiseDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -13,7 +13,7 @@ import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/sc
 
 export class AgAsyncBackgroundFillComponent implements OnInit, ICellRendererAngularComp {
 
-  private initParamsValues: IScheduleDashboardLabelConfigurationDto;
+  initParamsValues: IScheduleDashboardLabelConfigurationWithPromiseDto;
 
   constructor(private databaseManipulation: DatabaseManipulation) {}
 

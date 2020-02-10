@@ -64,6 +64,13 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "7mb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "apps/shiptech/src/environments/environment.ts",
@@ -218,6 +225,7 @@
       }
     },
     "feature-invoice": {
+
       "projectType": "library",
       "root": "libs/feature/invoice",
       "sourceRoot": "libs/feature/invoice/src",
@@ -254,6 +262,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
+
     "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
