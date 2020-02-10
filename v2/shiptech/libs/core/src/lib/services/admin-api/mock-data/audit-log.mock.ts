@@ -1,6 +1,6 @@
-import {date, random, name} from 'faker';
-import {IAuditLogItemDto} from "@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto";
-import {range} from "lodash";
+import { date, name, random } from 'faker';
+import { IAuditLogItemDto } from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
+import { range } from 'lodash';
 
 export function getMockAuditLog(n: number): IAuditLogItemDto[] {
   return range(1, n).map(id => getMockAuditLogItem(id));

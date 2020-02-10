@@ -32,6 +32,8 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly emailStatus: Dexie.Table<IDisplayLookupDto, number>;
   readonly scheduleDashboardLabelConfiguration: Dexie.Table<IScheduleDashboardLabelConfigurationDto, number>;
   readonly transactionType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly invoiceCustomStatus: Dexie.Table<IStatusLookupDto, number>;
+  readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
    * Note: In case a transformer is not defined {@link fromLegacyLookup} is used as default mapper
@@ -39,7 +41,9 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly transforms: Record<string, (dto: any) => any> = {
     [nameof<LegacyLookupsDatabase>('reconMatch')]: (dto: ColorDisplayLookup) => (<IReconStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code }),
     [nameof<LegacyLookupsDatabase>('status')]: (dto: ColorDisplayLookup) => (<IStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code }),
-    [nameof<LegacyLookupsDatabase>('scheduleDashboardLabelConfiguration')]: (dto: ColorDisplayMappingLookup) => (<IScheduleDashboardLabelConfigurationDto>{ ... fromLegacyLookup(dto), code: dto.code, transactionTypeId: dto.transactionTypeId, index: dto.index })
+    [nameof<LegacyLookupsDatabase>('scheduleDashboardLabelConfiguration')]: (dto: ColorDisplayMappingLookup) => (<IScheduleDashboardLabelConfigurationDto>{ ... fromLegacyLookup(dto), code: dto.code, transactionTypeId: dto.transactionTypeId, index: dto.index }),
+    [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: (dto: ColorDisplayLookup) => (<IReconStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code }),
+    [nameof<LegacyLookupsDatabase>('orderedStatus')]: (dto: ColorDisplayLookup) => (<IReconStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code })
   };
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
@@ -71,6 +75,8 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('emailStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('scheduleDashboardLabelConfiguration')]: lookupDashboardSchema,
       [nameof<LegacyLookupsDatabase>('transactionType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema,
     };
   }
 

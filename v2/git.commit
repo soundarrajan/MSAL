@@ -1,9 +1,7 @@
-﻿commit 0028f72f91397f6788908b1cdd047a63d965beb1
-Author: Radu.coman <Radu.coman@24software.ro>
-Date:   Fri Feb 7 13:13:31 2020 +0000
+﻿commit a3c751bd446558b167eedb8e72b08c157fa50b78
+Author: Radu Coman <radu.coman@24software.ro>
+Date:   Mon Feb 10 12:25:52 2020 +0200
 
-    Merged PR 2884: create module for wunderbar component
-    
-    create module for wunderbar component
+    added webpack analyzer
 
 branch: master
