@@ -19,6 +19,8 @@ import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 import { ModuleError } from '../../../core/error-handling/module-error';
+import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
+import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
 
 function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
   return prop;
@@ -120,11 +122,12 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  orderProductStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+  orderProductStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
     headerName: InvoiceListColumnsLabels.orderProductStatus,
     colId: InvoiceListColumns.orderProductStatus,
     field: model('orderProductStatus'),
     valueFormatter: params => params.value?.name,
+    cellRendererFramework: AgAsyncBackgroundFillComponent,
     width: 110
   };
 
@@ -503,11 +506,21 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  orderStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+  orderStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
     headerName: InvoiceListColumnsLabels.orderStatus,
     colId: InvoiceListColumns.orderStatus,
     field: model('orderStatus'),
     valueFormatter: params => params.value?.name,
+    cellRendererFramework: AgAsyncBackgroundFillComponent,
+    width: 110
+  };
+
+  invoiceStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+    headerName: InvoiceListColumnsLabels.invoiceStatus,
+    colId: InvoiceListColumns.invoiceStatus,
+    field: model('invoiceStatus'),
+    valueFormatter: params => params.value?.name,
+    cellRendererFramework: AgAsyncBackgroundFillComponent,
     width: 110
   };
 
@@ -535,11 +548,12 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceApprovalStatusCol: ITypedColDef<ICompleteListItemDto, ILookupDto> = {
+  invoiceApprovalStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
     headerName: InvoiceListColumnsLabels.invoiceApprovalStatus,
     colId: InvoiceListColumns.invoiceApprovalStatus,
     field: model('invoiceApprovalStatus'),
     valueFormatter: params => params.value?.name,
+    cellRendererFramework: AgAsyncBackgroundFillComponent,
     width: 110
   };
 
@@ -613,10 +627,11 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
       this.receivedDateCol,
       this.sellerDueDateCol,
       this.orderStatusCol,
+      this.invoiceApprovalStatusCol,
       this.contractIdCol,
       this.productTypeCol,
       this.fuelPriceItemDescriptionCol,
-      this.invoiceApprovalStatusCol
+      this.invoiceStatusCol
     ];
   }
 

@@ -1,5 +1,5 @@
-import * as faker from 'faker';
-import * as _ from 'lodash';
+import { random } from 'faker';
+import { range, sample } from 'lodash';
 import { mockUomsLookup } from '@shiptech/core/services/masters-api/mock-data/uoms.mock';
 import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-data/products.mock';
 import { IQcOrderProductsListItemDto } from '../dto/qc-order-products-list-item.dto';
@@ -7,18 +7,18 @@ import { MockOrdersLookup } from '@shiptech/core/services/masters-api/mock-data/
 import { MockCounterparties } from '@shiptech/core/services/masters-api/mock-data/counterparties.mock';
 
 export function getQcOrderProductsList(n: number): IQcOrderProductsListItemDto[] {
-  return _.range(n).map(id => {
-    const product = _.sample(MockProductsLookup);
-    const order = _.sample(MockOrdersLookup);
-    const uom = _.sample(mockUomsLookup);
-    const counterparty = _.sample(MockCounterparties);
+  return range(n).map(id => {
+    const product = sample(MockProductsLookup);
+    const order = sample(MockOrdersLookup);
+    const uom = sample(mockUomsLookup);
+    const counterparty = sample(MockCounterparties);
     return {
       id: id + 1,
       order: order,
       product: product,
       counterparty: counterparty,
       uom: uom,
-      confirmedQty: faker.random.number(),
+      confirmedQty: random.number()
     };
   });
 }
