@@ -1,17 +1,19 @@
-import { date, internet, lorem, random } from 'faker';
-import { range } from 'lodash';
-import { IQcEventLogListItemDto } from '../dto/qc-event-log-list-item.dto';
+import {range} from 'lodash';
+import {IQcEventLogListItemDto} from '../dto/qc-event-log-list-item.dto';
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 export function getMockQcEventsLog(n: number): IQcEventLogListItemDto[] {
   return range(1, n).map(id => getMockQcEventsLogItem(id));
 }
 
 export function getMockQcEventsLogItem(id: number): IQcEventLogListItemDto {
-  const name = internet.email();
+  const name = chance.email();
   return {
-    id: random.number(),
-    eventDetails: lorem.lines(random.number({ min: 1, max: 3 })),
-    createdOn: date.recent().toISOString(),
-    createdBy: { id: 1, name: name, displayName: name }
+    id: chance.d100(),
+    eventDetails: chance.word({length: chance.d4()}),
+    createdOn: chance.date().toISOString(),
+    createdBy: {id: 1, name: name, displayName: name}
   };
 }

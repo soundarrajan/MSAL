@@ -5,8 +5,10 @@ import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.int
 import { MockVesselsLookup } from "@shiptech/core/services/masters-api/mock-data/vessels.mock";
 import { roundDecimals } from "@shiptech/core/utils/math";
 import { MockStatusLookupEnumMap, StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
-import { random, lorem } from "faker";
 import { last, sample, values, range } from 'lodash';
+import { Chance } from 'chance';
+
+const chance = new Chance();
 
 const mockDecimals = 3;
 
@@ -26,7 +28,7 @@ export const mockCategoriesLookup: IDisplayLookupDto[] = [
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   const isNew = !id;
 
-  const productTypeCategories = getMockQcReportProductTypes(random.number({ min: 5, max: 5 }), true);
+  const productTypeCategories = getMockQcReportProductTypes(chance.integer({ min: 5, max: 5 }), true);
   const sludgeProductType = last(productTypeCategories)?.productType;
 
   if (isNew) {
@@ -44,7 +46,7 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       vesselResponses: {
         categories: mockCategoriesLookup
       },
-      emailTransactionTypeId: random.number()
+      emailTransactionTypeId: chance.d10()
     };
   }
 
@@ -52,12 +54,12 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     id: id,
     vessel: sample(MockVesselsLookup),
     portCall: {
-      portCallId: random.alphaNumeric(5).toUpperCase(),
-      voyageReference: random.alphaNumeric(9).toUpperCase(),
-      vesselVoyageDetailId: random.number()
+      portCallId: chance.string({alpha: true, numeric: true, length: 5}).toUpperCase(),
+      voyageReference: chance.string({alpha: true, numeric: true, length: 5}).toUpperCase(),
+      vesselVoyageDetailId: chance.d100()
     },
-    nbOfClaims: random.number(),
-    nbOfDeliveries: random.number(),
+    nbOfClaims: chance.d100(),
+    nbOfDeliveries: chance.d100(),
     status: sample(values(MockStatusLookupEnumMap)),
     uoms: {
       deliveredQtyUom: sample(mockUomsLookup),
@@ -71,18 +73,18 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
       categories: mockCategoriesLookup,
       bunker: {
         activeCategory: sample(mockCategoriesLookup),
-        description: lorem.paragraph(random.number({ min: 1, max: 10 }))
+        description: chance.paragraph({ min: 1, max: 10 })
       },
       sludge: {
         activeCategory: sample(mockCategoriesLookup),
-        description: lorem.paragraph(random.number({ min: 1, max: 10 })),
-        sludge: random.number({ min: 1, max: 10 }) + Math.random(),
-        sludgeVerified: random.boolean()
+        description: chance.paragraph({ min: 1, max: 100000 }),
+        sludge: chance.d100() + Math.random(),
+        sludgeVerified: chance.bool()
       }
     },
-    comments: random.words(random.number({ min: 10, max: 40 })),
-    hasSentEmail: random.boolean(),
-    emailTransactionTypeId: random.number()
+    comments: chance.paragraph({ min: 10, max: 40 }),
+    hasSentEmail: chance.bool(),
+    emailTransactionTypeId: chance.d100()
   };
 }
 
@@ -93,18 +95,18 @@ export function getMockQcReportProductTypes(n: number, isNew: boolean = false): 
       id: product.id, // Note: Only used for BE
       productType: product,
       deliveredQty: {
-        bdnQuantity: !isNew ? roundDecimals(random.number(500) + Math.random(), mockDecimals) : undefined,
-        measuredQty: !isNew ? roundDecimals(random.number(400) + Math.random(), mockDecimals) : undefined,
+        bdnQuantity: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
+        measuredQty: !isNew ? roundDecimals(chance.integer({max: 400}) + Math.random(), mockDecimals) : undefined,
         difference: 0
       },
       robAfterDelivery: {
-        logBookROB: !isNew ? roundDecimals(random.number(500) + Math.random(), mockDecimals) : undefined,
-        measuredROB: !isNew ? roundDecimals(random.number(500) + Math.random(), mockDecimals) : undefined,
+        logBookROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
+        measuredROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
         difference: 0
       },
       robBeforeDelivery: {
-        logBookROB: !isNew ? roundDecimals(random.number(500) + Math.random(), mockDecimals) : undefined,
-        measuredROB: !isNew ? roundDecimals(random.number(500) + Math.random(), mockDecimals) : undefined,
+        logBookROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
+        measuredROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
         difference: 0
       }
     };

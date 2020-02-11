@@ -1,10 +1,12 @@
-import { random } from 'faker';
-import { range, sample } from 'lodash';
-import { mockUomsLookup } from '@shiptech/core/services/masters-api/mock-data/uoms.mock';
-import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-data/products.mock';
-import { IQcOrderProductsListItemDto } from '../dto/qc-order-products-list-item.dto';
-import { MockOrdersLookup } from '@shiptech/core/services/masters-api/mock-data/orders.mock';
-import { MockCounterparties } from '@shiptech/core/services/masters-api/mock-data/counterparties.mock';
+import {range, sample} from 'lodash';
+import {mockUomsLookup} from '@shiptech/core/services/masters-api/mock-data/uoms.mock';
+import {MockProductsLookup} from '@shiptech/core/services/masters-api/mock-data/products.mock';
+import {IQcOrderProductsListItemDto} from '../dto/qc-order-products-list-item.dto';
+import {MockOrdersLookup} from '@shiptech/core/services/masters-api/mock-data/orders.mock';
+import {MockCounterparties} from '@shiptech/core/services/masters-api/mock-data/counterparties.mock';
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 export function getQcOrderProductsList(n: number): IQcOrderProductsListItemDto[] {
   return range(n).map(id => {
@@ -18,7 +20,7 @@ export function getQcOrderProductsList(n: number): IQcOrderProductsListItemDto[]
       product: product,
       counterparty: counterparty,
       uom: uom,
-      confirmedQty: random.number()
+      confirmedQty: chance.integer()
     };
   });
 }
