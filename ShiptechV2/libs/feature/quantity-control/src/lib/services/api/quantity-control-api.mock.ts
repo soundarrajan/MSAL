@@ -57,7 +57,9 @@ import {
   IQcLoadPortCallBdnRequest,
   IQcLoadPortCallBdnResponse
 } from './request-response/load-bdn-port-call.request-response';
-import { random } from 'faker';
+import { Chance } from 'chance';
+
+const chance = new Chance();
 
 @Injectable({
   providedIn: 'root'
@@ -168,8 +170,8 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
         productType: p.productType,
         bdnQuantity: p.deliveredQty.bdnQuantity
       })),
-      nbOfClaims: random.number({ min: 0, max: 50 }),
-      nbOfDeliveries: random.number({ min: 0, max: 50 })
+      nbOfClaims: chance.integer({ min: 0, max: 50 }),
+      nbOfDeliveries: chance.integer({ min: 0, max: 50 })
     });
   }
 

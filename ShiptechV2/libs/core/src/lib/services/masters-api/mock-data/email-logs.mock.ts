@@ -1,7 +1,9 @@
-import { IEmailLogsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
-import { range } from "lodash";
-import { date, internet, random } from "faker";
-import { MockStatusLookupEnumMap, StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import {IEmailLogsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
+import {range} from "lodash";
+import {MockStatusLookupEnumMap, StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 export function getMockEmailLogs(n: number): IEmailLogsItemDto[] {
   return range(1, n).map(id => getMockEmailLogsItem(id));
@@ -10,19 +12,19 @@ export function getMockEmailLogs(n: number): IEmailLogsItemDto[] {
 export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
   return {
     id,
-    from: internet.email(),
+    from: chance.name(),
     status: MockStatusLookupEnumMap[StatusLookupEnum.Pending],
     transactionType: {
-      id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      id: chance.d100(),
+      name: chance.name(),
+      displayName: chance.name()
     },
-    emailTemplateId: random.number(100),
-    to: internet.email(),
-    cc: internet.email(),
-    bcc: internet.email(),
-    body: random.word(),
-    subject: random.word(),
-    sentAt: date.past().toISOString()
+    emailTemplateId: chance.d100(),
+    to: chance.email(),
+    cc: chance.email(),
+    bcc: chance.email(),
+    body: chance.word(),
+    subject: chance.word(),
+    sentAt: chance.date().toISOString()
   };
 }
