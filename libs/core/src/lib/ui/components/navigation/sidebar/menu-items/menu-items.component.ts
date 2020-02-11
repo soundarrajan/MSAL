@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { SidebarComponent } from '../sidebar.component';
-import { MenuItem } from 'primeng/primeng';
+import { MenuItem } from 'primeng/api';
 import { AppConfig } from '@shiptech/core/config/app-config';
 
 @Component({

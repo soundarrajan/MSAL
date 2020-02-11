@@ -4,7 +4,7 @@ import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.inter
 import {nameof} from '@shiptech/core/utils/type-definitions';
 import {AgGridKnownFilterTypes} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {ServerGridConditionFilterEnum} from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
-import {AutoComplete} from 'primeng/primeng';
+import {AutoComplete} from 'primeng/autocomplete';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 
 export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {

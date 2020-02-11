@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from "@angular/core";
-import { DynamicDialogConfig, DynamicDialogRef } from "primeng/primeng";
 import { IDocumentsUpdateNotesRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
 import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
@@ -7,6 +6,7 @@ import { IDocumentsApiService } from "@shiptech/core/services/masters-api/docume
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { ToastrService } from "ngx-toastr";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/api';
 
 @Component({
   selector: "shiptech-document-view-edit-notes",

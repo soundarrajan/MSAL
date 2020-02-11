@@ -1,12 +1,12 @@
 import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import { ChangeDetectorRef, Inject, Injectable, Input } from "@angular/core";
-import { GridOptions, IServerSideGetRowsParams } from "ag-grid-community";
+import { IServerSideGetRowsParams } from "ag-grid-community/dist/lib/interfaces/iServerSideDatasource";
+import { GridOptions } from "ag-grid-community/dist/lib/entities/gridOptions";
 import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
 import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { AppError } from "@shiptech/core/error-handling/app-error";
 import { TenantFormattingService } from "@shiptech/core/services/formatting/tenant-formatting.service";
 import { IAuditLogItemDto } from "@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto";
 import { AuditLogColumnServerKeys, AuditLogColumnsLabels, AuditLogListColumns } from "./audit-log-list.columns";

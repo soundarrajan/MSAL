@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { Spinner } from 'primeng/primeng';
+import { Spinner } from 'primeng/spinner';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
