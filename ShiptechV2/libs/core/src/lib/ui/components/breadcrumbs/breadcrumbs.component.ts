@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { filter, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { MenuItem } from "primeng/primeng";
 import { AppConfig } from "@shiptech/core/config/app-config";
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: "shiptech-breadcrumbs",

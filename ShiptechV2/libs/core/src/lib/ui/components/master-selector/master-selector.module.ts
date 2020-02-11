@@ -10,14 +10,11 @@ import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { VesselPortCallsMasterSelectorComponent } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/vessel-port-calls-master-selector.component';
-import { PrimeNGModule } from '../../primeng.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import {DocumentsMasterSelectorComponent} from "@shiptech/core/ui/components/master-selector/known-masters/documents/documents-master-selector.component";
 import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
-
-export function getDefaultStorage(defaultStorage: any): any {
-  return defaultStorage;
-}
+import { ButtonModule } from 'primeng/button';
+import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
   imports: [
@@ -25,13 +22,14 @@ export function getDefaultStorage(defaultStorage: any): any {
     FormsModule,
     ReactiveFormsModule,
     UIModule,
-    PrimeNGModule,
     FilterPresetsModule,
     SearchBoxModule,
     AgGridExtensionsModule,
     AgGridModule,
     AgFilterDisplayModule,
-    AgFooterModule
+    AgFooterModule,
+    ButtonModule,
+    PortalModule
   ],
   declarations: [
     MasterSelectorHostComponent,

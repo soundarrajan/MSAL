@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit } from '@angular/core';
-import { Spinner } from 'primeng/primeng';
+import { Spinner } from 'primeng/spinner';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 export type TenantNumberFormatType = 'price' | 'quantity';
