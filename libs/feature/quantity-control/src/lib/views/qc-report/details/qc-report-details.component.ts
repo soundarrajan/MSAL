@@ -33,7 +33,7 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
   selector: 'shiptech-port-call',
   templateUrl: './qc-report-details.component.html',
   styleUrls: ['./qc-report-details.component.scss'],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsComponent implements OnInit, OnDestroy {

@@ -20,7 +20,7 @@ import { ConfirmationService, DialogService } from 'primeng/api';
   selector: "shiptech-documents",
   templateUrl: "./documents.component.html",
   styleUrls: ["./documents.component.scss"],
-  providers: [DocumentsGridViewModel],
+  providers: [DocumentsGridViewModel, DialogService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {

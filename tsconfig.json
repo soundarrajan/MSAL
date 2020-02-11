@@ -33,7 +33,11 @@
     "esModuleInterop": true,
     "types": ["reflect-metadata"]
   },
-  "exclude": ["node_modules", "tmp"],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "**/*.mock.ts"
+  ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "disableTypeScriptVersionCheck": true,
