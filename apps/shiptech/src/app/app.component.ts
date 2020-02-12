@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding } from "@angular/core";
-import { environment } from "@shiptech/environment";
-import { NavigationCancel, NavigationEnd, NavigationError, Router, RouterEvent } from "@angular/router";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding} from "@angular/core";
+import {environment} from "@shiptech/environment";
+import {NavigationCancel, NavigationEnd, NavigationError, Router, RouterEvent} from "@angular/router";
 
 @Component({
   selector: "shiptech-root",

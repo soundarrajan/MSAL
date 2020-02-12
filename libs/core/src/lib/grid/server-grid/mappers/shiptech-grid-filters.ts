@@ -1,4 +1,4 @@
-import { GridApi, IServerSideGetRowsParams } from "ag-grid-community";
+import { GridApi, IServerSideGetRowsParams } from "@ag-grid-community/core";
 import * as _ from "lodash";
 import { nameof, Omit } from "@shiptech/core/utils/type-definitions";
 import { ServerGridFilter } from "@shiptech/core/grid/server-grid/server-grid.filter";

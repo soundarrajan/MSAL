@@ -8,13 +8,13 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
-import { AgGridModule } from 'ag-grid-angular';
 import { VesselPortCallsMasterSelectorComponent } from '@shiptech/core/ui/components/master-selector/known-masters/vessel-port-calls/vessel-port-calls-master-selector.component';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import {DocumentsMasterSelectorComponent} from "@shiptech/core/ui/components/master-selector/known-masters/documents/documents-master-selector.component";
 import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
 import { ButtonModule } from 'primeng/button';
 import { PortalModule } from '@angular/cdk/portal';
+import {AgGridModule} from "@ag-grid-community/angular";
 
 @NgModule({
   imports: [

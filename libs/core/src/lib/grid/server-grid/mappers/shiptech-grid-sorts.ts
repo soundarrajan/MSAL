@@ -1,4 +1,4 @@
-import { GridApi, IServerSideGetRowsParams } from 'ag-grid-community';
+import { GridApi, IServerSideGetRowsParams } from '@ag-grid-community/core';
 import { ServerGridSortParametersEnum } from '@shiptech/core/grid/server-grid/server-grid-sort-parameters.enum';
 import { IServerGridSortsDto } from '@shiptech/core/grid/server-grid/server-grid-sorts';
 

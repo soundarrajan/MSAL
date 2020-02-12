@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions } from '@ag-grid-community/core';
 import { QcSoundingReportDetailsColumns, QcSoundingReportDetailsColumnsLabels, QcSoundingReportListColumns, QcSoundingReportListColumnsLabels } from './grid-column-constants';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';

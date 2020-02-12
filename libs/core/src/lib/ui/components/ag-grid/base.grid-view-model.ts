@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { ColDef, ColumnApi, GridApi, GridOptions, IServerSideGetRowsParams } from 'ag-grid-community';
+import { ColDef, ColumnApi, GridApi, GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
 import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { observe } from 'rxjs-observe';
 import { catchError, filter, finalize, first, takeUntil, tap } from 'rxjs/operators';
@@ -339,7 +339,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
    */
   markServerSideDataSourceReady(): void {
     if(!this.enablePreServerSideDataSourcePipe){
-      console.warn(`${nameof<BaseGridViewModel>('markServerSideDataSourceReady')} was called while ${nameof<BaseGridViewModel>('enablePreServerSideDataSourcePipe')} is false. Did you forget to enable it?`)
+      console.warn(`${nameof<BaseGridViewModel>('markServerSideDataSourceReady')} was called while ${nameof<BaseGridViewModel>('enablePreServerSideDataSourcePipe')} is false. Did you forget to enable it?`);
       return;
     }
 

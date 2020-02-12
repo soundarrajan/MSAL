@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
-import { IHeaderAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams } from 'ag-grid-community';
+import { ICellRendererParams } from '@ag-grid-community/core';
 import { HeaderRendererConfig } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {IHeaderAngularComp} from "@ag-grid-community/angular";
 
 export interface IAgColumnHeaderParams extends Partial<ICellRendererParams> {
 }

@@ -1,14 +1,14 @@
 import { Attribute, Directive, EventEmitter, OnDestroy, OnInit, Optional, Output } from '@angular/core';
 import { merge, of, Subject, throwError } from 'rxjs';
 import { concatMap, debounceTime, delay, filter, finalize, map, mergeMap, retry, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { FilterChangedEvent } from 'ag-grid-community';
+import { FilterChangedEvent } from '@ag-grid-community/core';
 import * as _ from 'lodash';
 import { first } from 'rxjs/internal/operators/first';
 import { FilterPreferencesComponent } from './filter-preference.component';
 import { AgGridFilterPresetsService } from './ag-filter-presets-service/ag-filter-presets.service';
-import { AgGridAngular } from 'ag-grid-angular';
 import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
+import {AgGridAngular} from "@ag-grid-community/angular";
 
 @Directive({
   // tslint:disable-next-line:directive-selector

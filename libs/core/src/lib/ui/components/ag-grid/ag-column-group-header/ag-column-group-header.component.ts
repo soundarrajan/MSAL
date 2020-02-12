@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
-import { IHeaderGroupAngularComp } from 'ag-grid-angular';
-import { IHeaderGroupParams } from 'ag-grid-community';
+import { IHeaderGroupParams } from '@ag-grid-community/core';
+import {IHeaderGroupAngularComp} from "@ag-grid-community/angular";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -26,7 +26,7 @@ export class AgColumnGroupHeaderComponent implements IHeaderGroupAngularComp {
       groupDef: params.columnGroup.getColGroupDef()
     };
     this.template = this.params.ngTemplate;
-    
+
     this.changeDetector.markForCheck();
   }
 }

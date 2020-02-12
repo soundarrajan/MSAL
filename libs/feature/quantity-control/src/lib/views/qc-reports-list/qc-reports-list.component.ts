@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IQcReportsListItemDto } from '../../services/api/dto/qc-reports-list-item.dto';
 import { TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
-import { RowNode } from 'ag-grid-community';
+import { RowNode } from '@ag-grid-community/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';

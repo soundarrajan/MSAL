@@ -1,7 +1,7 @@
 import {IVesselMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/vessel";
 import {ChangeDetectorRef, Inject, Injectable, Input} from "@angular/core";
 import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
-import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
+import {GridOptions, IServerSideGetRowsParams} from "@ag-grid-community/core";
 import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
 import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";

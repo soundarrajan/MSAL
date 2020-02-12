@@ -1,11 +1,11 @@
 import { Directive, OnDestroy } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular';
-import { GridApi, RowNode } from 'ag-grid-community';
+import { GridApi, RowNode } from '@ag-grid-community/core';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash';
 import { AgGridEventsEnum, fromGridEvent } from '@shiptech/core/ui/components/ag-grid/ag-grid.events';
 import { nameof } from '@shiptech/core/utils/type-definitions';
+import {AgGridAngular} from "@ag-grid-community/angular";
 
 @Directive({
   // tslint:disable-next-line:directive-selector

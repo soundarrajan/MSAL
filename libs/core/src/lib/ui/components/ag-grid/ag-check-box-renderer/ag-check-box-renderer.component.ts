@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { GridApi, IAfterGuiAttachedParams, RowSelectedEvent } from 'ag-grid-community';
+import { GridApi, IAfterGuiAttachedParams, RowSelectedEvent } from '@ag-grid-community/core';
 import { CellRendererConfig, ITypedCellRendererParams } from '../type.definition';
 import { AgGridEventsEnum } from '../ag-grid.events';
+import {ICellRendererAngularComp} from "@ag-grid-community/angular";
 
 export interface IAgCheckBoxRendererParams<TData = any, TField = any> extends Partial<ITypedCellRendererParams<TData, TField>> {
   selectionChange?: (isSelected: boolean, params?: IAgCheckBoxRendererParams<TData, TField>) => void;

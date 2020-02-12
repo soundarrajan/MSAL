@@ -1,7 +1,7 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { AgGridAngular } from 'ag-grid-angular';
-import { MenuItemDef } from 'ag-grid-community';
+import {Injectable, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
+import {MenuItemDef} from '@ag-grid-community/core';
+import {AgGridAngular} from "@ag-grid-community/angular";
 
 
 @Injectable({

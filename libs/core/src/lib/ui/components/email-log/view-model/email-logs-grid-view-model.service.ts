@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Inject, Injectable, Input} from "@angular/core";
 import {BaseGridViewModel} from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
-import {GridOptions, IServerSideGetRowsParams} from "ag-grid-community";
+import {GridOptions, IServerSideGetRowsParams} from "@ag-grid-community/core";
 import {transformLocalToServeGridInfo} from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";
 import {AppErrorHandler} from "@shiptech/core/error-handling/app-error-handler";
 import {EmailLogsListColumns, EmailLogsListColumnServerKeys, EmailLogsListColumnsLabels} from "./email-logs-list.columns";
@@ -8,7 +8,6 @@ import {AgColumnPreferencesService} from "@shiptech/core/ui/components/ag-grid/a
 import {TenantFormattingService} from "@shiptech/core/services/formatting/tenant-formatting.service";
 import {ITypedColDef, RowModelType, RowSelection} from "@shiptech/core/ui/components/ag-grid/type.definition";
 import {IEmailLogsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
-import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
 import {AgCellTemplateComponent} from "@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component";
 import {IEmailLogsApiService} from "@shiptech/core/services/masters-api/email-logs-api.service.interface";
 import {EMAIL_LOGS_API_SERVICE} from "@shiptech/core/services/masters-api/email-logs-api.service";
@@ -16,9 +15,9 @@ import {ServerQueryFilter} from "@shiptech/core/grid/server-grid/server-query.fi
 import {LoggerFactory} from "@shiptech/core/logging/logger-factory.service";
 import {takeUntil} from "rxjs/operators";
 import {EmailStatusLookup} from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service";
-import { ModuleError } from "@shiptech/core/ui/components/email-log/error-handling/module-error";
-import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
-import { EmailStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.enum';
+import {ModuleError} from "@shiptech/core/ui/components/email-log/error-handling/module-error";
+import {IStatusLookupDto} from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import {EmailStatusLookupEnum} from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.enum';
 
 function model(prop: keyof IEmailLogsItemDto): keyof IEmailLogsItemDto {
   return prop;

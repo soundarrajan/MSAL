@@ -1,9 +1,9 @@
 import { Directive, OnDestroy } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular';
 import { filter, map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { OptionsFactory } from 'ag-grid-community/dist/lib/filter/provided/optionsFactory';
+import { OptionsFactory } from '@ag-grid-community/core/dist/cjs/filter/provided/optionsFactory';
 import { AgGridConditionTypeEnum } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {AgGridAngular} from "@ag-grid-community/angular";
 
 @Directive({
   // tslint:disable-next-line:directive-selector

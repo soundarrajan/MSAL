@@ -1,11 +1,11 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions } from '@ag-grid-community/core';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { debounceTime, filter, groupBy, mergeMap, switchMap, tap, throttleTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { LocalPreferenceService } from '../../../../services/preference-storage/local-preference.service';
 import { IPreferenceStorage, PREFERENCE_STORAGE } from '../../../../services/preference-storage/preference-storage.interface';
-import { ColumnState } from 'ag-grid-community/dist/lib/columnController/columnController';
+import { ColumnState } from '@ag-grid-community/core/dist/cjs/columnController/columnController';
 
 interface IGridRegistration {
   name: string;
