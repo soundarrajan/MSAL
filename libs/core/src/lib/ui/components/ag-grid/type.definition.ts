@@ -2,6 +2,9 @@ import {
   CellClassParams,
   ColDef,
   ColGroupDef,
+  Column,
+  ColumnApi,
+  GridApi,
   ICellEditorParams,
   ICellRendererParams,
   IFilterParams,
@@ -11,11 +14,6 @@ import {
   ValueFormatterParams,
   ValueGetterParams
 } from '@ag-grid-community/core';
-import {ComponentSelectorResult} from '@ag-grid-community/core/dist/cjs/components/framework/userComponentFactory';
-import {BaseColDefParams, BaseWithValueColDefParams} from '@ag-grid-community/core/dist/cjs/entities/colDef';
-import {GridApi} from "@ag-grid-community/core/dist/cjs/gridApi";
-import {Column} from "@ag-grid-community/core/dist/cjs/entities/column";
-import {NullComparator} from "@ag-grid-community/core/dist/cjs/filter/provided/scalerFilter";
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -30,11 +28,11 @@ export interface ITypedCellRendererColDef<TCellRendererParams = any> extends Col
   cellRendererParams?: TCellRendererParams;
 }
 
-export interface ITypedValueFormatterParams<T> extends BaseWithValueColDefParams {
+export interface ITypedValueFormatterParams<T> extends IBaseWithValueColDefParams {
 
 }
 
-export interface ITypedValueGetterParams<T> extends BaseColDefParams {
+export interface ITypedValueGetterParams<T> extends IBaseColDefParams {
   getValue: (field: string) => any;
 }
 
@@ -43,7 +41,7 @@ export interface ITypedCellRendererParams<TData = any, TField = any> extends Omi
   value: TField;
 }
 
-export interface ITypedBaseColDefParams<TData = any, TField = any> extends Omit<BaseColDefParams, 'data' | 'value'> {
+export interface ITypedBaseColDefParams<TData = any, TField = any> extends Omit<IBaseColDefParams, 'data' | 'value'> {
   data: TData;
 }
 
@@ -82,7 +80,7 @@ export interface ITypedColDef<TData = any, TField = any> extends Omit<ColDef, 'f
   cellClassRules?: IAgGridCellClassRules;
   cellStyle?: (params: ITypedValueParams<TData, TField>) => Partial<CSSStyleDeclaration>;
   field?: keyof TData,
-  cellRendererSelector?: (params: ITypedCellRendererParams<TData, TField>) => ComponentSelectorResult;
+  cellRendererSelector?: (params: ITypedCellRendererParams<TData, TField>) => ITypedComponentSelectorResult;
   onCellValueChanged?: (params: ITypedValueParams<TData, TField>) => void;
   filterParams?: TypedFilterParams<TData, TField>;
 }
@@ -232,13 +230,19 @@ export interface ITypedSimpleFilterParams extends ITypedProvidedFilterParams {
   suppressAndOrCondition?: boolean;
 }
 
+export interface ITypedNullComparator {
+  equals?: boolean;
+  lessThan?: boolean;
+  greaterThan?: boolean;
+}
+
 export interface ITypedScalarFilterParams extends ITypedSimpleFilterParams {
   inRangeInclusive?: boolean;
   includeBlanksInEquals?: boolean;
   includeBlanksInLessThan?: boolean;
   includeBlanksInGreaterThan?: boolean;
   /** @deprecated in v21*/
-  nullComparator?: NullComparator;
+  nullComparator?: ITypedNullComparator;
 }
 
 export declare class TypedOptionsFactory {
@@ -257,4 +261,33 @@ export declare class TypedOptionsFactory {
   getDefaultOption(): string;
 
   getCustomOption(name: string): ITypedFilterOptionDef;
+}
+
+export interface ITypedComponentSelectorResult {
+  component?: string;
+  params?: any;
+}
+
+export interface IBaseColDefParams<TData = any> {
+  data: TData;
+  node: RowNode;
+  colDef: ColDef;
+  column: Column;
+  api: GridApi | null | undefined;
+  columnApi: ColumnApi | null | undefined;
+  context: any;
+}
+
+export interface IBaseWithValueColDefParams extends IBaseColDefParams {
+  value: any;
+}
+
+export interface ITypedColumnState {
+  colId: string;
+  hide?: boolean;
+  aggFunc?: string | ((input: any[]) => any) | null;
+  width?: number;
+  pivotIndex?: number | null;
+  pinned?: boolean | string | "left" | "right";
+  rowGroupIndex?: number | null;
 }
