@@ -1,8 +1,12 @@
 import { Directive, OnDestroy } from '@angular/core';
 import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { AgGridAngular } from 'ag-grid-angular';
 import { AgGridGeneralMenuItemsStorage } from '@shiptech/core/ui/components/ag-grid/directives/general-menu-items-storage.service';
+import {AgGridAngular} from "@ag-grid-community/angular";
+
+
+
+
 
 @Directive({
   // tslint:disable-next-line:directive-selector

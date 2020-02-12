@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { IHeaderAngularComp } from 'ag-grid-angular';
-import { GridApi, IAfterGuiAttachedParams, IHeaderParams, RowNode } from 'ag-grid-community';
+import { GridApi, IAfterGuiAttachedParams, IHeaderParams, RowNode } from '@ag-grid-community/core';
 import { IAgCheckBoxRendererParams } from '../ag-check-box-renderer/ag-check-box-renderer.component';
 import { HeaderRendererConfig } from '../type.definition';
 import { AgGridEventsEnum } from '../ag-grid.events';
+import {IHeaderAngularComp} from "@ag-grid-community/angular";
 
 export interface IAgCheckBoxHeaderParams extends Partial<IHeaderParams> {
   selectionChange?: (isSelected: boolean, params?: IAgCheckBoxHeaderParams) => void;

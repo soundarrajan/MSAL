@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ColDef, Column, ICellRendererParams } from 'ag-grid-community';
+import { ColDef, Column, ICellRendererParams } from '@ag-grid-community/core';
+import {ICellRendererAngularComp} from "@ag-grid-community/angular";
 
 export interface ITemplateRendererParams extends Partial<ICellRendererParams> {
   ngTemplate?: TemplateRef<any>;

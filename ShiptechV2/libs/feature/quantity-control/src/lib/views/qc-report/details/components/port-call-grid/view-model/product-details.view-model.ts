@@ -4,7 +4,7 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ProductTypeListItemViewModel, ProductTypeListItemViewModelFactory } from './product-type-list-item.view-model';
 import { map } from 'rxjs/operators';
-import { Column } from 'ag-grid-community';
+import { Column } from '@ag-grid-community/core';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { Omit } from '@shiptech/core/utils/type-definitions';
 import { QcProductTypeListItemStateModel } from '../../../../../../store/report/details/qc-product-type-list-item-state.model';

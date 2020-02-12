@@ -1,8 +1,21 @@
-import { CellClassParams, ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams, IFilterParams, NewValueParams } from 'ag-grid-community';
-import { BaseColDefParams, BaseWithValueColDefParams, ValueGetterParams } from 'ag-grid-community/dist/lib/entities/colDef';
-import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
-import { ComponentSelectorResult } from 'ag-grid-community/dist/lib/components/framework/userComponentFactory';
-import { IRowModel } from 'ag-grid-community/dist/lib/interfaces/iRowModel';
+import {
+  CellClassParams,
+  ColDef,
+  ColGroupDef,
+  ICellEditorParams,
+  ICellRendererParams,
+  IFilterParams,
+  IRowModel,
+  NewValueParams,
+  RowNode,
+  ValueFormatterParams,
+  ValueGetterParams
+} from '@ag-grid-community/core';
+import {ComponentSelectorResult} from '@ag-grid-community/core/dist/cjs/components/framework/userComponentFactory';
+import {BaseColDefParams, BaseWithValueColDefParams} from '@ag-grid-community/core/dist/cjs/entities/colDef';
+import {GridApi} from "@ag-grid-community/core/dist/cjs/gridApi";
+import {Column} from "@ag-grid-community/core/dist/cjs/entities/column";
+import {NullComparator} from "@ag-grid-community/core/dist/cjs/filter/provided/scalerFilter";
 
 export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
 export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
@@ -18,11 +31,11 @@ export interface ITypedCellRendererColDef<TCellRendererParams = any> extends Col
 }
 
 export interface ITypedValueFormatterParams<T> extends BaseWithValueColDefParams {
-  value: T;
+
 }
 
-export interface ITypedValueGetterParams<T> extends ValueGetterParams {
-  value: T;
+export interface ITypedValueGetterParams<T> extends BaseColDefParams {
+  getValue: (field: string) => any;
 }
 
 export interface ITypedCellRendererParams<TData = any, TField = any> extends Omit<ICellRendererParams, 'data' | 'value'> {
@@ -64,8 +77,8 @@ export interface IAgGridCellClassRules<TData = any, TField = any> {
 }
 
 export interface ITypedColDef<TData = any, TField = any> extends Omit<ColDef, 'field' | 'filterParams'> {
-  valueFormatter?: (params: ITypedValueFormatterParams<TField>) => string;
-  valueGetter?: ((params: ITypedBaseColDefParams<TData>) => any) | string;
+  valueFormatter?: (params: ValueFormatterParams) => string;
+  valueGetter?: ((params: ValueGetterParams) => any) | string;
   cellClassRules?: IAgGridCellClassRules;
   cellStyle?: (params: ITypedValueParams<TData, TField>) => Partial<CSSStyleDeclaration>;
   field?: keyof TData,
@@ -178,3 +191,70 @@ export enum AgGridKnownFilterTypes {
 }
 
 export type AgGridFilterModel = IAgGridBaseFilter & Partial<IAgGridConditionFilter>;
+
+export interface ITypedFilterOptionDef {
+  displayKey: string;
+  displayName: string;
+  test: (filterValue: any, cellValue: any) => boolean;
+  hideFilterInput?: boolean;
+}
+
+export interface ITypedFilterParams {
+  api: GridApi;
+  column: Column;
+  colDef: ColDef;
+  rowModel: IRowModel;
+  filterChangedCallback: (additionalEventAttributes?: any) => void;
+  filterModifiedCallback: () => void;
+  valueGetter: (rowNode: RowNode) => any;
+  doesRowPassOtherFilter: (rowNode: RowNode) => boolean;
+  context: any;
+}
+
+export interface ITypedProvidedFilterParams extends IFilterParams {
+  clearButton?: boolean;
+  resetButton?: boolean;
+  applyButton?: boolean;
+  newRowsAction?: string;
+  debounceMs?: number;
+}
+
+export interface ITypedFilterOptionDef {
+  displayKey: string;
+  displayName: string;
+  test: (filterValue: any, cellValue: any) => boolean;
+  hideFilterInput?: boolean;
+}
+
+export interface ITypedSimpleFilterParams extends ITypedProvidedFilterParams {
+  filterOptions?: (ITypedFilterOptionDef | string)[];
+  defaultOption?: string;
+  suppressAndOrCondition?: boolean;
+}
+
+export interface ITypedScalarFilterParams extends ITypedSimpleFilterParams {
+  inRangeInclusive?: boolean;
+  includeBlanksInEquals?: boolean;
+  includeBlanksInLessThan?: boolean;
+  includeBlanksInGreaterThan?: boolean;
+  /** @deprecated in v21*/
+  nullComparator?: NullComparator;
+}
+
+export declare class TypedOptionsFactory {
+  protected customFilterOptions: {
+    [name: string]: ITypedFilterOptionDef;
+  };
+  protected filterOptions: (ITypedFilterOptionDef | string)[];
+  protected defaultOption: string;
+  private mapCustomOptions;
+  private selectDefaultItem;
+
+  init(params: ITypedScalarFilterParams, defaultOptions: string[]): void;
+
+  getFilterOptions(): (ITypedFilterOptionDef | string)[];
+
+  getDefaultOption(): string;
+
+  getCustomOption(name: string): ITypedFilterOptionDef;
+}
