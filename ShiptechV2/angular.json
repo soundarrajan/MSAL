@@ -225,7 +225,6 @@
       }
     },
     "feature-invoice": {
-
       "projectType": "library",
       "root": "libs/feature/invoice",
       "sourceRoot": "libs/feature/invoice/src",
@@ -262,7 +261,6 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-
     "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
