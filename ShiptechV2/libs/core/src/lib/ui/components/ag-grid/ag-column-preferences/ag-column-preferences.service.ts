@@ -1,11 +1,11 @@
-import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
-import { EMPTY, Observable, Subject } from 'rxjs';
-import { debounceTime, filter, groupBy, mergeMap, switchMap, tap, throttleTime } from 'rxjs/operators';
+import {Inject, Injectable, OnDestroy, Optional} from '@angular/core';
+import {GridOptions} from '@ag-grid-community/core';
+import {EMPTY, Observable, Subject} from 'rxjs';
+import {debounceTime, filter, groupBy, mergeMap, switchMap, tap, throttleTime} from 'rxjs/operators';
 import * as _ from 'lodash';
-import { LocalPreferenceService } from '../../../../services/preference-storage/local-preference.service';
-import { IPreferenceStorage, PREFERENCE_STORAGE } from '../../../../services/preference-storage/preference-storage.interface';
-import { ColumnState } from 'ag-grid-community/dist/lib/columnController/columnController';
+import {LocalPreferenceService} from '../../../../services/preference-storage/local-preference.service';
+import {IPreferenceStorage, PREFERENCE_STORAGE} from '../../../../services/preference-storage/preference-storage.interface';
+import {ITypedColumnState} from "@shiptech/core/ui/components/ag-grid/type.definition";
 
 interface IGridRegistration {
   name: string;
@@ -22,7 +22,7 @@ interface IAgGridSortModel {
 
 interface IGridPreferences {
   gridName: string;
-  columnState: ColumnState[];
+  columnState: ITypedColumnState[];
   sortState: IAgGridSortModel[];
 }
 

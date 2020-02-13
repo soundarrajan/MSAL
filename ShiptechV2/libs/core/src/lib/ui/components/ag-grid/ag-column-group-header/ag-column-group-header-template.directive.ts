@@ -1,5 +1,5 @@
 import { Directive, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
-import { ColGroupDef } from 'ag-grid-community';
+import { ColGroupDef } from '@ag-grid-community/core';
 
 @Directive({
   // tslint:disable-next-line:directive-selector

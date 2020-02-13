@@ -22,7 +22,6 @@ import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
-import { AgGridModule } from 'ag-grid-angular';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
@@ -35,6 +34,7 @@ import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-
 import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
 import { MessagesModule } from 'primeng/messages';
 import { ButtonModule } from 'primeng/button';
+import {AgGridModule} from "@ag-grid-community/angular";
 
 @NgModule({
   imports: [

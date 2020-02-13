@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { IDateAngularComp } from 'ag-grid-angular';
-import { IDateParams } from 'ag-grid-community';
+import { IDateParams } from '@ag-grid-community/core';
 import { Calendar } from 'primeng/calendar';
+import {IDateAngularComp} from "@ag-grid-community/angular";
 
 @Component({
   // tslint:disable-next-line:component-selector

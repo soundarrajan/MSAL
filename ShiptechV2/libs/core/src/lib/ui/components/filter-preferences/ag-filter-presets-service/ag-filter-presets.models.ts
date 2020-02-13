@@ -1,5 +1,5 @@
 import { FilterPreferenceViewModel } from '../../../../services/user-settings/filter-preference.interface';
-import { GridApi } from 'ag-grid-community';
+import { GridApi } from '@ag-grid-community/core';
 
 export type IFilterPresetsStore = Record<string, IPresetGroup>;
 

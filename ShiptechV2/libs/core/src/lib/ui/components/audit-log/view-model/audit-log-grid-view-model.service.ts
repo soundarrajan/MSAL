@@ -1,7 +1,6 @@
 import { BaseGridViewModel } from "@shiptech/core/ui/components/ag-grid/base.grid-view-model";
 import { ChangeDetectorRef, Inject, Injectable, Input } from "@angular/core";
-import { IServerSideGetRowsParams } from "ag-grid-community/dist/lib/interfaces/iServerSideDatasource";
-import { GridOptions } from "ag-grid-community/dist/lib/entities/gridOptions";
+import { GridOptions, IServerSideGetRowsParams } from "@ag-grid-community/core";
 import { ITypedColDef, RowModelType, RowSelection } from "@shiptech/core/ui/components/ag-grid/type.definition";
 import { AgColumnPreferencesService } from "@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service";
 import { transformLocalToServeGridInfo } from "@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters";

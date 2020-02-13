@@ -7,12 +7,12 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
-import { AgGridModule } from 'ag-grid-angular';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";
 import { SelectorComponent } from "@shiptech/core/ui/components/master-selector/selector/selector.component";
 import { ButtonModule } from 'primeng/button';
 import { PortalModule } from '@angular/cdk/portal';
+import {AgGridModule} from "@ag-grid-community/angular";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;

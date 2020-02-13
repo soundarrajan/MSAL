@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -10,6 +9,7 @@ import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
+import {AgGridModule} from "@ag-grid-community/angular";
 
 @NgModule({
   imports: [

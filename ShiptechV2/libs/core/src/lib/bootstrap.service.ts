@@ -4,7 +4,7 @@ import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { catchError, concatMap, map, tap } from 'rxjs/operators';
-import { LicenseManager } from 'ag-grid-enterprise';
+import { LicenseManager } from '@ag-grid-enterprise/all-modules';
 import { AppConfig, IAppConfig } from './config/app-config';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
 import { AuthenticationService } from './authentication/authentication.service';
