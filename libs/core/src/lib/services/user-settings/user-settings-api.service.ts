@@ -47,9 +47,7 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   @ObservableException()
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.get(request.key)}`;
-    return this.getSettingsCached(requestUrl).pipe(catchError((e) => {
-        return throwError(AppError.FailedToLoadUserSettings(e));
-      }
+    return this.getSettingsCached(requestUrl).pipe(catchError((e) => throwError(AppError.FailedToLoadUserSettings(e))
     ));
   }
 
@@ -136,12 +134,10 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
       catchError(response =>
         // Note: 404 is a valid response, the key is missing in the user settings.
         response.status === 404 ? of(response) : throwError(response)),
-      switchMap(response => {
-        return !response.body || !response.body.value
+      switchMap(response => !response.body || !response.body.value
           // Note: We need to map a 404 status code to the <IUserSettingResponse> { value: any } format.
           ? of({ value: undefined })
-          : of(response.body);
-      }));
+          : of(response.body)));
   }
 }
 

@@ -47,14 +47,14 @@ export class BaseStoreService {
         first(),
         concatMap(() =>
           safeCall(apiCall).pipe(
-            catchError(responseError => {
+            catchError(responseError => 
               // Note: failedAction(apiError) can either be an action constructor function or a ActionFactory or the actual action object.
-              return this.store.dispatch(typeof failedAction === 'function' ? failedAction(responseError) || failedAction : failedAction)
+               this.store.dispatch(typeof failedAction === 'function' ? failedAction(responseError) || failedAction : failedAction)
                 .pipe(concatMap(() =>
                   // Note: If we get an AppError, it means that it was probably converted from an apiError to an appError somewhere else and we should use that.
                   // Note: Otherwise just use whatever it was provided as params
-                  throwError(responseError instanceof AppError ? responseError : unknownError)));
-            }),
+                  throwError(responseError instanceof AppError ? responseError : unknownError)))
+            ),
             // Note: successfulAction(response) can either be an action constructor function or a ActionFactory or the actual action object.
             switchMap(response => this.store.dispatch(typeof successfulAction === 'function' ? successfulAction(response) || successfulAction : successfulAction).pipe(mapTo(response)))
           )

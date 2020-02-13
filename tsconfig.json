@@ -31,7 +31,7 @@
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["reflect-metadata"]
+    "types": ["reflect-metadata", "jest"]
   },
   "exclude": [
     "node_modules",

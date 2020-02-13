@@ -34,15 +34,9 @@ export class AgGridFirstColumnLockedDirective implements OnDestroy {
 
   onColumnPinned(event: any): void {
     const allCols = event.columnApi.getAllGridColumns();
-    const allFixedCols = allCols.filter((col: Column) => {
-      return col.isLockPosition();
-    });
-    const allNonFixedCols = allCols.filter((col: Column) => {
-      return !col.isLockPosition();
-    });
-    const pinnedCount = allNonFixedCols.filter((col: Column) => {
-      return col.getPinned() === 'left';
-    }).length;
+    const allFixedCols = allCols.filter((col: Column) => col.isLockPosition());
+    const allNonFixedCols = allCols.filter((col: Column) => !col.isLockPosition());
+    const pinnedCount = allNonFixedCols.filter((col: Column) => col.getPinned() === 'left').length;
     const pinFixed = pinnedCount > 0;
     event.columnApi.setColumnsPinned(allFixedCols, pinFixed);
   }

@@ -28,12 +28,6 @@ export const DelayOptions = [
   styleUrls: ['./api-service-settings.component.scss']
 })
 export class ApiServiceSettingsComponent implements OnDestroy {
-  private _reset$: Observable<any>;
-  private _resetSubscription: Subscription;
-  private _apiService: IApiService;
-  private _persistSettings: boolean;
-  private originalSettingsJson: string;
-
   @Input() set reset$(value: Observable<any>) {
     this._reset$ = value;
 
@@ -103,6 +97,12 @@ export class ApiServiceSettingsComponent implements OnDestroy {
   throwErrorForAll: boolean;
   indeterminateThrowErrorAll: boolean;
   overrideAllUrls: string;
+
+  private _reset$: Observable<any>;
+  private _resetSubscription: Subscription;
+  private _apiService: IApiService;
+  private _persistSettings: boolean;
+  private originalSettingsJson: string;
 
   constructor(private devService: DeveloperToolbarService) {
   }
@@ -214,6 +214,38 @@ export class ApiServiceSettingsComponent implements OnDestroy {
   /**
    * Loads all api call settings for services metadata
    */
+
+  /**
+   *  Detect if all api call settings have the same value for delay
+   */
+  updateOverrideAll(): void {
+    const allSameValue = this.methods.every((method, i, arr) => method.settings.apiUrl === arr[0].settings.apiUrl);
+
+    this.overrideAllUrls = this.methods.length > 0 && allSameValue ? this.methods[0].settings.apiUrl : undefined;
+    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
+  }
+
+  changeOverrideAllUrls(baseUrl: string): void {
+    this.methods.forEach(method => (method.settings.apiUrl = baseUrl));
+    this.updateOverrideAll();
+  }
+
+  ngOnDestroy(): void {
+    if (this._resetSubscription) {
+      this._resetSubscription.unsubscribe();
+      this._resetSubscription = undefined;
+    }
+  }
+
+  forwardToRealChanged($event: MatCheckboxChange): void {
+    if ($event.checked) {
+      this.selectedMethod.settings.delay = 0;
+      this.updateDelayAll();
+    } else {
+      this.selectedMethod.settings.delay = RANDOM_DELAY;
+      this.updateDelayAll();
+    }
+  }
   private loadApiCallSettings(): void {
     this.methods = this.devService.getApiCallMetadata(this.apiService.instance);
     this.selectedMethod = this.methods[0];
@@ -260,35 +292,4 @@ export class ApiServiceSettingsComponent implements OnDestroy {
     };
   }
 
-  /**
-   *  Detect if all api call settings have the same value for delay
-   */
-  updateOverrideAll(): void {
-    const allSameValue = this.methods.every((method, i, arr) => method.settings.apiUrl === arr[0].settings.apiUrl);
-
-    this.overrideAllUrls = this.methods.length > 0 && allSameValue ? this.methods[0].settings.apiUrl : undefined;
-    this.devService.saveApiSettings(this.apiService.id, this.getCurrentSettingsForSaving());
-  }
-
-  changeOverrideAllUrls(baseUrl: string): void {
-    this.methods.forEach(method => (method.settings.apiUrl = baseUrl));
-    this.updateOverrideAll();
-  }
-
-  ngOnDestroy(): void {
-    if (this._resetSubscription) {
-      this._resetSubscription.unsubscribe();
-      this._resetSubscription = undefined;
-    }
-  }
-
-  forwardToRealChanged($event: MatCheckboxChange): void {
-    if ($event.checked) {
-      this.selectedMethod.settings.delay = 0;
-      this.updateDelayAll();
-    } else {
-      this.selectedMethod.settings.delay = RANDOM_DELAY;
-      this.updateDelayAll();
-    }
-  }
 }
