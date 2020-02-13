@@ -1,12 +1,10 @@
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { UIModule } from '@shiptech/core/ui/ui.module';
-import { VesselAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/vessel/vessel-autocomplete.component';
-import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
-import { PrimeNGModule } from '../../primeng.module';
-import { VesselPortCallsAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/vessel-port-calls/vessel-port-calls-autocomplete.component';
-import {DocumentsAutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component";
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {UIModule} from '@shiptech/core/ui/ui.module';
+import {MasterSelectorModule} from '@shiptech/core/ui/components/master-selector/master-selector.module';
+import {PrimeNGModule} from '../../primeng.module';
+import {AutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/autocomplete/autocomplete.component";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -22,14 +20,10 @@ export function getDefaultStorage(defaultStorage: any): any {
     MasterSelectorModule
   ],
   declarations: [
-    VesselAutocompleteComponent,
-    VesselPortCallsAutocompleteComponent,
-    DocumentsAutocompleteComponent
+    AutocompleteComponent
   ],
   exports: [
-    VesselAutocompleteComponent,
-    VesselPortCallsAutocompleteComponent,
-    DocumentsAutocompleteComponent
+    AutocompleteComponent
   ],
   entryComponents: []
 })
