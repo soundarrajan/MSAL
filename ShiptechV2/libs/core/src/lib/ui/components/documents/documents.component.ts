@@ -15,6 +15,7 @@ import { FileSaverService } from "ngx-filesaver";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
 import { FileUpload } from 'primeng/fileupload';
 import { ConfirmationService, DialogService } from 'primeng/api';
+import { knownMastersAutocomplete } from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
 
 @Component({
   selector: "shiptech-documents",
@@ -28,8 +29,10 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
   private _destroy$ = new Subject();
   private _entityId: number;
   private _entityName: string;
-  public selectedDocumentType: IDisplayLookupDto;
-  public isReadOnly: boolean;
+  selectedDocumentType: IDisplayLookupDto;
+  isReadOnly: boolean;
+
+  autocompleteDocuments: string;
 
   @ViewChild("uploadComponent", { static: false }) uploadedFiles: FileUpload;
 
@@ -59,6 +62,7 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
               private dialogService: DialogService,
               private _FileSaverService: FileSaverService
   ) {
+    this.autocompleteDocuments = knownMastersAutocomplete.documents;
   }
 
   ngOnInit(): void {
