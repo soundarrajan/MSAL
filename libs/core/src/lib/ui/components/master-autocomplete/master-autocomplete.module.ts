@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UIModule } from '@shiptech/core/ui/ui.module';
-import { VesselAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/vessel/vessel-autocomplete.component';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
-import { VesselPortCallsAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/vessel-port-calls/vessel-port-calls-autocomplete.component';
-import { DocumentsAutocompleteComponent } from '@shiptech/core/ui/components/master-autocomplete/known-masters/documents/documents-autocomplete.component';
 import { ButtonModule } from 'primeng/button';
 import { PortalModule } from '@angular/cdk/portal';
+import {AutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/autocomplete/autocomplete.component";
+
+export function getDefaultStorage(defaultStorage: any): any {
+  return defaultStorage;
+}
 
 @NgModule({
   imports: [
@@ -20,14 +22,10 @@ import { PortalModule } from '@angular/cdk/portal';
     PortalModule
   ],
   declarations: [
-    VesselAutocompleteComponent,
-    VesselPortCallsAutocompleteComponent,
-    DocumentsAutocompleteComponent
+    AutocompleteComponent
   ],
   exports: [
-    VesselAutocompleteComponent,
-    VesselPortCallsAutocompleteComponent,
-    DocumentsAutocompleteComponent
+    AutocompleteComponent
   ],
   entryComponents: []
 })
