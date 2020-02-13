@@ -1,7 +1,9 @@
-﻿commit a3c751bd446558b167eedb8e72b08c157fa50b78
-Author: Radu Coman <radu.coman@24software.ro>
-Date:   Mon Feb 10 12:25:52 2020 +0200
+﻿commit ba0fa80f872fc70f3dde029d8a2269cf6ea40709
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Thu Feb 13 08:26:18 2020 +0000
 
-    added webpack analyzer
+    Merged PR 2820: Refactor autocomplete & selector - code review
+    
+    Code review
 
 branch: master

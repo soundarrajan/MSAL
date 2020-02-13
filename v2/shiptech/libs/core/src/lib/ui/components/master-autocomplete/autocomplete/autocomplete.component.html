@@ -1,0 +1,16 @@
+<div class="ui-inputgroup">
+  <ng-content></ng-content>
+  <button pButton type="button" icon="pi pi-search" class="ui-button-warn" [disabled]="disabled"
+          appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" header="SELECT DOCUMENT">
+  </button>
+  <ng-template cdkPortal #masterSelector="cdkPortal" >
+    <shiptech-shared-master-selector (selectedChange)="selectorSelectionChange($event); masterSelectorTrigger.close()" [selectorType]="autocompleteType"
+                                        [disabled]="disabled"
+                                        [readonly]="readonly"
+                                        [multiple]="autoComplete.multiple"
+                                        [entityName]="entityName"
+                                        [entityId]="entityId"
+                                        [vesselId]="vesselId"
+    ></shiptech-shared-master-selector>
+  </ng-template>
+</div>
