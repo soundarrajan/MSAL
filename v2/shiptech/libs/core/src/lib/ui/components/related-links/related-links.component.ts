@@ -5,7 +5,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { EntityType, IEntityRelatedLink } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
 import { EntityRelatedLinksService } from '@shiptech/core/services/entity-related-links/entity-related-links.service';
 import { Omit } from '../../../utils/type-definitions';
-import { MenuItem } from 'primeng/primeng';
+import { MenuItem } from 'primeng/api';
 
 export interface IRelatedLinksRouteData {
   relatedLinksOptions?: IRelatedLinksOptions,
@@ -25,35 +25,7 @@ export interface IRelatedLinkItem extends Omit<MenuItem, 'id'> {
 
 @Component({
   selector: 'shiptech-related-links',
-  template: `
-      <div [class]="styleClass" [ngStyle]="style"
-           [ngClass]="'ui-related-links ui-widget ui-widget-header ui-helper-clearfix ui-corner-all'">
-          <ul>
-              <ng-template ngFor let-item let-end="last" [ngForOf]="model">
-                  <li role="menuitem">
-                      <a *ngIf="!item.routerLink" [href]="item.url||'#'" class="ui-menuitem-link"
-                         (click)="itemClick($event, item)"
-                         [ngClass]="{'ui-state-disabled':item.disabled, 'active': item.isActive, 'previous-active': item.isPreviousActive}" [attr.target]="item.target"
-                         [attr.title]="item.title" [attr.id]="item.id"
-                         [attr.tabindex]="item.tabindex ? item.tabindex : '0'">
-                          <span *ngIf="item.icon" class="ui-menuitem-icon" [ngClass]="item.icon"></span>
-                          <span class="ui-menuitem-text">{{item.label}}</span>
-                      </a>
-                      <a *ngIf="item.routerLink" [routerLink]="item.routerLink" [queryParams]="item.queryParams"
-                         [routerLinkActive]="'ui-state-active'"
-                         [routerLinkActiveOptions]="item.routerLinkActiveOptions||{exact:false}"
-                         class="ui-menuitem-link" (click)="itemClick($event, item)"
-                         [ngClass]="{'ui-state-disabled':item.disabled}" [attr.target]="item.target"
-                         [attr.title]="item.title" [attr.id]="item.id"
-                         [attr.tabindex]="item.tabindex ? item.tabindex : '0'">
-                          <span *ngIf="item.icon" class="ui-menuitem-icon" [ngClass]="item.icon"></span>
-                          <span class="ui-menuitem-text">{{item.label}}</span>
-                      </a>
-                  </li>
-              </ng-template>
-          </ul>
-      </div>
-  `,
+  templateUrl: './related-links.component.html',
   styleUrls: ['./related-links.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

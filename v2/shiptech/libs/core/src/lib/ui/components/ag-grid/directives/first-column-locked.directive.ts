@@ -1,8 +1,8 @@
 import { Directive, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { Column } from 'ag-grid-community';
-import { AgGridAngular } from 'ag-grid-angular';
+import { Column } from '@ag-grid-community/core';
+import {AgGridAngular} from "@ag-grid-community/angular";
 
 @Directive({
   // tslint:disable-next-line:directive-selector

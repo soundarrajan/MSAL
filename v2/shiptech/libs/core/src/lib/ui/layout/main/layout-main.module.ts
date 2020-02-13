@@ -4,7 +4,8 @@ import { NavigationModule } from '../../components/navigation/navigation.module'
 import { BreadcrumbsModule } from '../../components/breadcrumbs/breadcrumbs.module';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {ConfirmationService} from "primeng/api";
 
 @NgModule({
   imports: [
@@ -12,10 +13,13 @@ import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
     NavigationModule,
     BreadcrumbsModule,
     RouterModule,
-    PrimeNGModule
+    ConfirmDialogModule
   ],
   declarations: [
     LayoutMainComponent
+  ],
+  providers: [
+    ConfirmationService
   ],
   exports: [
     LayoutMainComponent

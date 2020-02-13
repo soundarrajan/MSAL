@@ -5,7 +5,7 @@ import { Observable, Observer, of } from 'rxjs';
 import { QcReportService } from '../services/qc-report.service';
 import { Store } from '@ngxs/store';
 import { QcReportState } from '../store/report/qc-report.state';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 
 @Injectable()
 export class QcReportDetailsUnsavedChangesGuard implements CanDeactivate<QcReportDetailsComponent> {

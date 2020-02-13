@@ -6,7 +6,6 @@ import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
-import { PrimeNGModule } from '@shiptech/core/ui/primeng.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
@@ -23,7 +22,6 @@ import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
-import { AgGridModule } from 'ag-grid-angular';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-group-header/ag-column-group-header.component';
@@ -33,7 +31,10 @@ import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-gri
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
-import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
+import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
+import { MessagesModule } from 'primeng/messages';
+import { ButtonModule } from 'primeng/button';
+import {AgGridModule} from "@ag-grid-community/angular";
 
 @NgModule({
   imports: [
@@ -45,7 +46,6 @@ import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-gr
     UIModule,
     FilterPresetsModule,
     MasterAutocompleteModule,
-    PrimeNGModule,
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
@@ -57,7 +57,9 @@ import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-gr
     AgFilterDisplayModule,
     AgFooterModule,
     SelectTextOnFocusDirectiveModule,
-    WunderBarModule
+    WunderBarModule,
+    ButtonModule,
+    MessagesModule
   ],
   declarations: [
     MainInvoiceComponent,

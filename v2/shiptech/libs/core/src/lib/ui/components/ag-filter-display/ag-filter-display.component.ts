@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import _ from 'lodash';
@@ -15,6 +14,7 @@ import {
   IAgGridTextFilter
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import {AgGridAngular} from "@ag-grid-community/angular";
 
 enum ConditionType {
   and = 'and',

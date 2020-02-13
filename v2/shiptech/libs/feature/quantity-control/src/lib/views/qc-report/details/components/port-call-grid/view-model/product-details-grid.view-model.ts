@@ -1,7 +1,7 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
-import { ColGroupDef, GridOptions } from 'ag-grid-community';
+import { ColGroupDef, GridOptions } from '@ag-grid-community/core';
 import { ITypedColDef, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { ProductDetailsColGroupsEnum, ProductDetailsColGroupsLabels, ProductDetailsColumns, ProductDetailsColumnsLabels } from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
