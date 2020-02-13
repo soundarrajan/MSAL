@@ -17,10 +17,10 @@ import { AgDatePickerComponent } from "@shiptech/core/ui/components/ag-grid/ag-d
 import { AgGridClearAllFiltersDirective } from "@shiptech/core/ui/components/ag-grid/directives/clear-all-filters.directive";
 import { AgCheckBoxRendererComponent } from "@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component";
 import { AgCheckBoxHeaderComponent } from "@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component";
-import { MatCheckboxModule } from "@angular/material";
 import { FlexModule } from "@angular/flex-layout";
 import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
 import { CalendarModule } from 'primeng/calendar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
