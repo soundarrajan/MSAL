@@ -3,7 +3,7 @@ import { BreadcrumbComponent } from "./breadcrumbs.component";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FlexLayoutModule } from "@angular/flex-layout";
-import { BreadcrumbModule } from "primeng/primeng";
+import { BreadcrumbModule } from "primeng/breadcrumb";
 
 @NgModule({
 

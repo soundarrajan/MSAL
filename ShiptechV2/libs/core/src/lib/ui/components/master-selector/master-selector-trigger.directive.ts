@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { MasterSelectorHostComponent } from '@shiptech/core/ui/components/master-selector/master-selector-host.component';
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/primeng';
 import { CdkPortal } from '@angular/cdk/portal';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/api';
 
 @Directive({
   // tslint:disable-next-line:directive-selector

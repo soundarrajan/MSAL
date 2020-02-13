@@ -5,8 +5,9 @@ import { AppSubMenuComponent } from './sidebar/menu-items/menu-items.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { BlankComponent } from '../blank/blank.component';
 import { AccessDeniedComponent } from '../access-denied/access-denied.component';
-import { PrimeNGModule } from '../../primeng.module';
 import { RouterModule } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
-    PrimeNGModule
+    ButtonModule,
+    ScrollPanelModule
   ],
   exports: [
     SidebarComponent,

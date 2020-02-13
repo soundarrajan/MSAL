@@ -12,7 +12,9 @@ import { AgFilterDisplayModule } from "@shiptech/core/ui/components/ag-filter-di
 import { DocumentsComponent } from "@shiptech/core/ui/components/documents/documents.component";
 import { DocumentViewEditNotesComponent } from "./document-view-edit-notes/document-view-edit-notes.component";
 import { MasterAutocompleteModule } from "@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module";
-import { AutoCompleteModule, CheckboxModule, FileUploadModule } from "primeng/primeng";
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { CheckboxModule } from "primeng/checkbox";
+import { FileUploadModule } from "primeng/fileupload";
 import { FormsModule } from "@angular/forms";
 import { FileSaverModule } from "ngx-filesaver";
 import { AgFooterModule } from "@shiptech/core/ui/components/ag-footer/ag-footer.module";

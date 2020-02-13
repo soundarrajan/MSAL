@@ -1,7 +1,9 @@
-import { random, date } from 'faker';
-import { range, sample, values } from 'lodash';
-import { ICompleteListItemDto } from '../dto/invoice-complete-list-item.dto';
-import { MockStatusLookupEnumMap } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import {range, sample, values} from 'lodash';
+import {ICompleteListItemDto} from '../dto/invoice-complete-list-item.dto';
+import {MockStatusLookupEnumMap} from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 export function getMockInvoiceCompleteList(n: number): ICompleteListItemDto[] {
   return range(1, n).map(id => getMockInvoiceCompletesListItem(id));
@@ -10,23 +12,23 @@ export function getMockInvoiceCompleteList(n: number): ICompleteListItemDto[] {
 export function getMockInvoiceCompletesListItem(id: number): ICompleteListItemDto {
   return {
     id,
-    nbOfMatched: random.number(100),
-    nbOfMatchedWithinLimit: random.number(100),
-    nbOfNotMatched: random.number(100),
+    nbOfMatched: chance.d100(),
+    nbOfMatchedWithinLimit: chance.d100(),
+    nbOfNotMatched: chance.d100(),
     order: sample(values(MockStatusLookupEnumMap)),
-    orderProductId: random.number(100),
+    orderProductId: chance.d100(),
     delivery: sample(values(MockStatusLookupEnumMap)),
     invoice: sample(values(MockStatusLookupEnumMap)),
-    sellerInvoiceNo: random.number(100),
-    documentNo: random.number(100),
+    sellerInvoiceNo: chance.d100(),
+    documentNo: chance.d100(),
     customStatus: sample(values(MockStatusLookupEnumMap)),
-    orderProductStatus:  {
-      id: random.number(10),
-      transactionTypeId: random.number(10),
-      displayName: random.word(),
+    orderProductStatus: {
+      id: chance.d10(),
+      transactionTypeId: chance.d10(),
+      displayName: chance.name(),
       code: null,
       index: null,
-      name: random.word()
+      name: chance.name()
     },
     buyer: sample(values(MockStatusLookupEnumMap)),
     supplier: sample(values(MockStatusLookupEnumMap)),
@@ -36,71 +38,71 @@ export function getMockInvoiceCompletesListItem(id: number): ICompleteListItemDt
     carrierCompany: sample(values(MockStatusLookupEnumMap)),
     paymentCompany: sample(values(MockStatusLookupEnumMap)),
     port: sample(values(MockStatusLookupEnumMap)),
-    eta: date.past().toISOString(),
-    deliveryDate: date.past().toISOString(),
+    eta: chance.date().toISOString(),
+    deliveryDate: chance.date().toISOString(),
     line: sample(values(MockStatusLookupEnumMap)),
     agreementType: sample(values(MockStatusLookupEnumMap)),
     product: sample(values(MockStatusLookupEnumMap)),
-    invoiceQuantity: random.number(100),
-    price: random.number(100),
-    sumOfCosts: random.number(100),
-    invoiceAmount: random.number(100),
-    invoiceProductAmount: random.number(100),
-    totalInvoiceProductAmount: random.number(100),
+    invoiceQuantity: chance.d100(),
+    price: chance.d100(),
+    sumOfCosts: chance.d100(),
+    invoiceAmount: chance.d100(),
+    invoiceProductAmount: chance.d100(),
+    totalInvoiceProductAmount: chance.d100(),
     invoiceCurrency: sample(values(MockStatusLookupEnumMap)),
     orderProduct: sample(values(MockStatusLookupEnumMap)),
-    confirmedQuantity: random.number(100),
-    finalQuantityAmount: random.number(100),
-    orderPrice: random.number(100),
+    confirmedQuantity: chance.d100(),
+    finalQuantityAmount: chance.d100(),
+    orderPrice: chance.d100(),
     orderPriceCurrency: sample(values(MockStatusLookupEnumMap)),
     convertedCurrency: sample(values(MockStatusLookupEnumMap)),
-    invoiceProductAmountInOrderCurrency: random.number(100),
-    orderCost: random.number(100),
-    orderProductAmount: random.number(100),
-    totalOrderProductAmount: random.number(100),
-    orderAmount: random.number(100),
+    invoiceProductAmountInOrderCurrency: chance.d100(),
+    orderCost: chance.d100(),
+    orderProductAmount: chance.d100(),
+    totalOrderProductAmount: chance.d100(),
+    orderAmount: chance.d100(),
     orderCurrency: sample(values(MockStatusLookupEnumMap)),
-    dueDate: date.past().toISOString(),
-    workingDueDate: date.past().toISOString(),
-    approvedDate: date.past().toISOString(),
-    accountNumber: random.number(100),
-    paymentDate: date.past().toISOString(),
-    backOfficeComments: random.word(),
-    claimNo: random.number(100),
-    claimDate: date.past().toISOString(),
+    dueDate: chance.date().toISOString(),
+    workingDueDate: chance.date().toISOString(),
+    approvedDate: chance.date().toISOString(),
+    accountNumber: chance.d100(),
+    paymentDate: chance.date().toISOString(),
+    backOfficeComments: chance.word(),
+    claimNo: chance.d100(),
+    claimDate: chance.date().toISOString(),
     claimStatus: sample(values(MockStatusLookupEnumMap)),
-    actualSettlementDate: date.past().toISOString(),
-    debunkerAmount: random.number(100),
-    resaleAmount: random.number(100),
+    actualSettlementDate: chance.date().toISOString(),
+    debunkerAmount: chance.d100(),
+    resaleAmount: chance.d100(),
     invoiceType: sample(values(MockStatusLookupEnumMap)),
-    receivedDate: date.past().toISOString(),
-    sellerDueDate: date.past().toISOString(),
+    receivedDate: chance.date().toISOString(),
+    sellerDueDate: chance.date().toISOString(),
     orderStatus: {
-      id: random.number(10),
-      transactionTypeId: random.number(10),
-      displayName: random.word(),
+      id: chance.d10(),
+      transactionTypeId: chance.d10(),
+      displayName: chance.name(),
       code: null,
       index: null,
-      name: random.word()
+      name: chance.name()
     },
     invoiceStatus: {
-      id: random.number(10),
-      transactionTypeId: random.number(10),
-      displayName: random.word(),
+      id: chance.d10(),
+      transactionTypeId: chance.d10(),
+      displayName: chance.name(),
       code: null,
       index: null,
-      name: random.word()
+      name: chance.name()
     },
-    contractId: random.number(100),
+    contractId: chance.d100(),
     productType: sample(values(MockStatusLookupEnumMap)),
-    fuelPriceItemDescription: random.word(),
+    fuelPriceItemDescription: chance.word(),
     invoiceApprovalStatus: {
-      id: random.number(10),
-      transactionTypeId: random.number(10),
-      displayName: random.word(),
+      id: chance.d10(),
+      transactionTypeId: chance.d10(),
+      displayName: chance.name(),
       code: null,
       index: null,
-      name: random.word()
+      name: chance.name()
     }
   };
 }

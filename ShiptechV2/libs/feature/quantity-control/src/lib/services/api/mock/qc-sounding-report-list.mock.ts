@@ -1,6 +1,8 @@
-import { random, date, commerce, name } from 'faker';
-import { range } from 'lodash';
-import { IQcSoundingReportItemDto } from '../dto/qc-report-sounding.dto';
+import {range} from 'lodash';
+import {IQcSoundingReportItemDto} from '../dto/qc-report-sounding.dto';
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 
 export function getMockQcSoundingReportList(n: number): IQcSoundingReportItemDto[] {
@@ -9,22 +11,22 @@ export function getMockQcSoundingReportList(n: number): IQcSoundingReportItemDto
 
 export function getMockQcSoundingReportListItem(id: number): IQcSoundingReportItemDto {
   return {
-    id: random.number(),
-    computedRobDogo: random.number({ min: 1000, max: 3000 }),
-    computedRobHsfo: random.number({ min: 1000, max: 3000 }),
-    computedRobLsfo: random.number({ min: 1000, max: 3000 }),
-    imoNo: random.alphaNumeric(10).toUpperCase(),
-    measuredRobDogo: random.number({ min: -500, max: 500 }),
-    measuredRobHsfo: random.number({ min: -500, max: 500 }),
-    measuredRobLsfo: random.number({ min: -500, max: 500 }),
-    reportId: random.number({ min: 1000000, max: 9000000 }),
-    robDogoDiff: random.number({ min: 1000, max: 3000 }),
-    robHsfoDiff: random.number({ min: 1000, max: 3000 }),
-    robLsfoDiff: random.number({ min: 1000, max: 3000 }),
-    soundedOn: date.recent(30).toISOString(),
-    soundingReason: `Request frok ${commerce.department()}`,
-    vesselCode: random.alphaNumeric(4),
-    vesselName: `${name.firstName()}`,
-    voyageReference: random.alphaNumeric(9)
+    id: chance.d100(),
+    computedRobDogo: chance.integer({min: 1000, max: 3000}),
+    computedRobHsfo: chance.integer({min: 1000, max: 3000}),
+    computedRobLsfo: chance.integer({min: 1000, max: 3000}),
+    imoNo: chance.string({alpha: true, numeric: true, length: 5}).toUpperCase(),
+    measuredRobDogo: chance.integer({min: -500, max: 500}),
+    measuredRobHsfo: chance.integer({min: -500, max: 500}),
+    measuredRobLsfo: chance.integer({min: -500, max: 500}),
+    reportId: chance.integer({min: 1000000, max: 9000000}),
+    robDogoDiff: chance.integer({min: 1000, max: 3000}),
+    robHsfoDiff: chance.integer({min: 1000, max: 3000}),
+    robLsfoDiff: chance.integer({min: 1000, max: 3000}),
+    soundedOn: chance.date().toISOString(),
+    soundingReason: `Request from ${chance.word()}`,
+    vesselCode: chance.string({alpha: true, numeric: true, length: 4}),
+    vesselName: `${chance.first()}`,
+    voyageReference: chance.string({alpha: true, numeric: true, length: 9})
   };
 }

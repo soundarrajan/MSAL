@@ -13,7 +13,6 @@ import { AgGridSizeToFitDirective } from "@shiptech/core/ui/components/ag-grid/d
 import { AgGridFirstColumnLockedDirective } from "@shiptech/core/ui/components/ag-grid/directives/first-column-locked.directive";
 import { AgGridDeselectFilteredRowsDirective } from "@shiptech/core/ui/components/ag-grid/directives/deselect-filtred-rows.directive";
 import { AgGridEmptyFilterOptionDirective } from "@shiptech/core/ui/components/ag-grid/directives/empty-filter-option";
-import { PrimeNGModule } from "@shiptech/core/ui/primeng.module";
 import { AgDatePickerComponent } from "@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component";
 import { AgGridClearAllFiltersDirective } from "@shiptech/core/ui/components/ag-grid/directives/clear-all-filters.directive";
 import { AgCheckBoxRendererComponent } from "@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component";
@@ -21,6 +20,7 @@ import { AgCheckBoxHeaderComponent } from "@shiptech/core/ui/components/ag-grid/
 import { MatCheckboxModule } from "@angular/material";
 import { FlexModule } from "@angular/flex-layout";
 import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
+import { CalendarModule } from 'primeng/calendar';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -40,7 +40,7 @@ const COMPONENTS = [
   AgDatePickerComponent,
   AgCheckBoxHeaderComponent,
   AgCheckBoxRendererComponent,
-  AgAsyncBackgroundFillComponent
+  AgAsyncBackgroundFillComponent,
 ];
 
 @NgModule({
@@ -49,9 +49,9 @@ const COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     AgPagingModule,
-    PrimeNGModule,
     MatCheckboxModule,
-    FlexModule
+    FlexModule,
+    CalendarModule
   ],
   declarations: [
     ...COMPONENTS

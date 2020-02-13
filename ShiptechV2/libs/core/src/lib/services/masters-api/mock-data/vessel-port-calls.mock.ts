@@ -1,27 +1,29 @@
-import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
-import { sample, range } from 'lodash';
-import { name, date, random } from 'faker';
-import { MockLocationsLookup } from '@shiptech/core/services/masters-api/mock-data/locations.mock';
-import { MockServicesLookup } from '@shiptech/core/services/masters-api/mock-data/services.mock';
+import {IVesselPortCallMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
+import {range, sample} from 'lodash';
+import {MockLocationsLookup} from '@shiptech/core/services/masters-api/mock-data/locations.mock';
+import {MockServicesLookup} from '@shiptech/core/services/masters-api/mock-data/services.mock';
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 export function getMockVesselPortCallsEventsLog(n: number): IVesselPortCallMasterDto[] {
   return range(1, n).map(id => getMockVesselPortCallsItem(id, n));
 }
 
 export function getMockVesselPortCallsItem(id: number, total: number): IVesselPortCallMasterDto {
-  const firstName = name.firstName();
+  const firstName = chance.first();
   return {
     id: id,
     name: firstName,
     displayName: firstName,
-    eta: date.recent().toISOString(),
-    etb: date.recent().toISOString(),
-    etd: date.recent().toISOString(),
+    eta: chance.date().toISOString(),
+    etb: chance.date().toISOString(),
+    etd: chance.date().toISOString(),
     location: sample(MockLocationsLookup),
-    portCallId: random.number({ min: Math.pow(10, 15), max: Math.pow(10, 16) - 1 }).toString(),
+    portCallId: chance.integer({min: Math.pow(10, 15), max: Math.pow(10, 16) - 1}).toString(),
     service: sample(MockServicesLookup),
-    voyageId: random.number({ min: Math.pow(10, 15), max: Math.pow(10, 16) - 1 }),
-    voyageReference: random.alphaNumeric(5).toUpperCase(),
+    voyageId: chance.integer({min: Math.pow(10, 15), max: Math.pow(10, 16) - 1}),
+    voyageReference: chance.string({alpha: true}).toUpperCase(),
     totalCount: total,
   };
 }

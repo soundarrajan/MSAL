@@ -6,7 +6,6 @@ import { IDocumentsApiService } from "@shiptech/core/services/masters-api/docume
 import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
 import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
 import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
-import { ConfirmationService, DialogService, FileUpload } from "primeng/primeng";
 import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
 import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
 import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
@@ -14,13 +13,15 @@ import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from "@sh
 import { ToastrService } from "ngx-toastr";
 import { FileSaverService } from "ngx-filesaver";
 import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
-import {knownMastersAutocomplete} from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
+import { FileUpload } from 'primeng/fileupload';
+import { ConfirmationService, DialogService } from 'primeng/api';
+import { knownMastersAutocomplete } from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
 
 @Component({
   selector: "shiptech-documents",
   templateUrl: "./documents.component.html",
   styleUrls: ["./documents.component.scss"],
-  providers: [DocumentsGridViewModel],
+  providers: [DocumentsGridViewModel, DialogService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {

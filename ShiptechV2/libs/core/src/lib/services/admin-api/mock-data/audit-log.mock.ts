@@ -1,6 +1,8 @@
-import { date, name, random } from 'faker';
-import { IAuditLogItemDto } from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
-import { range } from 'lodash';
+import {IAuditLogItemDto} from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
+import {range} from 'lodash';
+import { Chance } from 'chance';
+
+const chance = new Chance();
 
 export function getMockAuditLog(n: number): IAuditLogItemDto[] {
   return range(1, n).map(id => getMockAuditLogItem(id));
@@ -9,22 +11,22 @@ export function getMockAuditLog(n: number): IAuditLogItemDto[] {
 export function getMockAuditLogItem(id: number): IAuditLogItemDto {
   return {
     id,
-    businessId: random.number(100),
-    date: date.past().toISOString(),
-    businessName: random.word(),
-    transactionType: random.word(),
-    fieldName: random.word(),
-    oldValue: random.word(),
-    newValue: random.word(),
-    oldNameValue: random.word(),
-    newNameValue: random.word(),
+    businessId: chance.d100(),
+    date: chance.date().toISOString(),
+    businessName: chance.string(),
+    transactionType: chance.string(),
+    fieldName: chance.string(),
+    oldValue: chance.string(),
+    newValue: chance.string(),
+    oldNameValue: chance.string(),
+    newNameValue: chance.string(),
     modifiedBy: {
-      id: random.number(100),
-      name: name.firstName() + name.lastName(),
-      displayName: name.firstName() + name.lastName()
+      id: chance.d100(),
+      name: chance.name(),
+      displayName: chance.name()
     },
-    modulePathUrl: random.word(),
-    clientIpAddress: random.word(),
-    userAction: random.word()
+    modulePathUrl: chance.string(),
+    clientIpAddress: chance.ip(),
+    userAction: chance.string()
   };
 }

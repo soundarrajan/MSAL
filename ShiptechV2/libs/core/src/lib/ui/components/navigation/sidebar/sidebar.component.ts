@@ -4,7 +4,7 @@ import { BASE_MENU } from '../models/menu.items';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { transformMenu } from '../models/sidebar-view.model';
 import * as jp from 'jsonpath';
-import { ScrollPanel } from 'primeng/primeng';
+import { ScrollPanel } from 'primeng/scrollpanel';
 
 @Component({
   selector: 'shiptech-sidebar',

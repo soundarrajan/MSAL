@@ -1,6 +1,8 @@
 import {range} from "lodash";
-import {date, internet, name, random} from "faker";
 import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
+import {Chance} from 'chance';
+
+const chance = new Chance();
 
 export function getMockDocuments(n: number): IDocumentsItemDto[] {
   return range(1, n).map(id => getMockDocumentItem(id));
@@ -10,53 +12,53 @@ export function getMockDocumentItem(id: number): IDocumentsItemDto {
 
   return {
     id,
-    name: random.word(),
-    size: random.number(),
+    name: chance.word(),
+    size: chance.d100(),
     documentType: {
-      id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      id: chance.d100(),
+      name: chance.word(),
+      displayName: chance.word()
     },
-    fileType: random.word(),
-    fileId: random.number(),
+    fileType: chance.word(),
+    fileId: chance.d100(),
     transactionType: {
-      id: random.number(),
-      name: random.word(),
-      displayName: random.word()
+      id: chance.d100(),
+      name: chance.word(),
+      displayName: chance.word()
     },
-    referenceNo: random.number(),
+    referenceNo: chance.d100(),
     uploadedBy: {
-      id: random.number(),
-      name: name.firstName() + name.lastName(),
-      displayName: name.firstName() + name.lastName()
+      id: chance.d100(),
+      name: chance.name(),
+      displayName: chance.name()
     },
-    uploadedOn: date.past().toISOString(),
-    notes: random.word(),
-    isVerified: random.boolean(),
-    verifiedOn: date.past().toISOString(),
+    uploadedOn: chance.date().toISOString(),
+    notes: chance.word(),
+    isVerified: chance.bool(),
+    verifiedOn: chance.date().toISOString(),
     verifiedBy: {
-      id: random.number(),
-      name: name.firstName() + name.lastName(),
-      displayName: name.firstName() + name.lastName()
+      id: chance.d100(),
+      name: chance.name(),
+      displayName: chance.name()
     },
     createdBy: {
-      id: random.number(),
-      name: name.firstName() + name.lastName(),
-      displayName: name.firstName() + name.lastName()
+      id: chance.d100(),
+      name: chance.name(),
+      displayName: chance.name()
     },
-    createdOn: date.past().toISOString(),
-    lastModifiedOn: date.past().toISOString(),
+    createdOn: chance.date().toISOString(),
+    lastModifiedOn: chance.date().toISOString(),
     lastModifiedByUser: {
-      id: random.number(),
-      name: name.firstName() + name.lastName(),
-      displayName: name.firstName() + name.lastName()
+      id: chance.d100(),
+      name: chance.name(),
+      displayName: chance.name()
     },
-    isIncludedInMail: random.word(),
-    totalCount: random.number(),
-    inclusionInMail: random.word(),
-    content: random.words(),
-    modulePathUrl: random.word(),
-    clientIpAddress: internet.ip(),
-    userAction: random.word()
+    isIncludedInMail: chance.word(),
+    totalCount: chance.d100(),
+    inclusionInMail: chance.word(),
+    content: chance.paragraph(),
+    modulePathUrl: chance.url(),
+    clientIpAddress: chance.ipv6(),
+    userAction: chance.word()
   };
 }
