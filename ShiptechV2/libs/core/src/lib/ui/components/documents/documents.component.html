@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-4 min-hgt-50">
           <label>Document type</label>
-          <shiptech-documents-autocomplete #documentsAutoComplete [entityId]="entityId" [entityName]="entityName">
+          <shiptech-autocomplete #documentsAutoComplete [entityId]="entityId" [entityName]="entityName" [autocompleteType]="autocompleteDocuments">
             <p-autoComplete (onSelect)="documentTypeSelection($event)"
                             [disabled]="isReadOnly"
                             [readonly]="documentsAutoComplete.readonly"
@@ -18,7 +18,7 @@
                             [ngModel]="selectedDocumentType"
                             placeholder="">
             </p-autoComplete>
-          </shiptech-documents-autocomplete>
+          </shiptech-autocomplete>
         </div>
         <div class="col-md-8">
           <div class="col-sm-6">
