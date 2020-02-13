@@ -20,8 +20,7 @@ export function transformMenu(baseMenu: KeyedMenuItems, patchMenu: KeyedMenuItem
 
   let itemsToArray: (obj: KeyedMenuItems) => MenuItem[];
 
-  itemsToArray = (obj: KeyedMenuItems) => {
-    return _.values(obj).map(i => {
+  itemsToArray = (obj: KeyedMenuItems) => _.values(obj).map(i => {
       const children = itemsToArray(i.items);
       const { items: __, ...menuItemProps } = i;
 
@@ -31,7 +30,6 @@ export function transformMenu(baseMenu: KeyedMenuItems, patchMenu: KeyedMenuItem
       }
       return menuItemProps;
     });
-  };
 
   return itemsToArray(mergedMenu);
 }

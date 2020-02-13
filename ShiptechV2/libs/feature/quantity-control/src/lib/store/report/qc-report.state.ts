@@ -537,9 +537,7 @@ export class QcReportState {
       const success = <QcSaveReportDetailsSuccessfulAction>action;
 
       // Note: For New Reports we need to save the id of each product type row. This id is not used in front-end, we track by productTypes.productType.id, it's used in backend to update rows in db
-      const productTypes = values(state.details.productTypesById).map(p => {
-        return { ...state.details.productTypesById[p.productType.id], id: success.productTypes.find(s => s.productType.id === p.productType.id)?.id ?? p.id };
-      });
+      const productTypes = values(state.details.productTypesById).map(p => ({ ...state.details.productTypesById[p.productType.id], id: success.productTypes.find(s => s.productType.id === p.productType.id)?.id ?? p.id }));
 
       patchState({
         details: {

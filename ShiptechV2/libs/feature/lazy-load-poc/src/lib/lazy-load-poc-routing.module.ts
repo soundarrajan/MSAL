@@ -4,7 +4,7 @@ import { MainLazyLoadComponent } from './views/main-lazy-load.component';
 import { LazyViewComponent } from './views/lazy-view/lazy-view.component';
 import { LazyLoadPocRouteResolver } from './lazy-load-poc-route.resolver';
 
-let routes: Routes = [
+const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
