@@ -8,7 +8,9 @@ export class AppContext {
   public isProd: boolean;
 
   constructor() {
-    this.sessionId = Md5.hashStr(Math.random().toString() + Date.now().toString()).toString();
+    this.sessionId = Md5.hashStr(
+      Math.random().toString() + Date.now().toString()
+    ).toString();
   }
 
   public get authContext(): AuthenticationContext {

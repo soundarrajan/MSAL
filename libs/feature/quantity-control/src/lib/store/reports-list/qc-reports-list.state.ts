@@ -1,17 +1,21 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { IQuantityControlState } from "../quantity-control.state";
-import { IQcReportsListState, QcReportsListStateModel } from "./qc-reports-list.state.model";
-import { nameof } from "@shiptech/core/utils/type-definitions";
-import { isAction } from "@shiptech/core/utils/ngxs-utils";
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { IQuantityControlState } from '../quantity-control.state';
+import {
+  IQcReportsListState,
+  QcReportsListStateModel
+} from './qc-reports-list.state.model';
+import { nameof } from '@shiptech/core/utils/type-definitions';
+import { isAction } from '@shiptech/core/utils/ngxs-utils';
 import {
   LoadReportListAction,
   LoadReportListFailedAction,
   LoadReportListSuccessfulAction
-} from "./qc-report-list.actions";
-import { Injectable } from "@angular/core";
+} from './qc-report-list.actions';
+import { Injectable } from '@angular/core';
 
 @State<IQcReportsListState>({
-  name: nameof<IQuantityControlState>("reportsList"),
+  name: nameof<IQuantityControlState>('reportsList'),
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   defaults: QcReportsListState.default
 })
 @Injectable()
@@ -34,7 +38,10 @@ export class QcReportsListState {
   }
 
   @Action(LoadReportListAction)
-  loadReportListAction({ patchState }: StateContext<IQcReportsListState>, { serverGridInfo}: LoadReportListAction): void {
+  loadReportListAction(
+    { patchState }: StateContext<IQcReportsListState>,
+    { serverGridInfo }: LoadReportListAction
+  ): void {
     patchState({
       _isLoading: true,
       _hasLoaded: false,
@@ -43,9 +50,17 @@ export class QcReportsListState {
   }
 
   @Action([LoadReportListSuccessfulAction, LoadReportListFailedAction])
-  loadReportListActionFinished({ getState, patchState }: StateContext<IQcReportsListState>, action: LoadReportListSuccessfulAction | LoadReportListFailedAction): void {
+  loadReportListActionFinished(
+    { getState, patchState }: StateContext<IQcReportsListState>,
+    action: LoadReportListSuccessfulAction | LoadReportListFailedAction
+  ): void {
     if (isAction(action, LoadReportListSuccessfulAction)) {
-      const { nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalCount } = <LoadReportListSuccessfulAction>action;
+      const {
+        nbOfMatched,
+        nbOfMatchedWithinLimit,
+        nbOfNotMatched,
+        totalCount
+      } = <LoadReportListSuccessfulAction>action;
       patchState({
         _isLoading: false,
         _hasLoaded: true,

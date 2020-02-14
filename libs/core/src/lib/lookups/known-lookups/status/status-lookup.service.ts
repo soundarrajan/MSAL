@@ -1,16 +1,16 @@
-import {LegacyLookupsDatabase} from "@shiptech/core/legacy-cache/legacy-lookups-database.service";
-import {Injectable} from "@angular/core";
-import {AppError} from "@shiptech/core/error-handling/app-error";
-import {IStatusLookupDto} from "@shiptech/core/lookups/known-lookups/status/status-lookup.interface";
-import {nameof} from "@shiptech/core/utils/type-definitions";
-import {StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
-import {DatabaseManipulation} from "@shiptech/core/legacy-cache/database-manipulation.service";
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { Injectable } from '@angular/core';
+import { AppError } from '@shiptech/core/error-handling/app-error';
+import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import { nameof } from '@shiptech/core/utils/type-definitions';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { DatabaseManipulation } from '@shiptech/core/legacy-cache/database-manipulation.service';
 
-const nameField = nameof<IStatusLookupDto>("name");
+const nameField = nameof<IStatusLookupDto>('name');
 // TODO: to be read from entity types and remove this hardcoded id
 const TRANSACTION_TYPE_ID: number = 46;
 
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class StatusLookup {
   get new(): IStatusLookupDto {
     console.assert(this._new !== undefined);
@@ -31,17 +31,17 @@ export class StatusLookup {
   private _new: IStatusLookupDto;
   private _pending: IStatusLookupDto;
 
-  constructor(private legacyLookupsDatabase: LegacyLookupsDatabase,
-              private databaseManipulation: DatabaseManipulation) {
-
-  }
+  constructor(
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private databaseManipulation: DatabaseManipulation
+  ) {}
 
   public getStatus(status: IStatusLookupDto): IStatusLookupDto | undefined {
     const result: IStatusLookupDto = {
       id: null,
       name: <string>status.name,
       displayName: <string>status.displayName,
-      code: "#fff"
+      code: '#fff'
     };
     switch (status.name) {
       case this._verified.name:
@@ -56,20 +56,46 @@ export class StatusLookup {
   }
 
   public async load(): Promise<any> {
-    this._verified = await this.legacyLookupsDatabase.status.where(nameField).equals(StatusLookupEnum.Verified).first();
-    this._verified.code = await this.databaseManipulation.getStatusColorFromDashboard(this._verified.id, TRANSACTION_TYPE_ID);
+    this._verified = await this.legacyLookupsDatabase.status
+      .where(nameField)
+      .equals(StatusLookupEnum.Verified)
+      .first();
+    this._verified.code = await this.databaseManipulation.getStatusColorFromDashboard(
+      this._verified.id,
+      TRANSACTION_TYPE_ID
+    );
     if (!this._verified)
-      throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>("status"), StatusLookupEnum.Verified);
+      throw AppError.MissingLookupKey(
+        nameof<LegacyLookupsDatabase>('status'),
+        StatusLookupEnum.Verified
+      );
 
-    this._new = await this.legacyLookupsDatabase.status.where(nameField).equals(StatusLookupEnum.New).first();
-    this._new.code = await this.databaseManipulation.getStatusColorFromDashboard(this._new.id, TRANSACTION_TYPE_ID);
+    this._new = await this.legacyLookupsDatabase.status
+      .where(nameField)
+      .equals(StatusLookupEnum.New)
+      .first();
+    this._new.code = await this.databaseManipulation.getStatusColorFromDashboard(
+      this._new.id,
+      TRANSACTION_TYPE_ID
+    );
     if (!this._new)
-      throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>("status"), StatusLookupEnum.New);
+      throw AppError.MissingLookupKey(
+        nameof<LegacyLookupsDatabase>('status'),
+        StatusLookupEnum.New
+      );
 
-    this._pending = await this.legacyLookupsDatabase.status.where(nameField).equals(StatusLookupEnum.Pending).first();
-    this._pending.code = await this.databaseManipulation.getStatusColorFromDashboard(this._pending.id, TRANSACTION_TYPE_ID);
+    this._pending = await this.legacyLookupsDatabase.status
+      .where(nameField)
+      .equals(StatusLookupEnum.Pending)
+      .first();
+    this._pending.code = await this.databaseManipulation.getStatusColorFromDashboard(
+      this._pending.id,
+      TRANSACTION_TYPE_ID
+    );
     if (!this._pending)
-      throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>("status"), StatusLookupEnum.Pending);
+      throw AppError.MissingLookupKey(
+        nameof<LegacyLookupsDatabase>('status'),
+        StatusLookupEnum.Pending
+      );
   }
-
 }

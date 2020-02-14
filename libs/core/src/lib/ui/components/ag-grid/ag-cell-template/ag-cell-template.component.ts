@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  TemplateRef
+} from '@angular/core';
 import { ColDef, Column, ICellRendererParams } from '@ag-grid-community/core';
-import {ICellRendererAngularComp} from "@ag-grid-community/angular";
+import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 
 export interface ITemplateRendererParams extends Partial<ICellRendererParams> {
   ngTemplate?: TemplateRef<any>;
@@ -10,16 +15,26 @@ export interface ITemplateRendererParams extends Partial<ICellRendererParams> {
   // tslint:disable-next-line:component-selector
   selector: 'ag-cell-template',
   template: `
-    <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="template; context: templateContext"
+    ></ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgCellTemplateComponent implements ICellRendererAngularComp {
   template: TemplateRef<any>;
-  templateContext: { $implicit: any; params: ITemplateRendererParams; data: any; value: any; valueFormatted: string; columnDef: ColDef; column: Column; rowIndex: number };
+  templateContext: {
+    $implicit: any;
+    params: ITemplateRendererParams;
+    data: any;
+    value: any;
+    valueFormatted: string;
+    columnDef: ColDef;
+    column: Column;
+    rowIndex: number;
+  };
 
-  constructor(private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private changeDetector: ChangeDetectorRef) {}
 
   refresh(params: ITemplateRendererParams): boolean {
     this.templateContext = {

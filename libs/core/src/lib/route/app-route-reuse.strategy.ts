@@ -1,4 +1,8 @@
-import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  DetachedRouteHandle,
+  RouteReuseStrategy
+} from '@angular/router';
 import { ComponentRef, Inject } from '@angular/core';
 import { ROUTES_TO_CACHE } from './routes-to-reuse.token';
 import * as _ from 'lodash';
@@ -9,8 +13,13 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
   private routeReuseLogger: ILogger;
   private _storedRouteHandles = new Map<string, DetachedRouteHandle>();
 
-  constructor(@Inject(ROUTES_TO_CACHE) private routesToCache: string[], loggerFactory: LoggerFactory) {
-    this.routeReuseLogger = loggerFactory.createLogger(AppRouteReuseStrategy.name);
+  constructor(
+    @Inject(ROUTES_TO_CACHE) private routesToCache: string[],
+    loggerFactory: LoggerFactory
+  ) {
+    this.routeReuseLogger = loggerFactory.createLogger(
+      AppRouteReuseStrategy.name
+    );
   }
 
   // Specify the routes to reuse/cache in an array.
@@ -36,7 +45,10 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
   }
 
   public removeCachedRoute(routeKey: string): void {
-    this.routeReuseLogger.info('Removing cached route with key {@Key}', routeKey);
+    this.routeReuseLogger.info(
+      'Removing cached route with key {@Key}',
+      routeKey
+    );
     const cachedComponent = this._storedRouteHandles.get(routeKey);
 
     // Note: Components detached are not destroyed. Force destroy
@@ -49,7 +61,10 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
 
   // Note: This method is called everytime we navigate between routes.
   // If it returns FALSE then the routing happens and the rest of the methods are called.
-  shouldReuseRoute(prev: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+  shouldReuseRoute(
+    prev: ActivatedRouteSnapshot,
+    curr: ActivatedRouteSnapshot
+  ): boolean {
     return prev.routeConfig === curr.routeConfig;
   }
 
@@ -65,7 +80,9 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
     // The store and retrieve methods are called twice regarding to bug https://github.com/angular/angular/issues/22474
 
-    const detachedRouteHandle: DetachedRouteHandle = this._storedRouteHandles.get(this.getPath(route));
+    const detachedRouteHandle: DetachedRouteHandle = this._storedRouteHandles.get(
+      this.getPath(route)
+    );
 
     if (!detachedRouteHandle) {
       return null;
@@ -78,7 +95,10 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
   // It is invoked when we leave the current route. If returns TRUE then the store method will be invoked:
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
     if (this._routesToCache.indexOf(this.getPath(route)) > -1) {
-      this.routeReuseLogger.info('Route with path {@Path} was cached', this.getPath(route));
+      this.routeReuseLogger.info(
+        'Route with path {@Path} was cached',
+        this.getPath(route)
+      );
     }
     return this._routesToCache.indexOf(this.getPath(route)) > -1;
   }

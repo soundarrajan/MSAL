@@ -4,18 +4,11 @@ import { CommonModule } from '@angular/common';
 import { EntityStatusComponent } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 
 @NgModule({
-  declarations: [
-    EntityStatusComponent
-  ],
+  declarations: [EntityStatusComponent],
   providers: [],
-  imports: [
-    RouterModule,
-    CommonModule
-  ],
+  imports: [RouterModule, CommonModule],
   exports: [EntityStatusComponent]
 })
 export class EntityStatusModule {
-  constructor() {
-  }
+  constructor() {}
 }
-

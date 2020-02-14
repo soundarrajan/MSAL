@@ -167,7 +167,8 @@ export const InvoiceListColumnServerKeys: Record<InvoiceListColumns, string> = {
   [InvoiceListColumns.orderPrice]: 'orderPrice',
   [InvoiceListColumns.orderPriceCurrency]: 'orderPriceCurrency_Name',
   [InvoiceListColumns.convertedCurrency]: 'convertedCurrency_Name',
-  [InvoiceListColumns.invoiceProductAmountInOrderCurrency]: 'invoiceProductAmountInOrderCurrency',
+  [InvoiceListColumns.invoiceProductAmountInOrderCurrency]:
+    'invoiceProductAmountInOrderCurrency',
   [InvoiceListColumns.orderCost]: 'orderCost',
   [InvoiceListColumns.orderProductAmount]: 'orderProductAmount',
   [InvoiceListColumns.totalOrderProductAmount]: 'totalOrderProductAmount',

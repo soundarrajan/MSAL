@@ -22,7 +22,10 @@ export enum VesselPortCallsMasterListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const VesselPortCallsMasterListColumnServerKeys: Record<VesselPortCallsMasterListColumns, string> = {
+export const VesselPortCallsMasterListColumnServerKeys: Record<
+  VesselPortCallsMasterListColumns,
+  string
+> = {
   [VesselPortCallsMasterListColumns.selection]: undefined,
   [VesselPortCallsMasterListColumns.locationPort]: 'Location_Name',
   [VesselPortCallsMasterListColumns.voyageId]: 'VoyageId_Name',
@@ -30,5 +33,5 @@ export const VesselPortCallsMasterListColumnServerKeys: Record<VesselPortCallsMa
   [VesselPortCallsMasterListColumns.etb]: 'etb',
   [VesselPortCallsMasterListColumns.etd]: 'etd',
   [VesselPortCallsMasterListColumns.portCallId]: 'portCallId',
-  [VesselPortCallsMasterListColumns.service]: 'Service_Name',
+  [VesselPortCallsMasterListColumns.service]: 'Service_Name'
 };

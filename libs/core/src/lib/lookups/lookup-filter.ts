@@ -20,7 +20,14 @@ export class LookupFilter implements ILookupFilter {
   pageSize?: number;
   sorts?: any[];
 
-  constructor({ startsWith, contains, page, pageSize, includeInactive, sorts }: Partial<LookupFilter> = {}) {
+  constructor({
+    startsWith,
+    contains,
+    page,
+    pageSize,
+    includeInactive,
+    sorts
+  }: Partial<LookupFilter> = {}) {
     // Note: Keys with it's value undefined will be omitted from the query string.
     // Note: We do not want to include default values, backend will handle default values,
     // Note: this way we keep clean request  urls.

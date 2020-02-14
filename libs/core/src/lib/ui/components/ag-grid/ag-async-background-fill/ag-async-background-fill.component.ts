@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
-import {DatabaseManipulation} from "@shiptech/core/legacy-cache/database-manipulation.service";
-import {IScheduleDashboardLabelConfigurationWithPromiseDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
-import {ICellRendererAngularComp} from "@ag-grid-community/angular";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { DatabaseManipulation } from '@shiptech/core/legacy-cache/database-manipulation.service';
+import { IScheduleDashboardLabelConfigurationWithPromiseDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
+import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,13 +10,11 @@ import {ICellRendererAngularComp} from "@ag-grid-community/angular";
   styleUrls: ['./ag-async-background-fill.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-export class AgAsyncBackgroundFillComponent implements OnInit, ICellRendererAngularComp {
-
+export class AgAsyncBackgroundFillComponent
+  implements OnInit, ICellRendererAngularComp {
   initParamsValues: IScheduleDashboardLabelConfigurationWithPromiseDto;
 
-  constructor(private databaseManipulation: DatabaseManipulation) {
-  }
+  constructor(private databaseManipulation: DatabaseManipulation) {}
 
   async agInit(params: any): Promise<void> {
     this.initParamsValues = params.value;
@@ -24,9 +22,11 @@ export class AgAsyncBackgroundFillComponent implements OnInit, ICellRendererAngu
   }
 
   async returnColor(): Promise<string> {
-    return this.databaseManipulation.getStatusColorFromDashboard(this.initParamsValues.id, this.initParamsValues.transactionTypeId);
+    return this.databaseManipulation.getStatusColorFromDashboard(
+      this.initParamsValues.id,
+      this.initParamsValues.transactionTypeId
+    );
   }
-
 
   refresh(params: any): boolean {
     /** Get the cell to refresh. Return true if successful. Return false if not (or you don't have refresh logic),
@@ -35,6 +35,5 @@ export class AgAsyncBackgroundFillComponent implements OnInit, ICellRendererAngu
     return true;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

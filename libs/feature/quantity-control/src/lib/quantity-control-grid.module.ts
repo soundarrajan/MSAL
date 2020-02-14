@@ -9,14 +9,19 @@ import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
-import {AgGridModule} from "@ag-grid-community/angular";
+import { AgGridModule } from '@ag-grid-community/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     AgGridExtensionsModule,
     AgGridModule.withComponents([
-      AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent, AgCheckBoxHeaderComponent, AgCheckBoxRendererComponent
+      AgCellTemplateComponent,
+      AgColumnHeaderComponent,
+      AgColumnGroupHeaderComponent,
+      AgDatePickerComponent,
+      AgCheckBoxHeaderComponent,
+      AgCheckBoxRendererComponent
     ]),
     FormsModule,
     ReactiveFormsModule,
@@ -24,5 +29,4 @@ import {AgGridModule} from "@ag-grid-community/angular";
   ],
   exports: [AgGridModule, AgGridExtensionsModule]
 })
-export class QuantityControlGridModule {
-}
+export class QuantityControlGridModule {}

@@ -13,13 +13,7 @@ import { SpinnerModule } from 'primeng/spinner';
     DropdownModule,
     SpinnerModule
   ],
-  declarations: [
-    AgPagingComponent
-  ],
-  exports: [
-    DropdownModule,
-    AgPagingComponent
-  ]
+  declarations: [AgPagingComponent],
+  exports: [DropdownModule, AgPagingComponent]
 })
-export class AgPagingModule {
-}
+export class AgPagingModule {}

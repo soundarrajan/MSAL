@@ -4,7 +4,15 @@ import { first, tap } from 'rxjs/operators';
 
 // Note: Doing this because of log method that is not exported from JSNLog
 export interface ILazyJSNLogAjaxAppender extends JL.JSNLogAjaxAppender {
-  log?(level: string, msg: string, meta: any, callback: () => void, levelNbr: number, message: string, loggerName: string): void;
+  log?(
+    level: string,
+    msg: string,
+    meta: any,
+    callback: () => void,
+    levelNbr: number,
+    message: string,
+    loggerName: string
+  ): void;
 
   log?(...args: any[]): void;
 }
@@ -43,7 +51,9 @@ export class LazyAjaxAppender implements JL.JSNLogAjaxAppender {
   }
   setOptions(options: JL.JSNLogAjaxAppenderOptions): JL.JSNLogAjaxAppender;
   setOptions(options: JL.JSNLogAppenderOptions): JL.JSNLogAppender;
-  setOptions(options: JL.JSNLogAjaxAppenderOptions | JL.JSNLogAppenderOptions): JL.JSNLogAjaxAppender | JL.JSNLogAppender {
+  setOptions(
+    options: JL.JSNLogAjaxAppenderOptions | JL.JSNLogAppenderOptions
+  ): JL.JSNLogAjaxAppender | JL.JSNLogAppender {
     return this.ajaxAppender.setOptions(options);
   }
 

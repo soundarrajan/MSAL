@@ -1,43 +1,44 @@
-import {ICompleteListItemDto} from '../../../services/api/dto/invoice-complete-list-item.dto';
-import {ChangeDetectorRef, Injectable} from '@angular/core';
-import {BaseGridViewModel} from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
-import {GridOptions, IServerSideGetRowsParams} from '@ag-grid-community/core';
-import {ITypedColDef, RowModelType, RowSelection} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {InvoiceListColumns, InvoiceListColumnServerKeys, InvoiceListColumnsLabels} from '../../view-model/invoice-list.columns';
-import {AgColumnPreferencesService} from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
-import {ModuleLoggerFactory} from '../../../../../../quantity-control/src/lib/core/logging/module-logger-factory';
-import {TenantFormattingService} from '@shiptech/core/services/formatting/tenant-formatting.service';
-import {InvoiceCompleteService} from '../../../services/invoice-complete.service';
-import {AppErrorHandler} from '@shiptech/core/error-handling/app-error-handler';
-import {transformLocalToServeGridInfo} from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
-import {takeUntil} from 'rxjs/operators';
-import {ILookupDto} from '@shiptech/core/lookups/lookup-dto.interface';
-import {AgCellTemplateComponent} from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import {IInvoiceListItemDto} from '../../../services/api/dto/invoice-list-item.dto';
-import {ModuleError} from '../../../core/error-handling/module-error';
-import {DatabaseManipulation} from "@shiptech/core/legacy-cache/database-manipulation.service";
-import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
-import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
+import { ICompleteListItemDto } from '../../../services/api/dto/invoice-complete-list-item.dto';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
+import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
+import {
+  ITypedColDef,
+  RowModelType,
+  RowSelection
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  InvoiceListColumns,
+  InvoiceListColumnServerKeys,
+  InvoiceListColumnsLabels
+} from '../../view-model/invoice-list.columns';
+import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
+import { ModuleLoggerFactory } from '../../../../../../quantity-control/src/lib/core/logging/module-logger-factory';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { InvoiceCompleteService } from '../../../services/invoice-complete.service';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
+import { takeUntil } from 'rxjs/operators';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
+import { IInvoiceListItemDto } from '../../../services/api/dto/invoice-list-item.dto';
+import { ModuleError } from '../../../core/error-handling/module-error';
+import { DatabaseManipulation } from '@shiptech/core/legacy-cache/database-manipulation.service';
+import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
+import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
 
 function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
   return prop;
 }
 
-async function getColorFromDashboard(columnId: number, transactionId: number): Promise<void> {
-  await this.databaseManipulation.getStatusColorFromDashboard(columnId, transactionId).then((result: string) => result);
-}
-
-
 @Injectable()
 export class InvoiceListGridViewModel extends BaseGridViewModel {
-
-  private defaultColFilterParams = {
+  public searchText: string;
+  public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
-
-  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -55,7 +56,8 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: ICompleteListItemDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: ICompleteListItemDto) =>
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -259,7 +261,10 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceStatusCol: ITypedColDef<IInvoiceListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  invoiceStatusCol: ITypedColDef<
+    IInvoiceListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.invoiceStatus,
     colId: InvoiceListColumns.invoiceStatus,
     field: model('invoiceStatus'),
@@ -315,7 +320,10 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  orderStatusCol: ITypedColDef<IInvoiceListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  orderStatusCol: ITypedColDef<
+    IInvoiceListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.orderStatus,
     colId: InvoiceListColumns.orderStatus,
     field: model('orderStatus'),
@@ -332,7 +340,10 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceApprovalStatusCol: ITypedColDef<IInvoiceListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  invoiceApprovalStatusCol: ITypedColDef<
+    IInvoiceListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.invoiceApprovalStatus,
     colId: InvoiceListColumns.invoiceApprovalStatus,
     field: model('invoiceApprovalStatus'),
@@ -350,7 +361,12 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     private appErrorHandler: AppErrorHandler,
     private databaseManipulation: DatabaseManipulation
   ) {
-    super('invoice-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(InvoiceListGridViewModel.name));
+    super(
+      'invoice-list-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(InvoiceListGridViewModel.name)
+    );
     this.init(this.gridOptions, true);
   }
 
@@ -398,8 +414,13 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     this.gridApi.purgeServerSideCache();
   }
 
-  public async getColorFromDashboard(columnId: number, transactionId: number): Promise<void> {
-    await this.databaseManipulation.getStatusColorFromDashboard(columnId, transactionId).then((result: string) => result);
+  public async getColorFromDashboard(
+    columnId: number,
+    transactionId: number
+  ): Promise<void> {
+    await this.databaseManipulation
+      .getStatusColorFromDashboard(columnId, transactionId)
+      .then((result: string) => result);
   }
 
   public getParameters(data: any): string {
@@ -408,14 +429,23 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getInvoiceList$(transformLocalToServeGridInfo(this.gridApi, params, InvoiceListColumnServerKeys, this.searchText))
+    this.reportService
+      .getInvoiceList$(
+        transformLocalToServeGridInfo(
+          this.gridApi,
+          params,
+          InvoiceListColumnServerKeys,
+          this.searchText
+        )
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => params.successCallback(response.payload, response.matchedCount),
+        response =>
+          params.successCallback(response.payload, response.matchedCount),
         () => {
           this.appErrorHandler.handleError(ModuleError.LoadInvoiceListFailed);
           params.failCallback();
-        });
+        }
+      );
   }
-
 }

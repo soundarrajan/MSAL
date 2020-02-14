@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { QcReportsListGridViewModel } from './view-model/qc-reports-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { Observable, Subject } from 'rxjs';
@@ -23,10 +30,12 @@ import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-st
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportsListComponent implements OnInit, OnDestroy {
-
   @Select(QcReportsListState.nbOfMatched) nbOfMatched$: Observable<number>;
-  @Select(QcReportsListState.nbOfMatchedWithinLimit) nbOfMatchedWithinLimit$: Observable<number>;
-  @Select(QcReportsListState.nbOfNotMatched) nbOfNotMatched$: Observable<number>;
+  @Select(QcReportsListState.nbOfMatchedWithinLimit)
+  nbOfMatchedWithinLimit$: Observable<number>;
+  @Select(QcReportsListState.nbOfNotMatched) nbOfNotMatched$: Observable<
+    number
+  >;
 
   public reportDetailsRoutePath = `../${KnownQuantityControlRoutes.Report}`;
   knownRoutes = KnownQuantityControlRoutes;
@@ -34,17 +43,17 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: QcReportsListGridViewModel,
-              public appConfig: AppConfig,
-              public reconStatusLookups: ReconStatusLookup,
-              private messageBox: MessageBoxService,
-              private reportService: QcReportService,
-              private toastr: ToastrService,
-              private surveyStatusLookups: StatusLookup,
-              private router: Router,
-              private activatedRoute: ActivatedRoute
-  ) {
-  }
+  constructor(
+    public gridViewModel: QcReportsListGridViewModel,
+    public appConfig: AppConfig,
+    public reconStatusLookups: ReconStatusLookup,
+    private messageBox: MessageBoxService,
+    private reportService: QcReportService,
+    private toastr: ToastrService,
+    private surveyStatusLookups: StatusLookup,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
@@ -55,17 +64,23 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   }
 
   showModal(data: any): void {
-    this.messageBox.displayDialog({ data, width: '500px', height: '600px' }, this.popupTemplate);
+    this.messageBox.displayDialog(
+      { data, width: '500px', height: '600px' },
+      this.popupTemplate
+    );
   }
 
   newReport(): void {
-    this.router.navigate([this.reportDetailsRoutePath, 0], { relativeTo: this.activatedRoute });
+    this.router.navigate([this.reportDetailsRoutePath, 0], {
+      relativeTo: this.activatedRoute
+    });
   }
 
   verifyVessels(): void {
     const gridApi = this.gridViewModel.gridOptions.api;
 
-    const selectedReports: TypedRowNode<IQcReportsListItemDto>[] = gridApi.getSelectedNodes() || [];
+    const selectedReports: TypedRowNode<IQcReportsListItemDto>[] =
+      gridApi.getSelectedNodes() || [];
 
     if (!selectedReports.length) {
       this.toastr.warning('Please select at least one report.');
@@ -74,35 +89,44 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
 
     const reportIds = selectedReports.map(rowNode => rowNode.data.id);
 
-    this.reportService.verifyVesselReports$(reportIds)
-      .subscribe(() => {
-        gridApi.deselectAll();
-        selectedReports.forEach(r => r.updateData({...r.data, surveyStatus: this.surveyStatusLookups.verified}));
+    this.reportService.verifyVesselReports$(reportIds).subscribe(() => {
+      gridApi.deselectAll();
+      selectedReports.forEach(r =>
+        r.updateData({
+          ...r.data,
+          surveyStatus: this.surveyStatusLookups.verified
+        })
+      );
 
-        // Note: Force redraw of checkbox.
-        gridApi.redrawRows({
-          rowNodes: selectedReports as RowNode[]
-        });
-
-        this.toastr.success(`Report(s) have been marked for verification.`);
+      // Note: Force redraw of checkbox.
+      gridApi.redrawRows({
+        rowNodes: selectedReports as RowNode[]
       });
+
+      this.toastr.success(`Report(s) have been marked for verification.`);
+    });
   }
 
   openEmailPreview(): void {
     const gridApi = this.gridViewModel.gridOptions.api;
 
-    const selectedReports: TypedRowNode<IQcReportsListItemDto>[] = (gridApi.getSelectedNodes() || []);
+    const selectedReports: TypedRowNode<IQcReportsListItemDto>[] =
+      gridApi.getSelectedNodes() || [];
 
     if (selectedReports.length !== 1) {
       this.toastr.warning('Please select one report.');
       return;
     }
 
-    this.reportService.previewEmail$(selectedReports[0].data.id, selectedReports[0].data.emailTransactionTypeId).subscribe();
+    this.reportService
+      .previewEmail$(
+        selectedReports[0].data.id,
+        selectedReports[0].data.emailTransactionTypeId
+      )
+      .subscribe();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   verifySludgeReport(item: IQcReportsListItemDto, isChecked: boolean): void {
     this.reportService.markSludgeVerification$(item.id, isChecked).subscribe();
@@ -116,5 +140,4 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 }

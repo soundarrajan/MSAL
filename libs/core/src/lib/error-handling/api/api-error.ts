@@ -15,16 +15,26 @@ export enum ApiErrorCode {
 export class ApiError<T = any> implements IApiError<T> {
   // noinspection JSUnusedGlobalSymbols
   static readonly Unknown = new ApiError();
-  static readonly MockError = new ApiError({ errorCode: ApiErrorCode.Mock, developerMessage: 'Mock error.' });
+  static readonly MockError = new ApiError({
+    errorCode: ApiErrorCode.Mock,
+    developerMessage: 'Mock error.'
+  });
 
   readonly developerMessage: string;
   readonly errorCode: number;
   readonly statusCode: number;
   readonly details?: T;
 
-  constructor({ errorCode, developerMessage, details, statusCode }: Partial<IApiError> = {}) {
+  constructor({
+    errorCode,
+    developerMessage,
+    details,
+    statusCode
+  }: Partial<IApiError> = {}) {
     this.errorCode = errorCode || ApiErrorCode.Unknown;
-    this.developerMessage = developerMessage || 'An unknown server error has occurred. Please try again later.';
+    this.developerMessage =
+      developerMessage ||
+      'An unknown server error has occurred. Please try again later.';
     this.details = details;
     this.statusCode = statusCode || 500;
   }

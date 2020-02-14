@@ -1,4 +1,8 @@
-import { IRelatedLinkItem, IRelatedLinksRouteData, RelatedLinksComponent } from '@shiptech/core/ui/components/related-links/related-links.component';
+import {
+  IRelatedLinkItem,
+  IRelatedLinksRouteData,
+  RelatedLinksComponent
+} from '@shiptech/core/ui/components/related-links/related-links.component';
 import { Route } from '@angular/router';
 import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
 import { EntityType } from '@shiptech/core/services/entity-related-links/model/entity-related-links.model';
@@ -19,7 +23,11 @@ export const AllEntityRelatedLinks: IRelatedLinkItem[] = [
   { label: 'Recon', id: EntityType.Recon }
 ];
 
-export function relatedLinksRouteDefinition(currentRouteLinkType: EntityType, entityIdRouteParam: string, availableLinks: IRelatedLinkItem[] = AllEntityRelatedLinks): IRelatedLinksRouteDefinition {
+export function relatedLinksRouteDefinition(
+  currentRouteLinkType: EntityType,
+  entityIdRouteParam: string,
+  availableLinks: IRelatedLinkItem[] = AllEntityRelatedLinks
+): IRelatedLinksRouteDefinition {
   return <IRelatedLinksRouteDefinition>{
     outlet: KnownNamedRouterOutlets.breadcrumbsRight,
     path: '',

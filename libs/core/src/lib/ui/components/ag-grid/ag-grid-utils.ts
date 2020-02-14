@@ -11,16 +11,33 @@ export const BooleanFilterParams = {
       displayKey: AgGridConditionTypeEnum.YES,
       displayName: 'Yes',
       hideFilterInput: true,
-      test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null && (cellValue.toString().toLowerCase() === '1' || cellValue.toString().toLowerCase() === 'true')
-    }, {
+      test: (filterValue: any, cellValue: any) =>
+        cellValue !== undefined &&
+        cellValue !== null &&
+        (cellValue.toString().toLowerCase() === '1' ||
+          cellValue.toString().toLowerCase() === 'true')
+    },
+    {
       displayKey: AgGridConditionTypeEnum.NO,
       displayName: 'No',
       hideFilterInput: true,
-      test: (filterValue: any, cellValue: any) => cellValue !== undefined && cellValue !== null && (cellValue.toString().toLowerCase() === '0' || cellValue?.toString().toLowerCase() === 'false')
-    }]
+      test: (filterValue: any, cellValue: any) =>
+        cellValue !== undefined &&
+        cellValue !== null &&
+        (cellValue.toString().toLowerCase() === '0' ||
+          cellValue?.toString().toLowerCase() === 'false')
+    }
+  ]
 };
 
-export function refreshCellAsync<TData = any, TField = any>(params: ITypedValueParams<TData, TField>): boolean {
-  setTimeout(() => params.api.refreshCells({ columns: [params.colDef.colId], rowNodes: [params.node] }));
+export function refreshCellAsync<TData = any, TField = any>(
+  params: ITypedValueParams<TData, TField>
+): boolean {
+  setTimeout(() =>
+    params.api.refreshCells({
+      columns: [params.colDef.colId],
+      rowNodes: [params.node]
+    })
+  );
   return true;
 }

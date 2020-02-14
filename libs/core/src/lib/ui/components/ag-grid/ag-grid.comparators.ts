@@ -1,6 +1,14 @@
-export function defaultComparer(valueA: any, valueB: any, accentedCompare: boolean = false): number {
+export function defaultComparer(
+  valueA: any,
+  valueB: any,
+  accentedCompare: boolean = false
+): number {
   const valueAMissing = valueA === null || valueA === undefined;
   const valueBMissing = valueB === null || valueB === undefined;
+
+  function doQuickCompare(a: string, b: string): number {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  }
 
   // Note: Currently ag-grid does a lexicographically compare of strings which is not natural
   // Note: We took the default comparer from ag-grid source and updated it to comapre with localCompare
@@ -47,9 +55,5 @@ export function defaultComparer(valueA: any, valueB: any, accentedCompare: boole
     return 1;
   } else {
     return 0;
-  }
-
-  function doQuickCompare(a: string, b: string): number {
-    return a.toLowerCase().localeCompare(b.toLowerCase());
   }
 }

@@ -7,7 +7,11 @@ import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { AppConfig } from '../../../config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
 import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
-import { EntityRelatedLinksRequest, EntityRelatedLinksResponse, EntityTypeIdField } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+import {
+  EntityRelatedLinksRequest,
+  EntityRelatedLinksResponse,
+  EntityTypeIdField
+} from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 
 export const EntityRelatedLinksApiPaths = {
   get: () => `api/infrastructure/navbar/navbaridslist`
@@ -16,22 +20,34 @@ export const EntityRelatedLinksApiPaths = {
 @Injectable({
   providedIn: 'root'
 })
-export class EntityRelatedLinksApi extends ApiServiceBase implements IEntityRelatedLinksApi {
+export class EntityRelatedLinksApi extends ApiServiceBase
+  implements IEntityRelatedLinksApi {
   @ApiCallUrl()
   protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
-  constructor(private http: HttpClient, private appConfig: AppConfig, loggerFactory: LoggerFactory) {
+  constructor(
+    private http: HttpClient,
+    private appConfig: AppConfig,
+    loggerFactory: LoggerFactory
+  ) {
     super(http, loggerFactory.createLogger(EntityRelatedLinksApi.name));
   }
 
   // TODO: Refactor tp use Request/Response format
   @ObservableException()
-  public getRelatedLinksForEntity(entityTypeIdField: EntityTypeIdField, id: any): Observable<EntityRelatedLinksResponse> {
-    return this.http.post<EntityRelatedLinksResponse>(`${this._apiUrl}/${EntityRelatedLinksApiPaths.get()}`,
+  public getRelatedLinksForEntity(
+    entityTypeIdField: EntityTypeIdField,
+    id: any
+  ): Observable<EntityRelatedLinksResponse> {
+    return this.http.post<EntityRelatedLinksResponse>(
+      `${this._apiUrl}/${EntityRelatedLinksApiPaths.get()}`,
       this.Request<EntityRelatedLinksRequest>({
         [entityTypeIdField]: id
-      }));
+      })
+    );
   }
 }
 
-export const ENTITY_RELATED_LINKS_API = new InjectionToken<IEntityRelatedLinksApi>('IEntityRelatedLinksApi');
+export const ENTITY_RELATED_LINKS_API = new InjectionToken<
+  IEntityRelatedLinksApi
+>('IEntityRelatedLinksApi');

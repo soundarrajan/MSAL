@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { KnownQuantityControlRoutes } from '../../../../../known-quantity-control.routes';
 import { Observable, Subject } from 'rxjs';
 import { QcSurveyHistoryListGridViewModel } from './view-model/qc-survey-history-list-grid.view-model';
@@ -17,11 +24,11 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
-
   public reportDetailsRoutePath = `/${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.Report}`;
 
   @Select(QcReportState.nbOfMatched) nbOfMatched$: Observable<number>;
-  @Select(QcReportState.nbOfMatchedWithinLimit) nbOfMatchedWithinLimit$: Observable<number>;
+  @Select(QcReportState.nbOfMatchedWithinLimit)
+  nbOfMatchedWithinLimit$: Observable<number>;
   @Select(QcReportState.nbOfNotMatched) nbOfNotMatched$: Observable<number>;
 
   matchStatus$: Observable<IReconStatusLookupDto>;
@@ -31,8 +38,14 @@ export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: QcSurveyHistoryListGridViewModel, private store: Store, public reconStatusLookups: ReconStatusLookup) {
-    this.matchStatus$ = this.store.select(QcReportState.matchStatus).pipe(map(s => reconStatusLookups.toReconStatus(s)));
+  constructor(
+    public gridViewModel: QcSurveyHistoryListGridViewModel,
+    private store: Store,
+    public reconStatusLookups: ReconStatusLookup
+  ) {
+    this.matchStatus$ = this.store
+      .select(QcReportState.matchStatus)
+      .pipe(map(s => reconStatusLookups.toReconStatus(s)));
   }
 
   onPageChange(page: number): void {
@@ -43,9 +56,7 @@ export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

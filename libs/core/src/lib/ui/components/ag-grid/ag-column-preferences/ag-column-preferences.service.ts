@@ -1,11 +1,22 @@
-import {Inject, Injectable, OnDestroy, Optional} from '@angular/core';
-import {GridOptions} from '@ag-grid-community/core';
-import {EMPTY, Observable, Subject} from 'rxjs';
-import {debounceTime, filter, groupBy, mergeMap, switchMap, tap, throttleTime} from 'rxjs/operators';
+import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
+import { GridOptions } from '@ag-grid-community/core';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import {
+  debounceTime,
+  filter,
+  groupBy,
+  mergeMap,
+  switchMap,
+  tap,
+  throttleTime
+} from 'rxjs/operators';
 import * as _ from 'lodash';
-import {LocalPreferenceService} from '../../../../services/preference-storage/local-preference.service';
-import {IPreferenceStorage, PREFERENCE_STORAGE} from '../../../../services/preference-storage/preference-storage.interface';
-import {ITypedColumnState} from "@shiptech/core/ui/components/ag-grid/type.definition";
+import { LocalPreferenceService } from '../../../../services/preference-storage/local-preference.service';
+import {
+  IPreferenceStorage,
+  PREFERENCE_STORAGE
+} from '../../../../services/preference-storage/preference-storage.interface';
+import { ITypedColumnState } from '@shiptech/core/ui/components/ag-grid/type.definition';
 
 interface IGridRegistration {
   name: string;
@@ -15,10 +26,9 @@ interface IGridRegistration {
 }
 
 interface IAgGridSortModel {
-  colId: string,
-  sort: string
+  colId: string;
+  sort: string;
 }
-
 
 interface IGridPreferences {
   gridName: string;
@@ -26,7 +36,13 @@ interface IGridPreferences {
   sortState: IAgGridSortModel[];
 }
 
-const GridMonitorEvents = ['gridColumnsChanged', 'displayedColumnsChanged', 'columnResized', 'columnEverythingChanged', 'sortChanged'];
+const GridMonitorEvents = [
+  'gridColumnsChanged',
+  'displayedColumnsChanged',
+  'columnResized',
+  'columnEverythingChanged',
+  'sortChanged'
+];
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +51,11 @@ export class AgColumnPreferencesService implements OnDestroy {
   private _savePreferences = new Subject<IGridPreferences>();
   private _watches: IGridRegistration[] = [];
   private _storage: IPreferenceStorage;
-  private _storageKey = (gridName: string) => `${gridName}_ColumnPreference`;
 
-  constructor(@Inject(PREFERENCE_STORAGE) @Optional() private storage: IPreferenceStorage, defaultStorage: LocalPreferenceService) {
+  constructor(
+    @Inject(PREFERENCE_STORAGE) @Optional() private storage: IPreferenceStorage,
+    defaultStorage: LocalPreferenceService
+  ) {
     this._storage = storage || defaultStorage;
 
     // Note: Aligned grids will each try to save it's preferences when a column state changes.
@@ -48,7 +66,9 @@ export class AgColumnPreferencesService implements OnDestroy {
         mergeMap(group =>
           group.pipe(
             throttleTime(1000),
-            switchMap(request => this._storage.set(this._storageKey(request.gridName), request))
+            switchMap(request =>
+              this._storage.set(this._storageKey(request.gridName), request)
+            )
           )
         )
       )
@@ -64,7 +84,9 @@ export class AgColumnPreferencesService implements OnDestroy {
 
     const listener = () => columnsStateChanged$.next();
 
-    GridMonitorEvents.forEach(event => gridOptions.api.addEventListener(event, listener));
+    GridMonitorEvents.forEach(event =>
+      gridOptions.api.addEventListener(event, listener)
+    );
 
     columnsStateChanged$
       .pipe(
@@ -72,11 +94,13 @@ export class AgColumnPreferencesService implements OnDestroy {
         debounceTime(100),
         // Note: gridOptions may already by uninitializing
         filter(() => !!gridOptions.columnApi),
-        tap(() => this._savePreferences.next({
-          gridName,
-          columnState: gridOptions.columnApi.getColumnState(),
-          sortState: gridOptions.api.getSortModel()
-        }))
+        tap(() =>
+          this._savePreferences.next({
+            gridName,
+            columnState: gridOptions.columnApi.getColumnState(),
+            sortState: gridOptions.api.getSortModel()
+          })
+        )
       )
       .subscribe();
 
@@ -120,10 +144,14 @@ export class AgColumnPreferencesService implements OnDestroy {
           throw Error('Invalid grid state json.');
         }
 
-        const allColumnsSet = new Set<string>(options.columnApi.getAllColumns().map(column => column.getColId()));
+        const allColumnsSet = new Set<string>(
+          options.columnApi.getAllColumns().map(column => column.getColId())
+        );
 
         // Note: Restore only existing columns.
-        const columns = columnsState.filter(columnState => allColumnsSet.has(columnState.colId));
+        const columns = columnsState.filter(columnState =>
+          allColumnsSet.has(columnState.colId)
+        );
 
         if (columns.length === 0) {
           throw Error('Preferences contains no valid columns.');
@@ -135,7 +163,9 @@ export class AgColumnPreferencesService implements OnDestroy {
 
         // Note: Restore Sort
         // Note: Restore sort only existing columns.
-        const sortModels = sortState.filter(sortModel => allColumnsSet.has(sortModel.colId));
+        const sortModels = sortState.filter(sortModel =>
+          allColumnsSet.has(sortModel.colId)
+        );
 
         // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
         options.api.setSortModel(sortModels);
@@ -155,4 +185,5 @@ export class AgColumnPreferencesService implements OnDestroy {
   ngOnDestroy(): void {
     this._savePreferences.complete();
   }
+  private _storageKey = (gridName: string) => `${gridName}_ColumnPreference`;
 }

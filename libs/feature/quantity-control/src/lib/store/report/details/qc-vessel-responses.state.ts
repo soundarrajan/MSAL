@@ -1,9 +1,12 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IQcVesselBunkerResponseDto, IQcVesselResponsesDto, IQcVesselSludgeResponseDto } from '../../../services/api/dto/qc-vessel-response.dto';
+import {
+  IQcVesselBunkerResponseDto,
+  IQcVesselResponsesDto,
+  IQcVesselSludgeResponseDto
+} from '../../../services/api/dto/qc-vessel-response.dto';
 import _ from 'lodash';
 
 export class QcVesselResponseSludgeStateModel {
-
   activeCategory: IDisplayLookupDto;
   description: string;
   sludge?: number;
@@ -17,8 +20,8 @@ export class QcVesselResponseSludgeStateModel {
   }
 }
 
-export interface IQcVesselResponseSludgeState extends QcVesselResponseSludgeStateModel {
-}
+export interface IQcVesselResponseSludgeState
+  extends QcVesselResponseSludgeStateModel {}
 
 export class QcVesselResponseBunkerStateModel {
   activeCategory: IDisplayLookupDto;
@@ -30,9 +33,8 @@ export class QcVesselResponseBunkerStateModel {
   }
 }
 
-export interface IQcVesselResponseBunkerState extends QcVesselResponseBunkerStateModel {
-}
-
+export interface IQcVesselResponseBunkerState
+  extends QcVesselResponseBunkerStateModel {}
 
 export class QcVesselResponsesStateModel {
   categories: IDisplayLookupDto[] = [];
@@ -42,14 +44,18 @@ export class QcVesselResponsesStateModel {
   constructor(vesselResponsesDto: IQcVesselResponsesDto) {
     this.categories = vesselResponsesDto.categories;
 
-    this.sludge = new QcVesselResponseSludgeStateModel(vesselResponsesDto.sludge);
-    this.bunker = new QcVesselResponseBunkerStateModel(vesselResponsesDto.bunker);
+    this.sludge = new QcVesselResponseSludgeStateModel(
+      vesselResponsesDto.sludge
+    );
+    this.bunker = new QcVesselResponseBunkerStateModel(
+      vesselResponsesDto.bunker
+    );
 
-    this.sludge.activeCategory = this.sludge.activeCategory ?? _.first(this.categories);
-    this.bunker.activeCategory = this.bunker.activeCategory ?? _.first(this.categories);
+    this.sludge.activeCategory =
+      this.sludge.activeCategory ?? _.first(this.categories);
+    this.bunker.activeCategory =
+      this.bunker.activeCategory ?? _.first(this.categories);
   }
 }
 
-export interface IQcVesselResponsesState extends QcVesselResponsesStateModel {
-
-}
+export interface IQcVesselResponsesState extends QcVesselResponsesStateModel {}

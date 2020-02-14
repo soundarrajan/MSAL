@@ -57,30 +57,42 @@ export enum QcSurveyHistoryListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const QcSurveyHistoryListColumnServerKeys: Record<QcSurveyHistoryListColumns, string> = {
+export const QcSurveyHistoryListColumnServerKeys: Record<
+  QcSurveyHistoryListColumns,
+  string
+> = {
   [QcSurveyHistoryListColumns.portCallId]: 'id',
   [QcSurveyHistoryListColumns.portName]: 'portName',
   [QcSurveyHistoryListColumns.vesselName]: 'vesselName',
   [QcSurveyHistoryListColumns.surveyDate]: 'surveyDate',
   [QcSurveyHistoryListColumns.surveyStatus]: 'SurveyStatus_DisplayName',
   [QcSurveyHistoryListColumns.qtyMatchedStatus]: 'QtyMatchedStatus_DisplayName',
-  [QcSurveyHistoryListColumns.logBookRobBeforeDelivery]: 'logBookRobBeforeDelivery',
-  [QcSurveyHistoryListColumns.measuredRobBeforeDelivery]: 'measuredRobBeforeDelivery',
+  [QcSurveyHistoryListColumns.logBookRobBeforeDelivery]:
+    'logBookRobBeforeDelivery',
+  [QcSurveyHistoryListColumns.measuredRobBeforeDelivery]:
+    'measuredRobBeforeDelivery',
   [QcSurveyHistoryListColumns.diffRobBeforeDelivery]: 'diffRobBeforeDelivery',
-  [QcSurveyHistoryListColumns.qtyBeforeDeliveryUom]: 'QtyBeforeDeliveryUom_Name',
+  [QcSurveyHistoryListColumns.qtyBeforeDeliveryUom]:
+    'QtyBeforeDeliveryUom_Name',
   [QcSurveyHistoryListColumns.bdnQuantity]: 'bdnQuantity',
   [QcSurveyHistoryListColumns.measuredDeliveredQty]: 'measuredDeliveredQty',
   [QcSurveyHistoryListColumns.diffDeliveredQty]: 'diffDeliveredQty',
   [QcSurveyHistoryListColumns.qtyDeliveredUom]: 'QtyDeliveredUom_DisplayName',
-  [QcSurveyHistoryListColumns.logBookRobAfterDelivery]: 'logBookRobAfterDelivery',
-  [QcSurveyHistoryListColumns.measuredRobAfterDelivery]: 'measuredRobAfterDelivery',
+  [QcSurveyHistoryListColumns.logBookRobAfterDelivery]:
+    'logBookRobAfterDelivery',
+  [QcSurveyHistoryListColumns.measuredRobAfterDelivery]:
+    'measuredRobAfterDelivery',
   [QcSurveyHistoryListColumns.diffRobAfterDelivery]: 'diffRobAfterDelivery',
   [QcSurveyHistoryListColumns.qtyAfterDeliveryUom]: 'QtyAfterDeliveryUom_Name',
-  [QcSurveyHistoryListColumns.logBookSludgeRobBeforeDischarge]: 'logBookSludgeRobBeforeDischarge',
-  [QcSurveyHistoryListColumns.measuredSludgeRobBeforeDischarge]: 'measuredSludgeRobBeforeDischarge',
-  [QcSurveyHistoryListColumns.diffSludgeRobBeforeDischarge]: 'diffSludgeRobBeforeDischarge',
+  [QcSurveyHistoryListColumns.logBookSludgeRobBeforeDischarge]:
+    'logBookSludgeRobBeforeDischarge',
+  [QcSurveyHistoryListColumns.measuredSludgeRobBeforeDischarge]:
+    'measuredSludgeRobBeforeDischarge',
+  [QcSurveyHistoryListColumns.diffSludgeRobBeforeDischarge]:
+    'diffSludgeRobBeforeDischarge',
   [QcSurveyHistoryListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
-  [QcSurveyHistoryListColumns.qtySludgeDischargedUom]: 'QtySludgeDischargedUom_Name',
+  [QcSurveyHistoryListColumns.qtySludgeDischargedUom]:
+    'QtySludgeDischargedUom_Name',
   [QcSurveyHistoryListColumns.comment]: 'comment',
   [QcSurveyHistoryListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
 };

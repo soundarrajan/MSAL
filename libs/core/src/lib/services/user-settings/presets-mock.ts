@@ -1,7 +1,27 @@
 import * as _ from 'lodash';
-import { IUserSettingResponse } from './request-response';
+import {IUserSettingResponse} from './request-response';
 
-export const mockFilterPresets = (groupId: string, gridName: string, n = 5): IUserSettingResponse => {
+export function getFilterModels(n: number = 5): any {
+  const presets = [
+    ..._.range(1, n).map(() => ({
+      id: Math.random()
+        .toString(36)
+        .replace(/[^a-z]+/g, '')
+        .substr(0, 5),
+      dateTo: null,
+      dateFrom: '2019-01-20',
+      type: 'equals',
+      filterType: 'date'
+    }))
+  ];
+
+  return _.keyBy(presets, 'id');
+}
+
+export const mockFilterPresets = (
+  groupId: string,
+  gridName: string
+): IUserSettingResponse => {
   const value = {
     [groupId]: [
       {
@@ -18,13 +38,8 @@ export const mockFilterPresets = (groupId: string, gridName: string, n = 5): IUs
   return { value };
 };
 
-export const mockFilterPresetsList = (n: number = 5): IUserSettingResponse => {
-  const value = getFilterPresets(n);
-  return { value };
-};
-
 export function getFilterPresets(n: number = 5): any[] {
-  const presets = [
+  return [
     ..._.range(1, n).map(id => ({
       [id]: [
         {
@@ -43,23 +58,9 @@ export function getFilterPresets(n: number = 5): any[] {
       ]
     }))
   ];
-
-  return presets;
 }
 
-export function getFilterModels(n: number = 5): any {
-  const presets = [
-    ..._.range(1, n).map(id => ({
-      id: Math.random()
-        .toString(36)
-        .replace(/[^a-z]+/g, '')
-        .substr(0, 5),
-      dateTo: null,
-      dateFrom: '2019-01-20',
-      type: 'equals',
-      filterType: 'date'
-    }))
-  ];
-
-  return _.keyBy(presets, 'id');
-}
+export const mockFilterPresetsList = (n: number = 5): IUserSettingResponse => {
+  const value = getFilterPresets(n);
+  return { value };
+};

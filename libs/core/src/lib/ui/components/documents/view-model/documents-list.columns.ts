@@ -31,7 +31,10 @@ export enum DocumentsListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const DocumentsListColumnServerKeys: Record<DocumentsListColumns, string> = {
+export const DocumentsListColumnServerKeys: Record<
+  DocumentsListColumns,
+  string
+> = {
   [DocumentsListColumns.name]: 'name',
   [DocumentsListColumns.size]: 'size',
   [DocumentsListColumns.documentType]: 'documentType_DisplayName',

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
+import {
+  ApiCall,
+  ApiCallForwardTo
+} from '@shiptech/core/utils/decorators/api-call.decorator';
 import { IAuditLogApiService } from '@shiptech/core/services/admin-api/audit-log-api.service.interface';
 import { AuditLogApi } from '@shiptech/core/services/admin-api/audit-log-api.service';
 import {
@@ -10,10 +13,9 @@ import {
 import { getMockAuditLog } from '@shiptech/core/services/admin-api/mock-data/audit-log.mock';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuditLogApiMock implements IAuditLogApiService {
-
   @ApiCallForwardTo() realService: AuditLogApi;
 
   constructor(realService: AuditLogApi) {

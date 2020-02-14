@@ -1,7 +1,10 @@
 import { GridApi } from '@ag-grid-community/core';
 import { fromEventPattern, Observable, throwError } from 'rxjs';
 
-export function fromGridEvent<T = any>(gridApi: GridApi, event: AgGridEventsEnum): Observable<T> {
+export function fromGridEvent<T = any>(
+  gridApi: GridApi,
+  event: AgGridEventsEnum
+): Observable<T> {
   if (!gridApi) {
     return throwError('Grid is not ready yet');
   }

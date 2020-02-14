@@ -5,5 +5,5 @@ export enum KnownQuantityControlRoutes {
   ReportIdParam = 'reportId',
   ReportAuditPath = 'audit-log',
   ReportDocumentsPath = 'documents',
-  ReportEmailLogPath = 'email-log',
+  ReportEmailLogPath = 'email-log'
 }

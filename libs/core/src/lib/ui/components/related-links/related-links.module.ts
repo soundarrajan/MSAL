@@ -4,19 +4,11 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-
-  declarations: [
-    RelatedLinksComponent
-  ],
+  declarations: [RelatedLinksComponent],
   providers: [],
-  imports: [
-    RouterModule,
-    CommonModule
-  ],
+  imports: [RouterModule, CommonModule],
   exports: [RelatedLinksComponent]
 })
 export class RelatedLinksModule {
-  constructor() {
-  }
+  constructor() {}
 }
-

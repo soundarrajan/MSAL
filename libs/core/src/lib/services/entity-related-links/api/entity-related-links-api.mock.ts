@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ApiCall, ApiCallForwardTo } from '../../../utils/decorators/api-call.decorator';
+import {
+  ApiCall,
+  ApiCallForwardTo
+} from '../../../utils/decorators/api-call.decorator';
 import { ObservableException } from '../../../utils/decorators/observable-exception.decorator';
 import { Store } from '@ngxs/store';
 import { IEntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api.interface';
 import { EntityRelatedLinksApi } from '@shiptech/core/services/entity-related-links/api/entity-related-links-api';
-import { EntityRelatedLinksResponse, EntityTypeIdField } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
+import {
+  EntityRelatedLinksResponse,
+  EntityTypeIdField
+} from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +25,10 @@ export class EntityRelatedLinksApiMock implements IEntityRelatedLinksApi {
 
   @ObservableException()
   @ApiCall()
-  getRelatedLinksForEntity(entityTypeIdField: EntityTypeIdField, id: any): Observable<EntityRelatedLinksResponse>{
+  getRelatedLinksForEntity(
+    entityTypeIdField: EntityTypeIdField,
+    id: any
+  ): Observable<EntityRelatedLinksResponse> {
     return of({
       [EntityTypeIdField.Request]: 1,
       [EntityTypeIdField.Offer]: 2,

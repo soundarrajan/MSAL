@@ -1,7 +1,7 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
-export interface IToleranceUomDto extends IDisplayLookupDto{
+export interface IToleranceUomDto extends IDisplayLookupDto {
   minTolerance: number;
   maxTolerance: number;
 }

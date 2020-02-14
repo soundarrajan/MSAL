@@ -1,4 +1,10 @@
-import { Directive, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
 import { ITemplateRendererParams } from './ag-cell-template.component';
 import { ITypedCellRendererColDef } from '../type.definition';
 
@@ -7,7 +13,9 @@ import { ITypedCellRendererColDef } from '../type.definition';
   selector: '[appAgCellTemplate]'
 })
 export class AgCellTemplateDirective implements OnChanges {
-  @Input() columnDef: ITypedCellRendererColDef<ITemplateRendererParams> | ITypedCellRendererColDef<ITemplateRendererParams>[];
+  @Input() columnDef:
+    | ITypedCellRendererColDef<ITemplateRendererParams>
+    | ITypedCellRendererColDef<ITemplateRendererParams>[];
 
   constructor(public template: TemplateRef<any>) {}
 
@@ -22,7 +30,8 @@ export class AgCellTemplateDirective implements OnChanges {
         colDef.cellRendererParams.ngTemplate = this.template;
       });
     } else {
-      this.columnDef.cellRendererParams = this.columnDef.cellRendererParams || {};
+      this.columnDef.cellRendererParams =
+        this.columnDef.cellRendererParams || {};
       this.columnDef.cellRendererParams.ngTemplate = this.template;
     }
   }

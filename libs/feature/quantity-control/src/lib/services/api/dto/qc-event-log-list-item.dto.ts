@@ -7,8 +7,8 @@ export interface IQcEventLogListItemDto {
   createdOn: string;
 }
 
-export interface IQcEventLogAddedListItemDto extends Omit<IQcEventLogListItemDto, 'id'> {
-}
+export interface IQcEventLogAddedListItemDto
+  extends Omit<IQcEventLogListItemDto, 'id'> {}
 
 export interface IQcEventLogDeletedListItemDto {
   id: number;

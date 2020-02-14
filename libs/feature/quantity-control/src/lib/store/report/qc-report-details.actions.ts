@@ -3,8 +3,7 @@ import { IQcReportDetailsDto } from '../../services/api/dto/qc-report-details.dt
 export class LoadReportDetailsAction {
   static readonly type = '[QC.Report.Details] Load Report Details';
 
-  constructor(public reportId: number) {
-  }
+  constructor(public reportId: number) {}
 
   public log(): any {
     return {
@@ -16,8 +15,7 @@ export class LoadReportDetailsAction {
 export class LoadReportDetailsSuccessfulAction {
   static readonly type = '[QC.Report.Details] Load Report Details Successful';
 
-  constructor(public reportId: number, public dto: IQcReportDetailsDto) {
-  }
+  constructor(public reportId: number, public dto: IQcReportDetailsDto) {}
 
   public log(): any {
     return {
@@ -31,8 +29,7 @@ export class LoadReportDetailsSuccessfulAction {
 export class LoadReportDetailsFailedAction {
   static readonly type = '[QC.Report.Details] Load Report Details Failed';
 
-  constructor(public reportId: number) {
-  }
+  constructor(public reportId: number) {}
 
   public log(): any {
     return {
@@ -41,11 +38,8 @@ export class LoadReportDetailsFailedAction {
   }
 }
 
-
 export class ResetQcReportDetailsStateAction {
   static readonly type = '[QC.Report.Details] Reset';
 
-  constructor() {
-  }
+  constructor() {}
 }
-

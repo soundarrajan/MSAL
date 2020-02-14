@@ -49,8 +49,7 @@ export interface IVesselMasterDto extends IDisplayLookupDto {
   isDeleted?: boolean;
 }
 
-export interface IVesselMasterRequest extends IServerGridInfo {
-}
+export interface IVesselMasterRequest extends IServerGridInfo {}
 
 export interface IVesselMasterResponse {
   items: IVesselMasterDto[];

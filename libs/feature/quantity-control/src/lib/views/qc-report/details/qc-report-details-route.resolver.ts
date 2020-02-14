@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Resolve,
+  Router,
+  RouterStateSnapshot
+} from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
@@ -12,30 +17,39 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
-    private reportService: QcReportService) {
-  }
+    private reportService: QcReportService
+  ) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    const reportIdParam = route.params[KnownQuantityControlRoutes.ReportIdParam];
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any> | Promise<any> | any {
+    const reportIdParam =
+      route.params[KnownQuantityControlRoutes.ReportIdParam];
     const reportId = Number(reportIdParam ?? 0);
 
-    if(!Number.isInteger(reportId)){
-      return this.router.navigate([KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.ReportList]);
+    if (!Number.isInteger(reportId)) {
+      return this.router.navigate([
+        KnownPrimaryRoutes.QuantityControl,
+        KnownQuantityControlRoutes.ReportList
+      ]);
     }
 
-    return this.reportService.loadReportDetails$(reportId)
-      .pipe(
-        catchError(error => {
-          // Note: If the user navigated directly to this route, we need to redirect to root and show and error
-          if (!state.root.component) {
-            this.appErrorHandler.handleError(error);
-            return this.router.navigate([KnownPrimaryRoutes.QuantityControl, KnownQuantityControlRoutes.ReportList]);
-          } else {
-            // Note: if the application is already loaded (something visible on the screen) and we navigate to a bad route we need to "cancel" the navigation and show an error
-            return throwError(error);
-          }
-        }),
-        mapTo(reportIdParam)
-      );
+    return this.reportService.loadReportDetails$(reportId).pipe(
+      catchError(error => {
+        // Note: If the user navigated directly to this route, we need to redirect to root and show and error
+        if (!state.root.component) {
+          this.appErrorHandler.handleError(error);
+          return this.router.navigate([
+            KnownPrimaryRoutes.QuantityControl,
+            KnownQuantityControlRoutes.ReportList
+          ]);
+        } else {
+          // Note: if the application is already loaded (something visible on the screen) and we navigate to a bad route we need to "cancel" the navigation and show an error
+          return throwError(error);
+        }
+      }),
+      mapTo(reportIdParam)
+    );
   }
 }
