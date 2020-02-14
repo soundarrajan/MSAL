@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppContext } from '../app-context/app-context';
 
@@ -7,7 +12,10 @@ import { AppContext } from '../app-context/app-context';
 export class CorrelationIdHttpInterceptor implements HttpInterceptor {
   constructor(private appContext: AppContext) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     const request = req.clone({
       setHeaders: {
         'x-correlation-id': this.appContext.sessionId

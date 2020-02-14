@@ -1,3 +1,3 @@
 export interface IShiptechApiRequest<T> {
-  payload: T
+  payload: T;
 }

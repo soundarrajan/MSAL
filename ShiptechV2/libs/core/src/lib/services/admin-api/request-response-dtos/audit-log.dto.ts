@@ -1,5 +1,5 @@
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 export interface IAuditLogItemDto {
   id: number;
@@ -18,8 +18,7 @@ export interface IAuditLogItemDto {
   userAction: string;
 }
 
-export interface IAuditLogRequest extends IServerGridInfo {
-}
+export interface IAuditLogRequest extends IServerGridInfo {}
 
 export interface IAuditLogResponse {
   payload: IAuditLogItemDto[];

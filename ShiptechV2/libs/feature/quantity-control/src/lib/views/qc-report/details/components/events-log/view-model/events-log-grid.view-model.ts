@@ -26,22 +26,19 @@ function model(prop: keyof IQcEventsLogItemState): keyof IQcEventsLogItemState {
 }
 
 @Injectable()
-export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestroy {
-
-  private readonly dateFormat: string;
-
-  private defaultColFilterParams = {
+export class EventsLogGridViewModel extends BaseGridViewModel
+  implements OnDestroy {
+  public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
-
   gridOptions: GridOptions = {
     groupHeaderHeight: 40,
     headerHeight: 25,
     rowHeight: 35,
 
-   domLayout: 'autoHeight',
+    domLayout: 'autoHeight',
     pagination: false,
     animateRows: true,
 
@@ -61,7 +58,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       sortable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams,
-      flex: 1,
+      flex: 1
     }
   };
 
@@ -75,9 +72,11 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
     flex: undefined,
-    cellRendererSelector: params => params.data?.createdBy?.id === this.store.selectSnapshot(UserProfileState.userId)
-      ? { component: nameof(AgCellTemplateComponent) }
-      : null
+    cellRendererSelector: params =>
+      params.data?.createdBy?.id ===
+      this.store.selectSnapshot(UserProfileState.userId)
+        ? { component: nameof(AgCellTemplateComponent) }
+        : null
   };
 
   eventDetailsCol: ITypedColDef<IQcEventsLogItemState, string> = {
@@ -86,10 +85,13 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     field: model('eventDetails'),
     width: 800,
     autoHeight: true,
-    cellRendererSelector: params => params.data?.isNew ? { component: nameof(AgCellTemplateComponent) } : null,
+    cellRendererSelector: params =>
+      params.data?.isNew
+        ? { component: nameof(AgCellTemplateComponent) }
+        : null,
     tooltipValueGetter: params => params.valueFormatted ?? params.value,
     flex: 2,
-    minWidth: 200,
+    minWidth: 200
   };
 
   createdByCol: ITypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {
@@ -98,7 +100,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     field: model('createdBy'),
     valueFormatter: params => params.value?.displayName ?? params.value?.name,
     filterParams: {
-      valueGetter: rowModel => rowModel.data?.createdBy?.displayName ?? rowModel.data?.createdBy?.name
+      valueGetter: rowModel =>
+        rowModel.data?.createdBy?.displayName ?? rowModel.data?.createdBy?.name
     }
   };
 
@@ -107,8 +110,9 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     colId: EventsLogColumns.Created,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: params => this.format.date(params.value)
   };
+  private readonly dateFormat: string;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -120,7 +124,12 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
     private format: TenantFormattingService,
     private detailsService: QcReportService
   ) {
-    super('quantity-control-events-log-grid', columnPreferences, changeDetector, loggerFactory.createLogger(EventsLogGridViewModel.name));
+    super(
+      'quantity-control-events-log-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(EventsLogGridViewModel.name)
+    );
     this.init(this.gridOptions);
 
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
@@ -130,28 +139,35 @@ export class EventsLogGridViewModel extends BaseGridViewModel implements OnDestr
       this.gridReady$.pipe(first()),
       // Note: After save we want to reload event notes, because we don't have saved ids, so we can't actually delete them.
       actions$.pipe(ofActionSuccessful(QcSaveReportDetailsSuccessfulAction))
-    ).pipe(
-      tap(() => this.gridApi.showLoadingOverlay()),
-      switchMap(() => this.detailsService.loadEventsLog$()),
-      // Note: No need for pagination or server-side filtering, everything is loaded in memory.
-      switchMap(() => store.select(QcReportState.eventLogsItems)),
-      catchError(() => {
-        this.gridApi.hideOverlay();
-        return EMPTY$;
-      }),
-      tap(items => {
-        this.gridApi.setRowData(items);
-        if (!items || !items.length) {
-          this.gridApi.showNoRowsOverlay();
-        } else {
+    )
+      .pipe(
+        tap(() => this.gridApi.showLoadingOverlay()),
+        switchMap(() => this.detailsService.loadEventsLog$()),
+        // Note: No need for pagination or server-side filtering, everything is loaded in memory.
+        switchMap(() => store.select(QcReportState.eventLogsItems)),
+        catchError(() => {
           this.gridApi.hideOverlay();
-        }
-      }),
-      takeUntil(this.destroy$)
-    ).subscribe();
+          return EMPTY$;
+        }),
+        tap(items => {
+          this.gridApi.setRowData(items);
+          if (!items || !items.length) {
+            this.gridApi.showNoRowsOverlay();
+          } else {
+            this.gridApi.hideOverlay();
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   getColumnsDefs(): ITypedColDef[] {
-    return [this.actionsColumn, this.eventDetailsCol, this.createdByCol, this.createdCol];
+    return [
+      this.actionsColumn,
+      this.eventDetailsCol,
+      this.createdByCol,
+      this.createdCol
+    ];
   }
 }

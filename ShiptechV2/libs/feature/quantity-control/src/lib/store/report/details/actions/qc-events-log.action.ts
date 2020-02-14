@@ -3,8 +3,7 @@ import { IQcEventLogListItemDto } from '../../../../services/api/dto/qc-event-lo
 export class QcLoadEventsLogAction {
   static readonly type = '[Qc.Report.Details] - Load Events Log';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};
@@ -14,8 +13,7 @@ export class QcLoadEventsLogAction {
 export class QcLoadEventsLogSuccessfulAction {
   static readonly type = '[Qc.Report.Details] - Load Events Log Successful';
 
-  constructor(public items: IQcEventLogListItemDto[]) {
-  }
+  constructor(public items: IQcEventLogListItemDto[]) {}
 
   public log(): any {
     return {
@@ -27,15 +25,13 @@ export class QcLoadEventsLogSuccessfulAction {
 export class QcLoadEventsLogFailedAction {
   static readonly type = '[Qc.Report.Details] - Load Events Log Failed';
 
-  constructor() {
-  }
+  constructor() {}
 }
 
 export class QcAddEventLogAction {
   static readonly type = '[Qc.Report.Details] - Add Event Log';
 
-  constructor(public eventDetails?: string) {
-  }
+  constructor(public eventDetails?: string) {}
 
   public log(): any {
     return {
@@ -47,8 +43,7 @@ export class QcAddEventLogAction {
 export class QcRemoveEventLogAction {
   static readonly type = '[Qc.Report.Details] - Remove Event Log';
 
-  constructor(public id: number) {
-  }
+  constructor(public id: number) {}
 
   public log(): any {
     return {
@@ -60,8 +55,7 @@ export class QcRemoveEventLogAction {
 export class QcUpdateEventLogAction {
   static readonly type = '[Qc.Report.Details] - Update Event Log';
 
-  constructor(public id: number, public eventDetails: string) {
-  }
+  constructor(public id: number, public eventDetails: string) {}
 
   public log(): any {
     return {

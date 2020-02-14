@@ -13,30 +13,20 @@ export function getDefaultStorage(defaultStorage: any): any {
 }
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule],
   declarations: [
     FilterPreferencesComponent,
     AvailableFiltersComponent,
     AgGridFilterPresetsDirective,
     PresetsMenuDropdownComponent
   ],
-  providers: [
-    AgGridFilterPresetsService
-  ],
+  providers: [AgGridFilterPresetsService],
   exports: [
     FilterPreferencesComponent,
     AvailableFiltersComponent,
     AgGridFilterPresetsDirective,
     PresetsMenuDropdownComponent
   ],
-  entryComponents: [
-    AvailableFiltersComponent
-  ]
+  entryComponents: [AvailableFiltersComponent]
 })
-export class FilterPresetsModule {
-}
+export class FilterPresetsModule {}

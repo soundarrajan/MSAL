@@ -1,11 +1,20 @@
 import { VesselMastersApi } from './vessel-masters-api.service';
 import { Observable, of } from 'rxjs';
-import { ApiCall, ApiCallForwardTo } from '../../utils/decorators/api-call.decorator';
+import {
+  ApiCall,
+  ApiCallForwardTo
+} from '../../utils/decorators/api-call.decorator';
 import { Injectable } from '@angular/core';
 import { IVesselMastersApi } from './vessel-masters-api.service.interface';
-import { IVesselMasterRequest, IVesselMasterResponse } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
+import {
+  IVesselMasterRequest,
+  IVesselMasterResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import getVesselsResponseMock from './mock-data/get-vessels-response.mock.json';
-import { IVesselPortCallMasterRequest, IVesselPortCallMasterResponse } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
+import {
+  IVesselPortCallMasterRequest,
+  IVesselPortCallMasterResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { getMockVesselPortCallsEventsLog } from '@shiptech/core/services/masters-api/mock-data/vessel-port-calls.mock';
 
 const mockVesselPortCallsEventsLog = getMockVesselPortCallsEventsLog(30);
@@ -29,8 +38,9 @@ export class VesselMastersApiMock implements IVesselMastersApi {
   }
 
   @ApiCall()
-  getVesselPortCalls(request: IVesselPortCallMasterRequest): Observable<IVesselPortCallMasterResponse> {
-
+  getVesselPortCalls(
+    request: IVesselPortCallMasterRequest
+  ): Observable<IVesselPortCallMasterResponse> {
     return of({
       items: mockVesselPortCallsEventsLog,
       totalCount: mockVesselPortCallsEventsLog.length

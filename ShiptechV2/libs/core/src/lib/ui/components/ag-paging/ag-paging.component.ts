@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
@@ -41,8 +48,8 @@ export class AgPagingComponent implements AfterViewInit {
     this._page = val;
     this.pages = this.calcPages();
 
-    if(this.useInputAsPageSelect) {
-      this.formControl.setValue(val, {emitEvent: false});
+    if (this.useInputAsPageSelect) {
+      this.formControl.setValue(val, { emitEvent: false });
     }
   }
 
@@ -123,13 +130,14 @@ export class AgPagingComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-    if(this.useInputAsPageSelect) {
-      this.formControl.valueChanges.pipe(
-        distinctUntilChanged(),
-        debounceTime(300),
-        tap(this.selectPage.bind(this))
-      ).subscribe()
+    if (this.useInputAsPageSelect) {
+      this.formControl.valueChanges
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(300),
+          tap(this.selectPage.bind(this))
+        )
+        .subscribe();
     }
   }
 }

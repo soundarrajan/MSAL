@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
@@ -9,19 +15,14 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UomSelectorComponent {
-  public options: SelectItem[];
-  public selectedOptionId: number;
-
-  private originalOptions: IDisplayLookupDto[];
-
-  @Output() public selectionChanged = new EventEmitter<IDisplayLookupDto>();
-  @Input() public disabled = false;
-
   @Input('uoms') set _options(options: IDisplayLookupDto[]) {
     if (!options) {
       return;
     }
-    this.options = options.map(value => ({ label: value.displayName, value: value.id }));
+    this.options = options.map(value => ({
+      label: value.displayName,
+      value: value.id
+    }));
     this.originalOptions = options;
   }
 
@@ -31,12 +32,19 @@ export class UomSelectorComponent {
     }
     this.selectedOptionId = option.id;
   }
+  public options: SelectItem[];
+  public selectedOptionId: number;
 
-  constructor() {
-  }
+  @Output() public selectionChanged = new EventEmitter<IDisplayLookupDto>();
+  @Input() public disabled = false;
+
+  private originalOptions: IDisplayLookupDto[];
+
+  constructor() {}
 
   onSelectionChanged(selectedId: number): void {
-    this.selectionChanged.next(this.originalOptions.find(option => option.id === selectedId));
+    this.selectionChanged.next(
+      this.originalOptions.find(option => option.id === selectedId)
+    );
   }
-
 }

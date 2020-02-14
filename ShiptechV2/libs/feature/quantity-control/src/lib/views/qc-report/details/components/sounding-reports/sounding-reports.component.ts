@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { QcSoundingReportListGridViewModel } from './view-model/grid-view-model';
 import { Subject } from 'rxjs';
 
@@ -12,11 +17,9 @@ import { Subject } from 'rxjs';
 export class SoundingReportsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: QcSoundingReportListGridViewModel) {
-  }
+  constructor(public gridViewModel: QcSoundingReportListGridViewModel) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

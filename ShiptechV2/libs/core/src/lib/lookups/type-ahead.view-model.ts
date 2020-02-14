@@ -2,7 +2,18 @@ import { FormControl } from '@angular/forms';
 import { merge, Observable, of, Subject } from 'rxjs';
 import { ILookupDto } from './lookup-dto.interface';
 import { LookupDataSource } from './lookup-data-source.interface';
-import { catchError, debounceTime, defaultIfEmpty, exhaustMap, filter, first, scan, startWith, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  defaultIfEmpty,
+  exhaustMap,
+  filter,
+  first,
+  scan,
+  startWith,
+  switchMap,
+  tap
+} from 'rxjs/operators';
 import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
 import { LookupFilter, LookupsDefaultPageSize } from './lookup-filter';
 import { OnDestroy } from '@angular/core';
@@ -16,12 +27,18 @@ export class TypeAheadViewModel<TLookup = ILookupDto> implements OnDestroy {
   isLoadingItemsSlow = false;
   loadMoreItems$ = new Subject();
 
-  constructor(selectedItem: TLookup, lookupDataSource: LookupDataSource<TLookup>) {
+  constructor(
+    selectedItem: TLookup,
+    lookupDataSource: LookupDataSource<TLookup>
+  ) {
     this.selectedControl = new FormControl();
     this.selectedItem = selectedItem;
 
     // Note: We let the async pipe subscribe tot this.p
-    this.items$ = merge(this.externalFilterItems$, this.selectedControl.valueChanges).pipe(
+    this.items$ = merge(
+      this.externalFilterItems$,
+      this.selectedControl.valueChanges
+    ).pipe(
       // Note: When the user types something, the value is of type string
       // Note: when the user selects an option from the dropdown, the value is an object ILookupDto
       // Note: so we want to perform the api Search only when the user types
@@ -98,18 +115,26 @@ export class TypeAheadViewModel<TLookup = ILookupDto> implements OnDestroy {
 
   validateItemOrReset(): void {
     // Note: If there was a item already selected, the user deleted all text, reset to original value.
-    if (!this.selectedControl || !this.selectedControl.value || typeof this.selectedControl.value === 'string') {
+    if (
+      !this.selectedControl ||
+      !this.selectedControl.value ||
+      typeof this.selectedControl.value === 'string'
+    ) {
       this.reset();
     }
-  }
-
-  // noinspection JSMethodCanBeStatic
-  private getFilterModel(startsWith: string, page: number): LookupFilter {
-    return new LookupFilter({ startsWith, page, pageSize: LookupsDefaultPageSize });
   }
 
   ngOnDestroy(): void {
     this.externalFilterItems$.complete();
     this.loadMoreItems$.complete();
+  }
+
+  // noinspection JSMethodCanBeStatic
+  private getFilterModel(startsWith: string, page: number): LookupFilter {
+    return new LookupFilter({
+      startsWith,
+      page,
+      pageSize: LookupsDefaultPageSize
+    });
   }
 }

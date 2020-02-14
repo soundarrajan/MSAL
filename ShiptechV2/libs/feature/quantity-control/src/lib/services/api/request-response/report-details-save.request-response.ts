@@ -1,5 +1,11 @@
-import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
-import { IQcEventLogAddedListItemDto, IQcEventLogDeletedListItemDto } from '../dto/qc-event-log-list-item.dto';
+import {
+  IBaseQuantityControlRequest,
+  IBaseQuantityControlResponse
+} from './request-response.quantity-control.model';
+import {
+  IQcEventLogAddedListItemDto,
+  IQcEventLogDeletedListItemDto
+} from '../dto/qc-event-log-list-item.dto';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcVesselPortCallDto } from '../dto/qc-vessel-port-call.interface';
 import { IQcReportProductTypeDto } from '../dto/qc-report-details.dto';
@@ -19,7 +25,7 @@ export interface IQcReportSaveProductDetailsDto {
 
 export interface ISaveReportDetailsRequest extends IBaseQuantityControlRequest {
   id: number;
-  portCall: IQcVesselPortCallDto,
+  portCall: IQcVesselPortCallDto;
   isVerifiedSludgeQty: boolean;
   sludgePercentage: number;
   comments: string;
@@ -31,8 +37,9 @@ export interface ISaveReportDetailsRequest extends IBaseQuantityControlRequest {
   notes: (IQcEventLogAddedListItemDto | IQcEventLogDeletedListItemDto)[];
 }
 
-export interface ISaveReportDetailsResponse extends IBaseQuantityControlResponse {
+export interface ISaveReportDetailsResponse
+  extends IBaseQuantityControlResponse {
   reportId: number;
   emailTransactionTypeId: number;
-  productTypes: IQcReportProductTypeDto[]
+  productTypes: IQcReportProductTypeDto[];
 }

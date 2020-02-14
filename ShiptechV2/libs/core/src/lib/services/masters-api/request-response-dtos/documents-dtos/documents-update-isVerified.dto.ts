@@ -1,8 +1,6 @@
-
 export interface IDocumentsUpdateIsVerifiedRequest {
   id: number;
   isVerified: boolean;
 }
 
-export interface IDocumentsUpdateIsVerifiedResponse {
-}
+export interface IDocumentsUpdateIsVerifiedResponse {}

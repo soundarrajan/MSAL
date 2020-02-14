@@ -14,8 +14,7 @@ import { Directive, HostListener, NgModule } from '@angular/core';
  * IMPORTANT: This directive is auto-applied and you need to be careful when you import the module. You can disable this behavior on specific elements by applying css class .disable-focus-select
  */
 export class SelectTextOnFocusDirective {
-  constructor() {
-  }
+  constructor() {}
 
   @HostListener('onFocus', ['$event.target'])
   @HostListener('focus', ['$event.target'])
@@ -25,12 +24,7 @@ export class SelectTextOnFocusDirective {
 }
 
 @NgModule({
-  declarations: [
-    SelectTextOnFocusDirective
-  ],
-  exports: [
-    SelectTextOnFocusDirective
-  ]
+  declarations: [SelectTextOnFocusDirective],
+  exports: [SelectTextOnFocusDirective]
 })
-export class SelectTextOnFocusDirectiveModule {
-}
+export class SelectTextOnFocusDirectiveModule {}

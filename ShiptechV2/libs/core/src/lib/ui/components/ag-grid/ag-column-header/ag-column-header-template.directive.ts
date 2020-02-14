@@ -1,4 +1,10 @@
-import { Directive, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
 import { ColDef } from '@ag-grid-community/core';
 
 @Directive({
@@ -9,8 +15,7 @@ export class AgColumnHeaderTemplateDirective implements OnChanges {
   // Note: Consider refactor to accept multiple columnDefs
   @Input() columnDef: ColDef | ColDef[];
 
-  constructor(public template: TemplateRef<any>) {
-  }
+  constructor(public template: TemplateRef<any>) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.columnDef) {
@@ -23,7 +28,8 @@ export class AgColumnHeaderTemplateDirective implements OnChanges {
         colDef.headerComponentParams.ngTemplate = this.template;
       });
     } else {
-      this.columnDef.headerComponentParams = this.columnDef.headerComponentParams || {};
+      this.columnDef.headerComponentParams =
+        this.columnDef.headerComponentParams || {};
       this.columnDef.headerComponentParams.ngTemplate = this.template;
     }
   }

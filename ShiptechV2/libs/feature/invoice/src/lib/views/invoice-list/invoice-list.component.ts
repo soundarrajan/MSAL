@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { InvoiceListGridViewModel } from './view-model/invoice-list-grid.view-model';
@@ -11,15 +18,14 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvoiceListComponent implements OnInit, OnDestroy {
-
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: InvoiceListGridViewModel,
-              public appConfig: AppConfig,
-              private urlService: UrlService
-  ) {
-  }
+  constructor(
+    public gridViewModel: InvoiceListGridViewModel,
+    public appConfig: AppConfig,
+    private urlService: UrlService
+  ) {}
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
@@ -30,19 +36,27 @@ export class InvoiceListComponent implements OnInit, OnDestroy {
   }
 
   openEditOrder(orderId: number): void {
-    window.open(this.urlService.editOrder(orderId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editOrder(orderId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
   openEditDelivery(deliveryId: number): void {
-    window.open(this.urlService.editDelivery(deliveryId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editDelivery(deliveryId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
   openEditInvoice(invoiceId: number): void {
-    window.open(this.urlService.editInvoice(invoiceId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editInvoice(invoiceId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

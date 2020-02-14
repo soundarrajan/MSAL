@@ -8,27 +8,15 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-
   declarations: [
     GetServiceInstanceDirective,
     DeveloperToolbarComponent,
     ApiServiceSettingsComponent
   ],
   providers: [],
-  imports: [
-    CommonModule,
-    FormsModule,
-    FlexLayoutModule,
-    MaterialModule
-  ],
-  exports: [
-    DeveloperToolbarComponent,
-    GetServiceInstanceDirective
-  ]
+  imports: [CommonModule, FormsModule, FlexLayoutModule, MaterialModule],
+  exports: [DeveloperToolbarComponent, GetServiceInstanceDirective]
 })
 export class DeveloperToolbarModule {
-  constructor() {
-  }
-
+  constructor() {}
 }
-

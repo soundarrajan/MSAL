@@ -1,8 +1,7 @@
 export class UpdateQcReportComment {
   static readonly type = '[Qc.Report.Details] - Update report comment';
 
-  constructor(public comment: string) {
-  }
+  constructor(public comment: string) {}
 
   public log(): any {
     return {

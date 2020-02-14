@@ -5,7 +5,7 @@ import { BreadcrumbsModule } from '../../components/breadcrumbs/breadcrumbs.modu
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import {ConfirmationService} from "primeng/api";
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -15,15 +15,8 @@ import {ConfirmationService} from "primeng/api";
     RouterModule,
     ConfirmDialogModule
   ],
-  declarations: [
-    LayoutMainComponent
-  ],
-  providers: [
-    ConfirmationService
-  ],
-  exports: [
-    LayoutMainComponent
-  ]
+  declarations: [LayoutMainComponent],
+  providers: [ConfirmationService],
+  exports: [LayoutMainComponent]
 })
-export class LayoutMainModule {
-}
+export class LayoutMainModule {}

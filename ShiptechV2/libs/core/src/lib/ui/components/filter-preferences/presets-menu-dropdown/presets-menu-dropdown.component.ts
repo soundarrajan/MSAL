@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AgGridFilterPresetsService } from '../ag-filter-presets-service/ag-filter-presets.service';
 
 @Component({
@@ -8,12 +8,9 @@ import { AgGridFilterPresetsService } from '../ag-filter-presets-service/ag-filt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresetsMenuDropdownComponent implements OnInit {
+  constructor(private filterPresetsService: AgGridFilterPresetsService) {}
 
-  constructor(private filterPresetsService: AgGridFilterPresetsService, private changeDetector: ChangeDetectorRef) { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   createFilter(): void {
     this.filterPresetsService.openSaveAsDialog();
@@ -24,6 +21,6 @@ export class PresetsMenuDropdownComponent implements OnInit {
   }
 
   exportExcel(): void {
-    alert('Wait for it...')
+    alert('Wait for it...');
   }
 }

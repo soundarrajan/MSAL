@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
-import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApi } from './services/api/quantity-control-api';
+import {
+  QUANTITY_CONTROL_API_SERVICE,
+  QuantityControlApi
+} from './services/api/quantity-control-api';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
@@ -72,7 +75,11 @@ import { MessagesModule } from 'primeng/messages';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
+    NgxsModule.forFeature([
+      QuantityControlState,
+      QcReportsListState,
+      QcReportState
+    ]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -110,9 +117,7 @@ import { MessagesModule } from 'primeng/messages';
     PSpinnerDisableKeysSpinDirective,
     PSpinnerTenantFormatDirective
   ],
-  entryComponents: [
-    RaiseClaimComponent
-  ],
+  entryComponents: [RaiseClaimComponent],
   exports: [
     MainQuantityControlComponent,
     PSpinnerDisableKeysSpinDirective,
@@ -124,11 +129,12 @@ import { MessagesModule } from 'primeng/messages';
     QcReportDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
-      useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
+      useClass: environment.production
+        ? QuantityControlApi
+        : QuantityControlApiMock
     },
     QcReportDetailsUnsavedChangesGuard,
     QcReportService
   ]
 })
-export class QuantityControlModule {
-}
+export class QuantityControlModule {}

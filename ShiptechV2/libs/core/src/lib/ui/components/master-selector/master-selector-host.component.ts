@@ -7,14 +7,11 @@ import { DynamicDialogConfig } from 'primeng/api';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MasterSelectorHostComponent implements OnInit {
-
   masterPortal: CdkPortal;
 
   constructor(public config: DynamicDialogConfig) {
-
     this.masterPortal = config.data.masterPortal;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

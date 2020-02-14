@@ -1,6 +1,11 @@
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Resolve,
+  Router,
+  RouterStateSnapshot
+} from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -34,9 +39,13 @@ export class FeatureInvoiceModuleResolver implements Resolve<any> {
     });
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any> | Promise<any> | any {
     // Note: Before this module can be used/opened, we need to load module settings and cached lookups first.
-    return this.tenantService.loadModule(TenantSettingsModuleName.Delivery)
+    return this.tenantService
+      .loadModule(TenantSettingsModuleName.Delivery)
       .pipe(
         catchError(error => {
           // Note: If the user navigated directly to this route, we need to redirect to root and show and error

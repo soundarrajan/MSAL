@@ -2,13 +2,21 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
-import { QcSoundingReportDetailsColumns, QcSoundingReportDetailsColumnsLabels, QcSoundingReportListColumns, QcSoundingReportListColumnsLabels } from './grid-column-constants';
+import {
+  QcSoundingReportDetailsColumns,
+  QcSoundingReportDetailsColumnsLabels,
+  QcSoundingReportListColumns,
+  QcSoundingReportListColumnsLabels
+} from './grid-column-constants';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
-import { IQcSoundingReportDetailsItemDto, IQcSoundingReportItemDto } from '../../../../../../services/api/dto/qc-report-sounding.dto';
+import {
+  IQcSoundingReportDetailsItemDto,
+  IQcSoundingReportItemDto
+} from '../../../../../../services/api/dto/qc-report-sounding.dto';
 import { ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -17,22 +25,24 @@ import { Store } from '@ngxs/store';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { IGetSoundingReportListResponse } from '../../../../../../services/api/request-response/sounding-reports.request-response';
 
-function model(prop: keyof IQcSoundingReportItemDto): keyof IQcSoundingReportItemDto {
+function model(
+  prop: keyof IQcSoundingReportItemDto
+): keyof IQcSoundingReportItemDto {
   return prop;
 }
 
-function detailsModel(prop: keyof IQcSoundingReportDetailsItemDto): keyof IQcSoundingReportDetailsItemDto {
+function detailsModel(
+  prop: keyof IQcSoundingReportDetailsItemDto
+): keyof IQcSoundingReportDetailsItemDto {
   return prop;
 }
 
 @Injectable()
 export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
-
-  private defaultColFilterParams = {
-    clearButton: true,
-    applyButton: true,
-    precision: () => this.format.quantityPrecision
-  };
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
+  }
 
   detailsReportIdCol: ITypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.reportId,
@@ -82,7 +92,10 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter'
   };
 
-  tankUnpumpableVolumeCol: ITypedColDef<IQcSoundingReportDetailsItemDto, number> = {
+  tankUnpumpableVolumeCol: ITypedColDef<
+    IQcSoundingReportDetailsItemDto,
+    number
+  > = {
     headerName: QcSoundingReportDetailsColumnsLabels.tankUnpumpableVolume,
     colId: QcSoundingReportDetailsColumns.tankUnpumpableVolume,
     field: detailsModel('tankUnpumpableVolume'),
@@ -96,6 +109,12 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     field: detailsModel('fuelMass'),
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
+  };
+
+  public defaultColFilterParams = {
+    clearButton: true,
+    applyButton: true,
+    precision: () => this.format.quantityPrecision
   };
 
   detailsGridOptions: GridOptions = {
@@ -263,7 +282,12 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
     private reportService: QcReportService,
     private store: Store
   ) {
-    super('qc-sounding-report-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcSoundingReportListGridViewModel.name));
+    super(
+      'qc-sounding-report-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(QcSoundingReportListGridViewModel.name)
+    );
     this.init(this.gridOptions);
 
     // Note: Do note use async pipe to load data directly in template because angular ag-grid first sets rowData to undefined, which shows no-rows and then triggers loading the data.
@@ -299,7 +323,8 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
           }
         }),
         takeUntil(this.destroy$)
-      ).subscribe();
+      )
+      .subscribe();
   }
 
   getColumnsDefs(): ITypedColDef[] {
@@ -324,20 +349,24 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   }
 
   protected detailServerSideGetRows(params: any): void {
-    this.reportService.getSoundingReportListItemDetails$((<IQcSoundingReportItemDto>params.data).id, {}).subscribe(
-      response => params.successCallback(response.items, response.totalCount),
-      error => {
-        this.appErrorHandler.handleError(error);
-      });
+    this.reportService
+      .getSoundingReportListItemDetails$(
+        (<IQcSoundingReportItemDto>params.data).id,
+        {}
+      )
+      .subscribe(
+        response => params.successCallback(response.items, response.totalCount),
+        error => {
+          this.appErrorHandler.handleError(error);
+        }
+      );
   }
 
-  private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
-    return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
-  }
-
-  protected get reportDetailsState(): IQcReportDetailsState {
-    // Note: Always get a fresh reference to the state.
-    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
+  private selectReportDetails<T>(
+    select: (state: IQcReportDetailsState) => T
+  ): Observable<T> {
+    return this.store.select((appState: IAppState) =>
+      select(appState?.quantityControl?.report?.details)
+    );
   }
 }
-

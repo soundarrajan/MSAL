@@ -17,20 +17,23 @@ export class UrlService {
 
   private readonly baseOrigin: string;
 
-  constructor(private appConfig: AppConfig,
-              loggerFactory: LoggerFactory,
-              @Inject(APP_BASE_HREF) private baseHref: string) {
+  constructor(
+    private appConfig: AppConfig,
+    loggerFactory: LoggerFactory,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {
     this.logger = loggerFactory.createLogger(UrlService.name);
 
     if (!environment.production) {
-      this.baseOrigin = appConfig.baseOrigin || new URL(window.location.href).origin;
+      this.baseOrigin =
+        appConfig.baseOrigin || new URL(window.location.href).origin;
     } else {
       this.baseOrigin = new URL(window.location.href).origin;
     }
   }
 
   public editRequest(requestId: string | number): string {
-    return `${this.baseOrigin}/#/edit-request/${(requestId)}`;
+    return `${this.baseOrigin}/#/edit-request/${requestId}`;
   }
 
   public getRuntimeSettings(): string {
@@ -42,31 +45,31 @@ export class UrlService {
   }
 
   public offer(requestId: string | number): string {
-    return `${this.baseOrigin}/#/group-of-requests/${(requestId)}`;
+    return `${this.baseOrigin}/#/group-of-requests/${requestId}`;
   }
 
   public editOrder(orderId: string | number): string {
-    return `${this.baseOrigin}/#/edit-order/${(orderId)}`;
+    return `${this.baseOrigin}/#/edit-order/${orderId}`;
   }
 
   public editDelivery(deliveryId: string | number): string {
-    return `${this.baseOrigin}/#/delivery/delivery/edit/${(deliveryId)}`;
+    return `${this.baseOrigin}/#/delivery/delivery/edit/${deliveryId}`;
   }
 
   public portCallDetails(portCallId: string | number): string {
-    return `${this.baseHref}${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.Report}/${(portCallId)}`;
+    return `${this.baseHref}${KnownPrimaryRoutes.QuantityControl}/${KnownQuantityControlRoutes.Report}/${portCallId}`;
   }
 
   public editLabResults(labId: string | number): string {
-    return `${this.baseOrigin}/#/labs/labresult/edit/${(labId)}`;
+    return `${this.baseOrigin}/#/labs/labresult/edit/${labId}`;
   }
 
   public editInvoice(invoiceId: string | number): string {
-    return `${this.baseOrigin}/#/invoices/invoice/edit/${(invoiceId)}`;
+    return `${this.baseOrigin}/#/invoices/invoice/edit/${invoiceId}`;
   }
 
   public editReconListOrder(orderId: string | number): string {
-    return `${this.baseOrigin}/#/recon/reconlist/edit/${(orderId)}`;
+    return `${this.baseOrigin}/#/recon/reconlist/edit/${orderId}`;
   }
 
   public editClaim(claimId: string | number): string {

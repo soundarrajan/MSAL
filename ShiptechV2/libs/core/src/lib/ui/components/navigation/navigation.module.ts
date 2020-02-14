@@ -17,12 +17,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     BlankComponent,
     AccessDeniedComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ButtonModule,
-    ScrollPanelModule
-  ],
+  imports: [CommonModule, RouterModule, ButtonModule, ScrollPanelModule],
   exports: [
     SidebarComponent,
     AppSubMenuComponent,
@@ -31,5 +26,4 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     AccessDeniedComponent
   ]
 })
-export class NavigationModule {
-}
+export class NavigationModule {}

@@ -8,10 +8,13 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
-import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
+import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
-type ColorDisplayLookup = IDisplayLookupDto & { 'code': string };
-type ColorDisplayMappingLookup = ColorDisplayLookup & { 'transactionTypeId': number, 'index': number}
+type ColorDisplayLookup = IDisplayLookupDto & { code: string };
+type ColorDisplayMappingLookup = ColorDisplayLookup & {
+  transactionTypeId: number;
+  index: number;
+};
 /**
  * Front-end will only work with this class, and it doesn't care how these tables are actually populated.
  * Note: See {@link LookupsCacheService} to see how data is actually loaded from the api.
@@ -20,7 +23,6 @@ type ColorDisplayMappingLookup = ColorDisplayLookup & { 'transactionTypeId': num
   providedIn: 'root'
 })
 export class LegacyLookupsDatabase extends Dexie {
-
   readonly currency: Dexie.Table<IDisplayLookupDto, number>;
   readonly uom: Dexie.Table<IDisplayLookupDto, number>;
   readonly uomVolume: Dexie.Table<IDisplayLookupDto, number>;
@@ -30,7 +32,10 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly reconMatch: Dexie.Table<IReconStatusLookupDto, number>;
   readonly documentType: Dexie.Table<IDisplayLookupDto, number>;
   readonly emailStatus: Dexie.Table<IDisplayLookupDto, number>;
-  readonly scheduleDashboardLabelConfiguration: Dexie.Table<IScheduleDashboardLabelConfigurationDto, number>;
+  readonly scheduleDashboardLabelConfiguration: Dexie.Table<
+    IScheduleDashboardLabelConfigurationDto,
+    number
+  >;
   readonly transactionType: Dexie.Table<IDisplayLookupDto, number>;
   readonly invoiceCustomStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
@@ -39,11 +44,25 @@ export class LegacyLookupsDatabase extends Dexie {
    * Note: In case a transformer is not defined {@link fromLegacyLookup} is used as default mapper
    */
   readonly transforms: Record<string, (dto: any) => any> = {
-    [nameof<LegacyLookupsDatabase>('reconMatch')]: (dto: ColorDisplayLookup) => (<IReconStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code }),
-    [nameof<LegacyLookupsDatabase>('status')]: (dto: ColorDisplayLookup) => (<IStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code }),
-    [nameof<LegacyLookupsDatabase>('scheduleDashboardLabelConfiguration')]: (dto: ColorDisplayMappingLookup) => (<IScheduleDashboardLabelConfigurationDto>{ ... fromLegacyLookup(dto), code: dto.code, transactionTypeId: dto.transactionTypeId, index: dto.index }),
-    [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: (dto: ColorDisplayLookup) => (<IReconStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code }),
-    [nameof<LegacyLookupsDatabase>('orderedStatus')]: (dto: ColorDisplayLookup) => (<IReconStatusLookupDto>{ ... fromLegacyLookup(dto), code: dto.code })
+    [nameof<LegacyLookupsDatabase>('reconMatch')]: (dto: ColorDisplayLookup) =>
+      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('status')]: (dto: ColorDisplayLookup) =>
+      <IStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('scheduleDashboardLabelConfiguration')]: (
+      dto: ColorDisplayMappingLookup
+    ) =>
+      <IScheduleDashboardLabelConfigurationDto>{
+        ...fromLegacyLookup(dto),
+        code: dto.code,
+        transactionTypeId: dto.transactionTypeId,
+        index: dto.index
+      },
+    [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: (
+      dto: ColorDisplayLookup
+    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('orderedStatus')]: (
+      dto: ColorDisplayLookup
+    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code }
   };
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
@@ -56,8 +75,12 @@ export class LegacyLookupsDatabase extends Dexie {
 
     const lookupId = nameof<IDisplayLookupDto>('id');
     const lookupName = nameof<IDisplayLookupDto>('name');
-    const lookupIndex = nameof<IScheduleDashboardLabelConfigurationDto>('index');
-    const lookupTransactionTypeId = nameof<IScheduleDashboardLabelConfigurationDto>('transactionTypeId');
+    const lookupIndex = nameof<IScheduleDashboardLabelConfigurationDto>(
+      'index'
+    );
+    const lookupTransactionTypeId = nameof<
+      IScheduleDashboardLabelConfigurationDto
+    >('transactionTypeId');
     const lookupSchema = `++${lookupId}, ${lookupName}`;
     const lookupDashboardSchema = `++${lookupIndex}, ${lookupTransactionTypeId}, ${lookupId}`;
 
@@ -65,7 +88,9 @@ export class LegacyLookupsDatabase extends Dexie {
     this.schema = {
       [nameof<LegacyLookupsDatabase>('currency')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('uom')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('lookupVersions')]: `++${nameof<ILegacyLookupVersion>('name')}`,
+      [nameof<LegacyLookupsDatabase>('lookupVersions')]: `++${nameof<
+        ILegacyLookupVersion
+      >('name')}`,
       [nameof<LegacyLookupsDatabase>('uomVolume')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('uomMass')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('status')]: lookupSchema,
@@ -73,10 +98,12 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('reconMatch')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('documentType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('emailStatus')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('scheduleDashboardLabelConfiguration')]: lookupDashboardSchema,
+      [nameof<LegacyLookupsDatabase>(
+        'scheduleDashboardLabelConfiguration'
+      )]: lookupDashboardSchema,
       [nameof<LegacyLookupsDatabase>('transactionType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema
     };
   }
 
@@ -92,6 +119,15 @@ export class LegacyLookupsDatabase extends Dexie {
     Object.keys(this.schema).forEach(tableName => {
       this[tableName] = this.table(tableName);
     });
+  }
+
+  async getTable(statusName: string): Promise<number[]> {
+    const db = this.table('status');
+    console.log(db);
+    return await db
+      .where('status')
+      .equals(statusName)
+      .toArray();
   }
 
   private async ensureVersion(): Promise<any> {
@@ -129,7 +165,9 @@ export class LegacyLookupsDatabase extends Dexie {
   private calculateDbVersion(tables: string[]): number {
     const str = tables.sort().join();
 
-    let hash = 0, i, chr;
+    let hash = 0,
+      i,
+      chr;
 
     if (str.length === 0) {
       return hash;
@@ -138,16 +176,12 @@ export class LegacyLookupsDatabase extends Dexie {
     for (i = 0; i < str.length; i++) {
       chr = str.charCodeAt(i);
       // tslint:disable-next-line:no-bitwise
-      hash = ((hash << 5) - hash) + chr;
+      // eslint-disable-next-line no-bitwise
+      hash = (hash << 5) - hash + chr;
       // tslint:disable-next-line:no-bitwise
+      // eslint-disable-next-line no-bitwise
       hash |= 0; // Convert to 32bit integer
     }
     return hash;
-  };
-
-  async getTable(statusName: string): Promise<number[]> {
-    const db = this.table('status');
-    console.log(db);
-    return await db.where('status').equals(statusName).toArray();
   }
 }

@@ -31,4 +31,3 @@ export interface IQcSoundingReportDetailsItemDto {
   fuelMass: number;
   measuredVesselReportId: number;
 }
-

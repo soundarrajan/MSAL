@@ -9,10 +9,9 @@ export class EntityStatusService {
   public statusChanged = new ReplaySubject<IEntityStatusConfig>(1);
   public currentStatus: IEntityStatusConfig;
 
-  constructor() {
-  }
+  constructor() {}
 
-  public setStatus(newStatus: IEntityStatusConfig): void{
+  public setStatus(newStatus: IEntityStatusConfig): void {
     this.currentStatus = newStatus;
     this.statusChanged.next(this.currentStatus);
   }

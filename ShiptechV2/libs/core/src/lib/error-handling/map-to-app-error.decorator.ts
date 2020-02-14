@@ -5,13 +5,22 @@ import { ApiError } from './api/api-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppError } from './app-error';
 
-export interface IApiToAppErrorMap<TErrorCode extends number = number, TAppError extends AppError = AppError> {
+export interface IApiToAppErrorMap<
+  TErrorCode extends number = number,
+  TAppError extends AppError = AppError
+> {
   [key: number]: AppError;
 }
 
 // TODO: Create per class decorator to avoid repetition
-export function MapToAppError(errorMap: IApiToAppErrorMap): MethodDecoratorFactory {
-  return (target: any, methodName: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
+export function MapToAppError(
+  errorMap: IApiToAppErrorMap
+): MethodDecoratorFactory {
+  return (
+    target: any,
+    methodName: string,
+    descriptor: PropertyDescriptor
+  ): PropertyDescriptor => {
     const oldMethod = descriptor.value;
 
     descriptor.value = function(...args: any[]): any {
@@ -19,7 +28,8 @@ export function MapToAppError(errorMap: IApiToAppErrorMap): MethodDecoratorFacto
         catchError((httpError: HttpErrorResponse) => {
           const unknownApiError = ApiError.UnknownWithDetails(httpError);
 
-          const apiError = (httpError ? httpError.error : unknownApiError) || unknownApiError;
+          const apiError =
+            (httpError ? httpError.error : unknownApiError) || unknownApiError;
 
           let appError = (errorMap || {})[apiError.errorCode];
 
@@ -29,7 +39,9 @@ export function MapToAppError(errorMap: IApiToAppErrorMap): MethodDecoratorFacto
             appError = new AppError({ ...appError, data: apiError });
           }
 
-          return throwError(appError || AppError.UnknownServerErrorWithData(apiError));
+          return throwError(
+            appError || AppError.UnknownServerErrorWithData(apiError)
+          );
         })
       );
     };

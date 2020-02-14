@@ -1,59 +1,48 @@
-import {ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {ColDef, ColumnApi, GridApi, GridOptions, IServerSideGetRowsParams} from '@ag-grid-community/core';
-import {Observable, of, ReplaySubject, Subject} from 'rxjs';
-import {observe} from 'rxjs-observe';
-import {catchError, filter, finalize, first, takeUntil, tap} from 'rxjs/operators';
-import {AgColumnPreferencesService} from './ag-column-preferences/ag-column-preferences.service';
-import {Logger} from '../../../logging/logger';
-import {defaultComparer} from './ag-grid.comparators';
-import {AgGridEventsEnum} from './ag-grid.events';
-import {AppError} from '../../../error-handling/app-error';
-import {nameof} from '@shiptech/core/utils/type-definitions';
-import {ITypedColDef, ITypedColGroupDef} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {EMPTY$} from '@shiptech/core/utils/rxjs-operators';
+import { ChangeDetectorRef, OnDestroy } from '@angular/core';
+import {
+  ColDef,
+  ColumnApi,
+  GridApi,
+  GridOptions,
+  IServerSideGetRowsParams
+} from '@ag-grid-community/core';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { observe } from 'rxjs-observe';
+import {
+  catchError,
+  filter,
+  finalize,
+  first,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
+import { AgColumnPreferencesService } from './ag-column-preferences/ag-column-preferences.service';
+import { Logger } from '../../../logging/logger';
+import { defaultComparer } from './ag-grid.comparators';
+import { AgGridEventsEnum } from './ag-grid.events';
+import { AppError } from '../../../error-handling/app-error';
+import { nameof } from '@shiptech/core/utils/type-definitions';
+import {
+  ITypedColDef,
+  ITypedColGroupDef
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 
 export const PageSizeOptions = [25, 50, 75, 100];
 export const DefaultPageSize = 25;
 export const colGroupMarginClass = 'col-group-border';
 
 export abstract class BaseGridViewModel implements OnDestroy {
-  saveColumnPreferences = true;
-  pageSizeOptions = PageSizeOptions;
-
-  protected constructor(protected gridId: string, protected columnPreferences: AgColumnPreferencesService, protected changeDetector: ChangeDetectorRef, protected logger: Logger) {
-  }
-
-  private _page: number = 1;
-
   get page(): number {
-    return this.gridApi ? this.gridApi.paginationGetCurrentPage() + 1 : this._page || 1;
+    return this.gridApi
+      ? this.gridApi.paginationGetCurrentPage() + 1
+      : this._page || 1;
   }
 
   set page(value: number) {
     this._page = value;
     this.syncPagination();
   }
-
-  protected gridApi: GridApi;
-  protected gridColumnApi: ColumnApi;
-  protected gridOptions: GridOptions;
-  public isLoading$ = new Subject<boolean>();
-
-  /**
-   * Note: ReplaySubject piped before setting the ag-grid server side data source. This is used to do other operations that might trigger data source multiple times.
-   * Note: For example, setting filters, sort or column preferences, will trigger the data source each time. Depending on case this behavior might not be desired,
-   * Note: especially if the server side operation is heavy.
-   * Note: We might at some point want to create a queue like behavior, if the grid needs to wait for multiple operations before it starts loading data.
-   *
-   * Note: Set {@link enablePreServerSideDataSourcePipe} property first to use this feature.
-   */
-  public preServerSideDataSourcePipe$: ReplaySubject<unknown>;
-
-  // Note: Currently only working for serverSide. For client set, you have to manually set the IsLoading.
-  private _isLoading: boolean;
-  private _isReady: boolean;
-
-  private _pageSize: number = this.pageSizeOptions && this.pageSizeOptions.length > 0 ? this.pageSizeOptions[0] : DefaultPageSize;
 
   get isLoading(): boolean {
     return this._isLoading;
@@ -66,7 +55,9 @@ export abstract class BaseGridViewModel implements OnDestroy {
   }
 
   get pageSize(): number {
-    return this.gridApi ? this.gridApi.paginationGetPageSize() : this._pageSize || DefaultPageSize;
+    return this.gridApi
+      ? this.gridApi.paginationGetPageSize()
+      : this._pageSize || DefaultPageSize;
   }
 
   get isReady(): boolean {
@@ -86,13 +77,9 @@ export abstract class BaseGridViewModel implements OnDestroy {
     this.syncPagination();
   }
 
-  private _destroy$ = new Subject();
-
   get destroy$(): Subject<any> {
     return this._destroy$;
   }
-
-  private _gridReady$ = new ReplaySubject(1);
 
   get gridReady$(): ReplaySubject<any> {
     return this._gridReady$;
@@ -101,11 +88,50 @@ export abstract class BaseGridViewModel implements OnDestroy {
   get totalItems(): number {
     return this.gridApi ? this.gridApi.paginationGetRowCount() : undefined;
   }
+  saveColumnPreferences = true;
+  pageSizeOptions = PageSizeOptions;
+  public isLoading$ = new Subject<boolean>();
+
+  /**
+   * Note: ReplaySubject piped before setting the ag-grid server side data source. This is used to do other operations that might trigger data source multiple times.
+   * Note: For example, setting filters, sort or column preferences, will trigger the data source each time. Depending on case this behavior might not be desired,
+   * Note: especially if the server side operation is heavy.
+   * Note: We might at some point want to create a queue like behavior, if the grid needs to wait for multiple operations before it starts loading data.
+   *
+   * Note: Set {@link enablePreServerSideDataSourcePipe} property first to use this feature.
+   */
+  public preServerSideDataSourcePipe$: ReplaySubject<unknown>;
 
   /**
    * See docs for {@link preServerSideDataSourcePipe$}
    */
   public enablePreServerSideDataSourcePipe: boolean = false;
+
+  protected gridApi: GridApi;
+  protected gridColumnApi: ColumnApi;
+  protected gridOptions: GridOptions;
+
+  private _page: number = 1;
+
+  // Note: Currently only working for serverSide. For client set, you have to manually set the IsLoading.
+  private _isLoading: boolean;
+  private _isReady: boolean;
+
+  private _pageSize: number =
+    this.pageSizeOptions && this.pageSizeOptions.length > 0
+      ? this.pageSizeOptions[0]
+      : DefaultPageSize;
+
+  private _destroy$ = new Subject();
+
+  private _gridReady$ = new ReplaySubject(1);
+
+  protected constructor(
+    protected gridId: string,
+    protected columnPreferences: AgColumnPreferencesService,
+    protected changeDetector: ChangeDetectorRef,
+    protected logger: Logger
+  ) {}
 
   public syncPagination(): void {
     if (!this.gridOptions.pagination) {
@@ -139,8 +165,11 @@ export abstract class BaseGridViewModel implements OnDestroy {
     }
   }
 
-  public init(gridOptions: GridOptions, enablePreServerSideDataSourcePipe: boolean = false): void {
-    const {observables, proxy} = observe(gridOptions);
+  public init(
+    gridOptions: GridOptions,
+    enablePreServerSideDataSourcePipe: boolean = false
+  ): void {
+    const { observables, proxy } = observe(gridOptions);
     this.gridOptions = proxy;
     this.gridOptions.defaultColDef = this.gridOptions.defaultColDef || {};
     this.enablePreServerSideDataSourcePipe = enablePreServerSideDataSourcePipe;
@@ -177,7 +206,10 @@ export abstract class BaseGridViewModel implements OnDestroy {
     // Note: Currently ag-grid does a lexicographically compare of strings which is not natural
     // Note: We took the default comparer from ag-grid source and updated it to comapre with localCompare
     this.gridOptions.defaultColDef = this.gridOptions.defaultColDef || {};
-    if (!this.gridOptions.defaultColDef || !this.gridOptions.defaultColDef.comparator) {
+    if (
+      !this.gridOptions.defaultColDef ||
+      !this.gridOptions.defaultColDef.comparator
+    ) {
       this.gridOptions.defaultColDef.comparator = defaultComparer.bind(this);
     }
 
@@ -200,12 +232,56 @@ export abstract class BaseGridViewModel implements OnDestroy {
 
   public getColumnsDefs(): (ITypedColDef | ITypedColGroupDef)[] {
     // Note: To be overridden in derived class
-    throw Error(`${nameof<BaseGridViewModel>('getColumnsDefs')} was not overridden in derived class`);
+    throw Error(
+      `${nameof<BaseGridViewModel>(
+        'getColumnsDefs'
+      )} was not overridden in derived class`
+    );
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     // Note: To be overridden in derived class
-    throw Error(`${nameof<BaseGridViewModel>('serverSideGetRows')} was not overridden in derived class`);
+    throw Error(
+      `${nameof<BaseGridViewModel>(
+        'serverSideGetRows'
+      )} was not overridden in derived class`
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.saveColumnPreferences) {
+      this.columnPreferences.unregisterWatch(this.gridId);
+    }
+
+    if (this.gridApi) {
+      this.gridApi.removeEventListener(
+        AgGridEventsEnum.columnVisible,
+        this.onGridColumnVisible
+      );
+    }
+
+    this._gridReady$.complete();
+    this.isLoading$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  /**
+   * See docs for {@link preServerSideDataSourcePipe$}
+   */
+  markServerSideDataSourceReady(): void {
+    if (!this.enablePreServerSideDataSourcePipe) {
+      console.warn(
+        `${nameof<BaseGridViewModel>(
+          'markServerSideDataSourceReady'
+        )} was called while ${nameof<BaseGridViewModel>(
+          'enablePreServerSideDataSourcePipe'
+        )} is false. Did you forget to enable it?`
+      );
+      return;
+    }
+
+    this.preServerSideDataSourcePipe$.next();
   }
 
   protected serverSideDatasourceDestroy(): void {
@@ -224,28 +300,16 @@ export abstract class BaseGridViewModel implements OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    if (this.saveColumnPreferences) {
-      this.columnPreferences.unregisterWatch(this.gridId);
-    }
-
-    if (this.gridApi) {
-      this.gridApi.removeEventListener(AgGridEventsEnum.columnVisible, this.onGridColumnVisible);
-    }
-
-    this._gridReady$.complete();
-    this.isLoading$.complete();
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   private onGridColumnVisible(): void {
     const displayedColumns = this.gridColumnApi.getAllDisplayedColumns();
 
     // Note: If the user deselected all columns, he won't be able to made them visible again (no column menu) without a page refresh (losing all unsaved data).
     // Note: In this case we're going to make the first column visible
     if (displayedColumns.length === 0) {
-      this.gridColumnApi.setColumnVisible(this.gridColumnApi.getAllColumns()[0], true);
+      this.gridColumnApi.setColumnVisible(
+        this.gridColumnApi.getAllColumns()[0],
+        true
+      );
     }
   }
 
@@ -255,25 +319,29 @@ export abstract class BaseGridViewModel implements OnDestroy {
 
     this.gridApi.setColumnDefs(<ColDef[]>this.getColumnsDefs());
 
-
     // Note: It's important to set pagination before setting the datasource otherwise multiple call to the dataSource will be made
     this.syncPagination();
 
     if (this.saveColumnPreferences) {
       this.columnPreferences.registerWatch(this.gridId, this.gridOptions);
 
-      this.columnPreferences.restore(this.gridId)
+      this.columnPreferences
+        .restore(this.gridId)
         .pipe(
           catchError(() => of(AppError.GridPreferenceRestore(this.gridId))),
           finalize(() => {
             // Note: Set the source as the final operation otherwise with each column state update or pagination, will call server side source multiple times
             this.setupServerSideDatasource();
-          }))
+          })
+        )
         .subscribe();
     } else {
       this.setupServerSideDatasource();
     }
-    this.gridApi.addEventListener(AgGridEventsEnum.columnVisible, this.onGridColumnVisible.bind(this));
+    this.gridApi.addEventListener(
+      AgGridEventsEnum.columnVisible,
+      this.onGridColumnVisible.bind(this)
+    );
 
     this._isReady = true;
     this._gridReady$.next();
@@ -288,63 +356,57 @@ export abstract class BaseGridViewModel implements OnDestroy {
     this.gridApi.showLoadingOverlay();
     this._isLoading = true;
 
-    (this.preServerSideDataSourcePipe$ ?? EMPTY$).pipe(
-      first(),
-      tap(() => {
-        this.gridApi.setServerSideDatasource({
-          getRows: params => {
-            const paramsProxy = {...params};
+    (this.preServerSideDataSourcePipe$ ?? EMPTY$)
+      .pipe(
+        first(),
+        tap(() => {
+          this.gridApi.setServerSideDatasource({
+            getRows: params => {
+              const paramsProxy = { ...params };
 
-            paramsProxy.successCallback = (rowsThisPage: any[], lastRow: number) => {
-              try {
-                params.successCallback(rowsThisPage, lastRow);
-                this.gridApi.hideOverlay();
+              paramsProxy.successCallback = (
+                rowsThisPage: any[],
+                lastRow: number
+              ) => {
+                try {
+                  params.successCallback(rowsThisPage, lastRow);
+                  this.gridApi.hideOverlay();
 
-                // Note: In order for ag-Grid to start at a specified page, it has to load the first page first.. yeah...
-                this.syncPagination();
-              } finally {
-                this._isLoading = false;
+                  // Note: In order for ag-Grid to start at a specified page, it has to load the first page first.. yeah...
+                  this.syncPagination();
+                } finally {
+                  this._isLoading = false;
 
-                if (!rowsThisPage.length) {
-                  this.gridApi.showNoRowsOverlay();
+                  if (!rowsThisPage.length) {
+                    this.gridApi.showNoRowsOverlay();
+                  }
+
+                  this.changeDetector.markForCheck();
                 }
+              };
 
-                this.changeDetector.markForCheck();
-              }
-            };
+              paramsProxy.failCallback = () => {
+                try {
+                  params.failCallback();
+                } finally {
+                  this._isLoading = false;
+                  this.changeDetector.markForCheck();
+                }
+              };
 
-            paramsProxy.failCallback = () => {
               try {
-                params.failCallback();
-              } finally {
+                this.serverSideGetRows(paramsProxy);
+              } catch (e) {
                 this._isLoading = false;
-                this.changeDetector.markForCheck();
               }
-            };
 
-            try {
-              this.serverSideGetRows(paramsProxy);
-            } catch (e) {
-              this._isLoading = false;
-            }
-
-            this.changeDetector.markForCheck();
-          },
-          destroy: () => this.serverSideDatasourceDestroy()
-        });
-      }),
-      takeUntil(this.destroy$)).subscribe();
-  }
-
-  /**
-   * See docs for {@link preServerSideDataSourcePipe$}
-   */
-  markServerSideDataSourceReady(): void {
-    if (!this.enablePreServerSideDataSourcePipe) {
-      console.warn(`${nameof<BaseGridViewModel>('markServerSideDataSourceReady')} was called while ${nameof<BaseGridViewModel>('enablePreServerSideDataSourcePipe')} is false. Did you forget to enable it?`);
-      return;
-    }
-
-    this.preServerSideDataSourcePipe$.next();
+              this.changeDetector.markForCheck();
+            },
+            destroy: () => this.serverSideDatasourceDestroy()
+          });
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 }

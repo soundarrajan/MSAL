@@ -3,5 +3,4 @@ export interface IDocumentsUpdateNotesRequest {
   notes: string;
 }
 
-export interface IDocumentsUpdateNotesResponse {
-}
+export interface IDocumentsUpdateNotesResponse {}

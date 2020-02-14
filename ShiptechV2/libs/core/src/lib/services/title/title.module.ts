@@ -12,5 +12,4 @@ import { TitleService } from '@shiptech/core/services/title/title.service';
     }
   ]
 })
-export class TitleModule {
-}
+export class TitleModule {}

@@ -9,11 +9,13 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: MainLazyLoadComponent,
-    children: [{
-      path: '',
-      resolve: { test: LazyLoadPocRouteResolver},
-      component: LazyViewComponent
-    }]
+    children: [
+      {
+        path: '',
+        resolve: { test: LazyLoadPocRouteResolver },
+        component: LazyViewComponent
+      }
+    ]
   }
 ];
 
@@ -21,5 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class LazyLoadPocRoutingModule {
-}
+export class LazyLoadPocRoutingModule {}
