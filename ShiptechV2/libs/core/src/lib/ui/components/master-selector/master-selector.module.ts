@@ -13,6 +13,7 @@ import { SelectorComponent } from "@shiptech/core/ui/components/master-selector/
 import { ButtonModule } from 'primeng/button';
 import { PortalModule } from '@angular/cdk/portal';
 import {AgGridModule} from "@ag-grid-community/angular";
+import {DynamicDialogComponent} from "primeng/dynamicdialog";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -36,7 +37,8 @@ export function getDefaultStorage(defaultStorage: any): any {
   declarations: [
     MasterSelectorHostComponent,
     MasterSelectorTriggerDirective,
-    SelectorComponent
+    SelectorComponent,
+    DynamicDialogComponent
   ],
   exports: [
     MasterSelectorHostComponent,
@@ -45,7 +47,8 @@ export function getDefaultStorage(defaultStorage: any): any {
   ],
   entryComponents: [
     MasterSelectorHostComponent,
-    SelectorComponent
+    SelectorComponent,
+    DynamicDialogComponent
   ]
 })
 export class MasterSelectorModule {
