@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FilterPreferenceViewModel } from '../../../services/user-settings/filter-preference.interface';
 import { distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators';
-import { MatDialog, MatDialogRef } from '@angular/material';
 import { Subject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { AvailableFiltersComponent } from './available-filters/available-filters.component';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultPreferenceLoaded, FiltersArNotLoaded, PreferenceAlreadyExists, PreferenceCleared, PreferenceLoaded, ToastPosition } from './filter-preferences-messages';
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   // tslint:disable-next-line:component-selector
