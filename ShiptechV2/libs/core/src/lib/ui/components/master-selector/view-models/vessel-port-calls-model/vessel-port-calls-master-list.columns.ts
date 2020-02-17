@@ -28,7 +28,7 @@ export const VesselPortCallsMasterListColumnServerKeys: Record<
 > = {
   [VesselPortCallsMasterListColumns.selection]: undefined,
   [VesselPortCallsMasterListColumns.locationPort]: 'Location_Name',
-  [VesselPortCallsMasterListColumns.voyageId]: 'VoyageId_Name',
+  [VesselPortCallsMasterListColumns.voyageId]: 'VoyageId',
   [VesselPortCallsMasterListColumns.eta]: 'eta',
   [VesselPortCallsMasterListColumns.etb]: 'etb',
   [VesselPortCallsMasterListColumns.etd]: 'etd',
