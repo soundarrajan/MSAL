@@ -13,6 +13,8 @@ import { SelectorComponent } from "@shiptech/core/ui/components/master-selector/
 import { ButtonModule } from 'primeng/button';
 import { PortalModule } from '@angular/cdk/portal';
 import {AgGridModule} from "@ag-grid-community/angular";
+import {DynamicDialogComponent} from "primeng/dynamicdialog";
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -25,6 +27,7 @@ export function getDefaultStorage(defaultStorage: any): any {
     ReactiveFormsModule,
     UIModule,
     FilterPresetsModule,
+    PrimeNGModule,
     SearchBoxModule,
     AgGridExtensionsModule,
     AgGridModule,

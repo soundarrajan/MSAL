@@ -57,6 +57,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { MessagesModule } from 'primeng/messages';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
+    PrimeNGModule,
     NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
@@ -106,17 +108,13 @@ import { MessagesModule } from 'primeng/messages';
     QcReportDetailsAuditLogsComponent,
     QcReportDetailsDocumentsComponent,
     UomSelectorComponent,
-    RaiseClaimComponent,
-    PSpinnerDisableKeysSpinDirective,
-    PSpinnerTenantFormatDirective
+    RaiseClaimComponent
   ],
   entryComponents: [
     RaiseClaimComponent
   ],
   exports: [
-    MainQuantityControlComponent,
-    PSpinnerDisableKeysSpinDirective,
-    PSpinnerTenantFormatDirective
+    MainQuantityControlComponent
   ],
   providers: [
     ModuleLoggerFactory,

@@ -1,7 +1,11 @@
-﻿commit 0cd396408773da99b90ad564f3e319a3b4ba20fb
-Author: Sergiu Vasui <sergiu_vasui@yahoo.com>
-Date:   Thu Feb 13 11:11:57 2020 +0200
+﻿commit 0d534b6c39eb17ec6bc93735ff45cc78c29b97db
+Author: Narcis Dumitrescu <narcis.dumitrescu@24software.ro>
+Date:   Mon Feb 17 09:25:49 2020 +0000
 
-    Added master in this build
+    Merged PR 2988: Fixed angular material imports
+    
+    Fixed angular material imports
+    
+    Related work items: #16333
 
 branch: master
